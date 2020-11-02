@@ -224,7 +224,6 @@ Begin VB.Form frmDadosImovel
       _ExtentY        =   10769
       _Version        =   393217
       BorderStyle     =   0
-      Enabled         =   -1  'True
       ReadOnly        =   -1  'True
       Appearance      =   0
       TextRTF         =   $"frmDadosImovel.frx":08DB
@@ -468,38 +467,143 @@ MsgBox "Erro ao carregar a foto do imóvel.", vbCritical, "Atenção"
 End Sub
 
 Private Sub cmdPrint_Click()
-Dim sLinha As String, sFoto As String, sPathOPrigem As String
+Dim Sql As String, RdoAux As rdoResultset, nCodigo As Long, RdoAux2 As rdoResultset, RdoAux3 As rdoResultset
+Dim mStream As New ADODB.Stream, rst As New ADODB.Recordset, adoConn As New ADODB.Connection, nFotoAtual As Integer
+Dim sAtivo As String, sInscricao As String, sCompromissario As String, sMatricula As String, sCep As String, nArea As Double
+Dim sImune As String, sReside As String, nEdif As Integer, nTestada As Double, qd As New rdoQuery, nVVT As Double, nVVC As Double, nVVI As Double
+Dim nValorFinal As Double, nSomaFator As Double, sIsentoCip As String, nValorGrupamento As Double
 
 If Rtb.Text = "" Then
     MsgBox "Nada a imprimir.", vbCritical, "Atenção"
     Exit Sub
 End If
 
-On Error Resume Next
-Open App.Path & "\bin\detalhe.bat" For Output As #1
-Print #1, "@echo off"
-Print #1, "echo Aguarde....gerando relatorio."
-Print #1, """" & App.Path & "\bin\DETALHE.html" & """"
-Close #1
+nCodigo = Val(txtCod.Text)
+Set qd.ActiveConnection = cn
+qd.QueryTimeout = 0
+qd.Sql = "{ Call spCALCULO(?,?) }"
+qd(0) = nCodigo
+qd(1) = Year(Now)
+Set RdoAux3 = qd.OpenResultset(rdOpenKeyset)
+With RdoAux3
+     nTestada = !TESTADAPRINC
+     nVVT = !vvt
+     nVVC = !vvp
+     nVVI = !vvi
+     nValorFinal = !valorfinalfull
+     nSomaFator = FormatNumber(!ftop * !fsit * !fped * !fpro * !fgle, 2)
+     nValorAgrupamento = !valorAgrupamento
+    .Close
+End With
 
-Open App.Path & "\bin\detalhe.html" For Output As #1
+nFotoAtual = Val(lblFotoDe.Caption)
 
-sLinha = "<html><head><title>Detalhes do imóvel</title></head>"
-Print #1, sLinha
-sLinha = "<body><font size =2>"
-Print #1, sLinha
-sLinha = Replace(Rtb.Text, vbCrLf, "<BR>") & "<BR><BR>"
-Print #1, sLinha
+Sql = "delete from dados_imovel_rpt where codigo=" & nCodigo
+cn.Execute Sql, rdExecDirect
 
-If nQtdeFoto > 0 Then
-    sPathOrigem = Replace(sPathAnexo, "\", "/") & "09/" & Format(aFoto(Val(lblFotoDe.Caption)).Pasta, "00") & "/" & aFoto(Val(lblFotoDe.Caption)).Arquivo
-    sLinha = "<img src=""file://///" & sPathOrigem & """ width=500 height=350 ></body></html>"
-    Print #1, sLinha
+Sql = "select * from vwfullimovel2 where codreduzido=" & nCodigo
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    If SubNull(!Ativo) = "S" Then
+        sAtivo = "ATIVO"
+    Else
+        sAtivo = "INATIVO"
+    End If
+    sInscricao = !Inscricao
+    If Val(SubNull(!Imune)) = 0 Then
+        sImune = "NÃO"
+    Else
+        sImune = "SIM"
+    End If
+    If IsNull(!ResideImovel) Then
+        sReside = "NÃO"
+    Else
+        If Not !ResideImovel Then
+            sReside = "NÃO"
+        Else
+            sReside = "SIM"
+        End If
+    End If
+    If Val(SubNull(!cip)) = 0 Then
+        sIsentoCip = "NÃO"
+    Else
+        sIsentoCip = "SIM"
+    End If
+
+    If Not IsNull(!NumMat) Then
+        sMatricula = "(" & SubNull(!TipoMat) & ") " & !NumMat
+    End If
+    
+    Sql = "SELECT proprietario.codcidadao, proprietario.tipoprop, proprietario.principal, cidadao.nomecidadao FROM proprietario INNER JOIN "
+    Sql = Sql & "cidadao ON proprietario.codcidadao = cidadao.codcidadao Where Proprietario.CODREDUZIDO = " & nCodReduz
+    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    With RdoAux2
+        Do Until .EOF
+            If (!tipoprop = "P" And !principal = True) Then
+            Else
+                sCompromissario = sCompromissario & !nomecidadao & ", "
+            End If
+           .MoveNext
+        Loop
+       .Close
+    End With
+    If Len(sCompromissario) > 3 Then
+        sCompromissario = Left(sCompromissario, Len(sCompromissario) - 2)
+    End If
+    
+    Sql = "select sum(areaconstr) as soma from areas where codreduzido=" & nCodigo
+    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    If Val(SubNull(RdoAux2!soma)) > 0 Then
+        nArea = RdoAux2!soma
+    End If
+    RdoAux2.Close
+    
+    Sql = "select count(areaconstr) as total from areas where codreduzido=" & nCodigo
+    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    If Val(SubNull(RdoAux2!Total)) > 0 Then
+        nEdif = RdoAux2!Total
+    End If
+    RdoAux2.Close
+    
+    
+    sCep = RetornaCEP(Val(SubNull(!CodLogr)), Val(SubNull(!Li_Num)))
+
+    Sql = "insert dados_imovel_rpt (codigo,proprietario,ativo,inscricao,proprietario2,mt,endereco,numero,complemento,bairro,cep,quadra,lote,areaterreno,fracaoideal,"
+    Sql = Sql & "topografia,pedologia,situacao,usoterreno,benfeitoria,categoria,condominio,areapredial,imunidade,reside,qtdeedif,testada,vvt,vvc,vvi,"
+    Sql = Sql & "somafator,isentocip,agrupamento,iptu) values("
+    Sql = Sql & nCodigo & ",'" & Mask(!nomecidadao) & "','" & sAtivo & "','" & sInscricao & "','" & IIf(sCompromissario = "", "N/A", Mask(sCompromissario)) & "','" & sMatricula & "','"
+    Sql = Sql & Mask(!Logradouro) & "'," & Val(SubNull(!Li_Num)) & ",'" & Left(SubNull(!Li_Compl), 199) & "','" & SubNull(!DescBairro) & "','" & sCep & "','"
+    Sql = Sql & SubNull(!Li_Quadras) & "','" & SubNull(!Li_Lotes) & "'," & Virg2Ponto(CStr(!Dt_AreaTerreno)) & "," & Virg2Ponto(CStr(!Dt_FracaoIdeal)) & ",'"
+    Sql = Sql & !DescTopografia & "','" & !DescPedologia & "','" & !DescSituacao & "','" & !DescUsoTerreno & "','" & !DescBenfeitoria & "','" & !DescCategProp & "','"
+    Sql = Sql & IIf(IsNull(!cd_nomecond), "N/A", IIf(!cd_nomecond = "NÃO CADASTRADO", "N/A", !cd_nomecond)) & "'," & Virg2Ponto(CStr(nArea)) & ",'"
+    Sql = Sql & sImune & "','" & sReside & "'," & nEdif & "," & Virg2Ponto(CStr(nTestada)) & "," & Virg2Ponto(CStr(nVVT)) & "," & Virg2Ponto(CStr(nVVC)) & ","
+    Sql = Sql & Virg2Ponto(CStr(nVVI)) & "," & Virg2Ponto(CStr(nSomaFator)) & ",'" & sIsentoCip & "'," & Virg2Ponto(CStr(nValorAgrupamento)) & "," & Virg2Ponto(CStr(nValorFinal)) & ")"
+    cn.Execute Sql, rdExecDirect
+   .Close
+End With
+
+
+adoConn.CursorLocation = adUseClient
+adoConn.Open cn.Connect
+'On Error Resume Next
+sPathOrigem = sPathAnexo & "09\" & Format(aFoto(nFotoAtual).Pasta, "00") & "\" & aFoto(nFotoAtual).Arquivo
+rst.Open "Select * from dados_imovel_rpt where codigo=" & nCodigo, adoConn, adOpenKeyset, adLockOptimistic
+If rst.RecordCount > 0 And aFoto(nFotoAtual).Arquivo <> "" Then
+    With mStream
+        .Type = adTypeBinary
+        .Open
+        .LoadFromFile sPathOrigem
+        rst("foto").value = .Read
+        rst.Update
+    End With
+    Set mStream = Nothing
 End If
 
-Close #1
+frmReport.ShowReport3 "DADOS_IMOVEL", frmMdi.HWND, Me.HWND, nCodigo
 
-x = Shell(App.Path & "\Bin\detalhe.bat", vbNormalFocus)
+Sql = "delete from dados_imovel_rpt where codigo=" & nCodigo
+cn.Execute Sql, rdExecDirect
+
 End Sub
 
 Private Sub cmdSair_Click()

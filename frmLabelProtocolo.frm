@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmLabelProtocolo 
    BackColor       =   &H00EEEEEE&
@@ -498,7 +498,7 @@ With lvEtiq
                         End If
                     End If
                     nCodCidadao = !CodCidadao
-                    If nCodCidadao = 0 Then GoTo Proximo
+                    If nCodCidadao = 0 Then GoTo PROXIMO
                     
                     
                     If IsNull(!tipoend) Then
@@ -637,7 +637,7 @@ With lvEtiq
                .Close
             End With
         End If
-Proximo:
+PROXIMO:
     Next
 End With
 
@@ -702,7 +702,7 @@ With RdoAux
         If Not IsNull(!nomecidadao) Then
             itmX.SubItems(2) = SubNull(!nomecidadao)
         Else
-            itmX.SubItems(2) = SubNull(!descricao)
+            itmX.SubItems(2) = SubNull(!Descricao)
         End If
         itmX.SubItems(3) = SubNull(!Complemento)
         .MoveNext
@@ -803,7 +803,7 @@ End Sub
 
 Private Sub cmdPrint_Click()
 Dim nProc As Long, nAno As Integer, sProc As String, sData As String, sAssunto As String, nAssunto As Integer
-Dim sCompl As String, x As Long, Y As Integer, aMatriz() As String, sTmp As String, nReq As Long, sReq As String, RdoAux2 As rdoResultset
+Dim sCompl As String, x As Long, y As Integer, aMatriz() As String, sTmp As String, nReq As Long, sReq As String, RdoAux2 As rdoResultset
 Dim sEnd As String, sBairro As String, sCidade As String, sFone As String, RdoS As rdoResultset, nSeqP As Integer, sObs1 As String, sObs2 As String
 Dim sObs3 As String, bInterno As Boolean, sTipoEnd As String, sCep As String, sValidade As String
 
@@ -953,7 +953,7 @@ With lvEtiq
                         With RdoAux2
                             If .RowCount > 0 Then
                                 nReq = 0
-                                sReq = SubNull(!descricao)
+                                sReq = SubNull(!Descricao)
                             End If
                            .Close
                         End With
@@ -987,7 +987,7 @@ With lvEtiq
                     With RdoAux
                         Do Until .EOF
                             ReDim Preserve aMatriz(UBound(aMatriz) + 1)
-                            aMatriz(UBound(aMatriz)) = CStr(UBound(aMatriz)) & " - " & SubNull(!Sigla) & " " & SubNull(!descricao)
+                            aMatriz(UBound(aMatriz)) = CStr(UBound(aMatriz)) & " - " & SubNull(!Sigla) & " " & SubNull(!Descricao)
                            .MoveNext
                         Loop
                        .Close
@@ -1001,7 +1001,7 @@ With lvEtiq
                     With RdoAux
                         Do Until .EOF
                             ReDim Preserve aMatriz(UBound(aMatriz) + 1)
-                            aMatriz(UBound(aMatriz)) = CStr(UBound(aMatriz)) & " - " & SubNull(!Sigla) & " " & SubNull(!descricao)
+                            aMatriz(UBound(aMatriz)) = CStr(UBound(aMatriz)) & " - " & SubNull(!Sigla) & " " & SubNull(!Descricao)
                            .MoveNext
                         Loop
                        .Close
@@ -1010,27 +1010,27 @@ With lvEtiq
                .Close
             End With
             'FINALIZANDO
-            For Y = 1 To UBound(aMatriz)
-                Select Case Y
+            For y = 1 To UBound(aMatriz)
+                Select Case y
                    Case 1, 6, 11, 16, 21
-                        sTmp = aMatriz(Y)
+                        sTmp = aMatriz(y)
                         nSeqP = nSeqP + 1
                         Sql = "INSERT ETIQUETAGTI (USUARIO,SEQ,CAMPO1,PROCESSO) VALUES('"
-                        Sql = Sql & NomeDeLogin & "'," & nSeqP & ",'" & Left(aMatriz(Y), 60) & "','" & sProc & "')"
+                        Sql = Sql & NomeDeLogin & "'," & nSeqP & ",'" & Left(aMatriz(y), 60) & "','" & sProc & "')"
                     Case 2, 7, 12, 17, 22
 '                        Sql = "UPDATE ETIQUETAGTI  SET CAMPO2='" & Left(aMatriz(y), 200) & "' WHERE  USUARIO='" & NomeDoUsuario & "' AND CAMPO1='" & sTmp & "'"
-                        Sql = "UPDATE ETIQUETAGTI  SET CAMPO2='" & Left(aMatriz(Y), 200) & "' WHERE  USUARIO='" & NomeDeLogin & "' AND SEQ=" & nSeqP
+                        Sql = "UPDATE ETIQUETAGTI  SET CAMPO2='" & Left(aMatriz(y), 200) & "' WHERE  USUARIO='" & NomeDeLogin & "' AND SEQ=" & nSeqP
                     Case 3, 8, 13, 18, 23
-                       Sql = "UPDATE ETIQUETAGTI  SET CAMPO3='" & Left(aMatriz(Y), 60) & "' WHERE   USUARIO='" & NomeDeLogin & "' AND SEQ=" & nSeqP
+                       Sql = "UPDATE ETIQUETAGTI  SET CAMPO3='" & Left(aMatriz(y), 60) & "' WHERE   USUARIO='" & NomeDeLogin & "' AND SEQ=" & nSeqP
                      Case 4, 9, 14, 19, 24
-                        Sql = "UPDATE ETIQUETAGTI  SET CAMPO4='" & Left(aMatriz(Y), 60) & "' WHERE  USUARIO='" & NomeDeLogin & "' AND SEQ=" & nSeqP
+                        Sql = "UPDATE ETIQUETAGTI  SET CAMPO4='" & Left(aMatriz(y), 60) & "' WHERE  USUARIO='" & NomeDeLogin & "' AND SEQ=" & nSeqP
                     Case 5, 10, 15, 20, 25
-                        Sql = "UPDATE ETIQUETAGTI  SET CAMPO5='" & Left(aMatriz(Y), 60) & "' WHERE   USUARIO='" & NomeDeLogin & "' AND SEQ=" & nSeqP
+                        Sql = "UPDATE ETIQUETAGTI  SET CAMPO5='" & Left(aMatriz(y), 60) & "' WHERE   USUARIO='" & NomeDeLogin & "' AND SEQ=" & nSeqP
                 End Select
                  cn.Execute Sql, rdExecDirect
             Next
         End If
-Proximo:
+PROXIMO:
     Next
 End With
 

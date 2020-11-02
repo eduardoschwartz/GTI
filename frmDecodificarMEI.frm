@@ -1,17 +1,17 @@
 VERSION 5.00
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "Richtx32.ocx"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmDecodificarMEI 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Decodificação de arquivos do MEI"
-   ClientHeight    =   8550
-   ClientLeft      =   9150
-   ClientTop       =   3675
+   ClientHeight    =   8430
+   ClientLeft      =   2115
+   ClientTop       =   3570
    ClientWidth     =   8835
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
-   ScaleHeight     =   8550
+   ScaleHeight     =   8430
    ScaleWidth      =   8835
    ShowInTaskbar   =   0   'False
    Begin Tributacao.jcFrames frProgress 
@@ -758,7 +758,7 @@ Do While Not EOF(16)
     End If
     RdoAux.Close
     
-    Sql = "select * from cidade where siglauf='" & sUF & "' and desccidade like '%" & sMunicipioResp & "'"
+    Sql = "select * from cidade where siglauf='" & sUF & "' and desccidade like '%" & Mask(sMunicipioResp) & "'"
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     If RdoAux.RowCount > 0 Then
         nMunicipioRespCodigo = RdoAux!CodCidade
@@ -770,7 +770,7 @@ Do While Not EOF(16)
     
     
     
-    Sql = "select * from logradouro where nomelogradouro='" & sNomeEnd & "'"
+    Sql = "select * from logradouro where nomelogradouro='" & Mask(sNomeEnd) & "'"
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     If RdoAux.RowCount > 0 Then
         nCodEndereco = RdoAux!CodLogradouro
@@ -779,7 +779,7 @@ Do While Not EOF(16)
     End If
     RdoAux.Close
 
-    Sql = "select * from logradouro where nomelogradouro='" & sNomeEndResp & "'"
+    Sql = "select * from logradouro where nomelogradouro='" & Mask(sNomeEndResp) & "'"
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     If RdoAux.RowCount > 0 Then
         nCodEnderecoResp = RdoAux!CodLogradouro

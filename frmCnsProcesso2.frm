@@ -695,7 +695,7 @@ If mskDataEntrada.ClipText <> "" Then
     End If
 End If
 
-PBar.value = 0
+pBar.value = 0
 lblTot.Caption = "0 processos localizados."
 grdProc.Clear
 bNumProc = False: bAno = False: bReq = False: bAss = False: bCompl = False: bEntrada = False: bFis = False: bLogr = False
@@ -725,7 +725,7 @@ Ocupado
 If cGetInputState() <> 0 Then DoEvents
 Sql = "SELECT processogti.ANO, processogti.NUMERO, processogti.CODASSUNTO, assunto.NOME AS DESCASSUNTO, processogti.COMPLEMENTO, processogti.OBSERVACAO, "
 Sql = Sql & "processogti.FISICO, processogti.INTERNO, processogti.DATAENTRADA, processogti.DATAREATIVA, processogti.DATACANCEL, processogti.DATAARQUIVA,"
-Sql = Sql & "processogti.DATASUSPENSO, processogti.CODCIDADAO, cidadao.nomecidadao, processogti.CENTROCUSTO, centrocusto.DESCRICAO,"
+Sql = Sql & "processogti.DATASUSPENSO,DATADESCARTE, processogti.CODCIDADAO, cidadao.nomecidadao, processogti.CENTROCUSTO, centrocusto.DESCRICAO,"
 Sql = Sql & "processoend.CODLOGR, processoend.NUMERO AS NUMIMOVEL, vwLOGRADOURO.logradouro FROM vwLOGRADOURO INNER JOIN "
 Sql = Sql & "processoend ON vwLOGRADOURO.codlogradouro = processoend.CODLOGR RIGHT OUTER JOIN "
 Sql = Sql & "processogti INNER JOIN assunto ON processogti.CODASSUNTO = assunto.CODIGO ON processoend.ANO = processogti.ANO AND "
@@ -778,7 +778,7 @@ With RdoAux
            CallPb xId, nNumRec
            
         End If
-        sNomeCidadao = SubNull(!NomeCidadao)
+        sNomeCidadao = SubNull(!nomecidadao)
         If sNomeCidadao = "" Then
             Sql = "select nome from cidadao_removido where codigo=" & !CodCidadao
             Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -795,10 +795,10 @@ With RdoAux
                 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 If RdoAux2.RowCount > 0 Then
                     On Error Resume Next
-                    Sql = "insert cidadao(codcidadao,nomecidadao) values(" & !CodCidadao & ",'" & Mask(RdoAux2!NomeCidadao) & "')"
+                    Sql = "insert cidadao(codcidadao,nomecidadao) values(" & !CodCidadao & ",'" & Mask(RdoAux2!nomecidadao) & "')"
                     cn.Execute Sql, rdExecDirect
                     On Error GoTo 0
-                    sNomeCidadao = RdoAux2!NomeCidadao
+                    sNomeCidadao = RdoAux2!nomecidadao
                 End If
                 RdoAux2.Close
             End If
@@ -807,7 +807,7 @@ With RdoAux
         grdProc.AddRow
         grdProc.CellDetails grdProc.Rows, 1, !Ano, DT_CENTER
         grdProc.CellDetails grdProc.Rows, 2, Format(!Numero & RetornaDVProcesso(CLng(!Numero)), "000000-0"), DT_CENTER
-        grdProc.CellDetails grdProc.Rows, 3, IIf(!INTERNO, !descricao, sNomeCidadao), DT_LEFT
+        grdProc.CellDetails grdProc.Rows, 3, IIf(!INTERNO, !Descricao, sNomeCidadao), DT_LEFT
         'grdProc.CellDetails grdProc.Rows, 3, IIf(IsNull(!nomecidadao), SubNull(!descricao), !nomecidadao), DT_LEFT
         grdProc.CellDetails grdProc.Rows, 4, !Complemento, DT_LEFT
         grdProc.CellDetails grdProc.Rows, 5, Format(!DATAENTRADA, "dd/mm/yyyy"), DT_CENTER
@@ -826,11 +826,16 @@ With RdoAux
         Else
             grdProc.CellDetails grdProc.Rows, 8, "--------", DT_CENTER
         End If
-        grdProc.CellDetails grdProc.Rows, 9, IIf(!FISICO, "S", "N"), DT_CENTER
-        grdProc.CellDetails grdProc.Rows, 10, IIf(!INTERNO, "S", "N"), DT_CENTER
+        If Not IsNull(!DATADESCARTE) Then
+            grdProc.CellDetails grdProc.Rows, 9, Format(!DATADESCARTE, "dd/mm/yyyy"), DT_CENTER
+        Else
+            grdProc.CellDetails grdProc.Rows, 9, "--------", DT_CENTER
+        End If
+        grdProc.CellDetails grdProc.Rows, 10, IIf(!FISICO, "S", "N"), DT_CENTER
+        grdProc.CellDetails grdProc.Rows, 11, IIf(!INTERNO, "S", "N"), DT_CENTER
         sEnd = IIf(IsNull(!Logradouro), "", !Logradouro)
         sEnd = sEnd & IIf(IsNull(!NUMIMOVEL), "", " nº " & !NUMIMOVEL)
-        grdProc.CellDetails grdProc.Rows, 11, sEnd, DT_LEFT
+        grdProc.CellDetails grdProc.Rows, 12, sEnd, DT_LEFT
         xId = xId + 1
      .MoveNext
     Loop
@@ -925,7 +930,7 @@ Dim iSortIndex As Long
 
 End Sub
 
-Private Sub grdProc_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single, bDoDefault As Boolean)
+Private Sub grdProc_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single, bDoDefault As Boolean)
 If Button = vbRightButton Then
     PopupMenu mnuGrid
 End If
@@ -996,7 +1001,7 @@ Sql = "SELECT CODIGO,DESCRICAO FROM CENTROCUSTO WHERE SUBSTRING(DESCRICAO,1,1)<>
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-       sText = !descricao
+       sText = !Descricao
        cmbLocal.AddItem sText
        cmbLocal.ItemData(cmbLocal.NewIndex) = !Codigo
       .MoveNext
@@ -1024,6 +1029,7 @@ With grdProc
     .AddColumn "kCan", "Dt.Cancel", ecgHdrTextALignCentre, , 80
     .AddColumn "kArq", "Dt.Arquiva", ecgHdrTextALignCentre, , 80
     .AddColumn "kRtv", "Dt.Reativa", ecgHdrTextALignCentre, , 80
+    .AddColumn "kDes", "Dt.Descarte", ecgHdrTextALignCentre, , 80
     .AddColumn "kFis", "Físico", ecgHdrTextALignCentre, , 60
     .AddColumn "kInt", "Interno", ecgHdrTextALignCentre, , 60
     .AddColumn "kEnd", "Endereço", ecgHdrTextALignLeft, , 200
@@ -1036,9 +1042,9 @@ On Error GoTo Erro
 If cGetInputState() <> 0 Then DoEvents
 If nTotal = 0 Then Exit Sub
 If ((nPos * 100) / nTotal) <= 100 Then
-   PBar.value = (nPos * 100) / nTotal
+   pBar.value = (nPos * 100) / nTotal
 Else
-   PBar.value = 100
+   pBar.value = 100
 End If
 
 Me.Refresh

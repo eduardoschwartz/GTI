@@ -79,7 +79,7 @@ Begin VB.Form frmProdutividadeMensal
    Begin VB.ComboBox cmbAno 
       Height          =   315
       ItemData        =   "frmProdutividadeMensal.frx":002E
-      Left            =   3900
+      Left            =   3915
       List            =   "frmProdutividadeMensal.frx":0030
       Style           =   2  'Dropdown List
       TabIndex        =   2
@@ -194,7 +194,7 @@ Begin VB.Form frmProdutividadeMensal
    End
    Begin VB.Label Label1 
       BackStyle       =   0  'Transparent
-      Caption         =   "Pontos Negativos:"
+      Caption         =   "Pontos Expirados:"
       Height          =   270
       Index           =   6
       Left            =   195
@@ -389,7 +389,7 @@ If NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "NOELI" Then
     End If
 End If
 
-For x = 2011 To 2019
+For x = 2011 To 2020
     cmbAno.AddItem (CStr(x))
 Next
 
@@ -423,7 +423,7 @@ For nDay = 1 To nLastDay
     ReDim Preserve aExtrato(UBound(aExtrato) + 1)
     aExtrato(nDay).nDia = nDay
     sData = Format(nDay, "00") & "/" & Format(nMes, "00") & "/" & cmbAno.Text
-    If sData = "29/02/2019" Then sData = "28/02/2019"
+    'If sData = "29/02/2020" Then sData = "28/02/2020"
     nWeekDay = Weekday(CDate(sData))
     aExtrato(nDay).sDia = WeekdayName(nWeekDay, True)
 
@@ -482,7 +482,7 @@ For nDay = 1 To nLastDay
         aExtrato(nDay).sEvento = FillSpace(sEvento, 16)
         aExtrato(nDay).nPontos = nPontos
     End If
-proximo:
+Proximo:
 Next
 
 End Sub
@@ -601,10 +601,10 @@ With RdoAux
         aExtratoItem(nPos).nQtde = FormatNumber(!QTDE, 2)
         aExtratoItem(nPos).nValor = FormatNumber(!Valor, 2)
         aExtratoItem(nPos).nPontos = FormatNumber(!QTDE * !Valor, 2)
-        If Len(!descricao) > 21 Then
-            sNome = Left(!descricao, 21) & "."
+        If Len(!Descricao) > 21 Then
+            sNome = Left(!Descricao, 21) & "."
         Else
-            sNome = !descricao
+            sNome = !Descricao
         End If
         
         aExtratoItem(nPos).sItem = !Item & " " & sNome
@@ -644,7 +644,7 @@ With RdoAux
     Do Until .EOF
         ReDim Preserve aExtratoItem(UBound(aExtratoItem) + 1)
         aExtratoItem(UBound(aExtratoItem)).sItem = !Item
-        aExtratoItem(UBound(aExtratoItem)).sDesc = !descricao
+        aExtratoItem(UBound(aExtratoItem)).sDesc = !Descricao
        .MoveNext
     Loop
    .Close
@@ -676,7 +676,7 @@ ReDim aFiscalEvento(0)
 
 For x = 1 To nLastDay
     sDataTmp = Format(x, "00") & "/" & Format(nMes, "00") & "/" & cmbAno.Text
-    If sDataTmp = "29/02/2019" Then sDataTmp = "28/02/2019"
+    'If sDataTmp = "29/02/2019" Then sDataTmp = "28/02/2019"
     nWeekDay = Weekday(CDate(sDataTmp))
     nCodEvento = ProdEventoDia(nCodFiscal, CDate(sDataTmp))
     If nCodEvento = 0 And bIsBoss Then
@@ -688,7 +688,7 @@ For x = 1 To nLastDay
     If RdoAux2.RowCount > 0 Then
         RdoAux2.Close
         'nContaDiaPerdido = nContaDiaPerdido + 1
-        GoTo proximo
+        GoTo Proximo
     End If
     
     If nCodEvento > 0 Then
@@ -714,7 +714,7 @@ For x = 1 To nLastDay
             End If
         End If
     End If
-proximo:
+Proximo:
 Next
 
 
@@ -726,7 +726,7 @@ If nContaFerias > 0 Then
     With RdoAux
         If .RowCount > 0 Then
             'sDataFerias = "Período de: " & Format(!dataini, "dd/mm/yyyy") & " até " & Format(!datafim, "dd/mm/yyyy")
-            sHistferias = "Período de: " & Format(!dataini, "dd/mm/yyyy") & " até " & Format(!datafim, "dd/mm/yyyy")
+            sHistferias = "Período de: " & Format(!dataini, "dd/mm/yyyy") & " até " & Format(!Datafim, "dd/mm/yyyy")
         End If
        .Close
     End With
@@ -739,7 +739,7 @@ If nContaLic > 0 Then
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         Do Until .EOF
-            nContaLic = nContaLic + DateDiff("d", !dataini, !datafim) + 1
+            nContaLic = nContaLic + DateDiff("d", !dataini, !Datafim) + 1
             
            .MoveNext
         Loop

@@ -56,7 +56,7 @@ Begin VB.Form frmSenhaStatus
          GridLinesFixed  =   0
          BorderStyle     =   0
          Appearance      =   0
-         FormatString    =   "                 |^Pref.      |^2ª Via    |^Prefer.    |^Pat        |^REFIS   |^Pr.Refis |^Total         "
+         FormatString    =   "                 |^D.Ativ.      |^2ª Via    |^Prefer.    |^Pat        |^REFIS   |^Pr.Refis |^Total         "
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
             Size            =   9.75
@@ -117,7 +117,7 @@ Begin VB.Form frmSenhaStatus
       _ExtentX        =   2328
       _ExtentY        =   582
       _Version        =   393216
-      Format          =   161677313
+      Format          =   72220673
       CurrentDate     =   40414
    End
    Begin prjChameleon.chameleonButton cmdAnterior 

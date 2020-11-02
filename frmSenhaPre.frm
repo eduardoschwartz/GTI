@@ -103,7 +103,7 @@ Begin VB.Form frmSenhaPre
       _ExtentX        =   5424
       _ExtentY        =   900
       BTYPE           =   14
-      TX              =   "PREFEITURA"
+      TX              =   "DIVIDA ATIVA"
       ENAB            =   -1  'True
       BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
@@ -700,7 +700,7 @@ Private Sub Le()
 Dim Sql As String, RdoAux As rdoResultset, dData As Date, x As Integer
 Dim aCount(5) As Integer
 dData = Now
-cmdSenha(0).Caption = "PREFEITURA (0)"
+cmdSenha(0).Caption = "DIVIDA ATIVA (0)"
 cmdSenha(1).Caption = "2ª VIA IPTU (0)"
 cmdSenha(2).Caption = "PREFERENCIAL (0)"
 cmdSenha(3).Caption = "SENHA PAT (0)"
@@ -716,7 +716,7 @@ With RdoAux
         aCount(!BANDA - 1) = (aCount(!BANDA - 1)) + 1
        Select Case !BANDA - 1
             Case 0
-                cmdSenha(!BANDA - 1).Caption = "PREFEITURA (" & aCount(!BANDA - 1) & ")"
+                cmdSenha(!BANDA - 1).Caption = "DIVIDA ATIVA (" & aCount(!BANDA - 1) & ")"
             Case 1
                 cmdSenha(!BANDA - 1).Caption = "2ª VIA IPTU (" & aCount(!BANDA - 1) & ")"
             Case 2

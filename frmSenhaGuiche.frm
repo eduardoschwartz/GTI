@@ -38,7 +38,7 @@ Begin VB.Form frmSenhaGuiche
       _ExtentX        =   4868
       _ExtentY        =   900
       BTYPE           =   14
-      TX              =   "PREFEITURA"
+      TX              =   "DIVIDA ATIVA"
       ENAB            =   -1  'True
       BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
@@ -526,7 +526,7 @@ For x = 0 To 5
     aCount(x) = 0
 Next
 
-cmdSenha(0).Caption = "PREFEITURA (0)"
+cmdSenha(0).Caption = "DIVIDA ATIVA (0)"
 cmdSenha(1).Caption = "2ª VIA IPTU (0)"
 cmdSenha(2).Caption = "PREFERENCIAL (0)"
 cmdSenha(3).Caption = "SENHA PAT (0)"
@@ -542,7 +542,7 @@ With RdoAux
         aCount(!BANDA - 1) = (aCount(!BANDA - 1)) + 1
        Select Case !BANDA - 1
             Case 0
-                cmdSenha(!BANDA - 1).Caption = "PREFEITURA (" & aCount(!BANDA - 1) & ")"
+                cmdSenha(!BANDA - 1).Caption = "DIVIDA ATIVA (" & aCount(!BANDA - 1) & ")"
             Case 1
                 cmdSenha(!BANDA - 1).Caption = "2ª VIA IPTU (" & aCount(!BANDA - 1) & ")"
             Case 2

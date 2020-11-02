@@ -781,7 +781,7 @@ End If
 End Sub
 
 Private Sub cmdBaixa_Click()
-Dim bAchou As Boolean, nCodReduz As Long
+Dim bAchou As Boolean, nCodReduz As Long, nSeq As Integer, RdoAux2 As rdoResultset
 If grdMain.Rows = 1 Then
     MsgBox "Não existem registros.", vbCritical, "ERRO"
     Exit Sub
@@ -798,36 +798,39 @@ For x = 1 To mskVenc.Count
     End If
 Next
 nCodReduz = Val(grdMain.TextMatrix(grdMain.Row, 0))
-Sql = "SELECT * FROM DEBITOPARCELA WHERE CODREDUZIDO=" & nCodReduz & " AND "
-Sql = Sql & "CODLANCAMENTO=" & cmbTipo.ItemData(cmbTipo.ListIndex) & " AND ANOEXERCICIO=" & Val(cmbAno.Text) & " AND NUMPARCELA<>12"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
-    If .RowCount > 0 Then
-        If MsgBox("Ja foram emitidos boletos de aluguel deste inquilino para o ano informado." & vbCrLf & "A nova geração irá cancelar os boletos antigos e gerar novos lancamentos." & vbCrLf & "Deseja continuar ?", vbQuestion + vbYesNo, "Atenção") = vbYes Then
-            bAchou = False
-            Do Until .EOF
-                If !statuslanc = 2 Then
-                    bAchou = True
-                    Exit Do
-                End If
-               .MoveNext
-            Loop
-            If bAchou Then
-                MsgBox "Alguns dos boletos já foram pagos." & vbCrLf & "Cancele os pagamentos para poder emitir novos boletos.", vbExclamation, "Atenção"
-            Else
+
+
+'Sql = "SELECT * FROM DEBITOPARCELA WHERE CODREDUZIDO=" & nCodReduz & " AND "
+'Sql = Sql & "CODLANCAMENTO=" & cmbTipo.ItemData(cmbTipo.ListIndex) & " AND ANOEXERCICIO=" & Val(cmbAno.Text) & " AND NUMPARCELA<>12"
+'Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+'With RdoAux
+'    If .RowCount > 0 Then
+    
+'        If MsgBox("Ja foram emitidos boletos de aluguel deste inquilino para o ano informado." & vbCrLf & "A nova geração irá cancelar os boletos antigos e gerar novos lancamentos." & vbCrLf & "Deseja continuar ?", vbQuestion + vbYesNo, "Atenção") = vbYes Then
+'            bAchou = False
+'            Do Until .EOF
+'                If !statuslanc = 2 Then
+'                    bAchou = True
+'                    Exit Do
+'                End If
+'               .MoveNext
+'            Loop
+'            If bAchou Then
+'                MsgBox "Alguns dos boletos já foram pagos." & vbCrLf & "Cancele os pagamentos para poder emitir novos boletos.", vbExclamation, "Atenção"
+'            Else
                
-                CarregaEnd nCodReduz
+'                CarregaEnd nCodReduz
                 'GravaCarneTmp
-                EmiteBoleto nCodReduz
-            End If
-        End If
-    Else
+'                EmiteBoleto nCodReduz
+'            End If
+'        End If
+ '   Else
         CarregaEnd nCodReduz
 '        GravaCarneTmp
         EmiteBoleto nCodReduz
-    End If
-   .Close
-End With
+ '   End If
+ '  .Close
+'End With
 
 End Sub
 
@@ -869,7 +872,7 @@ With grdMain
     With RdoAux
         lblValorTotal.Caption = FormatNumber(!ValorTotal, 2)
         sVencto1 = Format(!DataVencto, "dd/mm/yyyy")
-        lblDesc.Caption = SubNull(!descricao)
+        lblDesc.Caption = SubNull(!Descricao)
         CarregaDados
        .Close
     End With
@@ -1165,8 +1168,8 @@ If nCodReduz < 100000 Then
     Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux2
         If .RowCount > 0 Then
-            If Not IsNull(!CPF) Then
-               sCPF = !CPF
+            If Not IsNull(!cpf) Then
+               sCPF = !cpf
             ElseIf Not IsNull(!Cnpj) Then
                sCPF = !Cnpj
             ElseIf Not IsNull(!rg) Then
@@ -1181,8 +1184,8 @@ Else
     Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux2
         If .RowCount > 0 Then
-            If Not IsNull(!CPF) Then
-               sCPF = !CPF
+            If Not IsNull(!cpf) Then
+               sCPF = !cpf
             ElseIf Not IsNull(!Cnpj) Then
                sCPF = !Cnpj
             ElseIf Not IsNull(!rg) Then
@@ -1256,7 +1259,7 @@ For nNumParc = 1 To Val(lblNumParc.Caption)
     nLastCod = nLastCod + 1
     grdTemp.AddItem nCodReduz & Chr(9) & nAno & Chr(9) & nCodLanc & Chr(9) & nSeq & Chr(9) & nNumParc & Chr(9) & 0 & Chr(9) & sVencimento & Chr(9) & FormatNumber(IIf(nNumParc = 0, nValorTotal, nValorParc), 2) & Chr(9) & nLastCod
 
-Proximo:
+PROXIMO:
 Next
 'Exit Sub
 'DADOS CABEÇALHO
@@ -1385,7 +1388,7 @@ With RdoAux
         With RdoAux
             If .RowCount > 0 Then
                sNumInsc = SubNull(!inscestadual)
-               sNomeResp = !razaosocial
+               sNomeResp = !RazaoSocial
                sEndImovel = Trim$(SubNull(!AbrevTipoLog)) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro
                nNumImovel = Val(SubNull(!Numero))
                sComplImovel = SubNull(!Complemento)
@@ -1588,7 +1591,7 @@ Select Case nCodReduz
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             If .RowCount > 0 Then
-                sCPF = SubNull(!CPF)
+                sCPF = SubNull(!cpf)
                 If Trim(sCPF) = "" Then
                    sCPF = SubNull(!Cnpj)
                 End If
@@ -1623,7 +1626,7 @@ Select Case nCodReduz
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             If .RowCount > 0 Then
-                sCPF = SubNull(!CPF)
+                sCPF = SubNull(!cpf)
                 If Trim(sCPF) = "" Then
                    sCPF = SubNull(!Cnpj)
                 End If
@@ -1659,7 +1662,7 @@ Select Case nCodReduz
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             If .RowCount > 0 Then
-                sCPF = SubNull(!CPF)
+                sCPF = SubNull(!cpf)
                 If Trim(sCPF) = "" Then
                    sCPF = SubNull(!Cnpj)
                 End If
@@ -1710,19 +1713,27 @@ Sql = "insert boletoguiacapa(usuario,computer,sid,seq,codtributo,desctributo,val
 Sql = Sql & cmbTipo.ItemData(cmbTipo.ListIndex) & ",'" & Left(cmbTipo.Text, 50) & "'," & Virg2Ponto(RemovePonto(lblValorTotal.Caption)) & ")"
 cn.Execute Sql, rdExecDirect
 
+'Sql = "select max(seqlancamento)as maximo from debitoparcela where codreduzido=" & nCodReduz & " and anoexercicio=" & Val(cmbAno.Text) & " and "
+'Sql = Sql & "codlancamento=" & cmbTipo.ItemData(cmbTipo.ListIndex)
+'Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+'nSeq = RdoAux2!maximo + 1
+'RdoAux2.Close
+
 
 'GERAÇÃO DOS DÉBITOS
 For nParc = 1 To Val(lblNumParc.Caption)
     sVencimento = mskVenc(nParc).Text
+    If CDate(sVencimento) < Now Then GoTo PROXIMO
+    
     nAno = Year(CDate(sVencimento))
     nCompl = 0
     
-    Sql = "delete from debitoparcela WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND seqlancamento=" & nSeq & " AND NUMPARCELA=" & nParc
-    cn.Execute Sql, rdExecDirect
-    Sql = "delete from debitotributo WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND seqlancamento=" & nSeq & " AND NUMPARCELA=" & nParc
-    cn.Execute Sql, rdExecDirect
-    Sql = "delete from parceladocumento WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND seqlancamento=" & nSeq & " AND NUMPARCELA=" & nParc
-    cn.Execute Sql, rdExecDirect
+'    Sql = "delete from debitoparcela WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND seqlancamento=" & nSeq & " AND NUMPARCELA=" & nParc
+'    cn.Execute Sql, rdExecDirect
+'    Sql = "delete from debitotributo WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND seqlancamento=" & nSeq & " AND NUMPARCELA=" & nParc
+'    cn.Execute Sql, rdExecDirect
+'    Sql = "delete from parceladocumento WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND seqlancamento=" & nSeq & " AND NUMPARCELA=" & nParc
+'    cn.Execute Sql, rdExecDirect
     
     'VERIFICA PRÓXIMA SEQUENCIA DE LANÇAMENTO
     Sql = "SELECT COUNT(*) AS CONTADOR FROM DEBITOPARCELA WHERE CODREDUZIDO=" & nCodReduz
@@ -1825,11 +1836,11 @@ For nParc = 1 To Val(lblNumParc.Caption)
     
     Sql = "insert boletoguia(usuario,computer,sid,seq,codreduzido,nome,cpf,endereco,numimovel,complemento,bairro,cidade,uf,fulllanc,numdoc,numparcela,totparcela,datavencto,numdoc2,"
     Sql = Sql & "digitavel,codbarra,valorguia,obs,numbarra2a,numbarra2b,numbarra2c,numbarra2d) values('" & NomeDeLogin & "','" & NomeDoComputador & "'," & nSid & "," & nParc & "," & nCodReduz & ",'" & Left(Mask(sNomeResp), 80) & "','" & sCPF & "','"
-    Sql = Sql & Left(Mask(sEndImovel), 80) & "'," & nNumImovel & ",'" & Left(sComplImovel, 30) & "','" & Left(Mask(sBairroImovel), 25) & "','" & Mask(sComplImovel) & "','" & sUF & "','" & Mask(sFullTrib) & "','"
+    Sql = Sql & Left(Mask(sEndImovel), 80) & "'," & nNumImovel & ",'" & Left(sComplImovel, 30) & "','" & Left(Mask(sBairroImovel), 25) & "','" & "JABOTICABAL" & "','" & "SP" & "','" & Mask(sFullTrib) & "','"
     Sql = Sql & CStr(nNumGuia) & "'," & nParc & "," & Val(lblNumParc.Caption) & ",'" & Format(sVencimento, "mm/dd/yyyy") & "','" & sNumDoc & "','" & sDigitavel2 & "','" & Mask(sBarra) & "',"
     Sql = Sql & Virg2Ponto(Format(nValorParc, "#0.00")) & ",'" & "" & "','" & NumBarra2a & "','" & NumBarra2b & "','" & NumBarra2c & "','" & NumBarra2d & "')"
     cn.Execute Sql, rdExecDirect
-
+PROXIMO:
 Next
 
 'EXIBE RELATORIO

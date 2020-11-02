@@ -358,11 +358,11 @@ Public Const FLASHW_TIMEROFG = 12
 'Tipos de Dados
 Type POINT
   x As Long
-  Y As Long
+  y As Long
 End Type
 Type POINTAPI
         x As Long
-        Y As Long
+        y As Long
 End Type
 Type TRegiao
     X1 As Integer
@@ -406,7 +406,7 @@ Type NMHDR
 End Type
 Type TRIVERTEX
     x As Long
-    Y As Long
+    y As Long
     Red As Integer 'Ushort value
     Green As Integer 'Ushort value
     Blue As Integer 'ushort value
@@ -556,7 +556,7 @@ Declare Function URLDownloadToFile Lib "urlmon" Alias "URLDownloadToFileA" (ByVa
 Declare Function InternetOpen Lib "wininet" Alias "InternetOpenA" (ByVal sAgent As String, ByVal lAccessType As Long, ByVal sProxyName As String, ByVal sProxyBypass As String, ByVal lFlags As Long) As Long
 Declare Function InternetCloseHandle Lib "wininet" (ByVal hInet As Long) As Integer
 
-Declare Function BitBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal x As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal dwRop As Long) As Long
+Declare Function BitBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal x As Long, ByVal y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal dwRop As Long) As Long
 Declare Function CallWindowProc Lib "user32" Alias "CallWindowProcA" (ByVal lpPrevWndFunc As Long, ByVal HWND As Long, ByVal Msg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
 Declare Sub ClientToScreen Lib "user32" (ByVal HWND As Long, lpPoint As POINTAPI)
 Declare Sub ClipCursor Lib "user32" (lpRect As Any)
@@ -577,7 +577,7 @@ Declare Function DefWindowProc Lib "user32" Alias "DefWindowProcA" (ByVal HWND A
 Declare Function DeleteDC Lib "gdi32" (ByVal hdc As Long) As Long
 Declare Function DeleteObject Lib "gdi32" (ByVal hObject As Long) As Long
 Declare Function DestroyWindow Lib "user32" (ByVal HWND As Long) As Long
-Declare Function DrawIcon Lib "user32" (ByVal hdc As Long, ByVal x As Long, ByVal Y As Long, ByVal hIcon As Long) As Boolean
+Declare Function DrawIcon Lib "user32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long, ByVal hIcon As Long) As Boolean
 Declare Function DrawIconEx Lib "user32" (ByVal hdc As Long, ByVal xLeft As Long, ByVal yTop As Long, ByVal hIcon As Long, ByVal cxWidth As Long, ByVal cyWidth As Long, ByVal istepIfAniCur As Long, ByVal hbrFlickerFreeDraw As Long, ByVal diFlags As Long) As Boolean
 Declare Function DrawText Lib "user32" Alias "DrawTextA" (ByVal hdc As Long, ByVal lpStr As String, ByVal nCount As Long, lpRect As RECT, ByVal wFormat As Long) As Long
 Declare Function EnumWindows Lib "user32" (ByVal lpEnumFunc As Long, ByVal lParam As Long) As Long
@@ -609,15 +609,15 @@ Declare Function GetWindow Lib "user32" (ByVal HWND As Long, ByVal wCmd As Long)
 Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal HWND As Long, ByVal nIndex As Long) As Long
 Declare Function GetWindowRect Lib "user32" (ByVal HWND As Long, lpRect As RECT) As Long
 Declare Function GetWindowText Lib "user32" Alias "GetWindowTextA" (ByVal HWND As Long, ByVal lpString As String, ByVal cch As Long) As Long
-Declare Function LineTo Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal Y As Long) As Long
+Declare Function LineTo Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long) As Long
 Declare Function LockWindowUpdate Lib "user32" (ByVal hwndLock As Long) As Long
 Declare Function MessageBoxIndirect Lib "user32" Alias "MessageBoxIndirectA" (lpMsgBoxParams As MSGBOXPARAMS) As Long
 Declare Sub MoveMemory Lib "KERNEL32" Alias "RtlMoveMemory" (pDest As Any, pSource As Any, ByVal dwLength As Long)
-Declare Function MoveToEx Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal Y As Long, lpPoint As POINTAPI) As Long
+Declare Function MoveToEx Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long, lpPoint As POINTAPI) As Long
 Declare Function PlaySound Lib "winmm.dll" Alias "PlaySoundA" (ByVal lpszName As String, ByVal hModule As Long, ByVal dwFlags As Long) As Long
 Declare Function PostMessage Lib "user32" Alias "PostMessageA" (ByVal HWND As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
-Declare Function PtInRect Lib "user32" (lpRect As RECT, ByVal x As Long, ByVal Y As Long) As Long
-Declare Function PtInRegion Lib "gdi32" (ByVal hRgn As Long, ByVal x As Long, ByVal Y As Long) As Long
+Declare Function PtInRect Lib "user32" (lpRect As RECT, ByVal x As Long, ByVal y As Long) As Long
+Declare Function PtInRegion Lib "gdi32" (ByVal hRgn As Long, ByVal x As Long, ByVal y As Long) As Long
 Declare Function RegCloseKey Lib "advapi32.dll" (ByVal hKey As Long) As Long
 Declare Function RegCreateKeyEx Lib "advapi32.dll" Alias "RegCreateKeyExA" (ByVal hKey As Long, ByVal lpSubKey As String, ByVal Reserved As Long, ByVal lpClass As String, ByVal dwOptions As Long, ByVal samDesired As Long, lpSecurityAttributes As SECURITY_ATTRIBUTES, phkResult As Long, lpdwDisposition As Long) As Long
 Declare Function RegCreateKey Lib "advapi32.dll" Alias "RegCreateKeyA" (ByVal hKey As Long, ByVal lpSubKey As String, phkResult As Long) As Long
@@ -635,12 +635,12 @@ Declare Function SendMessageByString Lib "user32" Alias "SendMessageA" (ByVal HW
 Declare Function SetBkMode Lib "gdi32" (ByVal hdc As Long, ByVal nBkMode As Long) As Long
 Declare Function SetBkColor Lib "gdi32" (ByVal hdc As Long, ByVal crColor As Long) As Long
 Declare Function SetCapture Lib "user32" (ByVal HWND As Long) As Long
-Declare Function SetCursorPos Lib "user32" (ByVal x As Long, ByVal Y As Long) As Long
+Declare Function SetCursorPos Lib "user32" (ByVal x As Long, ByVal y As Long) As Long
 Declare Function SetParent Lib "user32" (ByVal hWndChild As Long, ByVal hWndNewParent As Long) As Long
 Declare Function SetRect Lib "user32" (lpRect As RECT, ByVal X1 As Long, ByVal Y1 As Long, ByVal X2 As Long, ByVal Y2 As Long) As Long
 Declare Function SetWindowsHookEx Lib "user32" Alias "SetWindowsHookExA" (ByVal idHook As Long, ByVal lpfn As Long, ByVal hMod As Long, ByVal dwThreadId As Long) As Long
 Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal HWND As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
-Declare Function SetWindowPos Lib "user32" (ByVal HWND As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+Declare Function SetWindowPos Lib "user32" (ByVal HWND As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 Declare Function SetWindowText Lib "user32.dll" Alias "SetWindowTextA" (ByVal HWND As Long, ByVal lpString As String) As Long
 Declare Function SHBrowseForFolder Lib "shell32.dll" Alias "SHBrowseForFolderA" (lpBrowseInfo As BROWSEINFO) As Long                               ' ITEMIDLIST
 Declare Function SHGetPathFromIDList Lib "shell32.dll" Alias "SHGetPathFromIDListA" (ByVal pIdl As Long, ByVal pszPath As String) As Long
@@ -1556,6 +1556,7 @@ Public Function Decrypt128(ByVal Text As String, ByVal Key As String) As String
         
         Assemble128
         
+        
         cfc = (((inter / 256) * 256) - (inter Mod 256)) / 256
         cfd = inter Mod 256
         
@@ -1612,6 +1613,8 @@ Private Sub Assemble128()
 End Sub
 
 Private Sub code128()
+    i = 0
+
     dX = (x1a2 + i) Mod 65536
     ax = x1a0(i)
     cx = &H15A
@@ -1716,7 +1719,7 @@ Function ValidaCGC(cgc As String) As Integer
         End If
 End Function
 
-Public Function ValidaCPF(CPF As String) As Integer
+Public Function ValidaCPF(cpf As String) As Integer
     
     
     Dim soma As Integer
@@ -1724,43 +1727,43 @@ Public Function ValidaCPF(CPF As String) As Integer
     Dim i As Integer
     
     'Valida argumento
-    If Len(CPF) = 0 Then
+    If Len(cpf) = 0 Then
          ValidaCPF = False
          Exit Function
     End If
-    If Len(CPF) <> 11 Then
+    If Len(cpf) <> 11 Then
         ValidaCPF = False
         Exit Function
     End If
         
-    If (CPF = "11111111111") Then
+    If (cpf = "11111111111") Then
         ValidaCPF = False
         Exit Function
     End If
         
     soma = 0
     For i = 1 To 9
-        soma = soma + Val(Mid$(CPF, i, 1)) * (11 - i)
+        soma = soma + Val(Mid$(cpf, i, 1)) * (11 - i)
     Next i
     Resto = 11 - (soma - (Int(soma / 11) * 11))
     If Resto = 10 Or Resto = 11 Then Resto = 0
-    If Resto <> Val(Mid$(CPF, 10, 1)) Then
+    If Resto <> Val(Mid$(cpf, 10, 1)) Then
         ValidaCPF = False
         Exit Function
     End If
         
     soma = 0
     For i = 1 To 10
-        soma = soma + Val(Mid$(CPF, i, 1)) * (12 - i)
+        soma = soma + Val(Mid$(cpf, i, 1)) * (12 - i)
     Next i
     Resto = 11 - (soma - (Int(soma / 11) * 11))
     If Resto = 10 Or Resto = 11 Then Resto = 0
-    If Resto <> Val(Mid$(CPF, 11, 1)) Then
+    If Resto <> Val(Mid$(cpf, 11, 1)) Then
         ValidaCPF = False
         Exit Function
     End If
         
-    If (CPF = "11111111111" Or CPF = "22222222222" Or CPF = "33333333333" Or CPF = "44444444444" Or CPF = "55555555555" Or CPF = "66666666666" Or CPF = "77777777777" Or CPF = "88888888888" Or CPF = "99999999999") Then
+    If (cpf = "11111111111" Or cpf = "22222222222" Or cpf = "33333333333" Or cpf = "44444444444" Or cpf = "55555555555" Or cpf = "66666666666" Or cpf = "77777777777" Or cpf = "88888888888" Or cpf = "99999999999") Then
         ValidaCPF = False
     Else
         ValidaCPF = True
@@ -1861,6 +1864,48 @@ End With
 
 End Function
 
+Public Function RetornaLogradouroBairro(Logradouro As Integer, Numero As Integer) As Bairro
+Dim Sql As String
+Dim RdoLg As rdoResultset
+Dim nConta As Integer
+Dim Num1 As Long, Num2 As Long
+Dim sBairro As String
+
+sBairro = ""
+Sql = "SELECT INICIAL,FINAL,BAIRRO,DESCBAIRRO FROM LOGRADOURO_BAIRRO INNER JOIN BAIRRO ON "
+Sql = Sql & "LOGRADOURO_BAIRRO.BAIRRO=BAIRRO.CODBAIRRO WHERE SIGLAUF='SP' AND CODCIDADE=413 AND LOGRADOURO=" & Logradouro
+Set RdoLg = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
+With RdoLg
+       nConta = .RowCount
+       If nConta = 0 Then
+            RetornaLogradouroBairro.Codigo = 0
+            RetornaLogradouroBairro.Nome = "Não cadastrado"
+       ElseIf nConta = 1 Then
+            RetornaLogradouroBairro.Codigo = !Bairro
+            RetornaLogradouroBairro.Nome = !DescBairro
+       ElseIf nConta > 1 Then
+            Do Until .EOF
+                  Num1 = !INICIAL
+                  Num2 = !FINAL
+                  If Numero >= Num1 And Numero <= Num2 Then
+                        RetornaLogradouroBairro.Codigo = !Bairro
+                        RetornaLogradouroBairro.Nome = !DescBairro
+                        Exit Do
+                  ElseIf Numero >= Num1 And Num2 = 0 Then
+                        RetornaLogradouroBairro.Codigo = !Bairro
+                        RetornaLogradouroBairro.Nome = !DescBairro
+                        Exit Do
+                  End If
+                 .MoveNext
+                 
+            Loop
+            .Close
+       End If
+End With
+
+End Function
+
+
 'Public Function RetornaIdUsuario(Username As String) As Integer
 'Dim RdoAux As rdoResultset
 '
@@ -1888,7 +1933,7 @@ Sql = Sql & "SEG_TELASISTEMA.NOMEFORM='" & sNomeForm & "'"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
 With RdoAux
        Do Until .EOF
-            sRetorno = sRetorno & "#" & Format(!CODEVENTO, "000")
+            sRetorno = sRetorno & "#" & Format(!codevento, "000")
            .MoveNext
        Loop
       .Close
@@ -2957,8 +3002,8 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
        'NUMERO DO PROCESSO ERRADO
-       nNumProcOld = Val(Left$(Trim$(!numprocesso), InStr(1, Trim$(!numprocesso), "/", vbBinaryCompare) - 1))
-       nAno = Val(Mid(Trim$(!numprocesso), InStr(1, Trim$(!numprocesso), "/", vbBinaryCompare) + 1, 4))
+       nNumProcOld = Val(Left$(Trim$(!NUMPROCESSO), InStr(1, Trim$(!NUMPROCESSO), "/", vbBinaryCompare) - 1))
+       nAno = Val(Mid(Trim$(!NUMPROCESSO), InStr(1, Trim$(!NUMPROCESSO), "/", vbBinaryCompare) + 1, 4))
        'PROCURA NO GENÉSIO
        Sql = "SELECT ANOPROCESS,NUMEROPROC FROM PROCESSO WHERE NUMEROPROC=" & nNumProcOld & " AND ANOPROCESS=" & nAno
        Set RdoGenesio = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -2976,7 +3021,7 @@ With RdoAux
                        'REGRAVA NA TABELA PROCESSOREPARC
                         Sql = "INSERT PROCESSOREPARC "
                         Sql = Sql & "SELECT '" & sNumProcNew & "',DATAPROCESSO,DATAREPARC,QTDEPARCELA,VALORENTRADA,PERCENTRADA,CALCULAMULTA,CALCULAJUROS,CODIGORESP,FUNCIONARIO,CANCELADO,DATACANCEL,FUNCIONARIOCANCEL,NUMprotocolo,PLANO FROM PROCESSOREPARC "
-                        Sql = Sql & "WHERE NUMPROCESSO='" & RdoAux!numprocesso & "'"
+                        Sql = Sql & "WHERE NUMPROCESSO='" & RdoAux!NUMPROCESSO & "'"
                         cn.Execute Sql, rdExecDirect
                      End If
                     .Close
@@ -2989,7 +3034,7 @@ With RdoAux
                        'REGRAVA NA TABELA ORIGEMREPARC
                         Sql = "INSERT ORIGEMREPARC "
                         Sql = Sql & "SELECT '" & sNumProcNew & "',CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,NUMSEQUENCIA,NUMPARCELA,CODCOMPLEMENTO FROM ORIGEMREPARC "
-                        Sql = Sql & "WHERE NUMPROCESSO='" & RdoAux!numprocesso & "'"
+                        Sql = Sql & "WHERE NUMPROCESSO='" & RdoAux!NUMPROCESSO & "'"
                         cn.Execute Sql, rdExecDirect
                      End If
                     .Close
@@ -3005,7 +3050,7 @@ With RdoAux
                        'REGRAVA NA TABELA DESTINOREPARC
                         Sql = "INSERT DESTINOREPARC "
                         Sql = Sql & "SELECT '" & sNumProcNew & "',CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,NUMSEQUENCIA,NUMPARCELA,CODCOMPLEMENTO FROM DESTINOREPARC "
-                        Sql = Sql & "WHERE NUMPROCESSO='" & RdoAux!numprocesso & "'"
+                        Sql = Sql & "WHERE NUMPROCESSO='" & RdoAux!NUMPROCESSO & "'"
                         cn.Execute Sql, rdExecDirect
                      End If
                     .Close
@@ -3018,7 +3063,7 @@ With RdoAux
                  cn.Execute Sql, rdExecDirect
                 'CORRIGE PROCESSO EM DEBITOPARCELA
                  Sql = "UPDATE DEBITOPARCELA SET NUMPROCESSO='" & sNumProcNew & "' WHERE "
-                 Sql = Sql & "NUMPROCESSO='" & RdoAux!numprocesso & "'"
+                 Sql = Sql & "NUMPROCESSO='" & RdoAux!NUMPROCESSO & "'"
                  cn.Execute Sql, rdExecDirect
             End If
            .Close
@@ -3615,7 +3660,7 @@ With RdoAux
             nPos = UBound(aRel) + 1
             ReDim Preserve aRel(nPos)
             aRel(nPos).nCodReduz = !codigomob
-            aRel(nPos).sRazao = !razaosocial
+            aRel(nPos).sRazao = !RazaoSocial
             aRel(nPos).nAno = !AnoExercicio
             aRel(nPos).sTx1 = FillLeft(FormatNumber(0, 2), 11)
             aRel(nPos).sTx2 = FillLeft(FormatNumber(0, 2), 11)
@@ -3855,7 +3900,7 @@ With RdoAux
         dDataFim = Format(!Datafim, "dd/mm/yyyy")
         If dData >= dDataIni And dData <= dDataFim Then
             bAchou = True
-            ProdEventoDia = !CODEVENTO
+            ProdEventoDia = !codevento
             Exit Do
         End If
        .MoveNext
@@ -4169,10 +4214,14 @@ Dim bRet As Boolean
 
 bRet = False
 
-If NomeDeLogin = "BRUNO.MASCARO" Or NomeDeLogin = "NAIARA.SOUZA" Or NomeDeLogin = "ELTON.DIAS" Or NomeDeLogin = "FERNANDO.MEDALHA" Or NomeDeLogin = "RENATA" Or _
-   NomeDeLogin = "MICHELLE.POLETTI" Or NomeDeLogin = "NATALIA.FRACASSO" Or NomeDeLogin = "MARA.BELLINI" Or _
+'If NomeDeLogin = "BRUNO.MASCARO" Or NomeDeLogin = "NAIARA.SOUZA" Or NomeDeLogin = "ELTON.DIAS" Or NomeDeLogin = "FERNANDO.MEDALHA" Or NomeDeLogin = "RENATA" Or _
+'   NomeDeLogin = "MICHELLE.POLETTI" Or NomeDeLogin = "NATALIA.FRACASSO" Or NomeDeLogin = "MARA.BELLINI" Or _
    NomeDeLogin = "MICHELE.OLIVEIRA" Or NomeDeLogin = "GABRIEL.MARQUES" Or NomeDeLogin = "RODRIGOG" Or NomeDeLogin = "POLYANA.TAVARES" Or _
-   NomeDeLogin = "TATIANE.SILVA" Or NomeDeLogin = "MIRELA.ASSONI" Then
+'   NomeDeLogin = "TATIANE.SILVA" Or NomeDeLogin = "RAPHAEL.CARREGARI" Or NomeDeLogin = "FILLIPE.GUSMAO" Or NomeDeLogin = "JONATAS.SOUZA" Or NomeDeLogin = "LUCAS.TOFFANELLI" Then
+'    bRet = True
+'End If
+
+If NomeDeLogin = "RENATA" Or NomeDeLogin = "SOLANGE" Then
     bRet = True
 End If
 

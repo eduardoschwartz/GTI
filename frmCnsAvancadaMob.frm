@@ -7,20 +7,20 @@ Begin VB.Form frmCnsAvancadaMob
    BackColor       =   &H00EEEEEE&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Consulta avançada de empresas e gerador de correspondência"
-   ClientHeight    =   6435
-   ClientLeft      =   14190
-   ClientTop       =   4815
+   ClientHeight    =   6900
+   ClientLeft      =   5790
+   ClientTop       =   4800
    ClientWidth     =   11400
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
-   ScaleHeight     =   6435
+   ScaleHeight     =   6900
    ScaleWidth      =   11400
    Begin RichTextLib.RichTextBox RtbTmp 
       Height          =   915
       Left            =   45
       TabIndex        =   76
-      Top             =   6885
+      Top             =   7695
       Visible         =   0   'False
       Width           =   8835
       _ExtentX        =   15584
@@ -32,7 +32,7 @@ Begin VB.Form frmCnsAvancadaMob
    End
    Begin Tributacao.jcFrames frModelo 
       Height          =   3570
-      Left            =   7470
+      Left            =   4410
       Top             =   1320
       Visible         =   0   'False
       Width           =   3480
@@ -147,7 +147,7 @@ Begin VB.Form frmCnsAvancadaMob
    Begin Tributacao.jcFrames tb2 
       Height          =   465
       Left            =   45
-      Top             =   5940
+      Top             =   6390
       Visible         =   0   'False
       Width           =   11310
       _ExtentX        =   19950
@@ -324,7 +324,7 @@ Begin VB.Form frmCnsAvancadaMob
    Begin Tributacao.jcFrames tb3 
       Height          =   465
       Left            =   45
-      Top             =   5940
+      Top             =   6390
       Visible         =   0   'False
       Width           =   11310
       _ExtentX        =   19950
@@ -537,13 +537,218 @@ Begin VB.Form frmCnsAvancadaMob
          Width           =   1680
       End
    End
+   Begin Tributacao.jcFrames tb1 
+      Height          =   465
+      Left            =   45
+      Top             =   6390
+      Width           =   11310
+      _ExtentX        =   19950
+      _ExtentY        =   820
+      FrameColor      =   12829635
+      Style           =   0
+      RoundedCornerTxtBox=   -1  'True
+      Caption         =   ""
+      TextColor       =   13579779
+      Alignment       =   0
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ColorFrom       =   0
+      ColorTo         =   0
+      Begin prjChameleon.chameleonButton cmdConsultar 
+         Height          =   315
+         Left            =   7380
+         TabIndex        =   26
+         ToolTipText     =   "Consultar as empresas"
+         Top             =   90
+         Width           =   1215
+         _ExtentX        =   2143
+         _ExtentY        =   556
+         BTYPE           =   3
+         TX              =   "&Pesquisar"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   0
+         FCOLO           =   0
+         MCOL            =   12632256
+         MPTR            =   1
+         MICON           =   "frmCnsAvancadaMob.frx":0E54
+         PICN            =   "frmCnsAvancadaMob.frx":0E70
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton cmdNext 
+         Height          =   315
+         Left            =   8685
+         TabIndex        =   27
+         ToolTipText     =   "Avançar para a próxima tela"
+         Top             =   90
+         Width           =   1215
+         _ExtentX        =   2143
+         _ExtentY        =   556
+         BTYPE           =   3
+         TX              =   "&Continuar"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   0
+         FCOLO           =   0
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmCnsAvancadaMob.frx":0F9F
+         PICN            =   "frmCnsAvancadaMob.frx":0FBB
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin Tributacao.XP_ProgressBar PBar 
+         Height          =   240
+         Left            =   4320
+         TabIndex        =   87
+         Top             =   135
+         Width           =   2940
+         _ExtentX        =   5186
+         _ExtentY        =   423
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         BrushStyle      =   0
+         Color           =   16777215
+         Scrolling       =   1
+         ShowText        =   -1  'True
+      End
+      Begin prjChameleon.chameleonButton cmdSair 
+         Height          =   315
+         Left            =   9990
+         TabIndex        =   103
+         ToolTipText     =   "Sair da Tela"
+         Top             =   90
+         Width           =   1215
+         _ExtentX        =   2143
+         _ExtentY        =   556
+         BTYPE           =   3
+         TX              =   "&Sair"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   0
+         FCOLO           =   0
+         MCOL            =   12632256
+         MPTR            =   1
+         MICON           =   "frmCnsAvancadaMob.frx":1115
+         PICN            =   "frmCnsAvancadaMob.frx":1131
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin VB.Label Label3 
+         BackStyle       =   0  'Transparent
+         Caption         =   "Números de empresas:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   12
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   330
+         Left            =   225
+         TabIndex        =   29
+         Top             =   90
+         Width           =   2805
+      End
+      Begin VB.Label lblTot 
+         Alignment       =   1  'Right Justify
+         BackStyle       =   0  'Transparent
+         Caption         =   "0"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   12
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H000000C0&
+         Height          =   330
+         Left            =   3015
+         TabIndex        =   28
+         Top             =   90
+         Width           =   915
+      End
+   End
    Begin Tributacao.jcFrames fr1 
-      Height          =   5865
+      Height          =   6315
       Left            =   45
       Top             =   45
       Width           =   11310
       _ExtentX        =   19950
-      _ExtentY        =   10345
+      _ExtentY        =   11139
       FrameColor      =   8388608
       TextBoxColor    =   11595760
       Style           =   2
@@ -561,6 +766,27 @@ Begin VB.Form frmCnsAvancadaMob
       EndProperty
       ColorFrom       =   0
       ColorTo         =   0
+      Begin VB.ListBox lstNomeLog 
+         BackColor       =   &H00C0FFFF&
+         Height          =   2205
+         ItemData        =   "frmCnsAvancadaMob.frx":119F
+         Left            =   5715
+         List            =   "frmCnsAvancadaMob.frx":11A1
+         TabIndex        =   134
+         Tag             =   "0"
+         Top             =   4050
+         Visible         =   0   'False
+         Width           =   5325
+      End
+      Begin VB.TextBox txtNomeLogr 
+         Appearance      =   0  'Flat
+         Height          =   285
+         Left            =   5715
+         MaxLength       =   50
+         TabIndex        =   133
+         Top             =   5940
+         Width           =   5325
+      End
       Begin VB.Frame frDDList4 
          BackColor       =   &H00EEEEEE&
          Height          =   375
@@ -605,8 +831,8 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   0
             MCOL            =   13026246
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":0E54
-            PICN            =   "frmCnsAvancadaMob.frx":0E70
+            MICON           =   "frmCnsAvancadaMob.frx":11A3
+            PICN            =   "frmCnsAvancadaMob.frx":11BF
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -645,7 +871,7 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   12582912
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":0FCA
+            MICON           =   "frmCnsAvancadaMob.frx":1319
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -684,7 +910,7 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   12582912
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":0FE6
+            MICON           =   "frmCnsAvancadaMob.frx":1335
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -805,8 +1031,8 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   0
             MCOL            =   13026246
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":1002
-            PICN            =   "frmCnsAvancadaMob.frx":101E
+            MICON           =   "frmCnsAvancadaMob.frx":1351
+            PICN            =   "frmCnsAvancadaMob.frx":136D
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -845,7 +1071,7 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   12582912
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":1178
+            MICON           =   "frmCnsAvancadaMob.frx":14C7
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -884,7 +1110,7 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   12582912
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":1194
+            MICON           =   "frmCnsAvancadaMob.frx":14E3
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -916,9 +1142,9 @@ Begin VB.Form frmCnsAvancadaMob
          End
          Begin VB.ComboBox cmbImposto 
             Height          =   315
-            ItemData        =   "frmCnsAvancadaMob.frx":11B0
+            ItemData        =   "frmCnsAvancadaMob.frx":14FF
             Left            =   2475
-            List            =   "frmCnsAvancadaMob.frx":11B2
+            List            =   "frmCnsAvancadaMob.frx":1501
             Style           =   2  'Dropdown List
             TabIndex        =   24
             Top             =   270
@@ -926,9 +1152,9 @@ Begin VB.Form frmCnsAvancadaMob
          End
          Begin VB.ComboBox cmbPagto 
             Height          =   315
-            ItemData        =   "frmCnsAvancadaMob.frx":11B4
+            ItemData        =   "frmCnsAvancadaMob.frx":1503
             Left            =   90
-            List            =   "frmCnsAvancadaMob.frx":11C7
+            List            =   "frmCnsAvancadaMob.frx":1516
             Style           =   2  'Dropdown List
             TabIndex        =   23
             Top             =   270
@@ -989,8 +1215,8 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   0
             MCOL            =   13026246
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":1238
-            PICN            =   "frmCnsAvancadaMob.frx":1254
+            MICON           =   "frmCnsAvancadaMob.frx":1587
+            PICN            =   "frmCnsAvancadaMob.frx":15A3
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -1029,7 +1255,7 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   12582912
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":13AE
+            MICON           =   "frmCnsAvancadaMob.frx":16FD
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -1068,7 +1294,7 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   12582912
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":13CA
+            MICON           =   "frmCnsAvancadaMob.frx":1719
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -1086,7 +1312,7 @@ Begin VB.Form frmCnsAvancadaMob
          Height          =   1455
          Left            =   315
          TabIndex        =   77
-         Top             =   4365
+         Top             =   4725
          Width           =   4155
          Begin VB.TextBox txtDelimiter 
             Alignment       =   2  'Center
@@ -1147,8 +1373,8 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   0
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":13E6
-            PICN            =   "frmCnsAvancadaMob.frx":1402
+            MICON           =   "frmCnsAvancadaMob.frx":1735
+            PICN            =   "frmCnsAvancadaMob.frx":1751
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -1187,8 +1413,8 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   0
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":1489
-            PICN            =   "frmCnsAvancadaMob.frx":14A5
+            MICON           =   "frmCnsAvancadaMob.frx":17D8
+            PICN            =   "frmCnsAvancadaMob.frx":17F4
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -1227,8 +1453,8 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   0
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":16B8
-            PICN            =   "frmCnsAvancadaMob.frx":16D4
+            MICON           =   "frmCnsAvancadaMob.frx":1A07
+            PICN            =   "frmCnsAvancadaMob.frx":1A23
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -1267,8 +1493,8 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   0
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":18F1
-            PICN            =   "frmCnsAvancadaMob.frx":190D
+            MICON           =   "frmCnsAvancadaMob.frx":1C40
+            PICN            =   "frmCnsAvancadaMob.frx":1C5C
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -1332,16 +1558,16 @@ Begin VB.Form frmCnsAvancadaMob
          BackColor       =   &H00EEEEEE&
          Caption         =   "Critérios Diversos"
          ForeColor       =   &H00800000&
-         Height          =   4020
+         Height          =   4380
          Left            =   315
          TabIndex        =   46
          Top             =   315
          Width           =   4155
          Begin VB.ComboBox cmbDispensaIE 
             Height          =   315
-            ItemData        =   "frmCnsAvancadaMob.frx":1A67
+            ItemData        =   "frmCnsAvancadaMob.frx":1DB6
             Left            =   2610
-            List            =   "frmCnsAvancadaMob.frx":1A74
+            List            =   "frmCnsAvancadaMob.frx":1DC3
             Style           =   2  'Dropdown List
             TabIndex        =   111
             Top             =   3555
@@ -1349,9 +1575,9 @@ Begin VB.Form frmCnsAvancadaMob
          End
          Begin VB.ComboBox cmbISSE 
             Height          =   315
-            ItemData        =   "frmCnsAvancadaMob.frx":1A89
+            ItemData        =   "frmCnsAvancadaMob.frx":1DD8
             Left            =   2610
-            List            =   "frmCnsAvancadaMob.frx":1A96
+            List            =   "frmCnsAvancadaMob.frx":1DE5
             Style           =   2  'Dropdown List
             TabIndex        =   109
             Top             =   3195
@@ -1359,9 +1585,9 @@ Begin VB.Form frmCnsAvancadaMob
          End
          Begin VB.ComboBox cmbISS 
             Height          =   315
-            ItemData        =   "frmCnsAvancadaMob.frx":1AAB
+            ItemData        =   "frmCnsAvancadaMob.frx":1DFA
             Left            =   2610
-            List            =   "frmCnsAvancadaMob.frx":1AAD
+            List            =   "frmCnsAvancadaMob.frx":1DFC
             Style           =   2  'Dropdown List
             TabIndex        =   7
             Top             =   2835
@@ -1724,7 +1950,7 @@ Begin VB.Form frmCnsAvancadaMob
             Width           =   1005
             _ExtentX        =   1773
             _ExtentY        =   503
-            MouseIcon       =   "frmCnsAvancadaMob.frx":1AAF
+            MouseIcon       =   "frmCnsAvancadaMob.frx":1DFE
             BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
                Name            =   "MS Sans Serif"
                Size            =   8.25
@@ -1749,7 +1975,7 @@ Begin VB.Form frmCnsAvancadaMob
             Width           =   1005
             _ExtentX        =   1773
             _ExtentY        =   503
-            MouseIcon       =   "frmCnsAvancadaMob.frx":1ACB
+            MouseIcon       =   "frmCnsAvancadaMob.frx":1E1A
             BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
                Name            =   "MS Sans Serif"
                Size            =   8.25
@@ -1812,7 +2038,7 @@ Begin VB.Form frmCnsAvancadaMob
             Width           =   1005
             _ExtentX        =   1773
             _ExtentY        =   503
-            MouseIcon       =   "frmCnsAvancadaMob.frx":1AE7
+            MouseIcon       =   "frmCnsAvancadaMob.frx":1E36
             BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
                Name            =   "MS Sans Serif"
                Size            =   8.25
@@ -1837,7 +2063,7 @@ Begin VB.Form frmCnsAvancadaMob
             Width           =   1005
             _ExtentX        =   1773
             _ExtentY        =   503
-            MouseIcon       =   "frmCnsAvancadaMob.frx":1B03
+            MouseIcon       =   "frmCnsAvancadaMob.frx":1E52
             BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
                Name            =   "MS Sans Serif"
                Size            =   8.25
@@ -1902,7 +2128,7 @@ Begin VB.Form frmCnsAvancadaMob
             Width           =   1005
             _ExtentX        =   1773
             _ExtentY        =   503
-            MouseIcon       =   "frmCnsAvancadaMob.frx":1B1F
+            MouseIcon       =   "frmCnsAvancadaMob.frx":1E6E
             BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
                Name            =   "MS Sans Serif"
                Size            =   8.25
@@ -1927,7 +2153,7 @@ Begin VB.Form frmCnsAvancadaMob
             Width           =   1005
             _ExtentX        =   1773
             _ExtentY        =   503
-            MouseIcon       =   "frmCnsAvancadaMob.frx":1B3B
+            MouseIcon       =   "frmCnsAvancadaMob.frx":1E8A
             BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
                Name            =   "MS Sans Serif"
                Size            =   8.25
@@ -1965,15 +2191,25 @@ Begin VB.Form frmCnsAvancadaMob
             Width           =   840
          End
       End
+      Begin VB.Label Label7 
+         BackStyle       =   0  'Transparent
+         Caption         =   "Logradouro.:"
+         Height          =   240
+         Index           =   2
+         Left            =   4725
+         TabIndex        =   132
+         Top             =   5940
+         Width           =   960
+      End
    End
    Begin Tributacao.jcFrames fr2 
-      Height          =   5865
+      Height          =   6315
       Left            =   45
       Top             =   45
       Visible         =   0   'False
       Width           =   11310
       _ExtentX        =   19950
-      _ExtentY        =   10345
+      _ExtentY        =   11139
       FrameColor      =   8388608
       TextBoxColor    =   11595760
       Style           =   2
@@ -1992,13 +2228,13 @@ Begin VB.Form frmCnsAvancadaMob
       ColorFrom       =   0
       ColorTo         =   0
       Begin vbAcceleratorSGrid6.vbalGrid grdMain 
-         Height          =   2610
+         Height          =   3150
          Left            =   90
          TabIndex        =   32
          Top             =   855
          Width           =   11130
          _ExtentX        =   19632
-         _ExtentY        =   4604
+         _ExtentY        =   5556
          NoHorizontalGridLines=   -1  'True
          BackgroundPictureHeight=   0
          BackgroundPictureWidth=   0
@@ -2030,9 +2266,9 @@ Begin VB.Form frmCnsAvancadaMob
          Width           =   2580
          Begin VB.ListBox lstDDList1 
             Height          =   3210
-            ItemData        =   "frmCnsAvancadaMob.frx":1B57
+            ItemData        =   "frmCnsAvancadaMob.frx":1EA6
             Left            =   45
-            List            =   "frmCnsAvancadaMob.frx":1B59
+            List            =   "frmCnsAvancadaMob.frx":1EA8
             Style           =   1  'Checkbox
             TabIndex        =   89
             Top             =   405
@@ -2067,8 +2303,8 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   0
             MCOL            =   13026246
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":1B5B
-            PICN            =   "frmCnsAvancadaMob.frx":1B77
+            MICON           =   "frmCnsAvancadaMob.frx":1EAA
+            PICN            =   "frmCnsAvancadaMob.frx":1EC6
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -2107,7 +2343,7 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   12582912
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":1CD1
+            MICON           =   "frmCnsAvancadaMob.frx":2020
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -2146,7 +2382,7 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   12582912
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":1CED
+            MICON           =   "frmCnsAvancadaMob.frx":203C
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -2186,8 +2422,8 @@ Begin VB.Form frmCnsAvancadaMob
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmCnsAvancadaMob.frx":1D09
-         PICN            =   "frmCnsAvancadaMob.frx":1D25
+         MICON           =   "frmCnsAvancadaMob.frx":2058
+         PICN            =   "frmCnsAvancadaMob.frx":2074
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2200,7 +2436,7 @@ Begin VB.Form frmCnsAvancadaMob
       Begin Tributacao.jcFrames jcFrames1 
          Height          =   2115
          Left            =   90
-         Top             =   3600
+         Top             =   4095
          Width           =   11145
          _ExtentX        =   19659
          _ExtentY        =   3731
@@ -2258,8 +2494,8 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   0
             MCOL            =   16777215
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":1E7F
-            PICN            =   "frmCnsAvancadaMob.frx":1E9B
+            MICON           =   "frmCnsAvancadaMob.frx":21CE
+            PICN            =   "frmCnsAvancadaMob.frx":21EA
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -2298,219 +2534,14 @@ Begin VB.Form frmCnsAvancadaMob
          Width           =   2850
       End
    End
-   Begin Tributacao.jcFrames tb1 
-      Height          =   465
-      Left            =   45
-      Top             =   5940
-      Width           =   11310
-      _ExtentX        =   19950
-      _ExtentY        =   820
-      FrameColor      =   12829635
-      Style           =   0
-      RoundedCornerTxtBox=   -1  'True
-      Caption         =   ""
-      TextColor       =   13579779
-      Alignment       =   0
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ColorFrom       =   0
-      ColorTo         =   0
-      Begin prjChameleon.chameleonButton cmdConsultar 
-         Height          =   315
-         Left            =   7380
-         TabIndex        =   26
-         ToolTipText     =   "Consultar as empresas"
-         Top             =   90
-         Width           =   1215
-         _ExtentX        =   2143
-         _ExtentY        =   556
-         BTYPE           =   3
-         TX              =   "&Pesquisar"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   0
-         FCOLO           =   0
-         MCOL            =   12632256
-         MPTR            =   1
-         MICON           =   "frmCnsAvancadaMob.frx":22F3
-         PICN            =   "frmCnsAvancadaMob.frx":230F
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin prjChameleon.chameleonButton cmdNext 
-         Height          =   315
-         Left            =   8685
-         TabIndex        =   27
-         ToolTipText     =   "Avançar para a próxima tela"
-         Top             =   90
-         Width           =   1215
-         _ExtentX        =   2143
-         _ExtentY        =   556
-         BTYPE           =   3
-         TX              =   "&Continuar"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   0
-         FCOLO           =   0
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmCnsAvancadaMob.frx":243E
-         PICN            =   "frmCnsAvancadaMob.frx":245A
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin Tributacao.XP_ProgressBar PBar 
-         Height          =   240
-         Left            =   4320
-         TabIndex        =   87
-         Top             =   135
-         Width           =   2940
-         _ExtentX        =   5186
-         _ExtentY        =   423
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         BrushStyle      =   0
-         Color           =   16777215
-         Scrolling       =   1
-         ShowText        =   -1  'True
-      End
-      Begin prjChameleon.chameleonButton cmdSair 
-         Height          =   315
-         Left            =   9990
-         TabIndex        =   103
-         ToolTipText     =   "Sair da Tela"
-         Top             =   90
-         Width           =   1215
-         _ExtentX        =   2143
-         _ExtentY        =   556
-         BTYPE           =   3
-         TX              =   "&Sair"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   0
-         FCOLO           =   0
-         MCOL            =   12632256
-         MPTR            =   1
-         MICON           =   "frmCnsAvancadaMob.frx":25B4
-         PICN            =   "frmCnsAvancadaMob.frx":25D0
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin VB.Label Label3 
-         BackStyle       =   0  'Transparent
-         Caption         =   "Números de empresas:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   12
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   330
-         Left            =   225
-         TabIndex        =   29
-         Top             =   90
-         Width           =   2805
-      End
-      Begin VB.Label lblTot 
-         Alignment       =   1  'Right Justify
-         BackStyle       =   0  'Transparent
-         Caption         =   "0"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   12
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H000000C0&
-         Height          =   330
-         Left            =   3015
-         TabIndex        =   28
-         Top             =   90
-         Width           =   915
-      End
-   End
    Begin Tributacao.jcFrames fr3 
-      Height          =   5865
+      Height          =   6315
       Left            =   45
       Top             =   45
       Visible         =   0   'False
       Width           =   11310
       _ExtentX        =   19950
-      _ExtentY        =   10345
+      _ExtentY        =   11139
       FrameColor      =   6974058
       TextBoxColor    =   11595760
       Style           =   2
@@ -2537,9 +2568,9 @@ Begin VB.Form frmCnsAvancadaMob
          Width           =   11220
          Begin VB.ComboBox cmbCampos 
             Height          =   315
-            ItemData        =   "frmCnsAvancadaMob.frx":263E
+            ItemData        =   "frmCnsAvancadaMob.frx":2642
             Left            =   8370
-            List            =   "frmCnsAvancadaMob.frx":2640
+            List            =   "frmCnsAvancadaMob.frx":2644
             Style           =   2  'Dropdown List
             TabIndex        =   93
             Top             =   135
@@ -2574,8 +2605,8 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   0
             MCOL            =   13026246
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":2642
-            PICN            =   "frmCnsAvancadaMob.frx":265E
+            MICON           =   "frmCnsAvancadaMob.frx":2646
+            PICN            =   "frmCnsAvancadaMob.frx":2662
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -2614,7 +2645,7 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   192
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":29B0
+            MICON           =   "frmCnsAvancadaMob.frx":29B4
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -2653,8 +2684,8 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   0
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":29CC
-            PICN            =   "frmCnsAvancadaMob.frx":29E8
+            MICON           =   "frmCnsAvancadaMob.frx":29D0
+            PICN            =   "frmCnsAvancadaMob.frx":29EC
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -2693,8 +2724,8 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   0
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":2BCB
-            PICN            =   "frmCnsAvancadaMob.frx":2BE7
+            MICON           =   "frmCnsAvancadaMob.frx":2BCF
+            PICN            =   "frmCnsAvancadaMob.frx":2BEB
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -2733,8 +2764,8 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   0
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":2DCD
-            PICN            =   "frmCnsAvancadaMob.frx":2DE9
+            MICON           =   "frmCnsAvancadaMob.frx":2DD1
+            PICN            =   "frmCnsAvancadaMob.frx":2DED
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -2790,8 +2821,8 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   0
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":2FD3
-            PICN            =   "frmCnsAvancadaMob.frx":2FEF
+            MICON           =   "frmCnsAvancadaMob.frx":2FD7
+            PICN            =   "frmCnsAvancadaMob.frx":2FF3
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -2831,8 +2862,8 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   0
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":31D3
-            PICN            =   "frmCnsAvancadaMob.frx":31EF
+            MICON           =   "frmCnsAvancadaMob.frx":31D7
+            PICN            =   "frmCnsAvancadaMob.frx":31F3
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -2872,8 +2903,8 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   0
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":33D0
-            PICN            =   "frmCnsAvancadaMob.frx":33EC
+            MICON           =   "frmCnsAvancadaMob.frx":33D4
+            PICN            =   "frmCnsAvancadaMob.frx":33F0
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -2912,8 +2943,8 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   0
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":35CD
-            PICN            =   "frmCnsAvancadaMob.frx":35E9
+            MICON           =   "frmCnsAvancadaMob.frx":35D1
+            PICN            =   "frmCnsAvancadaMob.frx":35ED
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -2952,7 +2983,7 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   0
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":37CF
+            MICON           =   "frmCnsAvancadaMob.frx":37D3
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -2991,7 +3022,7 @@ Begin VB.Form frmCnsAvancadaMob
             FCOLO           =   0
             MCOL            =   13026246
             MPTR            =   1
-            MICON           =   "frmCnsAvancadaMob.frx":37EB
+            MICON           =   "frmCnsAvancadaMob.frx":37EF
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -3003,18 +3034,18 @@ Begin VB.Form frmCnsAvancadaMob
          End
       End
       Begin RichTextLib.RichTextBox Rtb 
-         Height          =   5055
+         Height          =   5460
          Left            =   45
          TabIndex        =   65
          Top             =   765
          Width           =   11220
          _ExtentX        =   19791
-         _ExtentY        =   8916
+         _ExtentY        =   9631
          _Version        =   393217
          ScrollBars      =   3
          Appearance      =   0
          AutoVerbMenu    =   -1  'True
-         TextRTF         =   $"frmCnsAvancadaMob.frx":3807
+         TextRTF         =   $"frmCnsAvancadaMob.frx":380B
       End
    End
    Begin VB.Menu mnuPrint 
@@ -3084,6 +3115,7 @@ Private Type Empresa
     sCNPJ As String
     sCPF As String
     sEndereco As String
+    sNumero As String
     sComplemento As String
     sBairro As String
     sCidade As String
@@ -3578,6 +3610,76 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
 Set xImovel = Nothing
 End Sub
 
+Private Sub txtNomeLogr_Change()
+If Trim$(txtNomeLogr) = "" Then
+   txtNomeLogr.Tag = 0
+End If
+End Sub
+
+Private Sub txtNomeLogr_GotFocus()
+txtNomeLogr.SelStart = 0
+txtNomeLogr.SelLength = Len(txtNomeLogr.Text)
+End Sub
+
+Private Sub txtNomeLogr_KeyPress(KeyAscii As Integer)
+
+If KeyAscii = vbKeyReturn Then
+   KeyAscii = 0
+   lstNomeLog.Clear
+   If txtNomeLogr.Text <> "" Then
+      Sql = "SELECT CODLOGRADOURO,CODTIPOLOG,NOMETIPOLOG,"
+      Sql = Sql & "ABREVTIPOLOG,CODTITLOG,NOMETITLOG,"
+      Sql = Sql & "ABREVTITLOG,NOMELOGRADOURO,DATAOFIC,"
+      Sql = Sql & "NUMOFIC FROM vwLOGRADOURO "
+      Sql = Sql & "WHERE NOMELOGRADOURO LIKE '%" & Trim$(txtNomeLogr) & "%' "
+      Sql = Sql & "ORDER BY NOMELOGRADOURO"
+      Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+      With RdoAux
+          If .RowCount > 0 Then
+             Do Until .EOF
+                lstNomeLog.AddItem Trim$(SubNull(!AbrevTipoLog)) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro
+                lstNomeLog.ItemData(lstNomeLog.NewIndex) = !CodLogradouro
+               .MoveNext
+             Loop
+             lstNomeLog.Visible = True
+             lstNomeLog.ZOrder (0)
+             lstNomeLog.ListIndex = 0
+             lstNomeLog.SetFocus
+          Else
+             MsgBox "Logradouro não encontrado.", vbInformation, "Atenção"
+             lstNomeLog.Visible = False
+             txtNomeLogr.SetFocus
+          End If
+      End With
+   End If
+Else
+   txtNomeLogr.Tag = 0
+End If
+
+End Sub
+
+Private Sub lstNomeLog_DblClick()
+If lstNomeLog.ListIndex > -1 Then
+   txtNomeLogr.Tag = lstNomeLog.ItemData(lstNomeLog.ListIndex)
+   lstNomeLog.Visible = False
+End If
+
+End Sub
+
+Private Sub lstNomeLog_KeyPress(KeyAscii As Integer)
+If KeyAscii = vbKeyReturn Then
+    If lstNomeLog.ListIndex > -1 Then
+       txtNomeLogr.Tag = lstNomeLog.ItemData(lstNomeLog.ListIndex)
+       lstNomeLog.Visible = False
+    End If
+ElseIf KeyAscii = vbKeyEscape Then
+   lstNomeLog.Visible = False
+   txtNomeLogr.SetFocus
+End If
+
+End Sub
+
+
 Private Sub mnuCadastro_Click()
 Dim Sql As String, x As Integer
 
@@ -3632,7 +3734,7 @@ cn.Execute Sql, rdExecDirect
 End Sub
 
 Private Sub mnuExcel_Click()
-Dim x As Long, Y As Long, ax As String, Scr_hdc As Long, z As Long
+Dim x As Long, y As Long, ax As String, Scr_hdc As Long, z As Long
 Dim cnExcel As ADODB.Connection, Rs As ADODB.Recordset, nCont As Integer, sFile As String
 Scr_hdc = GetDesktopWindow()
          
@@ -3642,9 +3744,9 @@ cnExcel.ConnectionString = "provider=Microsoft.Jet.OLEDB.4.0; data source=" & sP
 cnExcel.Open
 
 ax = ""
-For Y = 1 To grdMain.Columns
-    If grdMain.ColumnVisible(Y) = True Then
-        ax = ax & RemoveSpace(grdMain.ColumnHeader(Y)) & " char(255), "
+For y = 1 To grdMain.Columns
+    If grdMain.ColumnVisible(y) = True Then
+        ax = ax & RemoveSpace(grdMain.ColumnHeader(y)) & " char(255), "
     End If
 Next
 ax = Left(ax, Len(ax) - 2)
@@ -3657,9 +3759,9 @@ Rs.Open "[Table1$]", cnExcel, adOpenDynamic, adLockOptimistic, adCmdTable
 For x = 1 To grdMain.Rows
     Rs.AddNew
     nCont = 0
-    For Y = 1 To grdMain.Columns
-        If grdMain.ColumnVisible(Y) = True Then
-            Rs.Fields(nCont).value = Left(grdMain.cell(x, Y).Text, 100)
+    For y = 1 To grdMain.Columns
+        If grdMain.ColumnVisible(y) = True Then
+            Rs.Fields(nCont).value = Left(grdMain.cell(x, y).Text, 100)
             nCont = nCont + 1
         End If
         
@@ -3677,7 +3779,7 @@ z = ShellExecute(Scr_hdc, "Open", sFile, "", sPathBin, SW_SHOWNORMAL)
 End Sub
 
 Private Sub mnuExcelOld_Click()
-Dim myExcelFile As New ExcelFile, x As Long, Y As Long, ax As String, Scr_hdc As Long, z As Long
+Dim myExcelFile As New ExcelFile, x As Long, y As Long, ax As String, Scr_hdc As Long, z As Long
 Scr_hdc = GetDesktopWindow()
          
           
@@ -3686,17 +3788,17 @@ With myExcelFile
     .CreateFile FileName$
     
     ax = ""
-    For Y = 1 To grdMain.Columns
-        If grdMain.ColumnVisible(Y) = True Then
-            .WriteValue xlsText, xlsFont3, xlsLeftAlign, xlsNormal, 1, Y, grdMain.ColumnHeader(Y)
+    For y = 1 To grdMain.Columns
+        If grdMain.ColumnVisible(y) = True Then
+            .WriteValue xlsText, xlsFont3, xlsLeftAlign, xlsNormal, 1, y, grdMain.ColumnHeader(y)
         End If
     Next
     For x = 2 To grdMain.Rows
         If cGetInputState() <> 0 Then DoEvents
         ax = ""
-        For Y = 1 To grdMain.Columns
-            If grdMain.ColumnVisible(Y) = True Then
-                .WriteValue xlsText, xlsFont3, xlsLeftAlign, xlsNormal, x, Y, grdMain.cell(x, Y).Text
+        For y = 1 To grdMain.Columns
+            If grdMain.ColumnVisible(y) = True Then
+                .WriteValue xlsText, xlsFont3, xlsLeftAlign, xlsNormal, x, y, grdMain.cell(x, y).Text
             End If
         Next
     Next
@@ -3754,23 +3856,23 @@ cn.Execute Sql, rdExecDirect
 End Sub
 
 Private Sub mnuTela_Click()
-Dim ax As String, z As Long, x As Integer, Y As Integer
+Dim ax As String, z As Long, x As Integer, y As Integer
 
 Open sPathBin & "\TEMPMOB.TXT" For Output As #1
 
 With grdMain
     ax = ""
-    For Y = 1 To .Columns
-        If .ColumnVisible(Y) = True Then
-            ax = ax & FillSpace(.ColumnHeader(Y), Val(Right(.ColumnKey(Y), 3))) & vbTab
+    For y = 1 To .Columns
+        If .ColumnVisible(y) = True Then
+            ax = ax & FillSpace(.ColumnHeader(y), Val(Right(.ColumnKey(y), 3))) & vbTab
         End If
     Next
     Print #1, ax
     For x = 1 To .Rows
         ax = ""
-        For Y = 1 To .Columns
-            If .ColumnVisible(Y) = True Then
-                ax = ax & FillSpace(.cell(x, Y).Text, Val(Right(.ColumnKey(Y), 3))) & vbTab
+        For y = 1 To .Columns
+            If .ColumnVisible(y) = True Then
+                ax = ax & FillSpace(.cell(x, y).Text, Val(Right(.ColumnKey(y), 3))) & vbTab
             End If
         Next
         Print #1, ax
@@ -3785,7 +3887,7 @@ z = Shell(App.Path & "\NOTEPAD2" & " " & sPathBin & "\TEMPMOB.TXT", vbNormalFocu
 End Sub
 
 Private Sub mnuTxt_Click()
-Dim ax As String, z As Long, x As Integer, Y As Integer, sChar As String
+Dim ax As String, z As Long, x As Integer, y As Integer, sChar As String
 
 If txtSep.Text = "" Then
     sChar = " "
@@ -3797,9 +3899,9 @@ Open sPathBin & "\RELATMOB.CSV" For Output As #1
 
 With grdMain
     ax = ""
-    For Y = 1 To .Columns
-        If .ColumnVisible(Y) = True Then
-            ax = ax & FillSpace(.ColumnHeader(Y), Val(Right(.ColumnKey(Y), 3))) & sChar
+    For y = 1 To .Columns
+        If .ColumnVisible(y) = True Then
+            ax = ax & FillSpace(.ColumnHeader(y), Val(Right(.ColumnKey(y), 3))) & sChar
         End If
     Next
     ax = Chomp(ax, chomp_righT, 1)
@@ -3807,9 +3909,9 @@ With grdMain
     For x = 1 To .Rows
         If cGetInputState() <> 0 Then DoEvents
         ax = ""
-        For Y = 1 To .Columns
-            If .ColumnVisible(Y) = True Then
-                ax = ax & FillSpace(.cell(x, Y).Text, Val(Right(.ColumnKey(Y), 3))) & sChar
+        For y = 1 To .Columns
+            If .ColumnVisible(y) = True Then
+                ax = ax & FillSpace(.cell(x, y).Text, Val(Right(.ColumnKey(y), 3))) & sChar
             End If
         Next
         If sChar <> " " Then ax = Chomp(ax, chomp_righT, 1)
@@ -3982,7 +4084,7 @@ Dim iSortIndex As Long
 End Sub
 
 Private Sub HideColumns()
-Dim x As Integer, Y As Integer, bAchou As Boolean
+Dim x As Integer, y As Integer, bAchou As Boolean
 
 bAchou = False
 For x = 0 To lstDDList1.ListCount - 1
@@ -4052,7 +4154,7 @@ With RdoAux
         aCodigos(UBound(aCodigos)).nCodigo = !CodCidadao
         aCodigos(UBound(aCodigos)).sRazao = !nomecidadao
         aCodigos(UBound(aCodigos)).sCNPJ = SubNull(!Cnpj)
-        aCodigos(UBound(aCodigos)).sCPF = SubNull(!CPF)
+        aCodigos(UBound(aCodigos)).sCPF = SubNull(!cpf)
         aCodigos(UBound(aCodigos)).sEndereco = Trim(SubNull(!Endereco) & " nº " & Val(SubNull(!NUMIMOVEL)))
         aCodigos(UBound(aCodigos)).sComplemento = SubNull(!Complemento)
         aCodigos(UBound(aCodigos)).sBairro = SubNull(!DescBairro)
@@ -4189,7 +4291,9 @@ If cmbDEnc.ListIndex = 1 Then
 ElseIf cmbDEnc.ListIndex = 2 Then
     Sql = Sql & " AND DATAENCERRAMENTO IS NULL"
 End If
-
+If Val(txtNomeLogr.Tag) > 0 Then
+    Sql = Sql & " AND CODLOGRADOURO=" & Val(txtNomeLogr.Tag)
+End If
 'Sql = Sql & " AND EMITENF=1"
 If chkContador.value = vbUnchecked Then
     sContador = ""
@@ -4427,12 +4531,13 @@ With RdoAux
         
         ReDim Preserve aCodigos(UBound(aCodigos) + 1)
         aCodigos(UBound(aCodigos)).nCodigo = !codigomob
-        aCodigos(UBound(aCodigos)).sRazao = !razaosocial
+        aCodigos(UBound(aCodigos)).sRazao = !RazaoSocial
         aCodigos(UBound(aCodigos)).sNomeFantasia = SubNull(!NOMEFANTASIA)
         aCodigos(UBound(aCodigos)).sCNPJ = SubNull(!Cnpj)
-        aCodigos(UBound(aCodigos)).sCPF = SubNull(!CPF)
+        aCodigos(UBound(aCodigos)).sCPF = SubNull(!cpf)
         aCodigos(UBound(aCodigos)).sIE = SubNull(!inscestadual)
-        aCodigos(UBound(aCodigos)).sEndereco = Trim(SubNull(!Logradouro) & " nº " & Val(SubNull(!Numero)))
+        aCodigos(UBound(aCodigos)).sEndereco = Trim(SubNull(!Logradouro))
+        aCodigos(UBound(aCodigos)).sNumero = Val(SubNull(!Numero))
         aCodigos(UBound(aCodigos)).sComplemento = SubNull(!Complemento)
         aCodigos(UBound(aCodigos)).sBairro = SubNull(!DescBairro)
         aCodigos(UBound(aCodigos)).sCidade = SubNull(!descCidade)
@@ -4458,7 +4563,7 @@ With RdoAux
         aCodigos(UBound(aCodigos)).sProcEncerramento = SubNull(!NUMPROCENCERRAMENTO)
         aCodigos(UBound(aCodigos)).sNomeContato = SubNull(!NOMECONTATO)
         aCodigos(UBound(aCodigos)).sFoneContato = SubNull(!fonecontato)
-        aCodigos(UBound(aCodigos)).sProcAbertura = SubNull(!numprocesso)
+        aCodigos(UBound(aCodigos)).sProcAbertura = SubNull(!NUMPROCESSO)
         aCodigos(UBound(aCodigos)).nParcPagtoTotal = nQtdePagtoTotal
         aCodigos(UBound(aCodigos)).nParcPagtoSim = nQtdePagtoSim
         aCodigos(UBound(aCodigos)).nParcPagtoNao = nQtdePagtoNao
@@ -4590,45 +4695,46 @@ For x = 1 To UBound(aCodigos)
     grdMain.CellDetails grdMain.Rows, 3, sDoc
     grdMain.CellDetails grdMain.Rows, 4, aCodigos(x).sIE
     grdMain.CellDetails grdMain.Rows, 5, aCodigos(x).sEndereco
-    grdMain.CellDetails grdMain.Rows, 6, aCodigos(x).sComplemento
-    grdMain.CellDetails grdMain.Rows, 7, aCodigos(x).sBairro
-    grdMain.CellDetails grdMain.Rows, 8, aCodigos(x).sCidade
-    grdMain.CellDetails grdMain.Rows, 9, aCodigos(x).sUF, DT_CENTER
-    grdMain.CellDetails grdMain.Rows, 10, aCodigos(x).sCep, DT_CENTER
-    grdMain.CellDetails grdMain.Rows, 11, aCodigos(x).sDataAbertura, DT_CENTER
-    grdMain.CellDetails grdMain.Rows, 12, aCodigos(x).sDataEncerramento, DT_CENTER
-    grdMain.CellDetails grdMain.Rows, 13, aCodigos(x).sDataSuspensao, DT_CENTER
-    grdMain.CellDetails grdMain.Rows, 14, aCodigos(x).sAtividade
-    grdMain.CellDetails grdMain.Rows, 15, aCodigos(x).sAtivExtenso
-    grdMain.CellDetails grdMain.Rows, 16, aCodigos(x).sHorario
-    grdMain.CellDetails grdMain.Rows, 17, aCodigos(x).sContador
-    grdMain.CellDetails grdMain.Rows, 18, aCodigos(x).sMEI, DT_CENTER
-    grdMain.CellDetails grdMain.Rows, 19, aCodigos(x).sSN, DT_CENTER
-    grdMain.CellDetails grdMain.Rows, 20, aCodigos(x).sIsentoTaxa, DT_CENTER
-    grdMain.CellDetails grdMain.Rows, 21, aCodigos(x).sAlvara, DT_CENTER
-    grdMain.CellDetails grdMain.Rows, 22, aCodigos(x).sVistoria, DT_CENTER
-    grdMain.CellDetails grdMain.Rows, 23, aCodigos(x).sVigilancia, DT_CENTER
-    grdMain.CellDetails grdMain.Rows, 24, aCodigos(x).sFixo, DT_CENTER
-    grdMain.CellDetails grdMain.Rows, 25, aCodigos(x).sVariavel, DT_CENTER
-    grdMain.CellDetails grdMain.Rows, 26, aCodigos(x).sEstimado, DT_CENTER
-    grdMain.CellDetails grdMain.Rows, 27, aCodigos(x).sProcEncerramento
-    grdMain.CellDetails grdMain.Rows, 28, aCodigos(x).sNomeContato
-    grdMain.CellDetails grdMain.Rows, 29, aCodigos(x).sFoneContato
-    grdMain.CellDetails grdMain.Rows, 30, aCodigos(x).sProcAbertura
-    grdMain.CellDetails grdMain.Rows, 31, aCodigos(x).nParcPagtoTotal, DT_RIGHT
-    grdMain.CellDetails grdMain.Rows, 32, aCodigos(x).nParcPagtoSim, DT_RIGHT
-    grdMain.CellDetails grdMain.Rows, 33, aCodigos(x).nParcPagtoNao, DT_RIGHT
-    grdMain.CellDetails grdMain.Rows, 34, aCodigos(x).sISSElet, DT_CENTER
-    grdMain.CellDetails grdMain.Rows, 35, aCodigos(x).sDispensaIE, DT_CENTER
-    grdMain.CellDetails grdMain.Rows, 36, aCodigos(x).sNomeFantasia
-    grdMain.CellDetails grdMain.Rows, 37, aCodigos(x).sAtivIss
-    grdMain.CellDetails grdMain.Rows, 38, ""
-    grdMain.CellDetails grdMain.Rows, 39, aCodigos(x).sEnderecoEnt
-    grdMain.CellDetails grdMain.Rows, 40, aCodigos(x).sComplementoEnt
-    grdMain.CellDetails grdMain.Rows, 41, aCodigos(x).sBairroEnt
-    grdMain.CellDetails grdMain.Rows, 42, aCodigos(x).sCidadeEnt
-    grdMain.CellDetails grdMain.Rows, 43, aCodigos(x).sUFEnt, DT_CENTER
-    grdMain.CellDetails grdMain.Rows, 44, aCodigos(x).sCEPEnt, DT_CENTER
+    grdMain.CellDetails grdMain.Rows, 6, aCodigos(x).sNumero, DT_RIGHT
+    grdMain.CellDetails grdMain.Rows, 7, aCodigos(x).sComplemento
+    grdMain.CellDetails grdMain.Rows, 8, aCodigos(x).sBairro
+    grdMain.CellDetails grdMain.Rows, 9, aCodigos(x).sCidade
+    grdMain.CellDetails grdMain.Rows, 10, aCodigos(x).sUF, DT_CENTER
+    grdMain.CellDetails grdMain.Rows, 11, aCodigos(x).sCep, DT_CENTER
+    grdMain.CellDetails grdMain.Rows, 12, aCodigos(x).sDataAbertura, DT_CENTER
+    grdMain.CellDetails grdMain.Rows, 13, aCodigos(x).sDataEncerramento, DT_CENTER
+    grdMain.CellDetails grdMain.Rows, 14, aCodigos(x).sDataSuspensao, DT_CENTER
+    grdMain.CellDetails grdMain.Rows, 15, aCodigos(x).sAtividade
+    grdMain.CellDetails grdMain.Rows, 16, aCodigos(x).sAtivExtenso
+    grdMain.CellDetails grdMain.Rows, 17, aCodigos(x).sHorario
+    grdMain.CellDetails grdMain.Rows, 18, aCodigos(x).sContador
+    grdMain.CellDetails grdMain.Rows, 19, aCodigos(x).sMEI, DT_CENTER
+    grdMain.CellDetails grdMain.Rows, 20, aCodigos(x).sSN, DT_CENTER
+    grdMain.CellDetails grdMain.Rows, 21, aCodigos(x).sIsentoTaxa, DT_CENTER
+    grdMain.CellDetails grdMain.Rows, 22, aCodigos(x).sAlvara, DT_CENTER
+    grdMain.CellDetails grdMain.Rows, 23, aCodigos(x).sVistoria, DT_CENTER
+    grdMain.CellDetails grdMain.Rows, 24, aCodigos(x).sVigilancia, DT_CENTER
+    grdMain.CellDetails grdMain.Rows, 25, aCodigos(x).sFixo, DT_CENTER
+    grdMain.CellDetails grdMain.Rows, 26, aCodigos(x).sVariavel, DT_CENTER
+    grdMain.CellDetails grdMain.Rows, 27, aCodigos(x).sEstimado, DT_CENTER
+    grdMain.CellDetails grdMain.Rows, 28, aCodigos(x).sProcEncerramento
+    grdMain.CellDetails grdMain.Rows, 29, aCodigos(x).sNomeContato
+    grdMain.CellDetails grdMain.Rows, 30, aCodigos(x).sFoneContato
+    grdMain.CellDetails grdMain.Rows, 31, aCodigos(x).sProcAbertura
+    grdMain.CellDetails grdMain.Rows, 32, aCodigos(x).nParcPagtoTotal, DT_RIGHT
+    grdMain.CellDetails grdMain.Rows, 33, aCodigos(x).nParcPagtoSim, DT_RIGHT
+    grdMain.CellDetails grdMain.Rows, 34, aCodigos(x).nParcPagtoNao, DT_RIGHT
+    grdMain.CellDetails grdMain.Rows, 35, aCodigos(x).sISSElet, DT_CENTER
+    grdMain.CellDetails grdMain.Rows, 36, aCodigos(x).sDispensaIE, DT_CENTER
+    grdMain.CellDetails grdMain.Rows, 37, aCodigos(x).sNomeFantasia
+    grdMain.CellDetails grdMain.Rows, 38, aCodigos(x).sAtivIss
+    grdMain.CellDetails grdMain.Rows, 39, ""
+    grdMain.CellDetails grdMain.Rows, 40, aCodigos(x).sEnderecoEnt
+    grdMain.CellDetails grdMain.Rows, 41, aCodigos(x).sComplementoEnt
+    grdMain.CellDetails grdMain.Rows, 42, aCodigos(x).sBairroEnt
+    grdMain.CellDetails grdMain.Rows, 43, aCodigos(x).sCidadeEnt
+    grdMain.CellDetails grdMain.Rows, 44, aCodigos(x).sUFEnt, DT_CENTER
+    grdMain.CellDetails grdMain.Rows, 45, aCodigos(x).sCEPEnt, DT_CENTER
 Proximo:
 Next
 Liberado
@@ -4649,88 +4755,91 @@ With lstDDList1
     .ItemData(.NewIndex) = 3
     .AddItem "Endereco"
     .ItemData(.NewIndex) = 4
-    .AddItem "Complemento"
+    .AddItem "Número"
     .ItemData(.NewIndex) = 5
-    .AddItem "Bairro"
+    .AddItem "Complemento"
     .ItemData(.NewIndex) = 6
-    .AddItem "Cidade"
+    .AddItem "Bairro"
     .ItemData(.NewIndex) = 7
-    .AddItem "UF"
+    .AddItem "Cidade"
     .ItemData(.NewIndex) = 8
-    .AddItem "CEP"
+    .AddItem "UF"
     .ItemData(.NewIndex) = 9
-    .AddItem "Data de Abertura"
+    .AddItem "CEP"
     .ItemData(.NewIndex) = 10
-    .AddItem "Data de Encerramento"
+    .AddItem "Data de Abertura"
     .ItemData(.NewIndex) = 11
-    .AddItem "Data de Suspensao"
+    .AddItem "Data de Encerramento"
     .ItemData(.NewIndex) = 12
-    .AddItem "Atividade"
+    .AddItem "Data de Suspensao"
     .ItemData(.NewIndex) = 13
-    .AddItem "Atividade por Extenso"
+    .AddItem "Atividade"
     .ItemData(.NewIndex) = 14
-    .AddItem "Horario de Funcionamento"
+    .AddItem "Atividade por Extenso"
     .ItemData(.NewIndex) = 15
-    .AddItem "Escritorio Contabil"
+    .AddItem "Horario de Funcionamento"
     .ItemData(.NewIndex) = 16
-    .AddItem "Inscrito no MEI"
+    .AddItem "Escritorio Contabil"
     .ItemData(.NewIndex) = 17
-    .AddItem "Simples Nacional"
+    .AddItem "Inscrito no MEI"
     .ItemData(.NewIndex) = 18
-    .AddItem "Isento Taxa"
+    .AddItem "Simples Nacional"
     .ItemData(.NewIndex) = 19
-    .AddItem "Alvara Automatico"
+    .AddItem "Isento Taxa"
     .ItemData(.NewIndex) = 20
-    .AddItem "Vistoria"
+    .AddItem "Alvara Automatico"
     .ItemData(.NewIndex) = 21
-    .AddItem "Vigilancia Sanitaria"
+    .AddItem "Vistoria"
     .ItemData(.NewIndex) = 22
-    .AddItem "ISS Fixo"
+    .AddItem "Vigilancia Sanitaria"
     .ItemData(.NewIndex) = 23
-    .AddItem "ISS Variável"
+    .AddItem "ISS Fixo"
     .ItemData(.NewIndex) = 24
-    .AddItem "ISS Estimado"
+    .AddItem "ISS Variável"
     .ItemData(.NewIndex) = 25
-    .AddItem "Processo Encerramento"
+    .AddItem "ISS Estimado"
     .ItemData(.NewIndex) = 26
-    .AddItem "Nome do Contato"
+    .AddItem "Processo Encerramento"
     .ItemData(.NewIndex) = 27
-    .AddItem "Telefone de Contato"
+    .AddItem "Nome do Contato"
     .ItemData(.NewIndex) = 28
-    .AddItem "Processo de Abertura"
+    .AddItem "Telefone de Contato"
     .ItemData(.NewIndex) = 29
-    .AddItem "Parc.Pagas Total"
+    .AddItem "Processo de Abertura"
     .ItemData(.NewIndex) = 30
-    .AddItem "Parc.Pagas Sim"
+    .AddItem "Parc.Pagas Total"
     .ItemData(.NewIndex) = 31
-    .AddItem "Parc.Pagas Não"
+    .AddItem "Parc.Pagas Sim"
     .ItemData(.NewIndex) = 32
-    .AddItem "ISS Eletrônico"
+    .AddItem "Parc.Pagas Não"
     .ItemData(.NewIndex) = 33
-    .AddItem "Dispensa ISS Elet."
+    .AddItem "ISS Eletrônico"
     .ItemData(.NewIndex) = 34
-    .AddItem "Nome Fantasia"
+    .AddItem "Dispensa ISS Elet."
     .ItemData(.NewIndex) = 35
-    .AddItem "Atividade ISS"
+    .AddItem "Nome Fantasia"
     .ItemData(.NewIndex) = 36
-    .AddItem "Auto Incremento"
+    .AddItem "Atividade ISS"
     .ItemData(.NewIndex) = 37
-    .AddItem "Endereco Entrega"
+    .AddItem "Auto Incremento"
     .ItemData(.NewIndex) = 38
-    .AddItem "Complemento Entrega"
+    .AddItem "Endereco Entrega"
     .ItemData(.NewIndex) = 39
-    .AddItem "Bairro Entrega"
+    .AddItem "Complemento Entrega"
     .ItemData(.NewIndex) = 40
-    .AddItem "Cidade Entrega"
+    .AddItem "Bairro Entrega"
     .ItemData(.NewIndex) = 41
-    .AddItem "UF Entrega"
+    .AddItem "Cidade Entrega"
     .ItemData(.NewIndex) = 42
-    .AddItem "CEP Entrega"
+    .AddItem "UF Entrega"
     .ItemData(.NewIndex) = 43
+    .AddItem "CEP Entrega"
+    .ItemData(.NewIndex) = 44
     .Selected(0) = True
     .Selected(1) = True
     .Selected(2) = True
     .Selected(4) = True
+    .Selected(5) = True
 End With
 
 For x = 0 To lstDDList1.ListCount - 1
@@ -4758,6 +4867,7 @@ With grdMain
     .AddColumn "kCnpj018", "CPF/CNPJ", ecgHdrTextALignLeft, , 120
     .AddColumn "kIE015", "Insc.Est.", ecgHdrTextALignLeft, , 100
     .AddColumn "kEndereco100", "Endereço", ecgHdrTextALignLeft, , 200
+    .AddColumn "kNumero100", "Nº", ecgHdrTextALignRight, , 50
     .AddColumn "kCompl030", "Complemento", ecgHdrTextALignLeft, , 90
     .AddColumn "kBairro050", "Bairro", ecgHdrTextALignLeft, , 120
     .AddColumn "kCidade050", "Cidade", ecgHdrTextALignLeft, , 120
@@ -5280,11 +5390,11 @@ With RdoAux
                 aDebito(nEval).nAno = !AnoExercicio
                 aDebito(nEval).nLanc = !CodLancamento
                 If !CodLancamento = 20 Or !CodLancamento = 8 Then
-                   If Not IsNull(!numprocesso) Then
-                      If Val(Right$(!numprocesso, 4)) >= 2006 Then
-                        aDebito(nEval).sLanc = !DESCLANCAMENTO & " (" & Left$(!numprocesso, InStr(1, !numprocesso, "/", vbBinaryCompare) - 1) & "-" & RetornaDVProcesso(Left$(!numprocesso, InStr(1, !numprocesso, "/", vbBinaryCompare) - 1)) & "/" & Right$(!numprocesso, 4) & ")"
+                   If Not IsNull(!NUMPROCESSO) Then
+                      If Val(Right$(!NUMPROCESSO, 4)) >= 2006 Then
+                        aDebito(nEval).sLanc = !DESCLANCAMENTO & " (" & Left$(!NUMPROCESSO, InStr(1, !NUMPROCESSO, "/", vbBinaryCompare) - 1) & "-" & RetornaDVProcesso(Left$(!NUMPROCESSO, InStr(1, !NUMPROCESSO, "/", vbBinaryCompare) - 1)) & "/" & Right$(!NUMPROCESSO, 4) & ")"
                       Else
-                        aDebito(nEval).sLanc = !DESCLANCAMENTO & " (" & !numprocesso & ")"
+                        aDebito(nEval).sLanc = !DESCLANCAMENTO & " (" & !NUMPROCESSO & ")"
                       End If
                    Else
                       aDebito(nEval).sLanc = !DESCLANCAMENTO

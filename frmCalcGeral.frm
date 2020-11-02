@@ -1398,7 +1398,7 @@ For x = 1 To 40000
             nCodReduz = !CODREDUZIDO
             nVVT = FormatNumber(!vvt, 2)
             nVVC = FormatNumber(!vvc, 2)
-            nVVI = FormatNumber(!VVI, 2)
+            nVVI = FormatNumber(!vvi, 2)
             nImpostoPredial = FormatNumber(!impostopredial, 2)
             nImpostoTerritorial = FormatNumber(!IMPOSTOTERRITORIAL, 2)
             sNatureza = !Natureza
@@ -1451,7 +1451,7 @@ For x = 1 To 40000
             nCodReduz2 = !CODREDUZIDO
             nVVT2 = FormatNumber(!vvt, 2)
             nVVC2 = FormatNumber(!vvc, 2)
-            nVVI2 = FormatNumber(!VVI, 2)
+            nVVI2 = FormatNumber(!vvi, 2)
             nImpostoPredial2 = FormatNumber(!impostopredial, 2)
             nImpostoTerritorial2 = FormatNumber(!IMPOSTOTERRITORIAL, 2)
             sNatureza2 = !Natureza
@@ -1975,11 +1975,11 @@ Sql = "SELECT CODLANCAMENTO,VALORPARCELA,VALORUNICA FROM EXPEDIENTE WHERE ANOEXP
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
      If .RowCount > 0 Then
-        nValorExpDocParc = FormatNumber(!VALORPARCELA, 2)
-        nValorExpDocUnica = FormatNumber(!ValorUnica, 2)
+        nValorExpDocParc = FormatNumber(!valorparcela, 2)
+        nValorExpDocUnica = FormatNumber(!valorunica, 2)
      Else
         MsgBox "Taxa de Expediente não cadastrada.", vbCritical, "Atenção"
-        GoTo FIM
+        GoTo fim
      End If
     .Close
 End With
@@ -2013,7 +2013,7 @@ With RdoAux
         If xId Mod 100 = 0 Then
            CallPb xId, nNumRec
         End If
-        If !Inativo = True Then GoTo proximo
+        If !Inativo = True Then GoTo Proximo
         If Not bExec Then
            MsgBox "Cálculo Interrompido pelo usuário", vbCritical, "Atenção"
            Exit Do
@@ -2026,7 +2026,7 @@ With RdoAux
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             If .RowCount > 0 Then
-                GoTo proximo
+                GoTo Proximo
             End If
            .Close
         End With
@@ -2036,7 +2036,7 @@ With RdoAux
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             If .RowCount > 0 Then
-                GoTo proximo
+                GoTo Proximo
             End If
            .Close
         End With
@@ -2097,7 +2097,7 @@ FASE1:
                         Sql = "SELECT CODREDUZIDO,CODPROPRIETARIO FROM vwPROPRIETARIODUPLICADO2 WHERE CODREDUZIDO=" & nCodReduz
                         Set RdoAux4 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
                         If RdoAux4.RowCount = 0 Then
-                            GoTo proximo
+                            GoTo Proximo
                         End If
                     End If
                     bTemPredial = True
@@ -2320,7 +2320,7 @@ FASE1:
         
         For x = 0 To nNumParc
             DoEvents
-            If x = 0 And lblUnica.Caption = "Não" Then GoTo proximo
+            If x = 0 And lblUnica.Caption = "Não" Then GoTo Proximo
             'GRAVA NA TABELA DEBITOPARCELA
             ax = nCodReduz & "," & nAnoCalculo & "," & 1 & "," & 0 & "," & x & "," & 0 & ","
             ax = ax & 3 & "," & Format(aParc(x), "mm/dd/yyyy") & "," & Format(sDataBase, "mm/dd/yyyy") & ","
@@ -2345,13 +2345,13 @@ FASE1:
             ax = ax & x & "," & 0 & "," & nLastDoc & "," & "0" & "," & "0"
             Print #3, ax
         Next
-proximo:
+Proximo:
         xId = xId + 1
        .MoveNext
     Loop
 End With
 
-FIM:
+fim:
 Close #4
 Close #3
 Close #2
@@ -2424,7 +2424,7 @@ With RdoAux
         If xId Mod 100 = 0 Then
            CallPb xId, nNumRec
         End If
-        If !Inativo = True Then GoTo proximo
+        If !Inativo = True Then GoTo Proximo
 '        If Not bExec Then
 '           MsgBox "Cálculo Interrompido pelo usuário", vbCritical, "Atenção"
 '           Exit Do
@@ -2534,7 +2534,7 @@ With RdoAux
             End If
             
             If Not bIsento Then
-                GoTo proximo
+                GoTo Proximo
             End If
             
             nValorVenalPredial = 0
@@ -2690,13 +2690,13 @@ With RdoAux
         Sql = Sql & Virg2Ponto(CStr(nValorVenalImovel)) & "," & Virg2Ponto(CStr(nAreaTerreno)) & ","
         Sql = Sql & Virg2Ponto(CStr(nAreaPrincipal)) & "," & Virg2Ponto(CStr(nValorFinal)) & "," & nTipoIsento & ")"
         cn.Execute Sql, rdExecDirect
-proximo:
+Proximo:
         xId = xId + 1
        .MoveNext
     Loop
 End With
 
-FIM:
+fim:
 
 End Sub
 
@@ -3506,7 +3506,7 @@ MsgBox "Debito recalculado."
 End Sub
 
 Private Sub cmdLista_Click()
-Dim aCidadao1() As Lista, aCidadao2() As Long, x As Long, Y As Long, z As Long, bAchou As Boolean, aDup() As Lista, bAchou2 As Boolean, t As Long
+Dim aCidadao1() As Lista, aCidadao2() As Long, x As Long, y As Long, z As Long, bAchou As Boolean, aDup() As Lista, bAchou2 As Boolean, t As Long
 
 ReDim aCidadao1(0): ReDim aCidadao2(0): ReDim aDup(0): ReDim aEspelho(0)
 'CARREGA A MATRIZ 1 COM TODOS OS CODIGOS
@@ -3531,12 +3531,12 @@ End With
 For x = 1 To UBound(aCidadao1)
     bAchou = False
     'VERIFICA SE O ITEM EXISTE EM MATRIZ 2
-    For Y = 1 To UBound(aCidadao2)
-        If aCidadao2(Y) = aCidadao1(x).nCodCidadao Then
+    For y = 1 To UBound(aCidadao2)
+        If aCidadao2(y) = aCidadao1(x).nCodCidadao Then
             bAchou = True
             Exit For
         End If
-    Next Y
+    Next y
     If bAchou Then
        'SE ACHAR VERIFICA SE JA EXISTE NA MATRIZ DE DUPLICADOS
         bAchou2 = False
@@ -3562,7 +3562,7 @@ For x = 1 To UBound(aCidadao1)
         ReDim Preserve aCidadao2(UBound(aCidadao2) + 1)
         aCidadao2(UBound(aCidadao2)) = aCidadao1(x).nCodCidadao
     End If
-proximo:
+Proximo:
 Next x
 
 Sql = "TRUNCATE TABLE PROPRIETARIODUPLICADO"
@@ -3637,7 +3637,7 @@ With RdoAux
      End If
       .Close
 End With
-FIM:
+fim:
 'LoadMatrix
 
 Liberado
@@ -3798,7 +3798,7 @@ Tweak txtAnoCalculo, KeyAscii, IntegerPositive
 End Sub
 
 Private Sub txtAnoCalculo_LostFocus()
-If Val(txtAnoCalculo.Text) >= 2004 And Val(txtAnoCalculo.Text) <= 2019 Then
+If Val(txtAnoCalculo.Text) >= 2004 And Val(txtAnoCalculo.Text) <= 2020 Then
     lblAno.Caption = "Cálculo " & txtAnoCalculo.Text
    CarregaTela
 Else
@@ -3837,7 +3837,7 @@ Sql = "SELECT ANO,QTDEPARCELA,PARCELAUNICA,DESCONTOUNICA,DESCONTOUNICA2,DESCONTO
 Sql = Sql & "VENC06,VENC07,VENC08,VENC09,VENC10,VENC11,VENC12 FROM PARAMPARCELA WHERE CODTIPO=1 AND ANO=" & nAnoCalculo
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
-     If .RowCount = 0 Then GoTo FIM
+     If .RowCount = 0 Then GoTo fim
      txtNumParc.Text = !qtdeparcela
      lblTemUnica.Caption = IIf(!PARCELAUNICA = "S", "Sim", "Não")
      lblPercUnica.Caption = FormatNumber(!DESCONTOUNICA, 2)
@@ -3865,7 +3865,7 @@ With RdoAux
      Loop
     .Close
 End With
-FIM:
+fim:
 End Sub
 
 Private Sub cmdRel_Click()
@@ -3919,7 +3919,7 @@ With RdoAux
             aLaser(1).nFace = !Seq
             aLaser(1).nUnidade = !Unidade
             aLaser(1).nSubUnidade = !SubUnidade
-            aLaser(1).sProprietario = !NomeCidadao
+            aLaser(1).sProprietario = !nomecidadao
             aLaser(1).nCodLogradouro = !CodLogr
             aLaser(1).sEndereco = Trim$(SubNull(!AbrevTipoLog)) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & SubNull(!NomeLogradouro)
             aLaser(1).nNumero = !Li_Num
@@ -4017,7 +4017,7 @@ With RdoAux
             If !Ano = 2006 Then
                 aLaser(1).nVVT1 = !vvt
                 aLaser(1).nVVC1 = !vvc
-                aLaser(1).nVVI1 = !VVI
+                aLaser(1).nVVI1 = !vvi
                 aLaser(1).nImpPre1 = !impostopredial
                 aLaser(1).nImpTer1 = !IMPOSTOTERRITORIAL
                 aLaser(1).nValorParcela1 = !valortotalparc
@@ -4025,7 +4025,7 @@ With RdoAux
             Else
                 aLaser(1).nVVT2 = !vvt
                 aLaser(1).nVVC2 = !vvc
-                aLaser(1).nVVI2 = !VVI
+                aLaser(1).nVVI2 = !vvi
                 aLaser(1).nImpPre2 = !impostopredial
                 aLaser(1).nImpTer2 = !IMPOSTOTERRITORIAL
                 aLaser(1).nValorParcela2 = !valortotalparc
@@ -4035,7 +4035,7 @@ With RdoAux
             If !Ano = 2006 Then
                 aLaser(1).nVVT1 = !vvt
                 aLaser(1).nVVC1 = !vvc
-                aLaser(1).nVVI1 = !VVI
+                aLaser(1).nVVI1 = !vvi
                 aLaser(1).nImpPre1 = !impostopredial
                 aLaser(1).nImpTer1 = !IMPOSTOTERRITORIAL
                 aLaser(1).nValorParcela1 = !valortotalparc
@@ -4043,14 +4043,14 @@ With RdoAux
             Else
                 aLaser(1).nVVT2 = !vvt
                 aLaser(1).nVVC2 = !vvc
-                aLaser(1).nVVI2 = !VVI
+                aLaser(1).nVVI2 = !vvi
                 aLaser(1).nImpPre2 = !impostopredial
                 aLaser(1).nImpTer2 = !IMPOSTOTERRITORIAL
                 aLaser(1).nValorParcela2 = !valortotalparc
                 aLaser(1).nValorUnica2 = !VALORTOTALUNICA
             End If
         End If
-proximo:
+Proximo:
         nPos = nPos + 1
        .MoveNext
     Loop
@@ -4096,8 +4096,8 @@ Sql = "SELECT CODLANCAMENTO,VALORPARCELA,VALORUNICA FROM EXPEDIENTE WHERE ANOEXP
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
      If .RowCount > 0 Then
-        nValorExpDocParc = FormatNumber(!VALORPARCELA, 2)
-        nValorExpDocUnica = FormatNumber(!ValorUnica, 2)
+        nValorExpDocParc = FormatNumber(!valorparcela, 2)
+        nValorExpDocUnica = FormatNumber(!valorunica, 2)
      Else
         MsgBox "Taxa de Expediente não cadastrada.", vbCritical, "Atenção"
         Exit Sub
@@ -4129,7 +4129,7 @@ With RdoAux
         If xId Mod 100 = 0 Then
            CallPb xId, nNumRec
         End If
-        If !Inativo = True Then GoTo proximo
+        If !Inativo = True Then GoTo Proximo
         If Not bExec Then
            MsgBox "Cálculo Interrompido pelo usuário", vbCritical, "Atenção"
            Exit Do
@@ -4141,7 +4141,7 @@ With RdoAux
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             If .RowCount > 0 Then
-                GoTo proximo
+                GoTo Proximo
             End If
            .Close
         End With
@@ -4151,7 +4151,7 @@ With RdoAux
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             If .RowCount > 0 Then
-                GoTo proximo
+                GoTo Proximo
             End If
            .Close
         End With
@@ -4209,7 +4209,7 @@ With RdoAux
             If .RowCount > 0 Then
                 If Not IsNull(RdoAux!SOMAAREA) Then
                     If RdoAux!SOMAAREA <= 65 And !USOCONSTR = 1 And (!CATCONSTR = 4 Or !CATCONSTR = 7) And !QTDEPAV < 2 And nAreaTerreno < 600 Then
-                        GoTo proximo
+                        GoTo Proximo
                     End If
                     bTemPredial = True
                     nAreaPrincipal = FormatNumber(RdoAux!SOMAAREA, 2)
@@ -4437,7 +4437,7 @@ With RdoAux
 '            ax = ax & x & "," & 0 & "," & nLastDoc & "," & "0" & "," & "0"
 '            Print #3, ax
 '        Next
-proximo:
+Proximo:
         xId = xId + 1
        .MoveNext
     Loop
@@ -4482,10 +4482,10 @@ With RdoAux
     lblTestadaMedia.Caption = FormatNumber(!TESTADAPRINC, 2)
     lblFracao.Caption = FormatNumber(!FRACAO, 2)
     lblVVT.Caption = FormatNumber(!vvt, 2)
-    lblVVP.Caption = FormatNumber(!VVP, 2)
-    lblVVI.Caption = FormatNumber(!VVI, 2)
+    lblVVP.Caption = FormatNumber(!vvp, 2)
+    lblVVI.Caption = FormatNumber(!vvi, 2)
     lblPerc.Caption = FormatNumber(!percisencao, 2)
-    lblIPTU.Caption = IIf(!Natureza = "predial", FormatNumber(!ValorIPTU, 2), FormatNumber(!ValorITU, 2))
+    lblIPTU.Caption = IIf(!Natureza = "predial", FormatNumber(!ValorIPTU, 2), FormatNumber(!valoritu, 2))
     lblFatorC.Caption = FormatNumber(!fcat, 2)
     lblAgrup.Caption = FormatNumber(!valorAgrupamento, 2)
     lblFatorD.Caption = FormatNumber(!fdis, 2)
@@ -4494,7 +4494,7 @@ With RdoAux
     lblFatorS.Caption = FormatNumber(!fsit, 2)
     lblFatorT.Caption = FormatNumber(!ftop, 2)
     lblFatorF.Caption = FormatNumber(!fpro, 2)
-    lblValorFinal.Caption = FormatNumber(!VALORPARCELA * !qtdeparc, 2)
+    lblValorFinal.Caption = FormatNumber(!valorparcela * !qtdeparc, 2)
     If Not IsNull(!valorfinal) Then
         nValorFinal = !valorfinal
     Else
@@ -4502,6 +4502,9 @@ With RdoAux
         MsgBox "Categoria da construção não cadastrada.", vbCritical, "ERRO"
         Exit Sub
     End If
+'    If nValorFinal = 0 Then
+'        nValorFinal = !valorfinalfull
+'    End If
 
             '** NOVA ROTINA DE QTDE DE PARCELAS ***
             If nValorFinal > 0 And nValorFinal <= 10 Then
@@ -4523,10 +4526,10 @@ With RdoAux
 '            nValorUnica = Round(nValorFinal - (nValorFinal * (CDbl(lblPercUnica.Caption) / 100)), 2)
 '            nValorUnica2 = Round(nValorFinal - (nValorFinal * (CDbl(lblPercUnica2.Caption) / 100)), 2)
 '            nValorUnica3 = Round(nValorFinal - (nValorFinal * (CDbl(lblPercUnica3.Caption) / 100)), 2)
-            nValorUnica = !ValorUnica
+            nValorUnica = !valorunica
             If Val(txtAnoCalculo.Text) >= 2018 Then
-                nValorUnica2 = !ValorUnica2
-                nValorUnica3 = !ValorUnica3
+                nValorUnica2 = !valorunica2
+                nValorUnica3 = !valorunica3
             Else
                 nValorUnica2 = 0
                 nValorUnica3 = 0

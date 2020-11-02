@@ -1441,10 +1441,10 @@ With RdoAux
                  lblNumInsc.Caption = Format(!Cnpj, "0#\.###\.###/####-##")
              End If
          Else
-             If Not IsNull(!CPF) Then
-                 If Val(!CPF) > 0 Then
+             If Not IsNull(!cpf) Then
+                 If Val(!cpf) > 0 Then
                      lblNum.Caption = "CPF:"
-                     lblNumInsc.Caption = Format(RetornaNumero(!CPF), "00#\.###\.###-##")
+                     lblNumInsc.Caption = Format(RetornaNumero(!cpf), "00#\.###\.###-##")
                  End If
              End If
          End If
@@ -2697,11 +2697,11 @@ With RdoAux
             lblNumInsc.Caption = Format(RdoAux2!Cnpj, "0#\.###\.###/####-##")
             nCPF = RdoAux2!Cnpj
         Else
-            If Not IsNull(RdoAux2!CPF) Then
-                If Val(RdoAux2!CPF) > 0 Then
+            If Not IsNull(RdoAux2!cpf) Then
+                If Val(RdoAux2!cpf) > 0 Then
                     lblNum.Caption = "CPF:"
-                    lblNumInsc.Caption = Format(RetornaNumero(RdoAux2!CPF), "00#\.###\.###-##")
-                    nCPF = RdoAux2!CPF
+                    lblNumInsc.Caption = Format(RetornaNumero(RdoAux2!cpf), "00#\.###\.###-##")
+                    nCPF = RdoAux2!cpf
                 End If
             End If
         End If
@@ -2733,17 +2733,17 @@ With RdoAux
                     lblNumInsc.Caption = Format(!Cnpj, "0#\.###\.###/####-##")
                     nCPF = !Cnpj
                 Else
-                    If Not IsNull(!CPF) Then
-                        If Val(!CPF) > 0 Then
+                    If Not IsNull(!cpf) Then
+                        If Val(!cpf) > 0 Then
                             lblNum.Caption = "CPF:"
-                            lblNumInsc.Caption = Format(RetornaNumero(!CPF), "00#\.###\.###-##")
-                            nCPF = !CPF
+                            lblNumInsc.Caption = Format(RetornaNumero(!cpf), "00#\.###\.###-##")
+                            nCPF = !cpf
                         End If
                     End If
                 End If
                
                lblRS.Caption = "Raz.Social"
-               lblProp.Caption = !razaosocial
+               lblProp.Caption = !RazaoSocial
                lblRua.Caption = Trim$(SubNull(!AbrevTipoLog)) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro
                If Trim(lblRua.Caption) = "" Then
                     lblRua.Caption = SubNull(!NomeLogr)
@@ -2832,11 +2832,11 @@ With RdoAux
                                 nCPF = RetornaNumero(!Cnpj)
                             End If
                         Else
-                            If SubNull(!CPF) <> "" Then
-                                If Val(!CPF) > 0 Then
+                            If SubNull(!cpf) <> "" Then
+                                If Val(!cpf) > 0 Then
                                     lblNum.Caption = "CPF:"
-                                    lblNumInsc.Caption = Format(RetornaNumero(!CPF), "00#\.###\.###-##")
-                                    nCPF = RetornaNumero(!CPF)
+                                    lblNumInsc.Caption = Format(RetornaNumero(!cpf), "00#\.###\.###-##")
+                                    nCPF = RetornaNumero(!cpf)
                                 End If
                             End If
                         End If
@@ -3097,8 +3097,8 @@ Sql = "SELECT CODREDUZIDO,CPF,CNPJ,RG,ORGAO FROM vwCONSULTAIMOVELPROP WHERE CODR
 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux2
     If .RowCount > 0 Then
-        If Not IsNull(!CPF) Then
-           sCPF = !CPF
+        If Not IsNull(!cpf) Then
+           sCPF = !cpf
         ElseIf Not IsNull(!Cnpj) Then
            sCPF = !Cnpj
         ElseIf Not IsNull(!rg) Then
@@ -3189,12 +3189,12 @@ Next
 'se tiver devem ser divididos
 If cmbLanc.ItemData(cmbLanc.ListIndex) = 2 Then
     bISSFixo = False: bTLL = False
-    For Y = 1 To UBound(aTributos)
-        If aTributos(Y).nCodTributo = 11 Then
+    For y = 1 To UBound(aTributos)
+        If aTributos(y).nCodTributo = 11 Then
             bISSFixo = True
-            nValorISSFixo = aTributos(Y).nValorTributo
+            nValorISSFixo = aTributos(y).nValorTributo
         End If
-        If aTributos(Y).nCodTributo = 14 Then bTLL = True
+        If aTributos(y).nCodTributo = 14 Then bTLL = True
     Next
 End If
 '**************************************************
@@ -3310,29 +3310,29 @@ With grdTemp
           End If
           
           sFullTrib = ""
-          For Y = 1 To UBound(aTributos)
+          For y = 1 To UBound(aTributos)
              '*************
              If bISSFixo And bTLL Then
                 If Val(.TextMatrix(x, 2)) = 14 Then 'se for iss fixo ignorar outros tributos que não sejam iss fixo(11)
-                    If aTributos(Y).nCodTributo <> 11 Then
+                    If aTributos(y).nCodTributo <> 11 Then
                         GoTo ProximoTrib
                     End If
                 ElseIf Val(.TextMatrix(x, 2)) = 6 Then 'se for taxa licenca ignorar o tributo iss fixo(11)
-                    If aTributos(Y).nCodTributo = 11 Then
+                    If aTributos(y).nCodTributo = 11 Then
                         GoTo ProximoTrib
                     End If
                 End If
              End If
              '*************
             'GRAVA DEBITOTRIBUTO
-             If aTributos(Y).nCodTributo <> 3 Then
+             If aTributos(y).nCodTributo <> 3 Then
                 Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,"
                 Sql = Sql & "NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,VALORTRIBUTO) VALUES("
                 Sql = Sql & .TextMatrix(x, 0) & "," & .TextMatrix(x, 1) & "," & .TextMatrix(x, 2) & "," & .TextMatrix(x, 3) & ","
-                Sql = Sql & .TextMatrix(x, 4) & "," & .TextMatrix(x, 5) & "," & aTributos(Y).nCodTributo & "," & IIf(.TextMatrix(x, 4) = "0", Virg2Ponto(CStr(aTributosU(Y).nValorTributo)), Virg2Ponto(CStr(aTributos(Y).nValorTributo))) & ")"
+                Sql = Sql & .TextMatrix(x, 4) & "," & .TextMatrix(x, 5) & "," & aTributos(y).nCodTributo & "," & IIf(.TextMatrix(x, 4) = "0", Virg2Ponto(CStr(aTributosU(y).nValorTributo)), Virg2Ponto(CStr(aTributos(y).nValorTributo))) & ")"
                 cn.Execute Sql, rdExecDirect
              End If
-             Sql = "SELECT CODTRIBUTO,DESCTRIBUTO FROM TRIBUTO WHERE CODTRIBUTO=" & aTributos(Y).nCodTributo
+             Sql = "SELECT CODTRIBUTO,DESCTRIBUTO FROM TRIBUTO WHERE CODTRIBUTO=" & aTributos(y).nCodTributo
              Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
              With RdoAux2
                 sFullTrib = sFullTrib & !desctributo & " - "
@@ -3649,7 +3649,7 @@ With RdoAux
 '        itmX.SubItems(4) = !Valor
         Set itmX = lvVS.ListItems.Add(, "VS" & !Cnae & Format(!criterio, "00"), !Cnae)
         itmX.SubItems(1) = Format(!criterio, "00")
-        itmX.SubItems(2) = !descricao
+        itmX.SubItems(2) = !Descricao
         itmX.SubItems(3) = !QTDE
         itmX.SubItems(4) = !Valor
        .MoveNext
@@ -3952,15 +3952,15 @@ With grdTemp
         End If
 
         sFullTrib = ""
-        For Y = 1 To UBound(aTributos)
+        For y = 1 To UBound(aTributos)
            'GRAVA DEBITOTRIBUTO
-            If aTributos(Y).nCodTributo <> 3 Then
+            If aTributos(y).nCodTributo <> 3 Then
                 Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,VALORTRIBUTO) VALUES("
                 Sql = Sql & .TextMatrix(x, 0) & "," & .TextMatrix(x, 1) & "," & .TextMatrix(x, 2) & "," & .TextMatrix(x, 3) & "," & .TextMatrix(x, 4) & "," & .TextMatrix(x, 5) & ","
-                Sql = Sql & aTributos(Y).nCodTributo & "," & Virg2Ponto(CStr(aTributos(Y).nValorTributo)) & ")"
+                Sql = Sql & aTributos(y).nCodTributo & "," & Virg2Ponto(CStr(aTributos(y).nValorTributo)) & ")"
                 cn.Execute Sql, rdExecDirect
              End If
-             Sql = "SELECT CODTRIBUTO,DESCTRIBUTO FROM TRIBUTO WHERE CODTRIBUTO=" & aTributos(Y).nCodTributo
+             Sql = "SELECT CODTRIBUTO,DESCTRIBUTO FROM TRIBUTO WHERE CODTRIBUTO=" & aTributos(y).nCodTributo
              Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
              With RdoAux2
                 sFullTrib = sFullTrib & !desctributo & " - "
@@ -4008,7 +4008,7 @@ Select Case nCodReduz
         With RdoAux
             sInsc = !Inscricao
             sNome = !nomecidadao
-            sDoc = SubNull(!CPF)
+            sDoc = SubNull(!cpf)
             If sDoc = "" Then
                 sDoc = SubNull(!Cnpj)
                 If sDoc = "" Then
@@ -4028,9 +4028,9 @@ Select Case nCodReduz
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             sInsc = !inscestadual
-            sNome = !razaosocial
-            If Not IsNull(!CPF) Then
-               sDoc = !CPF
+            sNome = !RazaoSocial
+            If Not IsNull(!cpf) Then
+               sDoc = !cpf
             ElseIf Not IsNull(!Cnpj) Then
                sDoc = !Cnpj
             Else
@@ -4051,8 +4051,8 @@ Select Case nCodReduz
             sNome = !nomecidadao
             If SubNull(!Cnpj) <> "" Then
                sDoc = !Cnpj
-            ElseIf SubNull(!CPF) <> "" Then
-               sDoc = !CPF
+            ElseIf SubNull(!cpf) <> "" Then
+               sDoc = !cpf
 
             Else
                 sDoc = SubNull(!rg)
@@ -4248,8 +4248,8 @@ Sql = "SELECT CODREDUZIDO,CPF,CNPJ,RG,ORGAO FROM vwCONSULTAIMOVELPROP WHERE CODR
 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux2
     If .RowCount > 0 Then
-        If Not IsNull(!CPF) Then
-           sCPF = !CPF
+        If Not IsNull(!cpf) Then
+           sCPF = !cpf
         ElseIf Not IsNull(!Cnpj) Then
            sCPF = !Cnpj
         ElseIf Not IsNull(!rg) Then
@@ -4558,12 +4558,12 @@ Next
 'se tiver devem ser divididos
 If cmbLanc.ItemData(cmbLanc.ListIndex) = 2 Then
     bISSFixo = False: bTLL = False
-    For Y = 1 To UBound(aTributos)
-        If aTributos(Y).nCodTributo = 11 Then
+    For y = 1 To UBound(aTributos)
+        If aTributos(y).nCodTributo = 11 Then
             bISSFixo = True
-            nValorISSFixo = aTributos(Y).nValorTributo
+            nValorISSFixo = aTributos(y).nValorTributo
         End If
-        If aTributos(Y).nCodTributo = 14 Then bTLL = True
+        If aTributos(y).nCodTributo = 14 Then bTLL = True
     Next
 End If
 '**************************************************
@@ -4724,15 +4724,15 @@ With grdTemp
 
 
         sFullTrib = ""
-        For Y = 1 To UBound(aTributos)
+        For y = 1 To UBound(aTributos)
            '*************
             If bISSFixo And bTLL Then
                 If Val(.TextMatrix(x, 2)) = 14 Then 'se for iss fixo ignorar outros tributos que não sejam iss fixo(11)
-                    If aTributos(Y).nCodTributo <> 11 Then
+                    If aTributos(y).nCodTributo <> 11 Then
                         GoTo ProximoTrib
                     End If
                 ElseIf Val(.TextMatrix(x, 2)) = 6 Then 'se for taxa licenca ignorar o tributo iss fixo(11)
-                    If aTributos(Y).nCodTributo = 11 Then
+                    If aTributos(y).nCodTributo = 11 Then
                         GoTo ProximoTrib
                     End If
                 End If
@@ -4740,13 +4740,13 @@ With grdTemp
            '*************
 
            'GRAVA DEBITOTRIBUTO
-            If aTributos(Y).nCodTributo <> 3 Then
+            If aTributos(y).nCodTributo <> 3 Then
                 Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,VALORTRIBUTO) VALUES("
                 Sql = Sql & .TextMatrix(x, 0) & "," & .TextMatrix(x, 1) & "," & .TextMatrix(x, 2) & "," & .TextMatrix(x, 3) & "," & .TextMatrix(x, 4) & "," & .TextMatrix(x, 5) & ","
-                Sql = Sql & aTributos(Y).nCodTributo & "," & IIf(.TextMatrix(x, 4) = "0", Virg2Ponto(CStr(aTributosU(Y).nValorTributo)), Virg2Ponto(CStr(aTributos(Y).nValorTributo))) & ")"
+                Sql = Sql & aTributos(y).nCodTributo & "," & IIf(.TextMatrix(x, 4) = "0", Virg2Ponto(CStr(aTributosU(y).nValorTributo)), Virg2Ponto(CStr(aTributos(y).nValorTributo))) & ")"
                 cn.Execute Sql, rdExecDirect
              End If
-             Sql = "SELECT CODTRIBUTO,DESCTRIBUTO FROM TRIBUTO WHERE CODTRIBUTO=" & aTributos(Y).nCodTributo
+             Sql = "SELECT CODTRIBUTO,DESCTRIBUTO FROM TRIBUTO WHERE CODTRIBUTO=" & aTributos(y).nCodTributo
              Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
              With RdoAux2
                 sFullTrib = sFullTrib & !desctributo & " - "
@@ -5053,25 +5053,25 @@ For nParc = 0 To Val(txtNumParc.Text)
     End If
 
     sFullTrib = ""
-    For Y = 1 To UBound(aTributos)
+    For y = 1 To UBound(aTributos)
        '*************
         If bISSFixo And bTLL Then
             If nLanc = 14 Then 'se for iss fixo ignorar outros tributos que não sejam iss fixo(11)
-                If aTributos(Y).nCodTributo <> 11 Then
+                If aTributos(y).nCodTributo <> 11 Then
                     GoTo ProximoTrib
                 End If
             ElseIf nLanc = 6 Then 'se for taxa licenca ignorar o tributo iss fixo(11)
-                If aTributos(Y).nCodTributo = 11 Then '
+                If aTributos(y).nCodTributo = 11 Then '
                     GoTo ProximoTrib
                 End If
             End If
         End If
       '*************
 
-        If aTributos(Y).nCodTributo <> 3 Then
+        If aTributos(y).nCodTributo <> 3 Then
             Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,VALORTRIBUTO) VALUES("
             Sql = Sql & nCodReduz & "," & nAno & "," & nLanc & "," & nSeq & "," & nParc & "," & 0 & ","
-            Sql = Sql & aTributos(Y).nCodTributo & "," & IIf(nParc = "0", Virg2Ponto(CStr(aTributosU(Y).nValorTributo)), Virg2Ponto(CStr(aTributos(Y).nValorTributo))) & ")"
+            Sql = Sql & aTributos(y).nCodTributo & "," & IIf(nParc = "0", Virg2Ponto(CStr(aTributosU(y).nValorTributo)), Virg2Ponto(CStr(aTributos(y).nValorTributo))) & ")"
             cn.Execute Sql, rdExecDirect
          End If
 ProximoTrib:
@@ -5113,7 +5113,8 @@ V10 = NomeDeLogin
 If Trim(lblCEP.Caption) = "" Or Trim(lblCEP.Caption) = "-" Then
     v9 = "14870-000"
 End If
-ShellExecute HWND, "open", "http://sistemas.jaboticabal.sp.gov.br/gti/Pages/boletoBB.aspx?f1=" & v1 & "&f2=" & v2 & "&f3=" & v3 & "&f4=" & v4 & "&f5=" & v5 & "&f6=" & v6 & "&f7=" & v7 & "&f8=" & v8 & "&f9=" & v9 & "&f10=" & V10, vbNullString, vbNullString, conSwNormal
+'ShellExecute HWND, "open", "http://sistemas.jaboticabal.sp.gov.br/gti/Pages/boletoBB.aspx?f1=" & v1 & "&f2=" & v2 & "&f3=" & v3 & "&f4=" & v4 & "&f5=" & v5 & "&f6=" & v6 & "&f7=" & v7 & "&f8=" & v8 & "&f9=" & v9 & "&f10=" & V10, vbNullString, vbNullString, conSwNormal
+ShellExecute HWND, "open", "http://sistemas.jaboticabal.sp.gov.br/gti/Tributario/GateBank?p1=" & v1 & "&p2=" & v2 & "&p3=" & v3 & "&p4=" & v4 & "&p5=" & v5 & "&p6=" & v6 & "&p7=" & v7 & "&p8=" & v8 & "&p9=" & v9, vbNullString, vbNullString, conSwNormal
 
 Limpa
 

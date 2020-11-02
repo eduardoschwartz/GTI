@@ -115,8 +115,8 @@ Else
     Print #1, ax
     ax = "====================================================================================================="
     Print #1, ax
-    PBar.Color = vbRed
-    PBar.value = 0
+    pBar.Color = vbRed
+    pBar.value = 0
     
     With RdoAux
         Ocupado
@@ -131,7 +131,7 @@ Else
             If RdoAux2.RowCount > 0 Then
                 If Not IsNull(RdoAux2!DATAHORA) Then
                     RdoAux2.Close
-                    GoTo PROXIMO
+                    GoTo Proximo
                 End If
             End If
             RdoAux2.Close
@@ -143,7 +143,7 @@ Else
             End If
             ax = Format(!Numero, "000000") & "-" & RetornaDVProcesso(!Numero) & "/" & !Ano & " " & Format(!DATAHORA, "dd/mm/yyyy") & " " & Format(DateDiff("d", !DATAHORA, Now), "0000") & " " & FillSpace(Left(!Complemento, 35), 35) & " " & FillSpace(Left(sNome, 35), 35)
             Print #1, ax
-PROXIMO:
+Proximo:
             DoEvents
            .MoveNext
         Loop
@@ -157,10 +157,12 @@ PROXIMO:
     Liberado
     If nConta > 0 Then
         z = Shell(App.Path & "\NOTEPAD2" & " " & sPathBin & "\PROTCC.TXT", vbNormalFocus)
+    Else
+        MsgBox "Nenhum processo encontrado.", vbExclamation, "Atenção"
     End If
 End If
-PBar.Color = vbWhite
-PBar.value = 0
+pBar.Color = vbWhite
+pBar.value = 0
 
 End Sub
 
@@ -196,14 +198,14 @@ End Function
 
 Private Sub CallPb(nVal As Long, nTot As Long)
 If nVal > 0 Then
-    PBar.Color = &HC0C000
+    pBar.Color = &HC0C000
 Else
-    PBar.Color = vbWhite
+    pBar.Color = vbWhite
 End If
 If ((nVal * 100) / nTot) <= 100 Then
-   PBar.value = (nVal * 100) / nTot
+   pBar.value = (nVal * 100) / nTot
 Else
-   PBar.value = 100
+   pBar.value = 100
 End If
 
 Me.Refresh

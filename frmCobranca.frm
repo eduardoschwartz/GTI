@@ -474,23 +474,23 @@ Else
         Sql = Sql & "debitoparcela.codlancamento = debitotributo.codlancamento AND debitoparcela.seqlancamento = debitotributo.seqlancamento AND debitoparcela.numparcela = debitotributo.numparcela AND debitoparcela.codcomplemento = debitotributo.codcomplemento INNER JOIN "
         Sql = Sql & "parceladocumento ON debitoparcela.codreduzido = parceladocumento.codreduzido AND debitoparcela.anoexercicio = parceladocumento.anoexercicio AND debitoparcela.codlancamento = parceladocumento.codlancamento AND debitoparcela.seqlancamento = parceladocumento.seqlancamento AND "
         Sql = Sql & "debitoparcela.numparcela = parceladocumento.numparcela AND debitoparcela.codcomplemento = parceladocumento.codcomplemento INNER JOIN vwFULLIMOVEL ON debitoparcela.codreduzido = vwFULLIMOVEL.codreduzido "
-'        Sql = Sql & "WHERE (debitoparcela.codreduzido =19048)  AND (debitoparcela.anoexercicio = 2019) AND (debitoparcela.codlancamento = 1) AND (debitoparcela.seqlancamento = 0) AND (debitoparcela.codcomplemento = 0 or debitoparcela.codcomplemento = 91 or debitoparcela.codcomplemento = 92)   order by parceladocumento.numdocumento"
-        Sql = Sql & "where parceladocumento.codreduzido in (select codigo from codtmp) AND (debitoparcela.anoexercicio = 2019) AND (debitoparcela.codlancamento = 1) AND (debitoparcela.seqlancamento = 0) AND (debitoparcela.codcomplemento = 0 or debitoparcela.codcomplemento = 91 or debitoparcela.codcomplemento = 92)  and (debitoparcela.userid is null)  and numdocumento<17000000 order by parceladocumento.numdocumento"
+        Sql = Sql & "WHERE (   debitoparcela.codreduzido BETWEEN 36001 AND 40000)  AND (debitoparcela.anoexercicio = 2020) AND (debitoparcela.codlancamento = 1) AND (debitoparcela.seqlancamento = 0) AND (debitoparcela.codcomplemento = 0 or debitoparcela.codcomplemento = 91 or debitoparcela.codcomplemento = 92)   order by parceladocumento.numdocumento"
+'        Sql = Sql & "where parceladocumento.codreduzido in (select codigo from codtmp) AND (debitoparcela.anoexercicio = 2020) AND (debitoparcela.codlancamento = 1) AND (debitoparcela.seqlancamento = 0) AND (debitoparcela.codcomplemento = 0 or debitoparcela.codcomplemento = 91 or debitoparcela.codcomplemento = 92)  and (debitoparcela.userid is null)  and numdocumento<17000000 order by parceladocumento.numdocumento"
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             nTotBar = .RowCount
             Do Until .EOF
-                If !CODREDUZIDO = 18779 Then MsgBox "TESTE"
+                'If !CODREDUZIDO > 4000 Then GoTo fim
                 If .AbsolutePosition Mod 50 = 0 Then
                     CallPb CLng(.AbsolutePosition), nTotBar
                 End If
-                If Trim(SubNull(!CPF)) = "" And Trim(SubNull(!Cnpj)) = "" Then
+                If Trim(SubNull(!cpf)) = "" And Trim(SubNull(!Cnpj)) = "" Then
                     GoTo PROXIMOIPTU
                 End If
                 
-                If Not IsNull(!CPF) Then
-                    If Trim(!CPF) <> "" Then
-                        sCPFCNPJ = RetornaNumero(!CPF)
+                If Not IsNull(!cpf) Then
+                    If Trim(!cpf) <> "" Then
+                        sCPFCNPJ = RetornaNumero(!cpf)
                         nTipoDoc = 1
                     Else
                         sCPFCNPJ = !Cnpj
@@ -540,7 +540,7 @@ PROXIMOIPTU:
         Sql = Sql & "vwFULLEMPRESA.cnpj, vwFULLEMPRESA.cpf, vwFULLEMPRESA.LOGRADOURO, vwFULLEMPRESA.numero, vwFULLEMPRESA.complemento,vwFULLEMPRESA.CodLogradouro , vwFULLEMPRESA.Cep, vwFULLEMPRESA.DescBairro, vwFULLEMPRESA.desccidade, vwFULLEMPRESA.SiglaUF "
         Sql = Sql & "FROM debitoparcela INNER JOIN parceladocumento ON debitoparcela.codreduzido = parceladocumento.codreduzido AND debitoparcela.anoexercicio = parceladocumento.anoexercicio AND "
         Sql = Sql & "debitoparcela.codlancamento = parceladocumento.codlancamento AND debitoparcela.seqlancamento = parceladocumento.seqlancamento AND debitoparcela.numparcela = parceladocumento.numparcela AND debitoparcela.codcomplemento = parceladocumento.codcomplemento INNER JOIN "
-        Sql = Sql & "vwFULLEMPRESA ON debitoparcela.codreduzido = vwFULLEMPRESA.codigomob WHERE (debitoparcela.anoexercicio = 2019) AND (debitoparcela.codlancamento = 6 OR debitoparcela.codlancamento = 14) and (debitoparcela.seqlancamento = 0) and (debitoparcela.codcomplemento = 0) AND (debitoparcela.statuslanc = 18) "
+        Sql = Sql & "vwFULLEMPRESA ON debitoparcela.codreduzido = vwFULLEMPRESA.codigomob WHERE (debitoparcela.anoexercicio = 2020) AND (debitoparcela.codlancamento = 6 OR debitoparcela.codlancamento = 14) and (debitoparcela.seqlancamento = 0) and (debitoparcela.codcomplemento = 0) AND (debitoparcela.statuslanc = 18) "
         Sql = Sql & "GROUP BY debitoparcela.codreduzido, debitoparcela.datadebase, debitoparcela.datavencimento, parceladocumento.numdocumento, vwFULLEMPRESA.razaosocial,vwFULLEMPRESA.cnpj, vwFULLEMPRESA.cpf, vwFULLEMPRESA.LOGRADOURO, vwFULLEMPRESA.numero, vwFULLEMPRESA.complemento,"
         Sql = Sql & "vwFULLEMPRESA.codlogradouro, vwFULLEMPRESA.cep, vwFULLEMPRESA.descbairro, vwFULLEMPRESA.desccidade, vwFULLEMPRESA.descuf, vwFULLEMPRESA.SiglaUF "
         Sql = Sql & "HAVING (debitoparcela.codreduzido BETWEEN 100000 AND 300000) "
@@ -557,13 +557,16 @@ PROXIMOIPTU:
                 nValorGuia = Round(RdoAux2!somatributo, 2)
                 RdoAux2.Close
                 
-                If Trim(SubNull(!CPF)) = "" And Trim(SubNull(!Cnpj)) = "" Then
+                If Trim(SubNull(!cpf)) = "" And Trim(SubNull(!Cnpj)) = "" Then
                     GoTo PROXIMOISS
                 End If
                 
-                If Not IsNull(!CPF) Then
-                    If Trim(!CPF) <> "" Then
-                        sCPFCNPJ = RetornaNumero(!CPF)
+                
+                
+                
+                If Not IsNull(!cpf) Then
+                    If Trim(!cpf) <> "" Then
+                        sCPFCNPJ = RetornaNumero(!cpf)
                         nTipoDoc = 1
                     Else
                         sCPFCNPJ = !Cnpj
@@ -585,7 +588,7 @@ PROXIMOIPTU:
                 aBoletos(UBound(aBoletos)).sDataBase = Format(Now, "dd") & Format(Now, "mm") & Format(Now, "yyyy")
                 aBoletos(UBound(aBoletos)).nTipoInscricao = CStr(nTipoDoc)
                 aBoletos(UBound(aBoletos)).nNumeroInscricao = sCPFCNPJ
-                aBoletos(UBound(aBoletos)).sNome = Left(!razaosocial, 40)
+                aBoletos(UBound(aBoletos)).sNome = Left(!RazaoSocial, 40)
                 aBoletos(UBound(aBoletos)).sEndereco = Left(!Logradouro & ", " & CStr(!Numero) & " " & SubNull(!Complemento), 40)
                 aBoletos(UBound(aBoletos)).sBairro = Left(SubNull(!DescBairro), 15)
                 sCep = Format(RetornaNumero(!Cep), "00000000")
@@ -609,7 +612,7 @@ PROXIMOISS:
         Sql = Sql & "parceladocumento ON debitoparcela.codreduzido = parceladocumento.codreduzido AND debitoparcela.anoexercicio = parceladocumento.anoexercicio AND "
         Sql = Sql & "debitoparcela.codlancamento = parceladocumento.codlancamento AND debitoparcela.seqlancamento = parceladocumento.seqlancamento AND "
         Sql = Sql & "debitoparcela.numparcela = parceladocumento.numparcela AND debitoparcela.codcomplemento = parceladocumento.codcomplemento INNER JOIN "
-        Sql = Sql & "vwFULLEMPRESA ON debitoparcela.codreduzido = vwFULLEMPRESA.codigomob WHERE (debitoparcela.anoexercicio = 2019) AND (debitoparcela.codlancamento = 13) and (debitoparcela.seqlancamento = 0) and (debitoparcela.codcomplemento = 0) AND (debitoparcela.statuslanc = 18) "
+        Sql = Sql & "vwFULLEMPRESA ON debitoparcela.codreduzido = vwFULLEMPRESA.codigomob WHERE (debitoparcela.anoexercicio = 2020) AND (debitoparcela.codlancamento = 13) and (debitoparcela.seqlancamento = 0) and (debitoparcela.codcomplemento = 0) AND (debitoparcela.statuslanc = 18) "
         Sql = Sql & "GROUP BY debitoparcela.codreduzido, debitoparcela.datadebase, debitoparcela.datavencimento, parceladocumento.numdocumento, vwFULLEMPRESA.razaosocial,"
         Sql = Sql & "vwFULLEMPRESA.cnpj, vwFULLEMPRESA.cpf, vwFULLEMPRESA.LOGRADOURO, vwFULLEMPRESA.numero, vwFULLEMPRESA.complemento,"
         Sql = Sql & "vwFULLEMPRESA.CodLogradouro,vwFULLEMPRESA.cep , vwFULLEMPRESA.DescBairro, vwFULLEMPRESA.desccidade, vwFULLEMPRESA.descuf, vwFULLEMPRESA.SiglaUF "
@@ -618,13 +621,14 @@ PROXIMOISS:
         With RdoAux
             Do Until .EOF
                 
-                If Trim(SubNull(!CPF)) = "" And Trim(SubNull(!Cnpj)) = "" Then
+                If Trim(SubNull(!cpf)) = "" And Trim(SubNull(!Cnpj)) = "" Then
                     GoTo PROXIMOVS
                 End If
                 
-                If Not IsNull(!CPF) Then
-                    If Trim(!CPF) <> "" Then
-                        sCPFCNPJ = RetornaNumero(!CPF)
+                
+                If Not IsNull(!cpf) Then
+                    If Trim(!cpf) <> "" Then
+                        sCPFCNPJ = RetornaNumero(!cpf)
                         nTipoDoc = 1
                     Else
                         sCPFCNPJ = !Cnpj
@@ -647,7 +651,7 @@ PROXIMOISS:
                 aBoletos(UBound(aBoletos)).sDataBase = Format(Now, "dd") & Format(Now, "mm") & Format(Now, "yyyy")
                 aBoletos(UBound(aBoletos)).nTipoInscricao = CStr(nTipoDoc)
                 aBoletos(UBound(aBoletos)).nNumeroInscricao = sCPFCNPJ
-                aBoletos(UBound(aBoletos)).sNome = Left(!razaosocial, 40)
+                aBoletos(UBound(aBoletos)).sNome = Left(!RazaoSocial, 40)
                 aBoletos(UBound(aBoletos)).sEndereco = Left(!Logradouro & ", " & CStr(!Numero) & " " & SubNull(!Complemento), 40)
                 aBoletos(UBound(aBoletos)).sBairro = Left(SubNull(!DescBairro), 15)
                 sCep = Format(RetornaNumero(!Cep), "00000000")
@@ -667,20 +671,20 @@ PROXIMOVS:
         Sql = Sql & "debitoparcela.codlancamento = debitotributo.codlancamento AND debitoparcela.seqlancamento = debitotributo.seqlancamento AND debitoparcela.numparcela = debitotributo.numparcela AND debitoparcela.codcomplemento = debitotributo.codcomplemento INNER JOIN "
         Sql = Sql & "parceladocumento ON debitoparcela.codreduzido = parceladocumento.codreduzido AND debitoparcela.anoexercicio = parceladocumento.anoexercicio AND debitoparcela.codlancamento = parceladocumento.codlancamento AND debitoparcela.seqlancamento = parceladocumento.seqlancamento AND "
         Sql = Sql & "debitoparcela.numparcela = parceladocumento.numparcela AND debitoparcela.codcomplemento = parceladocumento.codcomplemento INNER JOIN vwFULLIMOVEL ON debitoparcela.codreduzido = vwFULLIMOVEL.codreduzido "
-        Sql = Sql & "WHERE (debitoparcela.codreduzido < 100000) AND (debitoparcela.anoexercicio = 2019) AND (debitoparcela.codlancamento = 79) "
-        'Sql = Sql & "WHERE (debitoparcela.codreduzido =4547) AND (debitoparcela.anoexercicio = 2017) AND (debitoparcela.codlancamento = 79) AND (debitoparcela.statuslanc = 18)"
+        Sql = Sql & "WHERE (debitoparcela.codreduzido < 100000) AND (debitoparcela.anoexercicio = 2020) AND (debitoparcela.codlancamento = 79) "
+'        Sql = Sql & "WHERE (debitoparcela.codreduzido =39174) AND (debitoparcela.anoexercicio = 2020) AND (debitoparcela.codlancamento = 79) AND (debitoparcela.statuslanc = 18)"
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             Do Until .EOF
                 
-                If Trim(SubNull(!CPF)) = "" And Trim(SubNull(!Cnpj)) = "" Then
+                If Trim(SubNull(!cpf)) = "" And Trim(SubNull(!Cnpj)) = "" Then
                     DoEvents
                     GoTo PROXIMOCIP
                 End If
                 
-                If Not IsNull(!CPF) Then
-                    If Trim(!CPF) <> "" Then
-                        sCPFCNPJ = RetornaNumero(!CPF)
+                If Not IsNull(!cpf) Then
+                    If Trim(!cpf) <> "" Then
+                        sCPFCNPJ = RetornaNumero(!cpf)
                         nTipoDoc = 1
                     Else
                         sCPFCNPJ = !Cnpj
@@ -783,6 +787,7 @@ PROXIMOCIP:
 End If
 
 fim:
+'MsgBox "FIM"
 
 End Sub
 
@@ -791,7 +796,7 @@ Private Sub GeraArquivo(nTipo As Integer)
 Dim RdoAux As rdoResultset, Sql As String, nPosReg As Long, nContador As Long, nInicio As Integer
 Dim aHeaderArquivo() As HeaderArquivo, FF1 As Integer, sHeaderArquivo As String
 Dim aTrailerArquivo() As TrailerArquivo, sTrailerArquivo As String, nQtdeRegistroArquivo As Long, nQtdeRegistroLote As Long, aHeaderLote() As HeaderLote, sHeaderLote As String
-Dim aTrailerLote() As TrailerLote, sTrailerLote As String, aSegmentoP() As SegmentoP, sSegmentoP As String, aSegmentoQ() As SegmentoQ, sSegmentoQ As String
+Dim aTrailerLote() As TrailerLote, sTrailerLote As String, aSegmentoP() As SegmentoP, sSegmentoP As String, aSegmentoQ() As SegmentoQ, sSegmentoQ As String, sEndereco As String
 
 sArquivo = "D:\Trabalho\GTI\Diversos\remessaiptu.txt"
 FF1 = FreeFile()
@@ -967,7 +972,7 @@ For nPosReg = 1 To UBound(aBoletos)
         .nTipoInscricao = aBoletos(nPosReg).nTipoInscricao
         .nNumeroInscricao = FillLeft(aBoletos(nPosReg).nNumeroInscricao, 15)
         .sNome = FillSpace(aBoletos(nPosReg).sNome, 40)
-        .sEndereco = FillSpace(aBoletos(nPosReg).sEndereco, 40)
+        .sEndereco = linebreak(FillSpace(aBoletos(nPosReg).sEndereco, 40))
         .sBairro = FillSpace(aBoletos(nPosReg).sBairro, 15)
         If Len(aBoletos(nPosReg).sCep) < 5 Then
             .nCep = "00000"
@@ -985,6 +990,7 @@ For nPosReg = 1 To UBound(aBoletos)
         .nBancoCorresponde = "000"
         .sNossoNumeroBancoCorr = FillSpace(" ", 20)
         .sUsoFebraban2 = FillSpace(" ", 8)
+        
         
         sSegmentoQ = .nCodigoBanco & .nLote & .nTipo & .nSeqReg & .sCodSegmento & .sUsoFebraban1 & .nCodMovimento & .nTipoInscricao & .nNumeroInscricao & .sNome & .sEndereco & .sBairro
         sSegmentoQ = sSegmentoQ & .nCep & .nCepsufixo & .sCidade & .sUF & .nipoInscricaoSacado & .nNumeroInscricaoSacado & .sNomeSacado & .nBancoCorresponde & .sNossoNumeroBancoCorr & .sUsoFebraban2
@@ -1088,3 +1094,8 @@ If cGetInputState() <> 0 Then DoEvents
 
 End Sub
 
+Private Function linebreak(myString) As String
+finalstr = Replace(myString, Chr(13), " ", , , vbTextCompare)
+finalstr = Replace(finalstr, Chr(10), " ", , , vbTextCompare)
+linebreak = finalstr
+End Function

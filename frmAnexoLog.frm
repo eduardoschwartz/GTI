@@ -220,7 +220,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub btAddAnexo_Click()
 Dim z As Variant, nAno As Integer, nNumero As Integer, Sql As String, RdoAux As rdoResultset
-Dim nAnoAtual As Integer, nNumeroAtual As Integer, sNumProc As String
+Dim nAnoAtual As Integer, nNumeroAtual As Long, sNumProc As String
 
 z = InputBox("Digite o nº do processo (com DV)", "Incluir Anexo")
 If Len(z) > 6 Then
@@ -279,7 +279,7 @@ End If
 End Sub
 
 Private Sub btDelAnexo_Click()
-Dim z As Variant, nAno As Integer, nNumero As Integer, Sql As String, nAnoAnexo As Integer, nNumeroAnexo As Integer
+Dim z As Variant, nAno As Integer, nNumero As Long, Sql As String, nAnoAnexo As Integer, nNumeroAnexo As Integer
 
 If lvAnexos.ListItems.Count = 0 Then Exit Sub
 If lvAnexos.SelectedItem = Null Then
@@ -323,7 +323,7 @@ End If
 End Sub
 
 Private Sub Form_Load()
-Dim nAno As Integer, nNumero As Integer
+Dim nAno As Integer, nNumero As Long
 
 Centraliza Me
 
@@ -335,7 +335,7 @@ CarregaAnexo nNumero, nAno
 
 End Sub
 
-Private Sub CarregaAnexo(Numero As Integer, Ano As Integer)
+Private Sub CarregaAnexo(Numero As Long, Ano As Integer)
 
 Dim Sql As String, RdoAux As rdoResultset
 
@@ -349,7 +349,7 @@ With RdoAux
         Set itmX = lvAnexos.ListItems.Add(, , !anoanexo)
         itmX.SubItems(1) = CStr(!numeroanexo)
         itmX.SubItems(2) = CStr(!numeroanexo) & "-" & RetornaDVProcesso(!numeroanexo) & "/" & CStr(!anoanexo)
-        itmX.SubItems(3) = IIf(IsNull(!nomecidadao), SubNull(!descricao), !nomecidadao)
+        itmX.SubItems(3) = IIf(IsNull(!nomecidadao), SubNull(!Descricao), !nomecidadao)
         itmX.SubItems(4) = !Complemento
        .MoveNext
     Loop
@@ -366,7 +366,7 @@ If lvAnexos.ListItems.Count = 0 Then
             Set itmX = lvAnexos.ListItems.Add(, , !Ano)
             itmX.SubItems(1) = CStr(!Numero)
             itmX.SubItems(2) = CStr(!Numero) & "-" & RetornaDVProcesso(!Numero) & "/" & CStr(!Ano)
-            itmX.SubItems(3) = IIf(IsNull(!nomecidadao), SubNull(!descricao), !nomecidadao)
+            itmX.SubItems(3) = IIf(IsNull(!nomecidadao), SubNull(!Descricao), !nomecidadao)
             itmX.SubItems(4) = !Complemento
            .MoveNext
         Loop

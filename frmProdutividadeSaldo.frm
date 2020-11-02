@@ -507,9 +507,9 @@ Centraliza Me
 ControlBehaviour True
 bExec = True
 'If UCase(NomeDeLogin) = "SCHWARTZ" Then cmdEndMounth.Visible = True
-grdMain.ColWidth(2) = 0
-grdMain.ColWidth(6) = 0
-grdMain.ColWidth(7) = 0
+grdMain.COLWIDTH(2) = 0
+grdMain.COLWIDTH(6) = 0
+grdMain.COLWIDTH(7) = 0
 
 Sql = "select codigo,nome,nomecompleto from produtividadefiscal inner join "
 Sql = Sql & "usuario on produtividadefiscal.nome = usuario.nomelogin where calculo=1 order by nomecompleto "
@@ -535,7 +535,7 @@ bExec = False
 For x = 2011 To Year(Now) + 1
     cmbAno.AddItem (CStr(x))
 Next
-
+On Error Resume Next
 cmbMes.ListIndex = Month(Now) - 1
 cmbAno.Text = Year(Now)
 bExec = True
@@ -711,13 +711,13 @@ txtEdit.Visible = False
 End Sub
 
 Private Sub Clear()
-Dim x As Integer, Y As Integer
+Dim x As Integer, y As Integer
 
 With grdMain
     For x = 1 To .Rows - 1
-        For Y = 1 To .Cols - 1
-            If Y <> 2 Then
-                .TextMatrix(x, Y) = "0"
+        For y = 1 To .Cols - 1
+            If y <> 2 Then
+                .TextMatrix(x, y) = "0"
             End If
         Next
     Next
@@ -729,13 +729,13 @@ Private Sub CalculaTotal()
 Dim nSoma As Integer
 
 
-For Y = 1 To grdMain.Cols - 1
+For y = 1 To grdMain.Cols - 1
     nSoma = 0
     For x = 1 To grdMain.Rows - 2
-        nSoma = nSoma + Val(grdMain.TextMatrix(x, Y))
+        nSoma = nSoma + Val(grdMain.TextMatrix(x, y))
     Next
-    If Y <> 2 Then
-        grdMain.TextMatrix(grdMain.Rows - 1, Y) = nSoma
+    If y <> 2 Then
+        grdMain.TextMatrix(grdMain.Rows - 1, y) = nSoma
     End If
 Next
 
@@ -765,7 +765,7 @@ With RdoAux
         grdMain.TextMatrix(x, 1) = !Pontos
         grdMain.TextMatrix(x, 3) = !negativos
         grdMain.TextMatrix(x, 4) = !utilizados
-        grdMain.TextMatrix(x, 5) = !saldo
+        grdMain.TextMatrix(x, 5) = !Saldo
        .MoveNext
     Loop
    .Close
@@ -860,11 +860,11 @@ Do Until RdoAux.EOF
             aTabela(nPos).nCodFiscal = nCodFiscal
             aTabela(nPos).nAno = !Ano
             aTabela(nPos).nMes = !Mes
-            aTabela(nPos).nSaldo = !saldo
+            aTabela(nPos).nSaldo = !Saldo
             aTabela(nPos).nPontos = !Pontos
             aTabela(nPos).nUtilizado = !utilizados
             aTabela(nPos).nNegativo = !negativos
-            nSomaSaldo = nSomaSaldo + !saldo
+            nSomaSaldo = nSomaSaldo + !Saldo
            .MoveNext
         Loop
        .Close
@@ -1041,7 +1041,7 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         nDia = Day(!Data)
-        nSomaTarefa = !valor * !QTDE
+        nSomaTarefa = !Valor * !QTDE
         nSomaMes = nSomaMes + nSomaTarefa
         aPontos(nDia) = aPontos(nDia) + nSomaTarefa
        .MoveNext
@@ -1060,7 +1060,7 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         ReDim Preserve aEvento(UBound(aEvento) + 1)
-        aEvento(UBound(aEvento)).sNome = !NOME
+        aEvento(UBound(aEvento)).sNome = !Nome
         aEvento(UBound(aEvento)).nPontos = !pontodia
        .MoveNext
     Loop

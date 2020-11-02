@@ -426,7 +426,7 @@ With RdoAux
          If sTipoCod = "I" Or sTipoCod = "C" Then
             lblNome.Caption = !nomecidadao
          ElseIf sTipoCod = "M" Then
-            lblNome.Caption = !razaosocial
+            lblNome.Caption = !RazaoSocial
          End If
     Else
        MsgBox "Código não Cadastrado.", vbExclamation, "Atenção"
@@ -478,7 +478,7 @@ End Sub
 
 Private Sub EmiteBoleto()
 
-Dim nValorTaxa As Double, x As Integer, nSituacao As Integer, dDataProc As Date, sDescImposto As String, RdoAux2 As rdoResultset, Y As Integer, nPercTrib As Double
+Dim nValorTaxa As Double, x As Integer, nSituacao As Integer, dDataProc As Date, sDescImposto As String, RdoAux2 As rdoResultset, y As Integer, nPercTrib As Double
 Dim nAno As Integer, nLanc As Integer, nSeq As Integer, nParc As Integer, nCompl As Integer, sDataVencto As String, nCodTrib As Integer, nValorTributo As Double
 Dim NumBarra1 As String, StrBarra1 As String, NumBarra2 As String, NumBarra2a As String, NumBarra2b As String, NumBarra2c As String, NumBarra2d As String, StrBarra2 As String
 Dim sCodReduz As String, sNomeResp As String, sTipoImposto As String, sEndImovel As String, nNumImovel As Integer, sComplImovel As String, sBairroImovel As String
@@ -560,7 +560,7 @@ Select Case Val(txtCod.Text)
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             If .RowCount > 0 Then
-                sCPF = SubNull(!CPF)
+                sCPF = SubNull(!cpf)
                 If Trim(sCPF) = "" Then
                    sCPF = SubNull(!Cnpj)
                 End If
@@ -597,7 +597,7 @@ Select Case Val(txtCod.Text)
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             If .RowCount > 0 Then
-                sCPF = SubNull(!CPF)
+                sCPF = SubNull(!cpf)
                 If Trim(sCPF) = "" Then
                    sCPF = SubNull(!Cnpj)
                 End If
@@ -635,7 +635,7 @@ Select Case Val(txtCod.Text)
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             If .RowCount > 0 Then
-                sCPF = SubNull(!CPF)
+                sCPF = SubNull(!cpf)
                 If Trim(sCPF) = "" Then
                    sCPF = SubNull(!Cnpj)
                 End If
@@ -804,7 +804,7 @@ Select Case nCodReduz
         With RdoAux
             sInsc = !Inscricao
             sNome = !nomecidadao
-            sDoc = Format(SubNull(!CPF), "00000000000")
+            sDoc = Format(SubNull(!cpf), "00000000000")
             If sDoc = "" Then
                 sDoc = Format(SubNull(!Cnpj), "00000000000000")
             End If
@@ -824,8 +824,8 @@ Select Case nCodReduz
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             sInsc = SubNull(!inscestadual)
-            sNome = !razaosocial
-            sDoc = SubNull(!CPF)
+            sNome = !RazaoSocial
+            sDoc = SubNull(!cpf)
             If Val(sDoc) = 0 Then
                 sDoc = SubNull(!Cnpj)
             End If
@@ -918,7 +918,7 @@ Select Case nCodReduz
                 sUF = ""
                 sCompl = ""
             End If
-            sDoc = SubNull(!CPF)
+            sDoc = SubNull(!cpf)
             If sDoc = "" Then
                 sDoc = SubNull(!Cnpj)
             End If
@@ -1021,11 +1021,14 @@ With RdoAux
         sDigitavel2 = sDigitavel2 & Mid(sDigitavel, 22, 5) & "." & Mid(sDigitavel, 27, 6) & " " & Mid(sDigitavel, 33, 1) & " " & Right(sDigitavel, 14)
         sBarra = Gera2of5Str(sBarra)
 
-        
-        sObs = "Referente ao Parcelamento de nº: " & sNumProc & " - Código do contribuinte: " & Format(nCodReduz, "000000")
+        nNumproc = ExtraiNumeroProcesso(txtNumProc.Text)
+        nNumproc = Left(nNumproc, Len(nNumproc) - 1) & "-" & Right(nNumproc, 1)
+        nAnoproc = ExtraiAnoProcesso(txtNumProc.Text)
+
+        sObs = "Referente ao Parcelamento de nº: " & nNumproc & "/" & nAnoproc & " - Código do contribuinte: " & Format(nCodReduz, "000000")
         sNumDoc = "287353200" & Format(nNumDoc, "00000000")
         Sql = "Insert FICHA_COMPENSACAO(SID,SEQ,CODIGO,NOME,CPF,ENDERECO,BAIRRO,CIDADE,CEP,DOCUMENTO,VALOR,VENCIMENTO,PARCELA,DIGITAVEL,CODBARRA,OBS,INSCRICAO,QUADRA,LOTE,UF) VALUES("
-        Sql = Sql & nSid & "," & x & "," & nCodReduz & ",'" & Left(Mask(sNome), 80) & "','" & sDoc & "','" & sEndereco & "','" & Left(Mask(sBairro), 25) & "','"
+        Sql = Sql & nSid & "," & x & "," & nCodReduz & ",'" & Left(Mask(sNome), 80) & "','" & sDoc & "','" & Mask(sEndereco) & "','" & Left(Mask(sBairro), 25) & "','"
         Sql = Sql & Mask(sCidade) & "','" & sCep & "'," & sNumDoc & "," & Virg2Ponto(Format(nValorGuia, "#0.00")) & ",'" & Format(sDataVencimento, "mm/dd/yyyy") & "','"
         Sql = Sql & Format(nParc, "00") & "/" & Format(Val(lblQtdeParc.Caption), "00") & "','" & sDigitavel2 & "','" & Mask(sBarra) & "','" & sObs & "','" & sInsc & "','"
         Sql = Sql & Mask(sQuadra) & "','" & Mask(sLote) & "','" & sUF & "')"

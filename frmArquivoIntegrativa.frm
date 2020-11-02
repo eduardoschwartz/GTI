@@ -35,7 +35,7 @@ Begin VB.Form frmArquivoIntegrativa
       MaxLength       =   10
       Mask            =   "99/99/9999"
       SelText         =   ""
-      Text            =   "31/12/2016"
+      Text            =   "31/12/2018"
       HideSelection   =   -1  'True
    End
    Begin VB.CommandButton cmdIntegrar 
@@ -597,7 +597,7 @@ With RdoAcordo
                 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 With RdoAux2
                     If .RowCount > 0 Then
-                        sCPF = SubNull(!CPF)
+                        sCPF = SubNull(!cpf)
                         If Trim(sCPF) = "" Then
                            sCPF = SubNull(!Cnpj)
                         End If
@@ -613,7 +613,7 @@ With RdoAcordo
                 Sql = "select * from vwfullempresa3 where codigomob=" & nCodReduz
                 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 With RdoAux
-                    sRazaoSocial = !razaosocial
+                    sRazaoSocial = !RazaoSocial
                     sNome = sRazaoSocial
                     sInscricao = nCodReduz
                     sRG = SubNull(!inscestadual)
@@ -622,7 +622,7 @@ With RdoAcordo
                     End If
                     sCPF = SubNull(!Cnpj)
                     If Trim(sCPF) = "" Then
-                        sCPF = SubNull(!CPF)
+                        sCPF = SubNull(!cpf)
                     End If
                     sCodReduz = nCodReduz
                     sLote = ""
@@ -654,7 +654,7 @@ With RdoAcordo
                     If .RowCount > 0 Then
                         sNomeResp = !nomecidadao
                         sNome = sNomeResp
-                        sCPF = SubNull(!CPF)
+                        sCPF = SubNull(!cpf)
                         If Trim(sCPF) = "" Then
                            sCPF = SubNull(!Cnpj)
                         End If
@@ -814,7 +814,7 @@ With RdoAcordo
                     With RdoAux2
                         sCPF = SubNull(!Cnpj)
                         If Trim(sCPF) = "" Then
-                            sCPF = SubNull(!CPF)
+                            sCPF = SubNull(!cpf)
                         End If
                         Sql = "INSERT Partes(idCDA,Tipo,Crc,Nome,CpfCnpj,RgInscrEstadual,Cep,Endereco,Numero,Complemento,Bairro,Cidade,Estado,DtGeracao) Values("
                         Sql = Sql & nCDA & ",'Principal'," & !CodCidadao & ",'" & Mask(!nomecidadao) & "','" & sCPF & "','" & SubNull(!rg) & "','" & SubNull(!Cep) & "','"
@@ -836,7 +836,7 @@ With RdoAcordo
                         Do Until .EOF
                             sCPF = SubNull(!Cnpj)
                             If Trim(sCPF) = "" Then
-                                sCPF = SubNull(!CPF)
+                                sCPF = SubNull(!cpf)
                             End If
                             sTipoProp = IIf(!tipoprop = "P", "Principal", "Compromissário")
                             Sql = "INSERT Partes(idCDA,Tipo,Crc,Nome,CpfCnpj,RgInscrEstadual,Cep,Endereco,Numero,Complemento,Bairro,Cidade,Estado,DtGeracao) Values("
@@ -855,7 +855,7 @@ With RdoAcordo
                         Do Until .EOF
                             sCPF = SubNull(!Cnpj)
                             If Trim(sCPF) = "" Then
-                                sCPF = SubNull(!CPF)
+                                sCPF = SubNull(!cpf)
                             End If
                             sTipoProp = "Sócio"
                             Sql = "INSERT Partes(idCDA,Tipo,Crc,Nome,CpfCnpj,RgInscrEstadual,Cep,Endereco,Numero,Complemento,Bairro,Cidade,Estado,DtGeracao) Values("
@@ -932,7 +932,7 @@ End With
 
 
 
-PBar.value = 0
+pBar.value = 0
 Set xImovel = Nothing
 Exit Sub
 Debitos:
@@ -999,7 +999,7 @@ With RdoDebito
                 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 With RdoAux2
                     If .RowCount > 0 Then
-                        sCPF = SubNull(!CPF)
+                        sCPF = SubNull(!cpf)
                         If Trim(sCPF) = "" Then
                            sCPF = SubNull(!Cnpj)
                         End If
@@ -1016,7 +1016,7 @@ With RdoDebito
                 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 With RdoAux
                     If RdoAux.RowCount = 0 Then GoTo PROXIMO2
-                    sRazaoSocial = !razaosocial
+                    sRazaoSocial = !RazaoSocial
                     sNome = sRazaoSocial
                     sInscricao = nCodReduz
                     sRG = SubNull(!inscestadual)
@@ -1025,7 +1025,7 @@ With RdoDebito
                     End If
                     sCPF = SubNull(!Cnpj)
                     If Trim(sCPF) = "" Then
-                        sCPF = SubNull(!CPF)
+                        sCPF = SubNull(!cpf)
                     End If
                     sCodReduz = nCodReduz
                     sLote = ""
@@ -1057,7 +1057,7 @@ With RdoDebito
                     If .RowCount > 0 Then
                         sNomeResp = !nomecidadao
                         sNome = sNomeResp
-                        sCPF = SubNull(!CPF)
+                        sCPF = SubNull(!cpf)
                         If Trim(sCPF) = "" Then
                            sCPF = SubNull(!Cnpj)
                         End If
@@ -1137,7 +1137,7 @@ With RdoDebito
             With RdoAux2
                 sCPF = SubNull(!Cnpj)
                 If Trim(sCPF) = "" Then
-                    sCPF = SubNull(!CPF)
+                    sCPF = SubNull(!cpf)
                 End If
                 Sql = "INSERT Partes(idCDA,Tipo,Crc,Nome,CpfCnpj,RgInscrEstadual,Cep,Endereco,Numero,Complemento,Bairro,Cidade,Estado,DtGeracao) Values("
                 Sql = Sql & nCDA & ",'Principal'," & !CodCidadao & ",'" & Mask(!nomecidadao) & "','" & sCPF & "','" & SubNull(!rg) & "','" & SubNull(!Cep) & "','"
@@ -1159,7 +1159,7 @@ With RdoDebito
                 Do Until .EOF
                     sCPF = SubNull(!Cnpj)
                     If Trim(sCPF) = "" Then
-                        sCPF = SubNull(!CPF)
+                        sCPF = SubNull(!cpf)
                     End If
                     sTipoProp = IIf(!tipoprop = "P", "Principal", "Compromissário")
                     Sql = "INSERT Partes(idCDA,Tipo,Crc,Nome,CpfCnpj,RgInscrEstadual,Cep,Endereco,Numero,Complemento,Bairro,Cidade,Estado,DtGeracao) Values("
@@ -1178,7 +1178,7 @@ With RdoDebito
                 Do Until .EOF
                     sCPF = SubNull(!Cnpj)
                     If Trim(sCPF) = "" Then
-                        sCPF = SubNull(!CPF)
+                        sCPF = SubNull(!cpf)
                     End If
                     sTipoProp = "Sócio"
                     Sql = "INSERT Partes(idCDA,Tipo,Crc,Nome,CpfCnpj,RgInscrEstadual,Cep,Endereco,Numero,Complemento,Bairro,Cidade,Estado,DtGeracao) Values("
@@ -1279,7 +1279,7 @@ With RdoAcordo
                 sNome = !nomecidadao
                 sInscricao = !Inscricao
                 sRG = SubNull(!rg)
-                sCPF = SubNull(!CPF)
+                sCPF = SubNull(!cpf)
                 If Trim(sCPF) = "" Then
                     sCPF = SubNull(!Cnpj)
                 End If
@@ -1318,7 +1318,7 @@ With RdoAcordo
             Sql = "select * from vwfullempresa3 where codigomob=" & nCodReduz
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux
-                sNome = !razaosocial
+                sNome = !RazaoSocial
                 sInscricao = nCodReduz
                 sRG = SubNull(!inscestadual)
                 If Trim(sRG) = "" Then
@@ -1326,7 +1326,7 @@ With RdoAcordo
                 End If
                 sCPF = SubNull(!Cnpj)
                 If Trim(sCPF) = "" Then
-                    sCPF = SubNull(!CPF)
+                    sCPF = SubNull(!cpf)
                 End If
                 sEndereco = !Logradouro
                 nNumero = !Numero
@@ -1456,7 +1456,7 @@ With RdoAcordo
                     With RdoAux2
                         sCPF = SubNull(!Cnpj)
                         If Trim(sCPF) = "" Then
-                            sCPF = SubNull(!CPF)
+                            sCPF = SubNull(!cpf)
                         End If
                         Sql = "INSERT Partes(idCDA,Tipo,Crc,Nome,CpfCnpj,RgInscrEstadual,Cep,Endereco,Numero,Complemento,Bairro,Cidade,Estado,DtGeracao) Values("
                         Sql = Sql & nCDA & ",'Principal'," & !CodCidadao & ",'" & Mask(!nomecidadao) & "','" & sCPF & "','" & SubNull(!rg) & "','" & SubNull(!Cep) & "','"
@@ -1478,7 +1478,7 @@ With RdoAcordo
                         Do Until .EOF
                             sCPF = SubNull(!Cnpj)
                             If Trim(sCPF) = "" Then
-                                sCPF = SubNull(!CPF)
+                                sCPF = SubNull(!cpf)
                             End If
                             sTipoProp = IIf(!tipoprop = "P", "Principal", "Compromissário")
                             Sql = "INSERT Partes(idCDA,Tipo,Crc,Nome,CpfCnpj,RgInscrEstadual,Cep,Endereco,Numero,Complemento,Bairro,Cidade,Estado,DtGeracao) Values("
@@ -1497,7 +1497,7 @@ With RdoAcordo
                         Do Until .EOF
                             sCPF = SubNull(!Cnpj)
                             If Trim(sCPF) = "" Then
-                                sCPF = SubNull(!CPF)
+                                sCPF = SubNull(!cpf)
                             End If
                             sTipoProp = "Sócio"
                             Sql = "INSERT Partes(idCDA,Tipo,Crc,Nome,CpfCnpj,RgInscrEstadual,Cep,Endereco,Numero,Complemento,Bairro,Cidade,Estado,DtGeracao) Values("
@@ -1706,7 +1706,7 @@ End Sub
 Private Sub Form_Load()
 
 Centraliza Me
-PBar.Color = vbWhite
+pBar.Color = vbWhite
 
 cmbCadastro.ListIndex = 0
 lstTipo.AddItem "01-Exportar débitos ajuizados"
@@ -1742,16 +1742,16 @@ Dim aCda() As typeCDA, aCdaDebito() As typeCDADebito, aParte() As Reg01
 Ocupado
 ConectaIntegrativa
 Sql = "delete from cdadebitos"
-'cnInt.Execute Sql, rdExecDirect
+cnInt.Execute Sql, rdExecDirect
 
 Sql = "delete from cadastro"
-'cnInt.Execute Sql, rdExecDirect
+cnInt.Execute Sql, rdExecDirect
 
 Sql = "delete from partes"
-'cnInt.Execute Sql, rdExecDirect
+cnInt.Execute Sql, rdExecDirect
 
 Sql = "delete from cdas"
-'cnInt.Execute Sql, rdExecDirect
+cnInt.Execute Sql, rdExecDirect
 
 cmdExec.Enabled = False
 Set qd.ActiveConnection = cn
@@ -1771,6 +1771,7 @@ ElseIf cmbCadastro.ListIndex = 2 Then
     Sql = Sql & " AND CODREDUZIDO BETWEEN 100000 AND 300000 "
     Sql = Sql & " AND CODLANCAMENTO<>20 "
 ElseIf cmbCadastro.ListIndex = 3 Then
+    'Sql = Sql & " AND CODREDUZIDO =501288 "
     Sql = Sql & " AND CODREDUZIDO BETWEEN 500000 AND 699999 "
     'Sql = Sql & " AND CODLANCAMENTO in(50,65,49,16,62,27,71,48,74) "
    Sql = Sql & " AND CODLANCAMENTO <>20 "
@@ -1816,8 +1817,8 @@ With RdoAux
         End If
         qd(0) = nCodReduz
         qd(1) = nCodReduz
-        qd(2) = 1990
-        qd(3) = Year(Now)
+        qd(2) = 2015
+        qd(3) = 2019
         qd(4) = 1
         qd(5) = 999
         qd(6) = 0
@@ -1941,8 +1942,8 @@ PROXIMODEBITO:
                 If Trim(SubNull(!Cnpj)) <> "" Then
                     sCPFCNPJ = RetornaNumero(!Cnpj)
                 Else
-                    If Trim(SubNull(!CPF)) <> "" Then
-                        sCPFCNPJ = RetornaNumero(!CPF)
+                    If Trim(SubNull(!cpf)) <> "" Then
+                        sCPFCNPJ = RetornaNumero(!cpf)
                     Else
                         sCPFCNPJ = ""
                     End If
@@ -2015,7 +2016,7 @@ PROXIMODEBITO:
             With RdoAux2
                 If .RowCount = 0 Then GoTo Proximo
                 sInscricao = ""
-                sNome = !razaosocial
+                sNome = !RazaoSocial
                 sFoneRes = ""
                 sFoneCom = ""
                 sCelular = ""
@@ -2024,15 +2025,15 @@ PROXIMODEBITO:
                 If Trim(SubNull(!Cnpj)) <> "" Then
                     sCPFCNPJ = RetornaNumero(!Cnpj)
                 Else
-                    If Trim(SubNull(!CPF)) <> "" Then
-                        sCPFCNPJ = RetornaNumero(!CPF)
+                    If Trim(SubNull(!cpf)) <> "" Then
+                        sCPFCNPJ = RetornaNumero(!cpf)
                     Else
                         sCPFCNPJ = ""
                     End If
                 End If
                 sRGIE = RetornaNumero(Trim(SubNull(!inscestadual)))
                 If sRGIE = "" Then
-                    sRGIE = Trim(SubNull(!rg) & " " & SubNull(!ORGAO))
+                    sRGIE = Trim(SubNull(!rg) & " " & SubNull(!Orgao))
                 End If
                 
                 xImovel.RetornaEndereco nCodReduz, Mobiliario, Localizacao
@@ -2101,8 +2102,8 @@ PROXIMODEBITO:
                 If Trim(SubNull(!Cnpj)) <> "" Then
                     sCPFCNPJ = RetornaNumero(!Cnpj)
                 Else
-                    If Trim(SubNull(!CPF)) <> "" Then
-                        sCPFCNPJ = RetornaNumero(!CPF)
+                    If Trim(SubNull(!cpf)) <> "" Then
+                        sCPFCNPJ = RetornaNumero(!cpf)
                     Else
                         sCPFCNPJ = ""
                     End If
@@ -2110,32 +2111,33 @@ PROXIMODEBITO:
                 sRGIE = RetornaNumero(Trim(Left(SubNull(!rg), 14)))
                 xImovel.RetornaEndereco nCodReduz, cidadao, cadastrocidadao
                 nCodLogradouro = Val(xImovel.CodLogradouro)
-                sEndereco = SubNull(!Endereco)
-                nNumero = SubNull(!NUMIMOVEL)
+                sEndereco = SubNull(xImovel.Endereco)
+                nNumero = SubNull(xImovel.Numero)
                 sComplemento = xImovel.Complemento
-                nCodBairro = Val(SubNull(!CodBairro))
-                sBairro = SubNull(!DescBairro)
+                nCodBairro = Val(SubNull(xImovel.CodBairro))
+                sBairro = SubNull(xImovel.Bairro)
                 If nCodBairro = 999 Then
                     nCodBairro = 0
                     sBairro = ""
                 End If
-                nCodCidade = SubNull(!CodCidade)
-                sCidade = SubNull(!descCidade)
+                nCodCidade = Val(SubNull(xImovel.CodCidade))
+                sCidade = SubNull(xImovel.Cidade)
                 sUFLocal = xImovel.UF
-                sCep = RetornaNumero(SubNull(!Cep))
-                sUF = SubNull(!SiglaUF)
+                sCep = RetornaNumero(SubNull(xImovel.Cep))
+                sUF = SubNull(xImovel.UF)
                
                 nCodLogradouroLocal = Val(xImovel.CodLogradouro)
-                sEnderecoLocal = SubNull(!Endereco)
-                nNumeroLocal = SubNull(!NUMIMOVEL)
-                nCodBairroLocal = Val(SubNull(!CodBairro))
-                sBairroLocal = SubNull(!DescBairro)
+                sEnderecoLocal = SubNull(xImovel.Endereco)
+                nNumeroLocal = SubNull(xImovel.Numero)
+                sComplementoLocal = SubNull(xImovel.Complemento)
+                nCodBairroLocal = Val(SubNull(xImovel.CodBairro))
+                sBairroLocal = SubNull(xImovel.Bairro)
                 If Val(nCodBairroLocal) = 999 Then
                     nCodBairroLocal = 0
                     sBairroLocal = ""
                 End If
                 sCidadeLocal = xImovel.Cidade
-                sCEPLocal = RetornaNumero(SubNull(!Cep))
+                sCEPLocal = RetornaNumero(SubNull(xImovel.Cep))
                 
                 sQuadra = ""
                 sLote = ""
@@ -2152,7 +2154,7 @@ PROXIMODEBITO:
                 Sql = Sql & "LocalBairro,LocalCidade,LocalEstado,Quadra,Lote,EntregaCep,EntregaEndereco,EntregaNumero,EntregaComplemento,EntregaBairro,"
                 Sql = Sql & "EntregaCidade,EntregaEstado,DtGeracao) values("
                 Sql = Sql & .nCDA & ",'" & SetorDevedor & "'," & nCodReduz & ",'" & Mask(Left(SubNull(sNome), 80)) & "','" & sInscricao & "','" & sCPFCNPJ & "','" & sRGIE & "','"
-                Sql = Sql & sCEPLocal & "','" & sEnderecoLocal & "'," & nNumeroLocal & ",'" & Mask(Left(sComplementoLocal, 50)) & "','" & sBairroLocal & "','" & sCidadeLocal & "','" & sUFLocal & "','"
+                Sql = Sql & sCep & "','" & sEndereco & "'," & nNumero & ",'" & Mask(Left(sComplemento, 50)) & "','" & sBairro & "','" & sCidade & "','" & sUF & "','"
                 Sql = Sql & sQuadra & "','" & sLote & "','" & sCep & "','" & sEndereco & "'," & nNumero & ",'" & Mask(Left(sComplemento, 50)) & "','"
                 Sql = Sql & sBairro & "','" & Mask(sCidade) & "','" & sUF & "','" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "')"
                 cnInt.Execute Sql, rdExecDirect
@@ -2175,8 +2177,8 @@ PROXIMODEBITO:
                     If Trim(SubNull(RdoAux2!Cnpj)) <> "" Then
                         aParte(U).sCPFCNPJSocio = RetornaNumero(RdoAux2!Cnpj)
                     Else
-                        If Trim(SubNull(RdoAux2!CPF)) <> "" Then
-                            aParte(U).sCPFCNPJSocio = RetornaNumero(RdoAux2!CPF)
+                        If Trim(SubNull(RdoAux2!cpf)) <> "" Then
+                            aParte(U).sCPFCNPJSocio = RetornaNumero(RdoAux2!cpf)
                         Else
                             aParte(U).sCPFCNPJSocio = ""
                         End If
@@ -2215,8 +2217,8 @@ PROXIMODEBITO:
                     If Trim(SubNull(RdoAux2!Cnpj)) <> "" Then
                         aParte(U).sCPFCNPJSocio = RetornaNumero(RdoAux2!Cnpj)
                     Else
-                        If Trim(SubNull(RdoAux2!CPF)) <> "" Then
-                            aParte(U).sCPFCNPJSocio = RetornaNumero(RdoAux2!CPF)
+                        If Trim(SubNull(RdoAux2!cpf)) <> "" Then
+                            aParte(U).sCPFCNPJSocio = RetornaNumero(RdoAux2!cpf)
                         Else
                             aParte(U).sCPFCNPJSocio = ""
                         End If
@@ -2383,8 +2385,8 @@ With RdoAux
                 If Trim(SubNull(!Cnpj)) <> "" Then
                     aReg00(t).sCPFCNPJ = RetornaNumero(!Cnpj)
                 Else
-                    If Trim(SubNull(!CPF)) <> "" Then
-                        aReg00(t).sCPFCNPJ = RetornaNumero(!CPF)
+                    If Trim(SubNull(!cpf)) <> "" Then
+                        aReg00(t).sCPFCNPJ = RetornaNumero(!cpf)
                     Else
                         aReg00(t).sCPFCNPJ = ""
                     End If
@@ -2455,7 +2457,7 @@ With RdoAux
             With RdoAux2
                 If .RowCount = 0 Then GoTo Proximo
                 aReg00(t).sCadastroImob = ""
-                aReg00(t).sNome = !razaosocial
+                aReg00(t).sNome = !RazaoSocial
                 aReg00(t).sFoneRes = ""
                 aReg00(t).sFoneCom = ""
                 aReg00(t).sCelular = ""
@@ -2464,8 +2466,8 @@ With RdoAux
                 If Trim(SubNull(!Cnpj)) <> "" Then
                     aReg00(t).sCPFCNPJ = RetornaNumero(!Cnpj)
                 Else
-                    If Trim(SubNull(!CPF)) <> "" Then
-                        aReg00(t).sCPFCNPJ = RetornaNumero(!CPF)
+                    If Trim(SubNull(!cpf)) <> "" Then
+                        aReg00(t).sCPFCNPJ = RetornaNumero(!cpf)
                     Else
                         aReg00(t).sCPFCNPJ = ""
                     End If
@@ -2537,8 +2539,8 @@ With RdoAux
                 If Trim(SubNull(!Cnpj)) <> "" Then
                     aReg00(t).sCPFCNPJ = RetornaNumero(!Cnpj)
                 Else
-                    If Trim(SubNull(!CPF)) <> "" Then
-                        aReg00(t).sCPFCNPJ = RetornaNumero(!CPF)
+                    If Trim(SubNull(!cpf)) <> "" Then
+                        aReg00(t).sCPFCNPJ = RetornaNumero(!cpf)
                     Else
                         aReg00(t).sCPFCNPJ = ""
                     End If
@@ -2607,8 +2609,8 @@ With RdoAux
                 If Trim(SubNull(RdoAux2!Cnpj)) <> "" Then
                     aReg01(s).sCPFCNPJSocio = RetornaNumero(RdoAux2!Cnpj)
                 Else
-                    If Trim(SubNull(RdoAux2!CPF)) <> "" Then
-                        aReg01(s).sCPFCNPJSocio = RetornaNumero(RdoAux2!CPF)
+                    If Trim(SubNull(RdoAux2!cpf)) <> "" Then
+                        aReg01(s).sCPFCNPJSocio = RetornaNumero(RdoAux2!cpf)
                     Else
                         aReg01(s).sCPFCNPJSocio = ""
                     End If
@@ -2650,8 +2652,8 @@ With RdoAux
                 If Trim(SubNull(RdoAux2!Cnpj)) <> "" Then
                     aReg01(s).sCPFCNPJSocio = RetornaNumero(RdoAux2!Cnpj)
                 Else
-                    If Trim(SubNull(RdoAux2!CPF)) <> "" Then
-                        aReg01(s).sCPFCNPJSocio = RetornaNumero(RdoAux2!CPF)
+                    If Trim(SubNull(RdoAux2!cpf)) <> "" Then
+                        aReg01(s).sCPFCNPJSocio = RetornaNumero(RdoAux2!cpf)
                     Else
                         aReg01(s).sCPFCNPJSocio = ""
                     End If
@@ -2933,8 +2935,8 @@ Close #1
 Liberado
 
 'cnn.Close
-PBar.value = 0
-PBar.Color = vbWhite
+pBar.value = 0
+pBar.Color = vbWhite
 MsgBox "Arquivo finalizado.", vbInformation, "Informação"
 
 Exit Sub
@@ -2979,14 +2981,14 @@ End Function
 
 Private Sub CallPb(nVal As Long, nTot As Long)
 If nVal > 0 Then
-    PBar.Color = &HC0C000
+    pBar.Color = &HC0C000
 Else
-    PBar.Color = vbWhite
+    pBar.Color = vbWhite
 End If
 If ((nVal * 100) / nTot) <= 100 Then
-   PBar.value = (nVal * 100) / nTot
+   pBar.value = (nVal * 100) / nTot
 Else
-   PBar.value = 100
+   pBar.value = 100
 End If
 
 Me.Refresh
@@ -3114,8 +3116,8 @@ With RdoAux
                 If Trim(SubNull(!Cnpj)) <> "" Then
                     aReg00(t).sCPFCNPJ = RetornaNumero(!Cnpj)
                 Else
-                    If Trim(SubNull(!CPF)) <> "" Then
-                        aReg00(t).sCPFCNPJ = RetornaNumero(!CPF)
+                    If Trim(SubNull(!cpf)) <> "" Then
+                        aReg00(t).sCPFCNPJ = RetornaNumero(!cpf)
                     Else
                         aReg00(t).sCPFCNPJ = ""
                     End If
@@ -3186,7 +3188,7 @@ With RdoAux
             With RdoAux2
                 If .RowCount = 0 Then GoTo Proximo
                 aReg00(t).sCadastroImob = ""
-                aReg00(t).sNome = !razaosocial
+                aReg00(t).sNome = !RazaoSocial
                 aReg00(t).sFoneRes = ""
                 aReg00(t).sFoneCom = ""
                 aReg00(t).sCelular = ""
@@ -3195,8 +3197,8 @@ With RdoAux
                 If Trim(SubNull(!Cnpj)) <> "" Then
                     aReg00(t).sCPFCNPJ = RetornaNumero(!Cnpj)
                 Else
-                    If Trim(SubNull(!CPF)) <> "" Then
-                        aReg00(t).sCPFCNPJ = RetornaNumero(!CPF)
+                    If Trim(SubNull(!cpf)) <> "" Then
+                        aReg00(t).sCPFCNPJ = RetornaNumero(!cpf)
                     Else
                         aReg00(t).sCPFCNPJ = ""
                     End If
@@ -3268,8 +3270,8 @@ With RdoAux
                 If Trim(SubNull(!Cnpj)) <> "" Then
                     aReg00(t).sCPFCNPJ = RetornaNumero(!Cnpj)
                 Else
-                    If Trim(SubNull(!CPF)) <> "" Then
-                        aReg00(t).sCPFCNPJ = RetornaNumero(!CPF)
+                    If Trim(SubNull(!cpf)) <> "" Then
+                        aReg00(t).sCPFCNPJ = RetornaNumero(!cpf)
                     Else
                         aReg00(t).sCPFCNPJ = ""
                     End If
@@ -3603,8 +3605,8 @@ End With
 Close #1
 Liberado
 
-PBar.value = 0
-PBar.Color = vbWhite
+pBar.value = 0
+pBar.Color = vbWhite
 MsgBox "Arquivo finalizado.", vbInformation, "Informação"
 
 Exit Sub
@@ -3715,16 +3717,16 @@ Dim aCda() As typeCDA, aCdaDebito() As typeCDADebito, aParte() As Reg01
 Ocupado
 ConectaIntegrativa
 Sql = "delete from cdadebitos_protesto"
-'cnInt.Execute Sql, rdExecDirect
+cnInt.Execute Sql, rdExecDirect
 
 Sql = "delete from cadastro_protesto"
-'cnInt.Execute Sql, rdExecDirect
+cnInt.Execute Sql, rdExecDirect
 
 Sql = "delete from partes_protesto"
-'cnInt.Execute Sql, rdExecDirect
+cnInt.Execute Sql, rdExecDirect
 
 Sql = "delete from cdas_protesto"
-'cnInt.Execute Sql, rdExecDirect
+cnInt.Execute Sql, rdExecDirect
 
 cmdExec.Enabled = False
 Set qd.ActiveConnection = cn
@@ -3735,12 +3737,12 @@ If cmbCadastro.ListIndex = 0 Then
     Exit Sub
 End If
 'Sql = "SELECT  DISTINCT CODREDUZIDO FROM DEBITOPARCELA WHERE DATAVENCIMENTO<='" & Format(mskDataVencto.Text, "mm/dd/yyyy") & "' AND STATUSLANC =3 AND NUMPARCELA>0 AND DATAAJUIZA IS NULL AND DATAINSCRICAO IS NOT NULL AND PROTESTO_DATA_REMESSA IS NULL"
-Sql = "SELECT  DISTINCT CODREDUZIDO FROM DEBITOPARCELA WHERE (anoexercicio = 2018) AND (STATUSLANC =3 or STATUSLANC =42 or STATUSLANC =43 or STATUSLANC =38 or STATUSLANC =39  ) AND NUMPARCELA>0 AND DATAAJUIZA IS NULL AND DATAINSCRICAO IS NOT NULL AND PROTESTO_DATA_REMESSA IS NULL"
+Sql = "SELECT  DISTINCT CODREDUZIDO FROM DEBITOPARCELA WHERE (anoexercicio >= 2015 and anoexercicio<=2017) AND (STATUSLANC =3 or STATUSLANC =42 or STATUSLANC =43 or STATUSLANC =38 or STATUSLANC =39  ) AND NUMPARCELA>0 AND DATAAJUIZA IS NULL AND DATAINSCRICAO IS NOT NULL AND PROTESTO_DATA_REMESSA IS NULL"
 If cmbCadastro.ListIndex = 1 Then
     Sql = Sql & " AND CODREDUZIDO BETWEEN 1 AND 40000 "
-   ' Sql = Sql & " AND CODREDUZIDO = 12984 "
+'    Sql = Sql & " AND CODREDUZIDO = 14972 "
     'Sql = Sql & " AND CODLANCAMENTO <>5 AND CODLANCAMENTO<>20 AND CODLANCAMENTO<>11 "
-    Sql = Sql & " AND CODLANCAMENTO=79 "
+    Sql = Sql & " AND CODLANCAMENTO in (1,16,38,79) "
 ElseIf cmbCadastro.ListIndex = 2 Then
     Sql = Sql & " AND CODREDUZIDO BETWEEN 100000 AND 300000 "
     Sql = Sql & " AND CODLANCAMENTO not in (11,20)  "
@@ -3781,19 +3783,17 @@ With RdoAux
         On Error Resume Next
         RdoDebito.Close
         On Error GoTo 0
-        If nCadastro = 3 Then
+        If cmbCadastro.ListIndex = 3 Then
             qd.Sql = "{ Call spEXTRATOAJUIZARTAXA(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
         Else
             qd.Sql = "{ Call spEXTRATOAJUIZAR(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
         End If
         qd(0) = nCodReduz
         qd(1) = nCodReduz
-        qd(2) = 2018
-        qd(3) = 2018
-        qd(4) = 79
-        qd(5) = 79
-        qd(4) = 1
-        qd(5) = 999
+        qd(2) = 2015
+        qd(3) = 2017
+        qd(4) = 0
+        qd(5) = 99
         qd(6) = 0
         qd(7) = 999
         qd(8) = 1
@@ -3802,7 +3802,7 @@ With RdoAux
         qd(11) = 99
         qd(12) = 3
         qd(13) = 3
-        qd(14) = Format("31/05/2019", "mm/dd/yyyy")
+        qd(14) = Format("31/03/2020", "mm/dd/yyyy")
         qd(15) = "Protesto"
         qd(16) = 0
         Set RdoDebito = qd.OpenResultset(rdOpenKeyset)
@@ -3811,8 +3811,8 @@ With RdoAux
 '                If Year(!DataVencimento) < 2015 Then
 '                    GoTo PROXIMODEBITO
 '                End If
-'                If !CodLancamento <> 79 Then
-'                    GoTo PROXIMODEBITO
+'                If !CODREDUZIDO = 23715 Then
+'                    MsgBox "tsted"
 '                End If
                 U = UBound(aCda)
                 Achou = False
@@ -3915,8 +3915,8 @@ PROXIMODEBITO:
                 If Trim(SubNull(!Cnpj)) <> "" Then
                     sCPFCNPJ = RetornaNumero(!Cnpj)
                 Else
-                    If Trim(SubNull(!CPF)) <> "" Then
-                        sCPFCNPJ = RetornaNumero(!CPF)
+                    If Trim(SubNull(!cpf)) <> "" Then
+                        sCPFCNPJ = RetornaNumero(!cpf)
                     Else
                         sCPFCNPJ = ""
                     End If
@@ -3989,7 +3989,7 @@ PROXIMODEBITO:
             With RdoAux2
                 If .RowCount = 0 Then GoTo Proximo
                 sInscricao = ""
-                sNome = !razaosocial
+                sNome = !RazaoSocial
                 sFoneRes = ""
                 sFoneCom = ""
                 sCelular = ""
@@ -3998,15 +3998,15 @@ PROXIMODEBITO:
                 If Trim(SubNull(!Cnpj)) <> "" Then
                     sCPFCNPJ = RetornaNumero(!Cnpj)
                 Else
-                    If Trim(SubNull(!CPF)) <> "" Then
-                        sCPFCNPJ = RetornaNumero(!CPF)
+                    If Trim(SubNull(!cpf)) <> "" Then
+                        sCPFCNPJ = RetornaNumero(!cpf)
                     Else
                         sCPFCNPJ = ""
                     End If
                 End If
                 sRGIE = RetornaNumero(Trim(SubNull(!inscestadual)))
                 If sRGIE = "" Then
-                    sRGIE = Trim(SubNull(!rg) & " " & SubNull(!ORGAO))
+                    sRGIE = Trim(SubNull(!rg) & " " & SubNull(!Orgao))
                 End If
                 
                 xImovel.RetornaEndereco nCodReduz, Mobiliario, Localizacao
@@ -4075,8 +4075,8 @@ PROXIMODEBITO:
                 If Trim(SubNull(!Cnpj)) <> "" Then
                     sCPFCNPJ = RetornaNumero(!Cnpj)
                 Else
-                    If Trim(SubNull(!CPF)) <> "" Then
-                        sCPFCNPJ = RetornaNumero(!CPF)
+                    If Trim(SubNull(!cpf)) <> "" Then
+                        sCPFCNPJ = RetornaNumero(!cpf)
                     Else
                         sCPFCNPJ = ""
                     End If
@@ -4149,8 +4149,8 @@ PROXIMODEBITO:
                     If Trim(SubNull(RdoAux2!Cnpj)) <> "" Then
                         aParte(U).sCPFCNPJSocio = RetornaNumero(RdoAux2!Cnpj)
                     Else
-                        If Trim(SubNull(RdoAux2!CPF)) <> "" Then
-                            aParte(U).sCPFCNPJSocio = RetornaNumero(RdoAux2!CPF)
+                        If Trim(SubNull(RdoAux2!cpf)) <> "" Then
+                            aParte(U).sCPFCNPJSocio = RetornaNumero(RdoAux2!cpf)
                         Else
                             aParte(U).sCPFCNPJSocio = ""
                         End If
@@ -4189,8 +4189,8 @@ PROXIMODEBITO:
                     If Trim(SubNull(RdoAux2!Cnpj)) <> "" Then
                         aParte(U).sCPFCNPJSocio = RetornaNumero(RdoAux2!Cnpj)
                     Else
-                        If Trim(SubNull(RdoAux2!CPF)) <> "" Then
-                            aParte(U).sCPFCNPJSocio = RetornaNumero(RdoAux2!CPF)
+                        If Trim(SubNull(RdoAux2!cpf)) <> "" Then
+                            aParte(U).sCPFCNPJSocio = RetornaNumero(RdoAux2!cpf)
                         Else
                             aParte(U).sCPFCNPJSocio = ""
                         End If

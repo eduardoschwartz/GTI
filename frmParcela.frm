@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "Mscomct2.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmParcela 
    BackColor       =   &H00EEEEEE&
@@ -277,7 +277,7 @@ Begin VB.Form frmParcela
       _ExtentX        =   2249
       _ExtentY        =   556
       _Version        =   393216
-      Format          =   94175233
+      Format          =   126418945
       CurrentDate     =   38187
    End
    Begin VB.Label lblCompl 
@@ -460,7 +460,7 @@ Private Sub cmbStatus_Click()
 If cmbStatus.ListIndex = -1 Then Exit Sub
 If cmbStatus.Text <> soStatus Then
     Sql = "UPDATE DEBITOPARCELA SET STATUSLANC=" & Val(Left$(cmbStatus.Text, 2))
-    Sql = Sql & " WHERE CODREDUZIDO = " & Val(lblCod.Caption) & " AND ANOEXERCICIO = " & Val(lblAno.Caption) & " AND CODLANCAMENTO = " & Val(lbllanc.Caption) & " AND "
+    Sql = Sql & " WHERE CODREDUZIDO = " & Val(lblCod.Caption) & " AND ANOEXERCICIO = " & Val(lblAno.Caption) & " AND CODLANCAMENTO = " & Val(lblLanc.Caption) & " AND "
     Sql = Sql & "SEQLANCAMENTO = " & Val(lblSeq.Caption) & " AND NUMPARCELA = " & lblParc.Caption & " AND CODCOMPLEMENTO = " & lblCompl.Caption
     cn.Execute Sql, rdExecDirect
     frmDebitoImob.grdExtrato.CellText(nLinha, 6) = cmbStatus.Text
@@ -486,7 +486,7 @@ soValor = grdTrib.TextMatrix(grdTrib.Row, 1)
 If MsgBox("Excluir este Tributo ?", vbQuestion + vbYesNo, "Confirmação") = vbYes Then
     If grdTrib.Rows > 2 Then
        Sql = "DELETE FROM DEBITOTRIBUTO "
-       Sql = Sql & " WHERE CODREDUZIDO = " & Val(lblCod.Caption) & " AND ANOEXERCICIO = " & Val(lblAno.Caption) & " AND CODLANCAMENTO = " & Val(lbllanc.Caption) & " AND "
+       Sql = Sql & " WHERE CODREDUZIDO = " & Val(lblCod.Caption) & " AND ANOEXERCICIO = " & Val(lblAno.Caption) & " AND CODLANCAMENTO = " & Val(lblLanc.Caption) & " AND "
        Sql = Sql & "SEQLANCAMENTO = " & Val(lblSeq.Caption) & " AND NUMPARCELA = " & lblParc.Caption & " AND CODCOMPLEMENTO = " & lblCompl.Caption & " AND CODTRIBUTO=" & Val(Left$(grdTrib.TextMatrix(grdTrib.Row, 0), 3))
        cn.Execute Sql, rdExecDirect
        grdTrib.RemoveItem (grdTrib.Row)
@@ -521,7 +521,7 @@ If Evento = "Novo" Then
         Exit Sub
     Else
         Sql = "INSERT DEBITOTRIBUTO(CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,VALORTRIBUTO) VALUES("
-        Sql = Sql & Val(lblCod.Caption) & "," & Val(lblAno.Caption) & "," & Val(lbllanc.Caption) & ","
+        Sql = Sql & Val(lblCod.Caption) & "," & Val(lblAno.Caption) & "," & Val(lblLanc.Caption) & ","
         Sql = Sql & Val(lblSeq.Caption) & "," & Val(lblParc.Caption) & "," & Val(lblCompl.Caption) & ","
         Sql = Sql & Left$(cmbTrib.Text, 3) & "," & Virg2Ponto(RemovePonto(txtValor.Text)) & ")"
         cn.Execute Sql, rdExecDirect
@@ -533,7 +533,7 @@ Else
 soTributo = grdTrib.TextMatrix(grdTrib.Row, 0)
 soValor = grdTrib.TextMatrix(grdTrib.Row, 1)
     Sql = "UPDATE DEBITOTRIBUTO SET VALORTRIBUTO=" & Virg2Ponto(RemovePonto(txtValor.Text))
-    Sql = Sql & " WHERE CODREDUZIDO = " & Val(lblCod.Caption) & " AND ANOEXERCICIO = " & Val(lblAno.Caption) & " AND CODLANCAMENTO = " & Val(lbllanc.Caption) & " AND "
+    Sql = Sql & " WHERE CODREDUZIDO = " & Val(lblCod.Caption) & " AND ANOEXERCICIO = " & Val(lblAno.Caption) & " AND CODLANCAMENTO = " & Val(lblLanc.Caption) & " AND "
     Sql = Sql & "SEQLANCAMENTO = " & Val(lblSeq.Caption) & " AND NUMPARCELA = " & lblParc.Caption & " AND CODCOMPLEMENTO = " & lblCompl.Caption & " AND CODTRIBUTO=" & Left$(cmbTrib.Text, 3)
     cn.Execute Sql, rdExecDirect
     grdTrib.TextMatrix(grdTrib.Row, 1) = FormatNumber(txtValor.Text, 2)
@@ -552,7 +552,7 @@ End Sub
 Private Sub dtVencto_CloseUp()
 If dtVencto.value <> doData Then
     Sql = "UPDATE DEBITOPARCELA SET DATAVENCIMENTO='" & Format(dtVencto.value, "mm/dd/yyyy")
-    Sql = Sql & "' WHERE CODREDUZIDO = " & Val(lblCod.Caption) & " AND ANOEXERCICIO = " & Val(lblAno.Caption) & " AND CODLANCAMENTO = " & Val(lbllanc.Caption) & " AND "
+    Sql = Sql & "' WHERE CODREDUZIDO = " & Val(lblCod.Caption) & " AND ANOEXERCICIO = " & Val(lblAno.Caption) & " AND CODLANCAMENTO = " & Val(lblLanc.Caption) & " AND "
     Sql = Sql & "SEQLANCAMENTO = " & Val(lblSeq.Caption) & " AND NUMPARCELA = " & lblParc.Caption & " AND CODCOMPLEMENTO = " & lblCompl.Caption
     cn.Execute Sql, rdExecDirect
     frmDebitoImob.grdExtrato.CellText(nLinha, 7) = Format(dtVencto.value, "dd/mm/yyyy")
@@ -573,11 +573,12 @@ With RdoAux
    .Close
 End With
 
+On Error Resume Next
 With frmDebitoImob.grdExtrato
     nLinha = .SelectedRow
     lblCod.Caption = frmDebitoImob.txtCod.Text
     lblAno.Caption = .CellText(nLinha, 1)
-    lbllanc.Caption = Left$(.CellText(nLinha, 2), 3)
+    lblLanc.Caption = Left$(.CellText(nLinha, 2), 3)
     lblSeq.Caption = .CellText(nLinha, 3)
     lblParc.Caption = .CellText(nLinha, 4)
     lblCompl.Caption = .CellText(nLinha, 5)
@@ -605,7 +606,7 @@ Private Sub CarregaTributo()
 grdTrib.Rows = 1
 Sql = "SELECT DEBITOTRIBUTO.CODTRIBUTO,DEBITOTRIBUTO.VALORTRIBUTO,TRIBUTO.ABREVTRIBUTO "
 Sql = Sql & "FROM DEBITOTRIBUTO INNER JOIN TRIBUTO ON DEBITOTRIBUTO.CODTRIBUTO = TRIBUTO.CODTRIBUTO "
-Sql = Sql & "WHERE DEBITOTRIBUTO.CODREDUZIDO = " & Val(lblCod.Caption) & " AND ANOEXERCICIO = " & Val(lblAno.Caption) & " AND CODLANCAMENTO = " & Val(lbllanc.Caption) & " AND "
+Sql = Sql & "WHERE DEBITOTRIBUTO.CODREDUZIDO = " & Val(lblCod.Caption) & " AND ANOEXERCICIO = " & Val(lblAno.Caption) & " AND CODLANCAMENTO = " & Val(lblLanc.Caption) & " AND "
 Sql = Sql & "SEQLANCAMENTO = " & Val(lblSeq.Caption) & " AND NUMPARCELA = " & lblParc.Caption & " AND CODCOMPLEMENTO = " & lblCompl.Caption
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
@@ -661,7 +662,7 @@ End Sub
 Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
 Dim nLastSeq As Integer
 
-Sql = "SELECT MAX(SEQ) AS MAXIMO FROM LOGPARCELA WHERE CODREDUZIDO=" & Val(lblCod.Caption) & " AND ANOEXERCICIO=" & Val(lblAno.Caption) & " AND CODLANCAMENTO=" & Val(lbllanc.Caption) & " AND SEQLANCAMENTO=" & Val(lblSeq.Caption)
+Sql = "SELECT MAX(SEQ) AS MAXIMO FROM LOGPARCELA WHERE CODREDUZIDO=" & Val(lblCod.Caption) & " AND ANOEXERCICIO=" & Val(lblAno.Caption) & " AND CODLANCAMENTO=" & Val(lblLanc.Caption) & " AND SEQLANCAMENTO=" & Val(lblSeq.Caption)
 Sql = Sql & " AND NUMPARCELA=" & Val(lblParc.Caption) & " AND CODCOMPLEMENTO=" & Val(lblCompl.Caption)
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
@@ -676,7 +677,7 @@ End With
 
 If Trim(txtLog.Text) <> "" Then
     Sql = "INSERT LOGPARCELA(CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,DATALOG,USERID,SEQ,TEXTO) VALUES("
-    Sql = Sql & Val(lblCod.Caption) & "," & Val(lblAno.Caption) & "," & Val(lbllanc.Caption) & ","
+    Sql = Sql & Val(lblCod.Caption) & "," & Val(lblAno.Caption) & "," & Val(lblLanc.Caption) & ","
     Sql = Sql & Val(lblSeq.Caption) & "," & Val(lblParc.Caption) & "," & Val(lblCompl.Caption) & ",'" & Format(Now, sDataFormat & " hh:mm") & "'," & RetornaUsuarioID(lblUser.Caption) & "," & nLastSeq & ",'" & Left$(Mask(txtLog.Text), 5000) & "')"
 '    Sql = "INSERT LOGPARCELA(CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,DATALOG,USUARIO,SEQ,TEXTO) VALUES("
 '    Sql = Sql & Val(lblCod.Caption) & "," & Val(lblAno.Caption) & "," & Val(lbllanc.Caption) & ","
