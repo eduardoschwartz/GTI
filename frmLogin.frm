@@ -512,6 +512,11 @@ With RdoAux2
         
         '***
       
+       If UCase(txtUser.Text) <> "TIC" And txtPwd.Text = "123456" Then
+            MsgBox "Obrigatório cadastrar uma nova senha.", vbCritical, "Falha na Autenticação."
+            Exit Sub
+        End If
+      
         Sql = "update usuario set logon=1,datalogon='" & Format(Now, sDataFormat) & "' where nomelogin='" & txtUser.Text & "'"
         cn.Execute Sql, rdExecDirect
         
@@ -762,45 +767,45 @@ Sql = Sql & "WHERE SEG_USERACESS.nomeUSUARIO = '" & txtUser.Text & "' AND CODEVE
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
 With RdoAux
         Do Until .EOF
-            'If UCase(!nomemenu) = "MNUCIDADAO" Then MsgBox "TESTE"
+         '   If !nomemenu = "mnuSenhaControle" Then MsgBox "TESTE"
             For x = 1 To frmMdi.m_cMenuPrincipal.Count
-                If frmMdi.m_cMenuPrincipal.ItemKey(x) = !NOMEMENU Then
+                If frmMdi.m_cMenuPrincipal.ItemKey(x) = !nomemenu Then
                    frmMdi.m_cMenuPrincipal.Enabled(x) = True
                 End If
             Next
             For x = 1 To frmMdi.m_cMenuParam.Count
-                If frmMdi.m_cMenuParam.ItemKey(x) = !NOMEMENU Then
+                If frmMdi.m_cMenuParam.ItemKey(x) = !nomemenu Then
                     
                    frmMdi.m_cMenuParam.Enabled(x) = True
                 End If
             Next
             For x = 1 To frmMdi.m_cMenuImob.Count
-                If frmMdi.m_cMenuImob.ItemKey(x) = !NOMEMENU Then
+                If frmMdi.m_cMenuImob.ItemKey(x) = !nomemenu Then
                    frmMdi.m_cMenuImob.Enabled(x) = True
                 End If
             Next
             For x = 1 To frmMdi.m_cMenuMob.Count
-                If frmMdi.m_cMenuMob.ItemKey(x) = !NOMEMENU Then
+                If frmMdi.m_cMenuMob.ItemKey(x) = !nomemenu Then
                    frmMdi.m_cMenuMob.Enabled(x) = True
                 End If
             Next
             For x = 1 To frmMdi.m_cMenuAtende.Count
-                If frmMdi.m_cMenuAtende.ItemKey(x) = !NOMEMENU Then
+                If frmMdi.m_cMenuAtende.ItemKey(x) = !nomemenu Then
                    frmMdi.m_cMenuAtende.Enabled(x) = True
                 End If
             Next
             For x = 1 To frmMdi.m_cMenuTrib.Count
-                If frmMdi.m_cMenuTrib.ItemKey(x) = !NOMEMENU Then
+                If frmMdi.m_cMenuTrib.ItemKey(x) = !nomemenu Then
                    frmMdi.m_cMenuTrib.Enabled(x) = True
                 End If
             Next
             For x = 1 To frmMdi.m_cMenuOutro.Count
-                If frmMdi.m_cMenuOutro.ItemKey(x) = !NOMEMENU Then
+                If frmMdi.m_cMenuOutro.ItemKey(x) = !nomemenu Then
                    frmMdi.m_cMenuOutro.Enabled(x) = True
                 End If
             Next
             For x = 1 To frmMdi.m_cMenuProt.Count
-                If frmMdi.m_cMenuProt.ItemKey(x) = !NOMEMENU Then
+                If frmMdi.m_cMenuProt.ItemKey(x) = !nomemenu Then
                    frmMdi.m_cMenuProt.Enabled(x) = True
                 End If
             Next
@@ -873,7 +878,7 @@ frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuRequerIsentoIP
 frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuGuiaPratico1")) = frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuParcelamentoDivida")) '169->162
 frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuGuiaPratico2")) = frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuParcelamentoDivida")) '169->163
 frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuGuiaPratico5")) = frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuParcelamentoDivida")) '169->164
-frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuGuiaPratico3")) = frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuParcelamentoDivida")) '169->165
+frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuGuiaPratico3")) = frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnu2ViaLaser"))
 
 frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuOutrosT")) = True
 frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuSituacaoTributaria")) = True
@@ -927,7 +932,7 @@ If frmMdi.m_cMenuMob.Enabled(frmMdi.m_cMenuMob.IndexForKey("mnuCadMobiliario")) 
 End If
 
 frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuITBIObs")) = frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuITBI"))
-frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuSenhaResumo")) = False
+'frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuSenhaResumo")) = False
 frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuCancelReparc")) = False
 frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuCancelParcelamentoAuto")) = False
 frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuMalaDiretaParc")) = False
@@ -941,11 +946,9 @@ If NomeDeLogin = "LUIZH" Or NomeDeLogin = "LEANDRO" Or NomeDeLogin = "ROSANGELA"
     frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuSNCnpjReceita")) = True '217
 End If
 
-If NomeDeLogin = "RENATA" Or NomeDeLogin = "SOLANGE" Then
-    'frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuEmissaoGuia")) = True '176
-    'frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnu2ViaEspecial")) = True '176
-    frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuSenhaResumo")) = True '151
-End If
+'If NomeDeLogin = "RENATA" Or NomeDeLogin = "SOLANGE"  Or NomeDeLogin = "ROSE" Then
+'    frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuSenhaResumo")) = True '151
+'End If
 
 If NomeDeLogin = "RENATA" Or NomeDeLogin = "ROSE" Or NomeDeLogin = "SOLANGE" Or NomeDeLogin = "ANA" Or NomeDeLogin = "GLEISE" Or NomeDeLogin = "LUIZH" Or NomeDeLogin = "JOSIANE" Or NomeDeLogin = "GLEISE" Or _
     NomeDeLogin = "RITA" Or NomeDeLogin = "DANIELAR" Or NomeDeLogin = "DANIELAT" Or NomeDeLogin = "TALITA" Or NomeDeLogin = "SIMONE" Or NomeDeLogin = "AMFNFONSECA" Then
@@ -962,12 +965,12 @@ If NomeDeLogin = "RENATA" Or NomeDeLogin = "ROSE" Or NomeDeLogin = "SOLANGE" Or 
 End If
 
 
- frmMdi.m_cMenuImob.Enabled(frmMdi.m_cMenuImob.IndexForKey("mnuEspolio")) = False '67
-If NomeDeLogin = "SCHWARTZ" Or NomeDeLogin = "RENATA" Or NomeDeLogin = "IORIO" Or NomeDeLogin = "ROSE" Or NomeDeLogin = "JOSEANE" Or NomeDeLogin = "JOSIANE" Or NomeDeLogin = "HELOISA" Or _
-     NomeDeLogin = "FERNANDA.SIMOLIN" Or NomeDeLogin = "SOLANGE" Or _
-    NomeDeLogin = "FACTORE" Or NomeDeLogin = "MARIELA" Or NomeDeLogin = "TICYANNE.OKIMASU" Or NomeDeLogin = "MARIELA.CUSTODIO" Or NomeDeLogin = "JOAOF" Or IsAtendente Then
-    frmMdi.m_cMenuImob.Enabled(frmMdi.m_cMenuImob.IndexForKey("mnuEspolio")) = True '67
-End If
+' frmMdi.m_cMenuImob.Enabled(frmMdi.m_cMenuImob.IndexForKey("mnuEspolio")) = False '67
+'If NomeDeLogin = "SCHWARTZ" Or NomeDeLogin = "RENATA" Or NomeDeLogin = "IORIO" Or NomeDeLogin = "ROSE" Or NomeDeLogin = "JOSEANE" Or NomeDeLogin = "JOSIANE" Or NomeDeLogin = "HELOISA" Or _
+'     NomeDeLogin = "FERNANDA.SIMOLIN" Or NomeDeLogin = "SOLANGE" Or _
+'    NomeDeLogin = "FACTORE" Or NomeDeLogin = "HENRIQUE.SOARES" Or NomeDeLogin = "TICYANNE.OKIMASU" Or NomeDeLogin = "MARIELA.CUSTODIO" Or NomeDeLogin = "JOAOF" Or IsAtendente Then
+'    frmMdi.m_cMenuImob.Enabled(frmMdi.m_cMenuImob.IndexForKey("mnuEspolio")) = True '67
+'End If
 
 If NomeDeLogin = "LORAINE" Then
     frmMdi.m_cMenuImob.Enabled(frmMdi.m_cMenuImob.IndexForKey("mnuSimulaRural")) = True '86
@@ -994,10 +997,10 @@ If frmMdi.m_cMenuMob.Enabled(frmMdi.m_cMenuMob.IndexForKey("mnuCadMobiliario")) 
     
 End If
 
-If NomeDeLogin = "LUIZH" Or NomeDeLogin = "DANIELAR" Or NomeDeLogin = "LEANDRO" Or NomeDeLogin = "ROSANGELA" Or NomeDeLogin = "NOELI" Or NomeDeLogin = "MAURICIOJ" Or NomeDeLogin = "RODRIGOC" Or NomeDeLogin = "PAULO" Or NomeDeLogin = "SIMONE" Then
-   ' frmMdi.m_cMenuOutro.Enabled(frmMdi.m_cMenuOutro.IndexForKey("mnuExporta")) = True '288
-    frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuNotificacao2")) = True '234
-End If
+'If NomeDeLogin = "LUIZH" Or NomeDeLogin = "DANIELAR" Or NomeDeLogin = "LEANDRO" Or NomeDeLogin = "ROSANGELA" Or NomeDeLogin = "NOELI" Or NomeDeLogin = "MAURICIOJ" Or NomeDeLogin = "RODRIGOC" Or NomeDeLogin = "DINAMAR.OLIVEIRA" Or NomeDeLogin = "SIMONE" Then
+'   ' frmMdi.m_cMenuOutro.Enabled(frmMdi.m_cMenuOutro.IndexForKey("mnuExporta")) = True '288
+'   ' frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuNotificacao2")) = True '234
+'End If
 
 frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuCorrecaoCPF")) = True
 If NomeDeLogin <> "RENATA" And NomeDeLogin <> "SOLANGE" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "ANA" And NomeDeLogin <> "ROSE" And NomeDeLogin <> "MARIELA.CUSTODIO" And NomeDeLogin <> "RITA" And NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "SIMONE" And NomeDeLogin <> "DANIELAT" And NomeDeLogin <> "HELOISA" And NomeDeLogin <> "FACTORE" And NomeDeLogin <> "LUIZH" Then
@@ -1007,13 +1010,13 @@ If NomeDeLogin <> "RENATA" And NomeDeLogin <> "SOLANGE" And NomeDeLogin <> "GLEI
     frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuCidade")) = False '1
     frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTipoLog")) = False '10
     frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTitLog")) = False '14
-    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTabSistemaTLAN")) = False '18
-    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTabTributoAliq")) = False '33
-    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTabSistemaTTRI")) = False '22
-    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTabSistemaTTLA")) = False '23
-    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuArtigoTributo")) = False '299
-    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTabSistemaPPARC")) = False '29
-    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTabSistemaUfir")) = False
+'    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTabSistemaTLAN")) = False '18
+'    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTabTributoAliq")) = False '33
+'    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTabSistemaTTRI")) = False '22
+'    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTabSistemaTTLA")) = False '23
+'    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuArtigoTributo")) = False '299
+'    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTabSistemaPPARC")) = False '29
+'    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTabSistemaUfir")) = False
     frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuFeriado")) = False '37
     frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuBanco")) = False 'ELIMINADO
     frmMdi.m_cMenuProt.Enabled(frmMdi.m_cMenuProt.IndexForKey("mnuProcessoAno")) = False '280
@@ -1024,19 +1027,19 @@ Else
     frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuCidade")) = True
     frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTipoLog")) = True
     frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTitLog")) = True
-    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTabSistemaTLAN")) = True
-    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTabTributoAliq")) = True
-    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTabSistemaTTRI")) = True
-    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTabSistemaTTLA")) = True
-    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuArtigoTributo")) = True
-    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTabSistemaPPARC")) = True
-    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTabSistemaUfir")) = True
+'    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTabSistemaTLAN")) = True
+'    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTabTributoAliq")) = True
+'    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTabSistemaTTRI")) = True
+'    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTabSistemaTTLA")) = True
+'    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuArtigoTributo")) = True
+'    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTabSistemaPPARC")) = True
+'    frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuTabSistemaUfir")) = True
     frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuFeriado")) = True
     frmMdi.m_cMenuParam.Enabled(frmMdi.m_cMenuParam.IndexForKey("mnuBanco")) = True
 End If
    
 
-If NomeDeLogin <> "ANA" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "CARLOS.SANTOS" And NomeDeLogin <> "MARIELA.CUSTODIO" And NomeDeLogin <> "HELOISA" And NomeDeLogin <> "JOAOF" Then
+If NomeDeLogin <> "ANA" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "CARLOS.SANTOS" And NomeDeLogin <> "MARIELA.CUSTODIO" And NomeDeLogin <> "HELOISA" And NomeDeLogin <> "JOAOF" And NomeDeLogin <> "ALBERTO" Then
     frmMdi.m_cMenuImob.Enabled(frmMdi.m_cMenuImob.IndexForKey("mnuAverbacao")) = False '68
     frmMdi.m_cMenuImob.Enabled(frmMdi.m_cMenuImob.IndexForKey("mnuRolImovel")) = False '69
     frmMdi.m_cMenuImob.Enabled(frmMdi.m_cMenuImob.IndexForKey("mnuDevedorIPTU")) = False '70
@@ -1055,7 +1058,7 @@ Else
     frmMdi.m_cMenuImob.Enabled(frmMdi.m_cMenuImob.IndexForKey("mnuCorrigeBairro")) = True '68
 End If
 
-If NomeDeLogin <> "LUIZH" And NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "LEANDRO" And NomeDeLogin <> "ROSANGELA" And NomeDeLogin <> "RITA" And NomeDeLogin <> "NOELI" And NomeDeLogin <> "RODRIGOC" And NomeDeLogin <> "PAULO" And NomeDeLogin <> "MARILIA" And NomeDeLogin <> "VANESSA" And NomeDeLogin <> "DIONE" And NomeDeLogin <> "RENILDA" And NomeDeLogin <> "ALESSANDRA" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "ROSE" Then
+If NomeDeLogin <> "LUIZH" And NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "LEANDRO" And NomeDeLogin <> "ROSANGELA" And NomeDeLogin <> "RITA" And NomeDeLogin <> "NOELI" And NomeDeLogin <> "RODRIGOC" And NomeDeLogin <> "PAULO" And NomeDeLogin <> "DINAMAR.OLIVEIRA" And NomeDeLogin <> "VANESSA" And NomeDeLogin <> "DIONE" And NomeDeLogin <> "RENILDA" And NomeDeLogin <> "ALESSANDRA" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "ROSE" Then
     frmMdi.m_cMenuMob.Enabled(frmMdi.m_cMenuMob.IndexForKey("mnuEscContab")) = False '92
     frmMdi.m_cMenuMob.Enabled(frmMdi.m_cMenuMob.IndexForKey("mnuTabAtivTL")) = False '96
     frmMdi.m_cMenuMob.Enabled(frmMdi.m_cMenuMob.IndexForKey("mnuTabAtivISS")) = False '100
@@ -1112,9 +1115,9 @@ Else
     frmMdi.m_cMenuMob.Enabled(frmMdi.m_cMenuMob.IndexForKey("mnuListaCnae")) = True
 End If
 
-If NomeDeLogin <> "LUIZH" And NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "LEANDRO" And NomeDeLogin <> "ROSANGELA" And NomeDeLogin <> "RITA" And NomeDeLogin <> "NOELI" And NomeDeLogin <> "RODRIGOC" And NomeDeLogin <> "PAULO" And NomeDeLogin <> "MARILIA" And NomeDeLogin <> "VANESSA" And NomeDeLogin <> "DIONE" And NomeDeLogin <> "RENILDA" And NomeDeLogin <> "ALESSANDRA" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "ROSE" And Not IsAtendente Then
+'If NomeDeLogin <> "LUIZH" And NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "LEANDRO" And NomeDeLogin <> "ROSANGELA" And NomeDeLogin <> "RITA" And NomeDeLogin <> "NOELI" And NomeDeLogin <> "RODRIGOC" And NomeDeLogin <> "PAULO" And NomeDeLogin <> "MARILIA" And NomeDeLogin <> "VANESSA" And NomeDeLogin <> "DIONE" And NomeDeLogin <> "RENILDA" And NomeDeLogin <> "ALESSANDRA" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "ROSE" And Not IsAtendente Then
 '    frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnu2vianotificacao")) = False '241
-End If
+'End If
 
 'If Not IsAtendente Then
 '        frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuCalcGeral")) = False

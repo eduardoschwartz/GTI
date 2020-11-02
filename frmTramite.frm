@@ -1451,7 +1451,7 @@ Sql = Sql & "WHERE ANO=" & Val(lblAno.Caption) & " AND NUMERO=" & Val(Left$(lblN
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-         grdEmp.AddItem Format(!Seq, "00") & Chr(9) & IIf(!Tipo = 1, "EMPRÉSTIMO", "DEVOLUÇÃO") & Chr(9) & !descricao & Chr(9) & Format(!DATAHORA, "dd/mm/yyyy hh:mm") & Chr(9) & !TEMPO
+         grdEmp.AddItem Format(!Seq, "00") & Chr(9) & IIf(!Tipo = 1, "EMPRÉSTIMO", "DEVOLUÇÃO") & Chr(9) & !Descricao & Chr(9) & Format(!DATAHORA, "dd/mm/yyyy hh:mm") & Chr(9) & !TEMPO
         .MoveNext
     Loop
    .Close
@@ -1562,7 +1562,7 @@ Sql = "SELECT CODIGO, DESCRICAO FROM CENTROCUSTO WHERE ATIVO = 1"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenForwardOnly, rdConcurReadOnly)
 With RdoAux
     Do Until .EOF
-        cmbLocal.AddItem !descricao
+        cmbLocal.AddItem !Descricao
         cmbLocal.ItemData(cmbLocal.NewIndex) = !Codigo
        .MoveNext
     Loop
@@ -1861,7 +1861,7 @@ With RdoAux
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             Do Until .EOF
-                grdTramite.AddItem !Seq & Chr(9) & !ccusto & Chr(9) & SubNull(!descricao)
+                grdTramite.AddItem !Seq & Chr(9) & !ccusto & Chr(9) & SubNull(!Descricao)
                 nMax = !Seq
                .MoveNext
             Loop
@@ -1884,7 +1884,7 @@ With RdoAux
                 Next
 '                If Not bAchou Then
                     nMax = nMax + 1
-                    grdTramite.AddItem nMax & Chr(9) & !Codigo & Chr(9) & SubNull(!descricao)
+                    grdTramite.AddItem nMax & Chr(9) & !Codigo & Chr(9) & SubNull(!Descricao)
  '               End If
                .MoveNext
             Loop
@@ -1899,7 +1899,7 @@ With RdoAux
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             Do Until .EOF
-                grdTramite.AddItem !Seq & Chr(9) & !ccusto & Chr(9) & SubNull(!descricao)
+                grdTramite.AddItem !Seq & Chr(9) & !ccusto & Chr(9) & SubNull(!Descricao)
                .MoveNext
             Loop
            .Close
@@ -1969,14 +1969,14 @@ If x = grdTramite.Rows Then
     x = x - 1
 End If
 
-For Y = 0 To grdTramite.Cols - 1
+For y = 0 To grdTramite.Cols - 1
     grdTramite.Row = x
-    grdTramite.col = Y
+    grdTramite.col = y
    ' grdTramite.CellBackColor = vbRed
    ' grdTramite.CellForeColor = vbWhite
    grdTramite.CellFontBold = True
 Next
-
+On Error Resume Next
 grdTramite.Row = 1
 grdTramite.RowSel = 1
 grdTramite.col = 0
@@ -2073,11 +2073,11 @@ Sql = "SELECT CODIGO,DESCRICAO FROM DESPACHO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-        cmbDespacho.AddItem !descricao
+        cmbDespacho.AddItem !Descricao
         cmbDespacho.ItemData(cmbDespacho.NewIndex) = !Codigo
-        cmbDespacho2.AddItem !descricao
+        cmbDespacho2.AddItem !Descricao
         cmbDespacho2.ItemData(cmbDespacho2.NewIndex) = !Codigo
-        cmbDespacho3.AddItem !descricao
+        cmbDespacho3.AddItem !Descricao
         cmbDespacho3.ItemData(cmbDespacho3.NewIndex) = !Codigo
        .MoveNext
     Loop

@@ -5,25 +5,64 @@ Begin VB.Form frmCidadao
    AutoRedraw      =   -1  'True
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Cadastro de Cidadão"
-   ClientHeight    =   7545
-   ClientLeft      =   9810
-   ClientTop       =   4170
+   ClientHeight    =   7875
+   ClientLeft      =   4560
+   ClientTop       =   2475
    ClientWidth     =   7590
    ControlBox      =   0   'False
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form2"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
-   ScaleHeight     =   7545
+   ScaleHeight     =   7875
    ScaleWidth      =   7590
    ShowInTaskbar   =   0   'False
+   Begin prjChameleon.chameleonButton btNewCod 
+      Height          =   315
+      Left            =   6075
+      TabIndex        =   92
+      ToolTipText     =   "Atualizar código antigo para código novo"
+      Top             =   7065
+      Width           =   1395
+      _ExtentX        =   2461
+      _ExtentY        =   556
+      BTYPE           =   3
+      TX              =   "Novo código"
+      ENAB            =   -1  'True
+      BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      COLTYPE         =   2
+      FOCUSR          =   0   'False
+      BCOL            =   12632256
+      BCOLO           =   12632256
+      FCOL            =   0
+      FCOLO           =   0
+      MCOL            =   16711935
+      MPTR            =   1
+      MICON           =   "frmCidadao.frx":0000
+      UMCOL           =   -1  'True
+      SOFT            =   0   'False
+      PICPOS          =   0
+      NGREY           =   0   'False
+      FX              =   0
+      HAND            =   0   'False
+      CHECK           =   0   'False
+      VALUE           =   0   'False
+   End
    Begin Tributacao.jcFrames jcFrames3 
-      Height          =   1890
+      Height          =   2160
       Left            =   60
       Top             =   60
       Width           =   7485
       _ExtentX        =   13203
-      _ExtentY        =   3334
+      _ExtentY        =   3810
       FrameColor      =   12829635
       Style           =   0
       Caption         =   ""
@@ -40,6 +79,24 @@ Begin VB.Form frmCidadao
       EndProperty
       ColorFrom       =   0
       ColorTo         =   0
+      Begin VB.TextBox txtCNH 
+         Appearance      =   0  'Flat
+         Height          =   285
+         Left            =   1080
+         MaxLength       =   30
+         TabIndex        =   9
+         Top             =   1460
+         Width           =   2780
+      End
+      Begin VB.TextBox txtOrgaoCNH 
+         Appearance      =   0  'Flat
+         Height          =   285
+         Left            =   4605
+         MaxLength       =   30
+         TabIndex        =   10
+         Top             =   1460
+         Width           =   2780
+      End
       Begin VB.TextBox txtProfissao 
          Appearance      =   0  'Flat
          BackColor       =   &H8000000F&
@@ -47,8 +104,8 @@ Begin VB.Form frmCidadao
          Left            =   3210
          Locked          =   -1  'True
          MaxLength       =   50
-         TabIndex        =   79
-         Top             =   1450
+         TabIndex        =   81
+         Top             =   1800
          Width           =   3690
       End
       Begin VB.TextBox txtCod 
@@ -68,7 +125,7 @@ Begin VB.Form frmCidadao
          Height          =   240
          Left            =   1140
          Locked          =   -1  'True
-         TabIndex        =   51
+         TabIndex        =   53
          Top             =   105
          Width           =   975
       End
@@ -117,7 +174,7 @@ Begin VB.Form frmCidadao
          Width           =   2325
          _ExtentX        =   4101
          _ExtentY        =   503
-         MouseIcon       =   "frmCidadao.frx":0000
+         MouseIcon       =   "frmCidadao.frx":001C
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -142,7 +199,7 @@ Begin VB.Form frmCidadao
          Width           =   2295
          _ExtentX        =   4048
          _ExtentY        =   503
-         MouseIcon       =   "frmCidadao.frx":001C
+         MouseIcon       =   "frmCidadao.frx":0038
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -167,7 +224,7 @@ Begin VB.Form frmCidadao
          Width           =   2775
          _ExtentX        =   4895
          _ExtentY        =   503
-         MouseIcon       =   "frmCidadao.frx":0038
+         MouseIcon       =   "frmCidadao.frx":0054
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -211,8 +268,8 @@ Begin VB.Form frmCidadao
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmCidadao.frx":0054
-         PICN            =   "frmCidadao.frx":0070
+         MICON           =   "frmCidadao.frx":0070
+         PICN            =   "frmCidadao.frx":008C
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -225,7 +282,7 @@ Begin VB.Form frmCidadao
       Begin prjChameleon.chameleonButton btCPF 
          Height          =   270
          Left            =   3465
-         TabIndex        =   71
+         TabIndex        =   73
          ToolTipText     =   "Situação Cadastral"
          Top             =   1125
          Width           =   435
@@ -251,8 +308,8 @@ Begin VB.Form frmCidadao
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmCidadao.frx":01CA
-         PICN            =   "frmCidadao.frx":01E6
+         MICON           =   "frmCidadao.frx":01E6
+         PICN            =   "frmCidadao.frx":0202
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -265,7 +322,7 @@ Begin VB.Form frmCidadao
       Begin prjChameleon.chameleonButton btCNPJ 
          Height          =   270
          Left            =   6930
-         TabIndex        =   72
+         TabIndex        =   74
          ToolTipText     =   "Situação Cadastral"
          Top             =   1125
          Width           =   435
@@ -291,8 +348,8 @@ Begin VB.Form frmCidadao
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmCidadao.frx":0340
-         PICN            =   "frmCidadao.frx":035C
+         MICON           =   "frmCidadao.frx":035C
+         PICN            =   "frmCidadao.frx":0378
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -305,12 +362,12 @@ Begin VB.Form frmCidadao
       Begin esMaskEdit.esMaskedEdit mskDtNascto 
          Height          =   285
          Left            =   1080
-         TabIndex        =   9
-         Top             =   1470
+         TabIndex        =   11
+         Top             =   1800
          Width           =   1035
          _ExtentX        =   1826
          _ExtentY        =   503
-         MouseIcon       =   "frmCidadao.frx":04B6
+         MouseIcon       =   "frmCidadao.frx":04D2
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -330,9 +387,9 @@ Begin VB.Form frmCidadao
       Begin prjChameleon.chameleonButton btProfissao 
          Height          =   270
          Left            =   6930
-         TabIndex        =   78
+         TabIndex        =   80
          ToolTipText     =   "Selecionar profissão"
-         Top             =   1470
+         Top             =   1785
          Width           =   435
          _ExtentX        =   767
          _ExtentY        =   476
@@ -356,8 +413,8 @@ Begin VB.Form frmCidadao
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmCidadao.frx":04D2
-         PICN            =   "frmCidadao.frx":04EE
+         MICON           =   "frmCidadao.frx":04EE
+         PICN            =   "frmCidadao.frx":050A
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -369,12 +426,32 @@ Begin VB.Form frmCidadao
       End
       Begin VB.Label Label1 
          BackStyle       =   0  'Transparent
+         Caption         =   "Orgão..:"
+         Height          =   225
+         Index           =   23
+         Left            =   4020
+         TabIndex        =   91
+         Top             =   1470
+         Width           =   630
+      End
+      Begin VB.Label Label1 
+         BackStyle       =   0  'Transparent
+         Caption         =   "CNH............:"
+         Height          =   225
+         Index           =   9
+         Left            =   90
+         TabIndex        =   90
+         Top             =   1455
+         Width           =   975
+      End
+      Begin VB.Label Label1 
+         BackStyle       =   0  'Transparent
          Caption         =   "Profissão..:"
          Height          =   225
          Index           =   27
          Left            =   2340
-         TabIndex        =   75
-         Top             =   1485
+         TabIndex        =   77
+         Top             =   1845
          Width           =   840
       End
       Begin VB.Label Label1 
@@ -383,8 +460,8 @@ Begin VB.Form frmCidadao
          Height          =   225
          Index           =   26
          Left            =   90
-         TabIndex        =   74
-         Top             =   1485
+         TabIndex        =   76
+         Top             =   1800
          Width           =   1020
       End
       Begin VB.Label lblEspolio 
@@ -402,7 +479,7 @@ Begin VB.Form frmCidadao
          ForeColor       =   &H00000080&
          Height          =   240
          Left            =   2700
-         TabIndex        =   73
+         TabIndex        =   75
          Top             =   90
          Visible         =   0   'False
          Width           =   1860
@@ -413,7 +490,7 @@ Begin VB.Form frmCidadao
          Height          =   225
          Index           =   0
          Left            =   90
-         TabIndex        =   57
+         TabIndex        =   59
          Top             =   90
          Width           =   975
       End
@@ -423,7 +500,7 @@ Begin VB.Form frmCidadao
          Height          =   225
          Index           =   1
          Left            =   90
-         TabIndex        =   56
+         TabIndex        =   58
          Top             =   435
          Width           =   975
       End
@@ -433,7 +510,7 @@ Begin VB.Form frmCidadao
          Height          =   225
          Index           =   11
          Left            =   4020
-         TabIndex        =   55
+         TabIndex        =   57
          Top             =   1125
          Width           =   660
       End
@@ -443,7 +520,7 @@ Begin VB.Form frmCidadao
          Height          =   225
          Index           =   12
          Left            =   90
-         TabIndex        =   54
+         TabIndex        =   56
          Top             =   1125
          Width           =   975
       End
@@ -453,7 +530,7 @@ Begin VB.Form frmCidadao
          Height          =   225
          Index           =   13
          Left            =   90
-         TabIndex        =   53
+         TabIndex        =   55
          Top             =   780
          Width           =   975
       End
@@ -463,7 +540,7 @@ Begin VB.Form frmCidadao
          Height          =   225
          Index           =   14
          Left            =   4020
-         TabIndex        =   52
+         TabIndex        =   54
          Top             =   795
          Width           =   630
       End
@@ -472,7 +549,7 @@ Begin VB.Form frmCidadao
       Height          =   2370
       Index           =   0
       Left            =   60
-      Top             =   1965
+      Top             =   2235
       Width           =   7485
       _ExtentX        =   13203
       _ExtentY        =   4180
@@ -493,11 +570,22 @@ Begin VB.Form frmCidadao
       EndProperty
       ColorFrom       =   0
       ColorTo         =   0
+      Begin VB.TextBox txtBairroR 
+         Appearance      =   0  'Flat
+         BackColor       =   &H8000000F&
+         Height          =   285
+         Left            =   1080
+         Locked          =   -1  'True
+         TabIndex        =   88
+         TabStop         =   0   'False
+         Top             =   1305
+         Width           =   4560
+      End
       Begin VB.CheckBox chkWhatsApp 
          Caption         =   "WhatsApp"
          Height          =   225
          Left            =   2070
-         TabIndex        =   84
+         TabIndex        =   86
          Top             =   2040
          Width           =   1095
       End
@@ -505,14 +593,14 @@ Begin VB.Form frmCidadao
          Caption         =   "Não possui telefone"
          Height          =   255
          Left            =   90
-         TabIndex        =   82
+         TabIndex        =   84
          Top             =   2010
          Width           =   1725
       End
       Begin prjChameleon.chameleonButton btPais 
          Height          =   270
          Left            =   3330
-         TabIndex        =   80
+         TabIndex        =   82
          ToolTipText     =   "Selecionar país"
          Top             =   1710
          Width           =   405
@@ -538,8 +626,8 @@ Begin VB.Form frmCidadao
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmCidadao.frx":0648
-         PICN            =   "frmCidadao.frx":0664
+         MICON           =   "frmCidadao.frx":0664
+         PICN            =   "frmCidadao.frx":0680
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -553,19 +641,19 @@ Begin VB.Form frmCidadao
          Appearance      =   0  'Flat
          BackColor       =   &H8000000F&
          Height          =   285
-         Left            =   1050
+         Left            =   1080
          Locked          =   -1  'True
          MaxLength       =   50
-         TabIndex        =   61
+         TabIndex        =   63
          Top             =   1680
-         Width           =   2235
+         Width           =   2190
       End
       Begin VB.TextBox txtEmail 
          Appearance      =   0  'Flat
          Height          =   285
          Left            =   4425
          MaxLength       =   50
-         TabIndex        =   60
+         TabIndex        =   62
          Top             =   1665
          Width           =   3000
       End
@@ -574,7 +662,7 @@ Begin VB.Form frmCidadao
          Height          =   285
          Left            =   4425
          MaxLength       =   30
-         TabIndex        =   59
+         TabIndex        =   61
          Top             =   2025
          Width           =   2985
       End
@@ -582,7 +670,7 @@ Begin VB.Form frmCidadao
          Alignment       =   1  'Right Justify
          Height          =   225
          Left            =   135
-         TabIndex        =   26
+         TabIndex        =   28
          Top             =   0
          Width           =   210
       End
@@ -591,7 +679,7 @@ Begin VB.Form frmCidadao
          Height          =   285
          Left            =   2205
          MaxLength       =   50
-         TabIndex        =   18
+         TabIndex        =   20
          Top             =   240
          Width           =   5220
       End
@@ -599,7 +687,7 @@ Begin VB.Form frmCidadao
          Appearance      =   0  'Flat
          Height          =   285
          Left            =   1080
-         TabIndex        =   17
+         TabIndex        =   19
          Top             =   240
          Width           =   930
       End
@@ -607,7 +695,7 @@ Begin VB.Form frmCidadao
          Appearance      =   0  'Flat
          Height          =   285
          Left            =   1080
-         TabIndex        =   19
+         TabIndex        =   21
          Top             =   585
          Width           =   930
       End
@@ -616,7 +704,7 @@ Begin VB.Form frmCidadao
          Height          =   285
          Left            =   2970
          MaxLength       =   50
-         TabIndex        =   20
+         TabIndex        =   22
          Top             =   585
          Width           =   4455
       End
@@ -626,9 +714,9 @@ Begin VB.Form frmCidadao
          Left            =   1080
          Sorted          =   -1  'True
          Style           =   2  'Dropdown List
-         TabIndex        =   23
+         TabIndex        =   25
          Top             =   1305
-         Width           =   2250
+         Width           =   4095
       End
       Begin VB.ComboBox cmbCidade 
          Appearance      =   0  'Flat
@@ -636,31 +724,31 @@ Begin VB.Form frmCidadao
          Left            =   4425
          Sorted          =   -1  'True
          Style           =   2  'Dropdown List
-         TabIndex        =   22
+         TabIndex        =   24
          Top             =   930
          Width           =   3000
       End
       Begin VB.ComboBox cmbUF 
          Appearance      =   0  'Flat
          Height          =   315
-         ItemData        =   "frmCidadao.frx":07BE
+         ItemData        =   "frmCidadao.frx":07DA
          Left            =   1080
-         List            =   "frmCidadao.frx":07C0
+         List            =   "frmCidadao.frx":07DC
          Sorted          =   -1  'True
          Style           =   2  'Dropdown List
-         TabIndex        =   21
+         TabIndex        =   23
          Top             =   915
          Width           =   2250
       End
       Begin esMaskEdit.esMaskedEdit mskCEP 
          Height          =   285
-         Left            =   4425
-         TabIndex        =   25
+         Left            =   6405
+         TabIndex        =   27
          Top             =   1320
          Width           =   1005
          _ExtentX        =   1773
          _ExtentY        =   503
-         MouseIcon       =   "frmCidadao.frx":07C2
+         MouseIcon       =   "frmCidadao.frx":07DE
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -679,8 +767,8 @@ Begin VB.Form frmCidadao
       End
       Begin prjChameleon.chameleonButton cmdAddBairro 
          Height          =   270
-         Left            =   3345
-         TabIndex        =   24
+         Left            =   5280
+         TabIndex        =   26
          ToolTipText     =   "Cadastrar um novo bairro"
          Top             =   1320
          Width           =   360
@@ -706,8 +794,8 @@ Begin VB.Form frmCidadao
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   99
-         MICON           =   "frmCidadao.frx":07DE
-         PICN            =   "frmCidadao.frx":0AF8
+         MICON           =   "frmCidadao.frx":07FA
+         PICN            =   "frmCidadao.frx":0B14
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -720,7 +808,7 @@ Begin VB.Form frmCidadao
       Begin VB.Image imgWhatsApp 
          Height          =   255
          Left            =   3180
-         Picture         =   "frmCidadao.frx":0C52
+         Picture         =   "frmCidadao.frx":0C6E
          Stretch         =   -1  'True
          Top             =   2040
          Width           =   240
@@ -731,7 +819,7 @@ Begin VB.Form frmCidadao
          Height          =   180
          Index           =   15
          Left            =   90
-         TabIndex        =   64
+         TabIndex        =   66
          Top             =   1710
          Width           =   990
       End
@@ -741,7 +829,7 @@ Begin VB.Form frmCidadao
          Height          =   225
          Index           =   10
          Left            =   3825
-         TabIndex        =   63
+         TabIndex        =   65
          Top             =   1725
          Width           =   630
       End
@@ -750,7 +838,7 @@ Begin VB.Form frmCidadao
          Caption         =   "Telefone.:"
          Height          =   225
          Left            =   3660
-         TabIndex        =   62
+         TabIndex        =   64
          Top             =   2055
          Width           =   795
       End
@@ -760,7 +848,7 @@ Begin VB.Form frmCidadao
          Height          =   225
          Index           =   2
          Left            =   90
-         TabIndex        =   43
+         TabIndex        =   45
          Top             =   615
          Width           =   975
       End
@@ -770,7 +858,7 @@ Begin VB.Form frmCidadao
          Height          =   225
          Index           =   3
          Left            =   90
-         TabIndex        =   42
+         TabIndex        =   44
          Top             =   270
          Width           =   975
       End
@@ -780,7 +868,7 @@ Begin VB.Form frmCidadao
          Height          =   225
          Index           =   4
          Left            =   2175
-         TabIndex        =   41
+         TabIndex        =   43
          Top             =   645
          Width           =   765
       End
@@ -790,7 +878,7 @@ Begin VB.Form frmCidadao
          Height          =   225
          Index           =   5
          Left            =   90
-         TabIndex        =   40
+         TabIndex        =   42
          Top             =   1365
          Width           =   975
       End
@@ -800,7 +888,7 @@ Begin VB.Form frmCidadao
          Height          =   225
          Index           =   6
          Left            =   3810
-         TabIndex        =   39
+         TabIndex        =   41
          Top             =   990
          Width           =   585
       End
@@ -810,7 +898,7 @@ Begin VB.Form frmCidadao
          Height          =   225
          Index           =   7
          Left            =   90
-         TabIndex        =   38
+         TabIndex        =   40
          Top             =   990
          Width           =   975
       End
@@ -819,8 +907,8 @@ Begin VB.Form frmCidadao
          Caption         =   "CEP....:"
          Height          =   225
          Index           =   8
-         Left            =   3810
-         TabIndex        =   37
+         Left            =   5790
+         TabIndex        =   39
          Top             =   1365
          Width           =   585
       End
@@ -828,9 +916,9 @@ Begin VB.Form frmCidadao
    Begin prjChameleon.chameleonButton cmdCopy 
       Height          =   315
       Left            =   4515
-      TabIndex        =   16
+      TabIndex        =   18
       ToolTipText     =   "Copiar dados do cidadão selecioando"
-      Top             =   7170
+      Top             =   7485
       Width           =   1065
       _ExtentX        =   1879
       _ExtentY        =   556
@@ -854,8 +942,8 @@ Begin VB.Form frmCidadao
       FCOLO           =   0
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frmCidadao.frx":1032
-      PICN            =   "frmCidadao.frx":104E
+      MICON           =   "frmCidadao.frx":104E
+      PICN            =   "frmCidadao.frx":106A
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -868,9 +956,9 @@ Begin VB.Form frmCidadao
    Begin prjChameleon.chameleonButton cmdGravar 
       Height          =   315
       Left            =   5340
-      TabIndex        =   15
+      TabIndex        =   17
       ToolTipText     =   "Gravar os Dados"
-      Top             =   7170
+      Top             =   7485
       Width           =   1035
       _ExtentX        =   1826
       _ExtentY        =   556
@@ -894,8 +982,8 @@ Begin VB.Form frmCidadao
       FCOLO           =   0
       MCOL            =   12632256
       MPTR            =   1
-      MICON           =   "frmCidadao.frx":1139
-      PICN            =   "frmCidadao.frx":1155
+      MICON           =   "frmCidadao.frx":1155
+      PICN            =   "frmCidadao.frx":1171
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -910,7 +998,7 @@ Begin VB.Form frmCidadao
       Left            =   3420
       TabIndex        =   1
       ToolTipText     =   "Consulta Cidadãos Cadastrados"
-      Top             =   7170
+      Top             =   7485
       Width           =   1065
       _ExtentX        =   1879
       _ExtentY        =   556
@@ -934,8 +1022,8 @@ Begin VB.Form frmCidadao
       FCOLO           =   0
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frmCidadao.frx":14FA
-      PICN            =   "frmCidadao.frx":1516
+      MICON           =   "frmCidadao.frx":1516
+      PICN            =   "frmCidadao.frx":1532
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -948,9 +1036,9 @@ Begin VB.Form frmCidadao
    Begin prjChameleon.chameleonButton cmdSair 
       Height          =   315
       Left            =   6420
-      TabIndex        =   10
+      TabIndex        =   12
       ToolTipText     =   "Sair da Tela"
-      Top             =   7170
+      Top             =   7485
       Width           =   1035
       _ExtentX        =   1826
       _ExtentY        =   556
@@ -974,8 +1062,8 @@ Begin VB.Form frmCidadao
       FCOLO           =   0
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frmCidadao.frx":1670
-      PICN            =   "frmCidadao.frx":168C
+      MICON           =   "frmCidadao.frx":168C
+      PICN            =   "frmCidadao.frx":16A8
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -989,9 +1077,9 @@ Begin VB.Form frmCidadao
       Cancel          =   -1  'True
       Height          =   315
       Left            =   6420
-      TabIndex        =   11
+      TabIndex        =   13
       ToolTipText     =   "Cancelar Edição"
-      Top             =   7170
+      Top             =   7485
       Width           =   1035
       _ExtentX        =   1826
       _ExtentY        =   556
@@ -1015,8 +1103,8 @@ Begin VB.Form frmCidadao
       FCOLO           =   0
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frmCidadao.frx":16FA
-      PICN            =   "frmCidadao.frx":1716
+      MICON           =   "frmCidadao.frx":1716
+      PICN            =   "frmCidadao.frx":1732
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -1029,9 +1117,9 @@ Begin VB.Form frmCidadao
    Begin prjChameleon.chameleonButton cmdExcluir 
       Height          =   315
       Left            =   2325
-      TabIndex        =   12
+      TabIndex        =   14
       ToolTipText     =   "Excluir Registro"
-      Top             =   7170
+      Top             =   7485
       Width           =   1035
       _ExtentX        =   1826
       _ExtentY        =   556
@@ -1055,8 +1143,8 @@ Begin VB.Form frmCidadao
       FCOLO           =   0
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frmCidadao.frx":1870
-      PICN            =   "frmCidadao.frx":188C
+      MICON           =   "frmCidadao.frx":188C
+      PICN            =   "frmCidadao.frx":18A8
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -1069,9 +1157,9 @@ Begin VB.Form frmCidadao
    Begin prjChameleon.chameleonButton cmdAlterar 
       Height          =   315
       Left            =   1230
-      TabIndex        =   13
+      TabIndex        =   15
       ToolTipText     =   "Editar Registro"
-      Top             =   7170
+      Top             =   7485
       Width           =   1035
       _ExtentX        =   1826
       _ExtentY        =   556
@@ -1095,8 +1183,8 @@ Begin VB.Form frmCidadao
       FCOLO           =   0
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frmCidadao.frx":192E
-      PICN            =   "frmCidadao.frx":194A
+      MICON           =   "frmCidadao.frx":194A
+      PICN            =   "frmCidadao.frx":1966
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -1109,9 +1197,9 @@ Begin VB.Form frmCidadao
    Begin prjChameleon.chameleonButton cmdNovo 
       Height          =   315
       Left            =   135
-      TabIndex        =   14
+      TabIndex        =   16
       ToolTipText     =   "Novo Registro"
-      Top             =   7170
+      Top             =   7485
       Width           =   1035
       _ExtentX        =   1826
       _ExtentY        =   556
@@ -1135,8 +1223,8 @@ Begin VB.Form frmCidadao
       FCOLO           =   0
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frmCidadao.frx":1AA4
-      PICN            =   "frmCidadao.frx":1AC0
+      MICON           =   "frmCidadao.frx":1AC0
+      PICN            =   "frmCidadao.frx":1ADC
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -1149,8 +1237,8 @@ Begin VB.Form frmCidadao
    Begin Tributacao.jcFrames jcFrames2 
       Height          =   2370
       Index           =   1
-      Left            =   60
-      Top             =   4350
+      Left            =   0
+      Top             =   4635
       Width           =   7485
       _ExtentX        =   13203
       _ExtentY        =   4180
@@ -1171,11 +1259,22 @@ Begin VB.Form frmCidadao
       EndProperty
       ColorFrom       =   0
       ColorTo         =   0
+      Begin VB.TextBox txtBairroC 
+         Appearance      =   0  'Flat
+         BackColor       =   &H8000000F&
+         Height          =   285
+         Left            =   1080
+         Locked          =   -1  'True
+         TabIndex        =   89
+         TabStop         =   0   'False
+         Top             =   1305
+         Width           =   4560
+      End
       Begin VB.CheckBox chkWhatsApp2 
          Caption         =   "WhatsApp"
          Height          =   225
          Left            =   2010
-         TabIndex        =   85
+         TabIndex        =   87
          Top             =   2040
          Width           =   1095
       End
@@ -1183,14 +1282,14 @@ Begin VB.Form frmCidadao
          Caption         =   "Não possui telefone"
          Height          =   255
          Left            =   120
-         TabIndex        =   83
+         TabIndex        =   85
          Top             =   2040
          Width           =   1725
       End
       Begin prjChameleon.chameleonButton btPais2 
          Height          =   270
          Left            =   3300
-         TabIndex        =   81
+         TabIndex        =   83
          ToolTipText     =   "Selecionar pais"
          Top             =   1680
          Width           =   405
@@ -1216,8 +1315,8 @@ Begin VB.Form frmCidadao
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmCidadao.frx":1C1A
-         PICN            =   "frmCidadao.frx":1C36
+         MICON           =   "frmCidadao.frx":1C36
+         PICN            =   "frmCidadao.frx":1C52
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1231,10 +1330,10 @@ Begin VB.Form frmCidadao
          Appearance      =   0  'Flat
          BackColor       =   &H8000000F&
          Height          =   285
-         Left            =   1065
+         Left            =   1080
          Locked          =   -1  'True
          MaxLength       =   50
-         TabIndex        =   67
+         TabIndex        =   69
          Top             =   1665
          Width           =   2175
       End
@@ -1243,7 +1342,7 @@ Begin VB.Form frmCidadao
          Height          =   285
          Left            =   4425
          MaxLength       =   50
-         TabIndex        =   66
+         TabIndex        =   68
          Top             =   1650
          Width           =   3000
       End
@@ -1252,7 +1351,7 @@ Begin VB.Form frmCidadao
          Height          =   285
          Left            =   4425
          MaxLength       =   30
-         TabIndex        =   65
+         TabIndex        =   67
          Top             =   1995
          Width           =   2985
       End
@@ -1260,19 +1359,19 @@ Begin VB.Form frmCidadao
          Alignment       =   1  'Right Justify
          Height          =   225
          Left            =   135
-         TabIndex        =   36
+         TabIndex        =   38
          Top             =   0
          Width           =   210
       End
       Begin VB.ComboBox cmbUF2 
          Appearance      =   0  'Flat
          Height          =   315
-         ItemData        =   "frmCidadao.frx":1D90
+         ItemData        =   "frmCidadao.frx":1DAC
          Left            =   1080
-         List            =   "frmCidadao.frx":1D92
+         List            =   "frmCidadao.frx":1DAE
          Sorted          =   -1  'True
          Style           =   2  'Dropdown List
-         TabIndex        =   31
+         TabIndex        =   33
          Top             =   915
          Width           =   2250
       End
@@ -1282,7 +1381,7 @@ Begin VB.Form frmCidadao
          Left            =   4425
          Sorted          =   -1  'True
          Style           =   2  'Dropdown List
-         TabIndex        =   32
+         TabIndex        =   34
          Top             =   930
          Width           =   3000
       End
@@ -1292,16 +1391,16 @@ Begin VB.Form frmCidadao
          Left            =   1080
          Sorted          =   -1  'True
          Style           =   2  'Dropdown List
-         TabIndex        =   33
+         TabIndex        =   35
          Top             =   1305
-         Width           =   2250
+         Width           =   4140
       End
       Begin VB.TextBox txtCompl2 
          Appearance      =   0  'Flat
          Height          =   285
          Left            =   2970
          MaxLength       =   50
-         TabIndex        =   30
+         TabIndex        =   32
          Top             =   585
          Width           =   4455
       End
@@ -1309,7 +1408,7 @@ Begin VB.Form frmCidadao
          Appearance      =   0  'Flat
          Height          =   285
          Left            =   1080
-         TabIndex        =   29
+         TabIndex        =   31
          Top             =   585
          Width           =   930
       End
@@ -1317,7 +1416,7 @@ Begin VB.Form frmCidadao
          Appearance      =   0  'Flat
          Height          =   285
          Left            =   1080
-         TabIndex        =   27
+         TabIndex        =   29
          Top             =   240
          Width           =   930
       End
@@ -1326,19 +1425,19 @@ Begin VB.Form frmCidadao
          Height          =   285
          Left            =   2205
          MaxLength       =   50
-         TabIndex        =   28
+         TabIndex        =   30
          Top             =   240
          Width           =   5220
       End
       Begin esMaskEdit.esMaskedEdit mskCEP2 
          Height          =   285
-         Left            =   4425
-         TabIndex        =   35
+         Left            =   6405
+         TabIndex        =   37
          Top             =   1320
          Width           =   1005
          _ExtentX        =   1773
          _ExtentY        =   503
-         MouseIcon       =   "frmCidadao.frx":1D94
+         MouseIcon       =   "frmCidadao.frx":1DB0
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -1357,8 +1456,8 @@ Begin VB.Form frmCidadao
       End
       Begin prjChameleon.chameleonButton cmdAddBairro2 
          Height          =   270
-         Left            =   3345
-         TabIndex        =   34
+         Left            =   5280
+         TabIndex        =   36
          ToolTipText     =   "Cadastrar um novo bairro"
          Top             =   1320
          Width           =   360
@@ -1384,8 +1483,8 @@ Begin VB.Form frmCidadao
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   99
-         MICON           =   "frmCidadao.frx":1DB0
-         PICN            =   "frmCidadao.frx":20CA
+         MICON           =   "frmCidadao.frx":1DCC
+         PICN            =   "frmCidadao.frx":20E6
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1398,7 +1497,7 @@ Begin VB.Form frmCidadao
       Begin VB.Image imgWhatsApp2 
          Height          =   255
          Left            =   3120
-         Picture         =   "frmCidadao.frx":2224
+         Picture         =   "frmCidadao.frx":2240
          Stretch         =   -1  'True
          Top             =   2040
          Width           =   240
@@ -1409,7 +1508,7 @@ Begin VB.Form frmCidadao
          Height          =   180
          Index           =   25
          Left            =   90
-         TabIndex        =   70
+         TabIndex        =   72
          Top             =   1710
          Width           =   990
       End
@@ -1419,7 +1518,7 @@ Begin VB.Form frmCidadao
          Height          =   225
          Index           =   24
          Left            =   3810
-         TabIndex        =   69
+         TabIndex        =   71
          Top             =   1680
          Width           =   600
       End
@@ -1428,7 +1527,7 @@ Begin VB.Form frmCidadao
          Caption         =   "Telefone.:"
          Height          =   225
          Left            =   3660
-         TabIndex        =   68
+         TabIndex        =   70
          Top             =   2025
          Width           =   735
       End
@@ -1437,8 +1536,8 @@ Begin VB.Form frmCidadao
          Caption         =   "CEP....:"
          Height          =   225
          Index           =   22
-         Left            =   3810
-         TabIndex        =   50
+         Left            =   5790
+         TabIndex        =   52
          Top             =   1365
          Width           =   585
       End
@@ -1448,7 +1547,7 @@ Begin VB.Form frmCidadao
          Height          =   225
          Index           =   21
          Left            =   90
-         TabIndex        =   49
+         TabIndex        =   51
          Top             =   990
          Width           =   975
       End
@@ -1458,7 +1557,7 @@ Begin VB.Form frmCidadao
          Height          =   225
          Index           =   20
          Left            =   3810
-         TabIndex        =   48
+         TabIndex        =   50
          Top             =   990
          Width           =   585
       End
@@ -1468,7 +1567,7 @@ Begin VB.Form frmCidadao
          Height          =   225
          Index           =   19
          Left            =   90
-         TabIndex        =   47
+         TabIndex        =   49
          Top             =   1365
          Width           =   975
       End
@@ -1478,7 +1577,7 @@ Begin VB.Form frmCidadao
          Height          =   225
          Index           =   18
          Left            =   2175
-         TabIndex        =   46
+         TabIndex        =   48
          Top             =   645
          Width           =   765
       End
@@ -1488,7 +1587,7 @@ Begin VB.Form frmCidadao
          Height          =   225
          Index           =   17
          Left            =   90
-         TabIndex        =   45
+         TabIndex        =   47
          Top             =   270
          Width           =   975
       End
@@ -1498,7 +1597,7 @@ Begin VB.Form frmCidadao
          Height          =   225
          Index           =   16
          Left            =   90
-         TabIndex        =   44
+         TabIndex        =   46
          Top             =   615
          Width           =   975
       End
@@ -1507,21 +1606,21 @@ Begin VB.Form frmCidadao
       Appearance      =   0  'Flat
       BackColor       =   &H00C0FFFF&
       Height          =   2175
-      ItemData        =   "frmCidadao.frx":2604
+      ItemData        =   "frmCidadao.frx":2620
       Left            =   2280
-      List            =   "frmCidadao.frx":2606
-      TabIndex        =   58
-      Top             =   2205
+      List            =   "frmCidadao.frx":2622
+      TabIndex        =   60
+      Top             =   2475
       Visible         =   0   'False
       Width           =   5205
    End
    Begin prjChameleon.chameleonButton btObservacao 
       Height          =   315
-      Left            =   2273
-      TabIndex        =   76
+      Left            =   1260
+      TabIndex        =   78
       ToolTipText     =   "Observação do Cidadão"
-      Top             =   6780
-      Width           =   1400
+      Top             =   7095
+      Width           =   1395
       _ExtentX        =   2461
       _ExtentY        =   556
       BTYPE           =   3
@@ -1544,8 +1643,8 @@ Begin VB.Form frmCidadao
       FCOLO           =   0
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frmCidadao.frx":2608
-      PICN            =   "frmCidadao.frx":2624
+      MICON           =   "frmCidadao.frx":2624
+      PICN            =   "frmCidadao.frx":2640
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -1557,10 +1656,10 @@ Begin VB.Form frmCidadao
    End
    Begin prjChameleon.chameleonButton btHistorico 
       Height          =   315
-      Left            =   3923
-      TabIndex        =   77
+      Left            =   2895
+      TabIndex        =   79
       ToolTipText     =   "Histórico do Cidadão"
-      Top             =   6780
+      Top             =   7095
       Width           =   1395
       _ExtentX        =   2461
       _ExtentY        =   556
@@ -1584,8 +1683,8 @@ Begin VB.Form frmCidadao
       FCOLO           =   0
       MCOL            =   16711935
       MPTR            =   1
-      MICON           =   "frmCidadao.frx":269E
-      PICN            =   "frmCidadao.frx":26BA
+      MICON           =   "frmCidadao.frx":26BA
+      PICN            =   "frmCidadao.frx":26D6
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -1680,6 +1779,65 @@ frm2.ZOrder 0
 
 End Sub
 
+Private Sub btNewCod_Click()
+Dim Sql As String, RdoAux As rdoResultset, bCpf As Boolean, bCnpj As Boolean, bFind As Boolean, nMaxCod As Long
+bCpf = False: bCnpj = False: bFind = False
+
+If cmdNovo.Enabled = False Or cmdNovo.Visible = False Then
+    MsgBox "Acesso negado", vbCritical, "Erro"
+    Exit Sub
+End If
+
+If txtNome.Text = "" Then
+    MsgBox "Selecione um cidadão.", vbCritical, "Erro"
+    Exit Sub
+End If
+
+If Val(txtCod.Text) >= 500000 Then
+    MsgBox "Apenas cidadãos com código antigo podem ser atualizados", vbCritical, "Erro"
+    Exit Sub
+End If
+
+If mskCPF.ClipText <> "" Then bCpf = True
+If mskCNPJ.ClipText <> "" Then bCnpj = True
+
+If bCpf Then
+    Sql = "select * from cidadao where cpf='" & mskCPF.ClipText & "' and codcidadao>=500000"
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    If RdoAux.RowCount > 0 Then
+        MsgBox "Já existe um cidadão (" & RdoAux!CodCidadao & ") com este CPF cadstrado", vbCritical, "Erro"
+        RdoAux.Close
+        Exit Sub
+    End If
+    RdoAux.Close
+End If
+
+If bCnpj Then
+    Sql = "select * from cidadao where cnpj='" & mskCNPJ.ClipText & "' and codcidadao>=500000"
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    If RdoAux.RowCount > 0 Then
+        MsgBox "Já existe um cidadão (" & RdoAux!CodCidadao & ") com este Cnpj cadstrado", vbCritical, "Erro"
+        RdoAux.Close
+        Exit Sub
+    End If
+    RdoAux.Close
+End If
+
+Sql = "select max(codcidadao) as maximo from cidadao"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+nMaxCod = RdoAux!maximo + 1
+
+Sql = "update cidadao set codcidadao=" & nMaxCod & " where codcidadao=" & Val(txtCod.Text)
+cn.Execute Sql, rdExecDirect
+
+Sql = "update proprietario set codcidadao=" & nMaxCod & " where codcidadao=" & Val(txtCod.Text)
+cn.Execute Sql, rdExecDirect
+
+txtCod.Text = nMaxCod
+MsgBox "Criado cidadão: " & nMaxCod, vbInformation, "Atenção"
+
+End Sub
+
 Private Sub btObservacao_Click()
 Dim frm2 As frmObsCidadao
 If Val(txtCod.Text) = 0 Then
@@ -1748,9 +1906,32 @@ End If
 End Sub
 
 Public Sub cmbCidade_Click()
-If Not bExec Then Exit Sub
-If cmbCidade.ListIndex = -1 Then Exit Sub
+Dim tBairro As Bairro
 cmbBairro.Clear
+If cmbCidade.ListIndex = -1 Then Exit Sub
+If cmbCidade.ItemData(cmbCidade.ListIndex) = 413 Then
+    tBairro = RetornaLogradouroBairro(Val(txtNomeLog.Tag), Val(txtNum.Text))
+    txtBairroR.Text = tBairro.Nome
+    txtBairroR.Tag = tBairro.Codigo
+    cmbBairro.Visible = False
+    cmdAddBairro.Visible = False
+    txtBairroR.Visible = True
+    Exit Sub
+End If
+'If Not bExec Then Exit Sub
+
+If cmbCidade.ListIndex = -1 Then Exit Sub
+If cmbCidade.ItemData(cmbCidade.ListIndex) = 413 Then
+    cmbBairro.Visible = False
+    cmdAddBairro.Visible = False
+    txtBairroR.Visible = True
+    Exit Sub
+Else
+    cmbBairro.Visible = True
+    cmdAddBairro.Visible = True
+    txtBairroR.Visible = False
+End If
+
 Sql = "SELECT CODBAIRRO,DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='" & Left$(cmbUF.Text, 2) & "' AND CODCIDADE=" & cmbCidade.ItemData(cmbCidade.ListIndex)
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
@@ -1768,9 +1949,30 @@ End With
 End Sub
 
 Public Sub cmbCidade2_Click()
-If Not bExec Then Exit Sub
-If cmbCidade2.ListIndex = -1 Then Exit Sub
+Dim tBairro As Bairro
 cmbBairro2.Clear
+If cmbCidade2.ListIndex = -1 Then Exit Sub
+If cmbCidade2.ItemData(cmbCidade2.ListIndex) = 413 Then
+    tBairro = RetornaLogradouroBairro(Val(txtNomeLog2.Tag), Val(txtNum2.Text))
+    txtBairroC.Text = tBairro.Nome
+    txtBairroC.Tag = tBairro.Codigo
+    cmbBairro2.Visible = False
+    cmdAddBairro2.Visible = False
+    txtBairroC.Visible = True
+    Exit Sub
+End If
+
+If cmbCidade2.ListIndex = -1 Then Exit Sub
+If cmbCidade2.ItemData(cmbCidade2.ListIndex) = 413 Then
+    cmbBairro2.Visible = False
+    cmdAddBairro2.Visible = False
+    txtBairroC.Visible = True
+    Exit Sub
+Else
+    cmbBairro2.Visible = True
+    cmdAddBairro2.Visible = True
+    txtBairroC.Visible = False
+End If
 Sql = "SELECT CODBAIRRO,DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='" & Left$(cmbUF2.Text, 2) & "' AND CODCIDADE=" & cmbCidade2.ItemData(cmbCidade2.ListIndex)
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
@@ -1810,7 +2012,7 @@ End Sub
 
 Private Sub cmbUF_Click()
 
-If Not bExec Then Exit Sub
+'If Not bExec Then Exit Sub
 cmbCidade.Clear
 cmbBairro.Clear
 Sql = "SELECT CODCIDADE,DESCCIDADE FROM CIDADE WHERE SIGLAUF='" & Left$(cmbUF.Text, 2) & "'"
@@ -1828,7 +2030,7 @@ End Sub
 
 Private Sub cmbUF2_Click()
 
-If Not bExec Then Exit Sub
+'If Not bExec Then Exit Sub
 cmbCidade2.Clear
 cmbBairro2.Clear
 Sql = "SELECT CODCIDADE,DESCCIDADE FROM CIDADE WHERE SIGLAUF='" & Left$(cmbUF2.Text, 2) & "'"
@@ -1887,7 +2089,7 @@ Private Sub cmdAlterar_Click()
        MsgBox "Não existem Registros.", vbCritical, "Atenção"
        Exit Sub
     End If
-    If NomeDeLogin <> "ROSE" And NomeDeLogin <> "FERNANDA.SIMOLIN" And NomeDeLogin <> "JOSEANE" And NomeDeLogin <> "ANGELICA" And NomeDeLogin <> "MARIELA" And NomeDeLogin <> "TICYANNE.OKIMASU" And NomeDeLogin <> "DANIELE.SILVA" And NomeDeLogin <> "MARIELA.CUSTODIO" Then
+    If NomeDeLogin <> "ROSE" And NomeDeLogin <> "FERNANDA.SIMOLIN" And NomeDeLogin <> "JOSEANE" And NomeDeLogin <> "ANGELICA" And NomeDeLogin <> "HENRIQUE.SOARES" And NomeDeLogin <> "TICYANNE.OKIMASU" And NomeDeLogin <> "DANIELE.SILVA" And NomeDeLogin <> "MARIELA.CUSTODIO" Then
  '       If Val(txtCod.Text) < 500000 Then
  '          MsgBox "Não é possivel alterar cidadãos antigos.", vbCritical, "Atenção"
  '          Exit Sub
@@ -1943,7 +2145,7 @@ With RdoAux
     Else
         If MsgBox("Deseja copiar os dados do cidadão " & !CodCidadao & "-" & !nomecidadao & " ?", vbYesNo + vbQuestion, "Confirmação") = vbYes Then
             Log Form, Me.Caption, Alteração, "Copiado cidadão " & !CodCidadao & " - " & nomecidadao & " para o código " & txtCod.Text & " - " & txtNome.Text
-            Sql = "update cidadao set cpf='" & SubNull(!CPF) & "',cnpj='" & SubNull(!Cnpj) & "',codlogradouro=" & Val(SubNull(!CodLogradouro)) & ","
+            Sql = "update cidadao set cpf='" & SubNull(!cpf) & "',cnpj='" & SubNull(!Cnpj) & "',codlogradouro=" & Val(SubNull(!CodLogradouro)) & ","
             Sql = Sql & "numimovel=" & Val(SubNull(!NUMIMOVEL)) & ",complemento='" & SubNull(!Complemento) & "',codbairro=" & Val(SubNull(!CodBairro)) & ","
             Sql = Sql & "codcidade=" & Val(!CodCidade) & ",siglauf='" & SubNull(!SiglaUF) & "' where codcidadao=" & Val(txtCod.Text)
             cn.Execute Sql, rdExecDirect
@@ -2002,7 +2204,7 @@ If bLocal Then
     Exit Sub
 End If
 
-Dim Y As Integer
+Dim y As Integer
     If txtNome.Text = "" Then
        MsgBox "Digite o Nome do Cidadão.", vbExclamation, "Atenção"
        txtNome.SetFocus
@@ -2023,8 +2225,13 @@ Dim Y As Integer
            Exit Sub
         End If
            
-        If txtOrgao.Text <> "" And mskRG.ClipText = "" Then
-           MsgBox "Digite o RG.", vbExclamation, "Atenção"
+  '      If txtOrgao.Text <> "" And mskRG.ClipText = "" Then
+  '         MsgBox "Digite o RG.", vbExclamation, "Atenção"
+  '         Exit Sub
+  '      End If
+           
+        If txtOrgaoCNH.Text <> "" And txtCNH = "" Then
+           MsgBox "Digite a CNH ou remova o orgão emissor.", vbExclamation, "Atenção"
            Exit Sub
         End If
            
@@ -2067,8 +2274,8 @@ Dim Y As Integer
            Exit Sub
         End If
     
-        If txtPais = "" And txtNomeLog.Text <> "" And cmbBairro.ListIndex = -1 Then
-           MsgBox "Favor selecionar o bairro residencial.", vbExclamation, "Atenção"
+        If (txtPais = "" Or txtPais.Text = "BRASIL") And txtNomeLog.Text <> "" And cmbBairro.ListIndex = -1 And Val(txtBairroR.Tag) = 0 Then
+           MsgBox "Bairro residencial não cadastrado.", vbExclamation, "Atenção"
            Exit Sub
         End If
     
@@ -2116,8 +2323,9 @@ Dim Y As Integer
            Exit Sub
         End If
     
-        If txtNomeLog2.Text <> "" And cmbBairro2.ListIndex < 1 Then
-           MsgBox "Favor selecionar o bairro end.comercial.", vbExclamation, "Atenção"
+       
+        If txtNomeLog2.Text <> "" And cmbBairro2.ListIndex < 1 And Val(txtBairroC.Tag) = 0 Then
+           MsgBox "Bairro comercial não cadastrado.", vbExclamation, "Atenção"
            Exit Sub
         End If
     
@@ -2194,7 +2402,7 @@ Dim Y As Integer
     If Evento = "Novo" Then
         For x = 0 To Forms.Count - 1
             If Forms(x).Name = "frmCadImob" Then
-                For Y = 1 To frmCadImob.tvProp.Nodes.Count
+                For y = 1 To frmCadImob.tvProp.Nodes.Count
                     On Error GoTo fim
                     If Right$(frmCadImob.tvProp.Nodes(x).Key, 5) = Format(txtCod.Text, "00000") Then
                        MsgBox "Ja existe um Proprietário ou Proprietário Solidário com este nome.", vbCritical, "Atenção"
@@ -2208,7 +2416,7 @@ Dim Y As Integer
                    Set NodX = frmCadImob.tvProp.Nodes.Add("COMP", tvwChild, "COMP" & Format(txtCod.Text, "00000"), txtNome.Text, 2)
                    frmCadImob.tvProp.Nodes("COMP" & Format(txtCod.Text, "00000")).ForeColor = vbBlue
                 End If
-                For Y = 1 To frmCadImob.tvProp.Nodes.Count
+                For y = 1 To frmCadImob.tvProp.Nodes.Count
                     frmCadImob.tvProp.Nodes(x).EnsureVisible
                 Next
 fim:
@@ -2217,8 +2425,8 @@ fim:
                 frmCadImob.SetFocus
                 Exit Sub
             ElseIf Forms(x).Name = "frmCadMob" Then
-                For Y = 1 To frmCadMob.grdProp.Rows - 1
-                    If Val(frmCadMob.grdProp.TextMatrix(Y, 0)) = Val(txtCod.Text) Then
+                For y = 1 To frmCadMob.grdProp.Rows - 1
+                    If Val(frmCadMob.grdProp.TextMatrix(y, 0)) = Val(txtCod.Text) Then
                        MsgBox "Ja existe um Proprietário ou Proprietário Solidário com este nome.", vbCritical, "Atenção"
                        GoTo Fim2
                     End If
@@ -2266,15 +2474,15 @@ If CodCidadao > 0 Then
 End If
 CodCidadao = 0
 
-If NomeForm = "frmProcesso" Then
+'If NomeForm = "frmProcesso" Then
     'bZOrder = True
-    If frmProcesso.cmdGravar.Visible = False Then
-        cmdNovo.Enabled = False
-        cmdAlterar.Enabled = False
-        cmdExcluir.Enabled = False
-        cmdConsultar.Enabled = False
-    End If
-End If
+'    If frmProcesso.cmdGravar.Visible = False Then
+'        cmdNovo.Enabled = False
+'        cmdAlterar.Enabled = False
+'        cmdExcluir.Enabled = False
+        'cmdConsultar.Enabled = False
+'    End If
+'End If
 
 Liberado
 
@@ -2314,7 +2522,7 @@ Eventos "INICIAR"
 End Sub
 
 Private Sub Le()
-Dim RdoS As rdoResultset
+Dim RdoS As rdoResultset, tBairro As Bairro
 
 Sql = "SELECT cidadao.*, profissao.nome AS profissao_nome,pais_1.nome_pais, pais.nome_pais AS nome_pais2 "
 Sql = Sql & "FROM profissao RIGHT OUTER JOIN cidadao LEFT OUTER JOIN pais AS pais_1 ON cidadao.codpais = pais_1.id_pais LEFT OUTER JOIN "
@@ -2324,7 +2532,7 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If .RowCount = 0 Then Exit Sub
     txtCod.Text = !CodCidadao
-    If Not IsNull(!CPF) Then mskCPF.Text = Format(Trim(!CPF), "000\.000\.000-00")
+    If Not IsNull(!cpf) Then mskCPF.Text = Format(Trim(!cpf), "000\.000\.000-00")
     If Not IsNull(!Cnpj) Then mskCNPJ.Text = Format(Trim(!Cnpj), "00\.000\.000/0000-00")
     If Not IsNull(!rg) Then mskRG.Text = !rg
     If Not IsNull(!data_nascimento) Then
@@ -2390,18 +2598,32 @@ With RdoAux
           bExec = False
             Sql = "SELECT DESCCIDADE FROM CIDADE WHERE SIGLAUF='" & !SiglaUF & "' AND CODCIDADE=" & !CodCidade
             Set RdoS = cn.OpenResultset(Sql, rdOpenKeyset)
-            cmbCidade.Text = RdoS!descCidade
+            If RdoS.RowCount > 0 Then
+                cmbCidade.Text = RdoS!descCidade
+            End If
             bExec = True
            cmbCidade_Click
-           If !CodBairro > 0 Then
-                Sql = "SELECT DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='" & !SiglaUF & "' AND CODCIDADE=" & !CodCidade & " AND CODBAIRRO=" & !CodBairro
-                Set RdoS = cn.OpenResultset(Sql, rdOpenKeyset)
-                If RdoS.RowCount > 0 Then
-                If RdoS!DescBairro <> "" Then
-                    cmbBairro.Text = RdoS!DescBairro
+           If !CodCidade <> 413 Then
+                 If !CodBairro > 0 Then
+                      Sql = "SELECT DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='" & !SiglaUF & "' AND CODCIDADE=" & !CodCidade & " AND CODBAIRRO=" & !CodBairro
+                      Set RdoS = cn.OpenResultset(Sql, rdOpenKeyset)
+                      If RdoS.RowCount > 0 Then
+                            If RdoS!DescBairro <> "" Then
+                                cmbBairro.Text = RdoS!DescBairro
+                            End If
+                      End If
                 End If
-                End If
-          End If
+                cmbBairro.Visible = True
+                cmdAddBairro.Visible = True
+                txtBairroR.Visible = False
+           Else
+                tBairro = RetornaLogradouroBairro(Val(SubNull(!CodLogradouro)), !NUMIMOVEL)
+                txtBairroR.Text = tBairro.Nome
+                txtBairroR.Tag = tBairro.Codigo
+                cmbBairro.Visible = False
+                cmdAddBairro.Visible = False
+                txtBairroR.Visible = True
+           End If
        End If
     End If
     
@@ -2420,13 +2642,30 @@ With RdoAux
             cmbCidade2.Text = RdoS!descCidade
             bExec = True
            cmbCidade2_Click
-           If !CodBairro2 > 0 Then
-                Sql = "SELECT DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='" & !SiglaUF2 & "' AND CODCIDADE=" & !CodCidade2 & " AND CODBAIRRO=" & !CodBairro2
-                Set RdoS = cn.OpenResultset(Sql, rdOpenKeyset)
-                If RdoS!DescBairro <> "" Then
-                    cmbBairro2.Text = RdoS!DescBairro
+           If !CodCidade2 <> 413 Then
+                 If !CodBairro > 0 Then
+                      Sql = "SELECT DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='" & !SiglaUF2 & "' AND CODCIDADE=" & !CodCidade2 & " AND CODBAIRRO=" & !CodBairro2
+                      Set RdoS = cn.OpenResultset(Sql, rdOpenKeyset)
+                      If RdoS.RowCount > 0 Then
+                            If RdoS!DescBairro <> "" Then
+                                cmbBairro2.Text = RdoS!DescBairro
+                            End If
+                      End If
                 End If
-          End If
+                cmbBairro2.Visible = True
+                cmdAddBairro2.Visible = True
+                txtBairroC.Visible = False
+           Else
+                If Not IsNull(!CodLogradouro2) Then
+                    tBairro = RetornaLogradouroBairro(Val(SubNull(!CodLogradouro2)), !NUMIMOVEL2)
+                    txtBairroC.Text = tBairro.Nome
+                    txtBairroC.Tag = tBairro.Codigo
+                End If
+                cmbBairro2.Visible = False
+                cmdAddBairro2.Visible = False
+                txtBairroC.Visible = True
+           End If
+           
        End If
     End If
     
@@ -2438,7 +2677,9 @@ With RdoAux
     End If
     txtFone.Text = SubNull(!telefone)
     txtEmail.Text = SubNull(!Email)
-    txtOrgao.Text = SubNull(!ORGAO)
+    txtOrgao.Text = SubNull(!Orgao)
+    txtCNH.Text = SubNull(!cnh)
+    txtOrgaoCNH.Text = SubNull(!orgaocnh)
 '    txtPais.Text = SubNull(!pais)
 '    txtPais2.Text = SubNull(!PAIS2)
     txtFone2.Text = SubNull(!Telefone2)
@@ -2577,6 +2818,7 @@ If Tipo = "INICIAR" Then
    cmdExcluir.Visible = True
    cmdSair.Visible = True
    cmdConsultar.Visible = True
+   cmdConsultar.Enabled = True
    cmdGravar.Visible = False
    cmdCancel.Visible = False
    For Each Ct In frmCidadao
@@ -2631,6 +2873,8 @@ ElseIf Tipo = "INCLUIR" Then
           Ct.Enabled = True
        End If
    Next
+   txtBairroR.BackColor = Kde
+   txtBairroC.BackColor = Kde
    txtProfissao.BackColor = Kde
    mskDtNascto.Enabled = True
    mskDtNascto.BackColor = vbWhite
@@ -2716,6 +2960,11 @@ Dim bValue As Boolean
 
 If chkEtiq2.value = vbChecked Then
     bValue = True
+    If Evento = "Novo" Then
+        cmbUF2.Text = "SP-SÃO PAULO"
+        cmbUF2_Click
+        cmbCidade2.Text = "JABOTICABAL"
+    End If
 Else
     bValue = False
 End If
@@ -2767,6 +3016,10 @@ txtNumLog.Text = 0
 txtNomeLog.Text = ""
 txtNum.Text = 0
 txtCompl.Text = ""
+txtBairroR.Text = ""
+txtBairroR.Tag = "0"
+txtBairroC.Text = ""
+txtBairroC.Tag = "0"
 cmbBairro.ListIndex = -1
 cmbCidade.ListIndex = -1
 cmbUF.ListIndex = -1
@@ -2796,6 +3049,9 @@ chkFone1.value = vbUnchecked
 chkFone2.value = vbUnchecked
 chkWhatsApp.value = vbUnchecked
 chkWhatsApp2.value = vbUnchecked
+txtCNH.Text = ""
+txtOrgao.Text = ""
+txtOrgaoCNH.Text = ""
 End Sub
 
 Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
@@ -2928,6 +3184,12 @@ mskRG.SelLength = Len(mskRG.Text)
 'mskRG.SetFocus
 End Sub
 
+
+
+Private Sub txtCNH_KeyPress(KeyAscii As Integer)
+Tweak txtCNH, KeyAscii, IntegerPositive
+End Sub
+
 Private Sub txtCompl_GotFocus()
 txtCompl.SelStart = 0
 txtCompl.SelLength = Len(txtCompl)
@@ -2976,7 +3238,7 @@ Private Sub txtNum2_KeyPress(KeyAscii As Integer)
 End Sub
 
 Private Sub txtNum_LostFocus()
-Dim s As String
+Dim s As String, tBairro As Bairro
 
 LimpaMascara mskCEP
 If cmbCidade.Text <> "JABOTICABAL" Then
@@ -2987,12 +3249,15 @@ End If
 If txtNomeLog.Text <> "" Then
     s = RetornaCEP(Val(txtNumLog.Text), Val(txtNum.Text))
     mskCEP.Text = s
+    tBairro = RetornaLogradouroBairro(Val(txtNumLog.Text), Val(txtNum.Text))
+    txtBairroR.Text = tBairro.Nome
+    txtBairroR.Tag = tBairro.Codigo
 End If
 
 End Sub
 
 Private Sub txtNum2_LostFocus()
-Dim s As String
+Dim s As String, tBairro As Bairro
 
 LimpaMascara mskCEP2
 If cmbCidade2.Text <> "JABOTICABAL" Then
@@ -3002,6 +3267,9 @@ End If
 If txtNomeLog2.Text <> "" Then
     s = RetornaCEP(Val(txtNumLog2.Text), Val(txtNum2.Text))
     mskCEP2.Text = s
+    tBairro = RetornaLogradouroBairro(Val(txtNumLog2.Text), Val(txtNum2.Text))
+    txtBairroC.Text = tBairro.Nome
+    txtBairroC.Tag = tBairro.Codigo
 End If
 
 End Sub
@@ -3026,10 +3294,14 @@ Else
     nPessoa = 1
 End If
 
-If cmbBairro.ListIndex > -1 Then
-    nBairro = cmbBairro.ItemData(cmbBairro.ListIndex)
+If txtBairroR.Visible = True Then
+    nBairro = Val(txtBairroR.Tag)
 Else
-    nBairro = 0
+    If cmbBairro.ListIndex > -1 Then
+        nBairro = cmbBairro.ItemData(cmbBairro.ListIndex)
+    Else
+        nBairro = 0
+    End If
 End If
 If cmbCidade.ListIndex > -1 Then
     nCidade = cmbCidade.ItemData(cmbCidade.ListIndex)
@@ -3037,10 +3309,14 @@ Else
     nCidade = 0
 End If
 
-If cmbBairro2.ListIndex > -1 Then
-    nBairro2 = cmbBairro2.ItemData(cmbBairro2.ListIndex)
+If txtBairroC.Visible = True Then
+    nBairro2 = Val(txtBairroC.Tag)
 Else
-    nBairro2 = 0
+    If cmbBairro2.ListIndex > -1 Then
+        nBairro2 = cmbBairro2.ItemData(cmbBairro2.ListIndex)
+    Else
+        nBairro2 = 0
+    End If
 End If
 If cmbCidade2.ListIndex > -1 Then
     nCidade2 = cmbCidade2.ItemData(cmbCidade2.ListIndex)
@@ -3052,7 +3328,8 @@ End If
 If Evento = "Novo" Then
     Sql = "INSERT CIDADAO(CODCIDADAO,NOMECIDADAO,CPF,CNPJ,CODLOGRADOURO,NUMIMOVEL,COMPLEMENTO,CODBAIRRO,CODCIDADE,"
     Sql = Sql & "SIGLAUF,CEP,TELEFONE,EMAIL,RG,NOMELOGRADOURO,ORGAO,JURIDICA,CODPAIS,CODLOGRADOURO2,NUMIMOVEL2,COMPLEMENTO2,CODBAIRRO2,CODCIDADE2,"
-    Sql = Sql & "SIGLAUF2,CEP2,NOMELOGRADOURO2,ETIQUETA,CODPAIS2,TELEFONE2,EMAIL2,ETIQUETA2,data_nascimento,codprofissao,temfone,temfone2,whatsapp,whatsapp2) VALUES(" & MaxCod & ",'" & Mask(txtNome.Text) & "','"
+    Sql = Sql & "SIGLAUF2,CEP2,NOMELOGRADOURO2,ETIQUETA,CODPAIS2,TELEFONE2,EMAIL2,ETIQUETA2,data_nascimento,codprofissao,temfone,temfone2,whatsapp,"
+    Sql = Sql & "whatsapp2,cnh,orgaocnh) VALUES(" & MaxCod & ",'" & Mask(txtNome.Text) & "','"
     Sql = Sql & IIf(mskCPF.ClipText = "", "", mskCPF.ClipText) & "','" & IIf(mskCNPJ.ClipText = "", "", mskCNPJ.ClipText) & "',"
     Sql = Sql & IIf(Val(txtNumLog.Text) > 0, Val(txtNumLog.Text), "Null") & "," & Val(txtNum.Text) & ",'" & Mask(txtCompl.Text) & "'," & IIf(nBairro > 0, nBairro, "Null") & ","
     Sql = Sql & IIf(nCidade > 0, nCidade, "Null") & ",'" & Left$(cmbUF.Text, 2) & "'," & IIf(Trim(mskCEP.ClipText) = "", "Null", "'" & mskCEP.ClipText & "'") & ",'" & Mask(txtFone.Text) & "','"
@@ -3062,7 +3339,7 @@ If Evento = "Novo" Then
     Sql = Sql & Left$(cmbUF2.Text, 2) & "'," & IIf(Trim(mskCEP2.ClipText) = "", "Null", "'" & mskCEP2.ClipText & "'") & "," & IIf(Val(txtNumLog2.Text) > 0, "Null", "'" & txtNomeLog2.Text & "'") & ",'"
     Sql = Sql & IIf(chkEtiq.value = vbChecked, "S", "N") & "'," & IIf(txtPais2.Tag = "", 1, Val(txtPais2.Tag)) & ",'" & Mask(txtFone2.Text) & "','" & Mask(txtEmail2.Text) & "','" & IIf(chkEtiq2.value = vbChecked, "S", "N") & "',"
     Sql = Sql & IIf(IsDate(mskDtNascto.Text), "'" & Format(mskDtNascto.Text, "mm/dd/yyyy") & "'", "Null") & "," & Val(txtProfissao.Tag) & "," & IIf(chkFone1.value = vbChecked, 1, 0) & ","
-    Sql = Sql & IIf(chkFone2.value = vbChecked, 1, 0) & "," & IIf(chkWhatsApp.value = vbChecked, 1, 0) & "," & IIf(chkWhatsApp2.value = vbChecked, 1, 0) & ")"
+    Sql = Sql & IIf(chkFone2.value = vbChecked, 1, 0) & "," & IIf(chkWhatsApp.value = vbChecked, 1, 0) & "," & IIf(chkWhatsApp2.value = vbChecked, 1, 0) & ",'" & txtCNH.Text & "','" & Mask(txtOrgaoCNH.Text) & "')"
 Else
     Sql = "UPDATE CIDADAO SET NOMECIDADAO='" & Mask(txtNome.Text) & "',CPF='" & IIf(mskCPF.ClipText = "", "", mskCPF.ClipText) & "',"
     Sql = Sql & "CNPJ='" & IIf(mskCNPJ.ClipText = "", "", mskCNPJ.ClipText) & "',CODLOGRADOURO=" & IIf(Val(txtNumLog.Text) > 0, Val(txtNumLog.Text), "Null") & ","
@@ -3075,15 +3352,13 @@ Else
     Sql = Sql & "SIGLAUF2='" & Left$(cmbUF2.Text, 2) & "',CEP2=" & IIf(Trim(mskCEP2.ClipText) = "", "Null", "'" & mskCEP2.ClipText & "'") & ",NOMELOGRADOURO2=" & IIf(Val(txtNumLog2.Text) > 0, "Null", "'" & txtNomeLog2.Text & "'") & ","
     Sql = Sql & "ETIQUETA='" & IIf(chkEtiq.value = vbChecked, "S", "N") & "',CODPAIS2=" & IIf(txtPais2.Tag = "", 1, Val(txtPais2.Tag)) & ",TELEFONE2='" & Mask(txtFone2.Text) & "',EMAIL2='" & Mask(txtEmail2.Text) & "',ETIQUETA2='" & IIf(chkEtiq2.value = vbChecked, "S", "N") & "',"
     Sql = Sql & "data_nascimento=" & IIf(IsDate(mskDtNascto.Text), "'" & Format(mskDtNascto.Text, "mm/dd/yyyy") & "'", "Null") & ",codPROFISSAO=" & IIf(Val(SubNull(txtProfissao.Tag)) = 0, 1, Val(txtProfissao.Tag)) & ",TEMFONE=" & IIf(chkFone1.value = vbChecked, 1, 0) & ","
-    Sql = Sql & "TEMFONE2=" & IIf(chkFone2.value = vbChecked, 1, 0) & ",WHATSAPP=" & IIf(chkWhatsApp.value = vbChecked, 1, 0) & ",WHATSAPP2=" & IIf(chkWhatsApp2.value = vbChecked, 1, 0) & " Where CodCidadao = " & Val(txtCod.Text)
+    Sql = Sql & "TEMFONE2=" & IIf(chkFone2.value = vbChecked, 1, 0) & ",WHATSAPP=" & IIf(chkWhatsApp.value = vbChecked, 1, 0) & ",WHATSAPP2=" & IIf(chkWhatsApp2.value = vbChecked, 1, 0) & ",CNH='" & txtCNH.Text & "',"
+    Sql = Sql & "ORGAOCNH='" & txtOrgaoCNH.Text & "' Where CodCidadao = " & Val(txtCod.Text)
 End If
  cn.Execute Sql, rdExecDirect
 
 If Evento = "Novo" Then
    txtCod.Text = MaxCod
-   
-'   Sql = "insert historicocidadao(codigo,data,usuario,obs) values(" & MaxCod & ",'" & Format(Now, sDataFormat & " hh:mm:ss") & "','" & NomeDeLogin & "','"
-'   Sql = Sql & "Cidadão criado através da tela de cadastro de cidadão')"
    Sql = "insert historicocidadao(codigo,data,userid,obs) values(" & MaxCod & ",'" & Format(Now, sDataFormat & " hh:mm:ss") & "'," & RetornaUsuarioID(NomeDeLogin) & ",'"
    Sql = Sql & "Cidadão criado através da tela de cadastro de cidadão')"
    cn.Execute Sql, rdExecDirect
@@ -3375,24 +3650,37 @@ End If
 End Sub
 
 Private Sub txtNumLog_LostFocus()
+Dim tBairro As Bairro
+
 If Val(txtNumLog.Text) > 0 Then
-   Sql = "select codlogradouro,endereco from logradouro where codlogradouro=" & Val(txtNumLog.Text)
-   Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-   With RdoAux
-       If .RowCount > 0 Then
-          txtNomeLog.Text = !Endereco
-       Else
-          txtNomeLog.Text = ""
-          MsgBox "Logradouro não cadastrado.", vbExclamation, "Atenção"
-          txtNumLog.SetFocus
-       End If
-      .Close
-   End With
+    Sql = "select codlogradouro,endereco from logradouro where codlogradouro=" & Val(txtNumLog.Text)
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    With RdoAux
+        If .RowCount > 0 Then
+           txtNomeLog.Text = !Endereco
+        Else
+           txtNomeLog.Text = ""
+           MsgBox "Logradouro não cadastrado.", vbExclamation, "Atenção"
+           txtNumLog.SetFocus
+        End If
+       .Close
+    End With
+   
+    If txtNomeLog.Text <> "" Then
+        s = RetornaCEP(Val(txtNumLog.Text), Val(txtNum.Text))
+        mskCEP.Text = s
+        tBairro = RetornaLogradouroBairro(Val(txtNumLog.Text), Val(txtNum.Text))
+        txtBairroR.Text = tBairro.Nome
+        txtBairroR.Tag = tBairro.Codigo
+    End If
+    
+   
 End If
 
 End Sub
 
 Private Sub txtNumLog2_LostFocus()
+Dim tBairro As Bairro
 If Val(txtNumLog2.Text) > 0 Then
    Sql = "select codlogradouro,endereco from logradouro where codlogradouro=" & Val(txtNumLog2.Text)
    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -3406,6 +3694,14 @@ If Val(txtNumLog2.Text) > 0 Then
        End If
       .Close
    End With
+
+    If txtNomeLog2.Text <> "" Then
+        s = RetornaCEP(Val(txtNumLog2.Text), Val(txtNum2.Text))
+        mskCEP2.Text = s
+        tBairro = RetornaLogradouroBairro(Val(txtNumLog2.Text), Val(txtNum2.Text))
+        txtBairroC.Text = tBairro.Nome
+        txtBairroC.Tag = tBairro.Codigo
+    End If
 End If
 
 End Sub

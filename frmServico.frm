@@ -188,14 +188,14 @@ End Type
     
 Private Sub CallPb(nVal As Long, nTot As Long)
 If nVal > 0 Then
-    PBar.Color = &HC0C000
+    pBar.Color = &HC0C000
 Else
-    PBar.Color = vbWhite
+    pBar.Color = vbWhite
 End If
 If ((nVal * 100) / nTot) <= 100 Then
-   PBar.value = (nVal * 100) / nTot
+   pBar.value = (nVal * 100) / nTot
 Else
-   PBar.value = 100
+   pBar.value = 100
 End If
 
 Me.Refresh
@@ -315,7 +315,7 @@ If CheckUpdate Then
    Exit Sub
 End If
 
-If NomeDeLogin = "SCHWARTZ" Then Exit Sub
+'If NomeDeLogin = "SCHWARTZ" Then Exit Sub
 
 'Exit Sub
 btVerificar.Enabled = False
@@ -505,7 +505,7 @@ With RdoAux
 End With
 
 txtMsg.Text = MsgDefault
-PBar.value = 0
+pBar.value = 0
 Liberado
 cnEicon2.Close
 End Sub
@@ -553,7 +553,7 @@ With RdoAux
         With RdoEmp
             If RdoEmp.RowCount = 0 Then GoTo Proximo
             sIE = RetornaNumero(SubNull(!inscestadual))
-            sRazao = !razaosocial
+            sRazao = !RazaoSocial
             sFantasia = SubNull(!NOMEFANTASIA)
             sNumProcesso = SubNull(!NUMPROCESSO)
             If Len(SubNull(!Cnpj)) = 14 Then
@@ -561,7 +561,7 @@ With RdoAux
                 sDoc = RetornaNumero(!Cnpj)
             Else
                 sTipoEmpresa = "F"
-                sDoc = RetornaNumero(SubNull(!CPF))
+                sDoc = RetornaNumero(SubNull(!cpf))
             End If
             If Len(sDoc) < 2 Then sTipoEmpresa = "J"
             sDataAbertura = Format(!DataAbertura, "dd/mm/yyyy")
@@ -801,7 +801,7 @@ Proximo:
     Loop
     RdoAux.Close
 End With
-PBar.value = 0
+pBar.value = 0
 Sql = "delete from eicon_empresa"
 cn.Execute Sql, rdExecDirect
 
@@ -878,7 +878,7 @@ With RdoAux
                     End If
                     RdoAux2.Close
                     
-                    sDoc = RetornaNumero(SubNull(!CPF))
+                    sDoc = RetornaNumero(SubNull(!cpf))
                     
                     If Not IsNull(!etiqueta2) Then
                         sTipoEnd = "C"
@@ -1046,7 +1046,7 @@ Dim nCodigo As Long, sDataIni As String, sDataFim As String, nPos As Long, nTot 
 
 ConectaEicon2
 
-PBar.value = 0
+pBar.value = 0
 nPos = 0
 Sql = "SELECT periodomei.id, periodomei.codigo, periodomei.datainicio, periodomei.datafim, periodomei.cnpj_base, periodomei.data_exportacao, mobiliario.cnpj "
 Sql = Sql & "FROM periodomei INNER JOIN mobiliario ON periodomei.codigo = mobiliario.codigomob where data_exportacao is null order by id"
@@ -1125,7 +1125,7 @@ End With
 'End With
 
 cnEicon2.Close
-PBar.value = 0
+pBar.value = 0
 Exit Sub
 Erro:
 'MsgBox Err.Description
@@ -1141,7 +1141,7 @@ Dim nCodigo As Long, sDataIni As String, sDataFim As String, nPos As Long, nTot 
 
 ConectaEicon2
 
-PBar.value = 0
+pBar.value = 0
 nPos = 0
 Sql = "SELECT optante_simples.codigo, optante_simples.data_inicio, optante_simples.data_final, optante_simples.cnpj_base, optante_simples.timestamp, optante_simples.data_exportacao, mobiliario.cnpj "
 Sql = Sql & "FROM optante_simples INNER JOIN mobiliario ON optante_simples.codigo = mobiliario.codigomob where data_exportacao is null order by timestamp"
@@ -1210,7 +1210,7 @@ End With
 'End With
 
 cnEicon2.Close
-PBar.value = 0
+pBar.value = 0
 Exit Sub
 Erro:
 MsgBox Err.Description
@@ -1226,7 +1226,7 @@ Dim sCep As String, sFone As String, sEmail As String, sBairro As String, sCidad
 Dim nCodCidadao As Long
 
 ConectaEicon2
-PBar.value = 0
+pBar.value = 0
 nPos = 0
 Sql = "select * from tb_inter_empresas_giss where controle is null order by cpf_cnpj"
 Set RdoAux = cnEicon2.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -1333,7 +1333,7 @@ Proximo:
 End With
 
 cnEicon2.Close
-PBar.value = 0
+pBar.value = 0
 Exit Sub
 Erro:
 MsgBox Err.Description

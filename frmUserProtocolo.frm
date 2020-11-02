@@ -5,14 +5,14 @@ Begin VB.Form frmUsuario
    BackColor       =   &H00EEEEEE&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Cadastro de Usuários"
-   ClientHeight    =   6075
-   ClientLeft      =   4320
-   ClientTop       =   1605
+   ClientHeight    =   6990
+   ClientLeft      =   14265
+   ClientTop       =   1620
    ClientWidth     =   5625
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
-   ScaleHeight     =   6075
+   ScaleHeight     =   6990
    ScaleWidth      =   5625
    Begin VB.Frame pn3 
       BackColor       =   &H00EEEEEE&
@@ -99,7 +99,7 @@ Begin VB.Form frmUsuario
       Left            =   4470
       TabIndex        =   23
       ToolTipText     =   "Sair da Tela"
-      Top             =   5685
+      Top             =   6585
       Width           =   1035
       _ExtentX        =   1826
       _ExtentY        =   556
@@ -140,7 +140,7 @@ Begin VB.Form frmUsuario
       Left            =   4470
       TabIndex        =   18
       ToolTipText     =   "Cancelar Edição"
-      Top             =   5685
+      Top             =   6585
       Width           =   1035
       _ExtentX        =   1826
       _ExtentY        =   556
@@ -180,7 +180,7 @@ Begin VB.Form frmUsuario
       Left            =   90
       TabIndex        =   19
       ToolTipText     =   "Novo Registro"
-      Top             =   5685
+      Top             =   6585
       Width           =   1035
       _ExtentX        =   1826
       _ExtentY        =   556
@@ -220,7 +220,7 @@ Begin VB.Form frmUsuario
       Left            =   1140
       TabIndex        =   20
       ToolTipText     =   "Editar Registro"
-      Top             =   5685
+      Top             =   6585
       Width           =   1035
       _ExtentX        =   1826
       _ExtentY        =   556
@@ -260,7 +260,7 @@ Begin VB.Form frmUsuario
       Left            =   2190
       TabIndex        =   21
       ToolTipText     =   "Excluir Registro"
-      Top             =   5685
+      Top             =   6585
       Width           =   1035
       _ExtentX        =   1826
       _ExtentY        =   556
@@ -300,7 +300,7 @@ Begin VB.Form frmUsuario
       Left            =   3420
       TabIndex        =   22
       ToolTipText     =   "Gravar os Dados"
-      Top             =   5685
+      Top             =   6585
       Width           =   1035
       _ExtentX        =   1826
       _ExtentY        =   556
@@ -376,10 +376,10 @@ Begin VB.Form frmUsuario
    End
    Begin VB.Frame pn1 
       BackColor       =   &H00EEEEEE&
-      Height          =   5250
-      Left            =   30
+      Height          =   6060
+      Left            =   0
       TabIndex        =   7
-      Top             =   330
+      Top             =   360
       Width           =   5595
       Begin VB.TextBox Text1 
          Appearance      =   0  'Flat
@@ -487,6 +487,71 @@ Begin VB.Form frmUsuario
          HAND            =   0   'False
          CHECK           =   0   'False
          VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton cmdFoto2 
+         Height          =   270
+         Left            =   585
+         TabIndex        =   35
+         ToolTipText     =   "Carregar imagem da assinatura"
+         Top             =   5580
+         Width           =   495
+         _ExtentX        =   873
+         _ExtentY        =   476
+         BTYPE           =   3
+         TX              =   "..."
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   0
+         FCOLO           =   0
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmUserProtocolo.frx":0A27
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin VB.Label Label2 
+         BackStyle       =   0  'Transparent
+         Caption         =   "Assinatura..:"
+         Height          =   255
+         Index           =   4
+         Left            =   135
+         TabIndex        =   37
+         Top             =   5310
+         Width           =   945
+      End
+      Begin VB.Image Image2 
+         Height          =   555
+         Left            =   1170
+         Stretch         =   -1  'True
+         Top             =   5310
+         Width           =   2085
+      End
+      Begin VB.Label lblAss2 
+         Caption         =   ".."
+         Height          =   240
+         Left            =   135
+         TabIndex        =   36
+         Top             =   5580
+         Visible         =   0   'False
+         Width           =   330
       End
       Begin VB.Label lblCod 
          Caption         =   "0000"
@@ -608,13 +673,13 @@ Begin VB.Form frmUsuario
       End
    End
    Begin vbalDTab6.vbalDTabControl TabUser 
-      Height          =   5565
+      Height          =   6375
       Left            =   0
       TabIndex        =   5
-      Top             =   0
+      Top             =   45
       Width           =   5610
       _ExtentX        =   9895
-      _ExtentY        =   9816
+      _ExtentY        =   11245
       AllowScroll     =   0   'False
       TabAlign        =   0
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -698,6 +763,16 @@ lblAss.Caption = fName
 
 End Sub
 
+Private Sub cmdFoto2_Click()
+Dim fName As String, cc As cCommonDlg
+
+Set cc = New cCommonDlg
+cc.VBGetOpenFileName fName, , , , , , "Imagem da assinatura|*.jpg;*.png", , "C:\trabalho\gti\diversos", "Selecione uma assinatura", , Me.HWND, OFN_HIDEREADONLY, False
+Image2.Picture = LoadPicture(fName)
+lblAss2.Caption = fName
+
+End Sub
+
 Private Sub cmdGravar_Click()
 Dim j As Integer, bAchou As Boolean
 Ocupado
@@ -722,7 +797,7 @@ End If
 If Trim$(txtSenha.Text) = "" Or Trim$(txtSenha2.Text) = "" Then
     Liberado
     MsgBox "Digite a senha e confirmação de senha.", vbExclamation, "Atenção"
-    txtSenha.SetFocus
+   ' txtSenha.SetFocus
     Exit Sub
 End If
 If Len(Trim$(txtSenha.Text)) < 6 Then
@@ -838,7 +913,7 @@ Sql = "SELECT CODIGO,DESCRICAO FROM CENTROCUSTO WHERE ATIVO=1"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-        lstSetor.AddItem !descricao
+        lstSetor.AddItem !Descricao
         lstSetor.ItemData(lstSetor.NewIndex) = !Codigo
        .MoveNext
     Loop
@@ -940,6 +1015,7 @@ lblAss.Caption = ""
 
 Set Image1.DataSource = Nothing
 Image1.Picture = Nothing
+Image2.Picture = Nothing
 lblCod.Caption = "0000"
 txtNome.Text = ""
 txtLogin = ""
@@ -1061,6 +1137,17 @@ If RdoAux.RowCount > 0 Then
     End With
     Set mStream = Nothing
 
+    With mStream
+        .Type = adTypeBinary
+        .Open
+        If Not IsNull(rst("fotoass2")) Then
+            .Write rst("fotoass2")
+            Image2.DataField = "fotoass2"
+            Set Image2.DataSource = rst
+        End If
+    End With
+    Set mStream = Nothing
+
 End If
 RdoAux.Close
 
@@ -1083,6 +1170,7 @@ If Evento = "Novo" Then
         Sql = Sql & sLogin & "','" & Trim$(Mask(txtNome.Text)) & "',1," & IIf(chkFiscal.value = vbChecked, 1, 0) & ",'" & Encrypt128(Mask(txtSenha.Text), "everest") & "',0)"
         cn.Execute Sql, rdExecDirect
        'adiciona os centro de custos
+       On Error Resume Next
         For j = 0 To lstSetor.ListCount - 1
             If lstSetor.Selected(j) = True Then
                 Sql = "INSERT USUARIOCC (USERID,CODIGOCC) VALUES("
@@ -1178,6 +1266,31 @@ If lblAss.Caption <> "" Then
             rst.Update
         End With
         Set mStream = Nothing
+    Else
+        MsgBox "Sem assinatura cadastrada.", vbCritical, "Erro"
+    End If
+End If
+
+If lblAss2.Caption <> "" And lblAss2.Caption <> ".." Then
+    'grava foto
+    Dim mStream2 As New ADODB.Stream
+    Dim rst2 As New ADODB.Recordset
+    Dim adoConn2 As New ADODB.Connection
+    
+    adoConn2.CursorLocation = adUseClient
+    'adoConn.Open "Provider=SQLOLEDB.1;Persist Security Info=True;User ID=" & NomeDeLogin & ";Password=" & UserPwd & ";Initial Catalog=Tributacao;Data Source=" & IPServer
+    adoConn2.Open cn.Connect
+        
+    rst2.Open "Select * from assinatura where usuario='" & txtLogin.Text & "'", adoConn2, adOpenKeyset, adLockOptimistic
+    If rst2.RecordCount > 0 Then
+        With mStream2
+            .Type = adTypeBinary
+            .Open
+            .LoadFromFile lblAss2.Caption
+            rst2("fotoass2").value = .Read
+            rst2.Update
+        End With
+        Set mStream2 = Nothing
     Else
         MsgBox "Sem assinatura cadastrada.", vbCritical, "Erro"
     End If

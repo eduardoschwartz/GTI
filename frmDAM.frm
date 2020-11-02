@@ -7,14 +7,14 @@ Begin VB.Form frmDAM
    BackColor       =   &H00EEEEEE&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Emissão de ficha de compensação (D.A.M.)"
-   ClientHeight    =   4950
+   ClientHeight    =   5010
    ClientLeft      =   8550
    ClientTop       =   3405
    ClientWidth     =   8970
    ControlBox      =   0   'False
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
-   ScaleHeight     =   4950
+   ScaleHeight     =   5010
    ScaleWidth      =   8970
    ShowInTaskbar   =   0   'False
    Begin VB.CheckBox chkDesativaRefis 
@@ -432,7 +432,7 @@ Begin VB.Form frmDAM
    End
    Begin VB.Label lblAnistia2 
       BackStyle       =   0  'Transparent
-      Caption         =   "Isenção dos juros e multa conforme REFIS-2017 em :"
+      Caption         =   "Isenção dos juros e multa conforme REFIS-2020 em :"
       ForeColor       =   &H00800000&
       Height          =   255
       Left            =   4200
@@ -585,13 +585,13 @@ Begin VB.Form frmDAM
       Caption         =   "mnuAnistia"
       Visible         =   0   'False
       Begin VB.Menu mnuA1 
-         Caption         =   "até 18/10/2019 (100%)"
+         Caption         =   "até 19/10/2020 (100%)"
       End
       Begin VB.Menu mnuA2 
-         Caption         =   "até 29/11/2019 (90%)"
+         Caption         =   "até 30/11/2020 (80%)"
       End
       Begin VB.Menu mnuA4 
-         Caption         =   "até 20/12/2019(80%)"
+         Caption         =   "até 22/12/2020(70%)"
       End
    End
 End
@@ -759,11 +759,23 @@ Private Type Boletos
     sUF As String
 End Type
 
+Private Type Debito_Decreto
+    nCodReduz As Long
+    nAno As Integer
+    nLanc As Integer
+    nSeq As Integer
+    nParc As Integer
+    nCompl As Integer
+    nValorMulta  As Double
+    nValorJuros As Double
+End Type
+
+
 Dim nNumRemessa As Long, sArquivo As String, sDataArquivo As String, aBoletos() As Boletos
 
 Dim sLANCAMENTO As String, sTributo As String, nSomaPrincipal As Double, bISSVariavel As Boolean
 Dim bCorrecao As Boolean, dVencto As Date, bHonorario As Boolean, nCodigoDam As Long, sDataVenctoDAM As String, bITBI As Boolean, bRefisAtivo As Boolean, bRefisAtivoDI As Boolean
-Dim dDataIni As Date, dDataFim As Date, dDataIniDI As Date, dDataFimDI As Date, nPlano As Integer, bExec As Boolean
+Dim dDataIni As Date, dDataFim As Date, dDataIniDI As Date, dDataFimDI As Date, nPlano As Integer, bExec As Boolean, aDebito_Decreto() As Debito_Decreto
 
 Public Property Let Honorarios(bValor As Boolean)
     bHonorario = bValor
@@ -928,7 +940,7 @@ End Sub
 
 Private Sub cmdBaixa_Click()
 Dim nCodReduz As Long, nAno As Integer, nLanc As Integer, nSeq As Integer, nParc As Integer
-Dim nCompl As Integer, x As Integer, aAno() As Integer, Y As Integer, bAchou As Boolean, sVento As String
+Dim nCompl As Integer, x As Integer, aAno() As Integer, y As Integer, bAchou As Boolean, sVento As String
 Dim bFindOldYear As Boolean
 
 'If nSeqFator = nSeqFator2 Then GoTo FIM2
@@ -995,8 +1007,8 @@ For x = 1 To grdTemp.Rows - 1
     If Val(grdTemp.TextMatrix(x, 1)) <> 4 And Val(grdTemp.TextMatrix(x, 1)) <> 41 Then
         nAno = grdTemp.TextMatrix(x, 0)
         bAchou = False
-        For Y = 1 To UBound(aAno)
-            If aAno(Y) = nAno Then
+        For y = 1 To UBound(aAno)
+            If aAno(y) = nAno Then
                 bAchou = True
                 Exit For
             End If
@@ -1055,7 +1067,7 @@ Private Sub Form_Load()
 Dim Sql As String, RdoAux As rdoResultset
 
 chkDesativaRefis.Enabled = False
-If NomeDeLogin = "ROSE" Or NomeDeLogin = "JOSEANE" Or NomeDeLogin = "RHENO.SOARES" Or NomeDeLogin = "CARMELINO" Or NomeDeLogin = "SCHWARTZ" Or NomeDeLogin = "WHICTOR.HOMEM" Or NomeDeLogin = "GLEISE" Or NomeDeLogin = "RENATA" Or NomeDeLogin = "SOLANGE" Or NomeDeLogin = "WILLIAN.LIMA" Then
+If NomeDeLogin = "ROSE" Or NomeDeLogin = "JOSEANE" Or NomeDeLogin = "RHENO.SOARES" Or NomeDeLogin = "CARMELINO" Or NomeDeLogin = "SCHWARTZ" Or NomeDeLogin = "WHICTOR.HOMEM" Or NomeDeLogin = "GLEISE" Or NomeDeLogin = "RENATA" Or NomeDeLogin = "SOLANGE" Or NomeDeLogin = "WILLIAN.LIMA" Or NomeDeLogin = "AFONSO.TASSO" Then
     chkDesativaRefis.Enabled = True
 End If
 
@@ -1140,14 +1152,15 @@ End If
 End Sub
 
 Private Sub CarregaLista2()
-Dim x As Integer, Y As Integer, nCodReduz As Long, aLanc() As String, Achou As Boolean, nRowGrid As Integer, nY1 As Integer
-Dim sAno As String, sLanc As String, sSeq As String, sParc As String, aAno() As Integer
+Dim x As Integer, y As Integer, nCodReduz As Long, aLanc() As String, Achou As Boolean, nRowGrid As Integer, nY1 As Integer
+Dim sAno As String, sLanc As String, sSeq As String, sParc As String, aAno() As Integer, dDataVencto As Date
 Dim sComp As String, sSit As String, sVencto As String, sDA As String, RdoTrib As rdoResultset
 Dim sAj As String, nValorPrincipal As Double, sDataBase As String, bDA As Boolean, dVenctoMinimo As Date
 Dim nValorCorrecao As Double, nValorJuros As Double, nValorMulta As Double, nValorTotal As Double, nPerc As Double, nValorHon As Double
 Dim nSomaTotal As Double, nSomaHon As Double, bJuros As Boolean, bMulta As Boolean, nCodTrib As Integer, qd As New rdoQuery, nSid As Long
 Dim bDIS As Boolean, bDIN As Boolean, bFind As Boolean, bAjuizado As Boolean, nValorTotalAjuizado As Double
 
+ReDim aDebito_Decreto(0)
 If bRefisAtivo Then
     If chkDesativaRefis.value = vbChecked Then
         nPlano = 0
@@ -1287,7 +1300,7 @@ With frmDebitoImob.grdExtrato
           If sTributo <> "" Then
             sTributo = Left(sTributo, Len(sTributo) - 1)
           End If
-           grdTrib.AddItem "001" & Chr(9) & sTributo
+           grdTrib.AddItem "001" & Chr(9) & linebreak(sTributo)
                        
            If chkMulta.value = 1 Then
                 nValorTotal = nValorTotal - nValorJuros - nValorMulta
@@ -1298,6 +1311,24 @@ With frmDebitoImob.grdExtrato
                 nValorCorrecao = 0
            End If
                        
+            dDataVencto = CDate(sVencto)
+            If Year(dDataVencto) = 2020 Then
+                If Month(dDataVencto) > 3 And Month(dDataVencto) < 7 Then
+                    ReDim Preserve aDebito_Decreto(UBound(aDebito_Decreto) + 1)
+                    aDebito_Decreto(UBound(aDebito_Decreto)).nCodReduz = nCodReduz
+                    aDebito_Decreto(UBound(aDebito_Decreto)).nAno = Val(sAno)
+                    aDebito_Decreto(UBound(aDebito_Decreto)).nLanc = Val(sLanc)
+                    aDebito_Decreto(UBound(aDebito_Decreto)).nSeq = Val(sSeq)
+                    aDebito_Decreto(UBound(aDebito_Decreto)).nParc = Val(sParc)
+                    aDebito_Decreto(UBound(aDebito_Decreto)).nCompl = Val(sComp)
+                    aDebito_Decreto(UBound(aDebito_Decreto)).nValorJuros = nValorJuros
+                    aDebito_Decreto(UBound(aDebito_Decreto)).nValorMulta = nValorMulta
+                    
+                    nValorJuros = 0
+                    nValorMulta = 0
+                    nValorTotal = nValorPrincipal + nValorCorrecao
+                End If
+            End If
                        
            grdTemp.AddItem sAno & Chr(9) & sLanc & Chr(9) & sSeq & Chr(9) & sParc & Chr(9) & _
            sComp & Chr(9) & sSit & Chr(9) & sVencto & Chr(9) & sDA & Chr(9) & sAj & Chr(9) & _
@@ -1332,7 +1363,7 @@ Else
     lblDI.Caption = "N"
 End If
 
-
+sDataBase = Right$(frmMdi.Sbar.Panels(6).Text, 10)
 If lblDI.Caption = "N" Then
     If Now >= dDataIni And Now <= dDataFim Then
         bRefisAtivo = True
@@ -1380,7 +1411,7 @@ lblAnistia.Caption = "0,00"
 
 '****** REFIS *************
 If chkAnistia.value = vbChecked Then
-    If Year(Now) = 2019 Then
+    If Year(Now) = 2020 Then
         If bRefisAtivoDI Then
             '******** 2018 ********
             If lblDI.Caption = "S" Then
@@ -1426,7 +1457,7 @@ If chkAnistia.value = vbChecked Then
                     With grdTemp
                         bFind = False
                         For x = 1 To .Rows - 1
-                            If CDate(.TextMatrix(x, 6)) > CDate("30/06/2019") And .TextMatrix(x, 1) <> 41 And .TextMatrix(x, 1) <> 78 And .TextMatrix(x, 1) <> 45 Then
+                            If CDate(.TextMatrix(x, 6)) > CDate("30/06/2020") And .TextMatrix(x, 1) <> 41 And .TextMatrix(x, 1) <> 78 And .TextMatrix(x, 1) <> 45 Then
                                 bFind = True
                                 Exit For
                             End If
@@ -1435,12 +1466,12 @@ If chkAnistia.value = vbChecked Then
                    
                     If Not bFind Then
                         If nPlano = 0 Then
-                            If dVencto <= CDate("20/10/2019") Then
-                                nPlano = 33
-                            ElseIf dVencto >= CDate("21/10/2019") And dVencto <= CDate("01/12/2019") Then
-                                nPlano = 34
-                            ElseIf dVencto >= CDate("02/12/2019") And dVencto <= CDate("20/12/2019") Then
-                                nPlano = 35
+                            If dVencto <= CDate("19/10/2020") Then
+                                nPlano = 41
+                            ElseIf dVencto >= CDate("20/10/2020") And dVencto <= CDate("30/11/2020") Then
+                                nPlano = 42
+                            ElseIf dVencto >= CDate("01/12/2020") And dVencto <= CDate("22/12/2020") Then
+                                nPlano = 43
                             End If
                         End If
                                                 
@@ -1477,88 +1508,12 @@ If chkAnistia.value = vbChecked Then
 End If
 '**************************
 
-'
-
-'***** ANISTIA *****
-'If bAnistia And chkAnistia.value = vbChecked Then
-'
-'    With grdTemp
-'        For nY1 = 1 To .Rows - 1
-'            If .TextMatrix(nY1, 1) = 74 Then
-'                chkAnistia.value = vbUnchecked
-'                lblAnistia.Caption = "0,00"
-'                GoTo continua
-'            End If
-'            'If CDate(.TextMatrix(nY1, 6)) > CDate("31/12/2015") And .TextMatrix(nY1, 1) <> 41 And .TextMatrix(nY1, 1) <> 69 And .TextMatrix(nY1, 1) <> 5 And .TextMatrix(nY1, 1) <> 78 Then
-'            If CDate(.TextMatrix(nY1, 6)) > CDate("31/12/2015") And .TextMatrix(nY1, 1) <> 41 And .TextMatrix(nY1, 1) <> 78 Then
-'                chkAnistia.value = vbUnchecked
-'                lblAnistia.Caption = "0,00"
-'                GoTo continua
-'            End If
-'            If .TextMatrix(nY1, 1) = 11 Then
-'                Sql = "select * from debitotributo where codreduzido=" & nCodReduz & " and anoexercicio=" & .TextMatrix(nY1, 0) & " and "
-'                Sql = Sql & "codlancamento=11 and seqlancamento=" & .TextMatrix(nY1, 2) & " and numparcela=" & .TextMatrix(nY1, 3) & " and "
-'                Sql = Sql & " codcomplemento=" & .TextMatrix(nY1, 4) & " and codtributo=527"
-'                Set RdoTrib = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-'                If RdoTrib.RowCount > 0 Then
-'                    RdoTrib.Close
-'                    chkAnistia.value = vbUnchecked
-'                    lblAnistia.Caption = "0,00"
-'                    GoTo continua
-'                End If
-'                RdoTrib.Close
-'            End If
-'        Next
-'    End With
-'
-'
-'
-'    If dVencto <= CDate("30/11/2016") Then
-'       lblAnistia.Caption = "90,00"
-'    ElseIf dVencto <= CDate("20/12/2016") Then
-'       lblAnistia.Caption = "70,00"
-'    ElseIf dVencto >= CDate("21/12/2016") Then
-'       If chkMulta.value = 0 Then
-'          lblAnistia.Caption = "0,00"
-'       Else
-'          lblAnistia.Caption = "100,00"
-'       End If
-'       GoTo continua
-'     End If
-'    nPerc = 100 - CDbl(lblAnistia.Caption)
-'    With grdTemp
-'        For nY1 = 1 To grdTemp.Rows - 1
-'            If .TextMatrix(nY1, 1) <> 41 Then
-'                .TextMatrix(nY1, 11) = FormatNumber(CDbl(.TextMatrix(nY1, 11)) * nPerc / 100, 2)
-'                .TextMatrix(nY1, 12) = FormatNumber(CDbl(.TextMatrix(nY1, 12)) * nPerc / 100, 2)
-'            End If
-'            .TextMatrix(nY1, 13) = FormatNumber(CDbl(.TextMatrix(nY1, 9)) + CDbl(.TextMatrix(nY1, 10)) + CDbl(.TextMatrix(nY1, 11)) + CDbl(.TextMatrix(nY1, 12)), 2)
-'        Next
-'    End With
-'Else
-'    lblAnistia.Caption = "0,00"
-'End If
-'*******************
 Continua:
 
 
-'Sql = "SELECT VALORDAM FROM EXPEDIENTE WHERE ANOEXPED = " & Year(Now) & " AND CODLANCAMENTO = 1"
-'Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-'With RdoAux
-     lblValorExp.Caption = FormatNumber(0, 2)
-     lblValorExp2.Caption = FormatNumber(0, 2)
-     lblTotalLanc.Caption = FormatNumber(nSomaTotal, 2)
-   ' .Close
-'End With
-
-
-'taxa expediente
-' grdTemp.AddItem Year(Now) & Chr(9) & "004" & Chr(9) & "00" & Chr(9) & "01" & Chr(9) & _
-  "0" & Chr(9) & "03" & Chr(9) & Format(Now, "dd/mm/yyyy") & Chr(9) & "N" & Chr(9) & "N" & Chr(9) & _
-  lblValorExp.Caption & Chr(9) & FormatNumber(0, 2) & Chr(9) & _
-  FormatNumber(0, 2) & Chr(9) & FormatNumber(0, 2) & Chr(9) & lblValorExp.Caption
-'sTributo = "003" & "-" & "TAXA EXP.DOC."
-'grdTrib.AddItem "003" & Chr(9) & sTributo
+lblValorExp.Caption = FormatNumber(0, 2)
+lblValorExp2.Caption = FormatNumber(0, 2)
+lblTotalLanc.Caption = FormatNumber(nSomaTotal, 2)
 
 'HONORARIOS
 nSomaHon = 0
@@ -1588,7 +1543,7 @@ If bAjuizado Then
     nSomaHon & Chr(9) & FormatNumber(0, 2) & Chr(9) & _
     FormatNumber(0, 2) & Chr(9) & FormatNumber(0, 2) & Chr(9) & nSomaHon
     sTributo = "041" & "-" & "HONORÁRIOS"
-    grdTrib.AddItem "041" & Chr(9) & sTributo
+    grdTrib.AddItem "041" & Chr(9) & linebreak(sTributo)
 End If
 
 If lblValorExp.Caption > 0 Then
@@ -1680,8 +1635,8 @@ Select Case nCodReduz
                 Sql = "SELECT CODREDUZIDO,CPF,CNPJ,RG,ORGAO FROM vwCONSULTAIMOVELPROP WHERE CODREDUZIDO=" & nCodReduz
                 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 With RdoAux2
-                    If Not IsNull(!CPF) Then
-                       sCPF = !CPF
+                    If Not IsNull(!cpf) Then
+                       sCPF = !cpf
                     ElseIf Not IsNull(!Cnpj) Then
                        sCPF = !Cnpj
                     ElseIf Not IsNull(!rg) Then
@@ -1711,8 +1666,8 @@ Select Case nCodReduz
                 nCodCidade = !CodCidade
                 sQuadra = "0"
                 sLote = "0"
-                If Not IsNull(!CPF) Then
-                   sCPF = !CPF
+                If Not IsNull(!cpf) Then
+                   sCPF = !cpf
                 ElseIf Not IsNull(!Cnpj) Then
                    sCPF = !Cnpj
                 Else
@@ -1741,8 +1696,8 @@ Select Case nCodReduz
                 nCodCidade = Val(SubNull(!CodCidade))
                 sCidadeEntrega = SubNull(!descCidade)
                 sUFEntrega = SubNull(!SiglaUF)
-                If Not IsNull(!CPF) And Trim$(SubNull(!CPF)) <> "" Then
-                   sCPF = !CPF
+                If Not IsNull(!cpf) And Trim$(SubNull(!cpf)) <> "" Then
+                   sCPF = !cpf
                 ElseIf Not IsNull(!Cnpj) And Trim$(SubNull(!Cnpj)) <> "" Then
                    sCPF = !Cnpj
                 ElseIf Not IsNull(!rg) Then
@@ -1842,7 +1797,7 @@ With grdTemp
                 .Close
              End With
              sData = Right$(frmMdi.Sbar.Panels(6).Text, 10)
-             sObs = "Lancamento incluido na DAM número " & nLastCod & " com " & lblAnistia.Caption & "% de desconto em multa e juros conforme REFIS-2019"
+             sObs = "Lancamento incluido na DAM número " & nLastCod & " com " & lblAnistia.Caption & "% de desconto em multa e juros conforme REFIS-2020"
 '             Sql = "INSERT OBSPARCELA(CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,SEQ,OBS,USUARIO,DATA) VALUES(" & nCodReduz & "," & nAno & ","
 '             Sql = Sql & nLanc & "," & nSeq & "," & nParc & "," & nComp & "," & nSeq2 & ",'" & sObs & "','" & NomeDeLogin & "','" & Format(sData, "mm/dd/yyyy") & "')"
              Sql = "INSERT OBSPARCELA(CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,SEQ,OBS,USERID,DATA) VALUES(" & nCodReduz & "," & nAno & ","
@@ -1947,8 +1902,8 @@ cn.Execute Sql, rdExecDirect
 Exit Sub
 
 Erro:
-For Y = 0 To rdoErrors.Count - 1
-     MsgBox rdoErrors(Y).Description
+For y = 0 To rdoErrors.Count - 1
+     MsgBox rdoErrors(y).Description
 Next
 Resume Next
 
@@ -2074,19 +2029,19 @@ End If
 End Function
 
 Private Sub mnuA1_Click()
-nPlano = 33
-mskVencimento.Text = "18/10/2019"
+nPlano = 41
+mskVencimento.Text = "19/10/2020"
 mskVencimento_LostFocus
 End Sub
 
 Private Sub mnuA2_Click()
-nPlano = 34
-mskVencimento.Text = "29/11/2019"
+nPlano = 42
+mskVencimento.Text = "30/11/2020"
 mskVencimento_LostFocus
 End Sub
 Private Sub mnuA4_Click()
-nPlano = 35
-mskVencimento.Text = "20/12/2019"
+nPlano = 43
+mskVencimento.Text = "22/12/2020"
 mskVencimento_LostFocus
 End Sub
 
@@ -2129,8 +2084,8 @@ End If
 End Sub
 
 Private Sub EmiteBoleto()
-Dim RdoAux As rdoResultset, RdoAux2 As rdoResultset, Sql As String, nPos As Integer, sDataDam As String, sDataVencto As String
-Dim nCodReduz As Long, sInsc As String, sNome As String, sDoc As String, sEnd As String, nNum As Integer, nValorDoc As Double
+Dim RdoAux As rdoResultset, RdoAux2 As rdoResultset, Sql As String, nPos As Integer, sDataDam As String, sDataVencto As String, dDataVencto As Date
+Dim nCodReduz As Long, sInsc As String, sNome As String, sDoc As String, sEnd As String, nNum As Integer, nValorDoc As Double, nSeqDecreto As Integer
 Dim sCompl As String, sBairro As String, sCidade As String, sUF As String, sQuadras As String, sLotes As String, sCep As String
 Dim sUsuario As String, nNumDoc As Long, bMulta As Boolean, nValorTaxa As Double, sNumDoc As String, bGerado As Boolean
 Dim sLanc As String, sFullTrib As String, nAno As Integer, nSeq As Integer, nLanc As Integer, nParc As Integer, nCompl As Integer, nValorJuros As Double, nValorMulta As Double, nValorCorrecao As Double, nValorTotal As Double
@@ -2200,26 +2155,12 @@ End If
 
 
 If bRefisAtivo And chkAnistia.value = vbChecked Then
-'    If dVencto <= CDate("30/11/2016") Then
-'       nPlano = 11
-'    ElseIf dVencto <= CDate("20/12/2016") Then
-'       nPlano = 12
-'    Else
-'        nPlano = 0
- '   End If
-    
-'    For x = 1 To grdTemp.Rows - 1
-'        If Val(grdTemp.TextMatrix(x, 0)) = 2016 And CodLancamento <> 41 And CodLancamento <> 4 Then
-'            nPlano = 0
-'            Exit For
-'        End If
-'    Next
     
     If bITBI Then nPlano = 0
     bAchou = False
     With grdTemp
         For x = 1 To .Rows - 1
-            If CDate(.TextMatrix(x, 6)) > CDate("30/06/2019") And Val(.TextMatrix(x, 1)) <> 41 Then
+            If CDate(.TextMatrix(x, 6)) > CDate("30/06/2020") And Val(.TextMatrix(x, 1)) <> 41 And Val(.TextMatrix(x, 1)) <> 78 Then
                 bAchou = True
                 Exit For
             End If
@@ -2228,7 +2169,7 @@ If bRefisAtivo And chkAnistia.value = vbChecked Then
     If bAchou Then
         With grdTemp
             For x = 1 To .Rows - 1
-                If CDate(.TextMatrix(x, 6)) <= CDate("30/06/2019") And Val(.TextMatrix(x, 1)) <> 4 And Val(.TextMatrix(x, 1)) <> 41 And Val(.TextMatrix(x, 1)) <> 69 And Val(.TextMatrix(x, 1)) <> 67 And Val(.TextMatrix(x, 1)) <> 78 And Val(.TextMatrix(x, 1)) <> 65 And Val(.TextMatrix(x, 1)) <> 41 Then
+                If CDate(.TextMatrix(x, 6)) <= CDate("30/06/2020") And Val(.TextMatrix(x, 1)) <> 4 And Val(.TextMatrix(x, 1)) <> 41 And Val(.TextMatrix(x, 1)) <> 69 And Val(.TextMatrix(x, 1)) <> 67 And Val(.TextMatrix(x, 1)) <> 78 And Val(.TextMatrix(x, 1)) <> 65 And Val(.TextMatrix(x, 1)) <> 41 Then
                     MsgBox "Não é permitido emitir débitos do Refis junto com débitos que não são do Refis." & vbCrLf & "Desmarque a opção REFIS se necessário.", vbExclamation, "Atenção"
                     nPlano = 0
                     lblAnistia.Caption = "0,00"
@@ -2250,11 +2191,9 @@ nSid = Int(Rnd(100) * 1000000)
 Sql = "delete from boleto where sid=" & nSid
 cn.Execute Sql, rdExecDirect
 
-'RETORNA VALOR EXPEDIENTE
-'Sql = "SELECT VALORDAM FROM EXPEDIENTE WHERE CODLANCAMENTO=3 AND ANOEXPED=" & Year(Now)
-'Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+
 nValorTaxa = 0
-'RdoAux.Close
+
 
 bMulta = False
 sDoc = ""
@@ -2274,7 +2213,7 @@ Select Case nCodReduz
         With RdoAux
             sInsc = !Inscricao
             sNome = !nomecidadao
-            sDoc = Format(SubNull(!CPF), "00000000000")
+            sDoc = Format(SubNull(!cpf), "00000000000")
             If sDoc = "" Then
                 sDoc = Format(SubNull(!Cnpj), "00000000000000")
             End If
@@ -2294,8 +2233,8 @@ Select Case nCodReduz
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             sInsc = SubNull(!inscestadual)
-            sNome = !razaosocial
-            sDoc = SubNull(!CPF)
+            sNome = !RazaoSocial
+            sDoc = SubNull(!cpf)
             If Val(sDoc) = 0 Then
                 sDoc = SubNull(!Cnpj)
             End If
@@ -2387,7 +2326,7 @@ Select Case nCodReduz
                 sUF = ""
                 sCompl = ""
             End If
-            sDoc = SubNull(!CPF)
+            sDoc = SubNull(!cpf)
             If sDoc = "" Then
                 sDoc = SubNull(!Cnpj)
             End If
@@ -2476,10 +2415,7 @@ With grdTemp
   '  End If
     
     sNumDoc = CStr(nNumDoc)
-    'sNumDoc = CStr(nNumDoc) & "-" & RetornaDVNumDoc(nNumDoc)
     sNumDoc2 = CStr(nNumDoc)
-    'sNumDoc2 = CStr(nNumDoc) & RetornaDVNumDoc(nNumDoc)
-    'sNumDoc3 = CStr(nNumDoc) & Modulo11(nNumDoc)
     
     For x = 1 To .Rows - 1
         nAno = Val(.TextMatrix(x, 0))
@@ -2497,13 +2433,13 @@ With grdTemp
         nValorCorrecao = FormatNumber(CDbl(.TextMatrix(x, 10)), 2)
         nValorTotal = FormatNumber(CDbl(.TextMatrix(x, 13)), 2)
         nValorDoc = nValorDoc + nValorTotal
-        sFullTrib = Left$(Mask(grdTrib.TextMatrix(x, 1)), 2000)
+        sFullTrib = Trim(Left$(Mask(grdTrib.TextMatrix(x, 1)), 5000))
         sFullTrib = Left(sFullTrib, Len(sFullTrib))
         
         If nLanc = 41 And Not bSomenteExtrato And (x = .Rows - 1) Then
             bAchou = False
-            For Y = 1 To .Rows - 1
-                If .TextMatrix(Y, 8) = "S" Then
+            For y = 1 To .Rows - 1
+                If .TextMatrix(y, 8) = "S" Then
                     bAchou = True
                 End If
             Next
@@ -2568,13 +2504,15 @@ With grdTemp
              Sql = Sql & nLanc & "," & nSeq & "," & nParc & "," & nCompl & "," & nSeq2 & ",'" & sObs & "'," & RetornaUsuarioID(NomeDeLogin) & ",'" & Format(Now, sDataFormat) & "')"
              cn.Execute Sql, rdExecDirect
         End If
+                    
+            
             
 '        If Not bComercioEletronico Then
             Sql = "insert boleto(usuario,computer,sid,seq,inscricao,codreduzido,nome,cpf,endereco,numimovel,complemento,bairro,cidade,uf,quadra,lote,numdoc,nomefunc,datadam,fulllanc,fulltrib,"
             Sql = Sql & "anoexercicio,codlancamento,seqlancamento,numparcela,codcomplemento,datavencto,aj,da,principal,juros,multa,correcao,total,numdoc2,valordam) values('"
             Sql = Sql & NomeDeLogin & "','" & NomeDoComputador & "'," & nSid & "," & nPos & ",'" & sInsc & "'," & nCodReduz & ",'" & Left(Mask(sNome), 40) & "','" & sDoc & "','"
             Sql = Sql & Left(Mask(sEnd), 40) & "'," & nNum & ",'" & Left(Mask(sCompl), 30) & "','" & Left(Mask(sBairro), 25) & "','" & Mask(sCidade) & "','" & sUF & "','" & Mask(sQuadras) & "','"
-            Sql = Sql & Mask(sLotes) & "','" & sNumDoc & "','" & NomeDeLogin & "','" & Format(sDataDam, sDataFormat) & "','" & sLANCAMENTO & "','" & sFullTrib & "'," & nAno & ","
+            Sql = Sql & Mask(sLotes) & "','" & sNumDoc & "','" & NomeDeLogin & "','" & Format(sDataDam, sDataFormat) & "','" & sLANCAMENTO & "','" & linebreak(sFullTrib) & "'," & nAno & ","
             Sql = Sql & nLanc & "," & nSeq & "," & nParc & "," & nCompl & ",'" & Format(sDataVencto, sDataFormat) & "','" & sAj & "','" & sDA & "'," & Virg2Ponto(Format(nValorPrincipal, "#0.00")) & ","
             Sql = Sql & Virg2Ponto(Format(nValorJuros, "#0.00")) & "," & Virg2Ponto(Format(nValorMulta, "#0.00")) & "," & Virg2Ponto(Format(nValorCorrecao, "#0.00")) & "," & Virg2Ponto(Format(nValorTotal, "#0.00")) & ",'" & sNumDoc2
             Sql = Sql & "'," & Virg2Ponto(RemovePonto(lblValorTotal.Caption)) & ")"
@@ -2585,6 +2523,48 @@ With grdTemp
     Next
 
 End With
+
+'##############################################
+'Decreto 7.162
+'For y = 1 To UBound(aDebito_Decreto)
+    
+'    With aDebito_Decreto(y)
+'        If .nValorJuros > 0 Or .nValorMulta > 0 Then
+'        Sql = "SELECT MAX(SEQLANCAMENTO) AS MAXIMO FROM DEBITOPARCELA WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & 2020 & " AND CODLANCAMENTO=" & 85
+'        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+'        With RdoAux
+'            If IsNull(!maximo) Then
+'                nSeqDecreto = 0
+'            Else
+'                nSeqDecreto = !maximo + 1
+'            End If
+'           .Close
+'        End With
+        
+'        Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,DATAVENCIMENTO,DATADEBASE,USERID) VALUES("
+'        Sql = Sql & nCodReduz & "," & 2020 & "," & 85 & "," & nSeqDecreto & "," & 1 & "," & 0 & "," & 3 & ",'" & Format("30/12/2020", "mm/dd/yyyy") & "','"
+'        Sql = Sql & Format(sDataDam, "mm/dd/yyyy") & "'," & RetornaUsuarioID(NomeDeLogin) & ")"
+'        cn.Execute Sql, rdExecDirect
+        
+'        Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,VALORTRIBUTO) VALUES("
+'        Sql = Sql & nCodReduz & "," & 2020 & "," & 85 & "," & nSeqDecreto & "," & 1 & "," & 0 & "," & 113 & "," & Virg2Ponto(CStr(.nValorJuros)) & ")"
+'        cn.Execute Sql, rdExecDirect
+        
+'        Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,VALORTRIBUTO) VALUES("
+'        Sql = Sql & nCodReduz & "," & 2020 & "," & 85 & "," & nSeqDecreto & "," & 1 & "," & 0 & "," & 112 & "," & Virg2Ponto(CStr(.nValorMulta)) & ")"
+'        cn.Execute Sql, rdExecDirect
+        
+'        Sql = "UPDATE PARCELADOCUMENTO SET PLANO=40 WHERE NUMDOCUMENTO=" & nNumDoc
+'        cn.Execute Sql, rdExecDirect
+        
+'        Sql = "INSERT Encargo_CVD(Codigo,exercicio,lancamento,sequencia,parcela,complemento,exercicio_enc,lancamento_enc,sequencia_enc,parcela_enc,complemento_enc,documento) values("
+'        Sql = Sql & nCodReduz & "," & .nAno & "," & .nLanc & "," & .nSeq & "," & .nParc & "," & .nCompl & "," & 2020 & ",85," & nSeqDecreto & ",1,0," & nNumDoc & ")"
+'        cn.Execute Sql, rdExecDirect
+'        nValorMulta = 0: nValorJuros = 0
+'        End If
+'    End With
+'Next
+'##############################################
 
 'CRIA VINCULO COM ISSELETRONICO SE HOUVER
 If bAnistia Then
@@ -2604,10 +2584,6 @@ End If
 'nValorDoc = 112.17
 'sDataDam = "30/01/2015"
 '******'
-
-
-
-
 
 'bBoleto = True
 'If NomeDeLogin = "SCHWARTZ" Then
@@ -2658,7 +2634,7 @@ If chkRegistrado.value = vbChecked Then
     frmReport.ShowReport2 "BOLETODAM_V3", frmMdi.HWND, Me.HWND, nSid, nNumGuia
     GeraArquivo 0, nNumDoc, sDataDam
 Else
-    Dim sValor As String, dDataVencto As Date, NumBarra2 As String, NumBarra2a As String, NumBarra2b As String, NumBarra2c As String, NumBarra2d As String, StrBarra2 As String
+    Dim sValor As String, NumBarra2 As String, NumBarra2a As String, NumBarra2b As String, NumBarra2c As String, NumBarra2d As String, StrBarra2 As String
     sValor = nValorDoc
     dDataVencto = CDate(sDataDam)
    ' nNumDoc = Val(sNumDoc2)
@@ -2713,7 +2689,7 @@ Dim v1 As String, v2 As String, v3 As String, v4 As String, v5 As String, v6 As 
 v1 = sNome
 v2 = Left(sEnd & ", " & nNum & IIf(sCompl <> "", " " & sCompl, "") & " - " & sBairro, 60)
 v3 = Format(CDate(sDataDam), "ddmmyyyy")
-v4 = sDoc
+v4 = RetornaNumero(sDoc)
 v5 = "287353200" & Format(nNumDoc, "00000000")
 Dim sValorDoc As String
 sValorDoc = FormatNumber(nValorDoc, 2)
@@ -2736,7 +2712,11 @@ If bSomenteExtrato Then Exit Sub
 If frmMdi.frTeste.Visible = False Then
     Dim requestParams As String
     requestParams = "msgLoja=NÃO RECEBER APÓS O VENCIMENTO" + "&cep=" + v9 + "&uf=" + v8 + "&cidade=" + v7 + "&endereco=" + v2 + "&nome=" + v1 + "&urlInforma=www.jaboticabal.sp.gov.br" + "&urlRetorno=www.jaboticabal.sp.gov.br" + "&tpDuplicata=DS" + "&dataLimiteDesconto=0" + "&valorDesconto=0" + "&indicadorPessoa=" + v11 + "&cpfCnpj=" + v4 + "&tpPagamento=" + "2" + "&dtVenc=" + v3 + "&qtdPontos=" + "0" + "&valor=" + v6 + "&qtdPontos=" + "0" + "&refTran=" + v5 + "&idConv=317203"
-    ShellExecute HWND, "open", "http://sistemas.jaboticabal.sp.gov.br/gti/Pages/boletoBB.aspx?f1=" & v1 & "&f2=" & v2 & "&f3=" & v3 & "&f4=" & v4 & "&f5=" & v5 & "&f6=" & v6 & "&f7=" & v7 & "&f8=" & v8 & "&f9=" & v9 & "&f10=" & V10, vbNullString, vbNullString, conSwNormal
+    'ShellExecute HWND, "open", "http://sistemas.jaboticabal.sp.gov.br/gti/Pages/boletoBB.aspx?f1=" & v1 & "&f2=" & v2 & "&f3=" & v3 & "&f4=" & v4 & "&f5=" & v5 & "&f6=" & v6 & "&f7=" & v7 & "&f8=" & v8 & "&f9=" & v9 & "&f10=" & V10, vbNullString, vbNullString, conSwNormal
+    Dim sChave As String
+    sChave = "everest"
+'    ShellExecute HWND, "open", "http://sistemas.jaboticabal.sp.gov.br/gti/Tributario/GateBank?p1=" & Encrypt128(v1, sChave) & "&p2=" & Encrypt128(v2, sChave) & "&p3=" & Encrypt128(v3, sChave) & "&p4=" & Encrypt128(v4, sChave) & "&p5=" & Encrypt128(v5, sChave) & "&p6=" & Encrypt128(v6, sChave) & "&p7=" & Encrypt128(v7, sChave) & "&p8=" & Encrypt128(v8, sChave) & "&p9=" & Encrypt128(v9, sChave), vbNullString, vbNullString, conSwNormal
+    ShellExecute HWND, "open", "http://sistemas.jaboticabal.sp.gov.br/gti/Tributario/GateBank?p1=" & v1 & "&p2=" & v2 & "&p3=" & v3 & "&p4=" & v4 & "&p5=" & v5 & "&p6=" & v6 & "&p7=" & v7 & "&p8=" & v8 & "&p9=" & v9, vbNullString, vbNullString, conSwNormal
 End If
 Unload Me
 
@@ -3031,5 +3011,11 @@ If Len(sPalavra) > nTamanho Then sPalavra = Left(sPalavra, nTamanho)
 sTmp = sPalavra & Space(nTamanho - Len(sPalavra))
 FillSpace = sTmp
 
+End Function
+
+Private Function linebreak(myString) As String
+finalstr = Replace(myString, Chr(13), " ", , , vbTextCompare)
+finalstr = Replace(finalstr, Chr(10), " ", , , vbTextCompare)
+linebreak = finalstr
 End Function
 

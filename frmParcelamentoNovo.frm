@@ -1077,7 +1077,7 @@ AtualizaTotal
 End Sub
 
 Private Sub cmbQtde_Click()
-Dim x As Integer, Y As Integer, nSomaLiquido As Double, nSomaJuros As Double, nSomaMulta As Double, nSomaCorrecao As Double, nSomaPrincipal As Double, nSomaJurosMes As Double, nSomaTotal As Double, nSomaTotal2 As Double
+Dim x As Integer, y As Integer, nSomaLiquido As Double, nSomaJuros As Double, nSomaMulta As Double, nSomaCorrecao As Double, nSomaPrincipal As Double, nSomaJurosMes As Double, nSomaTotal As Double, nSomaTotal2 As Double
 Dim nSomaJurosApl As Double, nSomaHonorario As Double
 nSomaLiquido = 0: nSomaJuros = 0: nSomaMulta = 0: nSomaCorrecao = 0: nSomaPrincipal = 0: nSomaJurosMes = 0: nSomaTotal = 0: nSomaTotal2 = 0
 If Not bExec Then Exit Sub
@@ -1126,10 +1126,10 @@ itmX.SubItems(10) = "N/A"
 itmX.SubItems(11) = Format(nSomaJurosApl, "#0.00")
 itmX.SubItems(12) = Format(nSomaHonorario, "#0.00")
 itmX.SubItems(13) = Format(nSomaTotal, "#0.00")
-For Y = 1 To 13
+For y = 1 To 13
     itmX.ForeColor = VerdeEscuro
-    itmX.ListSubItems(Y).ForeColor = vbBlue
-Next Y
+    itmX.ListSubItems(y).ForeColor = vbBlue
+Next y
 
 
 Set itmX = lvDestino.ListItems.Add(, , ">>>>")
@@ -1147,10 +1147,10 @@ itmX.SubItems(12) = Format(nSomaHonorario * 100 / nSomaTotal, "#0.00")
 itmX.SubItems(13) = Format(nSomaTotal * 100 / nSomaTotal, "#0.00")
 
 
-For Y = 1 To 13
+For y = 1 To 13
     itmX.ForeColor = VerdeEscuro
-    itmX.ListSubItems(Y).ForeColor = vbBlue
-Next Y
+    itmX.ListSubItems(y).ForeColor = vbBlue
+Next y
 
 
 End Sub
@@ -1229,7 +1229,7 @@ End If
 
 '****** REFIS *************
 If (bRefisAtivo Or bRefisAtivoDI) And chkRefis.value = vbChecked Then
-    If Year(Now) = 2019 Then
+    If Year(Now) = 2020 Then
         '******** 2017 ********
         If lblDI.Caption = "S" Then
             '** DISTRITO INDUSTRIAL **
@@ -1255,9 +1255,9 @@ InicioData:
             '*** OUTROS ***
             
             For x = 1 To lvOrigem.ListItems.Count
-                If lvOrigem.ListItems(x).Checked And CDate(lvOrigem.ListItems(x).SubItems(5)) > CDate("06/30/2019") Then
+                If lvOrigem.ListItems(x).Checked And CDate(lvOrigem.ListItems(x).SubItems(5)) > CDate("06/30/2020") Then
 '                    If Val(Left(lvOrigem.ListItems(x).SubItems(1), 2)) <> 62 Then
-                        MsgBox "No refis só podem entrar débitos vencidos até 30/06/2019", vbCritical, "Atenção"
+                        MsgBox "No Refis só podem entrar débitos vencidos até 30/06/2020", vbCritical, "Atenção"
                         Exit Sub
  '                   End If
                 End If
@@ -1265,12 +1265,12 @@ InicioData:
             
             
             
-            If CDate(mskVencto.Text) <= CDate("19/10/2019") Then
-                nPlano = 36
-            ElseIf CDate(mskVencto.Text) > CDate("19/10/2019") And CDate(mskVencto.Text) <= CDate("29/11/2019") Then
-                nPlano = 37
-            ElseIf CDate(mskVencto.Text) > CDate("30/11/2019") And CDate(mskVencto.Text) <= CDate("20/12/2019") Then
-                nPlano = 38
+            If CDate(mskVencto.Text) <= CDate("19/10/2020") Then
+                nPlano = 44
+            ElseIf CDate(mskVencto.Text) >= CDate("20/10/2020") And CDate(mskVencto.Text) <= CDate("30/11/2020") Then
+                nPlano = 45
+            ElseIf CDate(mskVencto.Text) >= CDate("01/12/2020") And CDate(mskVencto.Text) <= CDate("22/12/2020") Then
+                nPlano = 46
             End If
                                     
             Sql = "select nome,desconto from plano where codigo=" & nPlano
@@ -1319,7 +1319,7 @@ AtualizaTributo
 End Sub
 
 Private Sub cmdDDList_Click()
-Dim nAno As Integer, x As Integer, Y As Integer
+Dim nAno As Integer, x As Integer, y As Integer
 
 If cmdDDList.value = True Then
     frDDList.Height = 2130
@@ -1327,15 +1327,15 @@ Else
     For x = 0 To lstAno.ListCount - 1
         nAno = lstAno.List(x)
         If lstAno.Selected(x) = True Then
-            For Y = 1 To lvOrigem.ListItems.Count
-                If lvOrigem.ListItems(Y).Text = nAno Then
-                    lvOrigem.ListItems(Y).Checked = True
+            For y = 1 To lvOrigem.ListItems.Count
+                If lvOrigem.ListItems(y).Text = nAno Then
+                    lvOrigem.ListItems(y).Checked = True
                 End If
             Next
         Else
-            For Y = 1 To lvOrigem.ListItems.Count
-                If lvOrigem.ListItems(Y).Text = nAno Then
-                    lvOrigem.ListItems(Y).Checked = False
+            For y = 1 To lvOrigem.ListItems.Count
+                If lvOrigem.ListItems(y).Text = nAno Then
+                    lvOrigem.ListItems(y).Checked = False
                 End If
             Next
         End If
@@ -1398,38 +1398,38 @@ End If
 
 End Sub
 
-Private Sub frDetalhe_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub frDetalhe_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 X1 = x
-Y1 = Y
+Y1 = y
 bMove = True
 
 End Sub
 
-Private Sub frDetalhe_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub frDetalhe_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 If bMove Then
-    frDetalhe.Top = frDetalhe.Top + Y - Y1
+    frDetalhe.Top = frDetalhe.Top + y - Y1
     frDetalhe.Left = frDetalhe.Left + x - X1
 End If
 End Sub
 
-Private Sub frDetalhe_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub frDetalhe_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
 bMove = False
 End Sub
 
-Private Sub grdDestino_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub grdDestino_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 X1 = x
-Y1 = Y
+Y1 = y
 bMove = True
 End Sub
 
-Private Sub grdDestino_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub grdDestino_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 If bMove Then
-    frDetalhe.Top = frDetalhe.Top + Y - Y1
+    frDetalhe.Top = frDetalhe.Top + y - Y1
     frDetalhe.Left = frDetalhe.Left + x - X1
 End If
 End Sub
 
-Private Sub grdDestino_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub grdDestino_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
 bMove = False
 End Sub
 
@@ -1492,8 +1492,8 @@ ReDim aAno(0)
 For x = 1 To lvOrigem.ListItems.Count
     If lvOrigem.ListItems(x).Checked Then
         bFind = False
-        For Y = 0 To UBound(aAno)
-            If aAno(Y) = Val(lvOrigem.ListItems(x).Text) Then
+        For y = 0 To UBound(aAno)
+            If aAno(y) = Val(lvOrigem.ListItems(x).Text) Then
                 bFind = True
                 Exit For
             End If
@@ -1706,7 +1706,7 @@ End If
 End Sub
 
 Private Sub mnuSimulado_Click()
-Dim Sql As String, RdoAux As rdoResultset, x As Integer, Y As Integer, nValorEntrada As Double, nValorParcela As Double, sExercicio As String
+Dim Sql As String, RdoAux As rdoResultset, x As Integer, y As Integer, nValorEntrada As Double, nValorParcela As Double, sExercicio As String
 Dim aAno() As Integer, bFind As Boolean, xImovel As clsImovel, nCodReduz As Long, sEndereco As String, nNumero As Integer, sComplemento As String
 Dim sBairro As String, sCidade As String, sCep As String, sUF As String, sFullEndereco As String
 
@@ -1720,8 +1720,8 @@ ReDim aAno(0)
 For x = 1 To lvOrigem.ListItems.Count
     If lvOrigem.ListItems(x).Checked And Val(lvOrigem.ListItems(x).Text) > 0 Then
         bFind = False
-        For Y = 0 To UBound(aAno)
-            If aAno(Y) = Val(lvOrigem.ListItems(x).Text) Then
+        For y = 0 To UBound(aAno)
+            If aAno(y) = Val(lvOrigem.ListItems(x).Text) Then
                 bFind = True
                 Exit For
             End If
@@ -1782,11 +1782,11 @@ cn.Execute Sql, rdExecDirect
 
 
 For x = Val(cmbQtde.List(0)) To Val(cmbQtde.List(cmbQtde.ListCount - 1))
-    For Y = 1 To UBound(aDestino)
-        If aDestino(Y).Qtde_Parcela = x And aDestino(Y).Numero_Parcela = 1 Then
-            nValorEntrada = aDestino(Y).valor_parcela
-        ElseIf aDestino(Y).Qtde_Parcela = x And aDestino(Y).Numero_Parcela = 2 Then
-            nValorParcela = aDestino(Y).valor_parcela
+    For y = 1 To UBound(aDestino)
+        If aDestino(y).Qtde_Parcela = x And aDestino(y).Numero_Parcela = 1 Then
+            nValorEntrada = aDestino(y).valor_parcela
+        ElseIf aDestino(y).Qtde_Parcela = x And aDestino(y).Numero_Parcela = 2 Then
+            nValorParcela = aDestino(y).valor_parcela
         End If
     Next
     Sql = "insert parcelamento_simulado(usuario,codigo,qtde_parcela,nome,documento,exercicios,valor_entrada,valor_parcela,endereco) values('"
@@ -1871,8 +1871,8 @@ If Codigo < 100000 Then
             GoTo SemCadastro
         Else
             txtNome.Text = RdoAux!nomecidadao
-            If SubNull(!CPF) <> "" Then
-                sDoc = Format(!CPF, "000\.000\.000-00")
+            If SubNull(!cpf) <> "" Then
+                sDoc = Format(!cpf, "000\.000\.000-00")
             Else
                 If SubNull(!Cnpj) <> "" Then
                     sDoc = Format(!Cnpj, "00\.000\.000/0000-00")
@@ -1889,9 +1889,9 @@ ElseIf Codigo >= 100000 And Codigo < 500000 Then
            .Close
             GoTo SemCadastro
         Else
-            txtNome.Text = RdoAux!razaosocial
-            If SubNull(!CPF) <> "" Then
-                sDoc = Format(!CPF, "000\.000\.000-00")
+            txtNome.Text = RdoAux!RazaoSocial
+            If SubNull(!cpf) <> "" Then
+                sDoc = Format(!cpf, "000\.000\.000-00")
             Else
                 If SubNull(!Cnpj) <> "" Then
                     sDoc = Format(!Cnpj, "00\.000\.000/0000-00")
@@ -1909,8 +1909,8 @@ ElseIf Codigo >= 500000 Then
             GoTo SemCadastro
         Else
             txtNome.Text = RdoAux!nomecidadao
-            If SubNull(!CPF) <> "" Then
-                sDoc = Format(!CPF, "000\.000\.000-00")
+            If SubNull(!cpf) <> "" Then
+                sDoc = Format(!cpf, "000\.000\.000-00")
             Else
                 If SubNull(!Cnpj) <> "" Then
                     sDoc = Format(!Cnpj, "00\.000\.000/0000-00")
@@ -2024,8 +2024,13 @@ With RdoAux
         itmX.SubItems(5) = Format(!Data_Vencimento, "dd/mm/yyyy")
         itmX.SubItems(6) = !ajuizado
         itmX.SubItems(7) = FormatNumber(!Valor_Principal, 2)
-        itmX.SubItems(8) = FormatNumber(!Valor_Juros, 2)
-        itmX.SubItems(9) = FormatNumber(!Valor_Multa, 2)
+        If !Data_Vencimento > CDate("01/04/2020") And !Data_Vencimento < CDate("01/07/2020") Then
+            itmX.SubItems(8) = FormatNumber(0, 2)
+            itmX.SubItems(9) = FormatNumber(0, 2)
+        Else
+            itmX.SubItems(8) = FormatNumber(!Valor_Juros, 2)
+            itmX.SubItems(9) = FormatNumber(!Valor_Multa, 2)
+        End If
         itmX.SubItems(10) = FormatNumber(!Valor_Correcao, 2)
         itmX.SubItems(11) = !qtde_parcelamento
         itmX.SubItems(12) = !perc_penalidade & "%"
@@ -2208,10 +2213,10 @@ itmX.SubItems(11) = "---"
 itmX.SubItems(12) = "---"
 itmX.SubItems(13) = lblValorAdicional.Caption
 itmX.SubItems(14) = Format(nSomaPrincipal + nSomaJuros + nSomaMulta + nSomaCorrecao, "#0.00")
-For Y = 1 To 14
+For y = 1 To 14
     itmX.ForeColor = VerdeEscuro
-    itmX.ListSubItems(Y).ForeColor = vbBlue
-Next Y
+    itmX.ListSubItems(y).ForeColor = vbBlue
+Next y
 
 Set itmX = lvOrigem.ListItems.Add(, , "")
 itmX.SubItems(1) = "% do Total  --->"
@@ -2229,10 +2234,10 @@ itmX.SubItems(12) = "---"
 itmX.SubItems(13) = "---"
 itmX.SubItems(14) = Format(nTotal * 100 / nTotal, "#0.00")
 
-For Y = 1 To 14
+For y = 1 To 14
     itmX.ForeColor = VerdeEscuro
-    itmX.ListSubItems(Y).ForeColor = vbBlue
-Next Y
+    itmX.ListSubItems(y).ForeColor = vbBlue
+Next y
 
 Set itmX = lvOrigem.ListItems.Add(, , "")
 itmX.SubItems(1) = "Div.Valor Adic --->"
@@ -2250,10 +2255,10 @@ itmX.SubItems(12) = "---"
 itmX.SubItems(13) = "---"
 itmX.SubItems(14) = Format(CDbl(lvOrigem.ListItems(lvOrigem.ListItems.Count - 1).SubItems(14)) * CDbl(lblValorAdicional.Caption) / 100, "#0.00")
 
-For Y = 1 To 14
+For y = 1 To 14
     itmX.ForeColor = VerdeEscuro
-    itmX.ListSubItems(Y).ForeColor = vbBlue
-Next Y
+    itmX.ListSubItems(y).ForeColor = vbBlue
+Next y
 
 
 nPlano = Val(txtPlano.Tag)
@@ -2395,20 +2400,20 @@ RdoAux.Close
 
 End Sub
 
-Private Sub grdTributo_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub grdTributo_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 X1 = x
-Y1 = Y
+Y1 = y
 bMove = True
 End Sub
 
-Private Sub grdTributo_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub grdTributo_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 If bMove Then
-    frDetalhe.Top = frDetalhe.Top + Y - Y1
+    frDetalhe.Top = frDetalhe.Top + y - Y1
     frDetalhe.Left = frDetalhe.Left + x - X1
 End If
 End Sub
 
-Private Sub grdTributo_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub grdTributo_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
 bMove = False
 End Sub
 
@@ -2453,8 +2458,8 @@ With lvOrigem
                     Sql = "SELECT DESCTRIBUTO FROM TRIBUTO WHERE CODTRIBUTO=" & !CodTributo
                     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
                     bAchou = False
-                    For Y = 1 To grdTributo.Rows - 1
-                        If Val(grdTributo.TextMatrix(Y, 0)) = !CodTributo Then
+                    For y = 1 To grdTributo.Rows - 1
+                        If Val(grdTributo.TextMatrix(y, 0)) = !CodTributo Then
                             bAchou = True
                             Exit For
                         End If
@@ -2472,11 +2477,11 @@ With lvOrigem
                     
                     nTotal = nValorTributo + nValorJuros + nValorMulta + nValorCorrecao
                     If bAchou Then
-                        grdTributo.TextMatrix(Y, 2) = Format(CDbl(grdTributo.TextMatrix(Y, 2)) + nValorTributo, "#0.00")
-                        grdTributo.TextMatrix(Y, 3) = Format(CDbl(grdTributo.TextMatrix(Y, 3)) + nValorJuros, "#0.00")
-                        grdTributo.TextMatrix(Y, 4) = Format(CDbl(grdTributo.TextMatrix(Y, 4)) + nValorMulta, "#0.00")
-                        grdTributo.TextMatrix(Y, 5) = Format(CDbl(grdTributo.TextMatrix(Y, 5)) + nValorCorrecao, "#0.00")
-                        grdTributo.TextMatrix(Y, 6) = Format(CDbl(grdTributo.TextMatrix(Y, 6)) + nTotal, "#0.00")
+                        grdTributo.TextMatrix(y, 2) = Format(CDbl(grdTributo.TextMatrix(y, 2)) + nValorTributo, "#0.00")
+                        grdTributo.TextMatrix(y, 3) = Format(CDbl(grdTributo.TextMatrix(y, 3)) + nValorJuros, "#0.00")
+                        grdTributo.TextMatrix(y, 4) = Format(CDbl(grdTributo.TextMatrix(y, 4)) + nValorMulta, "#0.00")
+                        grdTributo.TextMatrix(y, 5) = Format(CDbl(grdTributo.TextMatrix(y, 5)) + nValorCorrecao, "#0.00")
+                        grdTributo.TextMatrix(y, 6) = Format(CDbl(grdTributo.TextMatrix(y, 6)) + nTotal, "#0.00")
                     Else
                         grdTributo.AddItem !CodTributo & Chr(9) & RdoAux!desctributo & Chr(9) & Format(nValorTributo, "#0.00") & Chr(9) & Format(nValorJuros, "#0.00") & Chr(9) & Format(nValorMulta, "#0.00") & Chr(9) & Format(nValorCorrecao, "#0.00") & Chr(9) & Format(nTotal, "#0.00")
                     End If
@@ -2487,15 +2492,15 @@ With lvOrigem
             End With
                 
             lblP.Caption = "0,00": lblJ.Caption = "0,00": lblM.Caption = "0,00": lblC.Caption = "0,00": lblT.Caption = "0,00"
-            For Y = 1 To grdTributo.Rows - 1
-                lblP.Caption = Format(CDbl(lblP.Caption) + CDbl(grdTributo.TextMatrix(Y, 2)), "#0.00")
-                lblJ.Caption = Format(CDbl(lblJ.Caption) + CDbl(grdTributo.TextMatrix(Y, 3)), "#0.00")
-                lblM.Caption = Format(CDbl(lblM.Caption) + CDbl(grdTributo.TextMatrix(Y, 4)), "#0.00")
-                lblC.Caption = Format(CDbl(lblC.Caption) + CDbl(grdTributo.TextMatrix(Y, 5)), "#0.00")
-                lblT.Caption = Format(CDbl(lblT.Caption) + CDbl(grdTributo.TextMatrix(Y, 6)), "#0.00")
+            For y = 1 To grdTributo.Rows - 1
+                lblP.Caption = Format(CDbl(lblP.Caption) + CDbl(grdTributo.TextMatrix(y, 2)), "#0.00")
+                lblJ.Caption = Format(CDbl(lblJ.Caption) + CDbl(grdTributo.TextMatrix(y, 3)), "#0.00")
+                lblM.Caption = Format(CDbl(lblM.Caption) + CDbl(grdTributo.TextMatrix(y, 4)), "#0.00")
+                lblC.Caption = Format(CDbl(lblC.Caption) + CDbl(grdTributo.TextMatrix(y, 5)), "#0.00")
+                lblT.Caption = Format(CDbl(lblT.Caption) + CDbl(grdTributo.TextMatrix(y, 6)), "#0.00")
             Next
-            For Y = 1 To grdTributo.Rows - 1
-                grdTributo.TextMatrix(Y, 7) = Format(CDbl(grdTributo.TextMatrix(Y, 6)) * 100 / CDbl(lblT.Caption), "#0.00")
+            For y = 1 To grdTributo.Rows - 1
+                grdTributo.TextMatrix(y, 7) = Format(CDbl(grdTributo.TextMatrix(y, 6)) * 100 / CDbl(lblT.Caption), "#0.00")
             Next
         End If
     Next
@@ -2504,7 +2509,7 @@ End With
 End Sub
 
 Private Sub EmiteBoleto()
-Dim nValorTaxa As Double, x As Integer, nSituacao As Integer, dDataProc As Date, sDescImposto As String, RdoAux2 As rdoResultset, Y As Integer, nPercTrib As Double
+Dim nValorTaxa As Double, x As Integer, nSituacao As Integer, dDataProc As Date, sDescImposto As String, RdoAux2 As rdoResultset, y As Integer, nPercTrib As Double
 Dim nAno As Integer, nLanc As Integer, nSeq As Integer, nParc As Integer, nCompl As Integer, sDataVencto As String, nCodTrib As Integer, nValorTributo As Double
 Dim NumBarra1 As String, StrBarra1 As String, NumBarra2 As String, NumBarra2a As String, NumBarra2b As String, NumBarra2c As String, NumBarra2d As String, StrBarra2 As String
 Dim sCodReduz As String, sNomeResp As String, sTipoImposto As String, sEndImovel As String, nNumImovel As Integer, sComplImovel As String, sBairroImovel As String
@@ -2572,22 +2577,22 @@ With lvDestino
 
        'DEFINE TRIBUTO PRINCIPAL
         With grdDestino
-            For Y = 1 To .Rows - 2
-                nCodTrib = Val(.TextMatrix(Y, 0))
+            For y = 1 To .Rows - 2
+                nCodTrib = Val(.TextMatrix(y, 0))
                 If x = 1 Then
-                    If .TextMatrix(Y, 6) = "" Then
+                    If .TextMatrix(y, 6) = "" Then
                         nValorDif = 0
                     Else
-                        nValorDif = CDbl(.TextMatrix(Y, 6))
+                        nValorDif = CDbl(.TextMatrix(y, 6))
                     End If
-                    nValorTributo = CDbl(.TextMatrix(Y, 5)) + nValorDif
+                    nValorTributo = CDbl(.TextMatrix(y, 5)) + nValorDif
                 Else
-                    If .TextMatrix(Y, 8) = "" Then
+                    If .TextMatrix(y, 8) = "" Then
                         nValorDif = 0
                     Else
-                        nValorDif = CDbl(.TextMatrix(Y, 8))
+                        nValorDif = CDbl(.TextMatrix(y, 8))
                     End If
-                    nValorTributo = CDbl(.TextMatrix(Y, 7)) + nValorDif
+                    nValorTributo = CDbl(.TextMatrix(y, 7)) + nValorDif
                 End If
                 
                 If nValorTributo > 0 Then
@@ -2728,7 +2733,7 @@ Select Case Val(txtCod.Text)
             If .RowCount > 0 Then
                 sNumInsc = SubNull(!inscestadual)
                 sCodReduz = !codigomob
-                sNomeResp = !razaosocial
+                sNomeResp = !RazaoSocial
                 sTipoImposto = "REPARCEL."
                 If IsNull(!NomeLogradouro) Then
                     sEndImovel = !NomeLogr
@@ -2991,7 +2996,7 @@ End Sub
 Private Sub FillDetalhe()
 Dim nValorTributo1 As Double, nValorTributoN As Double, nValorJuros1 As Double, nValorJurosN As Double, nDif1 As Double, nDifN As Double, bFind As Boolean, w As Integer
 Dim nValorMulta1 As Double, nValorMultaN As Double, nValorCorrecao1 As Double, nValorCorrecaoN As Double, nValorJurosApl1 As Double, nValorTotal As Double
-Dim nValorJurosAplN As Double, nValorHonorario1 As Double, nValorHonorarioN As Double, nPercTributo As Double, nSomaTotal1 As Double, nSomaTotalN As Double, Y, nPerc1 As Double, nPercN As Double, nPerc As Double
+Dim nValorJurosAplN As Double, nValorHonorario1 As Double, nValorHonorarioN As Double, nPercTributo As Double, nSomaTotal1 As Double, nSomaTotalN As Double, y, nPerc1 As Double, nPercN As Double, nPerc As Double
 Dim nTotalPrincipal As Double, nTotalMulta As Double, nTotalJuros As Double, nTotalCorrecao As Double, nTotalJrApl As Double, nTotalHon As Double, nValorP1 As Double, nValorPN As Double, nQtdeParcela As Integer
 
     
@@ -3051,9 +3056,9 @@ With grdTributo
                             FormatNumber(nValorP1 * nPerc / 100, 2) & Chr(9) & "" & Chr(9) & FormatNumber((nValorPN * nPerc / 100), 2)
     End If
     nSomaTotal1 = 0: nSomaTotalN = 0
-    For Y = 1 To grdDestino.Rows - 1
-        nSomaTotal1 = nSomaTotal1 + CDbl(grdDestino.TextMatrix(Y, 5))
-        nSomaTotalN = nSomaTotalN + CDbl(grdDestino.TextMatrix(Y, 7))
+    For y = 1 To grdDestino.Rows - 1
+        nSomaTotal1 = nSomaTotal1 + CDbl(grdDestino.TextMatrix(y, 5))
+        nSomaTotalN = nSomaTotalN + CDbl(grdDestino.TextMatrix(y, 7))
     Next
     nDif1 = (nSomaTotal1 - CDbl(lvDestino.ListItems(1).SubItems(13))) * (-1)
     nDifN = (nSomaTotalN - CDbl(lvDestino.ListItems(2).SubItems(13))) * (-1)

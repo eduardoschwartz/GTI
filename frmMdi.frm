@@ -391,10 +391,10 @@ Begin VB.MDIForm frmMdi
       Begin prjChameleon.chameleonButton btBar 
          Height          =   555
          Index           =   12
-         Left            =   7845
+         Left            =   11835
          TabIndex        =   36
          ToolTipText     =   "Agenda"
-         Top             =   30
+         Top             =   0
          Visible         =   0   'False
          Width           =   555
          _ExtentX        =   979
@@ -989,6 +989,47 @@ Begin VB.MDIForm frmMdi
          CHECK           =   0   'False
          VALUE           =   0   'False
       End
+      Begin prjChameleon.chameleonButton btBar 
+         Height          =   555
+         Index           =   13
+         Left            =   7290
+         TabIndex        =   37
+         ToolTipText     =   "Histórico de Atualizações"
+         Top             =   45
+         Width           =   555
+         _ExtentX        =   979
+         _ExtentY        =   979
+         BTYPE           =   8
+         TX              =   ""
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   15197159
+         BCOLO           =   15197159
+         FCOL            =   12648447
+         FCOLO           =   0
+         MCOL            =   15197159
+         MPTR            =   99
+         MICON           =   "frmMdi.frx":B1CF
+         PICN            =   "frmMdi.frx":B4E9
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   -1  'True
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
    End
    Begin VB.Timer Timer1 
       Interval        =   1000
@@ -1011,7 +1052,7 @@ Begin VB.MDIForm frmMdi
          BorderStyle     =   0  'None
          Height          =   11520
          Left            =   240
-         Picture         =   "frmMdi.frx":B1CF
+         Picture         =   "frmMdi.frx":BDC3
          ScaleHeight     =   11520
          ScaleWidth      =   15360
          TabIndex        =   6
@@ -1127,7 +1168,7 @@ Begin VB.MDIForm frmMdi
          Height          =   240
          Index           =   2
          Left            =   5970
-         Picture         =   "frmMdi.frx":354A1
+         Picture         =   "frmMdi.frx":36095
          Top             =   390
          Visible         =   0   'False
          Width           =   240
@@ -1136,7 +1177,7 @@ Begin VB.MDIForm frmMdi
          Height          =   240
          Index           =   1
          Left            =   6240
-         Picture         =   "frmMdi.frx":3582B
+         Picture         =   "frmMdi.frx":3641F
          Top             =   330
          Visible         =   0   'False
          Width           =   240
@@ -1144,14 +1185,14 @@ Begin VB.MDIForm frmMdi
       Begin VB.Image imOK 
          Height          =   240
          Left            =   11370
-         Picture         =   "frmMdi.frx":35BB5
+         Picture         =   "frmMdi.frx":367A9
          Top             =   30
          Width           =   240
       End
       Begin VB.Image imWorking 
          Height          =   240
          Left            =   11640
-         Picture         =   "frmMdi.frx":35F3F
+         Picture         =   "frmMdi.frx":36B33
          Top             =   30
          Width           =   240
       End
@@ -1159,7 +1200,7 @@ Begin VB.MDIForm frmMdi
          Height          =   240
          Index           =   0
          Left            =   5100
-         Picture         =   "frmMdi.frx":362C9
+         Picture         =   "frmMdi.frx":36EBD
          Top             =   420
          Visible         =   0   'False
          Width           =   240
@@ -1224,6 +1265,13 @@ Attribute m_cMenuTrib.VB_VarHelpID = -1
 Private Type FileData
     sName As String
     dDate As Date
+End Type
+
+Private Type tVersion
+    Major As Integer
+    Minor As Integer
+    Revision As Integer
+    version As String
 End Type
 
 Dim RunOnce As Boolean, lngTimer As Long, lngTimer2 As Long, FlagServico As Long
@@ -1343,6 +1391,8 @@ Select Case Index
         'frmAgenda.show
         'frmAgenda.ZOrder (0)
         frmRTF.show
+     Case 13
+        Gera_WhatsNew
 End Select
 End Sub
 
@@ -1653,6 +1703,8 @@ If (lIndex > 0) Then
              Set frm = frmVigSanitaria
         Case "mnuVRE"
              Set frm = frmDadosVRE
+        Case "mnuVRERedeSim"
+             Set frm = frmImportaRedeSim
         Case "mnuCnsEmpresa"
              Set frm = frmCnsMob
         Case "mnuProdutEvento"
@@ -2065,7 +2117,8 @@ If (lIndex > 0) Then
             Set frm = Nothing
             frmReport.ShowReport2 "calculoiptu", frmMdi.HWND, Me.HWND
         Case "mnuImportaArq"
-            Set frm = frmArqBanco
+            'Set frm = frmArqBanco
+            Set frm = frmImportaBanco
         Case "mnuBuscaArq"
             Set frm = frmBuscaDoc
         Case "mnuBaixaDebito"
@@ -2259,24 +2312,6 @@ If Not RunOnce Then
 Else
     Unload frmLogin
 End If
-'If NomeDeLogin = "SCHWARTZ" Or NomeDeLogin = "RENATA" Or NomeDeLogin = "IORIO" Or _
-'     NomeDeLogin = "ISRAEL" Or NomeDeLogin = "SOLANGE" Or NomeDeLogin = "GLEISE" Or NomeDeLogin = "ROSE" Or NomeDeLogin = "FACTORE" Or NomeDeLogin = "HELOISA" Or NomeDeLogin = "MARIELA" Or NomeDeLogin = "RODRIGOG" Or NomeDeLogin = "TIC" Or NomeDeLogin = "JOAOF" Or NomeDeLogin = "AAFMARTINS" Or NomeDeLogin = "TICYANNE.OKIMASU" Or NomeDeLogin = "MARIELA.CUSTODIO" Or IsAtendente Then
-'    mnuCertidaoDebito.Enabled = True
-'    mnuCertidaoDemolicao.Enabled = True
-'    mnuCertidaoEndereco.Enabled = True
-'    mnuCertidaoIsencao.Enabled = True
-'    mnuCertidaoValorVenal.Enabled = True
-'    mnuCertidaoIsencaoITBI.Enabled = True
-'Else
-'    mnuCertidaoDebito.Enabled = False
-'    mnuCertidaoDemolicao.Enabled = False
-'    mnuCertidaoEndereco.Enabled = False
- '   mnuCertidaoIsencao.Enabled = False
- '   mnuCertidaoValorVenal.Enabled = False
- '   mnuCertidaoIsencaoITBI.Enabled = False
-'End If
-
-
 
 MDIForm_Resize
 End Sub
@@ -3011,6 +3046,7 @@ With m_cMenuMob
     h = .AddItem("Sala do empreendedor", "", 1, i, , , , "mnuSalaEmp")
     h = .AddItem("Nova GIA", "", 1, i, , , , "mnuNovaGIA")
     h = .AddItem("Integração VRE", "", 1, i, , , , "mnuVRE")
+    h = .AddItem("Importar dados da RedeSim", "", 1, i, , , , "mnuVRERedeSim")
     j = .AddItem("Produtividade", "", 1, , , , , "mnuProdutividade")
     h = .AddItem("Cadastro de eventos", "", 1, j, , , , "mnuProdutEvento")
     h = .AddItem("Controle diário de tarefas", "", 1, j, , , , "mnuProdutTarefa")
@@ -3168,7 +3204,7 @@ With m_cMenuTrib
     h = .AddItem("Relatório de ajuizamentos", "", 1, i, , , , "mnuRelAjuizamento")
     h = .AddItem("Lista de devedores", "", 1, i, , , , "mnuListaDevedor")
     h = .AddItem("Notificação de imposto devido", "", 1, i, , , , "mnuNotificacao")
-    h = .AddItem("Notificação de iss construção civil", "", 1, i, , , , "mnuNotificacao2")
+'    h = .AddItem("Notificação de iss construção civil", "", 1, i, , , , "mnuNotificacao2")
     h = .AddItem("Aviso de débito", "", 1, i, , , , "mnuAvisoDebito")
     h = .AddItem("Débito ajuizados pagos", "", 1, i, , , , "mnuDebitoAjPago")
     h = .AddItem("Complementos gerados", "", 1, i, , , , "mnuComplementoPagto")
@@ -3481,7 +3517,7 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         nCodReduz = !CODREDUZIDO
-        sNome = !razaosocial
+        sNome = !RazaoSocial
         nAno = !AnoExercicio
         
         
@@ -3604,5 +3640,59 @@ End With
 cnEicon.Close
 
 MsgBox "Baixa finalizada", vbInformation, "Infomação"
+
+End Sub
+
+Private Sub Gera_WhatsNew()
+
+Dim Sql As String, RdoAux As rdoResultset, ax As String, sNomeArq As String, sVersion As String, aVersion() As tVersion, x As Integer
+
+ReDim aVersion(0)
+Sql = "select distinct major,minor,revision from whats_new order by major desc,minor desc,revision desc"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    Do Until .EOF
+        sVersion = !Major & "." & !Minor & "." & !Revision
+        ReDim Preserve aVersion(UBound(aVersion) + 1)
+        aVersion(UBound(aVersion)).version = sVersion
+        aVersion(UBound(aVersion)).Major = !Major
+        aVersion(UBound(aVersion)).Minor = !Minor
+        aVersion(UBound(aVersion)).Revision = !Revision
+       .MoveNext
+    Loop
+   .Close
+End With
+
+sNomeArq = sPathBin & "\WHATSNEW.TXT"
+FF1 = FreeFile()
+Open sNomeArq For Output As FF1
+
+Print #FF1, "**************************************************************"
+Print #FF1, "G.T.I. - Histórico de Atualizações"
+Print #FF1, "Impresso em " & Format(Now, "dd/mm/yyyy") & " ÀS " & Format(Now, "hh:mm")
+Print #FF1, "**************************************************************"
+
+For x = 1 To UBound(aVersion)
+    Sql = "SELECT * from whats_new where major=" & aVersion(x).Major & " and minor=" & aVersion(x).Minor & " and revision=" & aVersion(x).Revision & " order by data desc,seq"
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    With RdoAux
+        Do Until .EOF
+            If .AbsolutePosition = 1 Then
+                ax = ""
+                Print #FF1, ax
+                ax = "Versão: " & aVersion(x).version
+                Print #FF1, ax
+            End If
+            ax = "* " & Format(!Data, "dd/mm/yyyy") & " - " & !obs
+            Print #FF1, ax
+           .MoveNext
+        Loop
+       .Close
+    End With
+Next
+
+
+Close #FF1
+ret = Shell("NOTEPAD" & " " & sNomeArq, vbNormalFocus)
 
 End Sub

@@ -19,10 +19,20 @@ Begin VB.Form frmCnsCidadao
    ShowInTaskbar   =   0   'False
    Begin VB.OptionButton optOrdem 
       BackColor       =   &H00EEEEEE&
+      Caption         =   "CNH"
+      Height          =   210
+      Index           =   5
+      Left            =   5445
+      TabIndex        =   11
+      Top             =   495
+      Width           =   945
+   End
+   Begin VB.OptionButton optOrdem 
+      BackColor       =   &H00EEEEEE&
       Caption         =   "Código"
       Height          =   210
       Index           =   4
-      Left            =   690
+      Left            =   555
       TabIndex        =   8
       Top             =   510
       Width           =   945
@@ -32,17 +42,17 @@ Begin VB.Form frmCnsCidadao
       Caption         =   "RG"
       Height          =   210
       Index           =   3
-      Left            =   4665
+      Left            =   4530
       TabIndex        =   7
       Top             =   495
-      Width           =   945
+      Width           =   855
    End
    Begin VB.OptionButton optOrdem 
       BackColor       =   &H00EEEEEE&
       Caption         =   "CNPJ"
       Height          =   210
       Index           =   2
-      Left            =   3660
+      Left            =   3525
       TabIndex        =   6
       Top             =   510
       Width           =   945
@@ -52,7 +62,7 @@ Begin VB.Form frmCnsCidadao
       Caption         =   "CPF"
       Height          =   210
       Index           =   1
-      Left            =   2670
+      Left            =   2535
       TabIndex        =   5
       Top             =   495
       Width           =   945
@@ -62,7 +72,7 @@ Begin VB.Form frmCnsCidadao
       Caption         =   "Nome"
       Height          =   210
       Index           =   0
-      Left            =   1665
+      Left            =   1530
       TabIndex        =   4
       Top             =   495
       Value           =   -1  'True
@@ -391,7 +401,7 @@ fim3:
                      End If
                  Next
             End If
-            frmCadMob.grdProp.AddItem Format(CodCidadao, "000000") & Chr(9) & RdoAux!nomecidadao & Chr(9) & SubNull(RdoAux!CPF)
+            frmCadMob.grdProp.AddItem Format(CodCidadao, "000000") & Chr(9) & RdoAux!nomecidadao & Chr(9) & SubNull(RdoAux!cpf)
        End If
        RdoAux.Close
 Fim4:
@@ -466,8 +476,8 @@ Fim4:
                 If Trim$(frmConfissaoDivida.lblEndCor.Caption) <> "" Then
                    frmConfissaoDivida.lblEndCor.Caption = frmConfissaoDivida.lblEndCor.Caption & " Nº " & !NUMIMOVEL
                 End If
-                If Trim(!CPF) <> "" Then
-                    frmConfissaoDivida.lblCPF.Caption = !CPF
+                If Trim(!cpf) <> "" Then
+                    frmConfissaoDivida.lblCPF.Caption = !cpf
                 Else
                     If Trim(!Cnpj) <> "" Then
                         frmConfissaoDivida.lblCPF.Caption = Format(!Cnpj, "0#\.###\.###/####-##")
@@ -527,7 +537,7 @@ If NomeForm = "frmDebitoImob" Or NomeForm = "frmEmissaoGuia" Or NomeForm = "2VIA
 End If
 
 If optOrdem(0).value = True Then
-   Sql = Sql & "NOMECIDADAO LIKE '" & Mask(Letra) & "%' ORDER BY NOMECIDADAO"
+   Sql = Sql & "NOMECIDADAO LIKE '%" & Mask(Letra) & "%' ORDER BY NOMECIDADAO"
 ElseIf optOrdem(1).value = True Then
    Sql = Sql & "CPF LIKE '%" & Letra & "%' ORDER BY CPF"
 ElseIf optOrdem(2).value = True Then
@@ -536,6 +546,8 @@ ElseIf optOrdem(3).value = True Then
    Sql = Sql & "RG LIKE '" & Letra & "%' ORDER BY RG"
 ElseIf optOrdem(4).value = True Then
    Sql = Sql & "cidadao.CODCIDADAO LIKE '" & Letra & "%' ORDER BY cidadao.CODCIDADAO"
+ElseIf optOrdem(5).value = True Then
+   Sql = Sql & "cidadao.CNH LIKE '" & Letra & "%' ORDER BY cidadao.CODCIDADAO"
 End If
 
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -545,7 +557,7 @@ With RdoAux
     Do Until .EOF
        Set itmX = lvCid.ListItems.Add(, "C" & Format(!CodCidadao, "000000") & Format(Val(SubNull(!CODREDUZIDO)), "000000"), !nomecidadao)
        itmX.SubItems(1) = sNomeLogr
-       itmX.SubItems(2) = SubNull(!CPF)
+       itmX.SubItems(2) = SubNull(!cpf)
        itmX.SubItems(3) = SubNull(!Cnpj)
        itmX.SubItems(4) = SubNull(!rg)
        itmX.SubItems(5) = SubNull(!CodCidadao)

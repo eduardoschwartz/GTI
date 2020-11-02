@@ -79,13 +79,13 @@ Begin VB.Form frmDataBase
       EndProperty
       MonthBackColor  =   16777215
       ShowToday       =   0   'False
-      StartOfWeek     =   151715841
+      StartOfWeek     =   76873729
       TitleBackColor  =   192
       TitleForeColor  =   16777215
       TrailingForeColor=   12632256
-      CurrentDate     =   42736
-      MaxDate         =   43830
-      MinDate         =   42736
+      CurrentDate     =   43466
+      MaxDate         =   44196
+      MinDate         =   43466
    End
    Begin VB.Label lblDB 
       BackStyle       =   0  'Transparent
@@ -130,9 +130,55 @@ If sOldData <> sData Then
 End If
 If frmMdi.frTeste.Visible = False Then
     AtualizaIntegrativa
+    AtualizaITBI
 End If
 
 Unload Me
+End Sub
+
+Public Sub AtualizaITBI()
+Dim Sql As String, RdoAux As rdoResultset, nNumDoc As Long, ibti As String, RdoAux2 As rdoResultset, bPago As Boolean, sObs As String, nCodReduz As Long
+
+Sql = "SELECT * FROM itbi_main WHERE situacao_itbi=2"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    Do Until .EOF
+        bPago = False
+        nNumDoc = !numero_guia
+        itbi = Format(!itbi_numero, "00000") & "/" & Format(!itbi_ano, "0000")
+        Sql = "select * from debitopago where numdocumento=" & nNumDoc
+        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        If RdoAux2.RowCount > 0 Then
+            bPago = True
+        End If
+        RdoAux2.Close
+        If bPago Then
+            Sql = "update itbi_main set situacao_itbi=3 where guid='" & !Guid & "'"
+            cn.Execute Sql, rdExecDirect
+            
+            nCodReduz = !imovel_codigo
+            If nCodReduz > 0 Then
+                sObs = "Pagamento do ITBI nº:" & itbi
+                Sql = "SELECT MAX(SEQ) AS MAXIMO FROM HISTORICO WHERE CODREDUZIDO=" & nCodReduz
+                Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                With RdoAux
+                    If IsNull(!maximo) Then
+                        nSeq = 1
+                    Else
+                        nSeq = !maximo + 1
+                    End If
+                   .Close
+                End With
+                Sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST,USERID,DATAHIST2) VALUES(" & nCodReduz & "," & nSeq & ",'" & Format(Now, "dd/mm/yyyy") & "','" & sObs & "'," & !liberado_por & ",'" & Format(Now, "mm/dd/yyyy") & "')"
+                cn.Execute Sql, rdExecDirect
+            End If
+        End If
+       .MoveNext
+    Loop
+   .Close
+End With
+
+
 End Sub
 
 Private Sub Form_Load()
@@ -238,7 +284,7 @@ With RdoAux
                         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                         With RdoAux2
                             If .RowCount > 0 Then
-                                sCPF = SubNull(!CPF)
+                                sCPF = SubNull(!cpf)
                                 If Trim(sCPF) = "" Then
                                    sCPF = SubNull(!Cnpj)
                                 End If
@@ -278,8 +324,8 @@ With RdoAux
                         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                         With RdoAux2
                             If .RowCount > 0 Then
-                                sNomeResp = !razaosocial
-                                sCPF = SubNull(!CPF)
+                                sNomeResp = !RazaoSocial
+                                sCPF = SubNull(!cpf)
                                 If Trim(sCPF) = "" Then
                                    sCPF = SubNull(!Cnpj)
                                 End If
@@ -321,7 +367,7 @@ With RdoAux
                         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                         With RdoAux2
                             If .RowCount > 0 Then
-                                sCPF = SubNull(!CPF)
+                                sCPF = SubNull(!cpf)
                                 If Trim(sCPF) = "" Then
                                    sCPF = SubNull(!Cnpj)
                                 End If
@@ -473,7 +519,7 @@ With RdoAux
                                 With RdoAux2
                                     sCPF = SubNull(!Cnpj)
                                     If Trim(sCPF) = "" Then
-                                        sCPF = SubNull(!CPF)
+                                        sCPF = SubNull(!cpf)
                                     End If
                                     Sql = "INSERT Partes(idCDA,Tipo,Crc,Nome,CpfCnpj,RgInscrEstadual,Cep,Endereco,Numero,Complemento,Bairro,Cidade,Estado,DtGeracao) Values("
                                     Sql = Sql & nCDA & ",'Principal'," & !CodCidadao & ",'" & Mask(!nomecidadao) & "','" & sCPF & "','" & SubNull(!rg) & "','" & SubNull(!Cep) & "','"
@@ -495,7 +541,7 @@ With RdoAux
                                     Do Until .EOF
                                         sCPF = SubNull(!Cnpj)
                                         If Trim(sCPF) = "" Then
-                                            sCPF = SubNull(!CPF)
+                                            sCPF = SubNull(!cpf)
                                         End If
                                         sTipoProp = IIf(!tipoprop = "P", "Principal", "Compromissário")
                                         Sql = "INSERT Partes(idCDA,Tipo,Crc,Nome,CpfCnpj,RgInscrEstadual,Cep,Endereco,Numero,Complemento,Bairro,Cidade,Estado,DtGeracao) Values("
@@ -514,7 +560,7 @@ With RdoAux
                                     Do Until .EOF
                                         sCPF = SubNull(!Cnpj)
                                         If Trim(sCPF) = "" Then
-                                            sCPF = SubNull(!CPF)
+                                            sCPF = SubNull(!cpf)
                                         End If
                                         sTipoProp = "Sócio"
                                         Sql = "INSERT Partes(idCDA,Tipo,Crc,Nome,CpfCnpj,RgInscrEstadual,Cep,Endereco,Numero,Complemento,Bairro,Cidade,Estado,DtGeracao) Values("
@@ -635,10 +681,10 @@ With RdoAux
         'If !NroCertidao > 0 Then
             Sql = "update debitoparcela set dataajuiza='" & Format(!DtAjuizamento, "mm/dd/yyyy") & "',processocnj='" & !ProcessoCNJ & "' where "
             Sql = Sql & "codreduzido=" & !iddevedor & " and anoexercicio=" & !exercicio & " and codlancamento=" & !lancamento & " and "
-            'Sql = Sql & "seqlancamento=" & !Seq & " and numparcela=" & !nroparcela
+            Sql = Sql & "seqlancamento=" & !Seq & " and numparcela=" & !nroparcela
             'Sql = Sql & " numparcela=" & !nroparcela & " and (statuslanc<5 or statuslanc=38 or statuslanc=39)"
 '            Sql = Sql & " numparcela=" & !nroparcela & " and (statuslanc=38 or statuslanc=39)"
-            Sql = Sql & " numparcela=" & !nroparcela
+            'Sql = Sql & " numparcela=" & !nroparcela
             
             'If !NroCertidao > 0 Then
             '    Sql = Sql & " and  numcertidao=" & !NroCertidao
@@ -769,7 +815,7 @@ With RdoAux
     Do Until .EOF
         'Sql = "update debitoparcela set STATUSLANC=3,protesto_nro_titulo=Null,protesto_data_remessa=Null where codreduzido=" & Val(Trim(!iddevedor)) & " and anoexercicio="
         Sql = "update debitoparcela set STATUSLANC=3 where codreduzido=" & Val(Trim(!iddevedor)) & " and anoexercicio="
-        Sql = Sql & !exercicio & " and codlancamento=" & !lancamento & " and seqlancamento=" & !Seq & " and numparcela=" & !nrparcela & " and codcomplemento=" & !complparcela & " and statuslanc=38"
+        Sql = Sql & !exercicio & " and codlancamento=" & !lancamento & " and seqlancamento=" & !Seq & " and numparcela=" & Val(SubNull(!nrparcela)) & " and codcomplemento=" & Val(SubNull(!complparcela)) & " and statuslanc=38"
         cn.Execute Sql, rdExecDirect
         
         Sql = "update CDADebitosNaoProtestados set dtleitura='" & Format(Now, "mm/dd/yyyy hh:mm") & "' where idCDADebitosNaoProtestados=" & !idCDADebitosNaoProtestados

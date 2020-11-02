@@ -781,7 +781,7 @@ frm.ZOrder 0
 End Sub
 
 Private Sub cmdLoadDeb_Click()
-Dim bResidencial As Boolean, bResideImovel As Boolean
+Dim bResidencial As Boolean, bResideImovel As Boolean, bSobrado As Boolean
 Limpa
 If Trim$(txtNumProc.Text) = "" Then
     MsgBox "Digite o nº do Processo.", vbCritical, "Atenção"
@@ -832,8 +832,8 @@ If nCodReduz < 100000 Then
                 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
                 With RdoAux2
                     If .RowCount > 0 Then
-                        If Not IsNull(!CPF) Then
-                            lblCPF.Caption = Format(Trim(!CPF), "000\.000\.000-00")
+                        If Not IsNull(!cpf) Then
+                            lblCPF.Caption = Format(Trim(!cpf), "000\.000\.000-00")
                         Else
                             If Not IsNull(!Cnpj) Then
                                 lblCPF.Caption = Format(Trim(!Cnpj), "00\.000\.000/0000-00")
@@ -872,7 +872,7 @@ Else
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
          If .RowCount > 0 Then
-             lblProp.Caption = !NomeCidadao
+             lblProp.Caption = !nomecidadao
              If Not IsNull(!NomeLogradouro) Then
                 If !NomeLogradouro <> "" Then
                     lblEnd.Caption = Trim$(SubNull(!NomeLogradouro)) & ", " & Val(SubNull(!NUMIMOVEL))
@@ -956,29 +956,43 @@ ElseIf lblCodCert.Caption = 6 Then
                     End If
                    .MoveNext
                  Loop
+                 .MoveFirst
+                 bSobrado = False
+                 Do Until .EOF
+                    If !tipoconstr = 2 Then
+                        bSobrado = True
+                        Exit Do
+                    End If
+                   .MoveNext
+                 Loop
              End With
              If Not bResidencial Then
                 MsgBox "Este Imóvel possui área não residencial.", vbExclamation, "Atenção"
                 cmdPrint.Enabled = False
                 Exit Sub
              End If
+             If bSobrado Then
+                MsgBox "Este imóvel possui mais de um pavimento.", vbExclamation, "Atenção"
+                cmdPrint.Enabled = False
+                Exit Sub
+             End If
              
            Else
-                If Not IsNull(RdoAux2!numprocesso) Then
-                   lblProcIsencao.Caption = RdoAux2!numprocesso
+                If Not IsNull(RdoAux2!NUMPROCESSO) Then
+                   lblProcIsencao.Caption = RdoAux2!NUMPROCESSO
                    lblDataProcIsencao.Caption = Format(RdoAux2!DATAPROCESSO, "dd/mm/yyyy")
                    'lblPercIsencao.Caption = RdoAux2!percisencao
-                   sTextoIsento = "Isento de acordo com o Processo nº " & RdoAux2!numprocesso & " de " & Format(RdoAux2!DATAPROCESSO, "dd/mm/yyyy") & "."
+                   sTextoIsento = "Isento de acordo com o Processo nº " & RdoAux2!NUMPROCESSO & " de " & Format(RdoAux2!DATAPROCESSO, "dd/mm/yyyy") & "."
                 Else
                    sTextoIsento = ""
                 End If
            End If
         Else
-            If Not IsNull(!numprocesso) Then
-               lblProcIsencao.Caption = !numprocesso
+            If Not IsNull(!NUMPROCESSO) Then
+               lblProcIsencao.Caption = !NUMPROCESSO
                lblDataProcIsencao.Caption = Format(!DATAPROCESSO, "dd/mm/yyyy")
                lblPercIsencao.Caption = !percisencao
-               sTextoIsento = "Isento de acordo com o Processo nº " & !numprocesso & " de " & Format(!DATAPROCESSO, "dd/mm/yyyy") & "."
+               sTextoIsento = "Isento de acordo com o Processo nº " & !NUMPROCESSO & " de " & Format(!DATAPROCESSO, "dd/mm/yyyy") & "."
             Else
                sTextoIsento = ""
             End If
@@ -1040,7 +1054,7 @@ With RdoAux
         
             If Not IsNull(RdoAux!ValorTotal) Then
                 If RdoAux!ValorTotal = 0 Then
-                    GoTo proximo
+                    GoTo Proximo
                 End If
             End If
         End If
@@ -1058,7 +1072,7 @@ With RdoAux
             ReDim Preserve aTipo(UBound(aTipo) + 1)
             aTipo(UBound(aTipo)) = sDescReduz
         End If
-proximo:
+Proximo:
        .MoveNext
     Loop
 End With
@@ -1208,8 +1222,8 @@ Select Case lblTipo.Caption
     Set RdoAux = qd.OpenResultset(rdOpenKeyset)
     With RdoAux
         lblVVT.Caption = FormatNumber(!vvt, 2) & " (" & FormatNumber(!vvt / !AreaTerreno, 2) & " R$/m²)"
-        lblVVC.Caption = FormatNumber(!VVP, 2)
-        lblVVI.Caption = FormatNumber(!VVI, 2)
+        lblVVC.Caption = FormatNumber(!vvp, 2)
+        lblVVI.Caption = FormatNumber(!vvi, 2)
         .Close
     End With
 '        lblVVT.Caption = FormatNumber(nValorVenalTerritorial, 2) & " (" & FormatNumber(nValorVenalTerritorial / nAreaTerreno, 2) & " R$/m²)"
@@ -1241,7 +1255,7 @@ Select Case lblTipo.Caption
             Sql = "SELECT * FROM vwISENCAOPROCESSO WHERE CODREDUZIDO=" & Val(txtCod.Text) & " AND CODISENCAO=1 AND NUMPROCESSO IS NOT NULL"
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             If RdoAux.RowCount > 0 Then
-                lblProcIsencao.Caption = SubNull(RdoAux!numprocesso)
+                lblProcIsencao.Caption = SubNull(RdoAux!NUMPROCESSO)
                 lblDataProcIsencao.Caption = SubNull(RdoAux!DATAPROCESSO)
                 sNomeReport = "CISENCAO"
             Else
@@ -1286,13 +1300,13 @@ End With
 
 If sNomeReport = "CVVIMOVEL" Then
     frmReport.ShowReport2 sNomeReport, frmMdi.HWND, Me.HWND
-    GoTo FIM
+    GoTo fim
 ElseIf sNomeReport = "CENDERECO" Then
     frmReport.ShowReport2 sNomeReport, frmMdi.HWND, Me.HWND
-    GoTo FIM
+    GoTo fim
 ElseIf sNomeReport = "CISENCAO" Or sNomeReport = "CISENCAOAREA" Then
     frmReport.ShowReport2 sNomeReport, frmMdi.HWND, Me.HWND
-    GoTo FIM
+    GoTo fim
 End If
 
 sAut1 = Encrypt128(NomeDeLogin, sChave)
@@ -1316,7 +1330,7 @@ Sql = "DELETE FROM CERTIDAO WHERE COMPUTER='" & NomeDoUsuario & "'"
 cn.Execute Sql, rdExecDirect
 
 
-FIM:
+fim:
 Sql = "UPDATE PARAMETROS SET VALPARAM=VALPARAM + 1 WHERE NOMEPARAM='" & sNomeParam & "'"
 cn.Execute Sql, rdExecDirect
 
@@ -1569,7 +1583,7 @@ With RdoAux
             If bTemPredial Then
                 Do Until .EOF
                     nUso = !USOCONSTR
-                    nTipo = !TIPOCONSTR
+                    nTipo = !tipoconstr
                     nCat = !CATCONSTR
                     nFatorCategoria = 0
                     For x = 1 To UBound(aFatorC)
@@ -1585,7 +1599,7 @@ With RdoAux
         Else
             If bTemPredial Then
                  nUso = !USOCONSTR
-                 nTipo = !TIPOCONSTR
+                 nTipo = !tipoconstr
                  nCat = !CATCONSTR
             End If
         End If
@@ -1838,7 +1852,7 @@ With RdoAux
        'APROVEITANDO O SELECT CALCULA TAXA DE LIMPEZA
         If bTemPredial Then
              nUso = !USOCONSTR
-             nTipo = !TIPOCONSTR
+             nTipo = !tipoconstr
              nCat = !CATCONSTR
              Select Case !USOCONSTR
                   Case 0
@@ -1869,7 +1883,7 @@ With RdoAux
         If bTemPredial Then
             Do Until .EOF
                 nUso = !USOCONSTR
-                nTipo = !TIPOCONSTR
+                nTipo = !tipoconstr
                 nCat = !CATCONSTR
                 nFatorCategoria = 0
                 For x = 1 To UBound(aFatorC)
@@ -2084,7 +2098,7 @@ With RdoAux
        'APROVEITANDO O SELECT CALCULA TAXA DE LIMPEZA
         If bTemPredial Then
              nUso = !USOCONSTR
-             nTipo = !TIPOCONSTR
+             nTipo = !tipoconstr
              nCat = !CATCONSTR
              Select Case !USOCONSTR
                   Case 0
@@ -2381,7 +2395,7 @@ If nCodCidadao > 0 Then
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         If .RowCount > 0 Then
-            lblRequerente.Caption = !NomeCidadao
+            lblRequerente.Caption = !nomecidadao
         End If
        .Close
     End With

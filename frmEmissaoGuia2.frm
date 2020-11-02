@@ -1145,7 +1145,7 @@ Sql = "select codlancamento, descreduz from lancamento "
 If nCodigo = 1 Or nCodigo = 6 Or nCodigo = 13 Or nCodigo = 14 Or nCodigo = 38 Then
     Sql = Sql & "where codlancamento=" & nCodigo
 Else
-    Sql = Sql & "where codlancamento not in (1,2,3,5,6,8,12,13,14,20,21,30) "
+    Sql = Sql & "where codlancamento not in (1,2,3,6,8,12,13,14,20,21,30) "
 End If
 Sql = Sql & "order by descreduz"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -1212,12 +1212,18 @@ End Sub
 
 Private Sub lvTrib_ItemCheck(ByVal Item As MSComctlLib.ListItem)
 Dim nAno As Integer, nCodTributo As Integer, nValorTributo As Double, Sql As String, RdoAux As rdoResultset, nCodigo As Long, nValorAliquota As Double, nCodAtividade As Integer
-Dim nQtdeProf As Integer, nArea As Double, x As Integer, sCnae As String, nCodCriterio As Integer, Y As Integer
+Dim nQtdeProf As Integer, nArea As Double, x As Integer, sCnae As String, nCodCriterio As Integer, y As Integer
 
 nCodigo = Val(frmEmissaoGuia.txtCodigo.Text)
 nAno = Val(cmbAnoTabela.Text)
 nCodTributo = Val(Right$(lvTrib.ListItems(Item.Index).Key, 3))
 Item.Selected = True
+
+If nCodTributo = 154 Or nCodTributo = 155 Or nCodTributo = 156 Then
+    MsgBox "Uso de plataforma deve ser emitido através do site da prefeitura.", vbCritical, "Atenção"
+    lvTrib.SelectedItem.Checked = False
+    Exit Sub
+End If
 
 With lvTrib
     If .ListItems(Item.Key).Checked = True Then
@@ -1476,16 +1482,23 @@ If CodLancamento = 38 Then
     RdoAux.Close
 End If
 
-Sql = "SELECT CODTRIBUTO,ABREVTRIBUTO,DESCTRIBUTO FROM vwTRIBUTOLANCAMENTO WHERE CODLANCAMENTO=" & CodLancamento & " AND CODTRIBUTO<>3 and codtributo<>13 ORDER BY ABREVTRIBUTO"
+'Sql = "SELECT CODTRIBUTO,ABREVTRIBUTO,DESCTRIBUTO FROM vwTRIBUTOLANCAMENTO WHERE CODLANCAMENTO=" & CodLancamento & " AND CODTRIBUTO<>3 and codtributo<>13 ORDER BY ABREVTRIBUTO"
+Sql = "SELECT CODTRIBUTO,ABREVTRIBUTO,DESCTRIBUTO FROM vwTRIBUTOLANCAMENTO WHERE CODLANCAMENTO=" & CodLancamento & "  ORDER BY ABREVTRIBUTO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
+        If CodLancamento = 5 Then
+            If !CodTributo = 13 Then
+                GoTo Proximo
+            End If
+        End If
         If !CodTributo <> 124 Then
             Set itmX = lvTrib.ListItems.Add(, "C" & Format(!CodTributo, "000"), !ABREVTRIBUTO)
             itmX.SubItems(1) = "0,00"
             itmX.SubItems(2) = "0,0000"
             itmX.SubItems(3) = !desctributo
         End If
+Proximo:
        .MoveNext
     Loop
    .Close
@@ -1543,7 +1556,7 @@ Sql = Sql & "INNER JOIN cnaecriteriodesc ON mobiliariovs.criterio = cnaecriterio
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
 With RdoAux
     Do Until .EOF
-       lstAtividade.AddItem Left(!Cnae, 4) & "-" & Mid(!Cnae, 5, 1) & "/" & Right(!Cnae, 2) & "-" & !descricao
+       lstAtividade.AddItem Left(!Cnae, 4) & "-" & Mid(!Cnae, 5, 1) & "/" & Right(!Cnae, 2) & "-" & !Descricao
        lstAtividade.ItemData(lstAtividade.NewIndex) = !criterio
       .MoveNext
     Loop
@@ -1817,12 +1830,14 @@ If Trim(sCep) = "" Or Trim(sCep) = "-" Then
     v9 = "14870-000"
 End If
 If bUnica Then
-    ShellExecute HWND, "open", "http://sistemas.jaboticabal.sp.gov.br/gti/Pages/boletoBB.aspx?f1=" & v1 & "&f2=" & v2 & "&f3=" & v3 & "&f4=" & v4 & "&f5=" & v5 & "&f6=" & v6 & "&f7=" & v7 & "&f8=" & v8 & "&f9=" & v9 & "&f10=" & V10, vbNullString, vbNullString, conSwNormal
+    'ShellExecute HWND, "open", "http://sistemas.jaboticabal.sp.gov.br/gti/Pages/boletoBB.aspx?f1=" & v1 & "&f2=" & v2 & "&f3=" & v3 & "&f4=" & v4 & "&f5=" & v5 & "&f6=" & v6 & "&f7=" & v7 & "&f8=" & v8 & "&f9=" & v9 & "&f10=" & V10, vbNullString, vbNullString, conSwNormal
+    ShellExecute HWND, "open", "http://sistemas.jaboticabal.sp.gov.br/gti/Tributario/GateBank?p1=" & v1 & "&p2=" & v2 & "&p3=" & v3 & "&p4=" & v4 & "&p5=" & v5 & "&p6=" & v6 & "&p7=" & v7 & "&p8=" & v8 & "&p9=" & v9, vbNullString, vbNullString, conSwNormal
+Else
+    v5 = "287353200" & Format(aNumDoc(1), "00000000")
+    v6 = RetornaNumero(lblValorParcela.Caption)
+    'ShellExecute HWND, "open", "http://sistemas.jaboticabal.sp.gov.br/gti/Pages/boletoBB.aspx?f1=" & v1 & "&f2=" & v2 & "&f3=" & v3 & "&f4=" & v4 & "&f5=" & v5 & "&f6=" & v6 & "&f7=" & v7 & "&f8=" & v8 & "&f9=" & v9 & "&f10=" & V10, vbNullString, vbNullString, conSwNormal
+    ShellExecute HWND, "open", "http://sistemas.jaboticabal.sp.gov.br/gti/Tributario/GateBank?p1=" & v1 & "&p2=" & v2 & "&p3=" & v3 & "&p4=" & v4 & "&p5=" & v5 & "&p6=" & v6 & "&p7=" & v7 & "&p8=" & v8 & "&p9=" & v9, vbNullString, vbNullString, conSwNormal
 End If
-v5 = "287353200" & Format(aNumDoc(1), "00000000")
-v6 = RetornaNumero(lblValorParcela.Caption)
-ShellExecute HWND, "open", "http://sistemas.jaboticabal.sp.gov.br/gti/Pages/boletoBB.aspx?f1=" & v1 & "&f2=" & v2 & "&f3=" & v3 & "&f4=" & v4 & "&f5=" & v5 & "&f6=" & v6 & "&f7=" & v7 & "&f8=" & v8 & "&f9=" & v9 & "&f10=" & V10, vbNullString, vbNullString, conSwNormal
-
 
 'IMPRIMIR O RESTANTE DOS BOLETOS
 If nQtdeParc > 1 Then

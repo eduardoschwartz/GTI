@@ -348,7 +348,7 @@ End If
 evDel = 4: evSus = 17
 If InStr(1, sRet, Format(evDel, "000"), vbBinaryCompare) > 0 Then bDel = True
 bSupervisor = bDel
-    If NomeDeLogin <> "JOSIANE" And NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "ANA" And NomeDeLogin <> "NOELI" Then
+    If NomeDeLogin <> "JOSIANE" And NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "ANA" And NomeDeLogin <> "NOELI" And NomeDeLogin <> "RITA" And NomeDeLogin <> "ALBERTO" And NomeDeLogin <> "JOSEANE" And NomeDeLogin <> "ROSE" And NomeDeLogin <> "RICARDO.MARTINEZ" And NomeDeLogin <> "REGIANE" Then
         If cmbTipo.ListIndex = 3 Or cmbTipo.ListIndex = 5 Then
             If InStr(1, sRet, Format(evSus, "000"), vbBinaryCompare) = 0 Then
                 MsgBox "O Usuário " & NomeDeLogin & " não possue permissão para suspender este(s) lancamento(s).", vbCritical, "Alerta de Segurança"
@@ -356,6 +356,24 @@ bSupervisor = bDel
             End If
         End If
 End If
+
+Achou = False
+For x = 1 To grdTemp.Rows - 1
+    With grdTemp
+        nLanc = Val(Left$(.TextMatrix(x, 1), 3))
+        If nLanc <> 11 And nLanc <> 10 And nLanc <> 11 And nLanc <> 59 Then
+            Achou = True
+        End If
+    End With
+Next
+If Achou Then
+'If cmbTipo.ListIndex = 0  Then
+    If NomeDeLogin <> "JOSIANE" And NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "ANA" And NomeDeLogin <> "NOELI" And NomeDeLogin <> "RITA" And NomeDeLogin <> "JOSEANE" And NomeDeLogin <> "ROSE" And NomeDeLogin <> "LUIZH" And NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "WILLIAN.LIMA" And NomeDeLogin <> "GLEISE" Then
+        MsgBox "O Usuário " & NomeDeLogin & " possui permissão para Cancelar débitos ou alterar o status, apenas de lançamentos de Taxas.", vbCritical, "Alerta de Segurança"
+        Exit Sub
+        End If
+    End If
+'End If
 
 If cmbTipo.ListIndex = 0 Then
     If chkKeep.value = vbChecked Then

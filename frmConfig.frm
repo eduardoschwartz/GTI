@@ -5,7 +5,7 @@ Begin VB.Form frmConfig
    BackColor       =   &H00EEEEEE&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Configuração"
-   ClientHeight    =   5295
+   ClientHeight    =   5235
    ClientLeft      =   4590
    ClientTop       =   2130
    ClientWidth     =   5310
@@ -13,7 +13,7 @@ Begin VB.Form frmConfig
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   5295
+   ScaleHeight     =   5235
    ScaleWidth      =   5310
    Begin VB.DirListBox Dir1 
       Height          =   2340
@@ -561,7 +561,7 @@ End Sub
 Private Sub btCadastro_Click()
 Dim Sql As String, RdoAux As rdoResultset, nAno1 As Integer, nLanc1 As Integer, RdoAux2 As rdoResultset, x As Integer, RdoAux3 As rdoResultset
 Dim nCodReduz As Long, aCodigo(17) As Integer, nCodigo1 As Long, nSeq1 As Integer, nParc1 As Integer, nCompl1 As Integer, sDataVencto As String, nValor1 As Double
-Dim aOrigem() As Documento, bFind As Boolean, Y As Integer, nCodigo2 As Long, nSeq2 As Integer, nParc2 As Integer, nCompl2 As Integer
+Dim aOrigem() As Documento, bFind As Boolean, y As Integer, nCodigo2 As Long, nSeq2 As Integer, nParc2 As Integer, nCompl2 As Integer
 
 
 If NomeDeLogin <> "SCHWARTZ" Then Exit Sub
@@ -578,8 +578,13 @@ With RdoAux
     Loop
    .Close
 End With
+Conta_Domicilio
+'Descarte_Processo
+'Corrige_Livro90
+'Corrige_Protesto
+'Numero_Certidao
 'Simples_Cnpj
-Suspender
+'Suspender
 'SENHA
 'CorrigeCPF
 'LaserIPTU
@@ -680,8 +685,8 @@ For x = 0 To 16
             
             'Localizar estes valores na matriz de origem
             bFind = False
-            For Y = 1 To UBound(aOrigem)
-                With aOrigem(Y)
+            For y = 1 To UBound(aOrigem)
+                With aOrigem(y)
                     If .nAno = nAno1 And .nLanc = nLanc1 And .nParc = nParc1 And .nCompl = nCompl1 And .sDataVencto = sDataVencto And .nValorPrincipal = nValor1 Then
                         bFind = True
                         Sql = "insert transfere_debito (codigo1,ano1,lanc1,seq1,parc1,comp1,datavencto1,valor1,codigo2,ano2,lanc2,seq2,parc2,comp2,datavencto2,valor2,statuslanc) "
@@ -1417,8 +1422,8 @@ With RdoAux
         If Not IsNull(!Datafim) Then
             nAnoFim = Year(!Datafim)
              
-            For Y = nAnoIni To nAnoFim
-                nAnoTmp = Y
+            For y = nAnoIni To nAnoFim
+                nAnoTmp = y
                 GoSub AddMatrix
             Next
         Else
@@ -1461,7 +1466,7 @@ Private Sub PrintExcel()
 
 If lvMain.ListItems.Count = 0 Then Exit Sub
 
-Dim x As Long, Y As Long, ax As String, Scr_hdc As Long, z As Long
+Dim x As Long, y As Long, ax As String, Scr_hdc As Long, z As Long
 Dim cnExcel As ADODB.Connection, Rs As ADODB.Recordset, nCont As Integer, sFile As String
 Scr_hdc = GetDesktopWindow()
 Set cnExcel = New ADODB.Connection
@@ -1470,8 +1475,8 @@ cnExcel.ConnectionString = "provider=Microsoft.Jet.OLEDB.4.0; data source=" & sP
 cnExcel.Open
 
 ax = ""
-For Y = 1 To lvMain.ColumnHeaders.Count
-    ax = ax & RemoveSpace(lvMain.ColumnHeaders(Y).Text) & " char(255), "
+For y = 1 To lvMain.ColumnHeaders.Count
+    ax = ax & RemoveSpace(lvMain.ColumnHeaders(y).Text) & " char(255), "
 Next
 ax = Left(ax, Len(ax) - 2)
 cnExcel.Execute "Create Table Table1(" & ax & ")"
@@ -1485,9 +1490,9 @@ For x = 1 To lvMain.ListItems.Count
     nCont = 0
     Rs.Fields(nCont).value = lvMain.ListItems(x).Text
     nCont = nCont + 1
-    For Y = 2 To lvMain.ColumnHeaders.Count
+    For y = 2 To lvMain.ColumnHeaders.Count
          
-         Rs.Fields(nCont).value = lvMain.ListItems(x).SubItems(Y - 1)
+         Rs.Fields(nCont).value = lvMain.ListItems(x).SubItems(y - 1)
          nCont = nCont + 1
     
         
@@ -1894,7 +1899,7 @@ End Sub
 
 Private Sub EmiteBoleto()
 
-Dim nValorTaxa As Double, x As Integer, nSituacao As Integer, dDataProc As Date, sDescImposto As String, RdoAux2 As rdoResultset, Y As Integer, nPercTrib As Double
+Dim nValorTaxa As Double, x As Integer, nSituacao As Integer, dDataProc As Date, sDescImposto As String, RdoAux2 As rdoResultset, y As Integer, nPercTrib As Double
 Dim nAno As Integer, nLanc As Integer, nSeq As Integer, nParc As Integer, nCompl As Integer, sDataVencto As String, nCodTrib As Integer, nValorTributo As Double
 Dim NumBarra1 As String, StrBarra1 As String, NumBarra2 As String, NumBarra2a As String, NumBarra2b As String, NumBarra2c As String, NumBarra2d As String, StrBarra2 As String
 Dim sCodReduz As String, sNomeResp As String, sTipoImposto As String, sEndImovel As String, nNumImovel As Integer, sComplImovel As String, sBairroImovel As String
@@ -1964,7 +1969,7 @@ With RdoAux
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             If .RowCount > 0 Then
-                sCPF = SubNull(!CPF)
+                sCPF = SubNull(!cpf)
                 If Trim(sCPF) = "" Then
                    sCPF = SubNull(!Cnpj)
                 End If
@@ -2892,7 +2897,7 @@ End Function
 
 Private Sub EmiteBoletoCIP()
 
-Dim nValorTaxa As Double, x As Integer, nSituacao As Integer, dDataProc As Date, sDescImposto As String, RdoAux2 As rdoResultset, Y As Integer, nPercTrib As Double
+Dim nValorTaxa As Double, x As Integer, nSituacao As Integer, dDataProc As Date, sDescImposto As String, RdoAux2 As rdoResultset, y As Integer, nPercTrib As Double
 Dim nAno As Integer, nLanc As Integer, nSeq As Integer, nParc As Integer, nCompl As Integer, sDataVencto As String, nCodTrib As Integer, nValorTributo As Double
 Dim NumBarra1 As String, StrBarra1 As String, NumBarra2 As String, NumBarra2a As String, NumBarra2b As String, NumBarra2c As String, NumBarra2d As String, StrBarra2 As String
 Dim sCodReduz As String, sNomeResp As String, sTipoImposto As String, sEndImovel As String, nNumImovel As Integer, sComplImovel As String, sBairroImovel As String
@@ -2962,7 +2967,7 @@ With RdoAux
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             If .RowCount > 0 Then
-                sCPF = SubNull(!CPF)
+                sCPF = SubNull(!cpf)
                 If Trim(sCPF) = "" Then
                    sCPF = SubNull(!Cnpj)
                 End If
@@ -3574,7 +3579,7 @@ End Sub
 
 Private Sub LaserIPTU()
 Dim nCodReduz As Long, Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, nPos2 As Integer, bFind As Boolean
-Dim nPos As Long, nTot As Long, a2019() As tLaser, a2020() As tLaser, x As Integer, Y As Integer
+Dim nPos As Long, nTot As Long, a2019() As tLaser, a2020() As tLaser, x As Integer, y As Integer
 On Error GoTo Erro
 
 ReDim a2019(0): ReDim a2020(0)
@@ -3629,9 +3634,9 @@ For x = 1 To UBound(a2020)
     End If
     bFind = False
     nCodReduz = a2020(x).Codigo
-    For Y = 1 To UBound(a2019)
-        If a2019(Y).Codigo = nCodReduz Then
-            If a2020(x).Area_Terreno <> a2019(Y).Area_Terreno Or a2020(x).Area_Predial <> a2019(Y).Area_Predial Then
+    For y = 1 To UBound(a2019)
+        If a2019(y).Codigo = nCodReduz Then
+            If a2020(x).Area_Terreno <> a2019(y).Area_Terreno Or a2020(x).Area_Predial <> a2019(y).Area_Predial Then
                 Sql = "update laseriptu set alterado=1 where ano=2020 and codreduzido=" & nCodReduz
                 cn.Execute Sql, rdExecDirect
             End If
@@ -3736,10 +3741,8 @@ End Sub
 
 Private Sub Simples_Cnpj()
 Dim nCodReduz As Long, Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, nPos2 As Integer, bFind As Boolean
-Dim nPos As Long, nTot As Long, a2019() As tLaser, a2020() As tLaser, x As Integer, Y As Integer
+Dim nPos As Long, nTot As Long, a2019() As tLaser, a2020() As tLaser, x As Integer, y As Integer
 On Error GoTo Erro
-
-
 
 Sql = "SELECT cnpj From simplestmp order by cnpj"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -3772,3 +3775,257 @@ Resume Next
 
 End Sub
 
+Private Sub Numero_Certidao()
+Dim nCodReduz As Long, Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, nPos2 As Integer, bFind As Boolean
+Dim nPos As Long, nTot As Long, sCNPJ As String
+On Error GoTo Erro
+
+Sql = "SELECT DISTINCT cnpj From importacao_banco Where Cnpj Is Not Null ORDER BY cnpj"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    nTot = .RowCount
+    nPos = 1
+    Do Until .EOF
+        If nPos Mod 50 = 0 Then
+           CallPb nPos, nTot
+        End If
+        nCodReduz = 0
+        sCNPJ = RdoAux!Cnpj
+        Sql = "select codigomob from mobiliario where cnpj='" & sCNPJ & "'"
+        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        If RdoAux2.RowCount > 0 Then
+            nCodReduz = RdoAux2!codigomob
+        End If
+        RdoAux2.Close
+        If nCodReduz = 0 Then
+            Sql = "select codcidadao from cidadao where cnpj='" & sCNPJ & "'"
+            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            If RdoAux2.RowCount > 0 Then
+                nCodReduz = RdoAux2!CodCidadao
+            End If
+            RdoAux2.Close
+        End If
+        If nCodReduz > 0 Then
+            Sql = "UPDATE IMPORTACAO_BANCO SET CODIGO_REDUZIDO=" & nCodReduz & " WHERE CNPJ='" & sCNPJ & "'"
+            cn.Execute Sql, rdExecDirect
+        End If
+        
+        nPos = nPos + 1
+        DoEvents
+       .MoveNext
+    Loop
+   .Close
+End With
+
+
+MsgBox "Fim"
+
+
+Exit Sub
+
+Erro:
+MsgBox rdoErrors(1).Description
+Resume Next
+
+End Sub
+
+Private Sub Corrige_Protesto()
+Dim nCodReduz As Long, Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, nPos2 As Integer, bFind As Boolean, RdoAux3 As rdoResultset
+Dim nPos As Long, nTot As Long, nCodProtesto As Long, nAno As Integer, nLanc As Integer, nSeq As Integer, nParc As Integer, nCompl As Integer
+On Error GoTo Erro
+ConectaIntegrativa
+
+Sql = "SELECT distinct iddevedor,cod_protesto FROM Protesto_remessa WHERE YEAR(dtLeitura)=2020 ORDER BY cod_protesto"
+Set RdoAux = cnInt.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    nTot = .RowCount
+    nPos = 1
+    Do Until .EOF
+        If nPos Mod 10 = 0 Then
+            CallPb nPos, nTot
+        End If
+        nCodReduz = !iddevedor
+        nCodProtesto = !Cod_protesto
+        Sql = "SELECT * FROM Protesto_Debitos WHERE Cod_protesto=" & nCodProtesto
+        Set RdoAux2 = cnInt.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        With RdoAux2
+            Do Until .EOF
+                nAno = !exercicio
+                nLanc = !lancamento
+                nSeq = !Seq
+                nParc = !nroparcela
+                nCompl = !complparcela
+                
+                Sql = "select * from debitoparcela where codreduzido=" & nCodReduz & " and anoexercicio=" & nAno & " and codlancamento=" & nLanc & " and "
+                Sql = Sql & "seqlancamento=" & nSeq & " and numparcela=" & nParc & " and statuslanc=6"
+                Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                If RdoAux3.RowCount > 0 Then
+                    Debug.Print nCodReduz
+                End If
+                RdoAux3.Close
+               .MoveNext
+               'nPos = nPos + 1
+            Loop
+           .Close
+        End With
+               
+      
+        
+        nPos = nPos + 1
+        DoEvents
+       .MoveNext
+    Loop
+   .Close
+End With
+
+cnInt.Close
+MsgBox "Fim"
+
+
+Exit Sub
+
+Erro:
+MsgBox rdoErrors(1).Description
+Resume Next
+
+End Sub
+
+Private Sub Corrige_Livro90()
+Dim nCodReduz As Long, Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, nPos2 As Integer, bFind As Boolean, RdoAux3 As rdoResultset
+Dim nPos As Long, nTot As Long, nCodProtesto As Long, nAno As Integer, nLanc As Integer, nSeq As Integer, nParc As Integer, nCompl As Integer, nLivro As Integer
+On Error GoTo Erro
+
+Sql = "SELECT DISTINCT codreduzido FROM debitoparcela WHERE anoexercicio=2019 AND numerolivro=91 ORDER BY codreduzido"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    nTot = .RowCount
+    nPos = 1
+    nLivro = 8828
+    Do Until .EOF
+        If nPos Mod 10 = 0 Then
+            CallPb nPos, nTot
+        End If
+        nCodReduz = !CODREDUZIDO
+        Sql = "update debitoparcela set numcertidao=" & nLivro & " where codreduzido=" & nCodReduz & " and anoexercicio=2019 and numerolivro=91"
+        cn.Execute Sql, rdExecDirect
+        'Debug.Print nCodReduz
+        nLivro = nLivro + 1
+        nPos = nPos + 1
+        DoEvents
+       .MoveNext
+    Loop
+   .Close
+End With
+
+MsgBox "Fim"
+
+
+Exit Sub
+
+Erro:
+MsgBox rdoErrors(1).Description
+Resume Next
+
+End Sub
+
+Private Sub Descarte_Processo()
+Dim nCodReduz As Long, Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, nPos2 As Integer, bFind As Boolean
+Dim nPos As Long, nTot As Long, sCNPJ_Base As String, sData_Inicio As String, sData_Final As String, sFone As String, sDDD As String
+Dim sNumProcesso As String
+On Error GoTo Erro
+
+Sql = "select ano,numero from codtmp2"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    nTot = .RowCount
+    nPos = 1
+    Do Until .EOF
+        If nPos Mod 10 = 0 Then
+           CallPb nPos, nTot
+        End If
+        Sql = "update processogti set datadescarte='06/24/2020' where ano=" & !Ano & " and numero=" & !Numero
+        cn.Execute Sql, rdExecDirect
+        
+        nPos = nPos + 1
+        DoEvents
+       .MoveNext
+    Loop
+   .Close
+End With
+MsgBox "Fim"
+
+
+Exit Sub
+
+Erro:
+MsgBox rdoErrors(1).Description
+Resume Next
+
+End Sub
+
+Private Sub Conta_Domicilio()
+Dim nCodReduz As Long, Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, nPos2 As Integer, bFind As Boolean
+Dim nPos As Long, nTot As Long, sCNPJ_Base As String, sData_Inicio As String, sData_Final As String, sFone As String, sDDD As String
+Dim nContaImovel As Long, nContaDomicilio As Long, nNumDoc As Long, nValor As Double
+On Error GoTo Erro
+GoTo 2
+
+Sql = "select documento, SUM(valor) AS soma FROM resumo_pagto_banco_ficha GROUP  BY documento ORDER BY documento"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    nTot = .RowCount
+    nPos = 1
+    Do Until .EOF
+        nNumDoc = !Documento
+        nValor = !soma
+        If nPos Mod 10 = 0 Then
+           CallPb nPos, nTot
+        End If
+        'Sql = "select sum(valorpagoreal) as soma from debitopago where numdocumento=" & nNumDoc
+        Sql = "select valorpago as soma from numdocumento where numdocumento=" & nNumDoc
+        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        If RdoAux2!soma - nValor > 1 Then
+            MsgBox nNumDoc & "   Valor doc: " & RdoAux2!soma & "   Valor analise: " & nValor
+        End If
+        RdoAux2.Close
+        nPos = nPos + 1
+        DoEvents
+       .MoveNext
+    Loop
+   .Close
+End With
+
+2:
+Sql = "select distinct numdocumento FROM resumo_pagto_banco_ficha GROUP  BY documento ORDER BY documento"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    nTot = .RowCount
+    nPos = 1
+    Do Until .EOF
+        nNumDoc = !Documento
+        nValor = !soma
+        If nPos Mod 10 = 0 Then
+           CallPb nPos, nTot
+        End If
+        'Sql = "select sum(valorpagoreal) as soma from debitopago where numdocumento=" & nNumDoc
+        Sql = "select valorpago as soma from numdocumento where numdocumento=" & nNumDoc
+        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        If RdoAux2!soma - nValor > 1 Then
+            MsgBox nNumDoc & "   Valor doc: " & RdoAux2!soma & "   Valor analise: " & nValor
+        End If
+        RdoAux2.Close
+        nPos = nPos + 1
+        DoEvents
+       .MoveNext
+    Loop
+   .Close
+End With
+
+
+Exit Sub
+
+Erro:
+MsgBox rdoErrors(1).Description
+Resume Next
+
+End Sub

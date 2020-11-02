@@ -1763,57 +1763,13 @@ With RdoAux
         .Close: Exit Sub
     Else
         If Val(SubNull(!plano)) > 0 Then
-            If !plano = 16 Then
-                nPercDesconto = 100
-            ElseIf !plano = 17 Then
-                nPercDesconto = 80
-            ElseIf !plano = 18 Then
-                nPercDesconto = 60
-            ElseIf !plano = 19 Then
-                nPercDesconto = 50
-            ElseIf !plano = 20 Then
-                nPercDesconto = 50
-            ElseIf !plano = 21 Then
-                nPercDesconto = 40
-            ElseIf !plano = 22 Then
-                nPercDesconto = 30
-            ElseIf !plano = 23 Then
-                nPercDesconto = 100
-            ElseIf !plano = 24 Then
-                nPercDesconto = 60
-            ElseIf !plano = 25 Then
-                nPercDesconto = 40
-            ElseIf !plano = 26 Then
-                nPercDesconto = 100
-            ElseIf !plano = 27 Then
-                nPercDesconto = 90
-            ElseIf !plano = 28 Then
-                nPercDesconto = 80
-            ElseIf !plano = 29 Then
-                nPercDesconto = 50
-            ElseIf !plano = 30 Then
-                nPercDesconto = 40
-            ElseIf !plano = 31 Then
-                nPercDesconto = 30
-            ElseIf !plano = 32 Then
-                nPercDesconto = 100
-            ElseIf !plano = 33 Then
-                nPercDesconto = 100
-            ElseIf !plano = 34 Then
-                nPercDesconto = 90
-            ElseIf !plano = 35 Then
-                nPercDesconto = 80
-            ElseIf !plano = 36 Then
-                nPercDesconto = 60
-            ElseIf !plano = 37 Then
-                nPercDesconto = 50
-            ElseIf !plano = 38 Then
-                nPercDesconto = 40
-            ElseIf !plano = 39 Then
-                nPercDesconto = 100
-            Else
-                nPercDesconto = 0
+            nPercDesconto = 0
+            Sql = "select * from plano where codigo=" & !plano
+            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenStatic, rdConcurValues)
+            If RdoAux2.RowCount > 0 Then
+                nPercDesconto = RdoAux2!desconto
             End If
+            RdoAux2.Close
         Else
             nPercDesconto = 0
         End If
@@ -2122,7 +2078,7 @@ For nLinha = 1 To UBound(aDoc)
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux
                 If .RowCount > 0 Then
-                   If Format(!datarecebimento, "dd/mm/yyyy") <> Format(CDate(sDataCredito), "dd/MM/yyyy") Or Val(SubNull(!NumDocumento)) <> nNumDoc Then
+                   If Format(!Datarecebimento, "dd/mm/yyyy") <> Format(CDate(sDataCredito), "dd/MM/yyyy") Or Val(SubNull(!NumDocumento)) <> nNumDoc Then
                        sDup = "S"
                    End If
                 Else
@@ -2201,7 +2157,7 @@ DoEvents
 End Sub
 
 Private Sub LimpaTela()
-    PBar.value = 0
+    pBar.value = 0
     lblDC.Caption = ""
     lblDB.Caption = ""
     lblAS.Caption = "N"
@@ -2373,7 +2329,7 @@ Else
 End If
 
 cmdOpcoes.Enabled = False: lstArq.Enabled = False: cmdLoad.Enabled = False
-PBar.value = 0
+pBar.value = 0
 
 If lblAS.Caption = "S" Then 'SOMENTE PARA SIMPLES NACIONAL
     '*** VALIDAÇÃO DE DOCUMENTOS***
@@ -2760,7 +2716,7 @@ DocumentoErro:
 Proximo:
 Next
 
-PBar.value = 0
+pBar.value = 0
 cmdOpcoes.Enabled = True: lstArq.Enabled = True: cmdLoad.Enabled = True
 
 lblDB.Caption = Format(Now, "dd/mm/yyyy")
@@ -2787,7 +2743,7 @@ cn.Execute Sql, rdExecDirect
 'GravaAnalise
 
 MsgBox "Baixa efetuada com sucesso.", vbInformation, "Informação"
-PBar.value = 0
+pBar.value = 0
 
 If lstArq.Visible = False Then
     ReDim aReg(0): ReDim aDoc(0)
@@ -2828,7 +2784,7 @@ cmdOpcoes.Enabled = False: lstArq.Enabled = False: cmdLoad.Enabled = False
 Sql = "DELETE FROM RECEITACLASSIFICAR WHERE DATARECEITA='" & Format(cmbDataCredito.Text, "mm/dd/yyyy") & "' AND NOMEARQ='" & lstArq.Text & "'"
 cn.Execute Sql, rdExecDirect
 
-PBar.value = 0
+pBar.value = 0
 For nLinha = 1 To UBound(aRegistro)
     CallPb CLng(nLinha), CLng(UBound(aRegistro))
     ReDim aDocTmp(0)
@@ -2954,7 +2910,7 @@ Else
     End If
 End If
 
-PBar.value = 0
+pBar.value = 0
 
 Sql = "DELETE FROM ANALISE2 WHERE USUARIO='" & NomeDeLogin & "' AND DATARECEITA='" & Format(lblDC.Caption, "mm/dd/yyyy") & "' AND CODBANCO=" & Val(Left(lblBanco.Caption, 3)) & " AND ARQUIVO='" & lstArq.Text & "'"
 'cn.Execute Sql, rdExecDirect
@@ -3040,14 +2996,14 @@ End Sub
 
 Private Sub CallPb(nVal As Long, nTot As Long)
 If nVal > 0 Then
-    PBar.Color = &HC0C000
+    pBar.Color = &HC0C000
 Else
-    PBar.Color = vbWhite
+    pBar.Color = vbWhite
 End If
 If ((nVal * 100) / nTot) <= 100 Then
-   PBar.value = (nVal * 100) / nTot
+   pBar.value = (nVal * 100) / nTot
 Else
-   PBar.value = 100
+   pBar.value = 100
 End If
 
 Me.Refresh
@@ -3077,7 +3033,7 @@ If Dir$(sFullPath) = "" Then
     Exit Sub
 End If
 
-nPos = 0: nTot = 0: PBar.value = 0: nValorEfetivo = 0
+nPos = 0: nTot = 0: pBar.value = 0: nValorEfetivo = 0
 Ocupado
 lblAS.Caption = "N": lblAC.Caption = "N": lblDA.Caption = "N"
 
@@ -3359,8 +3315,8 @@ Test1:
 CloseFile1:
 Close #FF1
 Liberado
-PBar.Color = vbWhite
-PBar.value = 0
+pBar.Color = vbWhite
+pBar.value = 0
 nErro = 0
 cmbDataCredito.Clear
 
@@ -3674,7 +3630,7 @@ CONTSN:
     Wend
 CloseFile2:
 Close #FF1
-PBar.value = 0
+pBar.value = 0
 Liberado
 nErro = 0
 
@@ -3935,7 +3891,7 @@ cmbDataCredito.ListIndex = 0
 '    lblDC.Caption = "Sem Registros"
 'End If
 
-PBar.value = 0
+pBar.value = 0
 Liberado
 
 Exit Sub
@@ -4152,7 +4108,7 @@ cmbDataCredito.ListIndex = 0
 '    lblDC.Caption = "Sem Registros"
 'End If
 
-PBar.value = 0
+pBar.value = 0
 Liberado
 
 Exit Sub
@@ -4304,7 +4260,7 @@ Open sFullPath For Binary Access Read Write As FF1
 CloseFile4:
 Close #FF1
 Liberado
-PBar.value = 0
+pBar.value = 0
 
 nErro = 0
 cmbDataCredito.Clear
@@ -4413,12 +4369,12 @@ End With
 End Sub
 
 Private Sub GravaAnalise()
-Dim x As Integer, Sql As String, Y As Integer, z As Integer
+Dim x As Integer, Sql As String, y As Integer, z As Integer
  
 For x = 1 To UBound(aTrib)
     With aTrib(x)
-        For Y = 1 To UBound(aTribF)
-            If aTribF(Y).nCodTrib = .nCodTrib Then Exit For
+        For y = 1 To UBound(aTribF)
+            If aTribF(y).nCodTrib = .nCodTrib Then Exit For
         Next
         
         If .nFicha = 0 And .nValorTotal > 0 Then
@@ -4438,7 +4394,7 @@ For x = 1 To UBound(aTrib)
             Sql = "INSERT ANALISE2(USUARIO,DATARECEITA,CODBANCO,ARQUIVO,NUMDOCUMENTO,CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,"
             Sql = Sql & "CODTRIBUTO,DESCTRIBUTO,VALORTOTAL,NUMFICHA,DESCFICHA,NATUREZA,VINCULO,PERC) "
             Sql = Sql & "VALUES('" & NomeDeLogin & "','" & Format(lblDC.Caption, "mm/dd/yyyy") & "'," & Val(Left(lblBanco.Caption, 3)) & ",'" & lstArq.Text & "',"
-            Sql = Sql & .nNumDoc & "," & .nCodReduz & "," & .nAno & "," & .nLanc & "," & .nSeq & "," & .nParc & "," & .nCompl & "," & .nCodTrib & ",'" & aTribF(Y).sAbrevTrib & "',"
+            Sql = Sql & .nNumDoc & "," & .nCodReduz & "," & .nAno & "," & .nLanc & "," & .nSeq & "," & .nParc & "," & .nCompl & "," & .nCodTrib & ",'" & aTribF(y).sAbrevTrib & "',"
             'Sql = Sql & Virg2Ponto(Format(.nValorpTotal - .nValorMulta - .nValorJuros - .nValorCorrecao, "#0.00")) & "," & .nFicha & ",'" & aFicha(z).Desc & "','" & aFicha(z).Natureza & "','" & aFicha(z).Vinculo & "'," & aFicha(z).Perc & ")"
             Sql = Sql & Virg2Ponto(Format(.nValorPrincipal + .nValorTarifa, "#0.00")) & "," & .nFicha & ",'" & aFicha(z).Desc & "','" & aFicha(z).Natureza & "','" & aFicha(z).Vinculo & "'," & aFicha(z).Perc & ")"
             cn.Execute Sql, rdExecDirect
@@ -4450,7 +4406,7 @@ For x = 1 To UBound(aTrib)
             Sql = "INSERT ANALISE2(USUARIO,DATARECEITA,CODBANCO,ARQUIVO,NUMDOCUMENTO,CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,"
             Sql = Sql & "CODTRIBUTO,DESCTRIBUTO,VALORTOTAL,NUMFICHA,DESCFICHA,NATUREZA,VINCULO,PERC) "
             Sql = Sql & "VALUES('" & NomeDeLogin & "','" & Format(lblDC.Caption, "mm/dd/yyyy") & "'," & Val(Left(lblBanco.Caption, 3)) & ",'" & lstArq.Text & "',"
-            Sql = Sql & .nNumDoc & "," & .nCodReduz & "," & .nAno & "," & .nLanc & "," & .nSeq & "," & .nParc & "," & .nCompl & "," & .nCodTrib & ",'" & aTribF(Y).sAbrevTrib & "',"
+            Sql = Sql & .nNumDoc & "," & .nCodReduz & "," & .nAno & "," & .nLanc & "," & .nSeq & "," & .nParc & "," & .nCompl & "," & .nCodTrib & ",'" & aTribF(y).sAbrevTrib & "',"
             Sql = Sql & Virg2Ponto(Format(.nValorJuros + .nValorMulta, "#0.00")) & "," & .nFichaJM & ",'" & aFicha(z).Desc & "','" & aFicha(z).Natureza & "','" & aFicha(z).Vinculo & "'," & aFicha(z).Perc & ")"
             cn.Execute Sql, rdExecDirect
         End If
@@ -4462,7 +4418,7 @@ For x = 1 To UBound(aTrib)
             Sql = "INSERT ANALISE2(USUARIO,DATARECEITA,CODBANCO,ARQUIVO,NUMDOCUMENTO,CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,"
             Sql = Sql & "CODTRIBUTO,DESCTRIBUTO,VALORTOTAL,NUMFICHA,DESCFICHA,NATUREZA,VINCULO,PERC) "
             Sql = Sql & "VALUES('" & NomeDeLogin & "','" & Format(lblDC.Caption, "mm/dd/yyyy") & "'," & Val(Left(lblBanco.Caption, 3)) & ",'" & lstArq.Text & "',"
-            Sql = Sql & .nNumDoc & "," & .nCodReduz & "," & .nAno & "," & .nLanc & "," & .nSeq & "," & .nParc & "," & .nCompl & "," & .nCodTrib & ",'" & aTribF(Y).sAbrevTrib & "',"
+            Sql = Sql & .nNumDoc & "," & .nCodReduz & "," & .nAno & "," & .nLanc & "," & .nSeq & "," & .nParc & "," & .nCompl & "," & .nCodTrib & ",'" & aTribF(y).sAbrevTrib & "',"
             Sql = Sql & Virg2Ponto(Format(.nValorCorrecao, "#0.00")) & "," & .nFichaC & ",'" & aFicha(z).Desc & "','" & aFicha(z).Natureza & "','" & aFicha(z).Vinculo & "'," & aFicha(z).Perc & ")"
             cn.Execute Sql, rdExecDirect
         End If

@@ -5,14 +5,14 @@ Begin VB.Form frmCancelParcAuto
    BackColor       =   &H00EEEEEE&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Cancelamento Automático de Parcelamento"
-   ClientHeight    =   3525
+   ClientHeight    =   3555
    ClientLeft      =   7905
    ClientTop       =   1365
    ClientWidth     =   11190
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
-   ScaleHeight     =   3525
+   ScaleHeight     =   3555
    ScaleWidth      =   11190
    Begin VB.TextBox txtCod 
       Appearance      =   0  'Flat
@@ -958,8 +958,8 @@ With RdoAux
 '    If !CODREDUZIDO <> 538957 Then
 '        GoTo PROXIMO
 '    End If
-    If x > 10 Then Exit Do
-        If !CODREDUZIDO < 100000 Then
+    If x > 25 Then Exit Do
+        If !CODREDUZIDO < 50000 Then
            Sql = "SELECT NOMECIDADAO FROM vwCONSULTAIMOVELPROP WHERE CODREDUZIDO=" & !CODREDUZIDO
            Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
            With RdoAux
@@ -981,8 +981,8 @@ With RdoAux
               .Close
            End With
         End If
-        nNumproc = Val(Left$(!numprocesso, InStr(1, !numprocesso, "/", vbBinaryCompare) - 1))
-        nAnoproc = Val(Right$(!numprocesso, 4))
+        nNumproc = Val(Left$(!NUMPROCESSO, InStr(1, !NUMPROCESSO, "/", vbBinaryCompare) - 1))
+        nAnoproc = Val(Right$(!NUMPROCESSO, 4))
         sNumProc = nNumproc & "/" & nAnoproc
         
         lblStatus.Caption = "Carregando processo nº " & (nNumproc & RetornaDVProcesso(nNumproc) & "/" & nAnoproc) & " (" & x & " de " & nContador & ")"
@@ -991,7 +991,7 @@ With RdoAux
         grdParc.AddItem !CODREDUZIDO & Chr(9) & sNome & Chr(9) & (nNumproc & RetornaDVProcesso(nNumproc) & "/" & nAnoproc) & Chr(9) & !contador & " de " & !qtdeparcela
         CarregaProcessos sNumProc
         x = x + 1
-proximo:
+Proximo:
        .MoveNext
        'Exit Do
     Loop
@@ -1005,7 +1005,7 @@ End Sub
 Private Sub cmdPrint_Click()
 Dim sNome As String, sNumProc As String, nNumproc As Long, nAnoproc As Integer
 
-frmReport.ShowReport "PROCESSOCANCELADO", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport "PROCESSOCANCELADO", frmMdi.HWND, Me.HWND
 
 End Sub
 
@@ -1498,7 +1498,7 @@ If Trim$(txtNumProc.Text) <> "" Then
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             If .RowCount = 0 Then
-                MsgBox "Processo de parcelamento não cadastrado para este código.", vbExclamation, "Atenção"
+                MsgBox "Processo de parcelamento " & txtNumProc.Text & " não cadastrado para este código.", vbExclamation, "Atenção"
                 lblValorNPago.Caption = "0,00"
                 lblDataParc.Caption = ""
                 lblValorPago.Caption = "0,00"
@@ -1590,7 +1590,7 @@ End Sub
 Private Sub CarregaGrid()
     On Error GoTo Erro
 
-Dim RdoAux2 As rdoResultset, RdoAux3 As rdoResultset
+Dim RdoAux2 As rdoResultset, RdoAux3 As rdoResultset, RdoGrid As rdoResultset
 Dim nValorLanc As Double
 Dim nValorJuros As Double
 Dim nValorMulta As Double
@@ -1614,8 +1614,8 @@ ReDim aDebito(0)
 dDataPag = CDate(lblDataParc.Caption)
 grdOrigem.Rows = 1: grdDestino.Rows = 1
 Sql = "SELECT * FROM vwCNSREPARCELAMENTOD WHERE NUMPROCESSO='" & sNumProc & "' ORDER BY ANOEXERCICIO,NUMPARCELA"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+Set RdoGrid = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoGrid
     nValorPago = 0
     nSomaPago = 0: nSomaNaoPago = 0: nSomaLancado = 0
     Do Until .EOF
@@ -1644,18 +1644,22 @@ With RdoAux
                 nValorMulta = 0
             End If
             nSomaValorTributo = nValorLanc + nValorCorrecao + nValorJuros + nValorMulta
-            .Close
+'            .Close
          End With
             
          Sql = "SELECT jurosapl, honorario From destinoreparc WHERE codreduzido = " & Val(txtCod.Text) & " AND NUMPROCESSO='" & CStr(nNumproc) & "/" & CStr(nAnoproc) & "'"
          Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
          With RdoAux2
-            If Not IsNull(!jurosapl) Then
-                nSomaValorTributoJuros = !jurosapl
+            If .RowCount > 0 Then
+                If Not IsNull(!jurosapl) Then
+                    nSomaValorTributoJuros = !jurosapl
+                Else
+                    nSomaValorTributoJuros = 0
+                End If
             Else
-                nSomaValorTributoJuros = 0
+                 nSomaValorTributoJuros = 0
             End If
-            .Close
+            RdoAux2.Close
          End With
             
          Sql = "SELECT SUM(VALORTRIBUTO) AS VALORTRIBUTO,DATAVENCIMENTO,DATADEBASE FROM DEBITOTRIBUTO INNER JOIN DEBITOPARCELA ON "
@@ -1672,7 +1676,7 @@ With RdoAux
             Else
                 nSomaCorrecao = 0
             End If
-            .Close
+            RdoAux2.Close
          End With
             
             
@@ -1689,9 +1693,9 @@ With RdoAux
               Else
                   Sql = "SELECT numdocumento.numdocumento, numdocumento.valorpago "
                   Sql = Sql & "FROM parceladocumento INNER JOIN  numdocumento ON parceladocumento.numdocumento = numdocumento.numdocumento "
-                  Sql = Sql & "WHERE CODREDUZIDO=" & RdoAux!CODREDUZIDO & " AND ANOEXERCICIO = " & RdoAux!AnoExercicio
-                  Sql = Sql & " AND CODLANCAMENTO=" & RdoAux!CodLancamento & " AND NUMPARCELA=" & RdoAux!NumParcela & " AND SEQLANCAMENTO=" & RdoAux!numsequencia
-                  Sql = Sql & " AND CODCOMPLEMENTO=" & RdoAux!CODCOMPLEMENTO & " AND VALORPAGO>0"
+                  Sql = Sql & "WHERE CODREDUZIDO=" & RdoGrid!CODREDUZIDO & " AND ANOEXERCICIO = " & RdoGrid!AnoExercicio
+                  Sql = Sql & " AND CODLANCAMENTO=" & RdoGrid!CodLancamento & " AND NUMPARCELA=" & RdoGrid!NumParcela & " AND SEQLANCAMENTO=" & RdoGrid!numsequencia
+                  Sql = Sql & " AND CODCOMPLEMENTO=" & RdoGrid!CODCOMPLEMENTO & " AND VALORPAGO>0"
                   Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                   With RdoAux2
                        If .RowCount > 0 Then
@@ -1702,11 +1706,11 @@ With RdoAux
                             dDataPagto = CDate("01/01/1900")
                             sDataPagto = "Não Pago"
                        End If
-                      .Close
+                      RdoAux2.Close
                   End With
                   
               End If
-             .Close
+             'RdoAux2.Close
          End With
            
          If nValorPago > 0 Then
@@ -1831,6 +1835,7 @@ For x = 1 To UBound(aDebito)
         FormatNumber(.nValorAtual, 2) & Chr(9) & "03-NÃO PAGO"
     End With
 Next
+If lblValorPago.Caption = "" Then lblValorPago.Caption = "0"
 nSomaPago = CDbl(lblValorPago.Caption)
 'lblValorNPago.Caption = FormatNumber(nSomaNaoPago - nSomaPago, 2)
 
@@ -1905,8 +1910,9 @@ With grdOrigem
               FormatNumber(CDbl(lblValorNaoPago.Caption), 2) & Chr(9) & "03-NÃO PAGO"
         End If
     Else
-        If CDbl(lblValorNaoPago.Caption) > CDbl(lblVlNComp.Caption) Then
-            .TextMatrix(.Rows - 1, 7) = FormatNumber(CDbl(lblValorNaoPago.Caption) - CDbl(lblVlNComp.Caption), 2)
+        If lblValorTotal.Caption = "" Then lblValorTotal.Caption = "0"
+        If CDbl(lblValorTotal.Caption) > CDbl(lblVlNComp.Caption) Then
+            .TextMatrix(.Rows - 1, 7) = FormatNumber(CDbl(lblValorTotal.Caption) - CDbl(lblVlNComp.Caption), 2)
 ''             .TextMatrix(.Rows - 1, 8) = FormatNumber(CDbl(lblValorExt.Caption), 2)
        Else
            If lblValorExt.Caption > 0 Then

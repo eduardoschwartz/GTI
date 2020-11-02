@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "richtx32.Ocx"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "Richtx32.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Object = "{9DC93C3A-4153-440A-88A7-A10AEDA3BAAA}#3.5#0"; "vbalDTab6.ocx"
 Begin VB.Form frmChat 
@@ -272,6 +272,7 @@ Begin VB.Form frmChat
       _ExtentY        =   7276
       _Version        =   393217
       BackColor       =   -2147483633
+      Enabled         =   -1  'True
       ReadOnly        =   -1  'True
       ScrollBars      =   2
       Appearance      =   0
@@ -578,7 +579,7 @@ End Sub
 
 Private Sub CarregaUser()
 Dim Sql As String, RdoAux As rdoResultset, bAchou As Boolean
-Dim itmX As ListItem, x As Integer, Y As Integer, z As Long
+Dim itmX As ListItem, x As Integer, y As Integer, z As Long
 Dim oListItem As ListItem
 On Error GoTo Erro
 Inicio:
@@ -677,19 +678,19 @@ For x = 1 To UBound(aNomeTmp)
     aNome(x).sFullName = aNomeTmp(x).sFullName
     aNome(x).sNomeLogin = aNomeTmp(x).sNomeLogin
 Next
-Y = 0
+y = 0
 For x = 1 To UBound(aNomeTmp)
     If aNomeTmp(x).bLogado Then
-        Y = Y + 1
+        y = y + 1
     End If
 Next
 
-Me.Caption = "Comunicador interno do GTI - " & Y + 1 & " usuários conectados."
-frmMdi.Sbar.Panels(1).Text = Y + 1 & " usuários conectados."
+Me.Caption = "Comunicador interno do GTI - " & y + 1 & " usuários conectados."
+frmMdi.Sbar.Panels(1).Text = y + 1 & " usuários conectados."
 If InStr(1, cn.Connect, "SERVER=192.") > 0 Then
-    frmMdi.Sbar.Panels(1).Text = Y + 1 & " usuários conectados."
+    frmMdi.Sbar.Panels(1).Text = y + 1 & " usuários conectados."
 Else
-    frmMdi.Sbar.Panels(1).Text = Y + 1 & " usuários conectados (Base Local)."
+    frmMdi.Sbar.Panels(1).Text = y + 1 & " usuários conectados (Base Local)."
 End If
         
 fim:
@@ -825,7 +826,7 @@ CarregaUser
 '    Exit Sub
 'End If
 
-If NomeDeLogin <> "SCHWARTZ" Then
+If NomeDeLogin <> "SCHWARTZ1" Then
     If bRunOnce Then
         Sql = "SELECT * FROM chat WHERE DATACHAT='" & Format(Now, sDataFormat) & "' AND USERRECEIVED='" & NomeDeLogin & "' AND ATIVO=1"
     Else
@@ -863,7 +864,7 @@ With RdoAux
             With Rtb
                 If NomeDeLogin = "SCHWARTZ" Then
                     Rtb.SelFontName = "Comic Sans MS"
-                    GoTo Continua
+                    'GoTo Continua
                 Else
                     Rtb.SelFontName = "MS Sans Serif"
                 End If
@@ -877,7 +878,7 @@ With RdoAux
                 .SelText = Decrypt128(RdoAux!Msg, "GTIchat") & vbCrLf
             End With
 Continua:
-            If NomeDeLogin <> "SCHWARTZ" Then
+            If NomeDeLogin <> "SCHWkARTZ" Then
                 Sql = "UPDATE CHAT SET ATIVO=0  WHERE DATACHAT='" & Format(Now, "mm/dd/yyyy") & "' AND SEQ=" & RdoAux!Seq
                 cn.Execute Sql, rdExecDirect
             Else
@@ -987,7 +988,7 @@ End If
 
 End Sub
 
-Private Sub vTab_TabClick(theTab As vbalDTab6.cTab, ByVal iButton As MouseButtonConstants, ByVal Shift As ShiftConstants, ByVal x As Single, ByVal Y As Single)
+Private Sub vTab_TabClick(theTab As vbalDTab6.cTab, ByVal iButton As MouseButtonConstants, ByVal Shift As ShiftConstants, ByVal x As Single, ByVal y As Single)
 SendToMsg
 End Sub
 

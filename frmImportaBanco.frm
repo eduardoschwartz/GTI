@@ -4,26 +4,28 @@ Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
 Begin VB.Form frmImportaBanco 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Importação de Arquivos Bancários"
-   ClientHeight    =   8535
-   ClientLeft      =   6435
-   ClientTop       =   5445
+   ClientHeight    =   5100
+   ClientLeft      =   12930
+   ClientTop       =   3735
    ClientWidth     =   8325
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   8535
+   ScaleHeight     =   5100
    ScaleWidth      =   8325
    Begin VB.CommandButton Command3 
       Caption         =   "Importar"
+      Enabled         =   0   'False
       Height          =   345
-      Left            =   6600
+      Left            =   6570
       TabIndex        =   12
-      Top             =   7110
+      Top             =   6300
       Width           =   1125
    End
    Begin VB.CommandButton Command2 
       Caption         =   "Command2"
+      Enabled         =   0   'False
       Height          =   345
       Left            =   6600
       TabIndex        =   11
@@ -32,10 +34,11 @@ Begin VB.Form frmImportaBanco
    End
    Begin VB.CommandButton Command1 
       Caption         =   "frmbaixabancaria"
+      Enabled         =   0   'False
       Height          =   345
-      Left            =   360
+      Left            =   6390
       TabIndex        =   9
-      Top             =   4710
+      Top             =   5805
       Width           =   1425
    End
    Begin Tributacao.jcFrames frProgress 
@@ -135,10 +138,10 @@ Begin VB.Form frmImportaBanco
    End
    Begin prjChameleon.chameleonButton cmdArq 
       Height          =   360
-      Left            =   6210
+      Left            =   6120
       TabIndex        =   0
       ToolTipText     =   "Selecione o arquivo a importar"
-      Top             =   4650
+      Top             =   4635
       Width           =   2025
       _ExtentX        =   3572
       _ExtentY        =   635
@@ -244,7 +247,14 @@ With cDialog
     
     vFiles = Split(.FileName, Chr(0)) 'Splits the filename up in segments
     nQtdeArquivos = UBound(vFiles)
+    
+    If MsgBox("Deseja importar este(s) arquivo(s)?", vbQuestion + vbYesNo, "Confirmação") = vbNo Then
+        txtResult.Text = "Operação cancelada."
+        Exit Sub
+    End If
+    
     txtResult.Text = IIf(nQtdeArquivos = 0, 1, nQtdeArquivos) & " arquivo(s) selecionado(s)."
+    Ocupado
     frProgress.Visible = True
     cmdArq.Enabled = False
     If UBound(vFiles) = 0 Then ' If there is only 1 file then do this
@@ -262,6 +272,7 @@ With cDialog
             ImportaArquivo vFiles(0) + "\" & vFiles(lFile), CStr(vFiles(lFile))
         Next
     End If
+    Liberado
     frProgress.Visible = False
     cmdArq.Enabled = True
 
@@ -437,7 +448,7 @@ On Error GoTo Erro
 nContN = 0: nContI = 0: nContP = 0
 lblFileNumber.Caption = "Importando arquivo " & nFilePos & " de " & nFileTot
 lblFileName.Caption = sFileTitle
-PBar.value = 0
+pBar.value = 0
 nTot = FileRowCount(sFileName)
 
 Sql = "SELECT MAX(numero_documento) AS MAXIMO FROM importacao_banco where numero_documento<2000000"
@@ -446,11 +457,8 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
 nNumDocSimples = Val(SubNull(RdoAux!maximo)) + 1
 RdoAux.Close
     
-
-
 ReDim aDataCredito(0)
 Set fso = New FileSystemObject
-
 
 Set TS = fso.OpenTextFile(sFileName, ForReading)
 Row = TS.ReadLine
@@ -530,6 +538,8 @@ SqlNormal:
     nPos = nPos + 1
 Loop
 TS.Close
+
+Grava_Arquivo_Banco sFileName, sFileTitle, sDataCredito, nCodBanco, Val(sAgencia), False
 txtResult.Text = txtResult.Text & vbCrLf & "Importado " & nRegImportado & " registros do arquivo " & sFileName & " - Arrecadação (" & sNomeBanco & ")"
 Exit Sub
 
@@ -567,18 +577,31 @@ Do Until TS.AtEndOfStream
             nAno = Val(Mid(Row, 101, 4))
             nMes = Val(Mid(Row, 105, 2))
             sCNPJ = Mid(Row, 75, 14)
+            Sql = "select codigomob from mobiliario where cnpj='" & sCNPJ & "'"
+            Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            If RdoAux.RowCount > 0 Then
+                nCodReduz = RdoAux!codigomob
+                RdoAux.Close
+            Else
+                Sql = "select codcidadao from cidadao where cnpj='" & sCNPJ & "'"
+                Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                If RdoAux.RowCount > 0 Then
+                    nCodReduz = RdoAux!CodCidadao
+                End If
+            End If
+            
             sAgencia = Mid(Row, 223, 4)
             'sSitRetorno = "CNPJ: " & Format(sCNPJ, "0#\.###\.###/####-##")
             
-            nCodigoSimples = 0
+            nCodigoSimples = nCodReduz
             
-'            nNumDoc = GravaSimples(sCNPJ, sDataVencto, nAno, nMes, nValorGuia, sFileTitle, sDataCredito, nCodBanco, sAgencia)
-'            If nNumDoc > 0 Then
+            nNumDoc = GravaSimples(sCNPJ, sDataVencto, nAno, nMes, nValorGuia, sFileTitle, sDataCredito, nCodBanco, sAgencia)
+            If nNumDoc > 0 Then
                 Sql = "insert importacao_banco(codigo_banco,data_credito,nome_arquivo,data_pagamento,valor_pago,numero_documento,agencia,data_vencimento,simples_nacional,cnpj,ano,mes,codigo_reduzido) values("
                 Sql = Sql & nCodBanco & ",'" & Format(sDataCredito, "mm/dd/yyyy") & "','" & sFileTitle & "','" & Format(sDataPag, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(nValorGuia)) & ","
                 Sql = Sql & nNumDocSimples & ",'" & sAgencia & "','" & Format(sDataVencto, "mm/dd/yyyy") & "'," & 1 & ",'" & sCNPJ & "'," & nAno & "," & nMes & "," & nCodigoSimples & ")"
                 cn.Execute Sql, rdExecDirect
-'            End If
+            End If
             nNumDocSimples = nNumDocSimples + 1
             nRegImportado = nRegImportado + 1
         End If
@@ -586,6 +609,7 @@ Do Until TS.AtEndOfStream
     nPos = nPos + 1
 Loop
 TS.Close
+Grava_Arquivo_Banco sFileName, sFileTitle, sDataCredito, nCodBanco, Val(sAgencia), False
 txtResult.Text = txtResult.Text & vbCrLf & "Incluído o arquivo " & sFileName & " - S.Nacional (" & sNomeBanco & ")"
 Exit Sub
 
@@ -648,7 +672,7 @@ Do Until TS.AtEndOfStream
                         aDataCredito(UBound(aDataCredito)) = sDataCredito
                         Sql = "select * from importacao_banco where codigo_banco=" & nCodBanco & " and data_credito='" & Format(sDataCredito, "mm/dd/yyyy") & "' and nome_arquivo='" & sFileTitle & "'"
                         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-                        If RdoAux.RowCount > 0 Then GoTo ARQUIVO_EXISTENTE
+        '                If RdoAux.RowCount > 0 Then GoTo ARQUIVO_EXISTENTE
                         RdoAux.Close
                     End If
                     sDataPag = ConvDataSerialBB(Mid(Row, 138, 8))
@@ -688,8 +712,14 @@ Do Until TS.AtEndOfStream
     nPos = nPos + 1
 Loop
 TS.Close
-txtResult.Text = txtResult.Text & vbCrLf & "Incluído o arquivo " & sFileName & " - Cobrança (" & sNomeBanco & ")"
+If IsDate(sDataCredito) Then
+    Grava_Arquivo_Banco sFileName, sFileTitle, sDataCredito, nCodBanco, Val(sAgencia), False
+    txtResult.Text = txtResult.Text & vbCrLf & "Incluído o arquivo " & sFileName & " - Cobrança (" & sNomeBanco & ")"
+Else
+    txtResult.Text = txtResult.Text & vbCrLf & "Arquivo ignorado " & sFileName & " - Cobrança (" & sNomeBanco & ")"
+End If
 Exit Sub
+
 
 LEDEBAUT:
 nPos = 1
@@ -798,7 +828,7 @@ Do Until TS.AtEndOfStream
                If nCodMov = 1 Then 'EXCLUSAO
                   If CDate(sDataOpcao) > Format(RdoAux!DataOpcao, "dd/mm/yyyy") Then
                       Sql = "DELETE FROM DEBITOAUTOMATICO WHERE CODREDUZ=" & nCodReduz & " AND CODBANCO=" & nCodBanco
-                      'cn.Execute Sql, rdExecDirect
+                      cn.Execute Sql, rdExecDirect
                       nContN = nContN + 1
                   Else
                       nContI = nContI + 1
@@ -810,11 +840,11 @@ Do Until TS.AtEndOfStream
             Else
                If nCodMov = 2 Then 'INCLUSAO
                   Sql = "DELETE FROM DEBITOAUTOMATICO WHERE CODREDUZ=" & nCodReduz
-                  'cn.Execute Sql, rdExecDirect
+                  cn.Execute Sql, rdExecDirect
                    
                   Sql = "INSERT DEBITOAUTOMATICO(CODREDUZ,CODBANCO,CODAGENCIA,NUMEROCONTA,DATAOPCAO,CODIGOPREF) VALUES("
                   Sql = Sql & nCodReduz & "," & nCodBanco & "," & sAgencia & "," & sConta & ",'" & Format(sDataOpcao, "mm/dd/yyyy") & "'," & nCodReduz & ")"
-                  'cn.Execute Sql, rdExecDirect
+                  cn.Execute Sql, rdExecDirect
                   nContP = nContP + 1
                Else
                   nContI = nContI + 1
@@ -834,6 +864,7 @@ If nContP > 0 Or nContI > 0 Or nContN > 0 Then
 End If
 Close_DA:
 TS.Close
+Grava_Arquivo_Banco sFileName, sFileTitle, sDataCredito, nCodBanco, Val(sAgencia), False
 Exit Sub
 
 ARQUIVO_EXISTENTE:
@@ -970,16 +1001,16 @@ If RdoAux.RowCount = 0 Then
     Sql = "SELECT MAX(NUMDOCUMENTO) AS MAXIMO FROM NUMDOCUMENTO where numdocumento<2000000"
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
     nNumDoc = RdoAux!maximo + 1
-    RdoAux.Close
+    'RdoAux.Close
     
     Sql = "INSERT NUMDOCUMENTO (NUMDOCUMENTO,DATADOCUMENTO,CODBANCO,CODAGENCIA,VALORPAGO,VALORTAXADOC,ISENTOMJ,emissor) VALUES("
     Sql = Sql & nNumDoc & ",'" & Format(Now, "mm/dd/yyyy") & "'," & 0 & "," & 0 & "," & 0 & "," & 0 & "," & 0 & ",'" & NomeDeLogin & " (BAIXA BANCÁRIA/SN)" & "')"
  '   cn.Execute Sql, rdExecDirect
     
-'    Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,DATAVENCIMENTO,DATADEBASE,CODMOEDA,USUARIO) "
-'    Sql = Sql & "VALUES(" & nCodReduz & "," & nAno & "," & 5 & "," & nSeq & "," & nNumParc & "," & nCompl & ","
-'    Sql = Sql & 3 & ",'" & Format(sDataVencto, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "'," & 1 & ",'GTI')"
- '   cn.Execute Sql, rdExecDirect
+    Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,DATAVENCIMENTO,DATADEBASE,CODMOEDA,USERID) "
+    Sql = Sql & "VALUES(" & nCodReduz & "," & nAno & "," & 5 & "," & nSeq & "," & nNumParc & "," & nCompl & ","
+    Sql = Sql & 3 & ",'" & Format(sDataVencto, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "'," & 1 & ",236)"
+  '  cn.Execute Sql, rdExecDirect
     
     Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,"
     Sql = Sql & "NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,VALORTRIBUTO) VALUES("
@@ -987,15 +1018,15 @@ If RdoAux.RowCount = 0 Then
     Sql = Sql & nNumParc & "," & nCompl & "," & 13 & "," & Virg2Ponto(CStr(nValor)) & ")"
  '   cn.Execute Sql, rdExecDirect
     
-    Sql = "INSERT PARCELADOCUMENTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,"
-    Sql = Sql & "NUMPARCELA,CODCOMPLEMENTO,NUMDOCUMENTO) VALUES(" & nCodReduz & ","
-    Sql = Sql & nAno & "," & 5 & "," & nSeq & "," & nNumParc & ","
-    Sql = Sql & nCompl & "," & nNumDoc & ")"
- '   cn.Execute Sql, rdExecDirect
+'    Sql = "INSERT PARCELADOCUMENTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,"
+'    Sql = Sql & "NUMPARCELA,CODCOMPLEMENTO,NUMDOCUMENTO) VALUES(" & nCodReduz & ","
+'    Sql = Sql & nAno & "," & 5 & "," & nSeq & "," & nNumParc & ","
+'    Sql = Sql & nCompl & "," & nNumDoc & ")"
+'    cn.Execute Sql, rdExecDirect
 
 
 End If
-'RdoAux.Close
+RdoAux.Close
 
 'PROCURA SE O DEBITO JA FOI BAIXADO
 Sql = "SELECT * FROM COMPLEMENTOSIMPLES WHERE ARQUIVOBANCO='" & sArquivo & "' AND DATACREDITO='" & Format(sDataCredito, "mm/dd/yyyy") & "' AND "
@@ -1005,7 +1036,7 @@ If RdoAux.RowCount = 0 Then
     Sql = "INSERT COMPLEMENTOSIMPLES(CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,ARQUIVOBANCO,DATACREDITO,VALOR,CNPJ,ANO,MES) VALUES(" & nCodReduz & ","
     Sql = Sql & nAno & "," & 5 & "," & nSeq & "," & nNumParc & "," & nCompl & ",'" & sArquivo & "','" & Format(sDataCredito, "mm/dd/yyyy") & "',"
     Sql = Sql & Virg2Ponto(CStr(nValor)) & ",'" & sCNPJ & "'," & nAno & "," & nMes & ")"
-  '  cn.Execute Sql, rdExecDirect
+'    cn.Execute Sql, rdExecDirect
     RdoAux.Close
 End If
 fim:
@@ -1016,7 +1047,7 @@ GravaSimples = nNumDoc
 Exit Function
 Erro:
 MsgBox Err.Description
-
+Resume Next
 End Function
 
 Private Function ConvDataSerial(sData As String) As String
@@ -1033,14 +1064,14 @@ End Function
 
 Private Sub CallPb(nVal As Long, nTot As Long)
 If nVal > 0 Then
-    PBar.Color = &HC0C000
+    pBar.Color = &HC0C000
 Else
-    PBar.Color = vbWhite
+    pBar.Color = vbWhite
 End If
 If ((nVal * 100) / nTot) <= 100 Then
-   PBar.value = (nVal * 100) / nTot
+   pBar.value = (nVal * 100) / nTot
 Else
-   PBar.value = 100
+   pBar.value = 100
 End If
 
 Me.Refresh
@@ -1095,3 +1126,41 @@ End Function
 Function GetFileNameFromPath(strFullPath As String) As String
     GetFileNameFromPath = Right(strFullPath, Len(strFullPath) - InStrRev(strFullPath, "\"))
 End Function
+
+Private Sub Grava_Arquivo_Banco(sFullPath As String, sNomeArq As String, sDataCredito As String, nCodBanco As Integer, nCodAgencia As Integer, bDA As Boolean)
+Dim nSeq As Integer, Sql As String, RdoAux3 As rdoResultset
+
+'cria os diretorios
+If Dir$(sPathArqBanco & "\" & Right$(sDataCredito, 4), vbDirectory) = "" Then
+   'cria o ano
+   MkDir sPathArqBanco & "\" & Right$(sDataCredito, 4)
+End If
+If Dir$(sPathArqBanco & "\" & Right$(sDataCredito, 4) & "\" & Mid$(sDataCredito, 4, 2), vbDirectory) = "" Then
+  'cria o mes
+   MkDir sPathArqBanco & "\" & Right$(sDataCredito, 4) & "\" & Mid$(sDataCredito, 4, 2)
+End If
+If Dir$(sPathArqBanco & "\" & Right$(sDataCredito, 4) & "\" & Mid$(sDataCredito, 4, 2) & "\" & Left$(sDataCredito, 2), vbDirectory) = "" Then
+  'cria o dia
+   MkDir sPathArqBanco & "\" & Right$(sDataCredito, 4) & "\" & Mid$(sDataCredito, 4, 2) & "\" & Left$(sDataCredito, 2)
+End If
+If Dir$(sPathArqBanco & "\" & Right$(sDataCredito, 4) & "\" & Mid$(sDataCredito, 4, 2) & "\" & Left$(sDataCredito, 2) & "\" & sNomeArq) = "" Then
+   FileCopy sFullPath, sPathArqBanco & "\" & Right$(sDataCredito, 4) & "\" & Mid$(sDataCredito, 4, 2) & "\" & Left$(sDataCredito, 2) & "\" & sNomeArq
+   Sql = "SELECT * FROM ARQUIVOBANCO WHERE DATACREDITO='" & Format(CDate(sDataCredito), "mm/dd/yyyy") & "'"
+   Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+   If RdoAux3.RowCount = 0 Then
+      nSeq = 1
+      RdoAux3.Close
+   Else
+      Sql = "SELECT MAX(SEQ) AS MAXIMO FROM ARQUIVOBANCO WHERE DATACREDITO='" & Format(CDate(sDataCredito), "mm/dd/yyyy") & "'"
+      Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+      nSeq = RdoAux3!maximo + 1
+      RdoAux3.Close
+   End If
+   Sql = "INSERT ARQUIVOBANCO(DATACREDITO,SEQ,CODBANCO,CODAGENCIA,DATAINCLUSAO,NOMEARQ,DA) VALUES('"
+   Sql = Sql & Format(CDate(sDataCredito), "mm/dd/yyyy") & "'," & nSeq & "," & nCodBanco & "," & nCodAgencia & ",'"
+   Sql = Sql & Format(Now, "mm/dd/yyyy") & "','" & sNomeArq & "'," & IIf(bDA, 1, 0) & ")"
+   cn.Execute Sql, rdExecDirect
+End If
+
+
+End Sub

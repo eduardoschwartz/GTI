@@ -598,19 +598,20 @@ cn.Execute Sql, rdExecDirect
 
 If NomeDeLogin = "SCHWARTZ" And nAno = 2020 Then
     Sql = "DELETE FROM LASERIPTU WHERE ANO=" & nAno
-    cn.Execute Sql, rdExecDirect
+    'cn.Execute Sql, rdExecDirect
 End If
 
 Open sPathBin & "\DEBITOPARCELA.TXT" For Output As #1
 Open sPathBin & "\DEBITOTRIBUTO.TXT" For Output As #2
 Open sPathBin & "\PARCELADOCUMENTO.TXT" For Output As #3
 Open sPathBin & "\NUMDOCUMENTO.TXT" For Output As #4
+Open sPathBin & "\ISENTOAREA.TXT" For Output As #5
 
 nLastDoc = 17200312
 nValorExp = 0
 
-'Sql = "select codreduzido from cadimob where inativo=0 order by codreduzido"
-Sql = "select codreduzido from cadimob where codreduzido between 5000 and 7000 and inativo=0 order by codreduzido"
+Sql = "select codreduzido from cadimob where inativo=0 order by codreduzido"
+'Sql = "select codreduzido from cadimob where codreduzido <1000 and inativo=0 order by codreduzido"
 'Sql = "select codigo as codreduzido from table1 order by codigo"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
@@ -658,6 +659,8 @@ With RdoAux
                 nQtdeIA = nQtdeIA + 1
                 nValorIA = nValorIA + FormatNumber(nValorFinal, 2)
                 nValorIAFull = nValorIAFull + FormatNumber(nValorFinalFull, 2)
+               'GRAVA NA TABELA ISENTOAREA
+                Print #5, nCodReduz
             Else
                 nQtdeIN = nQtdeIN + 1
                 nValorIN = nValorIN + FormatNumber(nValorFinal, 2)
@@ -724,7 +727,7 @@ With RdoAux
                 Sql = Sql & Virg2Ponto(CStr(!fcat)) & "," & Virg2Ponto(CStr(!fped)) & "," & Virg2Ponto(CStr(!fsit)) & "," & Virg2Ponto(CStr(!fpro)) & ","
                 Sql = Sql & Virg2Ponto(CStr(!ftop)) & "," & Virg2Ponto(CStr(IIf(IsNull(!fdis), "0,00", !fdis))) & "," & Virg2Ponto(CStr(!fgle)) & "," & Virg2Ponto(CStr(!valorAgrupamento)) & ","
                 Sql = Sql & Virg2Ponto(CStr(!FRACAO)) & "," & Virg2Ponto(CStr(!Aliquota * 100)) & ")"
-                cn.Execute Sql, rdExecDirect
+            '    cn.Execute Sql, rdExecDirect
             End If
             
             
@@ -801,6 +804,7 @@ Proximo:
    .Close
 End With
 
+Close #5
 Close #4
 Close #3
 Close #2

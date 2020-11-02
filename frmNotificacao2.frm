@@ -40,7 +40,7 @@ Begin VB.Form frmNotificacao2
       _ExtentX        =   2408
       _ExtentY        =   582
       _Version        =   393216
-      Format          =   126025729
+      Format          =   164429825
       CurrentDate     =   40750
    End
    Begin VB.ComboBox cmbAno 
@@ -555,13 +555,14 @@ End Sub
 Private Sub cmdGravar_Click()
 Dim RdoAux As rdoResultset, Sql As String, RdoAux2 As rdoResultset, nAreaOld As Double, nCodReduz As Long, nDif As Integer, nArea As Double
 Dim sNome As String, sInscricao As String, sEndereco As String, nNumero As Integer, sComplemento As String, sExtenso As String, nCodCidadao As Long
-Dim sBairro As String, sCidade As String, sEndereco2 As String, sCep As String, nSeq As Integer, sProcesso As String, sInsc As String, nAno As Integer
+Dim sBairro As String, sCidade As String, sEndereco2 As String, sCep As String, nSeq As Integer, sProcesso As String, sInsc As String, nAno As Integer, nAno_Tabela As Integer
 Dim nTipoEnd As Integer, sLogradouro As String, sBAIRRO2 As String, sCEP2 As String, nNumero2 As Integer, nValorIss As Double, nSeq2 As Integer
 Dim sTipo As String, nUso As Integer, nCateg As Integer, sDataBase As String, sDataVencto As String, sHist As String, nValorPago As Double
 
 sDataBase = Format(Now, "dd/mm/yyyy")
 sDataVencto = mskDataVencto.value
-nAno = Val(cmbAno.Text)
+nAno_Tabela = Val(cmbAno.Text)
+nAno = Year(Now)
 
 If Trim(txtISSPago.Text) = "" Then txtISSPago.Text = "0"
 nValorPago = CDbl(txtISSPago.Text)
@@ -608,14 +609,14 @@ With RdoAux
     Sql = "delete from notificacaoiss where seq=" & Val(txtNot.Text) & " and ano=" & nAno
     cn.Execute Sql, rdExecDirect
                 
-    Sql = "insert notificacaoiss(usuario,codigo,razao,processo,seq,ano,endereco,tipo,area,valoriss,valorpago,codcidadao,isspago) "
+    Sql = "insert notificacaoiss(usuario,codigo,razao,processo,seq,ano,endereco,tipo,area,valoriss,valorpago,codcidadao,isspago,ano_tabela) "
     Sql = Sql & "values('"
     Sql = Sql & IIf(NomeDeLogin = "LUIZ.FERRETI", "NOELI", NomeDeLogin) & "'," & nCodReduz & ",'" & Mask(sNome) & "','" & sProcesso & "'," & Val(txtNot.Text) & "," & nAno & ",'" & Left(Mask(sEndereco), 70) & "','" & sTipo & "',"
-    Sql = Sql & Virg2Ponto(CStr(nArea)) & "," & Virg2Ponto(CStr(nValor)) & "," & Virg2Ponto(CStr(nValorTotal)) & "," & nCodCidadao & "," & Virg2Ponto(Format(nValorPago, "#0.00")) & ")"
+    Sql = Sql & Virg2Ponto(CStr(nArea)) & "," & Virg2Ponto(CStr(nValor)) & "," & Virg2Ponto(CStr(nValorTotal)) & "," & nCodCidadao & "," & Virg2Ponto(Format(nValorPago, "#0.00")) & "," & nAno_Tabela & ")"
     cn.Execute Sql, rdExecDirect
     
     'insere parcelas de calculo
-    Sql = "SELECT MAX(SEQLANCAMENTO) AS MAXIMO FROM DEBITOPARCELA WHERE CODREDUZIDO=" & nCodCidadao & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=65"
+    Sql = "SELECT MAX(SEQLANCAMENTO) AS MAXIMO FROM DEBITOPARCELA WHERE CODREDUZIDO=" & nCodCidadao & " AND ANOEXERCICIO=" & nAno_Tabela & " AND CODLANCAMENTO=65"
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         If IsNull(!maximo) Then
@@ -629,24 +630,37 @@ With RdoAux
 '    Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,DATAVENCIMENTO,DATADEBASE,USUARIO) VALUES("
 '    Sql = Sql & nCodCidadao & "," & nAno & "," & 65 & "," & nSeq2 & "," & 1 & "," & 0 & "," & 3 & ",'" & Format(sDataVencto, "mm/dd/yyyy") & "','" & Format(sDataBase, "mm/dd/yyyy") & "','" & Left$("GTI/" & NomeDeLogin, 25) & "')"
     Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,DATAVENCIMENTO,DATADEBASE,USERID) VALUES("
-    Sql = Sql & nCodCidadao & "," & nAno & "," & 65 & "," & nSeq2 & "," & 1 & "," & 0 & "," & 3 & ",'" & Format(sDataVencto, "mm/dd/yyyy") & "','" & Format(sDataBase, "mm/dd/yyyy") & "'," & 236 & ")"
+    Sql = Sql & nCodCidadao & "," & nAno_Tabela & "," & 65 & "," & nSeq2 & "," & 1 & "," & 0 & "," & 3 & ",'" & Format(sDataVencto, "mm/dd/yyyy") & "','" & Format(sDataBase, "mm/dd/yyyy") & "'," & 236 & ")"
     cn.Execute Sql, rdExecDirect
     
     Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,VALORTRIBUTO) VALUES("
-    Sql = Sql & nCodCidadao & "," & nAno & "," & 65 & "," & nSeq2 & "," & 1 & "," & 0 & "," & nCodTributo & "," & Virg2Ponto(Format(nValorTotal, "#0.00")) & ")"
+    Sql = Sql & nCodCidadao & "," & nAno_Tabela & "," & 65 & "," & nSeq2 & "," & 1 & "," & 0 & "," & nCodTributo & "," & Virg2Ponto(Format(nValorTotal, "#0.00")) & ")"
     cn.Execute Sql, rdExecDirect
     
-    sHist = "Iss construção civil processo nº " & sProcesso & " notificação nº " & nSeq & "/" & cmbAno.Text & " codigo imóvel: " & nCodReduz
+    sHist = "Iss construção civil processo nº " & sProcesso & " notificação nº " & nSeq & "/" & nAno & " codigo imóvel: " & nCodReduz
     
 '    Sql = "INSERT OBSPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,SEQ,OBS,USUARIO,DATA) VALUES("
 '    Sql = Sql & nCodCidadao & "," & nAno & "," & 65 & "," & nSeq2 & "," & 1 & "," & 0 & "," & 0 & ",'" & Mask(sHist) & "','"
 '    Sql = Sql & Left$("GTI/" & NomeDeLogin, 25) & "','" & Format(Now, "mm/dd/yyyy") & "')"
+    
+    Sql = "SELECT MAX(SEQLANCAMENTO) AS MAXIMO FROM OBSPARCELA WHERE CODREDUZIDO=" & nCodCidadao & " AND ANOEXERCICIO=" & nAno_Tabela & " AND CODLANCAMENTO=65"
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    With RdoAux
+        If IsNull(!maximo) Then
+            nSeq2 = 1
+        Else
+            nSeq2 = !maximo + 1
+        End If
+       .Close
+    End With
+    
+    
     Sql = "INSERT OBSPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,SEQ,OBS,USERID,DATA) VALUES("
-    Sql = Sql & nCodCidadao & "," & nAno & "," & 65 & "," & nSeq2 & "," & 1 & "," & 0 & "," & 0 & ",'" & Mask(sHist) & "',"
-    Sql = Sql & 236 & ",'" & Format(Now, "mm/dd/yyyy") & "')"
+    Sql = Sql & nCodCidadao & "," & nAno_Tabela & "," & 65 & "," & nSeq2 & "," & 1 & "," & 0 & "," & 0 & ",'" & Mask(sHist) & "',"
+    Sql = Sql & RetornaUsuarioID(NomeDeLogin) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
     cn.Execute Sql, rdExecDirect
     
-    sHist = "Iss construção civil lançado no código " & nCodCidadao & " processo nº " & sProcesso & " notificação nº " & nSeq & "/" & cmbAno.Text & " Área notificada: " & txtArea.Text & " m²"
+    sHist = "Iss construção civil lançado no código " & nCodCidadao & " processo nº " & sProcesso & " notificação nº " & nSeq & "/" & nAno & " Área notificada: " & txtArea.Text & " m²"
     
     Sql = "SELECT MAX(SEQ) AS MAXIMO FROM HISTORICO WHERE CODREDUZIDO=" & nCodReduz
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -662,24 +676,24 @@ With RdoAux
 '    Sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST,USUARIO,DATAHIST2) VALUES("
 '    Sql = Sql & nCodReduz & "," & nSeq2 & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sHist) & "','" & "GTI/Iss.C.Civil" & "','" & Format(Now, "mm/dd/yyyy") & "')"
     Sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST,USERID,DATAHIST2) VALUES("
-    Sql = Sql & nCodReduz & "," & nSeq2 & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sHist) & "'," & 236 & ",'" & Format(Now, "mm/dd/yyyy") & "')"
+    Sql = Sql & nCodReduz & "," & nSeq2 & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sHist) & "'," & RetornaUsuarioID(NomeDeLogin) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
     cn.Execute Sql, rdExecDirect
    .Close
     
-    Sql = "delete from notificacao_iss_ccivil where codigo_cidadao=" & nCodCidadao & " and codigo_imovel=" & nCodReduz & " and numero_notificacao=" & Val(txtNot.Text) & " and ano_notificacao=" & Val(cmbAno.Text)
+    Sql = "delete from notificacao_iss_ccivil where codigo_cidadao=" & nCodCidadao & " and codigo_imovel=" & nCodReduz & " and numero_notificacao=" & Val(txtNot.Text) & " and ano_notificacao=" & nAno
     cn.Execute Sql, rdExecDirect
     
     Sql = "insert notificacao_iss_ccivil(codigo_cidadao,codigo_imovel,numero_notificacao,ano_notificacao,valor,data_gravacao,processo) values(" & nCodCidadao & "," & nCodReduz & ","
-    Sql = Sql & Val(txtNot.Text) & "," & Val(cmbAno.Text) & "," & Virg2Ponto(Format(nValorTotal, "#0.00")) & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(txtNumProc.Text) & "')"
+    Sql = Sql & Val(txtNot.Text) & "," & nAno & "," & Virg2Ponto(Format(nValorTotal, "#0.00")) & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(txtNumProc.Text) & "')"
     cn.Execute Sql, rdExecDirect
     
 End With
 
 Liberado
 If chkHabitese.value = 0 Then
-    frmReport.ShowReport2 "NOTIFICACAO3", frmMdi.HWND, Me.HWND
+    frmReport.ShowReport2 "NOTIFICACAO5", frmMdi.HWND, Me.HWND
 Else
-    frmReport.ShowReport2 "NOTIFICACAO4", frmMdi.HWND, Me.HWND
+    frmReport.ShowReport2 "NOTIFICACAO6", frmMdi.HWND, Me.HWND
 End If
 
 txtArea.Text = ""

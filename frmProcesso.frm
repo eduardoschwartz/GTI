@@ -7,14 +7,254 @@ Begin VB.Form frmProcesso
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Controle Geral dos Processos"
    ClientHeight    =   6390
-   ClientLeft      =   5205
-   ClientTop       =   3150
+   ClientLeft      =   7110
+   ClientTop       =   3870
    ClientWidth     =   8805
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    ScaleHeight     =   6390
    ScaleWidth      =   8805
+   Begin VB.Frame pnlPrint 
+      BackColor       =   &H00C0E0FF&
+      Caption         =   " Impressão de Documentos"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   -1  'True
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00800000&
+      Height          =   2385
+      Left            =   1710
+      TabIndex        =   68
+      Top             =   1230
+      Visible         =   0   'False
+      Width           =   4485
+      Begin VB.CheckBox chkP1 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Protocolo de Entrada do Processo"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H80000008&
+         Height          =   285
+         Left            =   90
+         TabIndex        =   73
+         Top             =   360
+         Value           =   1  'Checked
+         Width           =   3615
+      End
+      Begin VB.CheckBox chkP2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Requerimento de abertura de processo"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H80000008&
+         Height          =   285
+         Left            =   90
+         TabIndex        =   72
+         Top             =   690
+         Width           =   3735
+      End
+      Begin VB.CheckBox chkP3 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Comunicado de entrega de Documento"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H80000008&
+         Height          =   285
+         Left            =   90
+         TabIndex        =   71
+         Top             =   1020
+         Width           =   3765
+      End
+      Begin VB.CheckBox chkP4 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Comprovante de entrega de Documento"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H80000008&
+         Height          =   285
+         Left            =   90
+         TabIndex        =   70
+         Top             =   1365
+         Width           =   3765
+      End
+      Begin VB.CheckBox chkP5 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00C0E0FF&
+         Caption         =   "Requerimento de Cancelamento de processo"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H80000008&
+         Height          =   285
+         Left            =   90
+         TabIndex        =   69
+         Top             =   1695
+         Width           =   4140
+      End
+      Begin prjChameleon.chameleonButton cmdCancelPrint 
+         Height          =   345
+         Left            =   3960
+         TabIndex        =   75
+         ToolTipText     =   "Cancelar operação"
+         Top             =   1980
+         Width           =   345
+         _ExtentX        =   609
+         _ExtentY        =   609
+         BTYPE           =   14
+         TX              =   ""
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   1
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   0
+         FCOLO           =   0
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmProcesso.frx":0000
+         PICN            =   "frmProcesso.frx":001C
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton cmdOrgão 
+         Height          =   255
+         Left            =   3825
+         TabIndex        =   117
+         ToolTipText     =   "Trocar órgão por CPF"
+         Top             =   690
+         Width           =   390
+         _ExtentX        =   688
+         _ExtentY        =   450
+         BTYPE           =   14
+         TX              =   "<>"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   1
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   0
+         FCOLO           =   0
+         MCOL            =   8421504
+         MPTR            =   1
+         MICON           =   "frmProcesso.frx":0176
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   -1  'True
+         VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton cmdOKPrint 
+         Height          =   345
+         Left            =   3555
+         TabIndex        =   74
+         ToolTipText     =   "Imprimir os documentos selecionados"
+         Top             =   1980
+         Width           =   345
+         _ExtentX        =   609
+         _ExtentY        =   609
+         BTYPE           =   14
+         TX              =   ""
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   1
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   0
+         FCOLO           =   0
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmProcesso.frx":0192
+         PICN            =   "frmProcesso.frx":01AE
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+   End
    Begin VB.Frame Frame6 
       BackColor       =   &H00EEEEEE&
       Caption         =   "Documentos"
@@ -62,8 +302,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":0000
-         PICN            =   "frmProcesso.frx":001C
+         MICON           =   "frmProcesso.frx":0308
+         PICN            =   "frmProcesso.frx":0324
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -201,7 +441,7 @@ Begin VB.Form frmProcesso
          FCOLO           =   192
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":0176
+         MICON           =   "frmProcesso.frx":047E
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -240,7 +480,7 @@ Begin VB.Form frmProcesso
          FCOLO           =   16384
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":0192
+         MICON           =   "frmProcesso.frx":049A
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -309,8 +549,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":01AE
-         PICN            =   "frmProcesso.frx":01CA
+         MICON           =   "frmProcesso.frx":04B6
+         PICN            =   "frmProcesso.frx":04D2
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -349,8 +589,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   32768
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":0291
-         PICN            =   "frmProcesso.frx":02AD
+         MICON           =   "frmProcesso.frx":0599
+         PICN            =   "frmProcesso.frx":05B5
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -389,8 +629,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":034F
-         PICN            =   "frmProcesso.frx":036B
+         MICON           =   "frmProcesso.frx":0657
+         PICN            =   "frmProcesso.frx":0673
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -429,8 +669,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":03D9
-         PICN            =   "frmProcesso.frx":03F5
+         MICON           =   "frmProcesso.frx":06E1
+         PICN            =   "frmProcesso.frx":06FD
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -469,8 +709,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":054F
-         PICN            =   "frmProcesso.frx":056B
+         MICON           =   "frmProcesso.frx":0857
+         PICN            =   "frmProcesso.frx":0873
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -509,8 +749,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":06C5
-         PICN            =   "frmProcesso.frx":06E1
+         MICON           =   "frmProcesso.frx":09CD
+         PICN            =   "frmProcesso.frx":09E9
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -549,8 +789,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":083B
-         PICN            =   "frmProcesso.frx":0857
+         MICON           =   "frmProcesso.frx":0B43
+         PICN            =   "frmProcesso.frx":0B5F
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -589,8 +829,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":09B1
-         PICN            =   "frmProcesso.frx":09CD
+         MICON           =   "frmProcesso.frx":0CB9
+         PICN            =   "frmProcesso.frx":0CD5
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -629,8 +869,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":0B27
-         PICN            =   "frmProcesso.frx":0B43
+         MICON           =   "frmProcesso.frx":0E2F
+         PICN            =   "frmProcesso.frx":0E4B
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -669,8 +909,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":0BE3
-         PICN            =   "frmProcesso.frx":0BFF
+         MICON           =   "frmProcesso.frx":0EEB
+         PICN            =   "frmProcesso.frx":0F07
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -709,8 +949,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   16777215
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":0C9E
-         PICN            =   "frmProcesso.frx":0CBA
+         MICON           =   "frmProcesso.frx":0FA6
+         PICN            =   "frmProcesso.frx":0FC2
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -749,8 +989,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":0D2E
-         PICN            =   "frmProcesso.frx":0D4A
+         MICON           =   "frmProcesso.frx":1036
+         PICN            =   "frmProcesso.frx":1052
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -789,8 +1029,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":0EA4
-         PICN            =   "frmProcesso.frx":0EC0
+         MICON           =   "frmProcesso.frx":11AC
+         PICN            =   "frmProcesso.frx":11C8
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -829,8 +1069,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   16777215
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":101A
-         PICN            =   "frmProcesso.frx":1036
+         MICON           =   "frmProcesso.frx":1322
+         PICN            =   "frmProcesso.frx":133E
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -869,8 +1109,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":10B9
-         PICN            =   "frmProcesso.frx":10D5
+         MICON           =   "frmProcesso.frx":13C1
+         PICN            =   "frmProcesso.frx":13DD
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -909,8 +1149,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":147A
-         PICN            =   "frmProcesso.frx":1496
+         MICON           =   "frmProcesso.frx":1782
+         PICN            =   "frmProcesso.frx":179E
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -949,8 +1189,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":15F0
-         PICN            =   "frmProcesso.frx":160C
+         MICON           =   "frmProcesso.frx":18F8
+         PICN            =   "frmProcesso.frx":1914
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1015,9 +1255,9 @@ Begin VB.Form frmProcesso
          Caption         =   "Processo Físico..:"
          ForeColor       =   &H80000008&
          Height          =   255
-         Left            =   120
+         Left            =   90
          TabIndex        =   0
-         Top             =   600
+         Top             =   630
          Value           =   1  'Checked
          Width           =   1605
       End
@@ -1247,8 +1487,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":16AC
-         PICN            =   "frmProcesso.frx":16C8
+         MICON           =   "frmProcesso.frx":19B4
+         PICN            =   "frmProcesso.frx":19D0
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1306,7 +1546,7 @@ Begin VB.Form frmProcesso
          FCOLO           =   192
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":1822
+         MICON           =   "frmProcesso.frx":1B2A
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1345,7 +1585,7 @@ Begin VB.Form frmProcesso
          FCOLO           =   192
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":183E
+         MICON           =   "frmProcesso.frx":1B46
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1384,7 +1624,7 @@ Begin VB.Form frmProcesso
          FCOLO           =   192
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":185A
+         MICON           =   "frmProcesso.frx":1B62
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1423,7 +1663,7 @@ Begin VB.Form frmProcesso
          FCOLO           =   192
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":1876
+         MICON           =   "frmProcesso.frx":1B7E
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1659,8 +1899,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":1892
-         PICN            =   "frmProcesso.frx":18AE
+         MICON           =   "frmProcesso.frx":1B9A
+         PICN            =   "frmProcesso.frx":1BB6
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1699,7 +1939,7 @@ Begin VB.Form frmProcesso
          FCOLO           =   255
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":1A08
+         MICON           =   "frmProcesso.frx":1D10
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1738,7 +1978,7 @@ Begin VB.Form frmProcesso
          FCOLO           =   12582912
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":1A24
+         MICON           =   "frmProcesso.frx":1D2C
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1828,8 +2068,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":1A40
-         PICN            =   "frmProcesso.frx":1A5C
+         MICON           =   "frmProcesso.frx":1D48
+         PICN            =   "frmProcesso.frx":1D64
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1868,8 +2108,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":1BB6
-         PICN            =   "frmProcesso.frx":1BD2
+         MICON           =   "frmProcesso.frx":1EBE
+         PICN            =   "frmProcesso.frx":1EDA
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1986,9 +2226,9 @@ Begin VB.Form frmProcesso
          Appearance      =   0  'Flat
          BackColor       =   &H00FFFFFF&
          Height          =   1005
-         ItemData        =   "frmProcesso.frx":1D2C
+         ItemData        =   "frmProcesso.frx":2034
          Left            =   2040
-         List            =   "frmProcesso.frx":1D2E
+         List            =   "frmProcesso.frx":2036
          TabIndex        =   83
          Top             =   585
          Visible         =   0   'False
@@ -2023,8 +2263,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":1D30
-         PICN            =   "frmProcesso.frx":1D4C
+         MICON           =   "frmProcesso.frx":2038
+         PICN            =   "frmProcesso.frx":2054
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2083,8 +2323,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":1EA6
-         PICN            =   "frmProcesso.frx":1EC2
+         MICON           =   "frmProcesso.frx":21AE
+         PICN            =   "frmProcesso.frx":21CA
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2123,8 +2363,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":201C
-         PICN            =   "frmProcesso.frx":2038
+         MICON           =   "frmProcesso.frx":2324
+         PICN            =   "frmProcesso.frx":2340
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2163,8 +2403,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":2192
-         PICN            =   "frmProcesso.frx":21AE
+         MICON           =   "frmProcesso.frx":249A
+         PICN            =   "frmProcesso.frx":24B6
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2203,8 +2443,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":2250
-         PICN            =   "frmProcesso.frx":226C
+         MICON           =   "frmProcesso.frx":2558
+         PICN            =   "frmProcesso.frx":2574
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2311,8 +2551,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":2611
-         PICN            =   "frmProcesso.frx":262D
+         MICON           =   "frmProcesso.frx":2919
+         PICN            =   "frmProcesso.frx":2935
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2456,246 +2696,6 @@ Begin VB.Form frmProcesso
          Width           =   915
       End
    End
-   Begin VB.Frame pnlPrint 
-      BackColor       =   &H00C0E0FF&
-      Caption         =   " Impressão de Documentos"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   400
-         Underline       =   -1  'True
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00800000&
-      Height          =   2385
-      Left            =   1710
-      TabIndex        =   68
-      Top             =   1230
-      Visible         =   0   'False
-      Width           =   4485
-      Begin VB.CheckBox chkP1 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00C0E0FF&
-         Caption         =   "Protocolo de Entrada do Processo"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H80000008&
-         Height          =   285
-         Left            =   90
-         TabIndex        =   73
-         Top             =   360
-         Value           =   1  'Checked
-         Width           =   3615
-      End
-      Begin VB.CheckBox chkP2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00C0E0FF&
-         Caption         =   "Requerimento de abertura de processo"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H80000008&
-         Height          =   285
-         Left            =   90
-         TabIndex        =   72
-         Top             =   690
-         Width           =   3735
-      End
-      Begin VB.CheckBox chkP3 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00C0E0FF&
-         Caption         =   "Comunicado de entrega de Documento"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H80000008&
-         Height          =   285
-         Left            =   90
-         TabIndex        =   71
-         Top             =   1020
-         Width           =   3765
-      End
-      Begin VB.CheckBox chkP4 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00C0E0FF&
-         Caption         =   "Comprovante de entrega de Documento"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H80000008&
-         Height          =   285
-         Left            =   90
-         TabIndex        =   70
-         Top             =   1365
-         Width           =   3765
-      End
-      Begin VB.CheckBox chkP5 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00C0E0FF&
-         Caption         =   "Requerimento de Cancelamento de processo"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H80000008&
-         Height          =   285
-         Left            =   90
-         TabIndex        =   69
-         Top             =   1695
-         Width           =   4140
-      End
-      Begin prjChameleon.chameleonButton cmdCancelPrint 
-         Height          =   345
-         Left            =   3960
-         TabIndex        =   75
-         ToolTipText     =   "Cancelar operação"
-         Top             =   1980
-         Width           =   345
-         _ExtentX        =   609
-         _ExtentY        =   609
-         BTYPE           =   14
-         TX              =   ""
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   1
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   0
-         FCOLO           =   0
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmProcesso.frx":269B
-         PICN            =   "frmProcesso.frx":26B7
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin prjChameleon.chameleonButton cmdOrgão 
-         Height          =   255
-         Left            =   3825
-         TabIndex        =   117
-         ToolTipText     =   "Trocar órgão por CPF"
-         Top             =   690
-         Width           =   390
-         _ExtentX        =   688
-         _ExtentY        =   450
-         BTYPE           =   14
-         TX              =   "<>"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   1
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   0
-         FCOLO           =   0
-         MCOL            =   8421504
-         MPTR            =   1
-         MICON           =   "frmProcesso.frx":2811
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   -1  'True
-         VALUE           =   0   'False
-      End
-      Begin prjChameleon.chameleonButton cmdOKPrint 
-         Height          =   345
-         Left            =   3540
-         TabIndex        =   74
-         ToolTipText     =   "Imprimir os documentos selecionados"
-         Top             =   1980
-         Width           =   345
-         _ExtentX        =   609
-         _ExtentY        =   609
-         BTYPE           =   14
-         TX              =   ""
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   1
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   0
-         FCOLO           =   0
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmProcesso.frx":282D
-         PICN            =   "frmProcesso.frx":2849
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-   End
 End
 Attribute VB_Name = "frmProcesso"
 Attribute VB_GlobalNameSpace = False
@@ -2706,8 +2706,8 @@ Attribute VB_Exposed = False
 
 Dim RdoAux As rdoResultset, Sql As String, RdoAux2 As rdoResultset
 Dim Evento As String, Evento2 As String, bExec As Boolean, sRet As String
-Dim evEdit As Integer, evNew As Integer, evDel As Integer, evEsp As Integer, evImp As Integer, evAne As Integer, evCan As Integer, evRea As Integer, evSus As Integer, evArq As Integer
-Dim bEdit As Boolean, bNew As Boolean, bDel As Boolean, bEsp As Boolean, bImp As Boolean, bAne As Boolean, bCan As Boolean, bRea As Boolean, bSus As Boolean, bArq As Boolean
+Dim evEdit As Integer, evNew As Integer, evDel As Integer, evEsp As Integer, evImp As Integer, evAne As Integer, evCan As Integer, evRea As Integer, evSus As Integer, evArq As Integer, evDes As Integer
+Dim bEdit As Boolean, bNew As Boolean, bDel As Boolean, bEsp As Boolean, bImp As Boolean, bAne As Boolean, bCan As Boolean, bRea As Boolean, bSus As Boolean, bArq As Boolean, bDes As Boolean
 Dim bevNew As Boolean, bevEdit As Boolean, bevDel As Boolean, bEvPrint As Boolean
 Dim bEvArquivar As Boolean, bEvCancdelar As Boolean, bEvSuspender As Boolean, bEvReativar As Boolean, bEvAnexos As Boolean
 Dim bEvCorrigir As Boolean, bEvArquivos As Boolean, nLoginId As Integer
@@ -2766,18 +2766,27 @@ If IsDate(lblDtSuspencao.Caption) Then
    MsgBox "Processo Suspenso.", vbExclamation, "Atenção"
    Exit Sub
 End If
+
+If IsDate(lblDtArquivamento.Caption) Then
+   MsgBox "Processo Arquivado.", vbExclamation, "Atenção"
+   Exit Sub
+End If
+
 Evento = "Alterar"
 Eventos "INCLUIR"
 If IsDate(lblDtArquivamento.Caption) Then
     cmdEditCid.Enabled = False
     cmdEditDoc.Enabled = False
     cmdEditEnd.Enabled = False
-    txtCompl.Locked = False
-    txtCompl.BackColor = Branco
     cmdRepair.Enabled = False
     chkFisico.Enabled = False
-    
+'Else
+'    txtCompl.Locked = False
+'    txtCompl.BackColor = Branco
+'    txtObs.Locked = False
+'    txtObs.BackColor = Branco
 End If
+
 End Sub
 
 Private Sub cmdAlterar2_Click()
@@ -2962,7 +2971,7 @@ With RdoAux
         lblCOCompl.Caption = !Complemento
         lblCOBairro.Caption = SubNull(!DescBairro)
         lblCOCidade.Caption = SubNull(!descCidade) & "/" & SubNull(!SiglaUF)
-        lblCORG.Caption = !rg & " - " & !ORGAO
+        lblCORG.Caption = !rg & " - " & !Orgao
     Else
         MsgBox "Não existem informações gravadas sobre o cidadão de origem, apenas processos a partir de 24/01/2011 possuem esta informação.", vbInformation, "Atenção"
        .Close
@@ -2984,7 +2993,11 @@ End Sub
 
 Private Sub cmdDescartar_Click()
 If IsDate(lblDataDescarte.Caption) Then
-    MsgBox "Processo já descartado.", vbCritical, "Erro"
+    If MsgBox("Processo já descartado, deseja remover esta data?", vbQuestion + vbYesNo, "Atenção") = vbYes Then
+        lblDataDescarte.Caption = "  /  /    "
+        Sql = "UPDATE PROCESSOGTI SET DATADESCARTE=null WHERE NUMERO=" & Val(Left$(lblNumProc.Caption, Len(lblNumProc.Caption) - 2)) & " AND ANO=" & Val(lblAno.Caption)
+        cn.Execute Sql, rdExecDirect
+    End If
 Else
     If MsgBox("Descartar este processo ?", vbQuestion + vbYesNo, "Confirmação") = vbYes Then
         t = InputBox("Digite a data de descarte.", "INFORME A DATA")
@@ -3696,6 +3709,7 @@ With RdoAux
         'lblAtendente.Caption = SubNull(!RESPONSAVEL)
         lblAtendente.Caption = SubNull(!NomeLogin)
         lblAtendente.Tag = Val(SubNull(!userid))
+        
         lblCodCid.Caption = !CodCidadao
         Sql = "SELECT NOMECIDADAO FROM CIDADAO WHERE CODCIDADAO=" & !CodCidadao
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
@@ -3851,7 +3865,7 @@ Sql = "SELECT CODIGO,DESCRICAO FROM CENTROCUSTO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-       cmbReq.AddItem !descricao
+       cmbReq.AddItem !Descricao
        cmbReq.ItemData(cmbReq.NewIndex) = !Codigo
       .MoveNext
     Loop
@@ -3996,8 +4010,9 @@ ElseIf Tipo = "INCLUIR" Then
         txtCompl.Locked = True
         txtCompl.BackColor = Kde
         If chkInterno.value = False Then
-            txtObs.Locked = True
-            txtObs.BackColor = Kde
+            txtObs.Enabled = True
+            txtObs.Locked = False
+            txtObs.BackColor = Branco
             txtInsc.Locked = True
             txtInsc.BackColor = Kde
         Else
@@ -4147,9 +4162,9 @@ If nCodCidadao > 0 Then
     Sql = "SELECT * FROM CIDADAO WHERE CODCIDADAO=" & nCodCidadao
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
-        If Not IsNull(!CPF) And SubNull(!CPF) <> "" Then
+        If Not IsNull(!cpf) And SubNull(!cpf) <> "" Then
         
-            sDoc = !CPF
+            sDoc = !cpf
         Else
             If Not IsNull(!Cnpj) Then
                 sDoc = !Cnpj
@@ -4160,7 +4175,7 @@ If nCodCidadao > 0 Then
         Sql = "INSERT PROCESSOCIDADAO (ANOPROC,NUMPROC,CODCIDADAO,NOMECIDADAO,DOC,CODLOGRADOURO,NUMIMOVEL,COMPLEMENTO,CODBAIRRO,CODCIDADE,SIGLAUF,CEP,RG,ORGAO) VALUES("
         Sql = Sql & Val(lblAno.Caption) & "," & MaxCod & "," & nCodCidadao & ",'" & Mask(!nomecidadao) & "','" & sDoc & "'," & Val(SubNull(!CodLogradouro)) & ","
         Sql = Sql & Val(SubNull(!NUMIMOVEL)) & ",'" & Mask(SubNull(!Complemento)) & "'," & Val(SubNull(!CodBairro)) & "," & Val(SubNull(!CodCidade)) & ",'" & SubNull(!SiglaUF) & "'," & Val(SubNull(!Cep)) & ",'"
-        Sql = Sql & Mask(SubNull(!rg)) & "','" & Mask(SubNull(!ORGAO)) & "')"
+        Sql = Sql & Mask(SubNull(!rg)) & "','" & Mask(SubNull(!Orgao)) & "')"
         cn.Execute Sql, rdExecDirect
     End With
     
@@ -4285,7 +4300,7 @@ If lstNomeLog.ListIndex > -1 Then
    txtNumLog.Text = lstNomeLog.ItemData(lstNomeLog.ListIndex)
    txtNumLog_LostFocus
    lstNomeLog.Visible = False
-   txtNum.SetFocus
+   txtNumeroLog.SetFocus
 End If
 
 End Sub
@@ -4400,8 +4415,9 @@ evCan = 19
 evRea = 18
 evSus = 17
 evArq = 16
+evDes = 26
 
-bNew = False: bEdit = False: bDel = False: bImp = False: bEsp = False: bAne = False: bCan = False: bRea = False: bSus = False: bArq = False
+bNew = False: bEdit = False: bDel = False: bImp = False: bEsp = False: bAne = False: bCan = False: bRea = False: bSus = False: bArq = False: bDes = False
 If InStr(1, sRet, Format(evNew, "000"), vbBinaryCompare) > 0 Then bNew = True
 If InStr(1, sRet, Format(evEdit, "000"), vbBinaryCompare) > 0 Then bEdit = True
 If InStr(1, sRet, Format(evDel, "000"), vbBinaryCompare) > 0 Then bDel = True
@@ -4412,6 +4428,7 @@ If InStr(1, sRet, Format(evCan, "000"), vbBinaryCompare) > 0 Then bCan = True
 If InStr(1, sRet, Format(evRea, "000"), vbBinaryCompare) > 0 Then bRea = True
 If InStr(1, sRet, Format(evSus, "000"), vbBinaryCompare) > 0 Then bSus = True
 If InStr(1, sRet, Format(evArq, "000"), vbBinaryCompare) > 0 Then bArq = True
+If InStr(1, sRet, Format(evDes, "000"), vbBinaryCompare) > 0 Then bDes = True
 
 If Not bNew Then cmdNovo.Enabled = False
 If Not bEdit Then cmdAlterar.Enabled = False
@@ -4422,6 +4439,7 @@ If Not bCan Then cmdCancelar.Enabled = False
 If Not bRea Then cmdReativar.Enabled = False
 If Not bSus Then cmdSuspender.Enabled = False
 If Not bArq Then cmdArquivar.Enabled = False
+If Not bDes Then cmdDescartar.Enabled = False
 
 If cmdNovo.Enabled = False Then
     cmdEditCid.Enabled = False

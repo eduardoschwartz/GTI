@@ -7,8 +7,8 @@ Begin VB.Form frmDebitoImob
    BackColor       =   &H00EEEEEE&
    Caption         =   "Consulta de Débitos"
    ClientHeight    =   5895
-   ClientLeft      =   7875
-   ClientTop       =   4635
+   ClientLeft      =   13170
+   ClientTop       =   5205
    ClientWidth     =   11415
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
@@ -3122,8 +3122,8 @@ If txtObservacao.Text = "" Then
     MsgBox "Selecione o registro que deseja alterar.", vbExclamation, "Atenção"
 Else
     sNomeUser = UCase(lvObserv.SelectedItem.SubItems(1))
-    If NomeDeLogin = "ROSE" Or NomeDeLogin = "SCHWARTZ" Or NomeDeLogin = "JOSEANE" Or NomeDeLogin = "RHENO.SOARES" Or NomeDeLogin = "DANIELE.SILVA" Or NomeDeLogin = "MATHEUS.BOTELHO" Or NomeDeLogin = "GISELE.ALMEIDA" Or _
-    NomeDeLogin = "WHICTOR.HOMEM" Or NomeDeLogin = "FERNANDA.SIMOLIN" Or NomeDeLogin = "IZAEL.AGOSTINI" Or NomeDeLogin = "BRUNA.SEIXAS" Or NomeDeLogin = "LORENA.ROSA" Or NomeDeLogin = "WILLIAN.LIMA" Or NomeDeLogin = "FRANCIELY.SOUZA" Then
+    If NomeDeLogin = "ROSE" Or NomeDeLogin = "SCHWARTZ" Or NomeDeLogin = "JOSEANE" Or NomeDeLogin = "RHENO.SOARES" Or NomeDeLogin = "DANIELE.SILVA" Or NomeDeLogin = "MATHEUS.BOTELHO" Or NomeDeLogin = "GISELE.ALMEIDA" Or NomeDeLogin = "HENRIQUE.SOARES" Or _
+    NomeDeLogin = "WHICTOR.HOMEM" Or NomeDeLogin = "FERNANDA.SIMOLIN" Or NomeDeLogin = "IZAEL.AGOSTINI" Or NomeDeLogin = "LUIZH" Or NomeDeLogin = "LORENA.ROSA" Or NomeDeLogin = "WILLIAN.LIMA" Or NomeDeLogin = "FRANCIELY.SOUZA" Or NomeDeLogin = "AFONSO.TASSO" Or NomeDeLogin = "ROBERTA.SILVA" Then
             bNovoObs = False
             EventosObs False
     Else
@@ -3384,7 +3384,8 @@ With grdExtrato
             End If
             
             
-            If Val(Left(.CellText(x, 6), 2)) <> 3 And Val(Left(.CellText(x, 6), 2)) <> 38 And Val(Left(.CellText(x, 6), 2)) <> 39 And Val(Left(.CellText(x, 6), 2)) <> 42 And Val(Left(.CellText(x, 6), 2)) <> 43 Then
+            'If Val(Left(.CellText(x, 6), 2)) <> 3 And Val(Left(.CellText(x, 6), 2)) <> 38 And Val(Left(.CellText(x, 6), 2)) <> 39 And Val(Left(.CellText(x, 6), 2)) <> 42 And Val(Left(.CellText(x, 6), 2)) <> 43 Then
+            If Val(Left(.CellText(x, 6), 2)) <> 3 And Val(Left(.CellText(x, 6), 2)) <> 38 And Val(Left(.CellText(x, 6), 2)) <> 42 And Val(Left(.CellText(x, 6), 2)) <> 43 Then
                 MsgBox "Só é possível emitir DAM para lançamentos não pagos e protestados.", vbExclamation, "Atenção"
                 Exit Sub
             End If
@@ -3439,7 +3440,7 @@ If bRefisAtivo Then
     Achou = False
     With grdExtrato
         For x = 1 To .Rows
-            If CDate(.CellText(x, 7)) <= CDate("30/06/2019") And .CellText(x, 12) = "S" Then
+            If CDate(.CellText(x, 7)) <= CDate("30/06/2020") And .CellText(x, 12) = "S" Then
                 Achou = True
                 Exit For
             End If
@@ -3448,7 +3449,7 @@ If bRefisAtivo Then
     Achou2 = False
     With grdExtrato
         For x = 1 To .Rows
-            If CDate(.CellText(x, 7)) > CDate("30/06/2019") And .CellText(x, 12) = "S" And Val(Left$(.CellText(x, 2), 3)) <> 41 And Val(Left$(.CellText(x, 2), 3)) <> 78 Then
+            If CDate(.CellText(x, 7)) > CDate("30/06/2020") And .CellText(x, 12) = "S" And Val(Left$(.CellText(x, 2), 3)) <> 41 And Val(Left$(.CellText(x, 2), 3)) <> 78 Then
                 Achou2 = True
                 Exit For
             End If
@@ -3456,7 +3457,7 @@ If bRefisAtivo Then
     End With
     
     If Achou And Achou2 Then
-        MsgBox "Não é possível emitir DAM para débitos anteriores e posteriores a 30/06/2019 na mesma DAM durante o Refis.", vbCritical, "Atenção"
+        MsgBox "Não é possível emitir DAM para débitos anteriores e posteriores a 30/06/2020 na mesma DAM durante o Refis.", vbCritical, "Atenção"
         Exit Sub
     End If
 End If
@@ -3536,7 +3537,7 @@ With grdExtrato
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux
                 If .RowCount > 0 Then
-                    If bRefisAtivo And CDate(sVencto) < CDate("31/08/2019") Then
+                    If bRefisAtivo And CDate(sVencto) < CDate("31/08/2020") Then
                     Else
                         MsgBox "Para débitos de ISS Váriavel gerado pela Giss será exibido o extrato da DAM porém não será impresso o boleto.", vbInformation, "Atenção"
                         'MsgBox "Apenas débitos de ISS Váriavel gerados pela Giss que estão ajuizados podem ser emitidos através de DAM.", vbInformation, "Atenção"
@@ -3832,9 +3833,9 @@ If cmbEF.Visible And cmbEF.ListIndex > -1 Then
     Sql = "UPDATE DEBITOPARCELA SET processocnj=null WHERE CODREDUZIDO=" & Val(txtCod.Text) & " AND processocnj='" & sNum & "'"
     cn.Execute Sql, rdExecDirect
     With grdExtrato
-        For Y = 1 To .Rows
-            If .CellText(Y, 14) = cmbEF.Text Then
-                .CellText(Y, 14) = ""
+        For y = 1 To .Rows
+            If .CellText(y, 14) = cmbEF.Text Then
+                .CellText(y, 14) = ""
             End If
         Next
     End With
@@ -4419,8 +4420,15 @@ With RdoAux
                     Else
                         aDebito(nEval).nValorAtual = FormatNumber(!ValorTotal, 2)
                     End If
-                    aDebito(nEval).nValorJuros = IIf(IsNull(!ValorJuros), 0, FormatNumber(!ValorJuros, 2))
-                    aDebito(nEval).nValorMulta = IIf(IsNull(!ValorMulta), 0, FormatNumber(!ValorMulta, 2))
+                    
+                    If !CODREDUZIDO = 17753 And !AnoExercicio = 2020 And !NumParcela = 1 Then
+                        'MsgBox "teste"
+                        aDebito(nEval).nValorJuros = FormatNumber(2.96, 2)
+                        aDebito(nEval).nValorMulta = FormatNumber(5.9, 2)
+                    Else
+                        aDebito(nEval).nValorJuros = IIf(IsNull(!ValorJuros), 0, FormatNumber(!ValorJuros, 2))
+                        aDebito(nEval).nValorMulta = IIf(IsNull(!ValorMulta), 0, FormatNumber(!ValorMulta, 2))
+                    End If
                     If Not IsNull(RdoAux!NumDocumento) Then
                        Sql = "SELECT DISTINCT parceladocumento.numdocumento, plano.desconto FROM parceladocumento LEFT OUTER JOIN plano ON parceladocumento.plano = plano.codigo WHERE NUMDOCUMENTO=" & !NumDocumento
                        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
@@ -4590,7 +4598,7 @@ End Sub
 
 
 Private Sub CarregaFiltro()
-Dim x As Integer, Y As Integer, nAno As Integer, bAchou As Boolean, aAno() As Integer, aLanc() As String, aStatus() As String, aSeq() As String
+Dim x As Integer, y As Integer, nAno As Integer, bAchou As Boolean, aAno() As Integer, aLanc() As String, aStatus() As String, aSeq() As String
 Ocupado
 
 If bFilterLoad Then GoTo fim
@@ -4600,8 +4608,8 @@ With grdExtrato
     For x = 1 To .Rows
         nAno = Val(.CellText(x, 1))
         bAchou = False
-        For Y = 1 To UBound(aAno)
-            If nAno = aAno(Y) Then
+        For y = 1 To UBound(aAno)
+            If nAno = aAno(y) Then
                 bAchou = True
             End If
         Next
@@ -4613,13 +4621,13 @@ With grdExtrato
     
         aLanc(1) = "{Todos}"
         bAchou = False
-        For Y = 1 To UBound(aLanc)
+        For y = 1 To UBound(aLanc)
             If Val(Left(.CellText(x, 2), 3)) = 20 Then
-                If "20-REPARCELAMENTO" = aLanc(Y) Then
+                If "20-REPARCELAMENTO" = aLanc(y) Then
                     bAchou = True
                 End If
             Else
-                If .CellText(x, 2) = aLanc(Y) Then
+                If .CellText(x, 2) = aLanc(y) Then
                     bAchou = True
                 End If
             End If
@@ -4635,8 +4643,8 @@ With grdExtrato
     
         aStatus(1) = "{Todos}"
         bAchou = False
-        For Y = 1 To UBound(aStatus)
-            If .CellText(x, 6) = aStatus(Y) Then
+        For y = 1 To UBound(aStatus)
+            If .CellText(x, 6) = aStatus(y) Then
                 bAchou = True
             End If
         Next
@@ -4647,8 +4655,8 @@ With grdExtrato
     
         aSeq(1) = "{Todos}"
         bAchou = False
-        For Y = 2 To UBound(aSeq)
-            If .CellText(x, 3) = aSeq(Y) Then
+        For y = 2 To UBound(aSeq)
+            If .CellText(x, 3) = aSeq(y) Then
                 bAchou = True
             End If
         Next
@@ -4699,7 +4707,7 @@ End Sub
 Private Sub cmdGravarEF_Click()
 Dim nExercicio As Integer, nLanc As Integer, nSeq As Integer, nParc As Integer, nCompl As Integer
 Dim sNum As String, nAno As Integer, nNum As Integer
-Dim RdoAux As rdoResultset, Sql As String, x As Integer, Y As Integer
+Dim RdoAux As rdoResultset, Sql As String, x As Integer, y As Integer
 
 If lvEFDest.ListItems.Count = 0 Then
     MsgBox "Nenhum débito selecionado.", vbCritical, "Erro"
@@ -4762,9 +4770,9 @@ If sEventoEF = "Alterar" Then
     Sql = "UPDATE DEBITOPARCELA SET processocnj=NULL WHERE CODREDUZIDO=" & Val(txtCod.Text) & " AND processocnj='" & sNum & "'"
     cn.Execute Sql, rdExecDirect
     With grdExtrato
-        For Y = 1 To .Rows
-            If .CellText(Y, 14) = cmbEF.Text Then
-                .CellText(Y, 14) = ""
+        For y = 1 To .Rows
+            If .CellText(y, 14) = cmbEF.Text Then
+                .CellText(y, 14) = ""
             End If
         Next
     End With
@@ -4780,9 +4788,9 @@ With lvEFDest
         nCompl = .ListItems(x).SubItems(4)
         
         With grdExtrato
-            For Y = 1 To .Rows
-                If Val(.CellText(Y, 1)) = nExercicio And Val(Left(.CellText(Y, 2), 3)) = nLanc And Val(.CellText(Y, 3)) = nSeq And Val(.CellText(Y, 4)) = nParc And Val(.CellText(Y, 5)) = nCompl Then
-                    .CellText(Y, 14) = Format(nNum, "00000") & "/" & nAno
+            For y = 1 To .Rows
+                If Val(.CellText(y, 1)) = nExercicio And Val(Left(.CellText(y, 2), 3)) = nLanc And Val(.CellText(y, 3)) = nSeq And Val(.CellText(y, 4)) = nParc And Val(.CellText(y, 5)) = nCompl Then
+                    .CellText(y, 14) = Format(nNum, "00000") & "/" & nAno
                     Sql = "UPDATE DEBITOPARCELA SET processocnj='" & sNum & "' WHERE CODREDUZIDO=" & Val(txtCod.Text) & " AND "
                     Sql = Sql & " ANOEXERCICIO=" & nExercicio & " AND CODLANCAMENTO=" & nLanc & " AND SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nParc & " AND CODCOMPLEMENTO=" & nCompl
                     cn.Execute Sql, rdExecDirect
@@ -5163,7 +5171,7 @@ Ocupado
 MontaMenu
 If NomeDeLogin <> "RENATA" And NomeDeLogin <> "PAULOT" And NomeDeLogin <> "SOLANGE" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "LUIZH" And NomeDeLogin <> "JOSIANE" And _
     NomeDeLogin <> "NOELI" And NomeDeLogin <> "LEANDRO" And NomeDeLogin <> "ANA" And NomeDeLogin <> "ROSANGELA" And _
-    NomeDeLogin <> "RODRIGOC" And NomeDeLogin <> "PAULO" And NomeDeLogin <> "RHENO.SOARES" And NomeDeLogin <> "VALQUIRIA.FELIPE" And NomeDeLogin <> "VTVIEIRA" Then
+    NomeDeLogin <> "RODRIGOC" And NomeDeLogin <> "DINAMAR.OLIVEIRA" And NomeDeLogin <> "RHENO.SOARES" And NomeDeLogin <> "VALQUIRIA.FELIPE" And NomeDeLogin <> "VTVIEIRA" And NomeDeLogin <> "AFONSO.TASSO" Then
     
     m_cMenuOpcoes.Enabled(m_cMenuOpcoes.IndexForKey("mnuSuspenso")) = False
     m_cMenuOpcoes.Enabled(m_cMenuOpcoes.IndexForKey("mnuMultaInfracao")) = False
@@ -5247,9 +5255,9 @@ grdExtrato.Height = Me.Height - 1700
 frStatus.Top = Me.Height - 950
 End Sub
 
-Private Sub frDoc_DragDrop(Source As Control, x As Single, Y As Single)
+Private Sub frDoc_DragDrop(Source As Control, x As Single, y As Single)
 frDoc.Left = x
-frDoc.Top = Y
+frDoc.Top = y
 End Sub
 
 Private Sub grdExtrato_ColumnClick(ByVal lcol As Long)
@@ -5298,7 +5306,7 @@ Dim nLancamento As Integer, nStatus As Integer, z As Variant, sData As String, s
 If NomeDeLogin = "SCHWARTZ" Or NomeDeLogin = "RENATA" Or _
     NomeDeLogin = "SOLANGE" Or NomeDeLogin = "GLEISE" Or NomeDeLogin = "LEANDRO" Or NomeDeLogin = "LUIZH" Or _
     NomeDeLogin = "ROSANGELA" Or NomeDeLogin = "NOELI" Or _
-    NomeDeLogin = "RODRIGOC" Or NomeDeLogin = "PAULO" Or IsAtendente Then
+    NomeDeLogin = "RODRIGOC" Or NomeDeLogin = "DINAMAR.OLIVEIRA" Or IsAtendente Then
     nAno = Val(grdExtrato.CellText(lrow, 1))
     nLancamento = Val(Left$(grdExtrato.CellText(lrow, 2), 3))
     nSeq = Val(grdExtrato.CellText(lrow, 3))
@@ -5345,7 +5353,7 @@ End If
 End Sub
 
 Private Sub grdExtrato_KeyDown(KeyCode As Integer, Shift As Integer, bDoDefault As Boolean)
-Dim x As Integer, Y As Integer, nStatus As Integer, sStatus As String, nOldStatus As Integer
+Dim x As Integer, y As Integer, nStatus As Integer, sStatus As String, nOldStatus As Integer
 Dim OldRow As Integer, sTexto As String
 Dim sNumProc As String, nInicio As Integer
 Dim nParcela As Integer, nAno As Integer, nLancamento As Integer, nSequencia As Integer, nComplemento As Integer
@@ -5525,28 +5533,28 @@ If KeyCode = vbKeyReturn Then
 ElseIf KeyCode = vbKeyF8 Then
      With grdExtrato
          .Redraw = False
-          For Y = 1 To .Rows
+          For y = 1 To .Rows
              If Not bSel Then
-                If (Val(Left$(.CellText(Y, 6), 2)) = 3 Or Val(Left$(.CellText(Y, 6), 2)) = 42 Or Val(Left$(.CellText(Y, 6), 2)) = 43) And .CellBackColor(Y, 1) <> &H9FFFC0 Then
-                    .CellText(Y, 12) = ""
+                If (Val(Left$(.CellText(y, 6), 2)) = 3 Or Val(Left$(.CellText(y, 6), 2)) = 42 Or Val(Left$(.CellText(y, 6), 2)) = 43) And .CellBackColor(y, 1) <> &H9FFFC0 Then
+                    .CellText(y, 12) = ""
                      For x = 1 To .Columns
-                        .CellBackColor(Y, x) = Branco
+                        .CellBackColor(y, x) = Branco
                         If x = 6 Then
-                          .CellForeColor(Y, x) = &HDC&
+                          .CellForeColor(y, x) = &HDC&
                         Else
-                          .CellForeColor(Y, x) = vbBlack
+                          .CellForeColor(y, x) = vbBlack
                         End If
                      Next
-                        lblSel.Caption = FormatNumber(CDbl(lblSel.Caption) - CDbl(.CellText(Y, 11)), 2)
+                        lblSel.Caption = FormatNumber(CDbl(lblSel.Caption) - CDbl(.CellText(y, 11)), 2)
                  End If
              Else
-                 If (Val(Left$(.CellText(Y, 6), 2)) = 3 Or Val(Left$(.CellText(Y, 6), 2)) = 42 Or Val(Left$(.CellText(Y, 6), 2)) = 43) And .CellBackColor(Y, 1) <> &H9FFFC0 Then
-                    .CellText(Y, 12) = "S"
+                 If (Val(Left$(.CellText(y, 6), 2)) = 3 Or Val(Left$(.CellText(y, 6), 2)) = 42 Or Val(Left$(.CellText(y, 6), 2)) = 43) And .CellBackColor(y, 1) <> &H9FFFC0 Then
+                    .CellText(y, 12) = "S"
                     For x = 1 To .Columns
-                        .CellBackColor(Y, x) = &HC0FFC0
-                        .CellForeColor(Y, x) = vbBlack
+                        .CellBackColor(y, x) = &HC0FFC0
+                        .CellForeColor(y, x) = vbBlack
                     Next
-                    lblSel.Caption = FormatNumber(CDbl(lblSel.Caption) + CDbl(.CellText(Y, 11)), 2)
+                    lblSel.Caption = FormatNumber(CDbl(lblSel.Caption) + CDbl(.CellText(y, 11)), 2)
                  End If
             End If
          Next
@@ -5555,28 +5563,28 @@ ElseIf KeyCode = vbKeyF8 Then
 ElseIf KeyCode = vbKeyF3 Then
      With grdExtrato
          .Redraw = False
-          For Y = 1 To .Rows
+          For y = 1 To .Rows
              If Not bSel Then
-                If Val(Left$(.CellText(Y, 6), 2)) = 19 And .CellBackColor(Y, 1) <> &H9FFFC0 Then
-                    .CellText(Y, 12) = ""
+                If Val(Left$(.CellText(y, 6), 2)) = 19 And .CellBackColor(y, 1) <> &H9FFFC0 Then
+                    .CellText(y, 12) = ""
                      For x = 1 To .Columns
-                        .CellBackColor(Y, x) = Branco
+                        .CellBackColor(y, x) = Branco
                         If x = 6 Then
-                          .CellForeColor(Y, x) = &HDC&
+                          .CellForeColor(y, x) = &HDC&
                         Else
-                          .CellForeColor(Y, x) = vbBlack
+                          .CellForeColor(y, x) = vbBlack
                         End If
                      Next
-                        lblSel.Caption = FormatNumber(CDbl(lblSel.Caption) - CDbl(.CellText(Y, 11)), 2)
+                        lblSel.Caption = FormatNumber(CDbl(lblSel.Caption) - CDbl(.CellText(y, 11)), 2)
                  End If
              Else
-                 If Val(Left$(.CellText(Y, 6), 2)) = 19 And .CellBackColor(Y, 1) <> &H9FFFC0 Then
-                    .CellText(Y, 12) = "S"
+                 If Val(Left$(.CellText(y, 6), 2)) = 19 And .CellBackColor(y, 1) <> &H9FFFC0 Then
+                    .CellText(y, 12) = "S"
                     For x = 1 To .Columns
-                        .CellBackColor(Y, x) = &HC0FFC0
-                        .CellForeColor(Y, x) = vbBlack
+                        .CellBackColor(y, x) = &HC0FFC0
+                        .CellForeColor(y, x) = vbBlack
                     Next
-                    lblSel.Caption = FormatNumber(CDbl(lblSel.Caption) + CDbl(.CellText(Y, 11)), 2)
+                    lblSel.Caption = FormatNumber(CDbl(lblSel.Caption) + CDbl(.CellText(y, 11)), 2)
                  End If
             End If
          Next
@@ -5646,7 +5654,7 @@ End With
 
 End Sub
 
-Private Sub grdExtrato_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single, bDoDefault As Boolean)
+Private Sub grdExtrato_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single, bDoDefault As Boolean)
 
 If Button = vbRightButton Then
     nIndex = m_cMenuOpcoes.IndexForKey("mnuAjuiza")
@@ -5667,7 +5675,7 @@ If Button = vbRightButton Then
         m_cMenuInterno.Enabled(nIndex) = False
     End If
 
-    lIndex = m_cMenuInterno.ShowPopupMenu(x, Y + 800, x, Y, Me.ScaleWidth - x, Y, False)
+    lIndex = m_cMenuInterno.ShowPopupMenu(x, y + 800, x, y, Me.ScaleWidth - x, y, False)
 End If
 
 End Sub
@@ -5801,10 +5809,10 @@ Select Case m_cMenuInterno.ItemKey(ItemNumber)
         End With
     Case "mnuEditParcela"
         If grdExtrato.SelectedRow > 0 Then
-           If IsAtendente Then
+           If NomeDeLogin = "ALBERTO" Then
               nLanc = Val(Left(grdExtrato.CellText(grdExtrato.SelectedRow, 2), 3))
               Select Case nLanc
-                  Case 11, 36, 48
+                  Case 11, 10, 38
                      frmParcela.show vbModal
                   Case Else
                      MsgBox "Você não esta autorizado a alterar este lançamento.", vbCritical, "Atenção"
@@ -5936,7 +5944,7 @@ Select Case m_cMenuOpcoes.ItemKey(ItemNumber)
              For x = 1 To grdExtrato.Rows
                 If grdExtrato.CellText(x, 12) = "S" Then
                     If Val(Left$(grdExtrato.CellText(x, 2), 3)) = 3 Or Val(Left$(grdExtrato.CellText(x, 2), 3)) = 5 Or Val(Left$(grdExtrato.CellText(x, 2), 3)) = 65 Or Val(Left$(grdExtrato.CellText(x, 2), 3)) = 14 Then
-                        If NomeDeLogin <> "LUIZH" And NomeDeLogin <> "ROSE" And NomeDeLogin <> "RITA" And NomeDeLogin <> "RENATA" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "NOELI" And NomeDeLogin <> "ANA" And NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "RHENO.SOARES" And NomeDeLogin <> "VALQUIRIAFELIPE." Then
+                        If NomeDeLogin <> "LUIZH" And NomeDeLogin <> "ROSE" And NomeDeLogin <> "RITA" And NomeDeLogin <> "RENATA" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "NOELI" And NomeDeLogin <> "ANA" And NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "RHENO.SOARES" And NomeDeLogin <> "VALQUIRIA.FELIPE" And NomeDeLogin <> "AFONSO.TASSO" Then
                            MsgBox "Você não possui permissão para cancelar/suspender lançamentos de ISS.", vbExclamation, "Atenção"
                            Exit Sub
                         End If
@@ -6086,10 +6094,10 @@ Select Case m_cMenuOpcoes.ItemKey(ItemNumber)
         frTop.Enabled = False
     Case "mnuEditaParcela"
         If grdExtrato.SelectedRow > 0 Then
-           If IsAtendente Then
+           If NomeDeLogin = "ALBERTO" Then
               nLanc = Val(Left(grdExtrato.CellText(grdExtrato.SelectedRow, 2), 3))
               Select Case nLanc
-                  Case 11, 36, 48
+                  Case 11, 10, 38
                      frmParcela.show vbModal
                   Case Else
                      MsgBox "Você não esta autorizado a alterar este lançamento.", vbCritical, "Atenção"
@@ -6234,7 +6242,7 @@ Select Case m_cMenuOpcoes.ItemKey(ItemNumber)
             frmCancelDebito.cmbTipo.Enabled = False
         End If
     Case "mnuDAMH"
-        If NomeDeLogin <> "ROSE" And NomeDeLogin <> "JOSEANE" And Not IsAtendente And NomeDeLogin <> "CARMELINO" And NomeDeLogin <> "RHENO.SOARES" And NomeDeLogin <> "VALQUIRIA.FELIPE" And NomeDeLogin <> "WHICTOR.HOMEM" And NomeDeLogin <> "FERNANDA.SIMOLIN" And NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "IZAEL.AGOSTINI" And NomeDeLogin <> "SOLANGE" And NomeDeLogin <> "RENATA" And NomeDeLogin <> "FRANCIELY.SOUZA" Then
+        If NomeDeLogin <> "ROSE" And NomeDeLogin <> "JOSEANE" And Not IsAtendente And NomeDeLogin <> "CARMELINO" And NomeDeLogin <> "RHENO.SOARES" And NomeDeLogin <> "VALQUIRIA.FELIPE" And NomeDeLogin <> "WHICTOR.HOMEM" And NomeDeLogin <> "FERNANDA.SIMOLIN" And NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "IZAEL.AGOSTINI" And NomeDeLogin <> "SOLANGE" And NomeDeLogin <> "RENATA" And NomeDeLogin <> "FRANCIELY.SOUZA" And NomeDeLogin <> "AFONSO.TASSO" And NomeDeLogin <> "HENRIQUE.SOARES" And NomeDeLogin <> "WILLIAN.LIMA" Then
             MsgBox "Acesso negado!", vbCritical, "ERRO"
             Exit Sub
         End If
@@ -6582,8 +6590,8 @@ With RdoAux
             '   lblNum.Caption = "Nº de Inscrição Estadual"
                lblNumInsc.Caption = SubNull(!inscestadual)
                lblRS.Caption = "Raz.Social"
-               lblProp.Caption = !razaosocial
-               txtProp.Text = !razaosocial
+               lblProp.Caption = !RazaoSocial
+               txtProp.Text = !RazaoSocial
                lblRua.Caption = Trim$(SubNull(!AbrevTipoLog)) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro & " nº " & SubNull(!Numero)
                CarregaDebito txtCod.Text
             Else
@@ -6785,7 +6793,7 @@ If Not bSer Then m_cMenuOpcoes.Enabled(nIndex) = False
 
 m_cMenuInterno.Enabled(m_cMenuInterno.IndexForKey("mnuCancelNotifISS")) = frmMdi.m_cMenuMob.Enabled(frmMdi.m_cMenuMob.IndexForKey("mnuNotificaISS"))
 
-If NomeDeLogin <> "RENATA" And NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "ROSE" And NomeDeLogin <> "RITA" And NomeDeLogin <> "JOSEANE" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "SOLANGE" And NomeDeLogin <> "ANA" And NomeDeLogin <> "LORENA.ROSA" And NomeDeLogin <> "BRUNA.SEIXAS" Then
+If NomeDeLogin <> "RENATA" And NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "ROSE" And NomeDeLogin <> "RITA" And NomeDeLogin <> "JOSEANE" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "SOLANGE" And NomeDeLogin <> "ANA" And NomeDeLogin <> "LORENA.ROSA" And NomeDeLogin <> "BRUNA.SEIXAS" And NomeDeLogin <> "HENRIQUE.SOARES" And NomeDeLogin <> "WILLIAN.LIMA" Then
     m_cMenuOpcoes.Enabled(m_cMenuOpcoes.IndexForKey("mnuChangeStatus")) = False
 Else
     m_cMenuInterno.Enabled(m_cMenuInterno.IndexForKey("mnuReativar")) = True
@@ -6802,6 +6810,8 @@ Dim nSomaDebito As Double, nEval As Integer, nValorCorrecao As Double, bFind As 
 Dim nSomaVencer As Double, nSomaDebitoUnica As Double, nSomaVencerUnica As Double
 Dim sDescReduz As String, nValorAtualizado As Double, nSomaValorTributo As Double
 Dim bAjuiza As Boolean, bDA As Boolean, qd As New rdoQuery, bIsentoMJ As Boolean
+
+
 
 lblDebito.Caption = "0,00"
 lblVencer.Caption = "0,00"
@@ -6888,7 +6898,8 @@ With RdoAux
           '  If aDebito(nEval).nAno = 2016 And aDebito(nEval).nParc = 1 And aDebito(nEval).nLanc = 13 Then MsgBox "teste"
             If chkTodosAnos.value = vbUnchecked Then
                 'If !AnoExercicio < Year(Now) - 5 And !statuslanc <> 3 And !statuslanc <> 19 And !statuslanc <> 20 And !statuslanc <> 25 Then
-                If !AnoExercicio < Year(Now) - 5 And !statuslanc <> 3 And !statuslanc <> 19 And !statuslanc <> 25 And !statuslanc <> 20 And !statuslanc <> 40 And !statuslanc <> 42 And !statuslanc <> 43 Then
+                
+                If !AnoExercicio < Year(Now) - 5 And !statuslanc <> 3 And !statuslanc <> 19 And !statuslanc <> 25 And !statuslanc <> 20 And !statuslanc <> 40 And !statuslanc <> 42 And !statuslanc <> 43 And !statuslanc <> 38 Then
                     GoTo Proximo
                 End If
             End If
@@ -7576,7 +7587,7 @@ With grdExtrato
     nComp = Val(.CellText(.SelectedRow, 5))
 End With
 
-Sql = "SELECT obsparcela.*, usuario.nomelogin FROM obsparcela INNER JOIN usuario ON obsparcela.userid = usuario.Id WHERE CODREDUZIDO=" & Val(txtCod.Text) & " AND ANOEXERCICIO=" & nAno
+Sql = "SELECT obsparcela.*, usuario.nomelogin FROM obsparcela LEFT OUTER JOIN usuario ON obsparcela.userid = usuario.Id WHERE CODREDUZIDO=" & Val(txtCod.Text) & " AND ANOEXERCICIO=" & nAno
 Sql = Sql & " AND CODLANCAMENTO=" & nLanc & " AND SEQLANCAMENTO=" & nSeqLanc & " AND NUMPARCELA=" & nParc
 Sql = Sql & " AND CODCOMPLEMENTO=" & nComp
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -7639,7 +7650,7 @@ End If
 End Sub
 
 Private Function ValidaMI() As Boolean
-Dim aMI() As Multa, nTipo As Integer, nAno As Integer, nLanc As Integer, nSeq As Integer, nParc As Integer, nCompl As Integer, x As Integer, Y As Integer
+Dim aMI() As Multa, nTipo As Integer, nAno As Integer, nLanc As Integer, nSeq As Integer, nParc As Integer, nCompl As Integer, x As Integer, y As Integer
 ReDim aMI(0)
 
 MI = False
@@ -7717,9 +7728,9 @@ Continua:
                     nSeq = Val(.CellText(x, 3))
                     nParc = Val(.CellText(x, 4))
                     nCompl = Val(.CellText(x, 5))
-                    For Y = 0 To UBound(aMI)
-                        If aMI(Y).nAno = nAno And aMI(Y).nLanc = nLanc And aMI(Y).nSeq = nSeq And aMI(Y).nParc = nParc And aMI(Y).nCompl = nCompl Then
-                            aMI(Y).bAchou = True 'marca a parcela
+                    For y = 0 To UBound(aMI)
+                        If aMI(y).nAno = nAno And aMI(y).nLanc = nLanc And aMI(y).nSeq = nSeq And aMI(y).nParc = nParc And aMI(y).nCompl = nCompl Then
+                            aMI(y).bAchou = True 'marca a parcela
                         End If
                     Next
                 End If
@@ -7728,8 +7739,8 @@ Continua:
         
        'VERIFICA SE ALGUMA PARCELA DA MATRIZ É NEGATIVA
        If UBound(aMI) > 0 Then
-            For Y = 0 To UBound(aMI)
-                If aMI(Y).bAchou = False Then
+            For y = 0 To UBound(aMI)
+                If aMI(y).bAchou = False Then
                 '    If aMI(Y).nStatus <> 6 Then
                         GoTo Erro
                  '   End If
@@ -7886,7 +7897,7 @@ End Sub
 
 Private Sub CarregaOrigemEF()
 Dim nAno As Integer, nLanc As Integer, nSeq As Integer, nParc As Integer, nCompl As Integer, sDA As String, sAj As String, sEF As String
-Dim nSit As Integer, itmX As ListItem, z As Long, sVencto As String, Sql As String, RdoAux As rdoResultset, x As Integer, Y As Integer
+Dim nSit As Integer, itmX As ListItem, z As Long, sVencto As String, Sql As String, RdoAux As rdoResultset, x As Integer, y As Integer
 Dim sNum As String, nNum As Integer
 
 'txtDocEF.Text = ""
@@ -7914,8 +7925,8 @@ With grdExtrato
         
             With lvEFDest
                 If .ListItems.Count > 0 Then
-                    For Y = 1 To .ListItems.Count
-                        If Val(.ListItems(Y).Text) = nAno And Val(.ListItems(Y).SubItems(1)) = nLanc And Val(.ListItems(Y).SubItems(2)) = nSeq And Val(.ListItems(Y).SubItems(3)) = nParc And Val(.ListItems(Y).SubItems(4)) = nCompl Then
+                    For y = 1 To .ListItems.Count
+                        If Val(.ListItems(y).Text) = nAno And Val(.ListItems(y).SubItems(1)) = nLanc And Val(.ListItems(y).SubItems(2)) = nSeq And Val(.ListItems(y).SubItems(3)) = nParc And Val(.ListItems(y).SubItems(4)) = nCompl Then
                             GoTo Proximo
                         End If
                     Next
@@ -7972,7 +7983,7 @@ Sql = "SELECT * FROM DOCUMENTOEF ORDER BY CODIGO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-        Set itmX = lvDoc.ListItems.Add(, "C" & Format(!Codigo, "000"), !descricao)
+        Set itmX = lvDoc.ListItems.Add(, "C" & Format(!Codigo, "000"), !Descricao)
         itmX.SubItems(1) = "0"
         .MoveNext
     Loop

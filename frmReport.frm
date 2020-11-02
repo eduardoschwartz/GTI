@@ -461,22 +461,22 @@ Data2:
     Case "ISSMENSAL"
             frmReport.Caption = "ISS MENSAL"
             rpt.RecordSelectionFormula = "{ISSMENSAL.COMPUTER}='" & NomeDoUsuario & "'"
-            If frmISSMensal.optTipo(0).value = True Then
+            If frmISSMensal.OptTipo(0).value = True Then
                 sTipo = "ESTIMADO"
-            ElseIf frmISSMensal.optTipo(1).value = True Then
+            ElseIf frmISSMensal.OptTipo(1).value = True Then
                 sTipo = "VARIÁVEL"
-            ElseIf frmISSMensal.optTipo(2).value = True Then
+            ElseIf frmISSMensal.OptTipo(2).value = True Then
                 sTipo = "FIXO"
             End If
             rpt.FormulaFields(2).Text = "'" & sTipo & "'"
     Case "ISSMENSALNAOPAGO"
             frmReport.Caption = "ISS MENSAL NÃO PAGO"
-            rpt.RecordSelectionFormula = "{vwISSMENSALNAOPAGO.CODLANCAMENTO}=" & IIf(frmISSMensal.optTipo(0).value = True, 3, 5)
-            rpt.FormulaFields(2).Text = "'" & IIf(frmISSMensal.optTipo(0).value, "ESTIMADO", "VARIÁVEL") & "'"
+            rpt.RecordSelectionFormula = "{vwISSMENSALNAOPAGO.CODLANCAMENTO}=" & IIf(frmISSMensal.OptTipo(0).value = True, 3, 5)
+            rpt.FormulaFields(2).Text = "'" & IIf(frmISSMensal.OptTipo(0).value, "ESTIMADO", "VARIÁVEL") & "'"
     Case "ISSMENSALFORA"
             frmReport.Caption = "ISS MENSAL"
             rpt.RecordSelectionFormula = "{ISSMENSAL.COMPUTER}='" & NomeDoUsuario & "'"
-            rpt.FormulaFields(2).Text = "'" & IIf(frmISSMensal.optTipo(0).value, "ESTIMADO", "VARIÁVEL") & "'"
+            rpt.FormulaFields(2).Text = "'" & IIf(frmISSMensal.OptTipo(0).value, "ESTIMADO", "VARIÁVEL") & "'"
     Case "LISTARURAL"
             frmReport.Caption = "Cadastro das Propriedades Rurais"
             If NomeDeLogin = "FABIO" Or NomeDeLogin = "SCHWARTZ" Then
@@ -718,8 +718,8 @@ Exit Function
                      End If
                      sEnd = sEnd & " " & SubNull(RdoAux2!fNUMIMOVEL)
                      sDoc = ""
-                     If SubNull(!CPF) <> "" Then
-                         sDoc = !CPF
+                     If SubNull(!cpf) <> "" Then
+                         sDoc = !cpf
                      Else
                          If SubNull(!Cnpj) <> "" Then
                              sDoc = !Cnpj
@@ -805,9 +805,9 @@ Exit Function
                      End If
                      sEnd = sEnd & " " & SubNull(RdoAux2!fNUMIMOVEL)
                      sDoc = ""
-                     If SubNull(!CPF) <> "" Then
+                     If SubNull(!cpf) <> "" Then
                          rpt.FormulaFields(7).Text = "'" & "Pessoa Física" & "'"
-                         sDoc = !CPF
+                         sDoc = !cpf
                      Else
                          If SubNull(!Cnpj) <> "" Then
                              rpt.FormulaFields(7).Text = "'" & "Pessoa Jurídica" & "'"
@@ -894,7 +894,7 @@ Exit Function
                 Sql = "SELECT RAZAOSOCIAL FROM vwFULLEMPRESA WHERE CODIGOMOB=" & Val(z)
                 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 If RdoAux.RowCount > 0 Then
-                    sTexto1 = RdoAux!razaosocial
+                    sTexto1 = RdoAux!RazaoSocial
                 Else
                     MsgBox "Cadastro não existe", vbCritical, "Erro"
                     Exit Function
@@ -940,8 +940,8 @@ Exit Function
                         rpt.FormulaFields(3).Text = "''"
                      End If
                      sDoc = ""
-                     If Not IsNull(!CPF) Then
-                         sDoc = !CPF
+                     If Not IsNull(!cpf) Then
+                         sDoc = !cpf
                      Else
                          If Not IsNull(!Cnpj) Then
                              sDoc = !Cnpj
@@ -978,8 +978,8 @@ Exit Function
                      RdoAux2.Close
                      
                      sDoc = ""
-                     If Not IsNull(!CPF) Then
-                         sDoc = !CPF
+                     If Not IsNull(!cpf) Then
+                         sDoc = !cpf
                      Else
                          If Not IsNull(!Cnpj) Then
                              sDoc = !Cnpj
@@ -1155,7 +1155,7 @@ Public Function ShowReport2(sReport As String, hMDI As Long, hFormCalling As Lon
 Dim RdoAux As rdoResultset, Sql As String, sTipo As String, dData As Date, nAno As Integer, sDoc As String, nSeq2 As Integer
 Dim sTexto1 As String, sTexto2 As String, sTexto3 As String, sHor As String, sSenha As String, nSeq As Integer, nCodReduz As Long
 Dim z As Variant, RdoAux2 As rdoResultset, z2 As Variant, z3 As Variant, z4 As Variant, z5 As Variant, fso As New FileSystemObject
-Dim sNumProc As String, nNumproc As Long, bAchou As Boolean, aTributo() As String, x As Integer, Y As Integer
+Dim sNumProc As String, nNumproc As Long, bAchou As Boolean, aTributo() As String, x As Integer, y As Integer
 Dim qd As New rdoQuery, bHeader As Boolean
 
 If bLocal Then
@@ -1678,10 +1678,10 @@ Data4:
                 Exit Function
             Else
                 If RdoAux!Tipo = 1 Then
-                    rpt.FormulaFields(1).Text = "'" & RdoAux!razaosocial & "'"
+                    rpt.FormulaFields(1).Text = "'" & RdoAux!RazaoSocial & "'"
                     sDoc = Format(SubNull(RdoAux!Cnpj), "00\.000\.000/0000-00")
                     If sDoc = "" Then
-                        sDoc = Format(SubNull(RdoAux!CPF), "000\.000\.000-00")
+                        sDoc = Format(SubNull(RdoAux!cpf), "000\.000\.000-00")
                     End If
                     rpt.FormulaFields(2).Text = "'" & sDoc & "'"
                     rpt.FormulaFields(3).Text = "'" & RdoAux!Logradouro & ", " & RdoAux!Numero & "'"
@@ -1768,7 +1768,7 @@ Data4:
     Case "REQUERIPTU"
             rpt.RecordSelectionFormula = "{REPORTTMP.USUARIO}='" & NomeDeLogin & "'"
             frmReport.Caption = "Requerimento para Isenção de IPTU"
-            If frmRequerIPTU.optTipo(0).value = True Then
+            If frmRequerIPTU.OptTipo(0).value = True Then
                 z = "isenção de IPTU"
                 rpt.FormulaFields(4).Text = "'ISENÇÃO DE IPTU'"
             Else
@@ -1832,8 +1832,8 @@ Data4:
             sTexto1 = "Aquisição de imóvel por templo religioso"
         Else
             x = InStr(1, sTexto1, "Inciso", vbBinaryCompare)
-            Y = InStr(x, sTexto1, "-", vbBinaryCompare)
-            sTexto1 = Mid(sTexto1, Y + 2, Len(sTexto1) - Y - 1)
+            y = InStr(x, sTexto1, "-", vbBinaryCompare)
+            sTexto1 = Mid(sTexto1, y + 2, Len(sTexto1) - y - 1)
         End If
         rpt.FormulaFields(4).Text = "'" & Mask(sTexto1) & "'"
         rpt.FormulaFields(11).Text = "'" & IIf(frmGuiaPratico4.cmbAss.ListIndex = 0, "A", "B") & "'"
@@ -1847,8 +1847,8 @@ Data4:
 '            sTexto1 = "Artigo 150 - Inciso VI, letra ""b"" da Constituição Federal da República Federativa do Brasil, combinado com o Artigo 111 - Inciso IV, "
         Else
             x = InStr(1, sTexto1, "Inciso", vbBinaryCompare)
-            Y = InStr(x, sTexto1, "-", vbBinaryCompare)
-            sTexto1 = Left(sTexto1, Y - 2)
+            y = InStr(x, sTexto1, "-", vbBinaryCompare)
+            sTexto1 = Left(sTexto1, y - 2)
         End If
 FIMPRATICO4:
         rpt.FormulaFields(10).Text = "'" & sTexto1 & "'"
@@ -1872,7 +1872,7 @@ DataR2:
     Case "REFISPARC"
         frmReport.Caption = "Relatório do Refis parcelado"
         rpt.RecordSelectionFormula = "{EXTRATOTMP.COMPUTER}='" & NomeDeLogin & "'"
-        rpt.FormulaFields(1).Text = "'2019'"
+        rpt.FormulaFields(1).Text = "'2020'"
         GeraRefis (nAno)
     Case "QTDEPROCESSOSANO"
         frmReport.Caption = "Qtde de processos tramitados no ano"
@@ -2293,7 +2293,7 @@ Public Function ShowReport3(sReport As String, hMDI As Long, hFormCalling As Lon
 Dim RdoAux As rdoResultset, Sql As String, sTipo As String, dData As Date, nAno As Integer, sDoc As String, nSeq2 As Integer
 Dim sTexto1 As String, sTexto2 As String, sTexto3 As String, sHor As String, sSenha As String, nSeq As Integer, nCodReduz As Long
 Dim z As Variant, RdoAux2 As rdoResultset, z2 As Variant, z3 As Variant, z4 As Variant, z5 As Variant, fso As New FileSystemObject
-Dim sNumProc As String, nNumproc As Long, bAchou As Boolean, aTributo() As String, x As Integer, Y As Integer, nAnoproc As Integer
+Dim sNumProc As String, nNumproc As Long, bAchou As Boolean, aTributo() As String, x As Integer, y As Integer, nAnoproc As Integer
 Dim qd As New rdoQuery, bHeader As Boolean, nLanc As Integer, nParc As Integer, nCompl As Integer
 
 If UCase(sReport) = "BOLETOGUIA2" Then
@@ -2324,6 +2324,16 @@ End If
 Select Case UCase(sReport)
     Case "EMPRESA_QTDEATIVIDADE"
         rpt.FormulaFields(1).Text = "'DATA DE ABERTURA ENTRE:" & frmCnsAvancadaMob.mskDataAbeIni.Text & " E " & frmCnsAvancadaMob.mskDataAbeFim.Text & "'"
+    Case "DADOS_IMOVEL"
+        rpt.RecordSelectionFormula = "{dados_imovel_rpt.codigo}=" & nNumDoc
+    Case "Resumo_Pagto_Banco"
+        rpt.RecordSelectionFormula = "{resumo_pagto_banco_ficha.userid}=" & RetornaUsuarioID(NomeDeLogin)
+    Case "Resumo_Pagamento_Banco"
+        rpt.RecordSelectionFormula = "{resumo_pagto_banco_ficha.userid}=" & RetornaUsuarioID(NomeDeLogin)
+    Case "Resumo_Pagamento_Ficha", "Resumo_Pagamento_Ficha_tmp"
+        rpt.RecordSelectionFormula = "{resumo_pagto_banco_ficha.userid}=" & RetornaUsuarioID(NomeDeLogin)
+    Case "Resumo_Pagamento_Analise"
+        rpt.RecordSelectionFormula = "{resumo_pagto_banco_ficha.userid}=" & RetornaUsuarioID(NomeDeLogin)
     Case "ALVARAFUNCIONAMENTO"
         rpt.FormulaFields(1).Text = "'" & frmAlvaraNovo.txtCodigo.Text & "'"
         rpt.FormulaFields(2).Text = "'" & frmAlvaraNovo.lblNome.Caption & "'"
@@ -2660,7 +2670,7 @@ Select Case UCase$(sReport)
         
 '    Case "PAGAMENTOCARTACOBRANCA"
 '        rpt.Database.LogOnServer "PDSODBC.DLL", "odbcTributacao", "Tributacao", UL, UP
-    Case "CARNETMP", "PARCELAMENTO_SIMULADO_TMP", "CALCULO_PARCELAMENTO2_TMP"
+    Case "CARNETMP", "PARCELAMENTO_SIMULADO_TMP", "CALCULO_PARCELAMENTO2_TMP", "Resumo_Pagamento_Ficha_tmp"
         rpt.Database.Tables(1).SetLogOnInfo IPServer, "TributacaoTeste", UL, UP
     Case "DECA", "DECA2"
         rpt.Database.Tables(1).SetLogOnInfo IPServer, "Tributacao", UL, UP
@@ -2699,6 +2709,15 @@ If UCase(sReport) = "ALVARAFUNCIONAMENTO" Or UCase(sReport) = "ALVARAFUNCIONAMEN
     
     Sql = "insert documentopic(seq,codigo,documento) values(" & nSeq2 & "," & Val(frmAlvaraNovo.txtCodigo.Text) & ",'" & sTexto1 & "')"
     cn.Execute Sql, rdExecDirect
+    
+    sPath = sPathAnexo & "08"
+    If fso.FolderExists(sPath) = False Then
+        fso.CreateFolder (sPath)
+    End If
+    sPath = sPathAnexo & "08\" & Format(Year(Now), "0000")
+    If fso.FolderExists(sPath) = False Then
+        fso.CreateFolder (sPath)
+    End If
     
     sPath = sPathAnexo & "08\" & Format(Year(Now), "0000") & "\" & Format(Month(Now), "00")
     If fso.FolderExists(sPath) = False Then
@@ -2891,7 +2910,7 @@ Sql = Sql & "debitoparcela.codlancamento = debitotributo.codlancamento AND debit
 Sql = Sql & "debitoparcela.codcomplemento = debitotributo.codcomplemento INNER JOIN parceladocumento ON debitoparcela.codreduzido = parceladocumento.codreduzido AND debitoparcela.anoexercicio = parceladocumento.anoexercicio AND "
 Sql = Sql & "debitoparcela.codlancamento = parceladocumento.codlancamento AND debitoparcela.seqlancamento = parceladocumento.seqlancamento AND debitoparcela.numparcela = parceladocumento.numparcela AND "
 Sql = Sql & "debitoparcela.codcomplemento = parceladocumento.codcomplemento INNER JOIN plano ON parceladocumento.plano = plano.codigo GROUP BY debitoparcela.codreduzido, debitoparcela.numprocesso, debitoparcela.codlancamento, "
-Sql = Sql & "parceladocumento.plano, plano.nome HAVING parceladocumento.plano IN (36,37,38) ORDER BY debitoparcela.codreduzido"
+Sql = Sql & "parceladocumento.plano, plano.nome HAVING parceladocumento.plano IN (44,45,46) ORDER BY debitoparcela.codreduzido"
 
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux

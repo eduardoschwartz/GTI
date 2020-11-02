@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmDebitoCompl 
    BackColor       =   &H00EEEEEE&
@@ -202,12 +202,12 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub cmdAutorizar_Click()
-Dim nCodReduz As Long, nAno As Integer, nLanc As Integer, nSeq As Integer, nParc As Integer, nCompl As Integer, X As Integer
+Dim nCodReduz As Long, nAno As Integer, nLanc As Integer, nSeq As Integer, nParc As Integer, nCompl As Integer, x As Integer
 
 If MsgBox("Autorizar os complementos selecionados?", vbQuestion + vbYesNo, "Confirmação") = vbNo Then Exit Sub
 
-For X = 1 To lvMain.ListItems.Count
-    With lvMain.ListItems(X)
+For x = 1 To lvMain.ListItems.Count
+    With lvMain.ListItems(x)
         If .Checked Then
             nCodReduz = .Text
             nAno = .SubItems(1)
@@ -235,8 +235,8 @@ End Sub
 Private Sub cmdExcluir_Click()
 If MsgBox("Excluir os complementos selecionados?", vbQuestion + vbYesNo, "Confirmação") = vbNo Then Exit Sub
 
-For X = 1 To lvMain.ListItems.Count
-    With lvMain.ListItems(X)
+For x = 1 To lvMain.ListItems.Count
+    With lvMain.ListItems(x)
         If .Checked Then
             nCodReduz = .Text
             nAno = .SubItems(1)
@@ -262,7 +262,7 @@ CarregaLista
 End Sub
 
 Private Sub cmdPrint_Click()
-Dim X As Integer
+Dim x As Integer
 
 sNomeArq = sPathBin & "\REPCOML1.TXT"
 FF1 = FreeFile()
@@ -277,8 +277,8 @@ ax = FillSpace("CÓDIGO", 8) & FillSpace(" ANO", 5) & FillLeft("LANC", 5) & FillL
 Print #FF1, ax
 Print #FF1, "****************************************************************************"
 
-For X = 1 To lvMain.ListItems.Count
-    With lvMain.ListItems(X)
+For x = 1 To lvMain.ListItems.Count
+    With lvMain.ListItems(x)
         ax = FillSpace(.Text, 8) & FillSpace(.SubItems(1), 5) & FillLeft(.SubItems(2), 5) & FillLeft(.SubItems(3), 6) & FillLeft(.SubItems(4), 6) & FillLeft(.SubItems(5), 6) & FillLeft(.SubItems(6), 11)
         Print #FF1, ax
     End With
@@ -302,7 +302,7 @@ End Sub
 
 Private Sub CarregaLista()
 Dim itmX As ListItem, z As Long, Sql As String, RdoAux As rdoResultset
-z = SendMessage(lvMain.hwnd, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvMain.HWND, LVM_DELETEALLITEMS, 0, 0)
 
 Sql = "SELECT debitoparcela.codreduzido, debitoparcela.anoexercicio, debitoparcela.codlancamento, debitoparcela.seqlancamento, debitoparcela.numparcela,"
 Sql = Sql & "debitoparcela.CODCOMPLEMENTO , complementopagto.valor FROM debitoparcela INNER JOIN complementopagto ON debitoparcela.codreduzido = complementopagto.codreduzido AND debitoparcela.anoexercicio = complementopagto.anoexercicio AND "

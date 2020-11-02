@@ -3,15 +3,24 @@ Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmSimplesCNPJ_Receita 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Exportação de CNPJ para a Rec.Federal"
-   ClientHeight    =   915
+   ClientHeight    =   795
    ClientLeft      =   6405
    ClientTop       =   4620
    ClientWidth     =   5415
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   915
+   ScaleHeight     =   795
    ScaleWidth      =   5415
+   Begin VB.CommandButton cmdImportar 
+      Caption         =   "Importar"
+      Enabled         =   0   'False
+      Height          =   330
+      Left            =   3645
+      TabIndex        =   2
+      Top             =   1125
+      Width           =   1410
+   End
    Begin prjChameleon.chameleonButton cmdExec 
       Height          =   345
       Left            =   4140
@@ -80,6 +89,13 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Private Type tLaser
+    Codigo As Long
+    Ano As Integer
+    Area_Terreno As Double
+    Area_Predial As Double
+End Type
+
 
 Private Sub cmdExec_Click()
 Dim Sql As String, RdoAux As rdoResultset, nPos As Long, nTot As Long, sCNPJ As String, nCodReduz As Long
@@ -205,21 +221,25 @@ With RdoAux
        .MoveNext
     Loop
     Print #1, "99999999999999"
-    GoTo FIM
+    GoTo fim
 End With
 
-proximo:
+Proximo:
 Close #1
 nReg = nReg + 1
 GoTo Inicio
 
 
-FIM:
+fim:
 Close #1
 Liberado
 MsgBox "Gravação concluída", vbInformation, "Informação"
 
 
+End Sub
+
+Private Sub cmdImportar_Click()
+Simples_Cnpj
 End Sub
 
 Private Sub Form_Load()
@@ -229,18 +249,54 @@ End Sub
 
 Private Sub CallPb(nVal As Long, nTot As Long)
 If nVal > 0 Then
-    PBar.Color = &HC0C000
+    pBar.Color = &HC0C000
 Else
-    PBar.Color = vbWhite
+    pBar.Color = vbWhite
 End If
 If ((nVal * 100) / nTot) <= 100 Then
-   PBar.value = (nVal * 100) / nTot
+   pBar.value = (nVal * 100) / nTot
 Else
-   PBar.value = 100
+   pBar.value = 100
 End If
 
 Me.Refresh
 If cGetInputState() <> 0 Then DoEvents
+
+End Sub
+
+Private Sub Simples_Cnpj()
+Dim nCodReduz As Long, Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, nPos2 As Integer, bFind As Boolean
+Dim nPos As Long, nTot As Long, a2019() As tLaser, a2020() As tLaser, x As Integer, y As Integer
+On Error GoTo Erro
+
+Sql = "SELECT cnpj From simplestmp order by cnpj"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    nTot = .RowCount
+    nPos = 1
+    Do Until .EOF
+        If nPos Mod 50 = 0 Then
+           CallPb nPos, nTot
+        End If
+        Sql = "insert simples_cnpj_receita(cnpj) values('" & !Cnpj & "')"
+        cn.Execute Sql, rdExecDirect
+        
+        nPos = nPos + 1
+        DoEvents
+       .MoveNext
+    Loop
+   .Close
+End With
+
+
+MsgBox "Fim"
+
+
+Exit Sub
+
+Erro:
+MsgBox rdoErrors(1).Description
+Resume Next
 
 End Sub
 

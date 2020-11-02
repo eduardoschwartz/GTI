@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmFichaCompensacaoLote 
    BorderStyle     =   1  'Fixed Single
@@ -739,7 +739,8 @@ Dim Sql As String, RdoAux As rdoResultset, itmX As ListItem
 lvOrigem.ListItems.Clear
 Sql = "select numero_documento,data_vencimento,valor_documento,datadocumento,nome,cpf,endereco,bairro,cep,cidade,uf "
 Sql = Sql & "from ficha_compensacao_documento inner join numdocumento on ficha_compensacao_documento.numero_documento=numdocumento.numdocumento "
-Sql = Sql & "where data_lote is null order by numero_documento"
+Sql = Sql & "where data_lote is null AND (ficha_compensacao_documento.nome <> '') AND (ficha_compensacao_documento.cpf <> '') AND (ficha_compensacao_documento.endereco <> '') AND "
+Sql = Sql & "(ficha_compensacao_documento.cep <> '') AND (ficha_compensacao_documento.cidade <> '') AND (ficha_compensacao_documento.uf <> '')  order by numero_documento"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
@@ -748,9 +749,13 @@ With RdoAux
         itmX.SubItems(2) = Format(!Datadocumento, "dd/mm/yyyy")
         itmX.SubItems(3) = Format(!valor_documento, "#0.00")
         itmX.SubItems(4) = !Nome
-        itmX.SubItems(5) = !CPF
+        itmX.SubItems(5) = !cpf
         itmX.SubItems(6) = !Endereco
-        itmX.SubItems(7) = !Bairro
+        If !Bairro = "" Then
+            itmX.SubItems(7) = "CENTRO"
+        Else
+            itmX.SubItems(7) = !Bairro
+        End If
         itmX.SubItems(8) = !Cep
         itmX.SubItems(9) = SubNull(!Cidade)
         itmX.SubItems(10) = SubNull(!UF)
@@ -802,7 +807,7 @@ With RdoAux
         itmX.SubItems(2) = Format(!Datadocumento, "dd/mm/yyyy")
         itmX.SubItems(3) = Format(!valor_documento, "#0.00")
         itmX.SubItems(4) = !Nome
-        itmX.SubItems(5) = !CPF
+        itmX.SubItems(5) = !cpf
         itmX.SubItems(6) = !Endereco
         itmX.SubItems(7) = !Bairro
         itmX.SubItems(8) = !Cep
@@ -874,8 +879,8 @@ For x = 1 To lvOrigem.ListItems.Count
     nValorGuia = CDbl(lvOrigem.ListItems(x).SubItems(3))
     sNome = lvOrigem.ListItems(x).SubItems(4)
     sCPFCNPJ = lvOrigem.ListItems(x).SubItems(5)
-    sEndereco = lvOrigem.ListItems(x).SubItems(6)
-    sBairro = lvOrigem.ListItems(x).SubItems(7)
+    sEndereco = sfuncVBCRLFremoved(lvOrigem.ListItems(x).SubItems(6))
+    sBairro = sfuncVBCRLFremoved(lvOrigem.ListItems(x).SubItems(7))
     sCep = lvOrigem.ListItems(x).SubItems(8)
     sCidade = lvOrigem.ListItems(x).SubItems(9)
     sUF = lvOrigem.ListItems(x).SubItems(10)
@@ -902,8 +907,8 @@ For x = 1 To lvOrigem.ListItems.Count
     aBoletos(UBound(aBoletos)).nTipoInscricao = CStr(nTipoDoc)
     aBoletos(UBound(aBoletos)).nNumeroInscricao = sCPFCNPJ
     aBoletos(UBound(aBoletos)).sNome = Left(sNome, 40)
-    aBoletos(UBound(aBoletos)).sEndereco = Left(sEndereco, 40)
-    aBoletos(UBound(aBoletos)).sBairro = Left(sBairro, 15)
+    aBoletos(UBound(aBoletos)).sEndereco = sfuncVBCRLFremoved(Left(sEndereco, 40))
+    aBoletos(UBound(aBoletos)).sBairro = sfuncVBCRLFremoved(Left(sBairro, 15))
     aBoletos(UBound(aBoletos)).sCep = Left(sCep, 5)
     aBoletos(UBound(aBoletos)).sSufixoCep = Right(sCep, 3)
     aBoletos(UBound(aBoletos)).sCidade = sCidade

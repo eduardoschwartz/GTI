@@ -352,7 +352,7 @@ Begin VB.Form frmITBI
       Appearance      =   0  'Flat
       Height          =   885
       Left            =   1170
-      MaxLength       =   2000
+      MaxLength       =   5000
       MultiLine       =   -1  'True
       ScrollBars      =   2  'Vertical
       TabIndex        =   4
@@ -626,7 +626,7 @@ Begin VB.Form frmITBI
    Begin VB.Label Label1 
       Alignment       =   1  'Right Justify
       BackStyle       =   0  'Transparent
-      Caption         =   "(Max 2000)"
+      Caption         =   "(Max 5000)"
       ForeColor       =   &H00C00000&
       Height          =   225
       Index           =   15
@@ -806,7 +806,7 @@ With RdoAuxCli
         With RdoAux
             sInsc = !Inscricao
             sNome = !nomecidadao
-            sDoc = SubNull(!CPF)
+            sDoc = SubNull(!cpf)
             If sDoc = "" Then
                 sDoc = SubNull(!Cnpj)
                 If sDoc = "" Then
@@ -994,7 +994,7 @@ With RdoAux
                
                lblNumInsc.Caption = SubNull(!inscestadual)
                lblRS.Caption = "Raz.Social"
-               lblProp.Caption = !razaosocial
+               lblProp.Caption = !RazaoSocial
                lblRua.Caption = Trim$(SubNull(!AbrevTipoLog)) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro
                lblNumImovel.Caption = Val(SubNull(!Numero))
                lblCEP.Caption = IIf(IsNull(!Cep), "", Left$(!Cep, 5) & "-" & Right$(!Cep, 3))
@@ -1120,8 +1120,8 @@ With RdoAux
                               lblBairroEntrega = SubNull(RdoS!DescBairro)
                           End If
                             lblUF.Caption = SubNull(!fsiglauf2)
-                       If SubNull(!CPF) <> "" Then
-                           lblNumInsc.Caption = !CPF
+                       If SubNull(!cpf) <> "" Then
+                           lblNumInsc.Caption = !cpf
                        Else
                             If SubNull(!Cnpj) <> "" Then
                                 lblNumInsc.Caption = Format(!Cnpj, "0#\.###\.###/####-##")
@@ -1397,8 +1397,8 @@ End If
 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux2
     If .RowCount > 0 Then
-        If Not IsNull(!CPF) And Trim(!CPF) <> "" Then
-           sCPF = !CPF
+        If Not IsNull(!cpf) And Trim(!cpf) <> "" Then
+           sCPF = !cpf
         ElseIf Not IsNull(!Cnpj) And Trim(!Cnpj) <> "" Then
            sCPF = !Cnpj
         ElseIf Not IsNull(!rg) Then
@@ -1579,7 +1579,7 @@ If Opt(0).value = True Then
     Sql = Sql & "VALORDAM,VALORPRINCDAM,CODTRIBUTO,USUARIO,SID) VALUES('" & NomeDeLogin & "'," & x & ",'" & sNumInsc & "','"
     Sql = Sql & Format(nCodReduz, "000000") & "','" & "DAM" & "','" & Left$(Mask(sNomeResp), 40) & "','" & sCPF & "','" & Left$(Mask(sEndImovel), 40) & "',"
     Sql = Sql & nNumImovel & ",'" & Left(Mask(sComplImovel), 30) & "','" & Left$(Mask(sBairroImovel), 25) & "','" & Mask(sCidadeEntrega) & "','" & sUFEntrega & "','"
-    Sql = Sql & Left$(sQuadra, 10) & "','" & Left$(sLote, 10) & "','" & "ITBI" & "','" & Left$(sFullTrib, 2000) & "','"
+    Sql = Sql & Left$(sQuadra, 10) & "','" & Left$(sLote, 10) & "','" & "ITBI" & "','" & Left$(sFullTrib, 5000) & "','"
     Sql = Sql & CStr(nNumDoc) & CStr(RetornaDVNumDoc(nNumDoc)) & "','" & nAno & "','" & nCodLanc & "','"
     Sql = Sql & nSeq & "','" & nNumParc & "','" & nComplemento & "','" & Format(dDataVencto, "mm/dd/yyyy") & "','"
     Sql = Sql & 3 & "','" & "N" & "','" & "N" & "'," & Virg2Ponto(sTr(nValorParc)) & ","
@@ -1682,7 +1682,7 @@ Select Case nCodReduz
         With RdoAux
             sInsc = !Inscricao
             sNome = !nomecidadao
-            sDoc = SubNull(!CPF)
+            sDoc = SubNull(!cpf)
             If sDoc = "" Then
                 sDoc = SubNull(!Cnpj)
                 If sDoc = "" Then
@@ -1734,9 +1734,9 @@ Select Case nCodReduz
                         sDoc = Format(!Cnpj, "0#\.###\.###/####-##")
  '                   End If
                 Else
-                    If SubNull(!CPF) <> "" Then
+                    If SubNull(!cpf) <> "" Then
 '                        If Val(!CPF) > 0 Then
-                            sDoc = Format(RetornaNumero(!CPF), "00#\.###\.###-##")
+                            sDoc = Format(RetornaNumero(!cpf), "00#\.###\.###-##")
  '                       End If
                     End If
                 End If
@@ -1853,7 +1853,7 @@ If chkRural.value = vbUnchecked Then
     End With
     sHist = "Emissão de ITBI no código cidadão " & CStr(nCodReduz)
     Sql = "INSERT HISTORICO (CODREDUZIDO,SEQ,DATAHIST,DESCHIST,DATAHIST2,USERID) VALUES("
-    Sql = Sql & Val(txtImovel.Text) & "," & nSeqLanc & ",'" & Format(Now, "mm/dd/yyyy") & "','" & sHist & "','" & Format(Now, "mm/dd/yyyy") & "'," & 236 & ")"
+    Sql = Sql & Val(txtImovel.Text) & "," & nSeqLanc & ",'" & Format(Now, "mm/dd/yyyy") & "','" & sHist & "','" & Format(Now, "mm/dd/yyyy") & "'," & RetornaUsuarioID(NomeDeLogin) & ")"
     cn.Execute Sql, rdExecDirect
 End If
         
@@ -2051,13 +2051,13 @@ If chkRural.value = vbUnchecked Then
     End With
     sHist = "Emissão de ITBI no código cidadão " & CStr(nCodReduz)
     Sql = "INSERT HISTORICO (CODREDUZIDO,SEQ,DATAHIST,DESCHIST,DATAHIST2,USERID) VALUES("
-    Sql = Sql & Val(txtImovel.Text) & "," & nSeqLanc & ",'" & Format(Now, "mm/dd/yyyy") & "','" & sHist & "','" & Format(Now, "mm/dd/yyyy") & "'," & 236 & ")"
+    Sql = Sql & Val(txtImovel.Text) & "," & nSeqLanc & ",'" & Format(Now, "mm/dd/yyyy") & "','" & sHist & "','" & Format(Now, "mm/dd/yyyy") & "'," & RetornaUsuarioID(NomeDeLogin) & ")"
     cn.Execute Sql, rdExecDirect
 End If
 
 
 v1 = lblProp.Caption
-v2 = Left(lblRua.Caption & ", " & lblNum.Caption & IIf(lblCompl.Caption <> "", " " & lblCompl.Caption, "") & " - " & lblBairro.Caption, 60)
+v2 = Left(lblRua.Caption & ", " & lblNumImovel.Caption & IIf(lblCompl.Caption <> "", " " & lblCompl.Caption, "") & " - " & lblBairro.Caption, 60)
 v3 = mskVencto.Text
 v4 = RetornaNumero(lblNumInsc.Caption)
 v5 = "287353200" & Format(nNumDoc, "00000000")
@@ -2069,7 +2069,9 @@ V10 = NomeDeLogin
 If Trim(lblCEP.Caption) = "" Or Trim(lblCEP.Caption) = "-" Then
     v9 = "14870-000"
 End If
-ShellExecute HWND, "open", "http://sistemas.jaboticabal.sp.gov.br/gti/Pages/boletoBB.aspx?f1=" & v1 & "&f2=" & v2 & "&f3=" & v3 & "&f4=" & v4 & "&f5=" & v5 & "&f6=" & v6 & "&f7=" & v7 & "&f8=" & v8 & "&f9=" & v9 & "&f10=" & V10, vbNullString, vbNullString, conSwNormal
+
+'ShellExecute HWND, "open", "http://sistemas.jaboticabal.sp.gov.br/gti/Pages/boletoBB.aspx?f1=" & v1 & "&f2=" & v2 & "&f3=" & v3 & "&f4=" & v4 & "&f5=" & v5 & "&f6=" & v6 & "&f7=" & v7 & "&f8=" & v8 & "&f9=" & v9 & "&f10=" & V10, vbNullString, vbNullString, conSwNormal
+ShellExecute HWND, "open", "http://sistemas.jaboticabal.sp.gov.br/gti/Tributario/GateBank?p1=" & v1 & "&p2=" & v2 & "&p3=" & v3 & "&p4=" & v4 & "&p5=" & v5 & "&p6=" & v6 & "&p7=" & v7 & "&p8=" & v8 & "&p9=" & v9, vbNullString, vbNullString, conSwNormal
 
 Limpa
 

@@ -275,7 +275,7 @@ ElseIf Opt(3).value = True Then
 ElseIf Opt(4).value = True Then
    GeraVS
 ElseIf Opt(5).value = True Then
-    nAno = 2019
+    nAno = 2020
    GeraCIP
 End If
 Liberado
@@ -328,7 +328,7 @@ With RdoAux
         End With
 
 
-        ax = !codigomob & "#" & !razaosocial & "#" & sCNPJ & "#" & dData & "#" & dDataS & "#" & sDivida
+        ax = !codigomob & "#" & !RazaoSocial & "#" & sCNPJ & "#" & dData & "#" & dDataS & "#" & sDivida
         Print #1, ax
        .MoveNext
     Loop
@@ -346,7 +346,7 @@ End Sub
 Private Sub Form_Load()
 Centraliza Me
 Set xImovel = New clsImovel
-nAno = 2020
+nAno = 2021
 CarregaEnderecoContabil
 End Sub
 
@@ -462,7 +462,7 @@ With RdoAux
             nCodLogr = !CodLogradouro
             sExercicio = CStr(nAno) '1-4
             sCodInscricao = Format(!codigomob, "00000000000000")
-            sContribuinte = FillSpace(!razaosocial, 40) '5-44
+            sContribuinte = FillSpace(!RazaoSocial, 40) '5-44
             sFantasia = FillSpace(SubNull(!NOMEFANTASIA), 40) '45-84
             sCodAtiv = Format(!codatividade, "00000000000000")
             sDescAtiv = FillSpace(Left$(!ativextenso, 50), 50)
@@ -1830,13 +1830,12 @@ Dim aMesAno(0 To 2) As String, sMesAno As String, sMes As String
 Dim aNumDoc(0 To 2) As String, sNumDoc As String
 Dim nTotalTrib As Double, sTotalTrib As String
 Dim nTotalTribUnica As Double, sTotalTribUnica As String
-Dim aCodBarra(0 To 5) As String, sCodBarra As String
 Dim dDataBase As Date, nUfir As Double
 Dim tDado As String, tEnd As String, tNum As Integer
 Dim tCidade As String, tBairro As String, bAchou As Boolean, sCPF As String
 Dim sValorEXP As String, strLinha1 As String, strLinha2 As String, aCodDup() As Long, sCod As String, l As Integer, k As Integer
 
-Dim aDigitavel(0 To 2) As String, sDigitavel As String
+Dim aDigitavel(0 To 2) As String, sDigitavel As String, aCodBarra(0 To 2) As String, sCodBarra As String
 Dim nFatorVencto As Long, sQuintoGrupo As String, sBarra As String, nParc As Integer
 Dim sCampo1 As String, sCampo2 As String, sCampo3 As String, sCampo4 As String, sCampo5 As String, sDigitavel2 As String
 
@@ -1868,7 +1867,7 @@ nExpUnica = 0
 '## ***************** G U I A ********************** ##
 '## ************************************************ ##
 
-Sql = "TRUNCATE TABLE LASERTMP"
+Sql = "DELETE FROM LASERTMP WHERE CALCULO=2"
 cn.Execute Sql, rdExecDirect
 
 Open sPathBin & "\LASERVIGSANIT.TXT" For Output As #1
@@ -1902,14 +1901,14 @@ With RdoAux
             nCodEsc = Val(SubNull(!RESPCONTABIL))
             sExercicio = CStr(nAno) '1-4
             sCodInscricao = Format(!codigomob, "000000")
-            sContribuinte = FillSpace(!razaosocial, 40) '5-44
+            sContribuinte = FillSpace(!RazaoSocial, 40) '5-44
             sFantasia = FillSpace(SubNull(!NOMEFANTASIA), 40) '45-84
             sCodAtiv = Format(!codatividade, "00000000000000")
             sDescAtiv = FillSpace(Left$(!ativextenso, 50), 50)
             sCPF = ""
-            If Not IsNull(!CPF) Then
-                If Trim(!CPF) <> "" Then
-                    sCPF = Format(Val(RetornaNumero(!CPF)), "00000000000")
+            If Not IsNull(!cpf) Then
+                If Trim(!cpf) <> "" Then
+                    sCPF = Format(Val(RetornaNumero(!cpf)), "00000000000")
                     tTipo = 1
                 Else
                     sCPF = Format(!Cnpj, "00000000000000")
@@ -1976,7 +1975,7 @@ With RdoAux
             tBairro = sBairroEntrega
             tCidade = sCidEntrega
             If Left(sCepEntrega, 1) = "_" Then sCepEntrega = "         "
-            If Trim(sCepEntrega) = "" Then sCepEntrega = "14870-000"
+            If Trim(sCepEntrega) = "" Then sCepEntrega = "14870000"
         
         End With
         sTipoImposto = FillSpace("VIGIL.SANITÁRIA", 20)  '308-327
@@ -2037,7 +2036,7 @@ With RdoAux
                Else
                    aMesAno(!NumParcela) = sMes & "/02"
                End If
-               aNumDoc(!NumParcela) = FillLeft(!NumDocumento, 9)
+               aNumDoc(!NumParcela) = FillLeft(!NumDocumento, 8)
                aVencParc(!NumParcela) = Format(!DataVencimento, "dd/mm/yyyy")
                aValorParc(!NumParcela) = FillLeft(RemovePonto(Format(!ValorTributo, "#0.00")), 13)
           
@@ -2051,7 +2050,7 @@ With RdoAux
                 sQuintoGrupo = Format(nFatorVencto, "0000")
                 sQuintoGrupo = sQuintoGrupo & Format(RetornaNumero(FormatNumber(aValorParc(nParc), 2)), "0000000000")
                 sBarra = "0019" & Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(aValorParc(nParc), 2)), "0000000000") & "000000287353200"
-                sBarra = sBarra & CStr(aNumDoc(nNumParc)) & "17"
+                sBarra = sBarra & CStr(aNumDoc(nParc)) & "17"
         
                 sCampo1 = "0019" & Mid(sBarra, 20, 5)
                 sDigitavel = sCampo1 & Val(Calculo_DV10(sCampo1))
@@ -2062,9 +2061,11 @@ With RdoAux
                 sCampo5 = Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(aValorParc(nParc), 2)), "0000000000")
                 sCampo4 = Val(Calculo_DV11(sBarra))
                 sDigitavel = sDigitavel & sCampo4 & sCampo5
+                sBarra = Left(sBarra, 4) & sCampo4 & Mid(sBarra, 5, Len(sBarra) - 4)
                 sDigitavel2 = Left(sDigitavel, 5) & "." & Mid(sDigitavel, 6, 5) & " " & Mid(sDigitavel, 11, 5) & "." & Mid(sDigitavel, 16, 6) & " "
                 sDigitavel2 = sDigitavel2 & Mid(sDigitavel, 22, 5) & "." & Mid(sDigitavel, 27, 6) & " " & Mid(sDigitavel, 33, 1) & " " & Right(sDigitavel, 14)
                 aDigitavel(nParc) = sDigitavel2
+                aCodBarra(nParc) = sBarra
                 '******************
               .MoveNext
             Loop
@@ -2111,11 +2112,11 @@ With RdoAux
 '                    Else
 '                        aDescTrib(x) = FillSpace(Left$(sDesc & "-" & sDesc2, 50), 50)
 '                    End If
-                    aCodTrib(x) = FillSpace(Left$(!Cnae, 15), 9)
+                    aCodTrib(x) = FillSpace(Left$(!Cnae, 15), 7)
                     If Left(SubNull(!criteriodesc), 6) = "não es" Then
-                        aDescTrib(x) = FillSpace(Left$(SubNull(!descricao), 50), 50)
+                        aDescTrib(x) = FillSpace(Left$(SubNull(!Descricao), 50), 50)
                     Else
-                        aDescTrib(x) = FillSpace(Left$(!descricao & "-" & !criteriodesc, 50), 50)
+                        aDescTrib(x) = FillSpace(Left$(!Descricao & "-" & !criteriodesc, 50), 50)
                     End If
 
                     x = x + 1
@@ -2126,7 +2127,7 @@ With RdoAux
             End With
     
             For s = x To 5
-                aCodTrib(s) = FillSpace(" ", 9)
+                aCodTrib(s) = FillSpace(" ", 7)
                 aDescTrib(s) = FillSpace(" ", 50)
             Next
             sCodTrib = ""
@@ -2201,9 +2202,14 @@ With RdoAux
             sValorParc = sValorParc & aValorParc(x)
         Next
         
-         sDigitavel = aDigitavel(0)
+        sDigitavel = aDigitavel(0)
         For x = 1 To Val(sQtdeParc)
             sDigitavel = sDigitavel & aDigitavel(x)
+        Next
+
+        sCodBarra = aCodBarra(0)
+        For x = 1 To Val(sQtdeParc)
+            sCodBarra = sCodBarra & aCodBarra(x)
         Next
 
 
@@ -2211,16 +2217,16 @@ FIMVS:
 
         sDataProc = Format(Now, "dd/mm/yyyy") '439-448
         
-        ax = sExercicio & sCodInscricao & sContribuinte & sCPF & sEnd & sNum & sCompl & sCep & sBairro & sCidade & sUF & sEndEntrega & sNumEntrega & sComplEntrega & sCepEntrega & sBairroEntrega & sCidEntrega & sUFEntrega
-        ax = ax & sTipoImposto & sDescAtiv & sDescParc & sQtdeParc & sDataProc & sNumDoc & sVencParc & sCodTrib & sDescTrib & sValorTributo & sValorParc & sNossoNumero & sDigitavel
+        ax = sExercicio & sCodInscricao & sContribuinte & sCPF & sEnd & sNum & sCompl & Format(RetornaNumero(sCep), "00000-000") & sBairro & sCidade & sUF & sEndEntrega & sNumEntrega & sComplEntrega & Format(RetornaNumero(sCepEntrega), "00000-000") & sBairroEntrega & sCidEntrega & sUFEntrega
+        ax = ax & sTipoImposto & sDescAtiv & sDescParc & sQtdeParc & sDataProc & sNumDoc & sVencParc & sCodTrib & sDescTrib & sValorTributo & sValorParc & sNossoNumero & sDigitavel & sCodBarra
         
         Print #1, ax
 
         tDado = ax
         ax = tDado & "," & tEnd & "," & tNum & "," & tTipo
         
-        Sql = "INSERT LASERTMP (DADO,CIDADE,BAIRRO,ENDERECO,NUMERO,TIPO) VALUES('" & Mask(tDado) & "','"
-        Sql = Sql & Trim(Mask(tBairro)) & "','" & Trim(Mask(tCidade)) & "','" & Trim(Mask(tEnd)) & "','" & tNum & "','" & tTipo & "')"
+        Sql = "INSERT LASERTMP (CALCULO,SEQ,DADO,CIDADE,BAIRRO,ENDERECO,NUMERO,TIPO,CEP) VALUES(2," & xId & ",'" & Mask(tDado) & "','"
+        Sql = Sql & Trim(Mask(tBairro)) & "','" & Trim(Mask(tCidade)) & "','" & Trim(Mask(tEnd)) & "','" & tNum & "','" & tTipo & "','" & RetornaNumero(sCepEntrega) & "')"
         cn.Execute Sql, rdExecDirect
         
 Proximo:
@@ -2234,8 +2240,8 @@ Close #1
 'Exit Sub
 ORDENA:
 
-Open sPathBin & "\VIG_SANIT.TXT" For Output As #1
-Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO FROM LASERTMP WHERE TIPO=1 ORDER BY CIDADE,ENDERECO,NUMERO"
+Open sPathBin & "\AW1.TXT" For Output As #1
+Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO,CEP FROM LASERTMP WHERE  CALCULO=2 AND TIPO=1 ORDER BY CEP,NUMERO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     xId = 1
@@ -2247,8 +2253,8 @@ With RdoAux
 End With
 Close #1
 
-Open sPathBin & "\VIGSANIT_SEM_CNPJ.TXT" For Output As #1
-Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO FROM LASERTMP WHERE TIPO=2 ORDER BY CIDADE,ENDERECO,NUMERO"
+Open sPathBin & "\AW2.TXT" For Output As #1
+Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO FROM LASERTMP WHERE CALCULO=2 AND  TIPO=2 ORDER BY CEP,NUMERO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     xId = 1
@@ -2317,15 +2323,16 @@ sDataProc = Format(Now, "dd/mm/yyyy")
 '## ***************** G U I A ********************** ##
 '## ************************************************ ##
 
-Sql = "TRUNCATE TABLE LASERTMP"
+Sql = "DELETE FROM LASERTMP WHERE CALCULO=3"
 cn.Execute Sql, rdExecDirect
+
 
 Open sPathBin & "\LASERISSFIXOTL.TXT" For Output As #1
 
 Sql = "SELECT DISTINCT CODREDUZIDO From DEBITOPARCELA "
 'Sql = Sql & "WHERE (ANOEXERCICIO = " & nAno & ") AND (CODLANCAMENTO = 14 OR CODLANCAMENTO=6 ) AND DATADEBASE='01/01/2020'"
 Sql = Sql & "WHERE (ANOEXERCICIO = " & nAno & ") AND (CODLANCAMENTO = 14 OR CODLANCAMENTO=6 )"
-'Sql = Sql & " and codreduzido =120685"
+'Sql = Sql & " and codreduzido =118703"
 Sql = Sql & " ORDER BY CODREDUZIDO"
 
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -2333,7 +2340,7 @@ With RdoAux
     nNumRec = .RowCount
     Do Until .EOF
         nCodReduz = !CODREDUZIDO
-        'If !CODREDUZIDO = 101132 Then MsgBox "TESTE"
+        'If !CODREDUZIDO = 107857 Then MsgBox "TESTE"
         If xId Mod 50 = 0 Then
             DoEvents
             
@@ -2400,13 +2407,13 @@ With RdoAux
             nCodEsc = Val(SubNull(!RESPCONTABIL))
             sExercicio = CStr(nAno) '1-4
             sCodInscricao = Format(!codigomob, "00000000000000")
-            sContribuinte = FillSpace(!razaosocial, 40) '5-44
+            sContribuinte = FillSpace(!RazaoSocial, 40) '5-44
             sCodAtiv = Format(!codatividade, "00000")
             sDescAtiv = FillSpace(Left$(!ativextenso, 50), 50)
             sCPF = ""
-            If Not IsNull(!CPF) Then
-                If Trim(!CPF) <> "" Then
-                    sCPF = Format(Val(RetornaNumero(!CPF)), "00000000000")
+            If Not IsNull(!cpf) Then
+                If Trim(!cpf) <> "" Then
+                    sCPF = Format(Val(RetornaNumero(!cpf)), "00000000000")
                     tTipo = 1
                 Else
                     sCPF = Format(!Cnpj, "00000000000000")
@@ -2451,6 +2458,7 @@ With RdoAux
                 sUFEntrega = FillSpace(.UF, 2)
             End With
             
+            
             If nCodEsc > 0 Then
                 '***ENDERECO CONTADOR***
                 For t = 1 To UBound(aEnd)
@@ -2472,6 +2480,7 @@ With RdoAux
                 '***********************
             End If
         End With
+        If Trim(sCepEntrega) = "" Then sCepEntrega = "00000000"
 fimend:
         tEnd = sEnd
         tNum = nNum
@@ -2506,7 +2515,7 @@ fimend:
         End If
         
         Sql = "SELECT debitoparcela.codreduzido, debitoparcela.numparcela, debitoparcela.datavencimento, parceladocumento.numdocumento, SUM(debitotributo.valortributo) AS Valor "
-        Sql = Sql & "FROM parceladocumento INNER JOIN numdocumento ON parceladocumento.numdocumento = numdocumento.numdocumento INNER JOIN debitoparcela ON parceladocumento.codreduzido = debitoparcela.codreduzido AND "
+        Sql = Sql & "FROM parceladocumento LEFT OUTER JOIN numdocumento ON parceladocumento.numdocumento = numdocumento.numdocumento INNER JOIN debitoparcela ON parceladocumento.codreduzido = debitoparcela.codreduzido AND "
         Sql = Sql & "parceladocumento.anoexercicio = debitoparcela.anoexercicio AND parceladocumento.codlancamento = debitoparcela.codlancamento AND parceladocumento.seqlancamento = debitoparcela.seqlancamento AND "
         Sql = Sql & "parceladocumento.numparcela = debitoparcela.numparcela AND parceladocumento.codcomplemento = debitoparcela.codcomplemento INNER JOIN debitotributo ON debitoparcela.codreduzido = debitotributo.codreduzido AND "
         Sql = Sql & "debitoparcela.anoexercicio = debitotributo.anoexercicio AND debitoparcela.codlancamento = debitotributo.codlancamento AND debitoparcela.seqlancamento = debitotributo.seqlancamento AND "
@@ -2578,7 +2587,7 @@ fimend:
                 sQuintoGrupo = Format(nFatorVencto, "0000")
                 sQuintoGrupo = sQuintoGrupo & Format(RetornaNumero(FormatNumber(aValorParc(nParc), 2)), "0000000000")
                 sBarra = "0019" & Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(aValorParc(nParc), 2)), "0000000000") & "000000287353200"
-                sBarra = sBarra & CStr(aNumDoc(nNumParc)) & "17"
+                sBarra = sBarra & CStr(aNumDoc(nParc)) & "17"
         
                 sCampo1 = "0019" & Mid(sBarra, 20, 5)
                 sDigitavel = sCampo1 & Val(Calculo_DV10(sCampo1))
@@ -2589,12 +2598,12 @@ fimend:
                 sCampo5 = Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(aValorParc(nParc), 2)), "0000000000")
                 sCampo4 = Val(Calculo_DV11(sBarra))
                 sDigitavel = sDigitavel & sCampo4 & sCampo5
+                sBarra = Left(sBarra, 4) & sCampo4 & Mid(sBarra, 5, Len(sBarra) - 4)
                 sDigitavel2 = Left(sDigitavel, 5) & "." & Mid(sDigitavel, 6, 5) & " " & Mid(sDigitavel, 11, 5) & "." & Mid(sDigitavel, 16, 6) & " "
                 sDigitavel2 = sDigitavel2 & Mid(sDigitavel, 22, 5) & "." & Mid(sDigitavel, 27, 6) & " " & Mid(sDigitavel, 33, 1) & " " & Right(sDigitavel, 14)
                 aDigitavel(nParc) = sDigitavel2
+                aCodBarra(nParc) = sBarra
                 '******************
-              
-              
               
               .MoveNext
             Loop
@@ -2654,11 +2663,17 @@ fimend:
             sDigitavel = sDigitavel & aDigitavel(x)
         Next
             
+        sCodBarra = aCodBarra(0)
+        For x = 1 To Val(sQtdeParc)
+            sCodBarra = sCodBarra & aCodBarra(x)
+        Next
+            
+            
         If sCodAtiv = "" Then sCodAtiv = "00000"
         sTotalTrib = FillLeft("0,00", 17) '????
-        ax = sExercicio & CStr(nCodReduz) & sContribuinte & sCPF & sEnd & sNum & sCompl & sCep & sBairro & sCidade & sUF & sEndEntrega & sNumEntrega & sComplEntrega & sCepEntrega & sBairroEntrega & sCidEntrega
+        ax = sExercicio & CStr(nCodReduz) & sContribuinte & sCPF & sEnd & sNum & sCompl & Format(RetornaNumero(sCep), "00000-000") & sBairro & sCidade & sUF & sEndEntrega & sNumEntrega & sComplEntrega & Format(RetornaNumero(sCepEntrega), "00000-000") & sBairroEntrega & sCidEntrega
         ax = ax & sUFEntrega & sTipoImposto & sAtividadeISS & sDescParc & FillLeft(sQtdeParc, 2) & sDataProc & sNumDoc & sCodTrib & sValorParc & sVencParc & sDescTrib & sValorTributo & sNossoNumero & sAtividade
-        ax = ax & sValorAliq & sCodAtiv & sValorAliqISS & sCodAtividadeISS & sDigitavel
+        ax = ax & sValorAliq & sCodAtiv & sValorAliqISS & sCodAtividadeISS & sDigitavel & sCodBarra
        
         Print #1, ax
 
@@ -2666,8 +2681,8 @@ fimend:
         tDado = ax
         ax = tDado & "," & tEnd & "," & tNum & "," & tTipo
         
-        Sql = "INSERT LASERTMP (DADO,CIDADE,BAIRRO,ENDERECO,NUMERO,TIPO) VALUES('" & Mask(tDado) & "','"
-        Sql = Sql & Trim(Mask(tBairro)) & "','" & Trim(Mask(tCidade)) & "','" & Trim(Mask(tEnd)) & "','" & tNum & "','" & tTipo & "')"
+        Sql = "INSERT LASERTMP (CALCULO,SEQ,DADO,CIDADE,BAIRRO,ENDERECO,NUMERO,TIPO,CEP) VALUES(3," & xId & ",'" & Mask(tDado) & "','"
+        Sql = Sql & Trim(Mask(tBairro)) & "','" & Trim(Mask(tCidade)) & "','" & Trim(Mask(tEnd)) & "','" & tNum & "','" & tTipo & "','" & RetornaNumero(sCepEntrega) & "')"
         cn.Execute Sql, rdExecDirect
         
 Proximo:
@@ -2683,8 +2698,8 @@ Close #1
 'Exit Sub
 ORDENA:
 
-Open sPathBin & "\ISSFIXOTL.TXT" For Output As #1
-Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO FROM LASERTMP WHERE TIPO=1 ORDER BY CIDADE,ENDERECO,NUMERO"
+Open sPathBin & "\AV1.TXT" For Output As #1
+Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO FROM LASERTMP WHERE  CALCULO=3 AND  TIPO=1 ORDER BY CEP,NUMERO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     xId = 1
@@ -2696,8 +2711,8 @@ With RdoAux
 End With
 Close #1
 
-Open sPathBin & "\ISSFIXOTL_SEM_CPF.TXT" For Output As #1
-Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO FROM LASERTMP WHERE TIPO=2 ORDER BY CIDADE,ENDERECO,NUMERO"
+Open sPathBin & "\AV2.TXT" For Output As #1
+Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO FROM LASERTMP WHERE CALCULO=3 AND  TIPO=2 ORDER BY CEP,NUMERO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     xId = 1
@@ -2748,7 +2763,7 @@ Dim RdoAux3 As rdoResultset
 '    RdoAux.MoveNext
 'Loop
 'RdoAux.Close
-
+Exit Sub
 Sql = "TRUNCATE TABLE LASERTMP"
 cn.Execute Sql, rdExecDirect
 cmdGerar.Enabled = False
@@ -2778,9 +2793,9 @@ With RdoAux
         Sql = "SELECT CODREDUZIDO,CPF,CNPJ FROM vwCONSULTAIMOVELPROP WHERE CODREDUZIDO=" & !CODREDUZIDO
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
-            If Not IsNull(!CPF) Then
-                If Trim(!CPF) <> "" Then
-                    sCPF = Format(Val(RetornaNumero(!CPF)), "00000000000")
+            If Not IsNull(!cpf) Then
+                If Trim(!cpf) <> "" Then
+                    sCPF = Format(Val(RetornaNumero(!cpf)), "00000000000")
                 Else
                     sCPF = Format(!Cnpj, "00000000000000")
                 End If
@@ -3100,6 +3115,9 @@ Dim aCodBarra(0 To 12) As String, sCodBarra As String
 Dim dDataBase As Date, aDataVencto(0 To 12) As Date, bPredial As Boolean
 Dim tDado As String, tEnd As String, tNum As Integer, tTipo As Integer
 Dim tCidade As String, tBairro As String
+Dim sNossoNumero As String, sQuintoGrupo As String, sBarra As String
+Dim sCampo1 As String, sCampo2 As String, sCampo3 As String, sCampo4 As String, sCampo5 As String, sDigitavel2 As String
+Dim NumBarra2 As String, NumBarra2a As String, NumBarra2b As String, NumBarra2c As String, NumBarra2d As String
 
 'variaveis para arquivo texto
 Dim sExercicio As String, sContribuinte As String, sSacado As String, sEnd As String, sCompl As String, sBairro As String
@@ -3126,8 +3144,8 @@ Sql = "TRUNCATE TABLE LASERTMP"
 cn.Execute Sql, rdExecDirect
 cmdGerar.Enabled = False
 Open sPathBin & "\LASERIPTU.TXT" For Output As #1
-
-Sql = "delete from cip_semregistro where ano=2019"
+nAno = 2020
+Sql = "delete from cip_semregistro where ano=2020"
 cn.Execute Sql, rdExecDirect
 
 Sql = "SELECT DISTINCT CODREDUZIDO FROM DEBITOPARCELA WHERE ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=79"
@@ -3153,9 +3171,9 @@ With RdoAux
         Sql = "SELECT CODREDUZIDO,CPF,CNPJ FROM vwCONSULTAIMOVELPROP WHERE CODREDUZIDO=" & !CODREDUZIDO
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
-            If Not IsNull(!CPF) Then
-                If Trim(!CPF) <> "" Then
-                    sCPF = Format(Val(RetornaNumero(!CPF)), "00000000000")
+            If Not IsNull(!cpf) Then
+                If Trim(!cpf) <> "" Then
+                    sCPF = Format(Val(RetornaNumero(!cpf)), "00000000000")
                 Else
                     sCPF = Format(!Cnpj, "00000000000000")
                 End If
@@ -3170,7 +3188,7 @@ With RdoAux
         sCPF = FillSpace(sCPF, 14)
         
         If Trim(sCPF) = "" Then
-            Sql = "insert cip_semregistro(ano,codigo) values(2019," & nCodReduz & ")"
+            Sql = "insert cip_semregistro(ano,codigo) values(2020," & nCodReduz & ")"
             cn.Execute Sql, rdExecDirect
            tTipo = 3
         End If
@@ -3314,7 +3332,7 @@ With RdoAux
                       If tTipo = 3 Then
                         'MsgBox "ERRO FATAL"
 '                        Exit Sub
-                         Sql = "INSERT BOLETOSEMREGISTRO(NUMDOCUMENTO,TIPO,ANO) VALUES(" & !NumDocumento & ",'CIP',2019)"
+                         Sql = "INSERT BOLETOSEMREGISTRO(NUMDOCUMENTO,TIPO,ANO) VALUES(" & !NumDocumento & ",'CIP',2020)"
                          cn.Execute Sql, rdExecDirect
                          aNosNum(!NumParcela) = FillLeft("267847800" & !NumDocumento, 17)
                       Else
@@ -3429,8 +3447,42 @@ With RdoAux
 '            ax = ax & sCodContribuinte & sInscricao & sValorTotal & sValorUnica & sDataProc & sQtdeParcela & sDescParc & sVencParc & sValorParc & sNumDoc
 '            ax = ax & sCodProc & sNosNum & sCPF & sQuadra & sLote
 
+
+
+ '******************
+            ' Linha Digitável
+            '******************
+            sLinhaD = ""
+            sNossoNumero = "2950230"
+            dDataBase = "07/10/1997"
+            sCodBarra = ""
+            For nParc = 1 To 3
+                nFatorVencto = CDate(aVencParc(nParc)) - CDate(dDataBase)
+                sQuintoGrupo = Format(nFatorVencto, "0000")
+                sQuintoGrupo = sQuintoGrupo & Format(RetornaNumero(FormatNumber(aValorParc(nParc), 2)), "0000000000")
+                sBarra = "0019" & Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(aValorParc(nParc), 2)), "0000000000") & "000000295023000"
+                sBarra = sBarra & CStr(aNumDoc(nParc)) & "17"
+    
+                sCampo1 = "0019" & Mid(sBarra, 20, 5)
+                sDigitavel = sCampo1 & Val(Calculo_DV10(sCampo1))
+                sCampo2 = Mid(sBarra, 24, 10)
+                sDigitavel = sDigitavel & sCampo2 & Val(Calculo_DV10(sCampo2))
+                sCampo3 = Mid(sBarra, 34, 10)
+                sDigitavel = sDigitavel & sCampo3 & Val(Calculo_DV10(sCampo3))
+                sCampo5 = Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(aValorParc(nParc), 2)), "0000000000")
+                sCampo4 = Val(Calculo_DV11(sBarra))
+                sDigitavel = sDigitavel & sCampo4 & sCampo5
+                sBarra = Left(sBarra, 4) & sCampo4 & Mid(sBarra, 5, Len(sBarra) - 4)
+                sDigitavel2 = Left(sDigitavel, 5) & "." & Mid(sDigitavel, 6, 5) & " " & Mid(sDigitavel, 11, 5) & "." & Mid(sDigitavel, 16, 6) & " "
+                sDigitavel2 = sDigitavel2 & Mid(sDigitavel, 22, 5) & "." & Mid(sDigitavel, 27, 6) & " " & Mid(sDigitavel, 33, 1) & " " & Right(sDigitavel, 14)
+                sDigitavel = sDigitavel & sDigitavel2
+                sLinhaD = sLinhaD & sDigitavel2
+'                aCodBarra(nParc) = sBarra
+                sCodBarra = sCodBarra & sBarra
+            Next
+
             ax = sCodContribuinte & sInscricao & sContribuinte & sCPF & sEnd & sCompl & sBairro & sCep & "JABOTICABALSP" & sQuadra & sLote & sEndEntrega & sComplEntrega & sBairroEntrega & sCidEntrega & sCepEntrega & sUFEntrega
-            ax = ax & sValorTotal & Format(Now, "dd/mm/yyyy") & sQtdeParcela & sDescParc & sVencParc & sValorParc & sNumDoc & sNosNum & sCodProc
+            ax = ax & sValorTotal & Format(Now, "dd/mm/yyyy") & Format(Now, "dd/mm/yyyy") & sQtdeParcela & sDescParc & sVencParc & sValorParc & sNumDoc & sNosNum & sCodProc & sLinhaD & sCodBarra
             
             tDado = ax
             
@@ -3438,7 +3490,7 @@ With RdoAux
            ' If Val(sCodContribuinte) = 55 Then MsgBox "teste"
             Print #1, ax
             
-            Sql = "INSERT LASERTMP (DADO,BAIRRO,CIDADE,ENDERECO,NUMERO,TIPO) VALUES('" & Mask(tDado) & "','"
+            Sql = "INSERT LASERTMP (CALCULO,SEQ,DADO,BAIRRO,CIDADE,ENDERECO,NUMERO,TIPO) VALUES(4," & xId & ",'" & Mask(tDado) & "','"
             Sql = Sql & Trim(Mask(tBairro)) & "','" & Trim(Mask(tCidade)) & "','" & Trim(Mask(tEnd)) & "','" & tNum & "','" & tTipo & "')"
             cn.Execute Sql, rdExecDirect
             
@@ -4233,7 +4285,7 @@ With RdoAux
             nCodLogr = !CodLogradouro
             sExercicio = "2014" '1-4
             sCodInscricao = Format(!codigomob, "00000000000000")
-            sContribuinte = FillSpace(!razaosocial, 40) '5-44
+            sContribuinte = FillSpace(!RazaoSocial, 40) '5-44
             sFantasia = FillSpace(SubNull(!NOMEFANTASIA), 40) '45-84
             sCodAtiv = Format(!codatividade, "00000000000000")
             sDescAtiv = FillSpace(Left$(!ativextenso, 50), 50)
@@ -4779,14 +4831,14 @@ With RdoAux
             nCodLogr = !CodLogradouro
             sExercicio = CStr(nAno) '1-4
             sCodInscricao = Format(!codigomob, "00000000000000")
-            sContribuinte = FillSpace(!razaosocial, 40) '5-44
+            sContribuinte = FillSpace(!RazaoSocial, 40) '5-44
             sFantasia = FillSpace(SubNull(!NOMEFANTASIA), 40) '45-84
             sCodAtiv = Format(!codatividade, "00000000000000")
             sDescAtiv = FillSpace(Left$(!ativextenso, 50), 50)
             
-            If Not IsNull(!CPF) Then
-                If Trim(!CPF) <> "" Then
-                    sCPF = Format(Val(RetornaNumero(!CPF)), "00000000000")
+            If Not IsNull(!cpf) Then
+                If Trim(!cpf) <> "" Then
+                    sCPF = Format(Val(RetornaNumero(!cpf)), "00000000000")
                     tTipo = 1
                 Else
                     sCPF = Format(!Cnpj, "00000000000000")
@@ -5253,8 +5305,10 @@ Dim aNosNum(0 To 14) As String, sNosNum As String
 Dim aDigitavel(0 To 14) As String, sDigitavel As String, aCodBarra(0 To 14) As String, sCodBarra As String
 Dim sNossoNumero As String, dDataBase As String, nFatorVencto As Long, sQuintoGrupo As String, sBarra As String
 Dim sCampo1 As String, sCampo2 As String, sCampo3 As String, sCampo4 As String, sCampo5 As String, sDigitavel2 As String
+Dim NumBarra2 As String, NumBarra2a As String, NumBarra2b As String, NumBarra2c As String, NumBarra2d As String
+
 'GoTo ORDENA
-Sql = "TRUNCATE TABLE LASERTMP"
+Sql = "DELETE FROM LASERTMP WHERE CALCULO=1"
 cn.Execute Sql, rdExecDirect
 cmdGerar.Enabled = False
 Open sPathBin & "\LASERIPTU.TXT" For Output As #1
@@ -5276,9 +5330,9 @@ With RdoAux
         Sql = "SELECT CODREDUZIDO,CPF,CNPJ FROM vwCONSULTAIMOVELPROP WHERE CODREDUZIDO=" & !CODREDUZIDO
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
-            If Not IsNull(!CPF) Then
-                If Trim(!CPF) <> "" Then
-                    sCPF = Format(Val(RetornaNumero(!CPF)), "00000000000")
+            If Not IsNull(!cpf) Then
+                If Trim(!cpf) <> "" Then
+                    sCPF = Format(Val(RetornaNumero(!cpf)), "00000000000")
                 Else
                     sCPF = Format(!Cnpj, "00000000000000")
                 End If
@@ -5415,28 +5469,38 @@ With RdoAux
                     '******************
                     ' Linha Digitável
                     '******************
-                    sNossoNumero = "2873532"
-                    dDataBase = "07/10/1997"
-                    nFatorVencto = CDate(aVencParc(nParc)) - CDate(dDataBase)
-                    sQuintoGrupo = Format(nFatorVencto, "0000")
-                    sQuintoGrupo = sQuintoGrupo & Format(RetornaNumero(FormatNumber(aValorParc(nParc), 2)), "0000000000")
-                    sBarra = "0019" & Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(aValorParc(nParc), 2)), "0000000000") & "000000287353200"
-                    sBarra = sBarra & CStr(aNumDoc(nNumParc)) & "17"
-
-                    sCampo1 = "0019" & Mid(sBarra, 20, 5)
-                    sDigitavel = sCampo1 & Val(Calculo_DV10(sCampo1))
-                    sCampo2 = Mid(sBarra, 24, 10)
-                    sDigitavel = sDigitavel & sCampo2 & Val(Calculo_DV10(sCampo2))
-                    sCampo3 = Mid(sBarra, 34, 10)
-                    sDigitavel = sDigitavel & sCampo3 & Val(Calculo_DV10(sCampo3))
-                    sCampo5 = Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(aValorParc(nParc), 2)), "0000000000")
-                    sCampo4 = Val(Calculo_DV11(sBarra))
-                    sDigitavel = sDigitavel & sCampo4 & sCampo5
-                    sBarra = Left(sBarra, 4) & sCampo4 & Mid(sBarra, 5, Len(sBarra) - 4)
-                    sDigitavel2 = Left(sDigitavel, 5) & "." & Mid(sDigitavel, 6, 5) & " " & Mid(sDigitavel, 11, 5) & "." & Mid(sDigitavel, 16, 6) & " "
-                    sDigitavel2 = sDigitavel2 & Mid(sDigitavel, 22, 5) & "." & Mid(sDigitavel, 27, 6) & " " & Mid(sDigitavel, 33, 1) & " " & Right(sDigitavel, 14)
-                    aDigitavel(nParc) = sDigitavel2
-                    aCodBarra(nParc) = sBarra
+                    If tTipo <> 3 Then
+                        sNossoNumero = "2873532"
+                        dDataBase = "07/10/1997"
+                        nFatorVencto = CDate(aVencParc(nParc)) - CDate(dDataBase)
+                        sQuintoGrupo = Format(nFatorVencto, "0000")
+                        sQuintoGrupo = sQuintoGrupo & Format(RetornaNumero(FormatNumber(aValorParc(nParc), 2)), "0000000000")
+                        sBarra = "0019" & Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(aValorParc(nParc), 2)), "0000000000") & "000000287353200"
+                        sBarra = sBarra & CStr(aNumDoc(nParc)) & "17"
+    
+                        sCampo1 = "0019" & Mid(sBarra, 20, 5)
+                        sDigitavel = sCampo1 & Val(Calculo_DV10(sCampo1))
+                        sCampo2 = Mid(sBarra, 24, 10)
+                        sDigitavel = sDigitavel & sCampo2 & Val(Calculo_DV10(sCampo2))
+                        sCampo3 = Mid(sBarra, 34, 10)
+                        sDigitavel = sDigitavel & sCampo3 & Val(Calculo_DV10(sCampo3))
+                        sCampo5 = Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(aValorParc(nParc), 2)), "0000000000")
+                        sCampo4 = Val(Calculo_DV11(sBarra))
+                        sDigitavel = sDigitavel & sCampo4 & sCampo5
+                        sBarra = Left(sBarra, 4) & sCampo4 & Mid(sBarra, 5, Len(sBarra) - 4)
+                        sDigitavel2 = Left(sDigitavel, 5) & "." & Mid(sDigitavel, 6, 5) & " " & Mid(sDigitavel, 11, 5) & "." & Mid(sDigitavel, 16, 6) & " "
+                        sDigitavel2 = sDigitavel2 & Mid(sDigitavel, 22, 5) & "." & Mid(sDigitavel, 27, 6) & " " & Mid(sDigitavel, 33, 1) & " " & Right(sDigitavel, 14)
+                        aDigitavel(nParc) = sDigitavel2
+                        aCodBarra(nParc) = sBarra
+                    Else
+                        NumBarra2 = Gera2of5Cod(CDbl(aValorParc(nParc)), CDate(aVencParc(nParc)), CLng(aNumDoc(nParc)), Val(RdoAux!CODREDUZIDO))
+                        NumBarra2a = Left$(NumBarra2, 13)
+                        NumBarra2b = Mid$(NumBarra2, 14, 13)
+                        NumBarra2c = Mid$(NumBarra2, 27, 13)
+                        NumBarra2d = Right$(NumBarra2, 13)
+                        aDigitavel(nParc) = Left(NumBarra2a, 13) & " " & Left(NumBarra2b, 13) & " " & Left(NumBarra2c, 13) & " " & Left(NumBarra2d, 13)
+                        aCodBarra(nParc) = Left(NumBarra2a, 11) & Left(NumBarra2b, 11) & Left(NumBarra2c, 11) & Left(NumBarra2d, 11)
+                    End If
                     '******************
                     
                    .MoveNext
@@ -5495,16 +5559,21 @@ With RdoAux
             For x = 1 To Val(sQtdeParcela)
                 sDigitavel = sDigitavel & aDigitavel(x)
             Next
-            For x = Val(sQtdeParcela) + 1 To 12
-                sDigitavel = sDigitavel & FillSpace(" ", 54)
-            Next
             
+            For x = Val(sQtdeParcela) + 1 To 12
+                If tTipo <> 3 Then
+                    sDigitavel = sDigitavel & FillSpace(" ", 54)
+                Else
+                    sDigitavel = sDigitavel & FillSpace(" ", 55)
+                End If
+            Next
+                    
             sCodBarra = aCodBarra(0) & aCodBarra(13) & aCodBarra(14)
             For x = 1 To Val(sQtdeParcela)
                 sCodBarra = sCodBarra & aCodBarra(x)
             Next
             For x = Val(sQtdeParcela) + 1 To 12
-                sCodBarra = sCodBarra & FillSpace(" ", 54)
+                sCodBarra = sCodBarra & FillSpace(" ", 44)
             Next
             
             ax = sCodContribuinte & sInscricao & sContribuinte & sCPF & sEnd & sCompl & sBairro & sCep & "JABOTICABALSP" & sQuadra & sLote & sEndEntrega & sComplEntrega & sBairroEntrega & sCidEntrega & sCepEntrega & sUFEntrega
@@ -5527,7 +5596,7 @@ With RdoAux
                     nFolhas = 5
             End Select
             
-            Sql = "INSERT LASERTMP (DADO,BAIRRO,CIDADE,ENDERECO,NUMERO,TIPO,FOLHAS,CEP) VALUES('" & Mask(tDado) & "','"
+            Sql = "INSERT LASERTMP (CALCULO,SEQ, DADO,BAIRRO,CIDADE,ENDERECO,NUMERO,TIPO,FOLHAS,CEP) VALUES(1," & xId & ",'" & Mask(tDado) & "','"
             Sql = Sql & "" & "','" & "" & "','" & Trim(Mask(tEnd)) & "','" & tNum & "','" & tTipo & "'," & nFolhas & ",'" & RetornaNumero(sCepEntrega) & "')"
             cn.Execute Sql, rdExecDirect
             
@@ -5544,7 +5613,7 @@ ORDENA:
 
 '####### 2 FOLHAS ##########
 Open sPathBin & "\AU1.TXT" For Output As #1
-Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO,CEP FROM LASERTMP WHERE (TIPO=0 or TIPO=2) AND FOLHAS=2 ORDER BY CEP,NUMERO"
+Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO,CEP FROM LASERTMP WHERE CALCULO=1 AND (TIPO=0 or TIPO=2) AND FOLHAS=2 ORDER BY CEP,NUMERO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     xId = 1
@@ -5557,7 +5626,7 @@ End With
 Close #1
 
 Open sPathBin & "\AU2.TXT" For Output As #1
-Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO,CEP FROM LASERTMP WHERE TIPO=1 AND FOLHAS=2 ORDER BY CEP,NUMERO"
+Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO,CEP FROM LASERTMP WHERE CALCULO=1 AND TIPO=1 AND FOLHAS=2 ORDER BY CEP,NUMERO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     xId = 1
@@ -5571,7 +5640,7 @@ Close #1
 
 '####### 3 FOLHAS ##########
 Open sPathBin & "\AX1.TXT" For Output As #1
-Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO,CEP FROM LASERTMP WHERE (TIPO=0 or TIPO=2) AND FOLHAS=3 ORDER BY CEP,NUMERO"
+Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO,CEP FROM LASERTMP WHERE  CALCULO=1 AND (TIPO=0 or TIPO=2) AND FOLHAS=3 ORDER BY CEP,NUMERO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     xId = 1
@@ -5584,7 +5653,7 @@ End With
 Close #1
 
 Open sPathBin & "\AX2.TXT" For Output As #1
-Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO,CEP FROM LASERTMP WHERE TIPO=1 AND FOLHAS=3 ORDER BY CEP,NUMERO"
+Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO,CEP FROM LASERTMP WHERE  CALCULO=1 AND  TIPO=1 AND FOLHAS=3 ORDER BY CEP,NUMERO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     xId = 1
@@ -5598,7 +5667,7 @@ Close #1
 
 '####### 4 FOLHAS ##########
 Open sPathBin & "\AY1.TXT" For Output As #1
-Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO,CEP FROM LASERTMP WHERE (TIPO=0 or TIPO=2) AND FOLHAS=4 ORDER BY CEP,NUMERO"
+Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO,CEP FROM LASERTMP WHERE  CALCULO=1 AND (TIPO=0 or TIPO=2) AND FOLHAS=4 ORDER BY CEP,NUMERO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     xId = 1
@@ -5611,7 +5680,7 @@ End With
 Close #1
 
 Open sPathBin & "\AY2.TXT" For Output As #1
-Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO,CEP FROM LASERTMP WHERE TIPO=1 AND FOLHAS=4 ORDER BY CEP,NUMERO"
+Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO,CEP FROM LASERTMP WHERE  CALCULO=1 AND TIPO=1 AND FOLHAS=4 ORDER BY CEP,NUMERO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     xId = 1
@@ -5625,7 +5694,7 @@ Close #1
 
 '####### 5 FOLHAS ##########
 Open sPathBin & "\AZ1.TXT" For Output As #1
-Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO,CEP FROM LASERTMP WHERE (TIPO=0 or TIPO=2) AND FOLHAS=5 ORDER BY CEP,NUMERO"
+Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO,CEP FROM LASERTMP WHERE  CALCULO=1 AND (TIPO=0 or TIPO=2) AND FOLHAS=5 ORDER BY CEP,NUMERO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     xId = 1
@@ -5638,7 +5707,7 @@ End With
 Close #1
 
 Open sPathBin & "\AZ2.TXT" For Output As #1
-Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO,CEP FROM LASERTMP WHERE TIPO=1 AND FOLHAS=5 ORDER BY CEP,NUMERO"
+Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO,CEP FROM LASERTMP WHERE  CALCULO=1 AND  TIPO=1 AND FOLHAS=5 ORDER BY CEP,NUMERO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     xId = 1
@@ -5649,6 +5718,64 @@ With RdoAux
     Loop
 End With
 Close #1
+
+'########## DAM #############
+'####### 2 FOLHAS ##########
+Open sPathBin & "\BA1.TXT" For Output As #1
+Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO,CEP FROM LASERTMP WHERE CALCULO=1 AND TIPO=3 AND FOLHAS=2 ORDER BY CEP,NUMERO"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    xId = 1
+    Do Until .EOF
+        Print #1, !dado & Format(xId, "000000")
+        xId = xId + 1
+       .MoveNext
+    Loop
+End With
+Close #1
+
+'####### 3 FOLHAS ##########
+Open sPathBin & "\BB1.TXT" For Output As #1
+Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO,CEP FROM LASERTMP WHERE  CALCULO=1 AND TIPO=3 AND FOLHAS=3 ORDER BY CEP,NUMERO"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    xId = 1
+    Do Until .EOF
+        Print #1, !dado & Format(xId, "000000")
+        xId = xId + 1
+       .MoveNext
+    Loop
+End With
+Close #1
+
+'####### 4 FOLHAS ##########
+Open sPathBin & "\BC1.TXT" For Output As #1
+Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO,CEP FROM LASERTMP WHERE  CALCULO=1 AND TIPO=3 AND FOLHAS=4 ORDER BY CEP,NUMERO"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    xId = 1
+    Do Until .EOF
+        Print #1, !dado & Format(xId, "000000")
+        xId = xId + 1
+       .MoveNext
+    Loop
+End With
+Close #1
+
+'####### 5 FOLHAS ##########
+Open sPathBin & "\BD1.TXT" For Output As #1
+Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO,CEP FROM LASERTMP WHERE  CALCULO=1 AND TIPO=3 AND FOLHAS=5 ORDER BY CEP,NUMERO"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    xId = 1
+    Do Until .EOF
+        Print #1, !dado & Format(xId, "000000")
+        xId = xId + 1
+       .MoveNext
+    Loop
+End With
+Close #1
+
 
 
 'Open sPathBin & "\IPTU_JABOTICABAL.TXT" For Output As #1
