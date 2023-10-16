@@ -1688,7 +1688,7 @@ grdTramite.TextMatrix(grdTramite.Row, 8) = Format(Now, "dd/mm/yyyy")
 Sql = "UPDATE TRAMITACAO SET DESPACHO=" & cmbDespacho.ItemData(cmbDespacho.ListIndex)
 ''Sql = Sql & " ,USUARIO='" & Trim$(NomeDeLogin) & "'  ,DATAENVIO='" & Format(Now, "mm/dd/yyyy") & "',USUARIO2='" & NomeDeLogin & "' "
 'Sql = Sql & " ,DATAENVIO='" & Format(Now, "mm/dd/yyyy") & "',USUARIO2='" & NomeDeLogin & "' "
-Sql = Sql & " ,DATAENVIO='" & Format(Now, "mm/dd/yyyy") & "',USERID2=" & nLoginId
+Sql = Sql & " ,DATAENVIO='" & Format(Now, "mm/dd/yyyy hh:mm") & "',USERID2=" & nLoginId
 Sql = Sql & " WHERE ANO=" & Val(lblAno.Caption) & " AND NUMERO=" & Val(Left$(lblNumProc.Caption, Len(lblNumProc.Caption) - 2))
 Sql = Sql & " AND SEQ=" & grdTramite.TextMatrix(grdTramite.Row, 0)
 cn.Execute Sql, rdExecDirect
@@ -1804,7 +1804,7 @@ With RdoAux
 '        Sql = "SELECT ANO,NUMERO FROM TRAMITACAOCC WHERE ANO=" & !ANO & " AND NUMERO=" & !Numero
 '        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 '        If RdoAux2.RowCount = 0 Then
-            Sql = "INSERT TRAMITACAOCC SELECT ANO,NUMERO,SEQ,CCUSTO FROM TRAMITACAO WHERE ANO=" & !Ano & " AND NUMERO=" & !Numero
+            Sql = "INSERT TRAMITACAOCC SELECT ANO,NUMERO,SEQ,CCUSTO FROM TRAMITACAO WHERE ANO=" & !ano & " AND NUMERO=" & !Numero
             cn.Execute Sql, rdExecDirect
 '        End If
 '        RdoAux2.Close

@@ -17,7 +17,7 @@ Begin VB.Form frmRegistroAtendimento
    Begin Tributacao.jcFrames pnlMaterial 
       Height          =   5745
       Left            =   3060
-      Top             =   510
+      Top             =   870
       Visible         =   0   'False
       Width           =   5085
       _ExtentX        =   8969
@@ -44,14 +44,14 @@ Begin VB.Form frmRegistroAtendimento
          Height          =   4755
          Left            =   90
          Style           =   1  'Checkbox
-         TabIndex        =   80
+         TabIndex        =   78
          Top             =   390
          Width           =   4905
       End
       Begin prjChameleon.chameleonButton btNovoMaterial 
          Height          =   315
          Left            =   300
-         TabIndex        =   81
+         TabIndex        =   79
          ToolTipText     =   "Cadastrar um novo material"
          Top             =   5280
          Visible         =   0   'False
@@ -92,7 +92,7 @@ Begin VB.Form frmRegistroAtendimento
       Begin prjChameleon.chameleonButton btAlterarMaterial 
          Height          =   315
          Left            =   1410
-         TabIndex        =   82
+         TabIndex        =   80
          ToolTipText     =   "Alterar um material cadastrado"
          Top             =   5280
          Visible         =   0   'False
@@ -133,7 +133,7 @@ Begin VB.Form frmRegistroAtendimento
       Begin prjChameleon.chameleonButton btExcluirMaterial 
          Height          =   315
          Left            =   2520
-         TabIndex        =   83
+         TabIndex        =   81
          ToolTipText     =   "Excluir um material"
          Top             =   5280
          Visible         =   0   'False
@@ -174,7 +174,7 @@ Begin VB.Form frmRegistroAtendimento
       Begin prjChameleon.chameleonButton btSairMaterial 
          Height          =   315
          Left            =   3780
-         TabIndex        =   84
+         TabIndex        =   82
          ToolTipText     =   "Fechar a tela de materiais"
          Top             =   5280
          Width           =   1035
@@ -212,12 +212,21 @@ Begin VB.Form frmRegistroAtendimento
          VALUE           =   0   'False
       End
    End
+   Begin VB.TextBox txtAtendente 
+      BackColor       =   &H8000000F&
+      Height          =   285
+      Left            =   1125
+      Locked          =   -1  'True
+      TabIndex        =   83
+      Top             =   540
+      Width           =   2670
+   End
    Begin VB.ListBox lstNum 
       Appearance      =   0  'Flat
       Height          =   615
       Left            =   10260
       Sorted          =   -1  'True
-      TabIndex        =   77
+      TabIndex        =   75
       Top             =   1590
       Visible         =   0   'False
       Width           =   765
@@ -227,10 +236,10 @@ Begin VB.Form frmRegistroAtendimento
       BackColor       =   &H00C0FFFF&
       Height          =   2175
       ItemData        =   "frmRegistroAtendimento.frx":0434
-      Left            =   1320
+      Left            =   1350
       List            =   "frmRegistroAtendimento.frx":0436
-      TabIndex        =   76
-      Top             =   3720
+      TabIndex        =   74
+      Top             =   3735
       Visible         =   0   'False
       Width           =   5265
    End
@@ -264,7 +273,7 @@ Begin VB.Form frmRegistroAtendimento
          Height          =   285
          Left            =   7245
          Locked          =   -1  'True
-         TabIndex        =   72
+         TabIndex        =   70
          Top             =   330
          Width           =   2355
       End
@@ -274,7 +283,7 @@ Begin VB.Form frmRegistroAtendimento
          Height          =   285
          Left            =   1215
          MaxLength       =   50
-         TabIndex        =   70
+         TabIndex        =   68
          Top             =   660
          Width           =   4725
       End
@@ -282,7 +291,7 @@ Begin VB.Form frmRegistroAtendimento
          Height          =   315
          Left            =   7230
          Style           =   2  'Dropdown List
-         TabIndex        =   28
+         TabIndex        =   26
          Top             =   660
          Width           =   3135
       End
@@ -292,14 +301,14 @@ Begin VB.Form frmRegistroAtendimento
          Height          =   285
          Left            =   1215
          MaxLength       =   50
-         TabIndex        =   27
+         TabIndex        =   25
          Top             =   330
          Width           =   4725
       End
       Begin prjChameleon.chameleonButton cmdAddNum 
          Height          =   285
          Left            =   9630
-         TabIndex        =   74
+         TabIndex        =   72
          ToolTipText     =   "Adicionar um número ao campo numeração"
          Top             =   330
          Width           =   345
@@ -338,7 +347,7 @@ Begin VB.Form frmRegistroAtendimento
       Begin prjChameleon.chameleonButton cmdDelNum 
          Height          =   285
          Left            =   10020
-         TabIndex        =   75
+         TabIndex        =   73
          ToolTipText     =   "Limpar campo numeração"
          Top             =   330
          Width           =   345
@@ -377,7 +386,7 @@ Begin VB.Form frmRegistroAtendimento
       Begin prjChameleon.chameleonButton btCopy 
          Height          =   435
          Left            =   10470
-         TabIndex        =   78
+         TabIndex        =   76
          ToolTipText     =   "Copiaer endereço para campo assunto"
          Top             =   420
          Width           =   405
@@ -419,7 +428,7 @@ Begin VB.Form frmRegistroAtendimento
          Height          =   195
          Index           =   25
          Left            =   6270
-         TabIndex        =   73
+         TabIndex        =   71
          Top             =   390
          Width           =   915
       End
@@ -428,7 +437,7 @@ Begin VB.Form frmRegistroAtendimento
          Height          =   195
          Index           =   24
          Left            =   60
-         TabIndex        =   71
+         TabIndex        =   69
          Top             =   690
          Width           =   1095
       End
@@ -437,7 +446,7 @@ Begin VB.Form frmRegistroAtendimento
          Height          =   195
          Index           =   23
          Left            =   6480
-         TabIndex        =   69
+         TabIndex        =   67
          Top             =   690
          Width           =   690
       End
@@ -446,7 +455,7 @@ Begin VB.Form frmRegistroAtendimento
          Height          =   195
          Index           =   22
          Left            =   60
-         TabIndex        =   68
+         TabIndex        =   66
          Top             =   360
          Width           =   1095
       End
@@ -456,7 +465,7 @@ Begin VB.Form frmRegistroAtendimento
       Left            =   1530
       Sorted          =   -1  'True
       Style           =   2  'Dropdown List
-      TabIndex        =   18
+      TabIndex        =   16
       Top             =   1980
       Width           =   8250
    End
@@ -466,7 +475,7 @@ Begin VB.Form frmRegistroAtendimento
       Left            =   1530
       Sorted          =   -1  'True
       Style           =   2  'Dropdown List
-      TabIndex        =   13
+      TabIndex        =   11
       Top             =   1260
       Visible         =   0   'False
       Width           =   8475
@@ -476,7 +485,7 @@ Begin VB.Form frmRegistroAtendimento
       Left            =   6615
       Sorted          =   -1  'True
       Style           =   2  'Dropdown List
-      TabIndex        =   17
+      TabIndex        =   15
       Top             =   1620
       Width           =   3165
    End
@@ -485,7 +494,7 @@ Begin VB.Form frmRegistroAtendimento
       Left            =   1530
       Sorted          =   -1  'True
       Style           =   2  'Dropdown List
-      TabIndex        =   15
+      TabIndex        =   13
       Top             =   1620
       Width           =   3165
    End
@@ -544,7 +553,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   195
       Index           =   2
       Left            =   1530
-      TabIndex        =   30
+      TabIndex        =   28
       Top             =   5295
       Width           =   1410
    End
@@ -556,7 +565,7 @@ Begin VB.Form frmRegistroAtendimento
       MaxLength       =   5000
       MultiLine       =   -1  'True
       ScrollBars      =   2  'Vertical
-      TabIndex        =   36
+      TabIndex        =   34
       Top             =   6015
       Width           =   11085
    End
@@ -575,7 +584,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   195
       Index           =   1
       Left            =   4455
-      TabIndex        =   32
+      TabIndex        =   30
       Top             =   5295
       Width           =   1410
    End
@@ -594,7 +603,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   195
       Index           =   0
       Left            =   2985
-      TabIndex        =   31
+      TabIndex        =   29
       Top             =   5295
       Width           =   1410
    End
@@ -606,7 +615,7 @@ Begin VB.Form frmRegistroAtendimento
       MaxLength       =   5000
       MultiLine       =   -1  'True
       ScrollBars      =   2  'Vertical
-      TabIndex        =   29
+      TabIndex        =   27
       Top             =   4530
       Width           =   9645
    End
@@ -618,7 +627,7 @@ Begin VB.Form frmRegistroAtendimento
       Left            =   135
       Locked          =   -1  'True
       MultiLine       =   -1  'True
-      TabIndex        =   53
+      TabIndex        =   51
       Text            =   "frmRegistroAtendimento.frx":09B6
       Top             =   4575
       Width           =   1320
@@ -629,7 +638,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   285
       Left            =   7020
       Locked          =   -1  'True
-      TabIndex        =   25
+      TabIndex        =   23
       Top             =   3060
       Width           =   2805
    End
@@ -639,7 +648,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   285
       Left            =   1530
       Locked          =   -1  'True
-      TabIndex        =   24
+      TabIndex        =   22
       Top             =   3060
       Width           =   4290
    End
@@ -649,7 +658,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   285
       Left            =   8685
       Locked          =   -1  'True
-      TabIndex        =   23
+      TabIndex        =   21
       Top             =   2700
       Width           =   2490
    End
@@ -659,7 +668,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   285
       Left            =   1530
       Locked          =   -1  'True
-      TabIndex        =   22
+      TabIndex        =   20
       Top             =   2700
       Width           =   5775
    End
@@ -669,7 +678,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   285
       Left            =   1530
       Locked          =   -1  'True
-      TabIndex        =   12
+      TabIndex        =   10
       Top             =   1260
       Width           =   8430
    End
@@ -687,7 +696,7 @@ Begin VB.Form frmRegistroAtendimento
       ForeColor       =   &H00000080&
       Height          =   195
       Left            =   10080
-      TabIndex        =   26
+      TabIndex        =   24
       Top             =   3105
       Width           =   1095
    End
@@ -697,7 +706,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   285
       Left            =   1530
       Locked          =   -1  'True
-      TabIndex        =   21
+      TabIndex        =   19
       Top             =   2340
       Width           =   9645
    End
@@ -705,7 +714,7 @@ Begin VB.Form frmRegistroAtendimento
       Appearance      =   0  'Flat
       Height          =   285
       Left            =   3870
-      TabIndex        =   11
+      TabIndex        =   9
       Top             =   900
       Width           =   1500
    End
@@ -714,7 +723,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   285
       Left            =   8370
       MaxLength       =   50
-      TabIndex        =   9
+      TabIndex        =   7
       Top             =   495
       Width           =   2805
    End
@@ -723,13 +732,13 @@ Begin VB.Form frmRegistroAtendimento
       Left            =   5040
       Sorted          =   -1  'True
       Style           =   2  'Dropdown List
-      TabIndex        =   7
+      TabIndex        =   5
       Top             =   495
       Width           =   2310
    End
-   Begin prjChameleon.chameleonButton cmdRefresh1 
+   Begin prjChameleon.chameleonButton cmdRefresh2 
       Height          =   240
-      Left            =   3510
+      Left            =   7380
       TabIndex        =   6
       TabStop         =   0   'False
       Top             =   495
@@ -766,65 +775,15 @@ Begin VB.Form frmRegistroAtendimento
       CHECK           =   0   'False
       VALUE           =   0   'False
    End
-   Begin VB.ComboBox cmbAtendente 
-      Height          =   315
-      ItemData        =   "frmRegistroAtendimento.frx":09F4
-      Left            =   1170
-      List            =   "frmRegistroAtendimento.frx":09F6
-      Sorted          =   -1  'True
-      Style           =   2  'Dropdown List
-      TabIndex        =   5
-      Top             =   495
-      Width           =   2310
-   End
-   Begin prjChameleon.chameleonButton cmdRefresh2 
-      Height          =   240
-      Left            =   7380
-      TabIndex        =   8
-      TabStop         =   0   'False
-      Top             =   495
-      Width           =   285
-      _ExtentX        =   503
-      _ExtentY        =   423
-      BTYPE           =   3
-      TX              =   "!"
-      ENAB            =   -1  'True
-      BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      COLTYPE         =   2
-      FOCUSR          =   0   'False
-      BCOL            =   15790320
-      BCOLO           =   15790320
-      FCOL            =   192
-      FCOLO           =   192
-      MCOL            =   12632256
-      MPTR            =   1
-      MICON           =   "frmRegistroAtendimento.frx":09F8
-      UMCOL           =   -1  'True
-      SOFT            =   0   'False
-      PICPOS          =   0
-      NGREY           =   0   'False
-      FX              =   0
-      HAND            =   0   'False
-      CHECK           =   0   'False
-      VALUE           =   0   'False
-   End
    Begin esMaskEdit.esMaskedEdit mskData 
       Height          =   285
       Left            =   1170
-      TabIndex        =   10
+      TabIndex        =   8
       Top             =   900
       Width           =   1080
       _ExtentX        =   1905
       _ExtentY        =   503
-      MouseIcon       =   "frmRegistroAtendimento.frx":0A14
+      MouseIcon       =   "frmRegistroAtendimento.frx":09F4
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -844,12 +803,12 @@ Begin VB.Form frmRegistroAtendimento
    Begin esMaskEdit.esMaskedEdit mskDataExec 
       Height          =   285
       Left            =   5490
-      TabIndex        =   33
+      TabIndex        =   31
       Top             =   5700
       Width           =   990
       _ExtentX        =   1746
       _ExtentY        =   503
-      MouseIcon       =   "frmRegistroAtendimento.frx":0A30
+      MouseIcon       =   "frmRegistroAtendimento.frx":0A10
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -869,7 +828,7 @@ Begin VB.Form frmRegistroAtendimento
    Begin prjChameleon.chameleonButton cmdGravar 
       Height          =   315
       Left            =   9075
-      TabIndex        =   37
+      TabIndex        =   35
       ToolTipText     =   "Gravar os Dados"
       Top             =   6780
       Width           =   1035
@@ -895,8 +854,8 @@ Begin VB.Form frmRegistroAtendimento
       FCOLO           =   0
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frmRegistroAtendimento.frx":0A4C
-      PICN            =   "frmRegistroAtendimento.frx":0A68
+      MICON           =   "frmRegistroAtendimento.frx":0A2C
+      PICN            =   "frmRegistroAtendimento.frx":0A48
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -909,7 +868,7 @@ Begin VB.Form frmRegistroAtendimento
    Begin prjChameleon.chameleonButton cmdSair 
       Height          =   315
       Left            =   10155
-      TabIndex        =   57
+      TabIndex        =   55
       ToolTipText     =   "Sair da Tela"
       Top             =   6780
       Width           =   1035
@@ -935,8 +894,8 @@ Begin VB.Form frmRegistroAtendimento
       FCOLO           =   0
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frmRegistroAtendimento.frx":0E0D
-      PICN            =   "frmRegistroAtendimento.frx":0E29
+      MICON           =   "frmRegistroAtendimento.frx":0DED
+      PICN            =   "frmRegistroAtendimento.frx":0E09
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -950,7 +909,7 @@ Begin VB.Form frmRegistroAtendimento
       Cancel          =   -1  'True
       Height          =   315
       Left            =   10170
-      TabIndex        =   38
+      TabIndex        =   36
       ToolTipText     =   "Cancelar Edição"
       Top             =   6780
       Width           =   1035
@@ -976,8 +935,8 @@ Begin VB.Form frmRegistroAtendimento
       FCOLO           =   0
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frmRegistroAtendimento.frx":0E97
-      PICN            =   "frmRegistroAtendimento.frx":0EB3
+      MICON           =   "frmRegistroAtendimento.frx":0E77
+      PICN            =   "frmRegistroAtendimento.frx":0E93
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -1016,8 +975,8 @@ Begin VB.Form frmRegistroAtendimento
       FCOLO           =   0
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frmRegistroAtendimento.frx":100D
-      PICN            =   "frmRegistroAtendimento.frx":1029
+      MICON           =   "frmRegistroAtendimento.frx":0FED
+      PICN            =   "frmRegistroAtendimento.frx":1009
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -1056,8 +1015,8 @@ Begin VB.Form frmRegistroAtendimento
       FCOLO           =   0
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frmRegistroAtendimento.frx":1183
-      PICN            =   "frmRegistroAtendimento.frx":119F
+      MICON           =   "frmRegistroAtendimento.frx":1163
+      PICN            =   "frmRegistroAtendimento.frx":117F
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -1070,12 +1029,12 @@ Begin VB.Form frmRegistroAtendimento
    Begin esMaskEdit.esMaskedEdit mskDataEnd 
       Height          =   285
       Left            =   7740
-      TabIndex        =   34
+      TabIndex        =   32
       Top             =   5700
       Width           =   990
       _ExtentX        =   1746
       _ExtentY        =   503
-      MouseIcon       =   "frmRegistroAtendimento.frx":12F9
+      MouseIcon       =   "frmRegistroAtendimento.frx":12D9
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -1121,8 +1080,8 @@ Begin VB.Form frmRegistroAtendimento
       FCOLO           =   0
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frmRegistroAtendimento.frx":1315
-      PICN            =   "frmRegistroAtendimento.frx":1331
+      MICON           =   "frmRegistroAtendimento.frx":12F5
+      PICN            =   "frmRegistroAtendimento.frx":1311
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -1135,7 +1094,7 @@ Begin VB.Form frmRegistroAtendimento
    Begin prjChameleon.chameleonButton cmdCns 
       Height          =   315
       Left            =   10080
-      TabIndex        =   14
+      TabIndex        =   12
       ToolTipText     =   "Consulta Munícipe/Secretaria"
       Top             =   1245
       Width           =   1065
@@ -1161,8 +1120,8 @@ Begin VB.Form frmRegistroAtendimento
       FCOLO           =   0
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frmRegistroAtendimento.frx":13D3
-      PICN            =   "frmRegistroAtendimento.frx":13EF
+      MICON           =   "frmRegistroAtendimento.frx":13B3
+      PICN            =   "frmRegistroAtendimento.frx":13CF
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -1175,7 +1134,7 @@ Begin VB.Form frmRegistroAtendimento
    Begin prjChameleon.chameleonButton cmdPrint 
       Height          =   315
       Left            =   90
-      TabIndex        =   61
+      TabIndex        =   59
       ToolTipText     =   "Imprimir registro"
       Top             =   6780
       Width           =   1035
@@ -1201,8 +1160,8 @@ Begin VB.Form frmRegistroAtendimento
       FCOLO           =   0
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frmRegistroAtendimento.frx":1549
-      PICN            =   "frmRegistroAtendimento.frx":1565
+      MICON           =   "frmRegistroAtendimento.frx":1529
+      PICN            =   "frmRegistroAtendimento.frx":1545
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -1215,7 +1174,7 @@ Begin VB.Form frmRegistroAtendimento
    Begin prjChameleon.chameleonButton cmdRefresh3 
       Height          =   240
       Left            =   4725
-      TabIndex        =   16
+      TabIndex        =   14
       TabStop         =   0   'False
       Top             =   1620
       Width           =   285
@@ -1241,7 +1200,7 @@ Begin VB.Form frmRegistroAtendimento
       FCOLO           =   192
       MCOL            =   12632256
       MPTR            =   1
-      MICON           =   "frmRegistroAtendimento.frx":16BF
+      MICON           =   "frmRegistroAtendimento.frx":169F
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -1254,7 +1213,7 @@ Begin VB.Form frmRegistroAtendimento
    Begin prjChameleon.chameleonButton cmdRefresh4 
       Height          =   240
       Left            =   9810
-      TabIndex        =   20
+      TabIndex        =   18
       TabStop         =   0   'False
       Top             =   1620
       Width           =   285
@@ -1280,7 +1239,7 @@ Begin VB.Form frmRegistroAtendimento
       FCOLO           =   192
       MCOL            =   12632256
       MPTR            =   1
-      MICON           =   "frmRegistroAtendimento.frx":16DB
+      MICON           =   "frmRegistroAtendimento.frx":16BB
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -1293,7 +1252,7 @@ Begin VB.Form frmRegistroAtendimento
    Begin prjChameleon.chameleonButton cmdRefresh5 
       Height          =   240
       Left            =   9810
-      TabIndex        =   19
+      TabIndex        =   17
       TabStop         =   0   'False
       Top             =   2025
       Width           =   285
@@ -1319,7 +1278,7 @@ Begin VB.Form frmRegistroAtendimento
       FCOLO           =   192
       MCOL            =   12632256
       MPTR            =   1
-      MICON           =   "frmRegistroAtendimento.frx":16F7
+      MICON           =   "frmRegistroAtendimento.frx":16D7
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -1332,12 +1291,12 @@ Begin VB.Form frmRegistroAtendimento
    Begin esMaskEdit.esMaskedEdit mskDataCancel 
       Height          =   285
       Left            =   10080
-      TabIndex        =   35
+      TabIndex        =   33
       Top             =   5700
       Width           =   990
       _ExtentX        =   1746
       _ExtentY        =   503
-      MouseIcon       =   "frmRegistroAtendimento.frx":1713
+      MouseIcon       =   "frmRegistroAtendimento.frx":16F3
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -1357,7 +1316,7 @@ Begin VB.Form frmRegistroAtendimento
    Begin prjChameleon.chameleonButton chkMaterial 
       Height          =   345
       Left            =   2160
-      TabIndex        =   79
+      TabIndex        =   77
       ToolTipText     =   "Material utilizado"
       Top             =   6750
       Width           =   2175
@@ -1383,8 +1342,8 @@ Begin VB.Form frmRegistroAtendimento
       FCOLO           =   0
       MCOL            =   16711935
       MPTR            =   1
-      MICON           =   "frmRegistroAtendimento.frx":172F
-      PICN            =   "frmRegistroAtendimento.frx":174B
+      MICON           =   "frmRegistroAtendimento.frx":170F
+      PICN            =   "frmRegistroAtendimento.frx":172B
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -1399,7 +1358,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   195
       Index           =   21
       Left            =   8820
-      TabIndex        =   67
+      TabIndex        =   65
       Top             =   5745
       Width           =   1185
    End
@@ -1417,7 +1376,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   330
       Index           =   20
       Left            =   135
-      TabIndex        =   66
+      TabIndex        =   64
       Top             =   135
       Width           =   1455
    End
@@ -1435,7 +1394,7 @@ Begin VB.Form frmRegistroAtendimento
       ForeColor       =   &H00800000&
       Height          =   330
       Left            =   1620
-      TabIndex        =   65
+      TabIndex        =   63
       Top             =   135
       Width           =   2490
    End
@@ -1444,7 +1403,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   195
       Index           =   19
       Left            =   135
-      TabIndex        =   64
+      TabIndex        =   62
       Top             =   2070
       Width           =   1320
    End
@@ -1453,7 +1412,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   195
       Index           =   18
       Left            =   5220
-      TabIndex        =   63
+      TabIndex        =   61
       Top             =   1710
       Width           =   1320
    End
@@ -1462,7 +1421,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   195
       Index           =   17
       Left            =   135
-      TabIndex        =   62
+      TabIndex        =   60
       Top             =   1710
       Width           =   1320
    End
@@ -1470,7 +1429,7 @@ Begin VB.Form frmRegistroAtendimento
       Caption         =   "0"
       Height          =   195
       Left            =   6795
-      TabIndex        =   60
+      TabIndex        =   58
       Top             =   5295
       Visible         =   0   'False
       Width           =   825
@@ -1479,7 +1438,7 @@ Begin VB.Form frmRegistroAtendimento
       Caption         =   "0"
       Height          =   195
       Left            =   6165
-      TabIndex        =   59
+      TabIndex        =   57
       Top             =   5295
       Visible         =   0   'False
       Width           =   780
@@ -1489,7 +1448,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   195
       Index           =   16
       Left            =   6570
-      TabIndex        =   58
+      TabIndex        =   56
       Top             =   5745
       Width           =   1140
    End
@@ -1498,7 +1457,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   195
       Index           =   15
       Left            =   4275
-      TabIndex        =   56
+      TabIndex        =   54
       Top             =   5745
       Width           =   1185
    End
@@ -1507,7 +1466,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   195
       Index           =   14
       Left            =   90
-      TabIndex        =   55
+      TabIndex        =   53
       Top             =   5745
       Width           =   3975
    End
@@ -1516,7 +1475,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   195
       Index           =   13
       Left            =   90
-      TabIndex        =   54
+      TabIndex        =   52
       Top             =   5295
       Width           =   1320
    End
@@ -1525,7 +1484,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   195
       Index           =   12
       Left            =   5985
-      TabIndex        =   52
+      TabIndex        =   50
       Top             =   3105
       Width           =   1005
    End
@@ -1534,7 +1493,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   195
       Index           =   11
       Left            =   7425
-      TabIndex        =   51
+      TabIndex        =   49
       Top             =   2745
       Width           =   1140
    End
@@ -1543,7 +1502,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   195
       Index           =   10
       Left            =   135
-      TabIndex        =   50
+      TabIndex        =   48
       Top             =   3105
       Width           =   1320
    End
@@ -1552,7 +1511,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   195
       Index           =   9
       Left            =   135
-      TabIndex        =   49
+      TabIndex        =   47
       Top             =   2730
       Width           =   1320
    End
@@ -1561,7 +1520,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   195
       Index           =   8
       Left            =   135
-      TabIndex        =   48
+      TabIndex        =   46
       Top             =   1305
       Width           =   1320
    End
@@ -1570,7 +1529,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   195
       Index           =   7
       Left            =   135
-      TabIndex        =   47
+      TabIndex        =   45
       Top             =   2385
       Width           =   1365
    End
@@ -1579,7 +1538,7 @@ Begin VB.Form frmRegistroAtendimento
       ForeColor       =   &H00000080&
       Height          =   195
       Left            =   7020
-      TabIndex        =   46
+      TabIndex        =   44
       Top             =   945
       Width           =   1140
    End
@@ -1588,7 +1547,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   195
       Index           =   6
       Left            =   5535
-      TabIndex        =   45
+      TabIndex        =   43
       Top             =   945
       Width           =   1500
    End
@@ -1607,7 +1566,7 @@ Begin VB.Form frmRegistroAtendimento
       ForeColor       =   &H00000080&
       Height          =   330
       Left            =   9675
-      TabIndex        =   44
+      TabIndex        =   42
       Top             =   135
       Width           =   1500
    End
@@ -1625,7 +1584,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   330
       Index           =   5
       Left            =   7605
-      TabIndex        =   43
+      TabIndex        =   41
       Top             =   135
       Width           =   2040
    End
@@ -1634,7 +1593,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   195
       Index           =   4
       Left            =   2430
-      TabIndex        =   42
+      TabIndex        =   40
       Top             =   945
       Width           =   1365
    End
@@ -1643,7 +1602,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   195
       Index           =   3
       Left            =   135
-      TabIndex        =   41
+      TabIndex        =   39
       Top             =   945
       Width           =   960
    End
@@ -1652,7 +1611,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   195
       Index           =   2
       Left            =   7830
-      TabIndex        =   40
+      TabIndex        =   38
       Top             =   540
       Width           =   465
    End
@@ -1661,7 +1620,7 @@ Begin VB.Form frmRegistroAtendimento
       Height          =   195
       Index           =   1
       Left            =   4005
-      TabIndex        =   39
+      TabIndex        =   37
       Top             =   540
       Width           =   960
    End
@@ -1690,7 +1649,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Dim Evento As String
+Dim Evento As String, nCodigoAt As Integer
 
 Private Sub btCopy_Click()
 Dim sEnd As String
@@ -1735,7 +1694,7 @@ Sql = "SELECT CODIGO,descricao FROM material_obras order by descricao"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-        lstMaterial.AddItem !descricao
+        lstMaterial.AddItem !Descricao
         lstMaterial.ItemData(lstMaterial.NewIndex) = !Codigo
        .MoveNext
     Loop
@@ -1822,20 +1781,20 @@ Private Sub cmdGravar_Click()
 Dim Sql As String, RdoAux As rdoResultset, nMaxCod As Integer, nNumproc As Long, nAnoproc As Integer, x As Integer
 Dim nCodAssunto As Integer, nChefe As Integer, nequipe As Integer, nCCusto As Integer
 
-If cmbAtendente.ListIndex = -1 Then
-    MsgBox "Selecione um atendente.", vbCritical, "Atenção"
-    Exit Sub
-End If
+'If cmbAtendente.ListIndex = -1 Then
+'    MsgBox "Selecione um atendente.", vbCritical, "Atenção"
+'    Exit Sub
+'End If
 
 If cmbTipoAtend.ListIndex = -1 Then
     MsgBox "Selecione um tipo de atendimento.", vbCritical, "Atenção"
     Exit Sub
 End If
 
-If Not IsDate(mskData.Text) Then
-    MsgBox "Data de atendimento inválido.", vbCritical, "Atenção"
-    Exit Sub
-End If
+'If Not IsDate(mskData.Text) Then
+'    MsgBox "Data de atendimento inválido.", vbCritical, "Atenção"
+'    Exit Sub
+'End If
 
 If txtCidadao.Text = "" And cmbReq.ListIndex = -1 Then
     MsgBox "Selecione um munícipe ou Secretaria.", vbCritical, "Atenção"
@@ -1916,8 +1875,8 @@ If Evento = "Novo" Then
     End With
     
     Sql = "INSERT REGISTROATENDIMENTO(NUMREG,ANOREG,ATENDENTE,TIPOATENDIMENTO,OBSTIPO,DATA,NUMPROC,ANOPROC,URGENTE,ASSUNTO,AGUARDO,DEFERIDO,INDEFERIDO,DATAEXEC,DATAEND,SOLUCAO,CIDADAO,CCUSTO,CODLOGR,CODBAIRRO,CHEFE,EQUIPE,CODASSUNTO,DATACANCEL,LOGRADOURO_SERVICO,BAIRRO,COMPLEMENTO_SERVICO,NUMERO_SERVICO) VALUES(" & nMaxCod & "," & Year(Now) & ","
-    Sql = Sql & cmbAtendente.ItemData(cmbAtendente.ListIndex) & "," & cmbTipoAtend.ItemData(cmbTipoAtend.ListIndex) & "," & IIf(Trim(txtObsTipo.Text) <> "", "'" & Mask(txtObsTipo.Text) & "'", "Null") & ",'"
-    Sql = Sql & Format(mskData.Text, "mm/dd/yyyy") & "'," & nNumproc & "," & nAnoproc & "," & chkUrg.value & "," & IIf(Trim(txtDesc.Text) <> "", "'" & Mask(txtDesc.Text) & "'", "Null") & "," & IIf(optD(2).value, 1, 0) & "," & IIf(optD(0).value, 1, 0) & ","
+    Sql = Sql & nCodigoAt & "," & cmbTipoAtend.ItemData(cmbTipoAtend.ListIndex) & "," & IIf(Trim(txtObsTipo.Text) <> "", "'" & Mask(txtObsTipo.Text) & "'", "Null") & ",'"
+    Sql = Sql & Format(Now, "mm/dd/yyyy") & "'," & nNumproc & "," & nAnoproc & "," & chkUrg.value & "," & IIf(Trim(txtDesc.Text) <> "", "'" & Mask(txtDesc.Text) & "'", "Null") & "," & IIf(optD(2).value, 1, 0) & "," & IIf(optD(0).value, 1, 0) & ","
     Sql = Sql & IIf(optD(1).value, 1, 0) & "," & IIf(IsDate(mskDataExec.Text), "'" & Format(mskDataExec.Text, "mm/dd/yyyy") & "'", "Null") & "," & IIf(IsDate(mskDataEnd.Text), "'" & Format(mskDataEnd.Text, "mm/dd/yyyy") & "'", "Null") & "," & IIf(Trim(txtSolucao.Text) <> "", "'" & Mask(txtSolucao.Text) & "'", "Null") & ","
     If IsNumeric(Left(txtCidadao.Text, 1)) Then
         Sql = Sql & Val(Left(txtCidadao.Text, 6)) & "," & "Null,"
@@ -1931,8 +1890,8 @@ If Evento = "Novo" Then
     End If
     lblNumReg.Caption = Format(nMaxCod, "00000") & "/" & Year(Now)
 Else
-    Sql = "UPDATE REGISTROATENDIMENTO SET ATENDENTE=" & cmbAtendente.ItemData(cmbAtendente.ListIndex) & ",TIPOATENDIMENTO=" & cmbTipoAtend.ItemData(cmbTipoAtend.ListIndex) & ",OBSTIPO=" & IIf(Trim(txtObsTipo.Text) <> "", "'" & Mask(txtObsTipo.Text) & "'", "Null") & ","
-    Sql = Sql & "DATA='" & Format(mskData.Text, "mm/dd/yyyy") & "',NUMPROC=" & nNumproc & ",ANOPROC=" & nAnoproc & ",URGENTE=" & chkUrg.value & ",ASSUNTO=" & IIf(Trim(txtDesc.Text) <> "", "'" & Mask(txtDesc.Text) & "'", "Null") & ",AGUARDO=" & IIf(optD(2).value, 1, 0) & ",DEFERIDO=" & IIf(optD(0).value, 1, 0) & ","
+    Sql = "UPDATE REGISTROATENDIMENTO SET ATENDENTE=" & nCodigoAt & ",TIPOATENDIMENTO=" & cmbTipoAtend.ItemData(cmbTipoAtend.ListIndex) & ",OBSTIPO=" & IIf(Trim(txtObsTipo.Text) <> "", "'" & Mask(txtObsTipo.Text) & "'", "Null") & ","
+    Sql = Sql & "NUMPROC=" & nNumproc & ",ANOPROC=" & nAnoproc & ",URGENTE=" & chkUrg.value & ",ASSUNTO=" & IIf(Trim(txtDesc.Text) <> "", "'" & Mask(txtDesc.Text) & "'", "Null") & ",AGUARDO=" & IIf(optD(2).value, 1, 0) & ",DEFERIDO=" & IIf(optD(0).value, 1, 0) & ","
     Sql = Sql & "INDEFERIDO=" & IIf(optD(1).value, 1, 0) & ",DATAEXEC=" & IIf(IsDate(mskDataExec.Text), "'" & Format(mskDataExec.Text, "mm/dd/yyyy") & "'", "Null") & ",DATAEND=" & IIf(IsDate(mskDataEnd.Text), "'" & Format(mskDataEnd.Text, "mm/dd/yyyy") & "'", "Null") & ",SOLUCAO=" & IIf(Trim(txtSolucao.Text) <> "", "'" & Mask(txtSolucao.Text) & "'", "Null") & ","
     Sql = Sql & "CIDADAO=" & IIf(IsNumeric(Left(txtCidadao.Text, 1)), Val(Left(txtCidadao.Text, 6)), "Null") & ",CCUSTO=" & IIf(IsNumeric(Left(txtCidadao.Text, 1)), "Null", nCCusto) & ",CODLOGR=" & Val(lblCodLogr.Caption) & ",CODBAIRRO=" & Val(lblCodBairro.Caption) & ",CHEFE=" & nChefe & ","
     If cmbBairro.ListIndex = -1 Then
@@ -1979,11 +1938,15 @@ Evento = ""
 End Sub
 
 Private Sub cmdNovo_Click()
+Dim Sql As String
 Limpa
+
+
+
 mskData.Text = Format(Now, "dd/mm/yyyy")
 Eventos "INCLUIR"
 Evento = "Novo"
-cmbAtendente.SetFocus
+'cmbAtendente.SetFocus
 End Sub
 
 Private Sub cmdPrint_Click()
@@ -2004,7 +1967,7 @@ cn.Execute Sql, rdExecDirect
 
 Sql = "INSERT REGISTROATENDIMENTOTMP(USUARIO,ATENDENTE,TIPO,DATA,PROCESSO,REGISTRO,NOME,ENDERECO,BAIRRO,TELEFONE,COMPL,URGENTE,ASSUNTO,"
 Sql = Sql & "DEFERIDO,INDEFERIDO,SOLUCAO,DATAEXEC,DATACONC,CHEFE,EQUIPE,ASSUNTO2,SITUACAO) VALUES('"
-Sql = Sql & NomeDeLogin & "','" & cmbAtendente.Text & "','" & cmbTipoAtend.Text & "','" & mskData.Text & "','" & txtNumProc.Text & "','"
+Sql = Sql & NomeDeLogin & "','" & txtAtendente.Text & "','" & Left(cmbTipoAtend.Text & " - " & Mask(txtObsTipo.Text), 50) & "','" & mskData.Text & "','" & txtNumProc.Text & "','"
 Sql = Sql & lblNumReg.Caption & "','" & IIf(txtCidadao.Visible, Mask(txtCidadao.Text), cmbReq.Text) & "','" & Mask(txtEnd.Text) & "','" & Mask(txtBairro.Text) & "','"
 Sql = Sql & Mask(txtFone.Text) & "','" & Mask(txtCompl.Text) & "','" & IIf(chkUrg.value = 1, "S", "N") & "','" & Mask(txtDesc.Text) & "','"
 Sql = Sql & IIf(optD(0).value = True, "X", " ") & "','" & IIf(optD(1).value = True, "X", " ") & "','" & Mask(txtSolucao.Text) & "','"
@@ -2018,9 +1981,6 @@ cn.Execute Sql, rdExecDirect
 
 End Sub
 
-Private Sub cmdRefresh1_Click()
-CarregaAT
-End Sub
 
 Private Sub cmdRefresh2_Click()
 CarregaTA
@@ -2045,6 +2005,7 @@ End If
 End Sub
 
 Private Sub Form_Load()
+Dim Sql As String, RdoAux As rdoResultset
 
 Centraliza Me
 CarregaBairro
@@ -2058,6 +2019,15 @@ CarregaMaterial
 Limpa
 Eventos "INICIAR"
 Evento = ""
+
+nCodigoAt = 0
+txtAtendente.Text = NomeDeLogin
+Sql = "select id from usuario where nomelogin='" & NomeDeLogin & "'"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+nCodigoAt = RdoAux!id
+RdoAux.Close
+
+
 End Sub
 
 Private Sub Limpa()
@@ -2068,7 +2038,7 @@ lblNumReg.Caption = ""
 lblSit.Caption = ""
 txtObsTipo.Text = ""
 txtNumProc.Text = ""
-cmbAtendente.ListIndex = -1
+'cmbAtendente.ListIndex = -1
 cmbAssunto.ListIndex = -1
 cmbTipoAtend.ListIndex = -1
 cmbChefe.ListIndex = -1
@@ -2102,19 +2072,19 @@ Next
 End Sub
 
 Private Sub CarregaAT()
-Dim Sql As String, RdoAux As rdoResultset
+'Dim Sql As String, RdoAux As rdoResultset
 
-cmbAtendente.Clear
-Sql = "SELECT CODIGO,NOME FROM PARAMOBRA WHERE SIGLA='AT'"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
-    Do Until .EOF
-        cmbAtendente.AddItem !Nome
-        cmbAtendente.ItemData(cmbAtendente.NewIndex) = !Codigo
-       .MoveNext
-    Loop
-   .Close
-End With
+'cmbAtendente.Clear
+'Sql = "SELECT CODIGO,NOME FROM PARAMOBRA WHERE SIGLA='AT'"
+'Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+'With RdoAux
+'    Do Until .EOF
+'        cmbAtendente.AddItem !Nome
+'        cmbAtendente.ItemData(cmbAtendente.NewIndex) = !Codigo
+'       .MoveNext
+'    Loop
+'   .Close
+'End With
 
 End Sub
 
@@ -2160,7 +2130,7 @@ Sql = "SELECT CODIGO,DESCRICAO FROM CENTROCUSTO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-       cmbReq.AddItem !descricao
+       cmbReq.AddItem !Descricao
        cmbReq.ItemData(cmbReq.NewIndex) = !Codigo
       .MoveNext
     Loop
@@ -2272,15 +2242,15 @@ If Trim$(txtNumProc.Text) <> "" And Trim$(txtNumProc.Text) <> "/" Then
                 lblDataProc.Caption = Format(!DATAENTRADA, "dd/mm/yyyy")
                 txtAssunto.Text = !Complemento
                 If IsNull(!nomecidadao) Then
-                    txtCidadao.Text = !descricao
+                    txtCidadao.Text = !Descricao
                     txtEnd.Text = ""
                     txtCompl.Text = ""
                     txtBairro.Text = ""
                     txtFone.Text = ""
                 Else
                     txtCidadao.Text = Format(!CodCidadao, "000000") & " - " & !nomecidadao
-                    txtEnd.Text = SubNull(!Endereco) & ", " & SubNull(!NUMIMOVEL)
-                    txtCompl.Text = SubNull(!COMPL)
+                    txtEnd.Text = SubNull(!Endereco) & ", " & SubNull(!numimovel)
+                    txtCompl.Text = SubNull(!Compl)
                     txtBairro.Text = SubNull(!DescBairro)
                     txtFone.Text = SubNull(!telefone)
                     lblCodLogr.Caption = Val(SubNull(!CodLogradouro))
@@ -2320,8 +2290,8 @@ If Tipo = "INICIAR" Then
    cmdGravar.Visible = False
    cmdCancel.Visible = False
    cmdCns.Enabled = False
-   cmbAtendente.Enabled = False
-   cmbAtendente.BackColor = Kde
+'   cmbAtendente.Enabled = False
+'   cmbAtendente.BackColor = Kde
    cmbBairro.Enabled = False
    cmbBairro.BackColor = Kde
    cmbTipoAtend.Enabled = False
@@ -2372,8 +2342,8 @@ ElseIf Tipo = "INCLUIR" Then
    cmdGravar.Visible = True
    cmdCancel.Visible = True
    cmdCns.Enabled = True
-   cmbAtendente.Enabled = True
-   cmbAtendente.BackColor = Branco
+'   cmbAtendente.Enabled = True
+'   cmbAtendente.BackColor = Branco
    cmbBairro.Enabled = True
    cmbBairro.BackColor = Branco
    cmbTipoAtend.Enabled = True
@@ -2399,8 +2369,8 @@ ElseIf Tipo = "INCLUIR" Then
 '   txtEndereco.BackColor = Branco
    txtNumProc.Locked = False
    txtNumProc.BackColor = Branco
-   mskData.Locked = False
-   mskData.BackColor = Branco
+'   mskData.Locked = False
+'   mskData.BackColor = Branco
    chkUrg.Enabled = True
    txtDesc.Locked = False
    txtDesc.BackColor = Branco
@@ -2427,13 +2397,18 @@ Sql = "SELECT registroatendimento.*,Logradouro.Endereco as nomelogradouro  FROM 
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If .RowCount > 0 Then
+        Sql = "select nomelogin from usuario where id=" & !atendente
+        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        txtAtendente.Text = SubNull(RdoAux2!NomeLogin)
+    
+    
         lblNumReg.Caption = Format(!numreg, "00000") & "/" & !anoreg
-        For x = 0 To cmbAtendente.ListCount - 1
-            If cmbAtendente.ItemData(x) = !ATENDENTE Then
-                cmbAtendente.ListIndex = x
-                Exit For
-            End If
-        Next
+'        For x = 0 To cmbAtendente.ListCount - 1
+'            If cmbAtendente.ItemData(x) = !ATENDENTE Then
+'                cmbAtendente.ListIndex = x
+'                Exit For
+'            End If
+'        Next
         For x = 0 To cmbTipoAtend.ListCount - 1
             If cmbTipoAtend.ItemData(x) = !TIPOATENDIMENTO Then
                 cmbTipoAtend.ListIndex = x
@@ -2481,7 +2456,7 @@ With RdoAux
                 With RdoAux2
                     If .RowCount > 0 Then
                         txtCidadao.Text = Format(!CodCidadao, "000000") & " - " & !nomecidadao
-                        txtEnd.Text = !Endereco & ", " & !NUMIMOVEL
+                        txtEnd.Text = !Endereco & ", " & !numimovel
                         txtBairro.Text = SubNull(!DescBairro)
                         txtCompl.Text = SubNull(!Complemento)
                         txtFone.Text = SubNull(!telefone)
@@ -2507,8 +2482,8 @@ With RdoAux
         optD(0).value = !deferido
         optD(1).value = !indeferido
         optD(2).value = !aguardo
-        If IsDate(!Dataexec) Then
-            mskDataExec.Text = Format(!Dataexec, "dd/mm/yyyy")
+        If IsDate(!DATAEXEC) Then
+            mskDataExec.Text = Format(!DATAEXEC, "dd/mm/yyyy")
         End If
         If IsDate(!dataend) Then
             mskDataEnd.Text = Format(!dataend, "dd/mm/yyyy")
@@ -2667,7 +2642,7 @@ cmdConsultar.Enabled = Not bLock
 cmdGravar.Enabled = Not bLock
 cmdCancel.Enabled = Not bLock
 cmdCns.Enabled = Not bLock
-cmbAtendente.Enabled = Not bLock
+'cmbAtendente.Enabled = Not bLock
 cmbBairro.Enabled = Not bLock
 cmbTipoAtend.Enabled = Not bLock
 cmbChefe.Enabled = Not bLock

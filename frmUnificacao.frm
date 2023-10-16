@@ -856,7 +856,7 @@ End With
 End Function
 
 Private Sub CarregaCampos()
-Dim x As Integer, Y As Integer, bAchou As Boolean, nAreaTerreno As Double, itmX As ListItem
+Dim x As Integer, y As Integer, bAchou As Boolean, nAreaTerreno As Double, itmX As ListItem
 LimpaCampos
 If UBound(aImovel) = 0 Then Exit Sub
 
@@ -865,8 +865,8 @@ lblSetor.Caption = Format(aImovel(1).nSetor, "00")
 
 For x = 1 To UBound(aImovel)
     bAchou = False
-    For Y = 0 To cmbQuadra.ListCount - 1
-        If aImovel(x).nQuadra = Val(cmbQuadra.List(Y)) Then
+    For y = 0 To cmbQuadra.ListCount - 1
+        If aImovel(x).nQuadra = Val(cmbQuadra.List(y)) Then
             bAchou = True
             Exit For
         End If
@@ -875,8 +875,8 @@ For x = 1 To UBound(aImovel)
         cmbQuadra.AddItem Format(aImovel(x).nQuadra, "0000")
     End If
     bAchou = False
-    For Y = 0 To cmbNumero.ListCount - 1
-        If aImovel(x).nNumero = Val(cmbNumero.List(Y)) Then
+    For y = 0 To cmbNumero.ListCount - 1
+        If aImovel(x).nNumero = Val(cmbNumero.List(y)) Then
             bAchou = True
             Exit For
         End If
@@ -885,8 +885,8 @@ For x = 1 To UBound(aImovel)
         cmbNumero.AddItem aImovel(x).nNumero
     End If
     bAchou = False
-    For Y = 0 To cmbBairro.ListCount - 1
-        If aImovel(x).nCodBairro = Val(cmbBairro.ItemData(Y)) Then
+    For y = 0 To cmbBairro.ListCount - 1
+        If aImovel(x).nCodBairro = Val(cmbBairro.ItemData(y)) Then
             bAchou = True
             Exit For
         End If
@@ -897,8 +897,8 @@ For x = 1 To UBound(aImovel)
     End If
    'USO TERRENO
     bAchou = False
-    For Y = 0 To cmbUso.ListCount - 1
-        If aImovel(x).nCodUsoTerreno = Val(cmbUso.ItemData(Y)) Then
+    For y = 0 To cmbUso.ListCount - 1
+        If aImovel(x).nCodUsoTerreno = Val(cmbUso.ItemData(y)) Then
             bAchou = True
             Exit For
         End If
@@ -909,8 +909,8 @@ For x = 1 To UBound(aImovel)
     End If
    'BENFEITORIA
     bAchou = False
-    For Y = 0 To cmbBen.ListCount - 1
-        If aImovel(x).nCodBenfeitoria = Val(cmbBen.ItemData(Y)) Then
+    For y = 0 To cmbBen.ListCount - 1
+        If aImovel(x).nCodBenfeitoria = Val(cmbBen.ItemData(y)) Then
             bAchou = True
             Exit For
         End If
@@ -921,8 +921,8 @@ For x = 1 To UBound(aImovel)
     End If
    'TOPOGRAFIA
     bAchou = False
-    For Y = 0 To cmbTop.ListCount - 1
-        If aImovel(x).nCodTopografia = Val(cmbTop.ItemData(Y)) Then
+    For y = 0 To cmbTop.ListCount - 1
+        If aImovel(x).nCodTopografia = Val(cmbTop.ItemData(y)) Then
             bAchou = True
             Exit For
         End If
@@ -933,8 +933,8 @@ For x = 1 To UBound(aImovel)
     End If
    'CATEG.PROP.
     bAchou = False
-    For Y = 0 To cmbCat.ListCount - 1
-        If aImovel(x).nCodCatProp = Val(cmbCat.ItemData(Y)) Then
+    For y = 0 To cmbCat.ListCount - 1
+        If aImovel(x).nCodCatProp = Val(cmbCat.ItemData(y)) Then
             bAchou = True
             Exit For
         End If
@@ -945,8 +945,8 @@ For x = 1 To UBound(aImovel)
     End If
    'SITUACAO
     bAchou = False
-    For Y = 0 To cmbSit.ListCount - 1
-        If aImovel(x).nCodSituacao = Val(cmbSit.ItemData(Y)) Then
+    For y = 0 To cmbSit.ListCount - 1
+        If aImovel(x).nCodSituacao = Val(cmbSit.ItemData(y)) Then
             bAchou = True
             Exit For
         End If
@@ -957,8 +957,8 @@ For x = 1 To UBound(aImovel)
     End If
    'PEDOLOGIA
     bAchou = False
-    For Y = 0 To cmbPed.ListCount - 1
-        If aImovel(x).nCodPedologia = Val(cmbPed.ItemData(Y)) Then
+    For y = 0 To cmbPed.ListCount - 1
+        If aImovel(x).nCodPedologia = Val(cmbPed.ItemData(y)) Then
             bAchou = True
             Exit For
         End If
@@ -969,8 +969,8 @@ For x = 1 To UBound(aImovel)
     End If
    'PROPRIETARIO
     bAchou = False
-    For Y = 0 To cmbProp.ListCount - 1
-        If aImovel(x).nCodProprietario = Val(cmbProp.ItemData(Y)) Then
+    For y = 0 To cmbProp.ListCount - 1
+        If aImovel(x).nCodProprietario = Val(cmbProp.ItemData(y)) Then
             bAchou = True
             Exit For
         End If
@@ -985,14 +985,14 @@ For x = 1 To UBound(aImovel)
     With RdoAux
         Do Until .EOF
             bAchou = False
-            For Y = 0 To grdTestada.Rows - 1
-                If Val(grdTestada.TextMatrix(Y, 0)) = !NUMFACE Then
+            For y = 0 To grdTestada.Rows - 1
+                If Val(grdTestada.TextMatrix(y, 0)) = !NUMFACE Then
                     bAchou = True
                     Exit For
                 End If
             Next
             If bAchou Then
-               grdTestada.TextMatrix(Y, 1) = FormatNumber(CDbl(grdTestada.TextMatrix(Y, 1)) + !AREATESTADA, 2)
+               grdTestada.TextMatrix(y, 1) = FormatNumber(CDbl(grdTestada.TextMatrix(y, 1)) + !AREATESTADA, 2)
             Else
                grdTestada.AddItem Format(!NUMFACE, "00") & Chr(9) & FormatNumber(!AREATESTADA, 2)
             End If
@@ -1039,8 +1039,8 @@ If cmbProp.ListCount = 1 Then cmbProp.ListIndex = 0
 
 'AREA TERRENO
 nAreaTerreno = 0
-For Y = 1 To UBound(aImovel)
-    nAreaTerreno = nAreaTerreno + aImovel(Y).nAreaTerreno
+For y = 1 To UBound(aImovel)
+    nAreaTerreno = nAreaTerreno + aImovel(y).nAreaTerreno
 Next
 lblAreaTerreno.Caption = FormatNumber(nAreaTerreno, 2)
 
@@ -1067,8 +1067,8 @@ txtFracao.Text = "0,00"
 lblAreaTerreno.Caption = "0,00"
 grdTestada.Rows = 1
 Inicio:
-For Y = 1 To lvArea.ListItems.Count
-    lvArea.ListItems.Remove (Y)
+For y = 1 To lvArea.ListItems.Count
+    lvArea.ListItems.Remove (y)
     GoTo Inicio
 Next
 
@@ -1206,7 +1206,7 @@ End With
 End Sub
 
 Private Sub Grava()
-Dim nLote As Integer, sData As String, x As Integer, nSeq As Integer, sHist As String, Y As Integer
+Dim nLote As Integer, sData As String, x As Integer, nSeq As Integer, sHist As String, y As Integer
 
 'Verificamos novamente o ultimo lote e codreduzido para evitar duplicação
 Sql = "SELECT MAX(LOTE) AS ULTIMOLOTE FROM CADIMOB WHERE "
@@ -1215,7 +1215,7 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
 nLote = RdoAux!ULTIMOLOTE + 1
 RdoAux.Close
 
-Sql = "SELECT MAX(CODREDUZIDO) AS ULTIMOCODREDUZ FROM CADIMOB WHERE CODREDUZIDO<40000"
+Sql = "SELECT MAX(CODREDUZIDO) AS ULTIMOCODREDUZ FROM CADIMOB WHERE CODREDUZIDO<50000"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
 nCodReduz = RdoAux!ULTIMOCODREDUZ + 1
 RdoAux.Close
@@ -1294,9 +1294,9 @@ For x = 1 To UBound(aImovel)
        nSeq = 1
     End If
     sHist = "O imóvel foi unificado com o(s) imóvel(is): "
-    For Y = 0 To lstImovel.ListCount - 1
-        If lstImovel.List(Y) <> aImovel(x).nCodReduz Then
-            sHist = sHist & Format(lstImovel.List(Y), "000000") & ", "
+    For y = 0 To lstImovel.ListCount - 1
+        If lstImovel.List(y) <> aImovel(x).nCodReduz Then
+            sHist = sHist & Format(lstImovel.List(y), "000000") & ", "
         End If
     Next
     sHist = Left$(sHist, Len(sHist) - 2)
@@ -1419,7 +1419,7 @@ With RdoS
                 Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,"
                 Sql = Sql & "DATAVENCIMENTO,DATADEBASE,CODMOEDA,NUMEROLIVRO,PAGINALIVRO,NUMCERTIDAO,DATAINSCRICAO,DATAAJUIZA,VALORJUROS,NUMPROCESSO,USERID) VALUES("
                 Sql = Sql & nCodNovo & "," & nAno & "," & nLanc & "," & nSeq2 & "," & nParc & "," & nCompl & "," & !statuslanc & ",'"
-                Sql = Sql & Format(!DataVencimento, "mm/dd/yyyy") & "','" & Format(!DATADEBASE, "mm/dd/yyyy") & "'," & !CODMOEDA & "," & IIf(IsNull(!numerolivro), 0, !numerolivro) & ","
+                Sql = Sql & Format(!DataVencimento, "mm/dd/yyyy") & "','" & Format(!DATADEBASE, "mm/dd/yyyy") & "'," & 1 & "," & IIf(IsNull(!numerolivro), 0, !numerolivro) & ","
                 Sql = Sql & IIf(IsNull(!paginalivro), 0, !paginalivro) & "," & IIf(IsNull(!numcertidao), 0, !numcertidao) & ",'" & Format(!datainscricao, "mm/dd/yyyy") & "','" & Format(!dataajuiza, "mm/dd/yyyy") & "',"
                 Sql = Sql & IIf(IsNull(!ValorJuros), 0, Virg2Ponto(CStr(SubNull(!ValorJuros)))) & ",'" & SubNull(!numprocesso) & "'," & RetornaUsuarioID(NomeDeLogin) & ")"
                 cn.Execute Sql, rdExecDirect
@@ -1477,7 +1477,7 @@ cn.Execute Sql, rdExecDirect
 Sql = "UPDATE PROCESSOREPARC SET CODIGORESP=" & nCodNovo & " WHERE CODIGORESP=" & nCodAntigo
 cn.Execute Sql, rdExecDirect
 
-Sql = "UPDATE DEBITOPARCELA SET STATUSLANC=13 WHERE CODREDUZIDO=" & nCodAntigo & " AND STATUSLANC=3"
+Sql = "UPDATE DEBITOPARCELA SET STATUSLANC=13 WHERE CODREDUZIDO=" & nCodAntigo & " AND (STATUSLANC=3 OR STATUSLANC=42 OR STATUSLANC=43)"
 cn.Execute Sql, rdExecDirect
 
 End Sub

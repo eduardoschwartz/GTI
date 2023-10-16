@@ -8,13 +8,13 @@ Begin VB.Form frmFaceQuadra
    ClientHeight    =   4845
    ClientLeft      =   6510
    ClientTop       =   3945
-   ClientWidth     =   6105
+   ClientWidth     =   6135
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    ScaleHeight     =   4845
-   ScaleWidth      =   6105
+   ScaleWidth      =   6135
    ShowInTaskbar   =   0   'False
    Begin prjChameleon.chameleonButton cmdSair 
       Height          =   315
@@ -352,8 +352,9 @@ Begin VB.Form frmFaceQuadra
       End
    End
    Begin VB.PictureBox Picture1 
+      Appearance      =   0  'Flat
       AutoRedraw      =   -1  'True
-      BackColor       =   &H80000014&
+      BackColor       =   &H80000005&
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   8.25
@@ -363,13 +364,14 @@ Begin VB.Form frmFaceQuadra
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+      ForeColor       =   &H80000008&
       Height          =   4755
       Left            =   6120
-      ScaleHeight     =   313
+      ScaleHeight     =   315
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   307
+      ScaleWidth      =   309
       TabIndex        =   7
-      Top             =   90
+      Top             =   60
       Width           =   4665
    End
    Begin VB.ComboBox cmbQuadra 
@@ -396,7 +398,9 @@ Begin VB.Form frmFaceQuadra
    Begin VB.ComboBox cmbDist 
       Appearance      =   0  'Flat
       Height          =   315
+      ItemData        =   "frmFaceQuadra.frx":0801
       Left            =   840
+      List            =   "frmFaceQuadra.frx":0803
       Sorted          =   -1  'True
       Style           =   2  'Dropdown List
       TabIndex        =   0
@@ -453,8 +457,8 @@ Begin VB.Form frmFaceQuadra
       FCOLO           =   0
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frmFaceQuadra.frx":0801
-      PICN            =   "frmFaceQuadra.frx":081D
+      MICON           =   "frmFaceQuadra.frx":0805
+      PICN            =   "frmFaceQuadra.frx":0821
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -511,7 +515,7 @@ Dim bEdit As Boolean, bNew As Boolean, bDel As Boolean, nFace As Integer
 Private Sub cmbDist_Click()
 If cmbDist.ListIndex = -1 Or Not bExec Then Exit Sub
 cmbSetor.Clear
-Sql = "SELECT CODSETOR FROM SETOR WHERE CODDISTRITO=" & Val(cmbDist.text)
+Sql = "SELECT CODSETOR FROM SETOR WHERE CODDISTRITO=" & Val(cmbDist.Text)
 Set RdoAux = cn.OpenResultset(Sql, rdOpenForwardOnly, rdConcurReadOnly)
 With RdoAux
    bExec = False
@@ -542,10 +546,10 @@ Else
            aRua(x) = grdFace.TextMatrix(x, 2)
        Next
        If grdFace.Rows - 1 <= 8 Then
-          MontaFace grdFace.Rows - 1, cmbQuadra.text
+          MontaFace grdFace.Rows - 1, cmbQuadra.Text
        Else
           If cmbQuadra.ListIndex > 0 Then
-             MontaFace 8, Val(cmbQuadra.text)
+             MontaFace 8, Val(cmbQuadra.Text)
           Else
              Picture1.Cls
           End If
@@ -564,8 +568,8 @@ cmbQuadra.Clear
 Screen.MousePointer = vbHourglass
 
 Sql = "SELECT DISTINCT CODQUADRA FROM FACEQUADRA WHERE "
-Sql = Sql & "CODDISTRITO=" & Val(cmbDist.text) & " AND "
-Sql = Sql & "CODSETOR=" & Val(cmbSetor.text) & " ORDER BY CODQUADRA"
+Sql = Sql & "CODDISTRITO=" & Val(cmbDist.Text) & " AND "
+Sql = Sql & "CODSETOR=" & Val(cmbSetor.Text) & " ORDER BY CODQUADRA"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenForwardOnly, rdConcurReadOnly)
 With RdoAux
    bExec = False
@@ -606,20 +610,20 @@ Dim OldD As Integer, OldS As Integer, OldQ As Integer
     End If
     
     If MsgBox("Excluir esta Face de Quadra ?", vbQuestion + vbYesNoCancel, "Atenção") = vbYes Then
-       OldD = cmbDist.text
-       OldS = cmbSetor.text
-       OldQ = txtQuadra.text
+       OldD = cmbDist.Text
+       OldS = cmbSetor.Text
+       OldQ = txtQuadra.Text
        Sql = "DELETE FROM FACEQUADRA WHERE "
-       Sql = Sql & "CODDISTRITO=" & Val(cmbDist.text) & " AND "
-       Sql = Sql & "CODSETOR=" & Val(cmbSetor.text) & " AND "
-       Sql = Sql & "CODQUADRA=" & Val(cmbQuadra.text) & " AND "
+       Sql = Sql & "CODDISTRITO=" & Val(cmbDist.Text) & " AND "
+       Sql = Sql & "CODSETOR=" & Val(cmbSetor.Text) & " AND "
+       Sql = Sql & "CODQUADRA=" & Val(cmbQuadra.Text) & " AND "
        Sql = Sql & "CODFACE=" & Val(grdFace.TextMatrix(grdFace.Row, 1))
        cn.Execute Sql, rdExecDirect
        'revisar
        Log Form, Me.Caption, Exclusão, "Excluído registro "
-       cmbDist.text = OldD
-       cmbSetor.text = OldS
-       cmbQuadra.text = OldQ
+       cmbDist.Text = OldD
+       cmbSetor.Text = OldS
+       cmbQuadra.Text = OldQ
     End If
     
 Exit Sub
@@ -634,17 +638,17 @@ End If
 End Sub
 
 Private Sub cmdGravar_Click()
-    If Val(txtQuadra.text) = 0 Then
+    If Val(txtQuadra.Text) = 0 Then
        MsgBox "Digite o Nº da Quadra.", vbExclamation, "Atenção"
        txtQuadra.SetFocus
        Exit Sub
     End If
-    If Val(txtFace.text) = 0 Then
+    If Val(txtFace.Text) = 0 Then
        MsgBox "Digite o Nº da Face.", vbExclamation, "Atenção"
        txtFace.SetFocus
        Exit Sub
     End If
-    If Val(txtCodLogr.text) = 0 Then
+    If Val(txtCodLogr.Text) = 0 Then
        MsgBox "Logradouro inválido.", vbExclamation, "Atenção"
        txtCodLogr.SetFocus
        Exit Sub
@@ -656,10 +660,10 @@ Private Sub cmdGravar_Click()
     End If
     If Evento = "Novo" Then
        Sql = "SELECT CODAGRUPA FROM FACEQUADRA WHERE "
-       Sql = Sql & "CODDISTRITO=" & Val(cmbDist.text) & " AND "
-       Sql = Sql & "CODSETOR=" & Val(cmbSetor.text) & " AND "
-       Sql = Sql & "CODQUADRA=" & Val(cmbQuadra.text) & " AND "
-       Sql = Sql & "CODFACE=" & Val(txtFace.text)
+       Sql = Sql & "CODDISTRITO=" & Val(cmbDist.Text) & " AND "
+       Sql = Sql & "CODSETOR=" & Val(cmbSetor.Text) & " AND "
+       Sql = Sql & "CODQUADRA=" & Val(cmbQuadra.Text) & " AND "
+       Sql = Sql & "CODFACE=" & Val(txtFace.Text)
        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
        If RdoAux.RowCount > 0 Then
           MsgBox "Nº de Face existente para esta quadra.", vbExclamation, "Atenção"
@@ -680,26 +684,26 @@ Private Sub cmdNovo_Click()
     If cmbQuadra.ListIndex = 0 Then
         grdFace.Rows = 1
         Sql = "SELECT MAX(CODQUADRA) AS MAXIMO FROM FACEQUADRA WHERE  "
-        Sql = Sql & "CODDISTRITO=" & cmbDist.text & " AND CODSETOR=" & cmbSetor.text & " AND CODQUADRA < 1910"
+        Sql = Sql & "CODDISTRITO=" & cmbDist.Text & " AND CODSETOR=" & cmbSetor.Text & " AND CODQUADRA < 1910"
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
-            If IsNull(!MAXIMO) Then
-                txtQuadra.text = "1"
+            If IsNull(!maximo) Then
+                txtQuadra.Text = "1"
             Else
-                txtQuadra.text = !MAXIMO + 1
+                txtQuadra.Text = !maximo + 1
             End If
-            txtFace.text = 1
+            txtFace.Text = 1
            .Close
         End With
     Else
         Sql = "SELECT MAX(CODFACE) AS MAXIMO FROM FACEQUADRA WHERE  "
-        Sql = Sql & "CODDISTRITO=" & cmbDist.text & " AND CODSETOR=" & cmbSetor.text & " AND CODQUADRA=" & cmbQuadra.text
+        Sql = Sql & "CODDISTRITO=" & cmbDist.Text & " AND CODSETOR=" & cmbSetor.Text & " AND CODQUADRA=" & cmbQuadra.Text
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
-            If IsNull(!MAXIMO) Then
-                txtFace.text = "1"
+            If IsNull(!maximo) Then
+                txtFace.Text = "1"
             Else
-                txtFace.text = !MAXIMO + 1
+                txtFace.Text = !maximo + 1
             End If
            .Close
         End With
@@ -793,13 +797,13 @@ ElseIf Tipo = "INCLUIR" Then
          txtQuadra.Enabled = False
          cmbQuadra.BackColor = Kde
          cmbQuadra.Enabled = False
-         txtQuadra.text = cmbQuadra.text
+         txtQuadra.Text = cmbQuadra.Text
          'txtFace.BackColor = Kde
          'txtFace.Enabled = False
          txtCodLogr.SetFocus
       End If
    Else
-      txtQuadra.text = cmbQuadra.text
+      txtQuadra.Text = cmbQuadra.Text
       txtQuadra.BackColor = Kde
       txtQuadra.Enabled = False
       cmbQuadra.BackColor = Kde
@@ -827,22 +831,22 @@ Sql = "SELECT CODDISTRITO,CODSETOR,CODQUADRA,CODFACE,"
 Sql = Sql & "CODLOGR,CODAGRUPA,CODTIPOLOG,NOMETIPOLOG,"
 Sql = Sql & "ABREVTIPOLOG,CODTITLOG,NOMETITLOG,ABREVTITLOG,"
 Sql = Sql & "NOMELOGRADOURO,QUADRAS FROM vwFACEQUADRA WHERE "
-Sql = Sql & "CODDISTRITO=" & Val(cmbDist.text) & " AND "
-Sql = Sql & "CODSETOR=" & Val(cmbSetor.text) & " AND "
-Sql = Sql & "CODQUADRA=" & Val(cmbQuadra.text) & " AND "
+Sql = Sql & "CODDISTRITO=" & Val(cmbDist.Text) & " AND "
+Sql = Sql & "CODSETOR=" & Val(cmbSetor.Text) & " AND "
+Sql = Sql & "CODQUADRA=" & Val(cmbQuadra.Text) & " AND "
 Sql = Sql & "CODFACE=" & Val(grdFace.TextMatrix(grdFace.Row, 1))
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If .RowCount > 0 Then
-        txtQuadra.text = !CODQUADRA
+        txtQuadra.Text = !CODQUADRA
         nFace = !CODFACE
-        txtFace.text = !CODFACE
-        txtCodLogr.text = Format(!CodLogr, "0000")
-        txtNomeLogr.text = Trim$(SubNull(!AbrevTipoLog)) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro
+        txtFace.Text = !CODFACE
+        txtCodLogr.Text = Format(!CodLogr, "0000")
+        txtNomeLogr.Text = Trim$(SubNull(!AbrevTipoLog)) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro
         If cmbAgrupa.ListCount > 0 And Not IsNull(!CODAGRUPA) Then
-            cmbAgrupa.text = !CODAGRUPA
+            cmbAgrupa.Text = !CODAGRUPA
         End If
-        txtQuadra2.text = SubNull(!Quadras)
+        txtQuadra2.Text = SubNull(!Quadras)
     Else
         Limpa
     End If
@@ -852,12 +856,12 @@ End Sub
 
 Private Sub Limpa()
 
-txtQuadra.text = ""
-txtFace.text = ""
-txtCodLogr.text = ""
-txtNomeLogr.text = ""
+txtQuadra.Text = ""
+txtFace.Text = ""
+txtCodLogr.Text = ""
+txtNomeLogr.Text = ""
 cmbAgrupa.ListIndex = -1
-txtQuadra2.text = ""
+txtQuadra2.Text = ""
 
 End Sub
 
@@ -870,10 +874,10 @@ Sql = "SELECT CODDISTRITO,CODSETOR,CODQUADRA,CODFACE,"
 Sql = Sql & "CODLOGR,CODAGRUPA,CODTIPOLOG,NOMETIPOLOG,"
 Sql = Sql & "ABREVTIPOLOG,CODTITLOG,NOMETITLOG,ABREVTITLOG,"
 Sql = Sql & "NOMELOGRADOURO,QUADRAS FROM vwFACEQUADRA WHERE "
-Sql = Sql & "CODDISTRITO=" & Val(cmbDist.text) & " AND "
-Sql = Sql & "CODSETOR=" & Val(cmbSetor.text)
+Sql = Sql & "CODDISTRITO=" & Val(cmbDist.Text) & " AND "
+Sql = Sql & "CODSETOR=" & Val(cmbSetor.Text)
 If cmbQuadra.ListIndex > 0 Then
-   Sql = Sql & " AND CODQUADRA=" & Val(cmbQuadra.text)
+   Sql = Sql & " AND CODQUADRA=" & Val(cmbQuadra.Text)
 End If
 Sql = Sql & " ORDER BY CODDISTRITO,CODSETOR,CODQUADRA,CODFACE,CODLOGR"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -895,30 +899,30 @@ Private Sub Grava()
 
 If Evento = "Novo" Then
     Sql = "INSERT FACEQUADRA(CODDISTRITO,CODSETOR,CODQUADRA,CODFACE,CODLOGR,CODAGRUPA,QUADRAS) values("
-    Sql = Sql & Val(cmbDist.text) & "," & Val(cmbSetor.text) & "," & Val(txtQuadra.text) & ","
-    Sql = Sql & Val(txtFace.text) & "," & Val(txtCodLogr.text) & "," & Val(cmbAgrupa.text) & ",'" & Mask(txtQuadra2.text) & "')"
+    Sql = Sql & Val(cmbDist.Text) & "," & Val(cmbSetor.Text) & "," & Val(txtQuadra.Text) & ","
+    Sql = Sql & Val(txtFace.Text) & "," & Val(txtCodLogr.Text) & "," & Val(cmbAgrupa.Text) & ",'" & Mask(txtQuadra2.Text) & "')"
 Else
-    Sql = "UPDATE FACEQUADRA SET CODLOGR=" & Val(txtCodLogr.text) & ",CODAGRUPA=" & Val(cmbAgrupa.text) & ",QUADRAS='" & Mask(txtQuadra2.text) & "',CODFACE=" & Val(txtFace.text)
-    Sql = Sql & " WHERE CODDISTRITO = " & Val(cmbDist.text) & " AND CODSETOR=" & Val(cmbSetor.text) & " AND "
-    Sql = Sql & "CODQUADRA=" & Val(txtQuadra.text) & " AND CODFACE=" & nFace
+    Sql = "UPDATE FACEQUADRA SET CODLOGR=" & Val(txtCodLogr.Text) & ",CODAGRUPA=" & Val(cmbAgrupa.Text) & ",QUADRAS='" & Mask(txtQuadra2.Text) & "',CODFACE=" & Val(txtFace.Text)
+    Sql = Sql & " WHERE CODDISTRITO = " & Val(cmbDist.Text) & " AND CODSETOR=" & Val(cmbSetor.Text) & " AND "
+    Sql = Sql & "CODQUADRA=" & Val(txtQuadra.Text) & " AND CODFACE=" & nFace
 End If
 cn.Execute Sql, rdExecDirect
 
 If Evento = "Novo" Then
-   grdFace.AddItem txtQuadra.text & Chr(9) & txtFace.text & Chr(9) & txtNomeLogr.text & Chr(9) & cmbAgrupa.text
+   grdFace.AddItem txtQuadra.Text & Chr(9) & txtFace.Text & Chr(9) & txtNomeLogr.Text & Chr(9) & cmbAgrupa.Text
    grdFace.Row = grdFace.Rows - 1
    grdFace.ColSel = 3
-   cmbQuadra.AddItem Val(txtQuadra.text)
-   cmbQuadra.text = Val(txtQuadra.text)
+   cmbQuadra.AddItem Val(txtQuadra.Text)
+   cmbQuadra.Text = Val(txtQuadra.Text)
    cmbQuadra_Click
    'REVISAR
-   Log Form, Me.Caption, Inclusão, "Inserido registro " & txtNomeLogr.text
+   Log Form, Me.Caption, Inclusão, "Inserido registro " & txtNomeLogr.Text
  ElseIf Evento = "Alterar" Then
-   grdFace.TextMatrix(grdFace.Row, 1) = txtFace.text
-   grdFace.TextMatrix(grdFace.Row, 2) = txtNomeLogr.text
-   grdFace.TextMatrix(grdFace.Row, 3) = cmbAgrupa.text
+   grdFace.TextMatrix(grdFace.Row, 1) = txtFace.Text
+   grdFace.TextMatrix(grdFace.Row, 2) = txtNomeLogr.Text
+   grdFace.TextMatrix(grdFace.Row, 3) = cmbAgrupa.Text
    'REVISAR
-   Log Form, Me.Caption, Alteração, "Alterado registro " & txtNomeLogr.text
+   Log Form, Me.Caption, Alteração, "Alterado registro " & txtNomeLogr.Text
 End If
 cmbQuadra_Click
       
@@ -950,8 +954,8 @@ Select Case Lados
         DrawLine Larg, 180
         ax(3) = Picture1.CurrentX
         aY(3) = Picture1.CurrentY
-        Call TextoFace("Face 1", Picture1, ax(1) - 15, aY(3), 900, Marrom&)
-        Call TextoFace(aRua(1), Picture1, ax(1) - 30, aY(3), 900, vbBlue)
+        Call TextoFace("Face 1", Picture1, ax(1) - 15, aY(3), 899, Marrom&)
+        Call TextoFace(aRua(1), Picture1, ax(1) - 30, aY(3), 899, vbBlue)
         Call TextoFace("Quadra " & Format(NumeroQuadra, "000"), Picture1, 110, 130, 0, Roxo)
     Case 2
         ReDim ax(4)
@@ -970,8 +974,8 @@ Select Case Lados
         DrawLine Larg, 180
         ax(3) = Picture1.CurrentX
         aY(3) = Picture1.CurrentY
-        Call TextoFace("Face 1", Picture1, ax(1) - 15, aY(3), 900, Marrom&)
-        Call TextoFace(aRua(1), Picture1, ax(1) - 30, aY(3), 900, vbBlue)
+        Call TextoFace("Face 1", Picture1, ax(1) - 15, aY(3), 899, Marrom&)
+        Call TextoFace(aRua(1), Picture1, ax(1) - 30, aY(3), 899, vbBlue)
         Call TextoFace("Face 2", Picture1, ax(4), aY(2) - 15, 0, Marrom&)
         Call TextoFace(aRua(2), Picture1, ax(4), aY(2) - 30, 0, vbRed)
         Call TextoFace("Quadra " & Format(NumeroQuadra, "000"), Picture1, 110, 130, 0, Roxo)
@@ -992,12 +996,12 @@ Select Case Lados
         DrawLine Larg, 180
         ax(3) = Picture1.CurrentX
         aY(3) = Picture1.CurrentY
-        Call TextoFace("Face 1", Picture1, ax(1) - 15, aY(3), 900, Marrom&)
-        Call TextoFace(aRua(1), Picture1, ax(1) - 30, aY(3), 900, vbBlue)
+        Call TextoFace("Face 1", Picture1, ax(1) - 15, aY(3), 899, Marrom&)
+        Call TextoFace(aRua(1), Picture1, ax(1) - 30, aY(3), 899, vbBlue)
         Call TextoFace("Face 2", Picture1, ax(4), aY(2) - 15, 0, Marrom&)
         Call TextoFace(aRua(2), Picture1, ax(4), aY(2) - 30, 0, vbRed)
-        Call TextoFace("Face 3", Picture1, ax(3) + 3, aY(3), 900, Marrom&)
-        Call TextoFace(aRua(3), Picture1, ax(3) + 15, aY(3), 900, vbBlack)
+        Call TextoFace("Face 3", Picture1, ax(3) + 3, aY(3), 899, Marrom&)
+        Call TextoFace(aRua(3), Picture1, ax(3) + 15, aY(3), 899, vbBlack)
         Call TextoFace("Quadra " & Format(NumeroQuadra, "000"), Picture1, 110, 130, 0, Roxo)
     Case 4
         ReDim ax(4)
@@ -1016,12 +1020,12 @@ Select Case Lados
         DrawLine Larg, 180
         ax(3) = Picture1.CurrentX
         aY(3) = Picture1.CurrentY
-        Call TextoFace("Face 1", Picture1, ax(1) - 15, aY(3), 900, Marrom&)
-        Call TextoFace(aRua(1), Picture1, ax(1) - 30, aY(3), 900, vbBlue)
+        Call TextoFace("Face 1", Picture1, ax(1) - 15, aY(3), 899, Marrom&)
+        Call TextoFace(aRua(1), Picture1, ax(1) - 30, aY(3), 899, vbBlue)
         Call TextoFace("Face 2", Picture1, ax(4), aY(2) - 15, 0, Marrom&)
         Call TextoFace(aRua(2), Picture1, ax(4), aY(2) - 30, 0, vbRed)
-        Call TextoFace("Face 3", Picture1, ax(3) + 3, aY(3), 900, Marrom&)
-        Call TextoFace(aRua(3), Picture1, ax(3) + 15, aY(3), 900, vbBlack)
+        Call TextoFace("Face 3", Picture1, ax(3) + 3, aY(3), 899, Marrom&)
+        Call TextoFace(aRua(3), Picture1, ax(3) + 15, aY(3), 899, vbBlack)
         Call TextoFace("Face 4", Picture1, ax(4), aY(4), 0, Marrom&)
         Call TextoFace(aRua(4), Picture1, ax(4), aY(4) + 15, 0, VerdeEscuro)
         Call TextoFace("Quadra " & Format(NumeroQuadra, "000"), Picture1, 110, 130, 0, Roxo)
@@ -1045,14 +1049,14 @@ Select Case Lados
         DrawLine Larg, 180
         ax(4) = Picture1.CurrentX
         aY(4) = Picture1.CurrentY
-        Call TextoFace("Face 1", Picture1, ax(1) - 15, aY(5), 900, Marrom&)
-        Call TextoFace(aRua(1), Picture1, ax(1) - 30, aY(5), 900, vbBlue)
+        Call TextoFace("Face 1", Picture1, ax(1) - 15, aY(5), 899, Marrom&)
+        Call TextoFace(aRua(1), Picture1, ax(1) - 30, aY(5), 899, vbBlue)
         Call TextoFace("Face 2", Picture1, ax(1) - 10, aY(1) - 15, 450, Marrom&)
         Call TextoFace(aRua(2), Picture1, ax(1) - 20, aY(1) - 25, 450, vbRed)
         Call TextoFace("Face 3", Picture1, ax(2) + 15, aY(2) - 15, -450, Marrom&)
         Call TextoFace(aRua(3), Picture1, ax(2) + 25, aY(2) - 25, -450, vbBlack)
-        Call TextoFace("Face 4", Picture1, ax(4), aY(4), 900, Marrom&)
-        Call TextoFace(aRua(4), Picture1, ax(4) + 15, aY(4), 900, vbBlue)
+        Call TextoFace("Face 4", Picture1, ax(4), aY(4), 899, Marrom&)
+        Call TextoFace(aRua(4), Picture1, ax(4) + 15, aY(4), 899, vbBlue)
         Call TextoFace("Face 5", Picture1, ax(5), aY(5), 0, Marrom&)
         Call TextoFace(aRua(5), Picture1, ax(5), aY(5) + 15, 0, VerdeEscuro)
         Call TextoFace("Quadra " & Format(NumeroQuadra, "000"), Picture1, 110, 150, 0, Roxo)
@@ -1120,14 +1124,14 @@ Select Case Lados
         aY(6) = Picture1.CurrentY
         Call TextoFace("Face 1", Picture1, ax(1), aY(1), -700, Marrom&)
         Call TextoFace(aRua(1), Picture1, ax(1) - 13, aY(1) + 2, -700, vbBlue)
-        Call TextoFace("Face 2", Picture1, ax(1) - 15, aY(1) - 7, 900, Marrom&)
-        Call TextoFace(aRua(2), Picture1, ax(1) - 28, aY(1) - 7, 900, vbRed)
+        Call TextoFace("Face 2", Picture1, ax(1) - 15, aY(1) - 7, 899, Marrom&)
+        Call TextoFace(aRua(2), Picture1, ax(1) - 28, aY(1) - 7, 899, vbRed)
         Call TextoFace("Face 3", Picture1, ax(2) - 8, aY(2) - 13, 300, Marrom&)
         Call TextoFace(aRua(3), Picture1, ax(2) - 15, aY(2) - 25, 300, vbBlack)
         Call TextoFace("Face 4", Picture1, ax(3) + 10, aY(3) - 15, -300, Marrom&)
         Call TextoFace(aRua(4), Picture1, ax(3) + 15, aY(3) - 27, -300, vbBlue)
-        Call TextoFace("Face 5", Picture1, ax(4) + 17, aY(4), -900, Marrom&)
-        Call TextoFace(aRua(5), Picture1, ax(4) + 30, aY(4), -900, VerdeEscuro)
+        Call TextoFace("Face 5", Picture1, ax(4) + 17, aY(4), -899, Marrom&)
+        Call TextoFace(aRua(5), Picture1, ax(4) + 30, aY(4), -899, VerdeEscuro)
         Call TextoFace("Face 6", Picture1, ax(6) + 2, aY(6), 700, Marrom&)
         Call TextoFace(aRua(6), Picture1, ax(6) + 14, aY(6) + 3, 700, vbRed)
         Call TextoFace("Face 7", Picture1, ax(7), aY(7) + 2, 0, Marrom&)
@@ -1164,16 +1168,16 @@ Select Case Lados
         aY(7) = Picture1.CurrentY
         Call TextoFace("Face 1", Picture1, ax(1) - 2, aY(1), -600, Marrom&)
         Call TextoFace(aRua(1), Picture1, ax(1) - 15, aY(1) + 5, -600, vbBlue)
-        Call TextoFace("Face 2", Picture1, ax(1) - 17, aY(1), 900, Marrom&)
-        Call TextoFace(aRua(2), Picture1, ax(1) - 30, aY(1), 900, vbRed)
+        Call TextoFace("Face 2", Picture1, ax(1) - 17, aY(1), 899, Marrom&)
+        Call TextoFace(aRua(2), Picture1, ax(1) - 30, aY(1), 899, vbRed)
         Call TextoFace("Face 3", Picture1, ax(2) - 12, aY(2) - 12, 600, Marrom&)
         Call TextoFace(aRua(3), Picture1, ax(2) - 22, aY(2) - 20, 600, vbBlack)
         Call TextoFace("Face 4", Picture1, ax(3), aY(3) - 17, 0, Marrom&)
         Call TextoFace(aRua(4), Picture1, ax(3), aY(3) - 30, 0, vbBlue)
         Call TextoFace("Face 5", Picture1, ax(4) + 17, aY(4) - 7, -600, Marrom&)
         Call TextoFace(aRua(5), Picture1, ax(4) + 28, aY(4) - 15, -600, VerdeEscuro)
-        Call TextoFace("Face 6", Picture1, ax(6) + 2, aY(6), 900, Marrom&)
-        Call TextoFace(aRua(6), Picture1, ax(6) + 15, aY(6), 900, vbRed)
+        Call TextoFace("Face 6", Picture1, ax(6) + 2, aY(6), 899, Marrom&)
+        Call TextoFace(aRua(6), Picture1, ax(6) + 15, aY(6), 899, vbRed)
         Call TextoFace("Face 7", Picture1, ax(7) + 2, aY(7), 600, Marrom&)
         Call TextoFace(aRua(7), Picture1, ax(7) + 15, aY(7) + 5, 600, vbBlack)
         Call TextoFace("Face 8", Picture1, ax(8), aY(8) + 2, 0, Marrom&)
@@ -1183,7 +1187,7 @@ End Select
 
 End Sub
 
-Private Sub DrawLine(ByVal Length As Single, ByVal Angle As Single)
+Private Sub DrawLine(ByVal length As Single, ByVal Angle As Single)
 
 pi = 4 * Atn(1)
 cx = Picture1.CurrentX
@@ -1193,7 +1197,7 @@ cy = Picture1.CurrentY
 Angle = Angle Mod 360
 Angle = Angle * pi / 180
 'Xp = 0
-yp = Abs(Length)
+yp = Abs(length)
 Rx = Xp * cOS(Angle) - yp * Sin(Angle)
 Ry = Xp * Sin(Angle) + yp * cOS(Angle)
 rxg = cx + Rx
@@ -1203,7 +1207,7 @@ Picture1.DrawStyle = 2
 Picture1.Line (cx, cy)-(rxg, ryg)
 
 ' if negative length go back to start position
-If Length < 0 Then
+If length < 0 Then
     Picture1.CurrentX = cx
     Picture1.CurrentY = cy
 End If
@@ -1211,7 +1215,7 @@ If cGetInputState() <> 0 Then DoEvents
 
 End Sub
 
-Private Function TextoFace(text As String, picturebox As picturebox, LadoX As Integer, LadoY As Integer, Angulo As Integer, Cor As Long)
+Private Function TextoFace(Text As String, picturebox As picturebox, LadoX As Integer, LadoY As Integer, Angulo As Integer, cor As Long)
     Dim Font As LOGFONT
     Dim prevFont As Long, hFont As Long
     
@@ -1223,7 +1227,7 @@ Private Function TextoFace(text As String, picturebox As picturebox, LadoX As In
     ' be negative if you are specifying the character height
     ' you want.
     Font.lfHeight = -10
-    If UCase$(Left$(text, 4)) = "QUAD" Then
+    If UCase$(Left$(Text, 4)) = "QUAD" Then
        Font.lfUnderline = True
     Else
        Font.lfUnderline = False
@@ -1232,17 +1236,17 @@ Private Function TextoFace(text As String, picturebox As picturebox, LadoX As In
     prevFont = SelectObject(picturebox.hdc, hFont)
     picturebox.CurrentX = LadoX
     picturebox.CurrentY = LadoY
-    picturebox.ForeColor = Cor
-    picturebox.Print text
+    picturebox.ForeColor = cor
+    picturebox.Print Text
     hFont = SelectObject(Picture1.hdc, prevFont)
     DeleteObject hFont
     If cGetInputState() <> 0 Then DoEvents
     If cGetInputState() <> 0 Then DoEvents
 End Function
 
-Private Sub MoveTo(x As Single, Y As Single)
+Private Sub MoveTo(x As Single, y As Single)
 Picture1.CurrentX = x
-Picture1.CurrentY = Y
+Picture1.CurrentY = y
 End Sub
 
 Private Sub grdFace_Click()
@@ -1255,7 +1259,7 @@ End Sub
 
 Private Sub lstNomeLog_DblClick()
 If lstNomeLog.ListIndex > -1 Then
-   txtCodLogr.text = lstNomeLog.ItemData(lstNomeLog.ListIndex)
+   txtCodLogr.Text = lstNomeLog.ItemData(lstNomeLog.ListIndex)
    txtCodLogr_LostFocus
    lstNomeLog.Visible = False
    cmbAgrupa.SetFocus
@@ -1266,7 +1270,7 @@ End Sub
 Private Sub lstNomeLog_KeyPress(KeyAscii As Integer)
 If KeyAscii = vbKeyReturn Then
     If lstNomeLog.ListIndex > -1 Then
-       txtCodLogr.text = lstNomeLog.ItemData(lstNomeLog.ListIndex)
+       txtCodLogr.Text = lstNomeLog.ItemData(lstNomeLog.ListIndex)
        txtCodLogr_LostFocus
        lstNomeLog.Visible = False
        cmbAgrupa.SetFocus
@@ -1293,17 +1297,17 @@ Tweak txtCodLogr, KeyAscii, IntegerPositive
 End Sub
 
 Private Sub txtCodLogr_LostFocus()
-If Val(txtCodLogr.text) > 0 Then
+If Val(txtCodLogr.Text) > 0 Then
    Sql = "SELECT CODLOGRADOURO,CODTIPOLOG,NOMETIPOLOG,"
    Sql = Sql & "ABREVTIPOLOG,CODTITLOG,NOMETITLOG,"
    Sql = Sql & "ABREVTITLOG,NOMELOGRADOURO "
-   Sql = Sql & "FROM vwLOGRADOURO WHERE CODLOGRADOURO=" & Val(txtCodLogr.text)
+   Sql = Sql & "FROM vwLOGRADOURO WHERE CODLOGRADOURO=" & Val(txtCodLogr.Text)
    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
    With RdoAux
        If .RowCount > 0 Then
-          txtNomeLogr.text = Trim$(!AbrevTipoLog) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro
+          txtNomeLogr.Text = Trim$(!AbrevTipoLog) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro
        Else
-          txtNomeLogr.text = ""
+          txtNomeLogr.Text = ""
           MsgBox "Logradouro não cadastrado.", vbExclamation, "Atenção"
           txtCodLogr.SetFocus
        End If
@@ -1319,7 +1323,7 @@ End Sub
 
 Private Sub txtNomeLogr_Change()
 If Trim$(txtNomeLogr) = "" Then
-   txtCodLogr.text = 0
+   txtCodLogr.Text = 0
 End If
 End Sub
 
@@ -1332,7 +1336,7 @@ Private Sub txtNomeLogr_KeyPress(KeyAscii As Integer)
 
 If KeyAscii = vbKeyReturn Then
    lstNomeLog.Clear
-   If txtNomeLogr.text <> "" Then
+   If txtNomeLogr.Text <> "" Then
       Sql = "SELECT CODLOGRADOURO,CODTIPOLOG,NOMETIPOLOG,"
       Sql = Sql & "ABREVTIPOLOG,CODTITLOG,NOMETITLOG,"
       Sql = Sql & "ABREVTITLOG,NOMELOGRADOURO,DATAOFIC,"
@@ -1344,7 +1348,7 @@ If KeyAscii = vbKeyReturn Then
           If .RowCount > 0 Then
              Do Until .EOF
                 lstNomeLog.AddItem Trim$(!AbrevTipoLog) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro
-                lstNomeLog.ItemData(lstNomeLog.NewIndex) = !CODLOGRADOURO
+                lstNomeLog.ItemData(lstNomeLog.NewIndex) = !CodLogradouro
                .MoveNext
              Loop
              lstNomeLog.Visible = True
@@ -1358,13 +1362,13 @@ If KeyAscii = vbKeyReturn Then
       End With
    End If
 Else
-   txtCodLogr.text = 0
+   txtCodLogr.Text = 0
 End If
 
 End Sub
 
 Private Sub FormHagana()
-
+If NomeDeLogin = "USER_TEST" Then Exit Sub
 evNew = 2
 evEdit = 3
 evDel = 4

@@ -415,7 +415,7 @@ End If
 End Sub
 
 Private Sub cmdGravar_Click()
-Dim nCodReduz As Long, nSid As Long
+Dim nCodReduz As Long, nSid As Long, TemValidade As Boolean
 If txtProtocolo.Text = "" Then
    MsgBox "Digite o nº do protocolo.", vbCritical, "Atenção"
    Exit Sub
@@ -427,18 +427,31 @@ If Not IsDate(mskDataEmissao.Text) Then
 End If
 
 If Not IsDate(mskDataValidade.Text) Then
-   MsgBox "Data de validade inválida.", vbCritical, "Atenção"
-   Exit Sub
+'   MsgBox "Data de validade inválida.", vbCritical, "Atenção"
+'   Exit Sub
+    TemValidade = False
+Else
+    TemValidade = True
 End If
 
 If Evento = "Novo" Then
     nCodReduz = Val(frmCadMob.txtCodEmpresa.Text)
-    Sql = "insert sil (codigo,protocolo,data_emissao,data_validade) values(" & nCodReduz & ",'" & Mask(txtProtocolo.Text) & "','"
-    Sql = Sql & Format(mskDataEmissao.Text, "mm/dd/yyyy") & "','" & Format(mskDataValidade.Text, "mm/dd/yyyy") & "')"
+    If TemValidade Then
+        Sql = "insert sil (codigo,protocolo,data_emissao,data_validade) values(" & nCodReduz & ",'" & Mask(txtProtocolo.Text) & "','"
+        Sql = Sql & Format(mskDataEmissao.Text, "mm/dd/yyyy") & "','" & Format(mskDataValidade.Text, "mm/dd/yyyy") & "')"
+    Else
+        Sql = "insert sil (codigo,protocolo,data_emissao) values(" & nCodReduz & ",'" & Mask(txtProtocolo.Text) & "','"
+        Sql = Sql & Format(mskDataEmissao.Text, "mm/dd/yyyy") & "')"
+    End If
 Else
     nSid = Val(lblSid.Caption)
-    Sql = "update sil set protocolo='" & Mask(txtProtocolo.Text) & "',data_emissao='" & Format(mskDataEmissao.Text, "mm/dd/yyyy") & "',"
-    Sql = Sql & "data_validade='" & Format(mskDataValidade.Text, "mm/dd/yyyy") & "' where sid=" & nSid
+    If TemValidade Then
+        Sql = "update sil set protocolo='" & Mask(txtProtocolo.Text) & "',data_emissao='" & Format(mskDataEmissao.Text, "mm/dd/yyyy") & "',"
+        Sql = Sql & "data_validade='" & Format(mskDataValidade.Text, "mm/dd/yyyy") & "' where sid=" & nSid
+    Else
+        Sql = "update sil set protocolo='" & Mask(txtProtocolo.Text) & "',data_emissao='" & Format(mskDataEmissao.Text, "mm/dd/yyyy") & "' "
+        Sql = Sql & " where sid=" & nSid
+    End If
 End If
 cn.Execute Sql, rdExecDirect
 Limpa
@@ -626,3 +639,13 @@ End If
 
 End Sub
 
+Private Sub mskDataEmissao_GotFocus()
+mskDataEmissao.SelStart = 1
+mskDataEmissao.SelLength = Len(mskDataEmissao.Text)
+End Sub
+
+Private Sub mskDataValidade_GotFocus()
+mskDataValidade.SelStart = 1
+mskDataValidade.SelLength = Len(mskDataValidade.Text)
+
+End Sub

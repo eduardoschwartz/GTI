@@ -5,21 +5,48 @@ Begin VB.Form frmProcessosEnviados
    BackColor       =   &H00EEEEEE&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Relação de processos enviados por centro de custos"
-   ClientHeight    =   1620
-   ClientLeft      =   14475
-   ClientTop       =   8985
+   ClientHeight    =   2475
+   ClientLeft      =   10770
+   ClientTop       =   6720
    ClientWidth     =   6450
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   1620
+   ScaleHeight     =   2475
    ScaleWidth      =   6450
+   Begin VB.Frame Frame1 
+      Caption         =   "Por ordem de:"
+      Height          =   645
+      Left            =   3060
+      TabIndex        =   9
+      Top             =   1035
+      Width           =   2940
+      Begin VB.OptionButton Opt 
+         Caption         =   "Nº Processo"
+         Height          =   240
+         Index           =   1
+         Left            =   1575
+         TabIndex        =   11
+         Top             =   315
+         Width           =   1275
+      End
+      Begin VB.OptionButton Opt 
+         Caption         =   "Data de Envio"
+         Height          =   240
+         Index           =   0
+         Left            =   135
+         TabIndex        =   10
+         Top             =   315
+         Value           =   -1  'True
+         Width           =   1455
+      End
+   End
    Begin VB.CheckBox chkSemDataEnvio 
       Caption         =   "Sem data de envio"
       Height          =   195
-      Left            =   3825
+      Left            =   1440
       TabIndex        =   8
-      Top             =   720
+      Top             =   675
       Width           =   2220
    End
    Begin VB.ComboBox cmbSetor 
@@ -32,10 +59,10 @@ Begin VB.Form frmProcessosEnviados
    End
    Begin prjChameleon.chameleonButton cmdPrint 
       Height          =   345
-      Left            =   3810
+      Left            =   2190
       TabIndex        =   3
       ToolTipText     =   "Imprimir Relatório"
-      Top             =   1080
+      Top             =   1980
       Width           =   1065
       _ExtentX        =   1879
       _ExtentY        =   609
@@ -72,10 +99,10 @@ Begin VB.Form frmProcessosEnviados
    End
    Begin prjChameleon.chameleonButton cmdSair 
       Height          =   345
-      Left            =   4950
+      Left            =   3330
       TabIndex        =   4
       ToolTipText     =   "Sair da Tela"
-      Top             =   1080
+      Top             =   1980
       Width           =   1095
       _ExtentX        =   1931
       _ExtentY        =   609
@@ -114,7 +141,7 @@ Begin VB.Form frmProcessosEnviados
       Height          =   285
       Left            =   1485
       TabIndex        =   1
-      Top             =   765
+      Top             =   1035
       Width           =   1140
       _ExtentX        =   2011
       _ExtentY        =   503
@@ -139,7 +166,7 @@ Begin VB.Form frmProcessosEnviados
       Height          =   285
       Left            =   1485
       TabIndex        =   2
-      Top             =   1125
+      Top             =   1395
       Width           =   1140
       _ExtentX        =   2011
       _ExtentY        =   503
@@ -167,7 +194,7 @@ Begin VB.Form frmProcessosEnviados
       Index           =   0
       Left            =   495
       TabIndex        =   7
-      Top             =   1185
+      Top             =   1455
       Width           =   795
    End
    Begin VB.Label lblVenc 
@@ -177,7 +204,7 @@ Begin VB.Form frmProcessosEnviados
       Index           =   1
       Left            =   495
       TabIndex        =   6
-      Top             =   825
+      Top             =   1095
       Width           =   795
    End
    Begin VB.Label lblVenc 
@@ -219,16 +246,16 @@ cn.Execute Sql, rdExecDirect
 nCCusto = cmbSetor.ItemData(cmbSetor.ListIndex)
 Ocupado
 If chkSemDataEnvio.value = vbChecked Then
-    Sql = "SELECT * From vwTRAMITACAO2 WHERE datahora between '" & Format(mskData.Text, "mm/dd/yyyy") & "' and '" & Format(mskData2.Text, "mm/dd/yyyy") & "' AND ccusto = " & nCCusto & " ORDER BY ANO,NUMERO"
+    Sql = "SELECT * From vwTRAMITACAO2 WHERE datahora between '" & Format(mskData.Text, "mm/dd/yyyy 00:00") & "' and '" & Format(mskData2.Text, "mm/dd/yyyy 23:59") & "' AND ccusto = " & nCCusto & " ORDER BY ANO,NUMERO"
 Else
-    Sql = "SELECT * From vwTRAMITACAO2 WHERE dataenvio between '" & Format(mskData.Text, "mm/dd/yyyy") & "' and '" & Format(mskData2.Text, "mm/dd/yyyy") & "' AND ccusto = " & nCCusto
+    Sql = "SELECT * From vwTRAMITACAO2 WHERE dataenvio between '" & Format(mskData.Text, "mm/dd/yyyy 00:00") & "' and '" & Format(mskData2.Text, "mm/dd/yyyy 23:59") & "' AND ccusto = " & nCCusto
 End If
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
 With RdoAux
     Do Until .EOF
-        nAno = !Ano
+        nAno = !ano
         nNumero = !Numero
-        
+      '  If nNumero = 5094 Then MsgBox "TESTE"
   '      If nNumero = 14726 Then MsgBox "teste"
         
         Sql = "SELECT * FROM PROCESSOGTI WHERE ANO=" & nAno & " AND NUMERO=" & nNumero
@@ -239,7 +266,7 @@ With RdoAux
                 Sql = "SELECT DESCRICAO FROM CENTROCUSTO WHERE CODIGO=" & RdoAux2!CENTROCUSTO
                 Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
                 If RdoAux3.RowCount > 0 Then
-                    sRequerente = RdoAux3!descricao
+                    sRequerente = RdoAux3!Descricao
                 Else
                     GoTo cidadao
                 End If
@@ -252,7 +279,7 @@ cidadao:
             Sql = "SELECT NOMECIDADAO FROM CIDADAO WHERE CODCIDADAO=" & RdoAux2!CodCidadao
             Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
             If RdoAux3.RowCount > 0 Then
-                sRequerente = RdoAux3!NomeCidadao
+                sRequerente = RdoAux3!nomecidadao
             Else
                 sRequerente = ""
             End If
@@ -261,15 +288,15 @@ cidadao:
         
                 
         nSeq = !Seq
-        sDesc1 = !descricao
+        sDesc1 = !Descricao
         sNome1 = SubNull(!NomeCompleto)
-        Sql = "SELECT * FROM vwTRAMITACAO2 WHERE ANO=" & !Ano & " AND NUMERO=" & !Numero & " AND SEQ=" & nSeq + 1
+        Sql = "SELECT * FROM vwTRAMITACAO2 WHERE ANO=" & !ano & " AND NUMERO=" & !Numero & " AND SEQ=" & nSeq + 1
         'Sql = "SELECT * FROM vwTRAMITACAO2 WHERE ANO=" & !Ano & " AND NUMERO=" & !Numero & " AND SEQ=" & nSeq
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
         
         With RdoAux2
             If .RowCount > 0 Then
-                sDesc2 = !descricao
+                sDesc2 = !Descricao
                 sNome2 = SubNull(!NomeCompleto)
             Else
                 Sql = "SELECT tramitacaocc.ano, tramitacaocc.numero, tramitacaocc.seq, tramitacaocc.ccusto, centrocusto.DESCRICAO "
@@ -277,10 +304,10 @@ cidadao:
                 Sql = Sql & "Where tramitacaocc.Ano = " & nAno & " And tramitacaocc.Numero = " & nNumero & " AND SEQ=" & nSeq + 1
                 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
                 If RdoAux2.RowCount > 0 Then
-                    sDesc2 = RdoAux2!descricao
+                    sDesc2 = RdoAux2!Descricao
                     sNome2 = ""
                 Else
-                    GoTo proximo
+                    GoTo Proximo
                 End If
             End If
            .Close
@@ -288,10 +315,10 @@ cidadao:
         On Error Resume Next
         Sql = "INSERT PROCESSOENVIO(COMPUTER,ANO,NUMERO,PROCESSO,SEQ,DESC1,NOME1,DESC2,NOME2,DATAENVIO,ASSUNTO,REQUERENTE,DATAENTRADA) VALUES('" & NomeDeLogin & "',"
         Sql = Sql & nAno & "," & nNumero & ",'" & CStr(nNumero) & "-" & CStr(RetornaDVProcesso(CLng(nNumero))) & "/" & CStr(nAno) & "'," & nSeq & ",'" & Mask(sDesc1) & "','" & Mask(sNome1) & "','" & Mask(sDesc2) & "','" & Mask(sNome2) & "','"
-        Sql = Sql & Format(!DATAENVIO, "mm/dd/yyyy") & "','" & Left(Mask(sAssunto), 50) & "','" & Left(Mask(sRequerente), 50) & "','" & Format(!DATAHORA, "mm/dd/yyyy") & "')"
+        Sql = Sql & Format(!DATAENVIO, "mm/dd/yyyy hh:mm") & "','" & Left(Mask(sAssunto), 50) & "','" & Left(Mask(sRequerente), 50) & "','" & Format(!DATAHORA, "mm/dd/yyyy") & "')"
         cn.Execute Sql, rdExecDirect
         On Error GoTo 0
-proximo:
+Proximo:
        .MoveNext
     Loop
    .Close
@@ -300,7 +327,11 @@ Liberado
 If chkSemDataEnvio.value = vbChecked Then
     frmReport.ShowReport2 "PROCESSOENVIADO2", frmMdi.HWND, Me.HWND
 Else
-    frmReport.ShowReport "PROCESSOENVIADO", frmMdi.HWND, Me.HWND
+    If Opt(0).value = True Then
+        frmReport.ShowReport "PROCESSOENVIADODATA", frmMdi.HWND, Me.HWND
+    Else
+        frmReport.ShowReport "PROCESSOENVIADO", frmMdi.HWND, Me.HWND
+    End If
 End If
 
 Sql = "DELETE FROM PROCESSOENVIO WHERE COMPUTER='" & NomeDeLogin & "'"
@@ -318,7 +349,7 @@ Sql = "SELECT CODIGO,DESCRICAO FROM CENTROCUSTO where ativo=1 ORDER BY DESCRICAO
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
         Do Until .EOF
-             cmbSetor.AddItem !descricao
+             cmbSetor.AddItem !Descricao
              cmbSetor.ItemData(cmbSetor.NewIndex) = !Codigo
             .MoveNext
         Loop

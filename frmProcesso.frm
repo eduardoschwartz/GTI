@@ -1420,85 +1420,6 @@ Begin VB.Form frmProcesso
          Width           =   1695
       End
    End
-   Begin VB.Frame Frame3 
-      BackColor       =   &H00EEEEEE&
-      Caption         =   "Endereços de Ocorrência"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   -1  'True
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00000080&
-      Height          =   1065
-      Left            =   30
-      TabIndex        =   13
-      Top             =   5325
-      Width           =   7350
-      Begin MSFlexGridLib.MSFlexGrid grdEnd 
-         Height          =   765
-         Left            =   90
-         TabIndex        =   8
-         Top             =   270
-         Width           =   5835
-         _ExtentX        =   10292
-         _ExtentY        =   1349
-         _Version        =   393216
-         Rows            =   3
-         Cols            =   3
-         FixedCols       =   0
-         BackColorBkg    =   15658734
-         FocusRect       =   0
-         SelectionMode   =   1
-         AllowUserResizing=   1
-         BorderStyle     =   0
-         Appearance      =   0
-         FormatString    =   "^Código   |<Nome do Logradouro                                                      |>Número   "
-      End
-      Begin prjChameleon.chameleonButton cmdEditEnd 
-         Height          =   315
-         Left            =   6030
-         TabIndex        =   9
-         ToolTipText     =   "Editar endereço de ocorrência"
-         Top             =   600
-         Width           =   1065
-         _ExtentX        =   1879
-         _ExtentY        =   556
-         BTYPE           =   3
-         TX              =   "&Editar"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   0
-         FCOLO           =   0
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmProcesso.frx":19B4
-         PICN            =   "frmProcesso.frx":19D0
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-   End
    Begin VB.Frame Frame4 
       BackColor       =   &H00EEEEEE&
       Caption         =   "Datas das Ocorrências"
@@ -1546,7 +1467,7 @@ Begin VB.Form frmProcesso
          FCOLO           =   192
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":1B2A
+         MICON           =   "frmProcesso.frx":19B4
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1585,7 +1506,7 @@ Begin VB.Form frmProcesso
          FCOLO           =   192
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":1B46
+         MICON           =   "frmProcesso.frx":19D0
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1624,7 +1545,7 @@ Begin VB.Form frmProcesso
          FCOLO           =   192
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":1B62
+         MICON           =   "frmProcesso.frx":19EC
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1663,7 +1584,7 @@ Begin VB.Form frmProcesso
          FCOLO           =   192
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":1B7E
+         MICON           =   "frmProcesso.frx":1A08
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1899,8 +1820,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":1B9A
-         PICN            =   "frmProcesso.frx":1BB6
+         MICON           =   "frmProcesso.frx":1A24
+         PICN            =   "frmProcesso.frx":1A40
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1939,7 +1860,7 @@ Begin VB.Form frmProcesso
          FCOLO           =   255
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":1D10
+         MICON           =   "frmProcesso.frx":1B9A
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1978,7 +1899,7 @@ Begin VB.Form frmProcesso
          FCOLO           =   12582912
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":1D2C
+         MICON           =   "frmProcesso.frx":1BB6
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2068,8 +1989,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":1D48
-         PICN            =   "frmProcesso.frx":1D64
+         MICON           =   "frmProcesso.frx":1BD2
+         PICN            =   "frmProcesso.frx":1BEE
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2108,8 +2029,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":1EBE
-         PICN            =   "frmProcesso.frx":1EDA
+         MICON           =   "frmProcesso.frx":1D48
+         PICN            =   "frmProcesso.frx":1D64
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2176,303 +2097,6 @@ Begin VB.Form frmProcesso
             Text            =   "Data Entrega"
             Object.Width           =   2540
          EndProperty
-      End
-   End
-   Begin VB.Frame pnlEnd 
-      BackColor       =   &H00E4FEFC&
-      Caption         =   "Endereços de Ocorrência"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   400
-         Underline       =   -1  'True
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00800000&
-      Height          =   2325
-      Left            =   990
-      TabIndex        =   82
-      Top             =   3120
-      Width           =   6225
-      Begin VB.TextBox txtNumLog 
-         Appearance      =   0  'Flat
-         Height          =   285
-         Left            =   1125
-         TabIndex        =   87
-         Top             =   1425
-         Width           =   855
-      End
-      Begin VB.TextBox txtNomeLog 
-         Appearance      =   0  'Flat
-         Height          =   285
-         Left            =   2040
-         MaxLength       =   50
-         TabIndex        =   86
-         Top             =   1425
-         Width           =   3990
-      End
-      Begin VB.TextBox txtNumeroLog 
-         Appearance      =   0  'Flat
-         Height          =   285
-         Left            =   1125
-         MaxLength       =   15
-         TabIndex        =   85
-         Top             =   1740
-         Width           =   1305
-      End
-      Begin VB.ListBox lstNomeLog 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00FFFFFF&
-         Height          =   1005
-         ItemData        =   "frmProcesso.frx":2034
-         Left            =   2040
-         List            =   "frmProcesso.frx":2036
-         TabIndex        =   83
-         Top             =   585
-         Visible         =   0   'False
-         Width           =   3990
-      End
-      Begin prjChameleon.chameleonButton cmdAlterar2 
-         Height          =   315
-         Left            =   4260
-         TabIndex        =   84
-         ToolTipText     =   "Editar Registro"
-         Top             =   1830
-         Width           =   885
-         _ExtentX        =   1561
-         _ExtentY        =   556
-         BTYPE           =   3
-         TX              =   "&Editar"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   0
-         FCOLO           =   0
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmProcesso.frx":2038
-         PICN            =   "frmProcesso.frx":2054
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin MSFlexGridLib.MSFlexGrid grdEnd2 
-         Height          =   975
-         Left            =   120
-         TabIndex        =   88
-         Top             =   330
-         Width           =   5925
-         _ExtentX        =   10451
-         _ExtentY        =   1720
-         _Version        =   393216
-         Rows            =   4
-         Cols            =   3
-         FixedCols       =   0
-         BackColorBkg    =   15007484
-         FocusRect       =   0
-         SelectionMode   =   1
-         AllowUserResizing=   1
-         Appearance      =   0
-         FormatString    =   "^Código   |<Nome do Logradouro                                                      |>Número   "
-      End
-      Begin prjChameleon.chameleonButton cmdCancel2 
-         Cancel          =   -1  'True
-         Height          =   315
-         Left            =   5160
-         TabIndex        =   89
-         ToolTipText     =   "Cancelar Edição"
-         Top             =   1830
-         Width           =   885
-         _ExtentX        =   1561
-         _ExtentY        =   556
-         BTYPE           =   3
-         TX              =   "&Canc."
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   0
-         FCOLO           =   0
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmProcesso.frx":21AE
-         PICN            =   "frmProcesso.frx":21CA
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin prjChameleon.chameleonButton cmdNovo2 
-         Height          =   315
-         Left            =   3360
-         TabIndex        =   90
-         ToolTipText     =   "Novo Registro"
-         Top             =   1830
-         Width           =   885
-         _ExtentX        =   1561
-         _ExtentY        =   556
-         BTYPE           =   3
-         TX              =   "&Novo"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   0
-         FCOLO           =   0
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmProcesso.frx":2324
-         PICN            =   "frmProcesso.frx":2340
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin prjChameleon.chameleonButton cmdExcluir2 
-         Height          =   315
-         Left            =   5160
-         TabIndex        =   93
-         ToolTipText     =   "Excluir Registro"
-         Top             =   1830
-         Width           =   885
-         _ExtentX        =   1561
-         _ExtentY        =   556
-         BTYPE           =   3
-         TX              =   "&Excluir"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   0
-         FCOLO           =   0
-         MCOL            =   12632256
-         MPTR            =   1
-         MICON           =   "frmProcesso.frx":249A
-         PICN            =   "frmProcesso.frx":24B6
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin prjChameleon.chameleonButton cmdGravar2 
-         Height          =   315
-         Left            =   4260
-         TabIndex        =   94
-         ToolTipText     =   "Gravar os Dados"
-         Top             =   1830
-         Width           =   885
-         _ExtentX        =   1561
-         _ExtentY        =   556
-         BTYPE           =   3
-         TX              =   "&Gravar"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   0
-         FCOLO           =   0
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmProcesso.frx":2558
-         PICN            =   "frmProcesso.frx":2574
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin VB.Label Label1 
-         BackStyle       =   0  'Transparent
-         Caption         =   "Logradouro..:"
-         Height          =   225
-         Index           =   2
-         Left            =   120
-         TabIndex        =   92
-         Top             =   1455
-         Width           =   975
-      End
-      Begin VB.Label Label1 
-         BackStyle       =   0  'Transparent
-         Caption         =   "Número.......:"
-         Height          =   225
-         Index           =   12
-         Left            =   120
-         TabIndex        =   91
-         Top             =   1770
-         Width           =   975
       End
    End
    Begin VB.Frame frReq1 
@@ -2551,8 +2175,8 @@ Begin VB.Form frmProcesso
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmProcesso.frx":2919
-         PICN            =   "frmProcesso.frx":2935
+         MICON           =   "frmProcesso.frx":1EBE
+         PICN            =   "frmProcesso.frx":1EDA
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2696,6 +2320,382 @@ Begin VB.Form frmProcesso
          Width           =   915
       End
    End
+   Begin VB.Frame Frame3 
+      BackColor       =   &H00EEEEEE&
+      Caption         =   "Endereços de Ocorrência"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   -1  'True
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00000080&
+      Height          =   1065
+      Left            =   30
+      TabIndex        =   13
+      Top             =   5325
+      Width           =   7350
+      Begin MSFlexGridLib.MSFlexGrid grdEnd 
+         Height          =   765
+         Left            =   90
+         TabIndex        =   8
+         Top             =   270
+         Width           =   5835
+         _ExtentX        =   10292
+         _ExtentY        =   1349
+         _Version        =   393216
+         Rows            =   3
+         Cols            =   3
+         FixedCols       =   0
+         BackColorBkg    =   15658734
+         FocusRect       =   0
+         SelectionMode   =   1
+         AllowUserResizing=   1
+         BorderStyle     =   0
+         Appearance      =   0
+         FormatString    =   "^Código   |<Nome do Logradouro                                                      |>Número   "
+      End
+      Begin prjChameleon.chameleonButton cmdEditEnd 
+         Height          =   315
+         Left            =   6030
+         TabIndex        =   9
+         ToolTipText     =   "Editar endereço de ocorrência"
+         Top             =   600
+         Width           =   1065
+         _ExtentX        =   1879
+         _ExtentY        =   556
+         BTYPE           =   3
+         TX              =   "&Editar"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   0
+         FCOLO           =   0
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmProcesso.frx":1F48
+         PICN            =   "frmProcesso.frx":1F64
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+   End
+   Begin VB.Frame pnlEnd 
+      BackColor       =   &H00E4FEFC&
+      Caption         =   "Endereços de Ocorrência"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   -1  'True
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00800000&
+      Height          =   2325
+      Left            =   990
+      TabIndex        =   82
+      Top             =   3120
+      Width           =   6225
+      Begin VB.TextBox txtNumLog 
+         Appearance      =   0  'Flat
+         Height          =   285
+         Left            =   1125
+         TabIndex        =   87
+         Top             =   1425
+         Width           =   855
+      End
+      Begin VB.TextBox txtNomeLog 
+         Appearance      =   0  'Flat
+         Height          =   285
+         Left            =   2040
+         MaxLength       =   50
+         TabIndex        =   86
+         Top             =   1425
+         Width           =   3990
+      End
+      Begin VB.TextBox txtNumeroLog 
+         Appearance      =   0  'Flat
+         Height          =   285
+         Left            =   1125
+         MaxLength       =   15
+         TabIndex        =   85
+         Top             =   1740
+         Width           =   1305
+      End
+      Begin VB.ListBox lstNomeLog 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00FFFFFF&
+         Height          =   1005
+         ItemData        =   "frmProcesso.frx":20BE
+         Left            =   2040
+         List            =   "frmProcesso.frx":20C0
+         TabIndex        =   83
+         Top             =   585
+         Visible         =   0   'False
+         Width           =   3990
+      End
+      Begin prjChameleon.chameleonButton cmdAlterar2 
+         Height          =   315
+         Left            =   4260
+         TabIndex        =   84
+         ToolTipText     =   "Editar Registro"
+         Top             =   1830
+         Width           =   885
+         _ExtentX        =   1561
+         _ExtentY        =   556
+         BTYPE           =   3
+         TX              =   "&Editar"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   0
+         FCOLO           =   0
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmProcesso.frx":20C2
+         PICN            =   "frmProcesso.frx":20DE
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin MSFlexGridLib.MSFlexGrid grdEnd2 
+         Height          =   975
+         Left            =   120
+         TabIndex        =   88
+         Top             =   330
+         Width           =   5925
+         _ExtentX        =   10451
+         _ExtentY        =   1720
+         _Version        =   393216
+         Rows            =   4
+         Cols            =   3
+         FixedCols       =   0
+         BackColorBkg    =   15007484
+         FocusRect       =   0
+         SelectionMode   =   1
+         AllowUserResizing=   1
+         Appearance      =   0
+         FormatString    =   "^Código   |<Nome do Logradouro                                                      |>Número   "
+      End
+      Begin prjChameleon.chameleonButton cmdCancel2 
+         Cancel          =   -1  'True
+         Height          =   315
+         Left            =   5160
+         TabIndex        =   89
+         ToolTipText     =   "Cancelar Edição"
+         Top             =   1830
+         Width           =   885
+         _ExtentX        =   1561
+         _ExtentY        =   556
+         BTYPE           =   3
+         TX              =   "&Canc."
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   0
+         FCOLO           =   0
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmProcesso.frx":2238
+         PICN            =   "frmProcesso.frx":2254
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton cmdNovo2 
+         Height          =   315
+         Left            =   3360
+         TabIndex        =   90
+         ToolTipText     =   "Novo Registro"
+         Top             =   1830
+         Width           =   885
+         _ExtentX        =   1561
+         _ExtentY        =   556
+         BTYPE           =   3
+         TX              =   "&Novo"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   0
+         FCOLO           =   0
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmProcesso.frx":23AE
+         PICN            =   "frmProcesso.frx":23CA
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton cmdExcluir2 
+         Height          =   315
+         Left            =   5160
+         TabIndex        =   93
+         ToolTipText     =   "Excluir Registro"
+         Top             =   1830
+         Width           =   885
+         _ExtentX        =   1561
+         _ExtentY        =   556
+         BTYPE           =   3
+         TX              =   "&Excluir"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   0
+         FCOLO           =   0
+         MCOL            =   12632256
+         MPTR            =   1
+         MICON           =   "frmProcesso.frx":2524
+         PICN            =   "frmProcesso.frx":2540
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton cmdGravar2 
+         Height          =   315
+         Left            =   4260
+         TabIndex        =   94
+         ToolTipText     =   "Gravar os Dados"
+         Top             =   1830
+         Width           =   885
+         _ExtentX        =   1561
+         _ExtentY        =   556
+         BTYPE           =   3
+         TX              =   "&Gravar"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   0
+         FCOLO           =   0
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmProcesso.frx":25E2
+         PICN            =   "frmProcesso.frx":25FE
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin VB.Label Label1 
+         BackStyle       =   0  'Transparent
+         Caption         =   "Logradouro..:"
+         Height          =   225
+         Index           =   2
+         Left            =   120
+         TabIndex        =   92
+         Top             =   1455
+         Width           =   975
+      End
+      Begin VB.Label Label1 
+         BackStyle       =   0  'Transparent
+         Caption         =   "Número.......:"
+         Height          =   225
+         Index           =   12
+         Left            =   120
+         TabIndex        =   91
+         Top             =   1770
+         Width           =   975
+      End
+   End
 End
 Attribute VB_Name = "frmProcesso"
 Attribute VB_GlobalNameSpace = False
@@ -2703,12 +2703,12 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
-
+Public bReadOnly As Boolean
 Dim RdoAux As rdoResultset, Sql As String, RdoAux2 As rdoResultset
 Dim Evento As String, Evento2 As String, bExec As Boolean, sRet As String
-Dim evEdit As Integer, evNew As Integer, evDel As Integer, evEsp As Integer, evImp As Integer, evAne As Integer, evCan As Integer, evRea As Integer, evSus As Integer, evArq As Integer, evDes As Integer
-Dim bEdit As Boolean, bNew As Boolean, bDel As Boolean, bEsp As Boolean, bImp As Boolean, bAne As Boolean, bCan As Boolean, bRea As Boolean, bSus As Boolean, bArq As Boolean, bDes As Boolean
-Dim bevNew As Boolean, bevEdit As Boolean, bevDel As Boolean, bEvPrint As Boolean
+Dim evEdit As Integer, evNew As Integer, evDel As Integer, evEsp As Integer, evImp As Integer, evAne As Integer, evCan As Integer, evRea As Integer, evSus As Integer, evArq As Integer, evDes As Integer, evInt As Integer
+Dim bEdit As Boolean, bNew As Boolean, bDel As Boolean, bEsp As Boolean, bImp As Boolean, bAne As Boolean, bCan As Boolean, bRea As Boolean, bSus As Boolean, bArq As Boolean, bDes As Boolean, bInt As Boolean
+Dim bevNew As Boolean, bevEdit As Boolean, bevDel As Boolean, bEvPrint As Boolean, bEvInterno As Boolean
 Dim bEvArquivar As Boolean, bEvCancdelar As Boolean, bEvSuspender As Boolean, bEvReativar As Boolean, bEvAnexos As Boolean
 Dim bEvCorrigir As Boolean, bEvArquivos As Boolean, nLoginId As Integer
 
@@ -2752,6 +2752,7 @@ End If
 End Sub
 
 Private Sub cmdAlterar_Click()
+bReadOnly = False
 If lblAno.Caption = "" Or lblNumProc.Caption = "" Then
     MsgBox "Selecione um processo.", vbExclamation, "Atenção"
     Exit Sub
@@ -2884,9 +2885,12 @@ Evento = ""
 If lblNumProc.Caption <> "" Then
    CodProcesso = Val(Left$(lblNumProc.Caption, Len(lblNumProc.Caption) - 2))
    Limpa
+
    Le
 End If
-
+bReadOnly = True
+   chkFisico.Enabled = False
+   chkInterno.Enabled = False
 End Sub
 
 Private Sub cmdCancel2_Click()
@@ -3218,6 +3222,7 @@ frCidadao.Visible = False
 End Sub
 
 Private Sub cmdGravar_Click()
+
 Dim Sql As String, RdoAux As rdoResultset
 If bLocal Then
     Exit Sub
@@ -3255,7 +3260,7 @@ Else
     End If
 End If
 Grava
-
+bReadOnly = True
 Eventos "INICIAR"
 Evento = ""
 End Sub
@@ -3343,6 +3348,7 @@ pnlPrint.Visible = True: pnlPrint.ZOrder (0)
 End Sub
 
 Private Sub cmdNovo_Click()
+bReadOnly = False
 Limpa
 CarregaCombo True
 lblDtEntrada.Caption = Format(Now, "dd/mm/yyyy")
@@ -3354,7 +3360,9 @@ lblAtendente.Tag = nLoginId
 
 Evento = "Novo"
 Eventos "INCLUIR"
-chkFisico.SetFocus
+If chkFisico.Enabled Then
+    chkFisico.SetFocus
+End If
 If cmbOrigem.ListCount > 0 Then cmbOrigem.ListIndex = 1
 End Sub
 
@@ -3506,6 +3514,12 @@ If lblAno.Caption = "" Or lblNumProc = "" Then
     MsgBox "Selecione um processo.", vbExclamation, "Atenção"
     Exit Sub
 End If
+
+If IsDate(lblDataDescarte.Caption) Then
+    MsgBox "Processo descartado não pode ser reativado.", vbCritical, "Erro"
+    Exit Sub
+End If
+
 If Not IsDate(lblDtArquivamento.Caption) And Not IsDate(lblDtCancelamento.Caption) And Not IsDate(lblDtSuspencao.Caption) Then
    MsgBox "Processo encontra-se ativo.", vbExclamation, "Atenção"
    Exit Sub
@@ -3542,7 +3556,7 @@ If lblAno.Caption = "" Or lblNumProc = "" Then
     Exit Sub
 End If
 
-If NomeDeLogin = "RENATA" Or NomeDeLogin = "PEDROS" Or NomeDeLogin = "TANIA" Or NomeDeLogin = "SCHWARTZ" Or NomeDeLogin = "RODRIGOG" Or NomeDeLogin = "GLEISE" Then
+If NomeDeLogin = "RENATA" Or NomeDeLogin = "PEDROS" Or NomeDeLogin = "TANIA" Or NomeDeLogin = "SCHWARTZ" Or NomeDeLogin = "FABIANO.PIRES" Or NomeDeLogin = "GLEISE" Then
 Else
     MsgBox "ACESSO NEGADO!!!", vbCritical, "ATENÇÃO"
     Exit Sub
@@ -3628,6 +3642,12 @@ If Evento = "Novo" Then
     End If
 End If
 
+If IsDate(lblDataDescarte.Caption) Then
+    MsgBox "Processo descartado não pode ser tramitado.", vbCritical, "Erro"
+    Exit Sub
+End If
+
+
 frmTramite.show
 frmTramite.ZOrder 0
 End Sub
@@ -3638,7 +3658,7 @@ If cmdConsultar.Visible = True And CodProcesso > 0 Then
     Limpa
     Le
 End If
-
+bReadOnly = True
 End Sub
 
 Private Sub Form_Load()
@@ -3664,7 +3684,7 @@ Sql = "SELECT processogti.ANO, processogti.NUMERO, processogti.FISICO, processog
 Sql = Sql & "processogti.OBSERVACAO, processogti.DATAENTRADA, processogti.DATAREATIVA, processogti.DATACANCEL, processogti.DATAARQUIVA,"
 Sql = Sql & "processogti.DATASUSPENSO, processogti.ETIQUETA, processogti.CODCIDADAO, processogti.MOTIVOCANCEL,"
 Sql = Sql & "processogti.CENTROCUSTO, processogti.OBSA, processogti.OBSC, processogti.OBSS, processogti.OBSR, processogti.HORA, processogti.INSC,"
-Sql = Sql & " ProcessoGTI.TIPOEND, ProcessoGTI.USERID, Usuario.NomeLogin, Usuario.NomeCompleto,processogti.datadescarte "
+Sql = Sql & " ProcessoGTI.TIPOEND, ProcessoGTI.USERID, Usuario.NomeLogin, Usuario.NomeCompleto,processogti.datadescarte,userweb "
 Sql = Sql & "FROM processogti LEFT OUTER JOIN usuario ON processogti.USERID = usuario.Id WHERE NUMERO=" & CodProcesso & " AND ANO=" & AnoProcesso
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
@@ -3708,6 +3728,9 @@ With RdoAux
         txtInsc.Text = SubNull(!INSC)
         'lblAtendente.Caption = SubNull(!RESPONSAVEL)
         lblAtendente.Caption = SubNull(!NomeLogin)
+        If !USerWeb = True Then
+           lblAtendente.Caption = "Parcelamento Web"
+        End If
         lblAtendente.Tag = Val(SubNull(!userid))
         
         lblCodCid.Caption = !CodCidadao
@@ -3761,7 +3784,7 @@ With RdoAux
         MsgBox "Processo não cadastrado.", vbExclamation, "Atenção"
     End If
    .Close
-   GoTo fim
+   GoTo Fim
    
 DOC2:
     Sql = "SELECT ASSUNTODOC.CODDOC, DOCUMENTO.NOME FROM DOCUMENTO INNER JOIN "
@@ -3780,7 +3803,7 @@ DOC2:
    
 End With
 
-fim:
+Fim:
 ReDim aProc(0)
 nQtde = 0
 
@@ -4041,7 +4064,7 @@ End If
 FormHagana
 cmdEditInsc.Enabled = cmdAlterar.Enabled
 If cmdAlterar.Enabled = False Then
-    If NomeDeLogin = "LUIZH" Or NomeDeLogin = "ROSANGELA" Or NomeDeLogin = "RITA" Or NomeDeLogin = "DANIELAR" Or NomeDeLogin = "ANAP" Or NomeDeLogin = "GLEISE" Or NomeDeLogin = "LUIZH" Or NomeDeLogin = "NOELI" Or NomeDeLogin = "RODRIGOC" Then
+    If NomeDeLogin = "LUIZH" Or NomeDeLogin = "ROSANGELA" Or NomeDeLogin = "RITA" Or NomeDeLogin = "DANIELAR" Or NomeDeLogin = "ANAP" Or NomeDeLogin = "GLEISE" Or NomeDeLogin = "LUIZH" Or NomeDeLogin = "RODRIGOC" Or NomeDeLogin = "ANA.REIS" Then
         cmdEditInsc.Enabled = True
     End If
 End If
@@ -4405,6 +4428,7 @@ End If
 End Sub
 
 Private Sub FormHagana()
+If NomeDeLogin = "USER_TEST" Then Exit Sub
 evNew = 2
 evEdit = 3
 evDel = 4
@@ -4416,9 +4440,11 @@ evRea = 18
 evSus = 17
 evArq = 16
 evDes = 26
+evInt = 30
 
-bNew = False: bEdit = False: bDel = False: bImp = False: bEsp = False: bAne = False: bCan = False: bRea = False: bSus = False: bArq = False: bDes = False
-If InStr(1, sRet, Format(evNew, "000"), vbBinaryCompare) > 0 Then bNew = True
+
+bNew = False: bEdit = False: bDel = False: bImp = False: bEsp = False: bAne = False: bCan = False: bRea = False: bSus = False: bArq = False: bDes = False: bInt = False
+'If InStr(1, sRet, Format(evNew, "000"), vbBinaryCompare) > 0 Then bNew = True
 If InStr(1, sRet, Format(evEdit, "000"), vbBinaryCompare) > 0 Then bEdit = True
 If InStr(1, sRet, Format(evDel, "000"), vbBinaryCompare) > 0 Then bDel = True
 If InStr(1, sRet, Format(evEsp, "000"), vbBinaryCompare) > 0 Then bEsp = True
@@ -4429,6 +4455,40 @@ If InStr(1, sRet, Format(evRea, "000"), vbBinaryCompare) > 0 Then bRea = True
 If InStr(1, sRet, Format(evSus, "000"), vbBinaryCompare) > 0 Then bSus = True
 If InStr(1, sRet, Format(evArq, "000"), vbBinaryCompare) > 0 Then bArq = True
 If InStr(1, sRet, Format(evDes, "000"), vbBinaryCompare) > 0 Then bDes = True
+'If InStr(1, sRet, Format(evInt, "000"), vbBinaryCompare) > 0 Then bInt = True
+
+Dim pFisico As Boolean, pNFisico As Boolean, pInterno As Boolean
+
+Sql = "SELECT * FROM usuario WHERE nomelogin='" & NomeDeLogin & "'"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    If IsNull(!processo_fisico) Then
+        pFisico = False
+    Else
+        pFisico = !processo_fisico
+    End If
+    If IsNull(!processo_naofisico) Then
+        pNFisico = False
+    Else
+        pNFisico = !processo_naofisico
+    End If
+    If IsNull(!processo_interno) Then
+        pInterno = False
+    Else
+        pInterno = !processo_interno
+    End If
+   .Close
+End With
+
+bInt = False
+If pFisico Or pNFisico Then
+    bNew = True
+    If pInterno = True Then
+        bInt = True
+    End If
+Else
+    bNew = False
+End If
 
 If Not bNew Then cmdNovo.Enabled = False
 If Not bEdit Then cmdAlterar.Enabled = False
@@ -4441,11 +4501,25 @@ If Not bSus Then cmdSuspender.Enabled = False
 If Not bArq Then cmdArquivar.Enabled = False
 If Not bDes Then cmdDescartar.Enabled = False
 
+If pFisico And pNFisico Then
+    chkFisico.Enabled = True
+ElseIf pFisico And Not pNFisico Then
+    chkFisico.value = vbChecked
+    chkFisico.Enabled = False
+ElseIf Not pFisico And pNFisico Then
+    chkFisico.value = vbUnchecked
+    chkFisico.Enabled = False
+End If
+
+If Not bInt Then
+    chkInterno.value = 0
+    chkInterno.Enabled = False
+End If
+
 If cmdNovo.Enabled = False Then
     cmdEditCid.Enabled = False
     cmdEditDoc.Enabled = False
     'cmdEditEnd.Enabled = False
-    
 End If
 
 If NomeDeLogin = "ROSE" Then
