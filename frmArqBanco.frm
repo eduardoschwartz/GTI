@@ -5,13 +5,13 @@ Begin VB.Form frmArqBanco
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Inclusão de Arquivos dos Bancos"
    ClientHeight    =   4665
-   ClientLeft      =   2625
-   ClientTop       =   2385
-   ClientWidth     =   6405
+   ClientLeft      =   6165
+   ClientTop       =   2445
+   ClientWidth     =   6375
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    ScaleHeight     =   4665
-   ScaleWidth      =   6405
+   ScaleWidth      =   6375
    ShowInTaskbar   =   0   'False
    Begin VB.ListBox lstLog 
       Height          =   1230

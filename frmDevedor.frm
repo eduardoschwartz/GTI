@@ -5,8 +5,8 @@ Begin VB.Form frmDevedor
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Lista de Devedores"
    ClientHeight    =   6150
-   ClientLeft      =   5250
-   ClientTop       =   2685
+   ClientLeft      =   15225
+   ClientTop       =   2175
    ClientWidth     =   6570
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
@@ -1032,7 +1032,7 @@ End Sub
 Private Sub cmdPrint_Click()
 Dim Sql As String, RdoAux As rdoResultset, nCodReduz As Long, aI() As MDEV, aM() As MDEV, aC() As MDEV, nMax As Integer
 Dim p As Integer, aPrint() As mDevPrint, qd As New rdoQuery, aDebito() As Debito, nEval As Integer, sLanc As String, sAno As String
-Dim Achou As Boolean, x As Integer, aMat() As MDEV, Y As Integer, aLanc() As Long, aAno() As Long
+Dim Achou As Boolean, x As Integer, aMat() As MDEV, y As Integer, aLanc() As Long, aAno() As Long
 
 ReDim aAno(0): ReDim aLanc(0)
 sLanc = "": sAno = ""
@@ -1120,7 +1120,7 @@ For p = 1 To UBound(aM)
     ReDim Preserve aPrint(UBound(aPrint) + 1)
     aPrint(UBound(aPrint)).nTipo = 2
     aPrint(UBound(aPrint)).nCodReduz = aM(p).nCodReduz
-    aPrint(UBound(aPrint)).sNome = SubNull(RdoAux!razaosocial)
+    aPrint(UBound(aPrint)).sNome = SubNull(RdoAux!RazaoSocial)
     RdoAux.Close
 Next
 
@@ -1160,18 +1160,18 @@ For p = 1 To UBound(aPrint)
         
         If RdoAux.RowCount > 0 Then
             Do Until .EOF
-                If !statuslanc <> 3 And !statuslanc <> 42 And !statuslanc <> 43 Then GoTo proximo
+                If !statuslanc <> 3 And !statuslanc <> 42 And !statuslanc <> 43 Then GoTo Proximo
             
                 z = BinarySearchLong(aAno(), CLng(!AnoExercicio))
-                If z = -1 Then GoTo proximo
+                If z = -1 Then GoTo Proximo
                 
                 z = BinarySearchLong(aLanc(), CLng(!CodLancamento))
-                If z = -1 Then GoTo proximo
+                If z = -1 Then GoTo Proximo
 
             
                 DoEvents
                 If CDate(Format(!DataVencimento, "dd/mm/yyyy")) > CDate(Format(Now, "dd/mm/yyyy")) Then
-                    GoTo proximo:
+                    GoTo Proximo:
                 End If
                 nEval = UBound(aDebito)
                 Achou = False
@@ -1208,7 +1208,7 @@ For p = 1 To UBound(aPrint)
                     aDebito(nEval).nValorMulta = FormatNumber(!ValorMulta, 2)
                     aDebito(nEval).nValorCorrecao = FormatNumber(!ValorCorrecao, 2)
                 Else
-                    If aDebito(x).nCodTributo = !CodTributo Then GoTo proximo
+                    If aDebito(x).nCodTributo = !CodTributo Then GoTo Proximo
                 
                     aDebito(x).nValorTributo = FormatNumber(aDebito(x).nValorTributo + !ValorTributo, 2)
                     aDebito(x).nValorJuros = FormatNumber(aDebito(x).nValorJuros + !ValorJuros, 2)
@@ -1216,7 +1216,7 @@ For p = 1 To UBound(aPrint)
                     aDebito(x).nValorCorrecao = FormatNumber(aDebito(x).nValorCorrecao + !ValorCorrecao, 2)
                     aDebito(x).nValorAtual = FormatNumber(aDebito(x).nValorAtual + !ValorTotal, 2)
                 End If
-proximo:
+Proximo:
                 .MoveNext
             Loop
           End If
@@ -1228,8 +1228,8 @@ Next
 ReDim aMat(0)
 For x = 1 To UBound(aDebito)
     Achou = False
-    For Y = 1 To UBound(aMat)
-        If aDebito(x).nCodReduz = aMat(Y).nCodReduz Then
+    For y = 1 To UBound(aMat)
+        If aDebito(x).nCodReduz = aMat(y).nCodReduz Then
             Achou = True
             Exit For
         End If
@@ -1245,11 +1245,11 @@ For x = 1 To UBound(aDebito)
         aMat(UBound(aMat)).nValorCorrecao = aDebito(x).nValorCorrecao
         aMat(UBound(aMat)).nValorAtual = aDebito(x).nValorAtual
     Else
-        aMat(Y).nValorPrincipal = aMat(Y).nValorPrincipal + aDebito(x).nValorTributo
-        aMat(Y).nValorMulta = aMat(Y).nValorMulta + aDebito(x).nValorMulta
-        aMat(Y).nValorJuros = aMat(Y).nValorJuros + aDebito(x).nValorJuros
-        aMat(Y).nValorCorrecao = aMat(Y).nValorCorrecao + aDebito(x).nValorCorrecao
-        aMat(Y).nValorAtual = aMat(Y).nValorAtual + aDebito(x).nValorAtual
+        aMat(y).nValorPrincipal = aMat(y).nValorPrincipal + aDebito(x).nValorTributo
+        aMat(y).nValorMulta = aMat(y).nValorMulta + aDebito(x).nValorMulta
+        aMat(y).nValorJuros = aMat(y).nValorJuros + aDebito(x).nValorJuros
+        aMat(y).nValorCorrecao = aMat(y).nValorCorrecao + aDebito(x).nValorCorrecao
+        aMat(y).nValorAtual = aMat(y).nValorAtual + aDebito(x).nValorAtual
     End If
 Next
 
@@ -1400,7 +1400,7 @@ With RdoAux
             Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux2
                 If RdoAux2.RowCount = 0 And chkAno.value = 0 Then
-                    GoTo proximo
+                    GoTo Proximo
                 End If
                .Close
             End With
@@ -1411,7 +1411,7 @@ With RdoAux
             Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux2
                 If .RowCount > 0 Then
-                    If !Inativo = 1 Then: .Close: GoTo proximo
+                    If !Inativo = 1 Then: .Close: GoTo Proximo
                     sNome = !nomecidadao
                 Else
                     sNome = ""
@@ -1423,9 +1423,9 @@ With RdoAux
             Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux2
                 If chkAtivo.value = vbChecked Then
-                    If Not IsNull(!dataencerramento) Then: .Close: GoTo proximo
+                    If Not IsNull(!dataencerramento) Then: .Close: GoTo Proximo
                 End If
-                sNome = !razaosocial
+                sNome = !RazaoSocial
                .Close
             End With
         Else
@@ -1476,7 +1476,7 @@ With RdoAux
            .Close
         End With
 
-proximo:
+Proximo:
        .MoveNext
     Loop
 End With
@@ -1495,15 +1495,15 @@ cn.Execute Sql, rdExecDirect
 End Sub
 
 Private Sub Main2()
-Dim x As Integer, nCodReduz1 As Long, nCodReduz2 As Long, aDebito() As Debito, nCodImovel As Long, z As Long
-Dim Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, nPos As Long, nTot As Long, aDebitoTotal() As DebitoTotal, Y As Integer
+Dim x As Integer, nCodReduz1 As Long, nCodReduz2 As Long, aDebito() As Debito, nCodImovel As Long, z As Long, RdoAux3 As rdoResultset
+Dim Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, nPos As Long, nTot As Long, aDebitoTotal() As DebitoTotal, y As Integer
 Dim nValorDebito As Double, Achou As Boolean, sExecFiscal As String, sNome As String
 Dim nSomaDebito As Double, nEval As Integer, nValorCorrecao As Double, sFullLanc As String
 Dim nSomaVencer As Double, nSomaDebitoUnica As Double, nSomaVencerUnica As Double
 Dim sDescReduz As String, nValorAtualizado As Double, nSomaValorTributo As Double
-Dim bAjuiza As Boolean, bDA As Boolean, qd As New rdoQuery, bIsentoMJ As Boolean, sSimples As String
+Dim bAjuiza As Boolean, bDA As Boolean, qd As New rdoQuery, bIsentoMJ As Boolean, sSimples As String, aLista() As Long, k As Long
 
-ReDim aAno(0): ReDim aLanc(0)
+ReDim aAno(0): ReDim aLanc(0): ReDim aLista(0)
 Ocupado
 Sql = "DELETE FROM DAM WHERE COMPUTER='" & NomeDeLogin & "'"
 cn.Execute Sql, rdExecDirect
@@ -1528,9 +1528,24 @@ nCodReduz1 = Val(txtCod1.Text)
 nCodReduz2 = Val(txtCod2.Text)
 nPos = 1
 nTot = nCodReduz2 - nCodReduz1
-For nCodImovel = nCodReduz1 To nCodReduz2
+
+Sql = "SELECT DISTINCT codreduzido FROM debitoparcela WHERE codreduzido BETWEEN " & nCodReduz1 & " and " & nCodReduz2 & " AND statuslanc IN (3,18,19,38,39,42,43,40,31) order by codreduzido"
+Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux3
+    Do Until .EOF
+        ReDim Preserve aLista(UBound(aLista) + 1)
+        aLista(UBound(aLista)) = !CODREDUZIDO
+       .MoveNext
+    Loop
+   .Close
+End With
+
+'For nCodImovel = nCodReduz1 To nCodReduz2
+For k = 1 To UBound(aLista)
+'If nCodImovel > 633483 Then Exit For
+    nCodImovel = aLista(k)
     If nPos Mod 10 = 0 Then
-       CallPb nPos, CLng(nTot)
+       CallPb nPos, CLng(UBound(aLista))
     End If
     
     If nCodImovel > 100000 And nCodImovel < 300000 Then
@@ -1541,7 +1556,7 @@ For nCodImovel = nCodReduz1 To nCodReduz2
             With RdoAux
                 If .RowCount > 0 Then
                     If !CODTIPOEVENTO = 2 Then
-                        GoTo proximo
+                        GoTo Proximo
                     End If
                 End If
                .Close
@@ -1553,7 +1568,7 @@ For nCodImovel = nCodReduz1 To nCodReduz2
             With RdoAux
                 If .RowCount > 0 Then
                     If Val(SubNull(!Mei)) = 0 Then
-                        GoTo proximo
+                        GoTo Proximo
                     End If
                 End If
                .Close
@@ -1563,7 +1578,7 @@ For nCodImovel = nCodReduz1 To nCodReduz2
             Sql = "SELECT Tributacao.dbo.RETORNASN(" & Format(Val(nCodImovel), "000000") & ",'" & Format(Now, "mm/dd/yyyy") & "') AS RETORNO"
             Set RdoAux2 = cn.OpenResultset(Sql, rdOpenForwardOnly, rdConcurReadOnly)
             If RdoAux2!RETORNO = 0 Then
-                GoTo proximo
+                GoTo Proximo
             End If
         End If
     
@@ -1573,7 +1588,7 @@ For nCodImovel = nCodReduz1 To nCodReduz2
             With RdoAux
                 If .RowCount > 0 Then
                     If Val(SubNull(!Mei)) = 1 Then
-                        GoTo proximo
+                        GoTo Proximo
                     End If
                 End If
                .Close
@@ -1586,7 +1601,7 @@ For nCodImovel = nCodReduz1 To nCodReduz2
             Sql = "SELECT Tributacao.dbo.RETORNASN(" & Format(Val(nCodImovel), "000000") & ",'" & Format(Now, "mm/dd/yyyy") & "') AS RETORNO"
             Set RdoAux2 = cn.OpenResultset(Sql, rdOpenForwardOnly, rdConcurReadOnly)
             If RdoAux2!RETORNO = 1 Then
-                GoTo proximo
+                GoTo Proximo
             End If
         End If
         
@@ -1595,7 +1610,7 @@ For nCodImovel = nCodReduz1 To nCodReduz2
     
     Calcula (nCodImovel)
 
-proximo:
+Proximo:
     nPos = nPos + 1
 Next
 
@@ -1627,7 +1642,7 @@ End Sub
 
 Private Sub Calcula(nCodImovel As Long)
 Dim x As Integer, nCodReduz1 As Long, nCodReduz2 As Long, aDebito() As Debito, z As Long
-Dim Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, nPos As Long, nTot As Long, aDebitoTotal() As DebitoTotal, Y As Integer
+Dim Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, nPos As Long, nTot As Long, aDebitoTotal() As DebitoTotal, y As Integer
 Dim nValorDebito As Double, Achou As Boolean, sExecFiscal As String, sNome As String, RdoAux3 As rdoResultset
 Dim nSomaDebito As Double, nEval As Integer, nValorCorrecao As Double, sFullLanc As String
 Dim nSomaVencer As Double, nSomaDebitoUnica As Double, nSomaVencerUnica As Double, sCNPJ As String
@@ -1665,7 +1680,7 @@ ElseIf nCodImovel > 100000 And nCodImovel < 500000 Then
             Else
                 If chkCNPJ.value = vbChecked Then: .Close: Exit Sub
             End If
-            sNome = !razaosocial
+            sNome = !RazaoSocial
         End If
        .Close
     End With
@@ -1708,37 +1723,37 @@ qd(15) = NomeDoUsuario
 Set RdoAux = qd.OpenResultset(rdOpenKeyset)
 
 With RdoAux
-    If RdoAux.RowCount > 0 Then
+        If RdoAux.RowCount > 0 Then
 
         nEval = UBound(aDebito)
         Do Until .EOF
             bJuros = False: bMulta = False
             If cmbAj.ListIndex = 1 Then
-                If IsNull(!dataajuiza) Then GoTo proximo
+                If IsNull(!dataajuiza) Then GoTo Proximo
             End If
             If cmbAj.ListIndex = 2 Then
-                If Not IsNull(!dataajuiza) Then GoTo proximo
+                If Not IsNull(!dataajuiza) Then GoTo Proximo
             End If
             If cmbDA.ListIndex = 1 Then
-                If IsNull(!datainscricao) Then GoTo proximo
+                If IsNull(!datainscricao) Then GoTo Proximo
             End If
             If cmbDA.ListIndex = 2 Then
-                If Not IsNull(!datainscricao) Then GoTo proximo
+                If Not IsNull(!datainscricao) Then GoTo Proximo
             End If
-            If !statuslanc <> 3 And !statuslanc <> 18 And !statuslanc <> 19 And !statuslanc <> 38 And !statuslanc <> 39 And !statuslanc <> 42 And !statuslanc <> 43 And !statuslanc <> 40 And !statuslanc <> 31 Then GoTo proximo
-            If !CodTributo = 3 Then GoTo proximo
+            If !statuslanc <> 3 And !statuslanc <> 18 And !statuslanc <> 19 And !statuslanc <> 38 And !statuslanc <> 39 And !statuslanc <> 42 And !statuslanc <> 43 And !statuslanc <> 40 And !statuslanc <> 31 Then GoTo Proximo
+            If !CodTributo = 3 Then GoTo Proximo
             
             'If !AnoExercicio = 2007 Then
             '    MsgBox "teste"
             'End If
             z = BinarySearchLong(aAno(), CLng(!AnoExercicio))
-            If z = -1 Then GoTo proximo
+            If z = -1 Then GoTo Proximo
             
             z = BinarySearchLong(aLanc(), CLng(!CodLancamento))
-            If z = -1 Then GoTo proximo
+            If z = -1 Then GoTo Proximo
             
             If IsDate(mskVenc.Text) Then
-                If !DataVencimento > CDate(mskVenc.Text) Then GoTo proximo
+                If !DataVencimento > CDate(mskVenc.Text) Then GoTo Proximo
             End If
 
             z = BinarySearchLong(aCodigoDebito(), CLng(!CODREDUZIDO))
@@ -1787,7 +1802,7 @@ With RdoAux
                     aDebito(x).nValorGeral = FormatNumber(aDebito(x).nValorGeral + !ValorTotal, 2)
                 End If
             End If
-proximo:
+Proximo:
                         
             .MoveNext
         Loop
@@ -1798,10 +1813,10 @@ nPos = nPos + 1
 
 ReDim Preserve aDebitoTotal(UBound(aDebitoTotal) + 1)
 aDebitoTotal(UBound(aDebitoTotal)).nCodReduz = nCodImovel
-For Y = 1 To UBound(aDebito)
+For y = 1 To UBound(aDebito)
     
-    If aDebito(Y).nCodReduz = nCodImovel Then
-        aDebitoTotal(UBound(aDebitoTotal)).nValor = aDebitoTotal(UBound(aDebitoTotal)).nValor + aDebito(Y).nValorGeral
+    If aDebito(y).nCodReduz = nCodImovel Then
+        aDebitoTotal(UBound(aDebitoTotal)).nValor = aDebitoTotal(UBound(aDebitoTotal)).nValor + aDebito(y).nValorGeral
     End If
 Next
 
@@ -1809,8 +1824,8 @@ Next
 sAno = "": ReDim aAnoFull(0)
 For x = 0 To UBound(aDebito)
     Achou = False
-    For Y = 0 To UBound(aAnoFull)
-        If aAnoFull(Y) = aDebito(x).nAno Then
+    For y = 0 To UBound(aAnoFull)
+        If aAnoFull(y) = aDebito(x).nAno Then
             Achou = True
             Exit For
         End If
@@ -1830,9 +1845,9 @@ For x = 1 To UBound(aDebito)
 '        If .nCodReduz = 21102 Then MsgBox "teste"
         If Val(txtValor.Text) > 0 Then
             nValorAtualizado = 0
-            For Y = 0 To UBound(aDebitoTotal)
-                If aDebitoTotal(Y).nCodReduz = aDebito(x).nCodReduz Then
-                    nValorAtualizado = aDebitoTotal(Y).nValor
+            For y = 0 To UBound(aDebitoTotal)
+                If aDebitoTotal(y).nCodReduz = aDebito(x).nCodReduz Then
+                    nValorAtualizado = aDebitoTotal(y).nValor
                     Exit For
                 End If
             Next
@@ -1915,7 +1930,7 @@ With RdoAux
             If .RowCount > 0 Then
                 If !CODTIPOEVENTO = 2 Then
                     .Close
-                    GoTo proximo
+                    GoTo Proximo
                 End If
             End If
            .Close
@@ -1972,7 +1987,7 @@ With RdoAux
             Sql = "insert mobiliariodevedor(usuario,codigo,valor) values('" & NomeDeLogin & "'," & nCodReduz & "," & Virg2Ponto(Format(nTotal, "#0.00")) & ")"
             cn.Execute Sql, rdExecDirect
         End If
-proximo:
+Proximo:
         DoEvents
         nPosReg = nPosReg + 1
        .MoveNext

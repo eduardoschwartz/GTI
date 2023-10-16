@@ -1232,7 +1232,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Private Type Lista
+Private Type lista
     nCodReduzido As Long
     nCodCidadao As Long
 End Type
@@ -1376,6 +1376,8 @@ Dim aFatorC() As FATORCATEG
 Dim aFatorC98() As FATORCATEG
 Dim aGleba() As GLEBA
 Dim aLaser() As LaserIPTU
+
+Dim sCPF As String, sBairro As String, sCep As String
 
 Private Sub cmdArray_Click()
 Dim x As Long, RdoAux As rdoResultset, Sql As String, RdoAux2 As rdoResultset, nAno1 As Integer, nAno2 As Integer
@@ -1979,7 +1981,7 @@ With RdoAux
         nValorExpDocUnica = FormatNumber(!valorunica, 2)
      Else
         MsgBox "Taxa de Expediente não cadastrada.", vbCritical, "Atenção"
-        GoTo fim
+        GoTo Fim
      End If
     .Close
 End With
@@ -2351,7 +2353,7 @@ Proximo:
     Loop
 End With
 
-fim:
+Fim:
 Close #4
 Close #3
 Close #2
@@ -2696,7 +2698,7 @@ Proximo:
     Loop
 End With
 
-fim:
+Fim:
 
 End Sub
 
@@ -3309,17 +3311,23 @@ Private Sub CalculoGeral2()
 
 End Sub
 
-
 Private Sub cmdGravar_Click()
 Dim nValorParcela As Double, nValorUnica As Double, nValorPago As Double, nSeq As Integer
-Dim nValorFinal As Double, nNumParc As Integer
+Dim nValorFinal As Double, nNumParc As Integer, nCodReduz As Long
+
+nCodReduz = Val(txtCod.Text)
 
 If Not IsDate(mskDataBase.Text) Then
     MsgBox "Data base inválida", vbCritical, "atenção"
     Exit Sub
 End If
 
-Sql = "select * from debitoparcela where codreduzido=" & Val(txtCod.Text) & " and anoexercicio=" & Val(txtAnoCalculo.Text) & " and codlancamento=1 and statuslanc<>5 and statuslanc<>8"
+If Val(lblParcela.Caption) = 0 Then
+    MsgBox "Não existe valor para as parcelas", vbCritical, "atenção"
+    Exit Sub
+End If
+
+Sql = "select * from debitoparcela where codreduzido=" & nCodReduz & " and anoexercicio=" & Val(txtAnoCalculo.Text) & " and codlancamento=1 and statuslanc not in (5,8,45)"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 If RdoAux.RowCount > 0 Then
     MsgBox "Este código já possui IPTU para " & txtAnoCalculo.Text
@@ -3327,22 +3335,14 @@ If RdoAux.RowCount > 0 Then
 End If
 RdoAux.Close
 
-'Sql = "SELECT CODLANCAMENTO,VALORPARCELA,VALORUNICA FROM EXPEDIENTE WHERE ANOEXPED=" & nAnoCalculo & " AND CODLANCAMENTO=1"
-'Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-'With RdoAux
-'     nValorExpDocParc = FormatNumber(!VALORPARCELA, 2)
-'
-'     nValorExpDocUnica = FormatNumber(!ValorUnica, 2)
-'    .Close
-'End With
+'GoTo LASERIPTUEXT
 
 'busca o valorpago
 Sql = "SELECT SUM(debitotributo.valortributo) AS TOTAL FROM debitotributo INNER JOIN debitoparcela ON debitotributo.codreduzido = debitoparcela.codreduzido AND "
 Sql = Sql & "debitotributo.anoexercicio = debitoparcela.anoexercicio AND debitotributo.codlancamento = debitoparcela.codlancamento AND "
 Sql = Sql & "debitotributo.seqlancamento = debitoparcela.seqlancamento AND debitotributo.NumParcela = debitoparcela.NumParcela And debitotributo.CODCOMPLEMENTO = debitoparcela.CODCOMPLEMENTO "
-Sql = Sql & "WHERE debitotributo.codreduzido = " & Val(txtCod.Text) & " AND debitotributo.anoexercicio = " & nAnoCalculo & " AND "
+Sql = Sql & "WHERE debitotributo.codreduzido = " & nCodReduz & " AND debitotributo.anoexercicio = " & nAnoCalculo & " AND "
 Sql = Sql & "debitotributo.codlancamento = 1 AND (debitoparcela.statuslanc = 1 OR debitoparcela.statuslanc = 2)"
-'Sql = "SELECT SUM(VALORPAGO) AS TOTAL FROM DEBITOPAGO WHERE CODREDUZIDO=" & Val(txtCod) & " AND ANOEXERCICIO =' " & nAnoCalculo & " AND (CODLANCAMENTO = 1 OR CODLANCAMENTO = 29)"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If IsNull(!Total) Then
@@ -3353,14 +3353,13 @@ With RdoAux
    .Close
 End With
 
-nCodReduz = Val(txtCod.Text)
 nAnoCalculo = Val(txtAnoCalculo.Text)
 sDataBase = mskDataBase.Text
 nValorParcela = (CDbl(lblValorFinal.Caption) - nValorPago) / Val(txtNumParc.Text)
 nValorUnica = CDbl(lblUnica.Caption)
 
 'busca ultima sequencia
-Sql = "SELECT MAX(SEQLANCAMENTO) AS MAXIMO FROM DEBITOPARCELA WHERE CODREDUZIDO=" & Val(txtCod.Text) & " AND ANOEXERCICIO=" & nAnoCalculo & " AND CODLANCAMENTO=1"
+Sql = "SELECT MAX(SEQLANCAMENTO) AS MAXIMO FROM DEBITOPARCELA WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAnoCalculo & " AND CODLANCAMENTO=1"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If IsNull(!maximo) Then
@@ -3372,56 +3371,8 @@ With RdoAux
 End With
 
 'cancela as parcelas nao pagas
-Sql = "UPDATE DEBITOPARCELA SET STATUSLANC=5 WHERE CODREDUZIDO=" & Val(txtCod.Text) & " AND ANOEXERCICIO=" & nAnoCalculo & " AND CODLANCAMENTO=1 AND STATUSLANC=3"
+Sql = "UPDATE DEBITOPARCELA SET STATUSLANC=5 WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAnoCalculo & " AND CODLANCAMENTO=1 AND STATUSLANC=3"
 cn.Execute Sql, rdExecDirect
-
-'APAGA
-
-'TABELA PARCELA DOCUMENTO
-'Sql = "SELECT  parceladocumento.codreduzido, parceladocumento.anoexercicio, parceladocumento.codlancamento, parceladocumento.seqlancamento, "
-'Sql = Sql & "parceladocumento.numparcela, parceladocumento.codcomplemento, parceladocumento.numdocumento, parceladocumento.valorjuros,"
-'Sql = Sql & "parceladocumento.codbanco, parceladocumento.valormulta, parceladocumento.valorcorrecao, parceladocumento.intacto,"
-'Sql = Sql & "debitoparcela.statuslanc FROM parceladocumento INNER JOIN debitoparcela ON parceladocumento.codreduzido = debitoparcela.codreduzido AND "
-'Sql = Sql & "parceladocumento.anoexercicio = debitoparcela.anoexercicio AND parceladocumento.codlancamento = debitoparcela.codlancamento AND "
-'Sql = Sql & "parceladocumento.seqlancamento = debitoparcela.seqlancamento AND parceladocumento.NumParcela = debitoparcela.NumParcela And "
-'Sql = Sql & "parceladocumento.CODCOMPLEMENTO = debitoparcela.CODCOMPLEMENTO WHERE parceladocumento.codreduzido = " & Val(txtCod.text) & " AND "
-'Sql = Sql & "parceladocumento.anoexercicio = " & nAnoCalculo & " AND parceladocumento.codlancamento = 1 AND debitoparcela.statuslanc = 3"
-'Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-'With RdoAux
-'    Do Until .EOF
-'        Sql = "DELETE FROM NUMDOCUMENTO WHERE NUMDOCUMENTO=" & !NumDocumento
-'        cn.Execute Sql, rdExecDirect
-'       .MoveNext
-'    Loop
-'End With
-'
-'Sql = "DELETE FROM parceladocumento INNER JOIN debitoparcela ON parceladocumento.codreduzido = debitoparcela.codreduzido AND "
-'Sql = Sql & "parceladocumento.anoexercicio = debitoparcela.anoexercicio AND parceladocumento.codlancamento = debitoparcela.codlancamento AND "
-'Sql = Sql & "parceladocumento.seqlancamento = debitoparcela.seqlancamento AND parceladocumento.NumParcela = debitoparcela.NumParcela And "
-'Sql = Sql & "parceladocumento.CODCOMPLEMENTO = debitoparcela.CODCOMPLEMENTO WHERE parceladocumento.codreduzido = " & Val(txtCod.text) & " AND "
-'Sql = Sql & "parceladocumento.anoexercicio = " & nAnoCalculo & " AND parceladocumento.codlancamento = 1 AND debitoparcela.statuslanc = 3"
-'cn.Execute Sql, rdExecDirect
-'
-''TABELA DEBITOTRIBUTO
-'Sql = "DELETE FROM debitotributo FROM  debitoparcela INNER JOIN  debitotributo ON debitoparcela.codcomplemento = debitotributo.codcomplemento AND "
-'Sql = Sql & "debitoparcela.numparcela = debitotributo.numparcela AND debitoparcela.seqlancamento = debitotributo.seqlancamento AND "
-'Sql = Sql & "debitoparcela.codlancamento = debitotributo.codlancamento AND debitoparcela.AnoExercicio = debitotributo.AnoExercicio And "
-'Sql = Sql & "debitoparcela.CODREDUZIDO = debitotributo.CODREDUZIDO Where debitoparcela.statuslanc = 3 And debitoTRIBUTO.CODREDUZIDO = " & Val(txtCod.text)
-'Sql = Sql & " And debitotributo.ANOEXERCICIO = " & nAnoCalculo & " and debitotributo.codlancamento=1"
-'cn.Execute Sql, rdExecDirect
-'
-''TABELA DEBITOPARCELA
-'Sql = "DELETE FROM DEBITOPARCELA WHERE CODREDUZIDO=" & Val(txtCod) & " AND ANOEXERCICIO = " & nAnoCalculo & " AND CODLANCAMENTO = 1 AND STATUSLANC=3"
-'cn.Execute Sql, rdExecDirect
-
-
-'ULTIMO Nº DE DOCUMENTO
-Sql = "SELECT MAX(NUMDOCUMENTO) AS ULTIMO FROM NUMDOCUMENTO"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
-    nLastDoc = !ULTIMO + 20
-   .Close
-End With
 
 
 nValorFinal = (CDbl(lblValorFinal.Caption) - nValorPago)
@@ -3446,67 +3397,132 @@ nValorUnica = Round(nValorFinal - (nValorFinal * (CDbl(lblPercUnica.Caption) / 1
 nValorParcela = Round(nValorFinal / nNumParc, 2)
 
 
-
 For x = 0 To nNumParc
     If lblTemUnica = "Não" And x = 0 Then x = 1
     'GRAVA NA TABELA DEBITOPARCELA
-'    Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,"
-'    Sql = Sql & "DATAVENCIMENTO,DATADEBASE,CODMOEDA,USUARIO) VALUES(" & Val(txtCod.Text) & "," & nAnoCalculo & ",1," & nSeq & "," & x & ",0,3,'"
-'    Sql = Sql & Format(aParc(x), "mm/dd/yyyy") & "','" & Format(sDataBase, "mm/dd/yyyy") & "',1,'" & Left$(NomeDeLogin, 25) & "')"
     Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,"
-    Sql = Sql & "DATAVENCIMENTO,DATADEBASE,CODMOEDA,USERID) VALUES(" & Val(txtCod.Text) & "," & nAnoCalculo & ",1," & nSeq & "," & x & ",0,3,'"
+    Sql = Sql & "DATAVENCIMENTO,DATADEBASE,CODMOEDA,USERID) VALUES(" & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & x & ",0,3,'"
     Sql = Sql & Format(aParc(x), "mm/dd/yyyy") & "','" & Format(sDataBase, "mm/dd/yyyy") & "',1," & RetornaUsuarioID(NomeDeLogin) & ")"
     cn.Execute Sql, rdExecDirect
-    'GRAVA NA TABELA DEBITO TRIBUTO
+    
+    'GRAVA NA TABELA DEBITOTRIBUTO
     Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,"
-    Sql = Sql & "VALORTRIBUTO) VALUES(" & Val(txtCod.Text) & "," & nAnoCalculo & ",1," & nSeq & "," & x & ",0,1," & Virg2Ponto(IIf(x = 0, Round(nValorUnica, 2), Round(nValorParcela, 2))) & ")"
+    Sql = Sql & "VALORTRIBUTO) VALUES(" & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & x & ",0,1," & Virg2Ponto(IIf(x = 0, Round(nValorUnica, 2), Round(nValorParcela, 2))) & ")"
     cn.Execute Sql, rdExecDirect
-    'GRAVA NA TABELA DEBITO TRIBUTO
-'    Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,"
-'    Sql = Sql & "VALORTRIBUTO) VALUES(" & Val(txtCod.text) & "," & nAnoCalculo & ",1," & nSeq & "," & x & ",0,3," & Virg2Ponto(IIf(x = 0, Round(nValorExpDocUnica, 2), Round(nValorExpDocParc, 2))) & ")"
-'    cn.Execute Sql, rdExecDirect
-    'GRAVA NA TABELA NUMDOCUMENTO
-  '  Sql = "INSERT NUMDOCUMENTO (NUMDOCUMENTO,DATADOCUMENTO,CODBANCO,CODAGENCIA,VALORPAGO,VALORTAXADOC,ISENTOMJ,emissor) VALUES("
-  '  Sql = Sql & nLastDoc & ",'" & Format(Now, "mm/dd/yyyy") & "',0,0,0," & Virg2Ponto(CStr(Round(nValorExpDocParc, 2))) & "," & "0" & ",'" & NomeDeLogin & " (CÁLCULO IND.)" & "')"
-  '  cn.Execute Sql, rdExecDirect
+    
+    'ULTIMO Nº DE DOCUMENTO
+    Sql = "SELECT MAX(NUMDOCUMENTO) AS ULTIMO FROM NUMDOCUMENTO"
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    With RdoAux
+        nLastDoc = !ULTIMO + 1
+       .Close
+    End With
+    
     'GRAVA NA TABELA PARCELADOCUMENTO
-  '  Sql = "INSERT PARCELADOCUMENTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,NUMDOCUMENTO) VALUES("
-  '  Sql = Sql & Val(txtCod.Text) & "," & nAnoCalculo & ",1," & nSeq & "," & x & ",0," & nLastDoc & ")"
-  '  cn.Execute Sql, rdExecDirect
-  '  nLastDoc = nLastDoc + 1
+    Sql = "INSERT PARCELADOCUMENTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,NUMDOCUMENTO) VALUES("
+    Sql = Sql & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & x & ",0," & nLastDoc & ")"
+    cn.Execute Sql, rdExecDirect
+    
+    'GRAVA NA TABELA NUMDOCUMENTO
+    Sql = "INSERT NUMDOCUMENTO (NUMDOCUMENTO,DATADOCUMENTO,EMISSOR,USERID,REGISTRADO) VALUES("
+    Sql = Sql & nLastDoc & ",'" & Format(Now, "mm/dd/yyyy") & "','(RECALCULO-IPTU)" & "'," & RetornaUsuarioID(NomeDeLogin) & ",1)"
+    cn.Execute Sql, rdExecDirect
+
+    'GRAVA DOCUMENTO PARA REGISTRO
+    Sql = "INSERT ficha_compensacao_documento(numero_documento,data_vencimento,valor_documento,nome,cpf,endereco,bairro,cep,cidade,uf) values(" & nLastDoc & ",'"
+    Sql = Sql & Format(aParc(x), "mm/dd/yyyy") & "'," & Virg2Ponto(IIf(x = 0, Round(nValorUnica, 2), Round(nValorParcela, 2))) & ",'" & Mask(Left(lblProp.Caption, 40)) & "','" & sCPF & "','"
+    Sql = Sql & Mask(Left(lblRua.Caption, 40)) & "','" & Mask(Left(sBairro, 15)) & "','" & RetornaNumero(sCep) & "','" & Mask(Left("JABOTICABAL", 30)) & "','SP')"
+    cn.Execute Sql, rdExecDirect
+
 Next
-'Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,"
-'Sql = Sql & "DATAVENCIMENTO,DATADEBASE,CODMOEDA,USUARIO) VALUES(" & Val(txtCod.Text) & "," & nAnoCalculo & ",1," & nSeq & "," & 0 & ",91,3,'"
-'Sql = Sql & Format(aParc(2), "mm/dd/yyyy") & "','" & Format(sDataBase, "mm/dd/yyyy") & "',1,'" & Left$(NomeDeLogin, 25) & "')"
+
+'ULTIMO Nº DE DOCUMENTO
+Sql = "SELECT MAX(NUMDOCUMENTO) AS ULTIMO FROM NUMDOCUMENTO"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    nLastDoc = !ULTIMO + 1
+   .Close
+End With
 Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,"
-Sql = Sql & "DATAVENCIMENTO,DATADEBASE,CODMOEDA,USERID) VALUES(" & Val(txtCod.Text) & "," & nAnoCalculo & ",1," & nSeq & "," & 0 & ",91,3,'"
+Sql = Sql & "DATAVENCIMENTO,DATADEBASE,CODMOEDA,USERID) VALUES(" & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & 0 & ",91,3,'"
 Sql = Sql & Format(aParc(2), "mm/dd/yyyy") & "','" & Format(sDataBase, "mm/dd/yyyy") & "',1," & RetornaUsuarioID(NomeDeLogin) & ")"
 cn.Execute Sql, rdExecDirect
-'GRAVA NA TABELA DEBITO TRIBUTO
+'GRAVA NA TABELA DEBITOTRIBUTO
 Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,"
-Sql = Sql & "VALORTRIBUTO) VALUES(" & Val(txtCod.Text) & "," & nAnoCalculo & ",1," & nSeq & "," & 0 & ",91,1," & Virg2Ponto(Round(CDbl(lblUnica2.Caption), 2)) & ")"
+Sql = Sql & "VALORTRIBUTO) VALUES(" & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & 0 & ",91,1," & Virg2Ponto(Round(CDbl(lblUnica2.Caption), 2)) & ")"
+cn.Execute Sql, rdExecDirect
+'GRAVA NA TABELA PARCELADOCUMENTO
+Sql = "INSERT PARCELADOCUMENTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,NUMDOCUMENTO) VALUES("
+Sql = Sql & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & 0 & ",91," & nLastDoc & ")"
+cn.Execute Sql, rdExecDirect
+'GRAVA NA TABELA NUMDOCUMENTO
+Sql = "INSERT NUMDOCUMENTO (NUMDOCUMENTO,DATADOCUMENTO,EMISSOR,USERID,REGISTRADO) VALUES("
+Sql = Sql & nLastDoc & ",'" & Format(Now, "mm/dd/yyyy") & "','(RECALCULO-IPTU)" & "'," & RetornaUsuarioID(NomeDeLogin) & ",1)"
+cn.Execute Sql, rdExecDirect
+'GRAVA DOCUMENTO PARA REGISTRO
+Sql = "INSERT ficha_compensacao_documento(numero_documento,data_vencimento,valor_documento,nome,cpf,endereco,bairro,cep,cidade,uf) values(" & nLastDoc & ",'"
+Sql = Sql & Format(aParc(2), "mm/dd/yyyy") & "'," & Virg2Ponto(Round(CDbl(lblUnica2.Caption), 2)) & ",'" & Mask(Left(lblProp.Caption, 40)) & "','" & sCPF & "','"
+Sql = Sql & Mask(Left(lblRua.Caption, 40)) & "','" & Mask(Left(sBairro, 15)) & "','" & RetornaNumero(sCep) & "','" & Mask(Left("JABOTICABAL", 30)) & "','SP')"
 cn.Execute Sql, rdExecDirect
 
-'Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,"
-'Sql = Sql & "DATAVENCIMENTO,DATADEBASE,CODMOEDA,USUARIO) VALUES(" & Val(txtCod.Text) & "," & nAnoCalculo & ",1," & nSeq & "," & 0 & ",92,3,'"
-'Sql = Sql & Format(aParc(3), "mm/dd/yyyy") & "','" & Format(sDataBase, "mm/dd/yyyy") & "',1,'" & Left$(NomeDeLogin, 25) & "')"
+
+'ULTIMO Nº DE DOCUMENTO
+Sql = "SELECT MAX(NUMDOCUMENTO) AS ULTIMO FROM NUMDOCUMENTO"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    nLastDoc = !ULTIMO + 1
+   .Close
+End With
 Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,"
-Sql = Sql & "DATAVENCIMENTO,DATADEBASE,CODMOEDA,USERID) VALUES(" & Val(txtCod.Text) & "," & nAnoCalculo & ",1," & nSeq & "," & 0 & ",92,3,'"
+Sql = Sql & "DATAVENCIMENTO,DATADEBASE,CODMOEDA,USERID) VALUES(" & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & 0 & ",92,3,'"
 Sql = Sql & Format(aParc(3), "mm/dd/yyyy") & "','" & Format(sDataBase, "mm/dd/yyyy") & "',1," & RetornaUsuarioID(NomeDeLogin) & ")"
 cn.Execute Sql, rdExecDirect
-'GRAVA NA TABELA DEBITO TRIBUTO
+'GRAVA NA TABELA DEBITOTRIBUTO
 Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,"
-Sql = Sql & "VALORTRIBUTO) VALUES(" & Val(txtCod.Text) & "," & nAnoCalculo & ",1," & nSeq & "," & 0 & ",92,1," & Virg2Ponto(Round(CDbl(lblUnica3.Caption), 2)) & ")"
+Sql = Sql & "VALORTRIBUTO) VALUES(" & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & 0 & ",92,1," & Virg2Ponto(Round(CDbl(lblUnica3.Caption), 2)) & ")"
+cn.Execute Sql, rdExecDirect
+'GRAVA NA TABELA PARCELADOCUMENTO
+Sql = "INSERT PARCELADOCUMENTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,NUMDOCUMENTO) VALUES("
+Sql = Sql & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & 0 & ",92," & nLastDoc & ")"
+cn.Execute Sql, rdExecDirect
+'GRAVA NA TABELA NUMDOCUMENTO
+Sql = "INSERT NUMDOCUMENTO (NUMDOCUMENTO,DATADOCUMENTO,EMISSOR,USERID,REGISTRADO) VALUES("
+Sql = Sql & nLastDoc & ",'" & Format(Now, "mm/dd/yyyy") & "','(RECALCULO-IPTU)" & "'," & RetornaUsuarioID(NomeDeLogin) & ",1)"
+cn.Execute Sql, rdExecDirect
+'GRAVA DOCUMENTO PARA REGISTRO
+Sql = "INSERT ficha_compensacao_documento(numero_documento,data_vencimento,valor_documento,nome,cpf,endereco,bairro,cep,cidade,uf) values(" & nLastDoc & ",'"
+Sql = Sql & Format(aParc(3), "mm/dd/yyyy") & "'," & Virg2Ponto(Round(CDbl(lblUnica3.Caption), 2)) & ",'" & Mask(Left(lblProp.Caption, 40)) & "','" & sCPF & "','"
+Sql = Sql & Mask(Left(lblRua.Caption, 40)) & "','" & Mask(Left(sBairro, 15)) & "','" & RetornaNumero(sCep) & "','" & Mask(Left("JABOTICABAL", 30)) & "','SP')"
+cn.Execute Sql, rdExecDirect
+
+
+LASERIPTUEXT:
+Sql = "select * from laseriptu_ext where ano=" & nAnoCalculo & " and codreduzido=" & nCodReduz
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+If RdoAux.RowCount > 0 Then
+    Sql = "delete from laseriptu_ext where ano=" & nAnoCalculo & " and codreduzido=" & nCodReduz
+    cn.Execute Sql, rdExecDirect
+End If
+RdoAux.Close
+
+'GRAVA NA TABELA LASERIPTU_EXT
+Sql = "INSERT LASERIPTU_EXT (ANO,CODREDUZIDO,VVT,VVC,VVI,IMPOSTOPREDIAL,IMPOSTOTERRITORIAL,NATUREZA,AREACONSTRUCAO,TESTADAPRINC,VALORTOTALPARC,VALORTOTALUNICA,VALORTOTALUNICA2,VALORTOTALUNICA3,QTDEPARC,AREATERRENO,"
+Sql = Sql & "FATORCAT,FATORPED,FATORSIT,FATORPRO,FATORTOP,FATORDIS,FATORGLE,AGRUPAMENTO,FRACAOIDEAL,ALIQUOTA) VALUES("
+Sql = Sql & nAnoCalculo & "," & nCodReduz & "," & Virg2Ponto(RemovePonto(lblVVT.Caption)) & "," & Virg2Ponto(RemovePonto(lblVVP.Caption)) & "," & Virg2Ponto(RemovePonto(lblVVI.Caption)) & "," & IIf(lblPredial.Caption = "Sim", Virg2Ponto(RemovePonto(lblValorFinal.Caption)), 0) & ","
+Sql = Sql & IIf(lblPredial.Caption = "Sim", 0, Virg2Ponto(RemovePonto(lblValorFinal.Caption))) & ",'" & IIf(lblPredial.Caption = "Sim", "Predial", "Territorial") & "'," & Virg2Ponto(RemovePonto(lblAreaPrincipal.Caption)) & "," & Virg2Ponto(RemovePonto(lblTestada.Caption)) & ","
+Sql = Sql & Virg2Ponto(RemovePonto(lblParcela.Caption)) & "," & Virg2Ponto(RemovePonto(lblUnica.Caption)) & "," & Virg2Ponto(RemovePonto(lblUnica2.Caption)) & "," & Virg2Ponto(RemovePonto(lblUnica3.Caption)) & "," & Val(txtNumParc.Text) & "," & Virg2Ponto(lblAreaTerreno.Caption) & "," & Virg2Ponto(lblFatorC.Caption) & "," & Virg2Ponto(lblFatorP.Caption) & ","
+Sql = Sql & Virg2Ponto(lblFatorS.Caption) & "," & Virg2Ponto(lblFatorP.Caption) & "," & Virg2Ponto(lblFatorT.Caption) & "," & Virg2Ponto(lblFatorT.Caption) & "," & Virg2Ponto(lblFatorG.Caption) & "," & Virg2Ponto(lblAgrup.Caption) & ","
+Sql = Sql & Virg2Ponto(lblFracao.Caption) & "," & Virg2Ponto(IIf(lblPredial.Caption = "Sim", 1.5, 3)) & ")"
 cn.Execute Sql, rdExecDirect
 
 
 
-MsgBox "Debito recalculado."
+MsgBox "Debito gravado.", vbInformation
 
 End Sub
 
 Private Sub cmdLista_Click()
-Dim aCidadao1() As Lista, aCidadao2() As Long, x As Long, y As Long, z As Long, bAchou As Boolean, aDup() As Lista, bAchou2 As Boolean, t As Long
+Dim aCidadao1() As lista, aCidadao2() As Long, x As Long, y As Long, z As Long, bAchou As Boolean, aDup() As lista, bAchou2 As Boolean, t As Long
 
 ReDim aCidadao1(0): ReDim aCidadao2(0): ReDim aDup(0): ReDim aEspelho(0)
 'CARREGA A MATRIZ 1 COM TODOS OS CODIGOS
@@ -3614,7 +3630,7 @@ Private Sub Form_Load()
 
 Ocupado
 
-If NomeDeLogin = "ANA" Or NomeDeLogin = "JOSIANE" Or NomeDeLogin = "SCHWARTZ" Then
+If NomeDeLogin = "ANA" Or NomeDeLogin = "JOSIANE" Or NomeDeLogin = "SCHWARTZ" Or NomeDeLogin = "ROBERTA.SILVA" Then
    cmdGravar.Enabled = True
 Else
    cmdGravar.Enabled = False
@@ -3637,7 +3653,7 @@ With RdoAux
      End If
       .Close
 End With
-fim:
+Fim:
 'LoadMatrix
 
 Liberado
@@ -3798,7 +3814,7 @@ Tweak txtAnoCalculo, KeyAscii, IntegerPositive
 End Sub
 
 Private Sub txtAnoCalculo_LostFocus()
-If Val(txtAnoCalculo.Text) >= 2004 And Val(txtAnoCalculo.Text) <= 2020 Then
+If Val(txtAnoCalculo.Text) >= 2004 And Val(txtAnoCalculo.Text) <= 2023 Then
     lblAno.Caption = "Cálculo " & txtAnoCalculo.Text
    CarregaTela
 Else
@@ -3822,12 +3838,31 @@ lblVVP.Caption = "0,00"
 End Sub
 
 Private Sub CarregaImovel()
+Dim sDoc As String
+'With xImovel
+'    .CarregaImovel Val(txtCod.Text)
+'    lblProp.Caption = .NomePropPrincipal
+'    lblRua.Caption = .EnderecoCompleto
+'    sBairro = .Bairro
+'End With
 
-With xImovel
-    .CarregaImovel Val(txtCod.Text)
-    lblProp.Caption = .NomePropPrincipal
-    lblRua.Caption = .EnderecoCompleto
+Sql = "select * from vwfullimovel where codreduzido=" & Val(txtCod.Text)
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    If .RowCount > 0 Then
+        lblProp.Caption = !nomecidadao
+        sDoc = SubNull(!Cnpj)
+        If sDoc = "" Then
+            sDoc = Format(Val(SubNull(!cpf)), "00000000000")
+        End If
+        sCPF = sDoc
+        sBairro = SubNull(!DescBairro)
+        lblRua.Caption = !Logradouro & "," & Val(SubNull(!Li_Num))
+        sCep = RetornaCEP(!CodLogr, !Li_Num)
+    End If
+   .Close
 End With
+
 
 End Sub
 
@@ -3837,7 +3872,7 @@ Sql = "SELECT ANO,QTDEPARCELA,PARCELAUNICA,DESCONTOUNICA,DESCONTOUNICA2,DESCONTO
 Sql = Sql & "VENC06,VENC07,VENC08,VENC09,VENC10,VENC11,VENC12 FROM PARAMPARCELA WHERE CODTIPO=1 AND ANO=" & nAnoCalculo
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
-     If .RowCount = 0 Then GoTo fim
+     If .RowCount = 0 Then GoTo Fim
      txtNumParc.Text = !qtdeparcela
      lblTemUnica.Caption = IIf(!PARCELAUNICA = "S", "Sim", "Não")
      lblPercUnica.Caption = FormatNumber(!DESCONTOUNICA, 2)
@@ -3865,7 +3900,7 @@ With RdoAux
      Loop
     .Close
 End With
-fim:
+Fim:
 End Sub
 
 Private Sub cmdRel_Click()
@@ -4014,7 +4049,7 @@ With RdoAux
             aLaser(1).sCepEntrega = sCep
             
            '******************************
-            If !Ano = 2006 Then
+            If !ano = 2006 Then
                 aLaser(1).nVVT1 = !vvt
                 aLaser(1).nVVC1 = !vvc
                 aLaser(1).nVVI1 = !vvi
@@ -4032,7 +4067,7 @@ With RdoAux
                 aLaser(1).nValorUnica2 = !VALORTOTALUNICA
             End If
         Else
-            If !Ano = 2006 Then
+            If !ano = 2006 Then
                 aLaser(1).nVVT1 = !vvt
                 aLaser(1).nVVC1 = !vvc
                 aLaser(1).nVVI1 = !vvi
@@ -4494,6 +4529,13 @@ With RdoAux
     lblFatorS.Caption = FormatNumber(!fsit, 2)
     lblFatorT.Caption = FormatNumber(!ftop, 2)
     lblFatorF.Caption = FormatNumber(!fpro, 2)
+    
+        'MULTIPLICA OS FATORES
+    nValorFatores = FormatNumber(!fdis * !fsit * !fped * !fpro * !fgle, 2)
+    lblMulF.Caption = FormatNumber(nValorFatores, 2)
+
+    
+    
     lblValorFinal.Caption = FormatNumber(!valorparcela * !qtdeparc, 2)
     If Not IsNull(!valorfinal) Then
         nValorFinal = !valorfinal

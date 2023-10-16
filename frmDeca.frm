@@ -5,15 +5,16 @@ Begin VB.Form frmDeca
    BackColor       =   &H00EEEEEE&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Declaração cadastral (DECA)"
-   ClientHeight    =   5385
-   ClientLeft      =   2715
-   ClientTop       =   2775
+   ClientHeight    =   5370
+   ClientLeft      =   975
+   ClientTop       =   3945
    ClientWidth     =   10050
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
-   MDIChild        =   -1  'True
-   ScaleHeight     =   5385
+   MinButton       =   0   'False
+   ScaleHeight     =   5370
    ScaleWidth      =   10050
+   ShowInTaskbar   =   0   'False
    Begin VB.Frame Frame1 
       BackColor       =   &H00EEEEEE&
       Height          =   600
@@ -2713,24 +2714,26 @@ MudaTela
 End Sub
 
 Private Sub cmdPrint_Click()
-If txtRG.Text = "" Then txtRG.Text = " "
+'If txtRG.Text = "" Then txtRG.Text = " "
 
-Dim Sql As String
+'Dim Sql As String
 
-Sql = "DELETE FROM REPORTTMP WHERE USUARIO='" & NomeDeLogin & "'"
-cn.Execute Sql, rdExecDirect
+'Sql = "DELETE FROM REPORTTMP WHERE USUARIO='" & NomeDeLogin & "'"
+'cn.Execute Sql, rdExecDirect
 
-Sql = "INSERT REPORTTMP(USUARIO,MEMO1) VALUES('" & NomeDeLogin & "','" & Mask(txtHist.Text) & "')"
-cn.Execute Sql, rdExecDirect
-frmReport.ShowReport2 "DECA", frmMdi.HWND, Me.HWND
+'Sql = "INSERT REPORTTMP(USUARIO,MEMO1) VALUES('" & NomeDeLogin & "','" & Mask(txtHist.Text) & "')"
+'cn.Execute Sql, rdExecDirect
+'frmReport.ShowReport2 "DECA", frmMdi.HWND, Me.HWND
 
-Sql = "DELETE FROM REPORTTMP WHERE USUARIO='" & NomeDeLogin & "'"
-cn.Execute Sql, rdExecDirect
+'Sql = "DELETE FROM REPORTTMP WHERE USUARIO='" & NomeDeLogin & "'"
+'cn.Execute Sql, rdExecDirect
 
+frmReport.ShowReport4 "DECA", frmMdi.HWND, Me.HWND
 End Sub
 
 Private Sub cmdPrint2_Click()
-frmReport.ShowReport2 "DECA2", frmMdi.HWND, Me.HWND
+'frmReport.ShowReport2 "DECA2", frmMdi.HWND, Me.HWND
+frmReport.ShowReport4 "DECA2", frmMdi.HWND, Me.HWND
 End Sub
 
 Private Sub cmdSair_Click()
@@ -2759,9 +2762,9 @@ If nCodReduz >= 100000 And nCodReduz < 300000 Then
     Sql = "SELECT * FROM vwFULLEMPRESA3 WHERE CODIGOMOB=" & nCodReduz
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
     With RdoAux
-        txtNome.Text = !razaosocial
+        txtNome.Text = !RazaoSocial
         txtRamo1.Text = !ativextenso
-        txtCodAtiv.Text = SubNull(!codatividade)
+        txtCodAtiv.Text = !codatividade
         txtEnd.Text = !Logradouro & ", " & !Numero
         txtBairro.Text = SubNull(!DescBairro)
         If IsNull(!Cep) Then
@@ -2777,7 +2780,7 @@ If nCodReduz >= 100000 And nCodReduz < 300000 Then
         txtMunicipio.Text = SubNull(!descCidade)
         txtOrgao.Text = SubNull(!NOMEORGAO)
         txtNumReg.Text = SubNull(!NUMREGISTRORESP)
-        txtCapital.Text = FormatNumber(!CAPITALSOCIAL, 2)
+        txtCapital.Text = FormatNumber(!CapitalSocial, 2)
         txtRG.Text = SubNull(!rg)
         If txtRG.Text = "" Then
             txtRG.Text = SubNull(!inscestadual)
@@ -2788,7 +2791,7 @@ If nCodReduz >= 100000 And nCodReduz < 300000 Then
             chkT(0).value = vbUnchecked
             chkT(1).value = vbChecked
         Else
-            txtCPF.Text = SubNull(!CPF)
+            txtCPF.Text = SubNull(!cpf)
             If txtCPF.Text <> "" Then
                 'txtCPF.Text = Format(txtCPF.Text, "00#\.###\.###-##")
                 chkT(0).value = vbChecked
@@ -2829,9 +2832,13 @@ If nCodReduz >= 100000 And nCodReduz < 300000 Then
         Do Until .EOF
             txtNomeP(.AbsolutePosition - 1).Text = !nomecidadao
             'txtCPFP(.AbsolutePosition - 1).Text = Format(SubNull(!CPF), "0#\.###\.###/####-##")
-            txtCPFP(.AbsolutePosition - 1).Text = SubNull(!CPF)
+            txtCPFP(.AbsolutePosition - 1).Text = SubNull(!cpf)
             txtRGP(.AbsolutePosition - 1).Text = SubNull(!rg)
-            txtRuaP(.AbsolutePosition - 1).Text = SubNull(!Endereco) & ", " & SubNull(!NUMIMOVEL) & ", " & RetornaCEP(Val(SubNull(!CodLogradouro)), Val(SubNull(!NUMIMOVEL)))
+            If Val(SubNull(!CodLogradouro)) > 0 Then
+                txtRuaP(.AbsolutePosition - 1).Text = SubNull(!Endereco) & ", " & SubNull(!NUMIMOVEL) & ", " & RetornaCEP(Val(SubNull(!CodLogradouro)), Val(SubNull(!NUMIMOVEL)))
+            Else
+                txtRuaP(.AbsolutePosition - 1).Text = SubNull(!Endereco) & ", " & SubNull(!NUMIMOVEL) & ", " & SubNull(!Cep)
+            End If
             txtBairroP(.AbsolutePosition - 1).Text = SubNull(!DescBairro) & ", " & SubNull(!descCidade) & " - " & SubNull(!SiglaUF)
             txtTelefone(.AbsolutePosition - 1).Text = SubNull(!telefone)
            .MoveNext
@@ -2870,7 +2877,7 @@ Else
             chkT(0).value = vbUnchecked
             chkT(1).value = vbChecked
         Else
-            txtCPF.Text = SubNull(!CPF)
+            txtCPF.Text = SubNull(!cpf)
             If txtCPF.Text <> "" Then
                 'txtCPF.Text = Format(txtCPF.Text, "00#\.###\.###-##")
                 txtCPF.Text = txtCPF.Text

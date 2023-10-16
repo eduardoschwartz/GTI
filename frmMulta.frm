@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Object = "{F48120B2-B059-11D7-BF14-0010B5B69B54}#1.0#0"; "esMaskEdit.ocx"
 Begin VB.Form frmMulta 
@@ -7,8 +7,8 @@ Begin VB.Form frmMulta
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Multa de Infração"
    ClientHeight    =   4410
-   ClientLeft      =   4155
-   ClientTop       =   3345
+   ClientLeft      =   16320
+   ClientTop       =   5775
    ClientWidth     =   9075
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
@@ -381,10 +381,10 @@ With frmDebitoImob.grdExtrato
             Set RdoAux = qd.OpenResultset(rdOpenKeyset)
             With RdoAux
                 Do Until .EOF
-                    nValorPrincipal = nValorPrincipal + !ValorTributo
+                    nValorPrincipal = nValorPrincipal + !VALORTRIBUTO
                     nValorJuros = nValorJuros + !ValorJuros
                     nValorMulta = nValorMulta + !ValorMulta
-                    nValorCorrecao = nValorCorrecao + !ValorCorrecao
+                    nValorCorrecao = nValorCorrecao + !valorcorrecao
                     nValorTotal = nValorTotal + !ValorTotal
                    .MoveNext
                 Loop
@@ -422,7 +422,7 @@ If TipoView = 3 Then
     Sql = "SELECT * FROM MULTAINFRACAO WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nParc & " AND CODCOMPLEMENTO=" & nComp
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
-        nAno = !Ano
+        nAno = !ano
         nLanc = !lancamento
         nSeq = !Sequencia
         nParc = !Parcela
@@ -438,7 +438,7 @@ With RdoAux2
         MsgBox "Não localizado vínculo para esta multa.", vbExclamation, "Atenção"
         Exit Sub
     End If
-    txtAno.Text = !Ano
+    txtAno.Text = !ano
     nSeqMulta = !Sequencia
     Sql = "SELECT OBS FROM OBSPARCELA WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & !AnoExercicio & " AND CODLANCAMENTO=" & !CodLancamento & " AND SEQLANCAMENTO=" & !SeqLancamento
     Sql = Sql & " AND NUMPARCELA=" & !NumParcela & " AND CODCOMPLEMENTO=" & !CODCOMPLEMENTO
@@ -478,10 +478,10 @@ With RdoAux2
             sAj = IIf(IsNull(!dataajuiza), "N", "S")
             sVencto = Format(!DataVencimento, "dd/mm/yyyy")
             Do Until .EOF
-                nValorPrincipal = nValorPrincipal + !ValorTributo
+                nValorPrincipal = nValorPrincipal + !VALORTRIBUTO
                 nValorJuros = nValorJuros + !ValorJuros
                 nValorMulta = nValorMulta + !ValorMulta
-                nValorCorrecao = nValorCorrecao + !ValorCorrecao
+                nValorCorrecao = nValorCorrecao + !valorcorrecao
                 nValorTotal = nValorTotal + !ValorTotal
                .MoveNext
             Loop

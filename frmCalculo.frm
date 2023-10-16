@@ -851,7 +851,7 @@ Sql = "SELECT ANO,QTDEPARCELA,PARCELAUNICA,DESCONTOUNICA,VENCUNICA,VENCUNICA2,VE
 Sql = Sql & "VENC06,VENC07,VENC08,VENC09,VENC10,VENC11,VENC12 FROM PARAMPARCELA WHERE CODTIPO=1 AND ANO=" & nAno
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
-     If .RowCount = 0 Then GoTo fim
+     If .RowCount = 0 Then GoTo Fim
      ReDim aParc(!qtdeparcela)
      Do Until .EOF
         If Not IsNull(!vencunica) Then aParc(0) = Format(!vencunica, "dd/mm/yyyy")
@@ -875,7 +875,7 @@ With RdoAux
     .Close
 End With
 
-fim:
+Fim:
 'Sql = "delete from calculo_situacao_imovel where ano=" & nAno
 'cn.Execute Sql, rdExecDirect
 

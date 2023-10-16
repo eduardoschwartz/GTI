@@ -361,15 +361,45 @@ If NomeForm = "Menu" Then cmdSelect.Enabled = False
 End Property
 
 Private Sub cmbCriterio_Click()
-If cmbCriterio.ListIndex = -1 Then Exit Sub
 
-Sql = "SELECT VALOR FROM CNAECRITERIODESC WHERE CRITERIO=" & cmbCriterio.ItemData(cmbCriterio.ListIndex)
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
-With RdoAux
-    txtValor.Text = FormatNumber(!Valor, 4)
-   .Close
-End With
+Dim sCnae As String, nDivisao As Integer, nGrupo As Integer, sClasse As String, nClasse As Integer, nSubClasse As Integer
+txtValor.Text = "0,00"
+sCnae = RetornaNumero(mskCnae.Text)
+nDivisao = Val(Left(sCnae, 2))
+nGrupo = Val(Mid(sCnae, 3, 1))
+sClasse = Mid(sCnae, 4, 3)
+sClasse = Left(sClasse, 1) & Right(sClasse, 1)
+nClasse = Val(sClasse)
+nSubClasse = Val(Right(sCnae, 2))
+If cmbCriterio.ListIndex > -1 Then
+    Sql = "SELECT cnae_aliquota.criterio,cnae_criterio_descricao.descricao,cnae_aliquota.valor,cnae_aliquota.cnae,cnae_aliquota.ano "
+    Sql = Sql & "FROM dbo.cnae_criterio_descricao INNER JOIN dbo.cnae_aliquota  ON cnae_criterio_descricao.codigo = cnae_aliquota.criterio "
+    'Sql = Sql & "WHERE cnae_aliquota.ano = " & Year(Now) & " AND cnae_aliquota.cnae = '" & sCnae & "' and criterio=" & cmbCriterio.ItemData(cmbCriterio.ListIndex)
+    Sql = Sql & "WHERE cnae_aliquota.ano = 2023 AND cnae_aliquota.cnae = '" & sCnae & "' and criterio=" & cmbCriterio.ItemData(cmbCriterio.ListIndex)
 
+
+'    Sql = "SELECT cnaecriterio.valor From "
+'    Sql = Sql & "cnaecriteriodesc INNER JOIN cnaecriterio ON (cnaecriteriodesc.criterio = cnaecriterio.criterio) WHERE CNAE='" & sCnae & "' AND cnaecriterio.CRITERIO=" & cmbCriterio.ItemData(cmbCriterio.ListIndex)
+    'Sql = "select valor from cnaecriteriodesc where criterio=" & cmbCriterio.ItemData(cmbCriterio.ListIndex)
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    With RdoAux
+        If .RowCount > 0 Then
+             txtValor.Text = FormatNumber(!valor, 4)
+        End If
+       .Close
+    End With
+End If
+
+
+'If cmbCriterio.ListIndex = -1 Then Exit Sub
+'
+'Sql = "SELECT VALOR FROM CNAECRITERIODESC WHERE CRITERIO=" & cmbCriterio.ItemData(cmbCriterio.ListIndex)
+'Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
+'With RdoAux
+'    txtValor.Text = FormatNumber(!valor, 4)
+'   .Close
+'End With
+'
 If Val(txtValor.Text) = 0 Then
     txtValor.Locked = False
     txtValor.BackColor = Branco
@@ -518,7 +548,7 @@ ElseIf NomeForm = "frmCadMob1" Then
     End If
     bAchou = False
     For x = 0 To frmCadMob.cmbCnae.ListCount - 1
-        If frmCadMob.cmbCnae.Text = sCnae Then
+        If frmCadMob.cmbCnae.List(x) = sCnae Then
             bAchou = True
             Exit For
         End If
@@ -542,10 +572,10 @@ End Sub
 Private Sub Form_Load()
 Centraliza Me
 CarregaLista
-If NomeDeLogin <> "RITA" And NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "SCHWARTZ" Then
+If NomeDeLogin <> "SCHWARTZ" Then
     cmdAdd.Enabled = False
     cmdDel.Enabled = False
-Exit Sub
+    cmdGravar.Enabled = False
 End If
 
 
@@ -570,7 +600,7 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         Set itmX = lvCnae.ListItems.Add(, , !Cnae)
-        itmX.SubItems(1) = !descricao
+        itmX.SubItems(1) = !Descricao
        .MoveNext
     Loop
    .Close
@@ -583,7 +613,7 @@ Sql = "SELECT CRITERIO,DESCRICAO FROM CNAECRITERIODESC ORDER BY DESCRICAO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
 With RdoAux
     Do Until .EOF
-        cmbCriterio.AddItem !descricao
+        cmbCriterio.AddItem !Descricao
         cmbCriterio.ItemData(cmbCriterio.NewIndex) = !criterio
        .MoveNext
     Loop
@@ -637,17 +667,28 @@ Dim x As Integer, sCnae
 sCnae = RetornaNumero(mskCnae.Text)
 
 grdTmp.Rows = 1
-'Sql = "SELECT cnaecriterio.cnae, cnaecriterio.seq,cnaecriterio.criterio,cnaecriteriodesc.descricao , cnaecriterio.valor FROM cnaecriterio INNER JOIN cnaecriteriodesc ON cnaecriterio.criterio = cnaecriteriodesc.criterio "
-'Sql = Sql & "WHERE CNAE='" & sCnae & "'"
-Sql = "SELECT cnae_criterio.cnae, cnae_criterio.criterio, cnaecriteriodesc.descricao, cnaecriteriodesc.valor "
-Sql = Sql & "FROM cnae_criterio INNER JOIN cnaecriteriodesc ON cnae_criterio.criterio = cnaecriteriodesc.criterio "
-Sql = Sql & "WHERE cnae_criterio.cnae = '" & sCnae & "'"
+
+Sql = "select max(ano) as maximo from cnae_aliquota"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+nAno = RdoAux!maximo
+RdoAux.Close
+
+
+Sql = "SELECT cnae_aliquota.criterio,cnae_criterio_descricao.descricao,cnae_aliquota.valor,cnae_aliquota.cnae,cnae_aliquota.ano "
+Sql = Sql & "FROM dbo.cnae_criterio_descricao INNER JOIN dbo.cnae_aliquota  ON cnae_criterio_descricao.codigo = cnae_aliquota.criterio "
+Sql = Sql & "WHERE cnae_aliquota.ano = " & nAno & " AND cnae_aliquota.cnae = '" & sCnae & "'"
+'Sql = Sql & "ON mobiliariovs.cnae = cnae_aliquota.cnae AND mobiliariovs.criterio = cnae_aliquota.criterio Where mobiliariovs.cnae = '" & sCnae & "' AND cnae_aliquota.ano = " & nAno
+
+
+'Sql = "SELECT cnae_criterio.cnae, cnae_criterio.criterio, cnaecriteriodesc.descricao, cnaecriteriodesc.valor "
+'Sql = Sql & "FROM cnae_criterio INNER JOIN cnaecriteriodesc ON cnae_criterio.criterio = cnaecriteriodesc.criterio "
+'Sql = Sql & "WHERE cnae_criterio.cnae = '" & sCnae & "'"
 
 
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
 With RdoAux
     Do Until .EOF
-        grdTmp.AddItem 0 & Chr(9) & RdoAux!criterio & Chr(9) & RdoAux!descricao & Chr(9) & FormatNumber(RdoAux!Valor, 4)
+        grdTmp.AddItem 0 & Chr(9) & RdoAux!criterio & Chr(9) & RdoAux!Descricao & Chr(9) & FormatNumber(RdoAux!valor, 4)
        .MoveNext
     Loop
    .Close

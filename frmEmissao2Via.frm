@@ -5,14 +5,14 @@ Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmEmissao2Via 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Emissão de 2ª Via"
-   ClientHeight    =   6045
+   ClientHeight    =   6090
    ClientLeft      =   1725
    ClientTop       =   4305
    ClientWidth     =   7575
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
-   ScaleHeight     =   6045
+   ScaleHeight     =   6090
    ScaleWidth      =   7575
    Begin VB.OptionButton optGuia 
       Caption         =   "Normal"
@@ -407,6 +407,47 @@ Begin VB.Form frmEmissao2Via
       MPTR            =   1
       MICON           =   "frmEmissao2Via.frx":063A
       PICN            =   "frmEmissao2Via.frx":0656
+      UMCOL           =   -1  'True
+      SOFT            =   0   'False
+      PICPOS          =   0
+      NGREY           =   0   'False
+      FX              =   0
+      HAND            =   0   'False
+      CHECK           =   0   'False
+      VALUE           =   0   'False
+   End
+   Begin prjChameleon.chameleonButton cmdteste 
+      Height          =   345
+      Left            =   2925
+      TabIndex        =   55
+      ToolTipText     =   "Imprimir 1ª Via"
+      Top             =   6255
+      Visible         =   0   'False
+      Width           =   1305
+      _ExtentX        =   2302
+      _ExtentY        =   609
+      BTYPE           =   3
+      TX              =   "teste"
+      ENAB            =   0   'False
+      BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      COLTYPE         =   2
+      FOCUSR          =   0   'False
+      BCOL            =   12632256
+      BCOLO           =   12632256
+      FCOL            =   0
+      FCOLO           =   0
+      MCOL            =   13026246
+      MPTR            =   1
+      MICON           =   "frmEmissao2Via.frx":07B0
+      PICN            =   "frmEmissao2Via.frx":07CC
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -835,7 +876,7 @@ Dim nTestada As Double, nAreaTotalTerreno As Double, nAreaConstruida As Double
 Dim nVVT As Double, nVVC As Double, nVVI As Double, nAliq As Double, nValorFinal As Double
 
 Private Sub cmdDDList_Click()
-Dim nAno As Integer, x As Integer, Y As Integer
+Dim nAno As Integer, x As Integer, y As Integer
 
 If cmdDDList.value = True Then
     frDDList.Height = 2130
@@ -844,15 +885,15 @@ Else
     For x = 0 To lstAno.ListCount - 1
         nAno = lstAno.List(x)
         If lstAno.Selected(x) = True Then
-            For Y = 1 To lvDeb.ListItems.Count
-                If lvDeb.ListItems(Y).Text = nAno Then
-                    lvDeb.ListItems(Y).Checked = True
+            For y = 1 To lvDeb.ListItems.Count
+                If lvDeb.ListItems(y).Text = nAno Then
+                    lvDeb.ListItems(y).Checked = True
                 End If
             Next
         Else
-            For Y = 1 To lvDeb.ListItems.Count
-                If lvDeb.ListItems(Y).Text = nAno Then
-                    lvDeb.ListItems(Y).Checked = False
+            For y = 1 To lvDeb.ListItems.Count
+                If lvDeb.ListItems(y).Text = nAno Then
+                    lvDeb.ListItems(y).Checked = False
                 End If
             Next
         End If
@@ -954,7 +995,7 @@ End Sub
 
 Private Sub cmbProc_Click()
 Dim RdoAux2 As rdoResultset
-Dim sprotocolo As String
+Dim sProtocolo As String
 Dim sDescSit As String
 z = SendMessage(lvDeb.HWND, LVM_DELETEALLITEMS, 0, 0)
 
@@ -1127,6 +1168,10 @@ End If
 
 End Sub
 
+Private Sub cmdteste_Click()
+EmiteBoletoTeste
+End Sub
+
 Private Sub Form_Activate()
 
 
@@ -1188,7 +1233,7 @@ With xImovel
           lblProp.Caption = .NomePropPrincipal
           lblRua.Caption = Trim$(.AbrevTipoLog) & " " & Trim$(.AbrevTitLog) & " " & .NomeLogradouro
           lblNumImovel.Caption = .Li_Num
-          lblCEP.Caption = RetornaCEP(.CodLogr, .Li_Num)
+          lblCep.Caption = RetornaCEP(.CodLogr, .Li_Num)
           lblCompl.Caption = .Li_Compl
           lblBairro.Caption = .DescBairro
           Select Case .Ee_TipoEnd
@@ -1199,7 +1244,7 @@ With xImovel
                     lblComplentrega.Caption = lblCompl.Caption
                     lblBairroEntrega.Caption = lblBairro.Caption
                     lblCidadeEntrega.Caption = "JABOTICABAL"
-                    lblCepEntrega.Caption = lblCEP.Caption
+                    lblCepEntrega.Caption = lblCep.Caption
                     lblUF.Caption = lblUF.Caption
                 Case 1
                     lblTipoEnd.Caption = "(Endereço do Proprietário)"
@@ -1237,7 +1282,7 @@ With xImovel
     End If
 End With
 
-fim:
+Fim:
 Liberado
 
 End Sub
@@ -1250,7 +1295,7 @@ lblRua.Caption = ""
 lblNumImovel.Caption = ""
 lblCompl.Caption = ""
 lblBairro.Caption = ""
-lblCEP.Caption = ""
+lblCep.Caption = ""
 lblRuaEntrega.Caption = ""
 lblNumEntrega.Caption = ""
 lblComplentrega.Caption = ""
@@ -1371,7 +1416,7 @@ With RdoAux
                lblNum.Caption = "Insc.Estadual"
                lblNumInsc.Caption = SubNull(!inscestadual)
                lblRS.Caption = "Raz.Social"
-               lblProp.Caption = !razaosocial
+               lblProp.Caption = !RazaoSocial
                If !CodCidade = 413 Then
                   lblRua.Caption = Trim$(SubNull(!AbrevTipoLog)) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro
                Else
@@ -1379,7 +1424,7 @@ With RdoAux
                   lblRua.Caption = SubNull(!NomeLogr)
                End If
                lblNumImovel.Caption = Val(SubNull(!Numero))
-               lblCEP.Caption = IIf(IsNull(!Cep), "", Left$(!Cep, 5) & "-" & Right$(!Cep, 3))
+               lblCep.Caption = IIf(IsNull(!Cep), "", Left$(!Cep, 5) & "-" & Right$(!Cep, 3))
                lblCompl.Caption = SubNull(!Complemento)
                Sql = "SELECT DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='SP' AND CODCIDADE=" & !CodCidade & " AND CODBAIRRO=" & !CodBairro
                Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -1415,7 +1460,7 @@ With RdoAux
                         lblComplentrega.Caption = lblCompl.Caption
                         lblBairroEntrega.Caption = lblBairro.Caption
                         lblCidadeEntrega.Caption = sNomeCidade
-                        lblCepEntrega.Caption = lblCEP.Caption
+                        lblCepEntrega.Caption = lblCep.Caption
                         lblUF.Caption = "SP"
                     End If
                    .Close
@@ -1455,10 +1500,10 @@ With RdoAux
                                 lblNumInsc.Caption = Format(!Cnpj, "0#\.###\.###/####-##")
                             End If
                         Else
-                            If Not IsNull(!CPF) Then
-                                If Val(!CPF) > 0 Then
+                            If Not IsNull(!cpf) Then
+                                If Val(!cpf) > 0 Then
                                     lblNum.Caption = "CPF:"
-                                    lblNumInsc.Caption = Format(RetornaNumero(!CPF), "00#\.###\.###-##")
+                                    lblNumInsc.Caption = Format(RetornaNumero(!cpf), "00#\.###\.###-##")
                                 End If
                             End If
                         End If
@@ -1507,7 +1552,7 @@ With RdoAux
                         lblCompl.Caption = SubNull(!fcomplemento)
                         lblBairro.Caption = sBairro
                         lblCidadeEntrega.Caption = sCidade
-                        lblCEP.Caption = sCep
+                        lblCep.Caption = sCep
                         lblUF.Caption = sUF
                         
                    
@@ -1515,7 +1560,7 @@ With RdoAux
                        lblNumEntrega.Caption = lblNumImovel.Caption
                        lblComplentrega.Caption = lblCompl.Caption
                        lblBairroEntrega.Caption = lblBairro.Caption
-                       lblCepEntrega.Caption = lblCEP.Caption
+                       lblCepEntrega.Caption = lblCep.Caption
                         cmbLanc.SetFocus
                    Else
                        MsgBox "Código não cadastrado.", vbCritical, "Atenção"
@@ -1609,7 +1654,7 @@ End Sub
 Private Sub GravaCarneTmp()
 On Error GoTo Erro
 
-Dim x As Integer, Y As Integer
+Dim x As Integer, y As Integer
 Dim RdoAux2 As rdoResultset
 Dim Achou As Boolean, nStat As Integer, bExp As Boolean
 Dim nCodReduz As Long
@@ -1669,8 +1714,8 @@ Sql = "SELECT CODREDUZIDO,CPF,CNPJ,RG,ORGAO FROM vwCONSULTAIMOVELPROP WHERE CODR
 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux2
     If .RowCount > 0 Then
-        If Not IsNull(!CPF) Then
-           sCPF = !CPF
+        If Not IsNull(!cpf) Then
+           sCPF = !cpf
         ElseIf Not IsNull(!Cnpj) Then
            sCPF = !Cnpj
         ElseIf Not IsNull(!rg) Then
@@ -1723,15 +1768,15 @@ If bISS And bTaxa Then
     'MONTA TRIBUTOS
     sDadosLanc = "ISS FIXO/TLL"
     nLastCod = nLastCod + 2
-    For Y = 1 To lvDeb.ListItems.Count
-        If lvDeb.ListItems(Y).Checked = True Then
+    For y = 1 To lvDeb.ListItems.Count
+        If lvDeb.ListItems(y).Checked = True Then
             nCodReduz = Val(txtCod.Text)
             nCodLanc = 2
-            nSeq = lvDeb.ListItems(Y).SubItems(2)
-            nNumParc = lvDeb.ListItems(Y).SubItems(3)
-            nComplemento = lvDeb.ListItems(Y).SubItems(4)
-            sVencimento = lvDeb.ListItems(Y).SubItems(5)
-            nStat = IIf(lvDeb.ListItems(Y).SubItems(6) = "NÃO PAGO", 1, 0)
+            nSeq = lvDeb.ListItems(y).SubItems(2)
+            nNumParc = lvDeb.ListItems(y).SubItems(3)
+            nComplemento = lvDeb.ListItems(y).SubItems(4)
+            sVencimento = lvDeb.ListItems(y).SubItems(5)
+            nStat = IIf(lvDeb.ListItems(y).SubItems(6) = "NÃO PAGO", 1, 0)
             If nStat = 0 Then
                 Sql = "SELECT SUM(VALORPAGO) AS SOMA FROM DEBITOPAGO WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND (CODLANCAMENTO=2 OR CODLANCAMENTO=14)"
                 Sql = Sql & "  AND SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nNumParc & " AND CODCOMPLEMENTO=" & nComplemento
@@ -1745,7 +1790,7 @@ If bISS And bTaxa Then
                    .Close
                 End With
             End If
-            nAno = lvDeb.ListItems(Y).Text
+            nAno = lvDeb.ListItems(y).Text
             nLastCod = nLastCod + 1
             
             Sql = "SELECT debitoparcela.codreduzido, debitoparcela.datavencimento, OBSPARCELA.obs fROM debitoparcela LEFT OUTER JOIN "
@@ -1773,7 +1818,7 @@ If bISS And bTaxa Then
                         If !Juros Then
                             bJuros = True
                         End If
-                        If !Multa Then
+                        If !multa Then
                             bMulta = True
                         End If
                        .Close
@@ -1805,16 +1850,16 @@ Else
     'MONTA TRIBUTOS
     sDadosLanc = cmbLanc.Text
     nLastCod = nLastCod + 1
-    For Y = 1 To lvDeb.ListItems.Count
-        If lvDeb.ListItems(Y).Checked = True Then
+    For y = 1 To lvDeb.ListItems.Count
+        If lvDeb.ListItems(y).Checked = True Then
             nCodReduz = Val(txtCod.Text)
-            nAno = lvDeb.ListItems(Y).Text
+            nAno = lvDeb.ListItems(y).Text
             nCodLanc = cmbLanc.ItemData(cmbLanc.ListIndex)
-            nSeq = lvDeb.ListItems(Y).SubItems(2)
-            nNumParc = lvDeb.ListItems(Y).SubItems(3)
-            nComplemento = lvDeb.ListItems(Y).SubItems(4)
-            sVencimento = lvDeb.ListItems(Y).SubItems(5)
-            nStat = IIf(lvDeb.ListItems(Y).SubItems(6) = "NÃO PAGO", 1, 0)
+            nSeq = lvDeb.ListItems(y).SubItems(2)
+            nNumParc = lvDeb.ListItems(y).SubItems(3)
+            nComplemento = lvDeb.ListItems(y).SubItems(4)
+            sVencimento = lvDeb.ListItems(y).SubItems(5)
+            nStat = IIf(lvDeb.ListItems(y).SubItems(6) = "NÃO PAGO", 1, 0)
             If nStat = 0 Then
                 If nCodLanc <> 999 Then
                     Sql = "SELECT VALORPAGO FROM DEBITOPAGO WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nCodLanc
@@ -1835,7 +1880,7 @@ Else
                    .Close
                 End With
             End If
-            nAno = lvDeb.ListItems(Y).Text
+            nAno = lvDeb.ListItems(y).Text
             nLastCod = nLastCod + 1
             
             Sql = "SELECT debitoparcela.codreduzido, debitoparcela.datavencimento, OBSPARCELA.obs fROM debitoparcela LEFT OUTER JOIN "
@@ -1877,7 +1922,7 @@ Else
                         If !Juros Then
                             bJuros = True
                         End If
-                        If !Multa Then
+                        If !multa Then
                             bMulta = True
                         End If
                        .Close
@@ -2039,16 +2084,16 @@ If nCodLanc = 1 Or nCodLanc = 29 Then
 Else
    ReDim aCarne(0)
    With grdTemp
-        For Y = 1 To .Rows - 1
-             nAno = .TextMatrix(Y, 1)
+        For y = 1 To .Rows - 1
+             nAno = .TextMatrix(y, 1)
              If cmbLanc.ListIndex > -1 Then
                 nCodLanc = cmbLanc.ItemData(cmbLanc.ListIndex)
              Else
                 nCodLanc = 0
              End If
-             nSeq = .TextMatrix(Y, 3)
-             nNumParc = .TextMatrix(Y, 4)
-             nComplemento = .TextMatrix(Y, 5)
+             nSeq = .TextMatrix(y, 3)
+             nNumParc = .TextMatrix(y, 4)
+             nComplemento = .TextMatrix(y, 5)
              If nNumParc = 0 Then GoTo PROXC
              Sql = "SELECT DISTINCT DEBITOTRIBUTO.CODTRIBUTO,ABREVTRIBUTO,VALORTRIBUTO FROM DEBITOTRIBUTO INNER JOIN "
              If nCodLanc <> 999 Then
@@ -2067,7 +2112,7 @@ Else
                     Achou = False
                     If !CodTributo = 3 Then bExp = True
                     For z = 1 To UBound(aCarne)
-                        If aCarne(z).sDesc = !ABREVTRIBUTO Then
+                        If aCarne(z).sDesc = !abrevTributo Then
                            Achou = True
                            Exit For
                         End If
@@ -2075,7 +2120,7 @@ Else
                     'If z > UBound(aCarne) Then z = UBound(aCarne)
                     If Not Achou Then
                         ReDim Preserve aCarne(UBound(aCarne) + 1)
-                        aCarne(UBound(aCarne)).sDesc = !ABREVTRIBUTO
+                        aCarne(UBound(aCarne)).sDesc = !abrevTributo
                         aCarne(UBound(aCarne)).sUn = "R$"
                         If !CodTributo = 568 Then 'multa vig.sanitaria
                             aCarne(UBound(aCarne)).nValor = !ValorTributo - (!ValorTributo * 0.2)
@@ -2710,7 +2755,7 @@ End Sub
 Private Sub EmiteBoleto()
 On Error GoTo Erro
 Dim bBoleto As Boolean
-Dim x As Integer, Y As Integer, RdoAux2 As rdoResultset, Achou As Boolean, nStat As Integer, bExp As Boolean, nCodReduz As Long, nValorTributo As Double
+Dim x As Integer, y As Integer, RdoAux2 As rdoResultset, Achou As Boolean, nStat As Integer, bExp As Boolean, nCodReduz As Long, nValorTributo As Double
 Dim sTipoImposto As String, sDescImposto As String, nAno As Integer, sNumProc As String, dDataProc As Date, dDataVencto As Date, nNumDoc As Long, sQuadra As String
 Dim sLote As String, nNumParc As Integer, sVencimento As String, nCodLanc As Integer, nSeq As Integer, nComplemento As Integer, sValorParc As String
 Dim nValorTotal As Double, nValorParc As Double, nValorParcUnica As Double, nValorTxExpParc As Double, nLastCod As Long, sDadosLanc As String, sFullTrib As String, sObs As String
@@ -2753,8 +2798,8 @@ Sql = "SELECT CODREDUZIDO,CPF,CNPJ,RG,ORGAO FROM vwCONSULTAIMOVELPROP WHERE CODR
 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux2
     If .RowCount > 0 Then
-        If Not IsNull(!CPF) Then
-           sCPF = !CPF
+        If Not IsNull(!cpf) Then
+           sCPF = !cpf
         ElseIf Not IsNull(!Cnpj) Then
            sCPF = !Cnpj
         ElseIf Not IsNull(!rg) Then
@@ -2809,15 +2854,15 @@ If cmbLanc.Text = "ISSFIXO + TAXA DE LICENÇ2A" Then
     'MONTA TRIBUTOS
     sDadosLanc = "ISS FIXO/TLL"
     nLastCod = nLastCod + 2
-    For Y = 1 To lvDeb.ListItems.Count
-        If lvDeb.ListItems(Y).Checked = True Then
+    For y = 1 To lvDeb.ListItems.Count
+        If lvDeb.ListItems(y).Checked = True Then
             nCodReduz = Val(txtCod.Text)
             nCodLanc = 2
-            nSeq = lvDeb.ListItems(Y).SubItems(2)
-            nNumParc = lvDeb.ListItems(Y).SubItems(3)
-            nComplemento = lvDeb.ListItems(Y).SubItems(4)
-            sVencimento = lvDeb.ListItems(Y).SubItems(5)
-            nStat = IIf(lvDeb.ListItems(Y).SubItems(6) = "NÃO PAGO", 1, 0)
+            nSeq = lvDeb.ListItems(y).SubItems(2)
+            nNumParc = lvDeb.ListItems(y).SubItems(3)
+            nComplemento = lvDeb.ListItems(y).SubItems(4)
+            sVencimento = lvDeb.ListItems(y).SubItems(5)
+            nStat = IIf(lvDeb.ListItems(y).SubItems(6) = "NÃO PAGO", 1, 0)
             If nStat = 0 Then
                 Sql = "SELECT SUM(VALORPAGO) AS SOMA FROM DEBITOPAGO WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND (CODLANCAMENTO=2 OR CODLANCAMENTO=14)"
                 Sql = Sql & "  AND SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nNumParc & " AND CODCOMPLEMENTO=" & nComplemento
@@ -2831,7 +2876,7 @@ If cmbLanc.Text = "ISSFIXO + TAXA DE LICENÇ2A" Then
                    .Close
                 End With
             End If
-            nAno = lvDeb.ListItems(Y).Text
+            nAno = lvDeb.ListItems(y).Text
             nLastCod = nLastCod + 1
             
             Sql = "SELECT debitoparcela.codreduzido, debitoparcela.datavencimento, OBSPARCELA.obs fROM debitoparcela LEFT OUTER JOIN "
@@ -2861,7 +2906,7 @@ If cmbLanc.Text = "ISSFIXO + TAXA DE LICENÇ2A" Then
                         If !Juros Then
                             bJuros = True
                         End If
-                        If !Multa Then
+                        If !multa Then
                             bMulta = True
                         End If
                        .Close
@@ -2893,16 +2938,16 @@ Else
     'MONTA TRIBUTOS
     sDadosLanc = cmbLanc.Text
     nLastCod = nLastCod + 1
-    For Y = 1 To lvDeb.ListItems.Count
-        If lvDeb.ListItems(Y).Checked = True Then
+    For y = 1 To lvDeb.ListItems.Count
+        If lvDeb.ListItems(y).Checked = True Then
             nCodReduz = Val(txtCod.Text)
-            nAno = lvDeb.ListItems(Y).Text
+            nAno = lvDeb.ListItems(y).Text
             nCodLanc = cmbLanc.ItemData(cmbLanc.ListIndex)
-            nSeq = lvDeb.ListItems(Y).SubItems(2)
-            nNumParc = lvDeb.ListItems(Y).SubItems(3)
-            nComplemento = lvDeb.ListItems(Y).SubItems(4)
-            sVencimento = lvDeb.ListItems(Y).SubItems(5)
-            nStat = IIf(lvDeb.ListItems(Y).SubItems(6) = "NÃO PAGO", 1, 0)
+            nSeq = lvDeb.ListItems(y).SubItems(2)
+            nNumParc = lvDeb.ListItems(y).SubItems(3)
+            nComplemento = lvDeb.ListItems(y).SubItems(4)
+            sVencimento = lvDeb.ListItems(y).SubItems(5)
+            nStat = IIf(lvDeb.ListItems(y).SubItems(6) = "NÃO PAGO", 1, 0)
             If nStat = 0 Then
                 If nCodLanc <> 999 Then
                     Sql = "SELECT VALORPAGO FROM DEBITOPAGO WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nCodLanc
@@ -2923,7 +2968,7 @@ Else
                    .Close
                 End With
             End If
-            nAno = lvDeb.ListItems(Y).Text
+            nAno = lvDeb.ListItems(y).Text
             nLastCod = nLastCod + 1
             
             Sql = "SELECT debitoparcela.codreduzido, debitoparcela.datavencimento, OBSPARCELA.obs fROM debitoparcela LEFT OUTER JOIN "
@@ -2965,7 +3010,7 @@ Else
                         If !Juros Then
                             bJuros = True
                         End If
-                        If !Multa Then
+                        If !multa Then
                             bMulta = True
                         End If
                        .Close
@@ -3281,6 +3326,79 @@ Sql = "delete from boletoguiacapa where sid=" & nSid
 cn.Execute Sql, rdExecDirect
 
 bGerado = True
+Exit Sub
+
+Erro:
+For R = 0 To rdoErrors.Count - 1
+     
+     MsgBox rdoErrors(R).Description
+Next
+Resume Next
+End Sub
+
+Private Sub EmiteBoletoTeste()
+On Error GoTo Erro
+Dim bBoleto As Boolean
+Dim x As Integer, y As Integer, RdoAux2 As rdoResultset, Achou As Boolean, nStat As Integer, bExp As Boolean, nCodReduz As Long, nValorTributo As Double
+Dim sTipoImposto As String, sDescImposto As String, nAno As Integer, sNumProc As String, dDataProc As Date, dDataVencto As Date, nNumDoc As Long, sQuadra As String
+Dim sLote As String, nNumParc As Integer, sVencimento As String, nCodLanc As Integer, nSeq As Integer, nComplemento As Integer, sValorParc As String
+Dim nValorTotal As Double, nValorParc As Double, nValorParcUnica As Double, nValorTxExpParc As Double, nLastCod As Long, sDadosLanc As String, sFullTrib As String, sObs As String
+Dim bJuros As Boolean, bMulta As Boolean, nSomaTributo As Double, nSomaJuros As Double, nSomaMulta As Double, nSomaCorrecao As Double
+Dim RdoAux As rdoResultset, Sql As String, nPos As Integer, sDataGuia As String, sDataVencto As String
+Dim sInsc As String, sNome As String, sDoc As String, sEnd As String, nNum As Integer, nValorDoc As Double
+Dim sCompl As String, sBairro As String, sCidade As String, sUF As String, nLinha As Integer
+Dim sUsuario As String, nValorTaxa As Double, sNumDoc As String
+Dim sLanc As String, nLanc As Integer, nParc As Integer, nCompl As Integer, nValorJuros As Double, nValorMulta As Double, nValorCorrecao As Double
+Dim nSeq2 As Integer, sAj As String, sDA As String, nValorPrincipal As Double, sNumDoc2 As String, sNumDoc3 As String, nFatorVencto As Long
+Dim nSid As Long, sDigitavel As String, sNossoNumero As String, sDv As String, sQuintoGrupo As String, dDataBase As Date
+Dim sBarra As String, sDigitavel2 As String, nValorGuia As Double, nNumGuia As Long, nQtdeParc As Integer
+Dim nNumDocEspecial As Long, bAbateu As Boolean, nAnoEmissao As Integer, sCPF As String
+Dim bDesconto As Boolean, bISSFixo As Boolean, bTLL As Boolean, nValorISSFixo As Double
+Dim nValorUnica As Double, sValorBoleto As String, sValor As String
+
+If MsgBox("Confirma Emissão da 2ª via ?", vbQuestion + vbYesNo, "Confirmação") = vbNo Then
+   bGerado = False
+   Exit Sub
+End If
+
+nNumGuia = 20491149
+nValorGuia = 14.36
+sDataVencto = "17/04/2023"
+
+sNumDoc = CStr(nNumGuia) & "-" & RetornaDVNumDoc(nNumGuia)
+sNumDoc2 = CStr(nNumGuia) & RetornaDVNumDoc(nNumGuia)
+sNumDoc3 = CStr(nNumGuia) & Modulo11(nNumGuia)
+nValorDoc = nValorGuia
+sDataDam = sDataVencto
+   
+'**** GERADOR DE CÓDIGO DE BARRAS ********
+sNossoNumero = "2873532"
+sDigitavel = "001900000"
+sDv = Trim(Calculo_DV10(Right(sDigitavel, 10)))
+sDigitavel = sDigitavel & sDv & "0" & sNossoNumero & "01"
+sDv = Trim(Calculo_DV10(Right(sDigitavel, 10)))
+sDigitavel = sDigitavel & sDv & Right(sNumDoc3, 8) & "18"
+sDv = Trim(Calculo_DV10(Right(sDigitavel, 10)))
+sDigitavel = sDigitavel & sDv
+
+dDataBase = "07/10/1997"
+nFatorVencto = CDate(sDataDam) - dDataBase
+sQuintoGrupo = Format(nFatorVencto, "0000")
+sQuintoGrupo = sQuintoGrupo & Format(RetornaNumero(FormatNumber(nValorDoc, 2)), "0000000000")
+sBarra = "0019" & Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(nValorDoc, 2)), "0000000000") & "000000287353200"
+sBarra = sBarra & sNumDoc3 & "18"
+sDv = Trim(Calculo_DV11(sBarra))
+sBarra = Left(sBarra, 4) & sDv & Mid(sBarra, 5, Len(sBarra) - 4)
+
+sDigitavel = sDigitavel & sDv & sQuintoGrupo
+
+sDigitavel2 = Left(sDigitavel, 5) & "." & Mid(sDigitavel, 6, 5) & " " & Mid(sDigitavel, 11, 5) & "." & Mid(sDigitavel, 16, 6) & " "
+sDigitavel2 = sDigitavel2 & Mid(sDigitavel, 22, 5) & "." & Mid(sDigitavel, 27, 6) & " " & Mid(sDigitavel, 33, 1) & " " & Right(sDigitavel, 14)
+sBarra = Gera2of5Str(sBarra)
+
+
+frmReport.ShowReport2 "BOLETOGUIA", frmMdi.HWND, Me.HWND, nSid, nNumGuia
+
 Exit Sub
 
 Erro:

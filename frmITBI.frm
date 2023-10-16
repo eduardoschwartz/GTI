@@ -857,13 +857,13 @@ With RdoAuxCli
                 sDataVencto = Format(!DataVencimento, "dd/mm/yyyy")
                 sDA = "N"
                 sAj = "N"
-                nValorPrincipal = FormatNumber(CDbl(!ValorTributo), 2)
+                nValorPrincipal = FormatNumber(CDbl(!VALORTRIBUTO), 2)
                 nValorJuros = FormatNumber(0, 2)
                 nValorMulta = FormatNumber(0, 2)
                 nValorCorrecao = FormatNumber(0, 2)
                 nValorTotal = FormatNumber(nValorPrincipal, 2)
                 nValorDoc = nValorTotal
-                sFullTrib = !ABREVTRIBUTO
+                sFullTrib = !abrevTributo
                 'GRAVA PARCELADOCUMENTO
                 
                 Sql = "INSERT PARCELADOCUMENTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,"
@@ -1189,7 +1189,7 @@ With xImovel
     End If
 End With
 
-fim:
+Fim:
 Liberado
 
 End Sub
@@ -2071,7 +2071,7 @@ If Trim(lblCEP.Caption) = "" Or Trim(lblCEP.Caption) = "-" Then
 End If
 
 'ShellExecute HWND, "open", "http://sistemas.jaboticabal.sp.gov.br/gti/Pages/boletoBB.aspx?f1=" & v1 & "&f2=" & v2 & "&f3=" & v3 & "&f4=" & v4 & "&f5=" & v5 & "&f6=" & v6 & "&f7=" & v7 & "&f8=" & v8 & "&f9=" & v9 & "&f10=" & V10, vbNullString, vbNullString, conSwNormal
-ShellExecute HWND, "open", "http://sistemas.jaboticabal.sp.gov.br/gti/Tributario/GateBank?p1=" & v1 & "&p2=" & v2 & "&p3=" & v3 & "&p4=" & v4 & "&p5=" & v5 & "&p6=" & v6 & "&p7=" & v7 & "&p8=" & v8 & "&p9=" & v9, vbNullString, vbNullString, conSwNormal
+ShellExecute HWND, "open", "https://gti.jaboticabal.sp.gov.br/Tributario/GateBank?p1=" & v1 & "&p2=" & v2 & "&p3=" & v3 & "&p4=" & v4 & "&p5=" & v5 & "&p6=" & v6 & "&p7=" & v7 & "&p8=" & v8 & "&p9=" & v9, vbNullString, vbNullString, conSwNormal
 
 Limpa
 

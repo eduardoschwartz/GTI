@@ -7,14 +7,14 @@ Begin VB.Form frmGeraLivro
    BackColor       =   &H00EEEEEE&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Geração dos Livros da Divida Ativa"
-   ClientHeight    =   4980
-   ClientLeft      =   6345
-   ClientTop       =   3375
+   ClientHeight    =   5475
+   ClientLeft      =   10860
+   ClientTop       =   4500
    ClientWidth     =   8070
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
-   ScaleHeight     =   4980
+   ScaleHeight     =   5475
    ScaleWidth      =   8070
    Begin VB.CheckBox chkAj 
       BackColor       =   &H00EEEEEE&
@@ -31,6 +31,7 @@ Begin VB.Form frmGeraLivro
       Left            =   150
       TabIndex        =   10
       Top             =   4680
+      Visible         =   0   'False
       Width           =   2025
    End
    Begin VB.CheckBox Check1 
@@ -59,7 +60,7 @@ Begin VB.Form frmGeraLivro
       Index           =   0
       Left            =   360
       TabIndex        =   14
-      Top             =   5220
+      Top             =   6030
       Visible         =   0   'False
       Width           =   1545
    End
@@ -70,7 +71,7 @@ Begin VB.Form frmGeraLivro
       Index           =   1
       Left            =   360
       TabIndex        =   13
-      Top             =   5460
+      Top             =   6270
       Value           =   -1  'True
       Visible         =   0   'False
       Width           =   1545
@@ -204,7 +205,6 @@ Begin VB.Form frmGeraLivro
       VALUE           =   0   'False
    End
    Begin prjChameleon.chameleonButton cmdCancel 
-      Cancel          =   -1  'True
       Height          =   360
       Left            =   6420
       TabIndex        =   17
@@ -269,6 +269,46 @@ Begin VB.Form frmGeraLivro
       SelText         =   ""
       Text            =   "__/__/____"
       HideSelection   =   -1  'True
+   End
+   Begin prjChameleon.chameleonButton cmdParcelado 
+      Cancel          =   -1  'True
+      Height          =   360
+      Left            =   6435
+      TabIndex        =   21
+      ToolTipText     =   "Cancelar Edição"
+      Top             =   4995
+      Width           =   1530
+      _ExtentX        =   2699
+      _ExtentY        =   635
+      BTYPE           =   3
+      TX              =   "&Reparcelados"
+      ENAB            =   -1  'True
+      BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      COLTYPE         =   2
+      FOCUSR          =   0   'False
+      BCOL            =   12632256
+      BCOLO           =   12632256
+      FCOL            =   0
+      FCOLO           =   0
+      MCOL            =   13026246
+      MPTR            =   1
+      MICON           =   "frmGeraLivro.frx":0251
+      UMCOL           =   -1  'True
+      SOFT            =   0   'False
+      PICPOS          =   0
+      NGREY           =   0   'False
+      FX              =   0
+      HAND            =   0   'False
+      CHECK           =   0   'False
+      VALUE           =   0   'False
    End
    Begin VB.Label Label2 
       Caption         =   "Data..:"
@@ -341,6 +381,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Private Type Debito
     nCodReduz As Long
     nAno As Integer
@@ -385,12 +426,29 @@ Private Type DIVIDATRIBUTO
     nSomaC As Double
     nSomaT As Double
 End Type
-Dim xImovel As clsImovel
+
+Private Type Endereco
+    nCodReduz As Long
+    sNome As String
+    sEndereco As String
+    sCompl As String
+    sCep As String
+    sBairro As String
+    sCidade As String
+    sUF As String
+End Type
+
+Private Type TRIBUTO
+    nCodigo As Integer
+    sNome As String
+End Type
+
+Dim xImovel As clsImovel, aTributo() As TRIBUTO, TipoReport As String, TipoContribuinte As String
 
 Private Sub chkA_Click()
 Dim x As Integer
 
-If Not bExec Then Exit Sub
+'If Not bExec Then Exit Sub
 For x = 0 To lstAno.ListCount - 1
    lstAno.Selected(x) = IIf(chkA.value, 1, 0)
 Next
@@ -400,7 +458,7 @@ End Sub
 Private Sub chkT_Click()
 Dim x As Integer
 
-If Not bExec Then Exit Sub
+'If Not bExec Then Exit Sub
 For x = 0 To lstTipo.ListCount - 1
    lstTipo.Selected(x) = IIf(chkT.value, 1, 0)
 Next
@@ -408,6 +466,7 @@ Next
 End Sub
 
 Private Sub cmdCancel_Click()
+TipoReport = "C"
 PopupMenu mnuTipo
 End Sub
 
@@ -417,7 +476,7 @@ If Opt(0).value = False And Opt(1).value = False Then
     MsgBox "Selecione o tipo do Relatório.", vbExclamation, "Atenção"
     Exit Sub
 End If
-
+TipoReport = ""
 If Not IsDate(mskData.Text) Then
     MsgBox "Data inválida.", vbExclamation, "Atenção"
     Exit Sub
@@ -429,6 +488,7 @@ For x = 0 To lstAno.ListCount - 1
         sAno = sAno & lstAno.Text & ","
     End If
 Next
+
 If sAno = "" Then
     MsgBox "Selecione ao menos um ano de exercício.", vbCritical, "Erro"
     Exit Sub
@@ -438,7 +498,7 @@ End If
 For x = 0 To lstTipo.ListCount - 1
     If lstTipo.Selected(x) = True Then
         lstTipo.ListIndex = x
-        Y = x + 1
+        y = x + 1
         sTipo = sTipo & lstTipo.ItemData(lstTipo.ListIndex) & ","
     End If
 Next
@@ -483,6 +543,11 @@ Liberado
 cmdExec.Enabled = True
 End Sub
 
+Private Sub cmdParcelado_Click()
+TipoReport = "R"
+PopupMenu mnuTipo
+End Sub
+
 Private Sub Form_Load()
 Centraliza Me
 Set xImovel = New clsImovel
@@ -491,6 +556,8 @@ CarregaAno
 CarregaTipo
 CarregaStatus
 mskData.Text = Format(Now, "dd/mm/yyyy")
+
+
 End Sub
 
 Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
@@ -532,6 +599,20 @@ With RdoAux
     Loop
 End With
 
+ReDim aTributo(0)
+Sql = "SELECT CODTRIBUTO,DESCTRIBUTO FROM TRIBUTO order by codtributo"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    Do Until .EOF
+       ReDim Preserve aTributo(UBound(aTributo) + 1)
+       aTributo(UBound(aTributo)).nCodigo = !CodTributo
+       aTributo(UBound(aTributo)).sNome = !desctributo
+      .MoveNext
+    Loop
+End With
+
+
+
 End Sub
 
 Private Sub CarregaStatus()
@@ -539,8 +620,8 @@ Sql = "SELECT CODSITUACAO,DESCSITUACAO FROM SITUACAOLANCAMENTO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-       lstStatus.AddItem !DescSituacao & " (" & Format(!codsituacao, "00") & ")"
-       lstStatus.ItemData(lstStatus.NewIndex) = !codsituacao
+       lstStatus.AddItem !DescSituacao & " (" & Format(!Codsituacao, "00") & ")"
+       lstStatus.ItemData(lstStatus.NewIndex) = !Codsituacao
       .MoveNext
     Loop
 End With
@@ -549,7 +630,7 @@ End Sub
 
 Private Sub CarregaGrid()
 
-Dim sAno As String, sTipo As String, x As Integer, Y As Integer
+Dim sAno As String, sTipo As String, x As Integer, y As Integer
 
 grdTemp.Rows = 1
 
@@ -564,7 +645,7 @@ sAno = Chomp(sAno, chomp_righT, 1)
 For x = 0 To lstTipo.ListCount - 1
     If lstTipo.Selected(x) = True Then
         lstTipo.ListIndex = x
-        Y = x + 1
+        y = x + 1
         sTipo = sTipo & lstTipo.ItemData(lstTipo.ListIndex) & ","
     End If
 Next
@@ -587,11 +668,11 @@ With RdoAux
         With RdoAux2
             If .RowCount > 0 Then
                 Do Until .EOF
-                    grdTemp.AddItem RdoAux!Ano & Chr(9) & sTipo & Chr(9) & RdoAux!Numero & Chr(9) & !NUMEROOLD
+                    grdTemp.AddItem RdoAux!ano & Chr(9) & sTipo & Chr(9) & RdoAux!Numero & Chr(9) & !NUMEROOLD
                    .MoveNext
                 Loop
             Else
-                grdTemp.AddItem RdoAux!Ano & Chr(9) & sTipo & Chr(9) & RdoAux!Numero & Chr(9) & RdoAux!Numero
+                grdTemp.AddItem RdoAux!ano & Chr(9) & sTipo & Chr(9) & RdoAux!Numero & Chr(9) & RdoAux!Numero
             End If
            .Close
         End With
@@ -601,7 +682,7 @@ With RdoAux
 End With
 
 If grdTemp.Rows = 1 Then
-    grdTemp.AddItem lstAno.Text & Chr(9) & Y & Chr(9) & 100 & Chr(9) & 100
+    grdTemp.AddItem lstAno.Text & Chr(9) & y & Chr(9) & 100 & Chr(9) & 100
 End If
 
 
@@ -612,10 +693,11 @@ Dim nAno As Integer, nCodTipo As Integer, nNumLivro As Integer, z As Integer, sN
 Dim RdoC As rdoResultset, xId As Long, nNumRec As Long, nAnoLinha As Integer, RdoAux2 As rdoResultset
 Dim nValorCorrecao As Double, nValorTotal As Double, sDescTributo As String
 Dim sProp As String, sStatus As String, sInscricao As String, sEndereco As String
-Dim sCompl As String, sCep As String, sBairro As String, sCidade As String, sUF As String
-Dim nValorJuros As Double, nValorMulta As Double, dDataInsc As Date, bJuros As Boolean, bMulta As Boolean
-Dim aSomaTributo() As DIVIDATRIBUTO, bFind As Boolean
-ReDim aSomaTributo(0)
+Dim sCompl As String, sCep As String, sBairro As String, sCidade As String, sUF As String, nPosTributo As Integer
+Dim nValorJuros As Double, nValorMulta As Double, dDataInsc As Date, bJuros As Boolean, bMulta As Boolean, p As Long
+Dim aSomaTributo() As DIVIDATRIBUTO, bFind As Boolean, aEndereco() As Endereco, bFindEnd As Boolean, endPos As Long, TributoExiste As Boolean
+ReDim aSomaTributo(0): ReDim aEndereco(0)
+
 
 sStatus = ""
 For x = 0 To lstStatus.ListCount - 1
@@ -637,72 +719,84 @@ cn.Execute Sql, rdExecDirect
 nValorTotal = 0
 xId = 0
 With grdTemp
-    For z = 1 To .Rows - 1
-        .TopRow = z
-        If chkReparc.value = 1 Then
-            If z > 1 Then
-                nAnoLinha = .TextMatrix(z, 0)
-                If nAnoLinha = nAno Then
-                    GoTo PROXIMO2
-                End If
+    If TipoReport = "R" Then
+        p = 1
+    Else
+        p = .Rows - 1
+    End If
+    For z = 1 To p
+'        If chkReparc.value = vbChecked Then
+'            If z > 1 Then Exit For
+'        End If
+'        .TopRow = z
+'        If chkReparc.value = 1 Then
+'            If z > 1 Then
+'                nAnoLinha = .TextMatrix(z, 0)
+'                If nAnoLinha = nAno Then
+'                    GoTo proximo2
+'                End If
+'            End If
+'        End If
+        If TipoReport = "R" Then
+            nAno = Year(Now)
+            Sql = "SELECT ANO,CODTIPO, NUMERO,DATAABERTURA,DATAENCERRAMENTO FROM LIVRO WHERE ANO=" & nAno
+            If eTipo = Imobiliario Then
+                Sql = Sql & " AND CODTIPO =1"
+            ElseIf eTipo = Mobiliario Then
+                Sql = Sql & " AND CODTIPO =2"
+            ElseIf eTipo = cidadao Then
+                Sql = Sql & " AND CODTIPO =3"
             End If
+            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            nNumLivro = RdoAux2!Numero
+            RdoAux2.Close
+        Else
+            nAno = .TextMatrix(z, 0)
+            nCodTipo = Val(Left$(.TextMatrix(z, 1), 1))
+            nNumLivro = .TextMatrix(z, 3)
         End If
-        
-        nAno = .TextMatrix(z, 0)
-        nCodTipo = Val(Left$(.TextMatrix(z, 1), 1))
-        nNumLivro = .TextMatrix(z, 3)
         xId = 0
         
-        If nAno < 2004 Then
-            If nCodTipo = 1 Then
-                If chkReparc.value = 1 Then
-                    Sql = "SELECT * FROM VWDIVIDAATIVAR WHERE CODREDUZIDO < 100000 AND ANOEXERCICIO=" & nAno & " AND CODTRIBUTO<>3 AND CODLANCAMENTO=20" & sStatus
-                Else
+        'If chkReparc.value = 1 Then
+        If TipoReport = "R" Then
+            Sql = "SELECT * FROM VWDIVIDAATIVAR "
+            If TipoContribuinte = "I" Then
+                Sql = Sql & "WHERE CODREDUZIDO<100000"
+                nCodTipo = 1
+            ElseIf TipoContribuinte = "M" Then
+                Sql = Sql & "WHERE CODREDUZIDO>=100000 AND CODREDUZIDO<200000"
+                 nCodTipo = 2
+            ElseIf TipoContribuinte = "C" Then
+                Sql = Sql & "WHERE CODREDUZIDO>500000"
+                nCodTipo = 3
+            End If
+            'Sql = "SELECT * FROM VWDIVIDAATIVAR WHERE livro=" & nCodTipo
+            'Sql = "SELECT * FROM VWDIVIDAATIVAR WHERE livro=" & nCodTipo & " And CODREDUZIDO = 2167"
+        Else
+            If nAno < 2004 Then
+                If nCodTipo = 1 Then
                     Sql = "SELECT * FROM VWDIVIDAATIVA WHERE NUMEROLIVRO=" & nNumLivro & " AND CODREDUZIDO < 100000 AND YEAR(DATAINSCRICAO)=" & nAno & " AND (CODTRIBUTO=1 or codtributo=2) " & sStatus
-                End If
-            ElseIf nCodTipo = 2 Then
-                If chkReparc.value = 1 Then
-                    Sql = "SELECT * FROM VWDIVIDAATIVAR WHERE (CODREDUZIDO > 100000 AND CODREDUZIDO<500000)  AND ANOEXERCICIO=" & nAno & " AND CODTRIBUTO<>3 AND VALORTRIBUTO>0 and CODLANCAMENTO=20" & sStatus
-                Else
+                ElseIf nCodTipo = 2 Then
                     Sql = "SELECT * FROM VWDIVIDAATIVA WHERE NUMEROLIVRO=" & nNumLivro & " AND (CODREDUZIDO > 100000) AND YEAR(DATAINSCRICAO)=" & nAno & " AND VALORTRIBUTO>0 and CODtributo in (11,12,13,14,25,179,180,181,182,183,502)" & sStatus
-                End If
-            ElseIf nCodTipo = 3 Then
-                If chkReparc.value = 1 Then
-                    Sql = "SELECT * FROM VWDIVIDAATIVAR WHERE CODREDUZIDO > 500000  AND ANOEXERCICIO=" & nAno & " AND CODTRIBUTO<>3 AND CODLANCAMENTO=20" & sStatus
-                Else
+                ElseIf nCodTipo = 3 Then
                     Sql = "SELECT * FROM VWDIVIDAATIVA WHERE NUMEROLIVRO=" & nNumLivro & " AND YEAR(DATAINSCRICAO)=" & nAno & " AND CODTRIBUTO<>3" & sStatus
                 End If
-            End If
-        Else
-            If nCodTipo = 1 Then
-                If chkReparc.value = 1 Then
-                    Sql = "SELECT * FROM VWDIVIDAATIVAR WHERE  CODREDUZIDO < 100000  AND ANOEXERCICIO=" & nAno & " AND CODTRIBUTO<>3 AND CODLANCAMENTO=20" & sStatus
-                Else
-                    Sql = "SELECT * FROM VWDIVIDAATIVA WHERE YEAR(DATAINSCRICAO)=" & nAno & " AND CODREDUZIDO < 100000 AND NUMEROLIVRO=" & nNumLivro & " AND CODTRIBUTO<>3 AND (CODLANCAMENTO=1 or CODLANCAMENTO=29)" & sStatus
-                End If
-            ElseIf nCodTipo = 2 Then
-                If chkReparc.value = 1 Then
-                    Sql = "SELECT * FROM VWDIVIDAATIVAR WHERE CODREDUZIDO>=100000 AND ANOEXERCICIO=" & nAno & " AND  CODTRIBUTO<>3 AND VALORTRIBUTO>0 and CODLANCAMENTO=20 " & sStatus
-                Else
-                    Sql = "SELECT * FROM VWDIVIDAATIVA WHERE NUMEROLIVRO=" & nNumLivro & " AND (CODREDUZIDO >= 100000) AND YEAR(DATAINSCRICAO)=" & nAno & " AND CODTRIBUTO in (11,12,13,14,19,25,179,180,181,182,183,184,502) AND VALORTRIBUTO>0" & sStatus
-                End If
-            ElseIf nCodTipo = 3 Or nCodTipo = 4 Or nCodTipo = 5 Then
-                If chkReparc.value = 1 Then
-                    Sql = "SELECT * FROM VWDIVIDAATIVAR WHERE  CODREDUZIDO >= 100000  AND ANOEXERCICIO =" & nAno & " AND CODTRIBUTO<>3 AND CODLANCAMENTO=20" & sStatus
-                Else
-                    Sql = "SELECT * FROM VWDIVIDAATIVA WHERE YEAR(DATAINSCRICAO)=" & nAno & " AND NUMEROLIVRO=" & nNumLivro & " AND CODLANCAMENTO<>20 AND CODTRIBUTO NOT in (1,2,3,11,12,13,14,19,25,179,180,181,182,183,184,502)  " & sStatus
+            Else
+                If nCodTipo = 1 Then
+                   Sql = "SELECT * FROM VWDIVIDAATIVA WHERE YEAR(DATAINSCRICAO)=" & nAno & " AND CODREDUZIDO < 100000 AND NUMEROLIVRO=" & nNumLivro & " AND CODTRIBUTO<>3 AND (CODLANCAMENTO=1 or CODLANCAMENTO=29)" & sStatus
+                ElseIf nCodTipo = 2 Then
+                   Sql = "SELECT * FROM VWDIVIDAATIVA WHERE NUMEROLIVRO=" & nNumLivro & " AND (CODREDUZIDO >= 100000) AND YEAR(DATAINSCRICAO)=" & nAno & " AND CODTRIBUTO in (11,12,13,14,19,25,179,180,181,182,183,184,502) AND VALORTRIBUTO>0" & sStatus
+                ElseIf nCodTipo = 3 Or nCodTipo = 4 Or nCodTipo = 5 Then
+                   Sql = "SELECT * FROM VWDIVIDAATIVA WHERE YEAR(DATAINSCRICAO)=" & nAno & " AND NUMEROLIVRO=" & nNumLivro & " AND CODLANCAMENTO<>20 AND CODTRIBUTO NOT in (1,2,3,11,12,13,14,19,25,179,180,181,182,183,184,502)  " & sStatus
                 End If
             End If
         End If
-        If chkAj.value = vbChecked Then
-            Sql = Sql & " AND DATAAJUIZA IS NOT NULL"
-        End If
-        
+        cn.QueryTimeout = 500
         Set RdoC = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoC
         
             nNumRec = .RowCount
-            If nNumRec = 0 Then GoTo PROXIMO2
+            If nNumRec = 0 Then GoTo proximo2
             If Not IsNull(!datainscricao) Then
                 dDataInsc = Format(!datainscricao, "dd/mm/yyyy")
             Else
@@ -716,77 +810,108 @@ With grdTemp
 
                 sProp = ""
                 '**** Endereço ******
-                With xImovel
-                    If RdoC!CODREDUZIDO < 100000 Then
-                       .RetornaEndereco RdoC!CODREDUZIDO, Imobiliario, Localizacao
-                        Sql = "SELECT * FROM vwfullimovel2 WHERE CODREDUZIDO=" & RdoC!CODREDUZIDO
-                        Set rdoc2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
-                        If rdoc2.RowCount > 0 Then
-                            sProp = rdoc2!NomeCidadao
-                            rdoc2.Close
-                        End If
-                    ElseIf RdoC!CODREDUZIDO >= 100000 And RdoC!CODREDUZIDO < 500000 Then
-                       .RetornaEndereco RdoC!CODREDUZIDO, Mobiliario, Localizacao
-                        Sql = "SELECT RAZAOSOCIAL FROM MOBILIARIO WHERE CODIGOMOB=" & RdoC!CODREDUZIDO
-                        Set rdoc2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
-                        If rdoc2.RowCount > 0 Then
-                            sProp = rdoc2!RazaoSocial
-                            rdoc2.Close
-                        End If
-                    Else
-                        Sql = "SELECT NOMECIDADAO FROM CIDADAO WHERE CODCIDADAO=" & RdoC!CODREDUZIDO
-                        Set rdoc2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
-                        If rdoc2.RowCount > 0 Then
-                            sProp = rdoc2!NomeCidadao
-                            rdoc2.Close
-                        End If
-                       .RetornaEndereco RdoC!CODREDUZIDO, cidadao, cadastrocidadao
+                bFindEnd = False
+                For endPos = 1 To UBound(aEndereco)
+                    If RdoC!CODREDUZIDO = aEndereco(endPos).nCodReduz Then
+                        bFindEnd = True
+                        Exit For
                     End If
+                Next
                 
-                    sEndereco = .Endereco & ", " & .Numero
-                    sCompl = .Complemento
-                    sCep = Format(.Cep, "00000-000")
-                    sBairro = .Bairro
-                    sCidade = .Cidade
-                    sUF = .UF
-                End With
                 
+                If Not bFindEnd Then
+                    With xImovel
+                        If RdoC!CODREDUZIDO < 100000 Then
+                           .RetornaEndereco RdoC!CODREDUZIDO, Imobiliario, Localizacao
+                            Sql = "SELECT * FROM vwfullimovel2 WHERE CODREDUZIDO=" & RdoC!CODREDUZIDO
+                            Set rdoc2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
+                            If rdoc2.RowCount > 0 Then
+                                sProp = rdoc2!nomecidadao
+                                rdoc2.Close
+                            End If
+                        ElseIf RdoC!CODREDUZIDO >= 100000 And RdoC!CODREDUZIDO < 500000 Then
+                           .RetornaEndereco RdoC!CODREDUZIDO, Mobiliario, Localizacao
+                            Sql = "SELECT RAZAOSOCIAL FROM MOBILIARIO WHERE CODIGOMOB=" & RdoC!CODREDUZIDO
+                            Set rdoc2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
+                            If rdoc2.RowCount > 0 Then
+                                sProp = rdoc2!RazaoSocial
+                                rdoc2.Close
+                            End If
+                        Else
+                            Sql = "SELECT NOMECIDADAO FROM CIDADAO WHERE CODCIDADAO=" & RdoC!CODREDUZIDO
+                            Set rdoc2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
+                            If rdoc2.RowCount > 0 Then
+                                sProp = rdoc2!nomecidadao
+                                rdoc2.Close
+                            End If
+                           .RetornaEndereco RdoC!CODREDUZIDO, cidadao, cadastrocidadao
+                        End If
+                    
+                        ReDim Preserve aEndereco(UBound(aEndereco) + 1)
+                        
+                        aEndereco(UBound(aEndereco)).nCodReduz = RdoC!CODREDUZIDO
+                        aEndereco(UBound(aEndereco)).sNome = sProp
+                        aEndereco(UBound(aEndereco)).sEndereco = .Endereco & ", " & .Numero
+                        aEndereco(UBound(aEndereco)).sCompl = .Complemento
+                        aEndereco(UBound(aEndereco)).sCep = Format(.Cep, "00000-000")
+                        aEndereco(UBound(aEndereco)).sBairro = .Bairro
+                        aEndereco(UBound(aEndereco)).sCidade = .Cidade
+                        aEndereco(UBound(aEndereco)).sUF = .UF
+                        endPos = UBound(aEndereco)
+                        
+'                        sEndereco = .Endereco & ", " & .Numero
+ '                       sCompl = .Complemento
+ '                       sCep = Format(.Cep, "00000-000")
+ '                       sBairro = .Bairro
+ '                       sCidade = .Cidade
+ '                       sUF = .UF
+                    End With
+               End If
                   
                sInscricao = ""
                'If DateDiff("y", !DataVencimento, CDate("31/12/2013")) > 0 Then
-         '      If Year(!DataVencimento) < 2014 Then
+              ' If Year(!DataVencimento) = 2023 Then MsgBox "TESTE"
                    nValorCorrecao = CalculaCorrecao(!ValorTributo, Format(!DataVencimento, "dd/mm/yyyy"), mskData.Text)
          '      Else
          '          nValorCorrecao = 0
          '      End If
                
-               Sql = "SELECT DESCTRIBUTO,MULTA,JUROS FROM TRIBUTO WHERE CODTRIBUTO=" & !CodTributo
-               Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-               With RdoAux2
-                   If .RowCount > 0 Then
-                        sDescTributo = !desctributo
-                        bJuros = !Juros
-                        bMulta = !Multa
-                   Else
-                        sDescTributo = ""
-                        bJuros = True
-                        bMulta = True
-                   End If
-                  .Close
-               End With
+               For nPosTributo = 1 To UBound(aTributo)
+                    If aTributo(nPosTributo).nCodigo = !CodTributo Then
+                        sDescTributo = aTributo(nPosTributo).sNome
+                        Exit For
+                    End If
+               Next
+               
+               
+               
+'               Sql = "SELECT DESCTRIBUTO,MULTA,JUROS FROM TRIBUTO WHERE CODTRIBUTO=" & !CodTributo
+'               Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+'               With RdoAux2
+'                   If .RowCount > 0 Then
+'                        sDescTributo = !desctributo
+'                        bJuros = !Juros
+ '                       bMulta = !Multa
+ '                  Else
+'                        sDescTributo = ""
+ '                       bJuros = True
+ '                       bMulta = True
+ '                  End If
+ '                 .Close
+ '              End With
                                
                 sNumProcesso = SubNull(!numprocesso)
                                
-               If bJuros Then
+'               If bJuros Then
                   nValorJuros = CalculaJuros(!ValorTributo + nValorCorrecao, Format(!DataVencimento, "dd/mm/yyyy"), mskData.Text)
-               Else
-                  nValorJuros = 0
-               End If
-               If bMulta Then
+'               Else
+'                  nValorJuros = 0
+'               End If
+'               If bMulta Then
                   nValorMulta = CalculaMulta(!ValorTributo + nValorCorrecao, Format(!DataVencimento, "dd/mm/yyyy"), mskData.Text)
-               Else
-                  nValorMulta = 0
-               End If
+'               Else
+'                  nValorMulta = 0
+'               End If
                 If chkReparc.value = 1 Then nNumLivro = 0
                Sql = "INSERT DIVIDATIVA (USUARIO,NUMLIVRO,TIPOLIVRO,ANOLIVRO,CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,"
                Sql = Sql & "SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,DATAVENCIMENTO,PAGINALIVRO,DATAINSCRICAO,"
@@ -797,10 +922,10 @@ With grdTemp
                Sql = Sql & Format(!DataVencimento, "mm/dd/yyyy") & "'," & Val(SubNull(!paginalivro)) & ",'" & Format(!datainscricao, "mm/dd/yyyy") & "',"
                Sql = Sql & Val(SubNull(!numcertidao)) & "," & !CodTributo & "," & Virg2Ponto(!ValorTributo) & ","
                Sql = Sql & Virg2Ponto(CStr(nValorJuros)) & "," & Virg2Ponto(CStr(nValorMulta)) & "," & Virg2Ponto(CStr(nValorCorrecao)) & ",'" & sInscricao & "','"
-               Sql = Sql & Mask(Left$(sProp, 40)) & "','" & Left$(Mask(sEndereco), 50) & "','" & Left$(sCompl, 35) & "','"
-               Sql = Sql & sCep & "','" & Left(sBairro, 40) & "','" & Mask(sCidade) & "','" & sUF & "','" & Mask(sDescTributo) & "','" & sNumProcesso & "')"
+               Sql = Sql & Mask(Left$(aEndereco(endPos).sNome, 40)) & "','" & Left$(Mask(aEndereco(endPos).sEndereco), 50) & "','" & Left$(Mask(aEndereco(endPos).sCompl), 35) & "','"
+               Sql = Sql & aEndereco(endPos).sCep & "','" & Left(aEndereco(endPos).sBairro, 40) & "','" & Mask(aEndereco(endPos).sCidade) & "','" & aEndereco(endPos).sUF & "','" & Mask(sDescTributo) & "','" & sNumProcesso & "')"
                cn.Execute Sql, rdExecDirect
-               nValorTotal = nValorTotal + !ValorTributo + nValorJuros + nValorJuros
+               nValorTotal = nValorTotal + !ValorTributo + nValorJuros + nValorMulta + nValorCorrecao
                
                 bFind = False
                 For x = 0 To UBound(aSomaTributo)
@@ -828,7 +953,7 @@ With grdTemp
                     aSomaTributo(UBound(aSomaTributo)).nSomaT = !ValorTributo + nValorMulta + nValorJuros + nValorCorrecao
                 End If
                
-proximo:
+Proximo:
                xId = xId + 1
                DoEvents
               .MoveNext
@@ -836,10 +961,11 @@ proximo:
            .Close
         End With
 '        ReDim aSomaTributo(0)
-        grdTemp.TextMatrix(z, 4) = FormatNumber(nValorTotal, 2)
+On Error Resume Next
+        grdTemp.TextMatrix(z, 4) = Format(nValorTotal, "##0.0")
         nValorTotal = 0
         CallPb CLng(z), .Rows - 1
-PROXIMO2:
+proximo2:
     Next
 End With
 
@@ -929,7 +1055,7 @@ For z = 1 To grdTemp.Rows - 1
             Set RdoEnd = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoEnd
                 sInscricao = SubNull(!Inscricao)
-                sNome = !NomeCidadao
+                sNome = !nomecidadao
                 sEnd = !Logradouro & " Nº " & CStr(!Li_Num)
                 sCompl = SubNull(Left(!Li_Compl, 35))
                 sCep = RetornaCEP(!CodLogr, !Li_Num)
@@ -998,7 +1124,7 @@ For z = 1 To grdTemp.Rows - 1
                     aDebito(nEval).sSituacao = !Situacao
                     aDebito(nEval).sVencto = Format(!DataVencimento, "dd/mm/yyyy")
                     aDebito(nEval).nCodTributo = !CodTributo
-                    aDebito(nEval).sDescTributo = SubNull(!ABREVTRIBUTO)
+                    aDebito(nEval).sDescTributo = SubNull(!abrevTributo)
                     aDebito(nEval).nValorTributo = FormatNumber(!ValorTributo, 2)
                     aDebito(nEval).nValorAtual = FormatNumber(!ValorTotal, 2)
                     aDebito(nEval).nValorJuros = FormatNumber(!ValorJuros, 2)
@@ -1112,7 +1238,7 @@ With RdoC
              If .RowCount = 0 Then
                 sProp = ""
              Else
-                sProp = !NomeCidadao
+                sProp = !nomecidadao
              End If
             .Close
           End With
@@ -1170,7 +1296,7 @@ With RdoC
              If .RowCount = 0 Then
                 sProp = ""
              Else
-                sProp = !NomeCidadao
+                sProp = !nomecidadao
              End If
             .Close
           End With
@@ -1188,7 +1314,7 @@ With RdoC
            If .RowCount > 0 Then
                 sDescTributo = !desctributo
                 bJuros = !Juros
-                bMulta = !Multa
+                bMulta = !multa
            Else
                 sDescTributo = ""
                 bJuros = True
@@ -1220,7 +1346,7 @@ With RdoC
        Sql = Sql & sCep & "','" & sBairro & "','" & sCidade & "','" & sUF & "','" & sDescTributo & "','" & sProcesso & "')"
        cn.Execute Sql, rdExecDirect
        nValorTotal = nValorTotal + !ValorTributo + nValorJuros + nValorJuros
-proximo:
+Proximo:
        
                 If Val(SubNull(!numerolivro)) > 10000 Then
                     nNumLivro = 0
@@ -1284,7 +1410,7 @@ cn.Execute Sql, rdExecDirect
 End Sub
 
 Private Sub CallPb(nPosF As Long, nTotal As Long)
-On Error GoTo Erro
+On Error Resume Next
 If cGetInputState() <> 0 Then DoEvents
 
 If ((nPosF * 100) / nTotal) <= 100 Then
@@ -1323,17 +1449,279 @@ MsgBox Err.Description
 End Sub
 
 Private Sub mnuCidadao_Click()
-CalculaCancel cidadao
+If TipoReport = "C" Then
+    CalculaCancel cidadao
+ElseIf TipoReport = "R" Then
+    TipoContribuinte = "C"
+    Calcula
+    frmReport.ShowReport "DIVIDATIVAPARCNAOTRIBUTAVEL", frmMdi.HWND, Me.HWND
+    Sql = "DELETE FROM DIVIDATIVA where usuario='" & NomeDeLogin & "'"
+    cn.Execute Sql, rdExecDirect
+    Sql = "delete  from DIVIDATIVATOTAL where usuario='" & NomeDeLogin & "'"
+    cn.Execute Sql, rdExecDirect
+End If
 End Sub
 
 Private Sub mnuEmpresa_Click()
-CalculaCancel Mobiliario
+If TipoReport = "C" Then
+    CalculaCancel Mobiliario
+ElseIf TipoReport = "R" Then
+    TipoContribuinte = "M"
+    Calcula
+    frmReport.ShowReport "DIVIDATIVAPARCISS", frmMdi.HWND, Me.HWND
+    Sql = "DELETE FROM DIVIDATIVA where usuario='" & NomeDeLogin & "'"
+    cn.Execute Sql, rdExecDirect
+    Sql = "delete  from DIVIDATIVATOTAL where usuario='" & NomeDeLogin & "'"
+    cn.Execute Sql, rdExecDirect
+End If
 End Sub
 
 Private Sub mnuImovel_Click()
-CalculaCancel Imobiliario
+If TipoReport = "C" Then
+    CalculaCancel Imobiliario
+ElseIf TipoReport = "R" Then
+    TipoContribuinte = "I"
+    Calcula
+    frmReport.ShowReport "DIVIDATIVAPARCIPTU", frmMdi.HWND, Me.HWND
+    Sql = "DELETE FROM DIVIDATIVA where usuario='" & NomeDeLogin & "'"
+    cn.Execute Sql, rdExecDirect
+    Sql = "delete  from DIVIDATIVATOTAL where usuario='" & NomeDeLogin & "'"
+    cn.Execute Sql, rdExecDirect
+End If
 End Sub
 
 Private Sub mskData_GotFocus()
 mskData.SetFocus
 End Sub
+
+Private Sub Calcula_Parcelado(eTipo As SeqEndereco)
+Dim nAno As Integer, nCodTipo As Integer, nNumLivro As Integer, z As Integer, sNumProcesso As String
+Dim RdoC As rdoResultset, xId As Long, nNumRec As Long, nAnoLinha As Integer, RdoAux2 As rdoResultset
+Dim nValorCorrecao As Double, nValorTotal As Double, sDescTributo As String
+Dim sProp As String, sStatus As String, sInscricao As String, sEndereco As String
+Dim sCompl As String, sCep As String, sBairro As String, sCidade As String, sUF As String, nPosTributo As Integer
+Dim nValorJuros As Double, nValorMulta As Double, dDataInsc As Date, bJuros As Boolean, bMulta As Boolean
+Dim aSomaTributo() As DIVIDATRIBUTO, bFind As Boolean, aEndereco() As Endereco, bFindEnd As Boolean, endPos As Long, TributoExiste As Boolean
+ReDim aSomaTributo(0): ReDim aEndereco(0)
+
+
+sStatus = ""
+For x = 0 To lstStatus.ListCount - 1
+    If lstStatus.Selected(x) = True Then
+        sStatus = sStatus & CStr(lstStatus.ItemData(x)) & ","
+    End If
+Next
+If sStatus <> "" Then
+    sStatus = Left(sStatus, Len(sStatus) - 1)
+    sStatus = " AND STATUSLANC in (" & sStatus & ")"
+End If
+
+
+Sql = "delete  from DIVIDATIVA"
+cn.Execute Sql, rdExecDirect
+Sql = "delete  from DIVIDATIVATOTAL"
+cn.Execute Sql, rdExecDirect
+
+nValorTotal = 0
+xId = 0
+With grdTemp
+        
+        nAno = Year(Now)
+'        nCodTipo = Val(Left$(.TextMatrix(z, 1), 1))
+'        nNumLivro = .TextMatrix(z, 3)
+
+        Sql = "SELECT ANO,CODTIPO, NUMERO,DATAABERTURA,DATAENCERRAMENTO FROM LIVRO WHERE ANO=" & nAno
+        If eTipo = Imobiliario Then
+            Sql = Sql & " AND CODTIPO =1"
+            nCodTipo = 1
+        ElseIf eTipo = Mobiliario Then
+            Sql = Sql & " AND CODTIPO =2"
+            nCodTipo = 2
+        ElseIf eTipo = cidadao Then
+            Sql = Sql & " AND CODTIPO =3"
+            nCodTipo = 3
+        End If
+        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        nNumLivro = RdoAux2!Numero
+        RdoAux2.Close
+
+
+        xId = 0
+
+        Sql = "SELECT * FROM VWDIVIDAATIVAR "
+        If eTipo = Imobiliario Then
+            Sql = Sql & "WHERE CODREDUZIDO<100000"
+        ElseIf eTipo = Mobiliario Then
+            Sql = Sql & "WHERE CODREDUZIDO>=100000 AND CODREDUZIDO<200000"
+        ElseIf eTipo = cidadao Then
+            Sql = Sql & "WHERE CODREDUZIDO>500000"
+        End If
+
+        cn.QueryTimeout = 500
+        Set RdoC = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        With RdoC
+        
+            nNumRec = .RowCount
+           ' If nNumRec = 0 Then GoTo proximo2
+            If Not IsNull(!datainscricao) Then
+                dDataInsc = Format(!datainscricao, "dd/mm/yyyy")
+            Else
+                dDataInsc = Format(Now, "dd/mm/yyyy")
+            End If
+            Do Until .EOF
+'                If !CODREDUZIDO = 2610 Then MsgBox "teste"
+               If xId Mod 80 = 0 Then
+                  CallPb2 xId, nNumRec
+               End If
+
+                sProp = ""
+                '**** Endereço ******
+                bFindEnd = False
+                For endPos = 1 To UBound(aEndereco)
+                    If RdoC!CODREDUZIDO = aEndereco(endPos).nCodReduz Then
+                        bFindEnd = True
+                        Exit For
+                    End If
+                Next
+                
+                
+                If Not bFindEnd Then
+                    With xImovel
+                        If RdoC!CODREDUZIDO < 100000 Then
+                           .RetornaEndereco RdoC!CODREDUZIDO, Imobiliario, Localizacao
+                            Sql = "SELECT * FROM vwfullimovel2 WHERE CODREDUZIDO=" & RdoC!CODREDUZIDO
+                            Set rdoc2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
+                            If rdoc2.RowCount > 0 Then
+                                sProp = rdoc2!nomecidadao
+                                rdoc2.Close
+                            End If
+                        ElseIf RdoC!CODREDUZIDO >= 100000 And RdoC!CODREDUZIDO < 500000 Then
+                           .RetornaEndereco RdoC!CODREDUZIDO, Mobiliario, Localizacao
+                            Sql = "SELECT RAZAOSOCIAL FROM MOBILIARIO WHERE CODIGOMOB=" & RdoC!CODREDUZIDO
+                            Set rdoc2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
+                            If rdoc2.RowCount > 0 Then
+                                sProp = rdoc2!RazaoSocial
+                                rdoc2.Close
+                            End If
+                        Else
+                            Sql = "SELECT NOMECIDADAO FROM CIDADAO WHERE CODCIDADAO=" & RdoC!CODREDUZIDO
+                            Set rdoc2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
+                            If rdoc2.RowCount > 0 Then
+                                sProp = rdoc2!nomecidadao
+                                rdoc2.Close
+                            End If
+                           .RetornaEndereco RdoC!CODREDUZIDO, cidadao, cadastrocidadao
+                        End If
+                    
+                        ReDim Preserve aEndereco(UBound(aEndereco) + 1)
+                        
+                        aEndereco(UBound(aEndereco)).nCodReduz = RdoC!CODREDUZIDO
+                        aEndereco(UBound(aEndereco)).sNome = sProp
+                        aEndereco(UBound(aEndereco)).sEndereco = .Endereco & ", " & .Numero
+                        aEndereco(UBound(aEndereco)).sCompl = .Complemento
+                        aEndereco(UBound(aEndereco)).sCep = Format(.Cep, "00000-000")
+                        aEndereco(UBound(aEndereco)).sBairro = .Bairro
+                        aEndereco(UBound(aEndereco)).sCidade = .Cidade
+                        aEndereco(UBound(aEndereco)).sUF = .UF
+                        endPos = UBound(aEndereco)
+                        
+                    End With
+               End If
+                  
+               sInscricao = ""
+                   nValorCorrecao = CalculaCorrecao(!ValorTributo, Format(!DataVencimento, "dd/mm/yyyy"), mskData.Text)
+               
+               For nPosTributo = 1 To UBound(aTributo)
+                    If aTributo(nPosTributo).nCodigo = !CodTributo Then
+                        sDescTributo = aTributo(nPosTributo).sNome
+                        Exit For
+                    End If
+               Next
+                               
+                sNumProcesso = SubNull(!numprocesso)
+                               
+                  nValorJuros = CalculaJuros(!ValorTributo + nValorCorrecao, Format(!DataVencimento, "dd/mm/yyyy"), mskData.Text)
+                  nValorMulta = CalculaMulta(!ValorTributo + nValorCorrecao, Format(!DataVencimento, "dd/mm/yyyy"), mskData.Text)
+              ' nNumLivro = 0
+               Sql = "INSERT DIVIDATIVA (USUARIO,NUMLIVRO,TIPOLIVRO,ANOLIVRO,CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,"
+               Sql = Sql & "SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,DATAVENCIMENTO,PAGINALIVRO,DATAINSCRICAO,"
+               Sql = Sql & "NUMCERTIDAO,CODTRIBUTO,VALORTRIBUTO,VALORJUROS,VALORMULTA,VALORCORRECAO,INSCRICAO,PROPRIETARIO,"
+               Sql = Sql & "ENDERECO,COMPLEMENTO,CEP,BAIRRO,CIDADE,UF,DESCTRIBUTO,PROCESSO) VALUES('" & NomeDeLogin & "',"
+               Sql = Sql & nNumLivro & "," & nCodTipo & "," & nAno & "," & !CODREDUZIDO & "," & !AnoExercicio & ","
+               Sql = Sql & !CodLancamento & "," & !SeqLancamento & "," & !NumParcela & "," & !CODCOMPLEMENTO & ",'"
+               Sql = Sql & Format(!DataVencimento, "mm/dd/yyyy") & "'," & Val(SubNull(!paginalivro)) & ",'" & Format(!datainscricao, "mm/dd/yyyy") & "',"
+               Sql = Sql & Val(SubNull(!numcertidao)) & "," & !CodTributo & "," & Virg2Ponto(!ValorTributo) & ","
+               Sql = Sql & Virg2Ponto(CStr(nValorJuros)) & "," & Virg2Ponto(CStr(nValorMulta)) & "," & Virg2Ponto(CStr(nValorCorrecao)) & ",'" & sInscricao & "','"
+               Sql = Sql & Mask(Left$(aEndereco(endPos).sNome, 40)) & "','" & Left$(Mask(aEndereco(endPos).sEndereco), 50) & "','" & Left$(Mask(aEndereco(endPos).sCompl), 35) & "','"
+               Sql = Sql & aEndereco(endPos).sCep & "','" & Left(aEndereco(endPos).sBairro, 40) & "','" & Mask(aEndereco(endPos).sCidade) & "','" & aEndereco(endPos).sUF & "','" & Mask(sDescTributo) & "','" & sNumProcesso & "')"
+               cn.Execute Sql, rdExecDirect
+               nValorTotal = nValorTotal + !ValorTributo + nValorJuros + nValorJuros
+               
+                bFind = False
+                For x = 0 To UBound(aSomaTributo)
+                    If aSomaTributo(x).nNumLivro = nNumLivro And aSomaTributo(x).nCodTributo = !CodTributo Then
+                        bFind = True
+                        Exit For
+                    End If
+                Next
+                
+                If bFind Then
+                    aSomaTributo(x).nSomaP = aSomaTributo(x).nSomaP + !ValorTributo
+                    aSomaTributo(x).nSomaM = aSomaTributo(x).nSomaM + nValorMulta
+                    aSomaTributo(x).nSomaJ = aSomaTributo(x).nSomaJ + nValorJuros
+                    aSomaTributo(x).nSomaC = aSomaTributo(x).nSomaC + nValorCorrecao
+                    aSomaTributo(x).nSomaT = aSomaTributo(x).nSomaT + !ValorTributo + nValorMulta + nValorJuros + nValorCorrecao
+                Else
+                    ReDim Preserve aSomaTributo(UBound(aSomaTributo) + 1)
+                    aSomaTributo(UBound(aSomaTributo)).nNumLivro = nNumLivro
+                    aSomaTributo(UBound(aSomaTributo)).nCodTributo = !CodTributo
+                    aSomaTributo(UBound(aSomaTributo)).sDescTributo = sDescTributo
+                    aSomaTributo(UBound(aSomaTributo)).nSomaP = !ValorTributo
+                    aSomaTributo(UBound(aSomaTributo)).nSomaM = nValorMulta
+                    aSomaTributo(UBound(aSomaTributo)).nSomaJ = nValorJuros
+                    aSomaTributo(UBound(aSomaTributo)).nSomaC = nValorCorrecao
+                    aSomaTributo(UBound(aSomaTributo)).nSomaT = !ValorTributo + nValorMulta + nValorJuros + nValorCorrecao
+                End If
+               
+Proximo:
+               xId = xId + 1
+               DoEvents
+              .MoveNext
+            Loop
+           .Close
+        End With
+        grdTemp.TextMatrix(z, 4) = FormatNumber(nValorTotal, 2)
+        nValorTotal = 0
+        'CallPb CLng(z), .Rows - 1
+
+
+End With
+
+For x = 0 To UBound(aSomaTributo)
+    With aSomaTributo(x)
+        If .nCodTributo > 0 Then
+            Sql = "insert dividativatotal(USUARIO,numlivro,codigo,nome,somap,somam,somaj,somac,somat)values('" & NomeDeLogin & "',"
+            Sql = Sql & .nNumLivro & "," & .nCodTributo & ",'" & .sDescTributo & "'," & Virg2Ponto(sTr(.nSomaP)) & "," & Virg2Ponto(sTr(.nSomaM)) & ","
+            Sql = Sql & Virg2Ponto(sTr(.nSomaJ)) & "," & Virg2Ponto(sTr(.nSomaC)) & "," & Virg2Ponto(sTr(.nSomaT)) & ")"
+            cn.Execute Sql, rdExecDirect
+        End If
+    End With
+Next
+
+If nCodTipo = 1 Then
+   frmReport.ShowReport "DIVIDATIVAPARCIPTU", frmMdi.HWND, Me.HWND
+ElseIf nCodTipo = 2 Then
+   frmReport.ShowReport "DIVIDATIVAPARCISS", frmMdi.HWND, Me.HWND
+Else
+    frmReport.ShowReport "DIVIDATIVAPARCNAOTRIBUTAVEL", frmMdi.HWND, Me.HWND
+End If
+
+'frmReport.ShowReport "DIVIDATIVAPARCELADO", frmMdi.HWND, Me.HWND
+Sql = "delete  from DIVIDATIVA"
+cn.Execute Sql, rdExecDirect
+Sql = "delete  from DIVIDATIVATOTAL"
+cn.Execute Sql, rdExecDirect
+
+
+End Sub
+

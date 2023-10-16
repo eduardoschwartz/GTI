@@ -615,7 +615,7 @@ If tTipoEnd = Imobiliario Then
             sNome = !nomecidadao
             sDoc = SubNull(!Cnpj)
             If sDoc = "" Then
-                sDoc = Format(Val(SubNull(!CPF)), "00000000000")
+                sDoc = Format(Val(SubNull(!cpf)), "00000000000")
             End If
             sQuadra = SubNull(!Li_Quadras)
             sLote = SubNull(!Li_Lotes)
@@ -631,10 +631,10 @@ ElseIf tTipoEnd = Mobiliario Then
         If .RowCount = 0 Then
             GoTo SemCadastro
         Else
-            sNome = !razaosocial
+            sNome = !RazaoSocial
             sDoc = SubNull(!Cnpj)
             If sDoc = "" Then
-                sDoc = Format(Val(SubNull(!CPF)), "00000000000")
+                sDoc = Format(Val(SubNull(!cpf)), "00000000000")
             End If
             sQuadra = "": sLote = ""
             sInscricao = SubNull(!inscestadual)
@@ -652,7 +652,7 @@ ElseIf tTipoEnd = cidadao Then
             sNome = !nomecidadao
             sDoc = SubNull(!Cnpj)
             If sDoc = "" Then
-                sDoc = Format(Val(SubNull(!CPF)), "00000000000")
+                sDoc = Format(Val(RetornaNumero(SubNull(!cpf))), "00000000000")
             End If
             sQuadra = "": sLote = ""
             sInscricao = ""
@@ -759,6 +759,7 @@ MsgBox "Inscrição não cadastrada.", vbCritical, "Erro"
 
 End Sub
 
+
 Private Sub txtCodigo_KeyUp(KeyCode As Integer, Shift As Integer)
 Dim nCodigo As Long
 nCodigo = Val(txtCodigo.Text)
@@ -807,6 +808,7 @@ qd.QueryTimeout = 0
 On Error Resume Next
 RdoAux.Close
 On Error GoTo 0
+
 qd.Sql = "{ Call spEXTRATONAOPAGO(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
 qd(0) = nCodigo
 qd(1) = nCodigo
@@ -850,7 +852,7 @@ With RdoAux
                 aListaDebitoGeral(nEval).sDA = IIf(IsNull(!datainscricao), "N", "S")
                 aListaDebitoGeral(nEval).sAj = IIf(IsNull(!dataajuiza), "N", "S")
                 aListaDebitoGeral(nEval).nCodTributo = !CodTributo
-                aListaDebitoGeral(nEval).nValorTributo = FormatNumber(!ValorTributo, 2)
+                aListaDebitoGeral(nEval).nValorTributo = FormatNumber(!VALORTRIBUTO, 2)
                 aListaDebitoGeral(nEval).nValorAtual = FormatNumber(!ValorTotal, 2)
             Else
                 bFind = False
@@ -864,7 +866,7 @@ With RdoAux
                 Next
                 
                 If Not bFind Then
-                    aListaDebitoGeral(x).nValorTributo = FormatNumber(aListaDebitoGeral(x).nValorTributo + !ValorTributo, 2)
+                    aListaDebitoGeral(x).nValorTributo = FormatNumber(aListaDebitoGeral(x).nValorTributo + !VALORTRIBUTO, 2)
                     aListaDebitoGeral(x).nValorAtual = FormatNumber(aListaDebitoGeral(x).nValorAtual + !ValorTotal, 2)
                 End If
             End If

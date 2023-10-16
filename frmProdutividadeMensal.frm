@@ -382,14 +382,14 @@ With RdoAux
    .Close
 End With
 
-If NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "NOELI" Then
+If NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "RODRIGOC" Then
     If Not ProdIsBossLogin() Then
         cmbFiscal.Text = RetornaUsuarioFullName()
         cmbFiscal.Enabled = False
     End If
 End If
 
-For x = 2011 To 2020
+For x = 2011 To 2023
     cmbAno.AddItem (CStr(x))
 Next
 
@@ -423,7 +423,7 @@ For nDay = 1 To nLastDay
     ReDim Preserve aExtrato(UBound(aExtrato) + 1)
     aExtrato(nDay).nDia = nDay
     sData = Format(nDay, "00") & "/" & Format(nMes, "00") & "/" & cmbAno.Text
-    'If sData = "29/02/2020" Then sData = "28/02/2020"
+    If sData = "29/02/2023" Then sData = "28/02/2023"
     nWeekDay = Weekday(CDate(sData))
     aExtrato(nDay).sDia = WeekdayName(nWeekDay, True)
 
@@ -440,7 +440,7 @@ For nDay = 1 To nLastDay
 
     nCodEvento = ProdEventoDia(nCodFiscal, CDate(sData))
     If nCodEvento > 0 Then
-        If (nWeekDay = 1 Or nWeekDay = 7) And nCodEvento <> 2 And nCodEvento <> 3 Then
+        If (nWeekDay = 1 Or nWeekDay = 7) And nCodEvento <> 2 And nCodEvento <> 3 And nCodEvento <> 8 Then
             sEvento = "SÁB/DOM/FER."
             nPontos = 0
 '            nPontos = aEvento(nCodEvento).nPontos
@@ -590,7 +590,7 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         nDia = Day(!Data)
-        nSomaTarefa = !Valor * !QTDE
+        nSomaTarefa = !valor * !Qtde
         nSomaMes = nSomaMes + nSomaTarefa
         aPontos(nDia) = FormatNumber(aPontos(nDia) + nSomaTarefa, 2)
         
@@ -598,9 +598,9 @@ With RdoAux
         ReDim Preserve aExtratoItem(UBound(aExtratoItem) + 1)
         nPos = UBound(aExtratoItem)
         aExtratoItem(nPos).nDia = nDia
-        aExtratoItem(nPos).nQtde = FormatNumber(!QTDE, 2)
-        aExtratoItem(nPos).nValor = FormatNumber(!Valor, 2)
-        aExtratoItem(nPos).nPontos = FormatNumber(!QTDE * !Valor, 2)
+        aExtratoItem(nPos).nQtde = FormatNumber(!Qtde, 2)
+        aExtratoItem(nPos).nValor = FormatNumber(!valor, 2)
+        aExtratoItem(nPos).nPontos = FormatNumber(!Qtde * !valor, 2)
         If Len(!Descricao) > 21 Then
             sNome = Left(!Descricao, 21) & "."
         Else
@@ -661,8 +661,8 @@ With RdoAux
     Do Until .EOF
         For x = 1 To UBound(aExtratoItem)
             If aExtratoItem(x).sItem = !Item Then
-                aExtratoItem(x).nQtde = aExtratoItem(x).nQtde + !QTDE
-                aExtratoItem(x).nValor = !Valor
+                aExtratoItem(x).nQtde = aExtratoItem(x).nQtde + !Qtde
+                aExtratoItem(x).nValor = !valor
                 Exit For
             End If
         Next
@@ -676,19 +676,30 @@ ReDim aFiscalEvento(0)
 
 For x = 1 To nLastDay
     sDataTmp = Format(x, "00") & "/" & Format(nMes, "00") & "/" & cmbAno.Text
-    'If sDataTmp = "29/02/2019" Then sDataTmp = "28/02/2019"
-    nWeekDay = Weekday(CDate(sDataTmp))
+    If sDataTmp = "29/02/2023" Then sDataTmp = "28/02/2023"
+    'nWeekDay = Weekday(CDate(sDataTmp))
     nCodEvento = ProdEventoDia(nCodFiscal, CDate(sDataTmp))
+    If nCodEvento = 1 Then
+        nWeekDay = Weekday(CDate(sDataTmp))
+        If nWeekDay = 1 Or nWeekDay = 7 Then
+            GoTo Proximo
+        End If
+
+    End If
+    
     If nCodEvento = 0 And bIsBoss Then
+        
         nCodEvento = 1
     End If
     
+    If nCodEvento <> 2 Then
     Sql = "select * from feriadodef where  dia=" & x & " and mes=" & nMes & " and ano=" & Val(cmbAno.Text)
     Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     If RdoAux2.RowCount > 0 Then
         RdoAux2.Close
         'nContaDiaPerdido = nContaDiaPerdido + 1
         GoTo Proximo
+    End If
     End If
     
     If nCodEvento > 0 Then
@@ -702,7 +713,7 @@ For x = 1 To nLastDay
                 nContaFerias = nContaFerias + 1
                 nContaDiaPerdido = nContaDiaPerdido + 1
                 sDataFerias = sDataTmp
-            ElseIf nCodEvento = 3 Or nCodEvento = 4 Then 'Licença médica
+            ElseIf nCodEvento = 3 Or nCodEvento = 4 Or nCodEvento = 8 Then 'Licença médica/nojo
                 nContaLic = nContaLic + 1
                 nContaDiaPerdido = nContaDiaPerdido + 1
                 sDataFerias = sDataTmp
@@ -732,20 +743,21 @@ If nContaFerias > 0 Then
     End With
 End If
 
-If nContaLic > 0 Then
-    nContaLic = 0
-    Sql = "SELECT codfiscal, seq, codevento, dataini, datafim From produtividadefiscalevento "
-    Sql = Sql & "WHERE codfiscal = " & nCodFiscal & " AND (codevento = 4 or codevento=3) AND ('" & Format(sDataFerias, "mm/dd/yyyy") & "' BETWEEN dataini AND datafim)"
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-    With RdoAux
-        Do Until .EOF
-            nContaLic = nContaLic + DateDiff("d", !dataini, !Datafim) + 1
-            
-           .MoveNext
-        Loop
-       .Close
-    End With
-End If
+'If nContaLic > 0 Then
+'    nContaLic = 0
+'    Sql = "SELECT codfiscal, seq, codevento, dataini, datafim From produtividadefiscalevento "
+'    'Sql = Sql & "WHERE codfiscal = " & nCodFiscal & " AND (codevento = 4 or codevento=3 or codevento=8) AND ('" & Format(sDataFerias, "mm/dd/yyyy") & "' BETWEEN dataini AND datafim)"
+'    Sql = Sql & "WHERE codfiscal = " & nCodFiscal & " AND (codevento = 4 or codevento=3 or codevento=8) AND MONTH(dataini)=" & nMes & " AND YEAR(dataini)=" & cmbAno.Text
+'    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+'    With RdoAux
+'        Do Until .EOF
+'            nContaLic = nContaLic + DateDiff("d", !dataini, !Datafim) + 1
+'
+'           .MoveNext
+'        Loop
+'       .Close
+'    End With
+'End If
 
 If bIsBoss Then
     nContaChefia = nContaDiaUtil - nContaDiaPerdido
@@ -761,7 +773,7 @@ For x = 1 To UBound(aExtratoItem)
     ElseIf aExtratoItem(x).sItem = "Afastamento" And (nContaFerias > 0 Or nContaLic > 0) Then 'FERIAS
         aExtratoItem(x).nQtde = nContaFerias
         If nContaLic > 0 Then
-            aExtratoItem(x).nQtde = nContaLic
+            aExtratoItem(x).nQtde = aExtratoItem(x).nQtde + nContaLic
             aExtratoItem(x).nValor = 20
             aExtratoItem(x).sDesc = "Licença"
         Else

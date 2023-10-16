@@ -328,7 +328,7 @@ Begin VB.Form frmFeriados
       ForeColor       =   -2147483630
       BackColor       =   15658734
       Appearance      =   1
-      StartOfWeek     =   53346305
+      StartOfWeek     =   102432769
       TitleBackColor  =   192
       TitleForeColor  =   12648447
       CurrentDate     =   37439
@@ -637,10 +637,10 @@ If sN <> "" Then
    Sql = "SELECT MAX(CODFERIADO) AS MAXIMO FROM FERIADO"
    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
    With RdoAux
-       If IsNull(!MAXIMO) Then
+       If IsNull(!maximo) Then
           nCod = 1
        Else
-          nCod = !MAXIMO + 1
+          nCod = !maximo + 1
        End If
       .Close
    End With
@@ -686,7 +686,7 @@ If cmbFeriado.ListIndex = -1 Then
    Exit Sub
 End If
 
-If MsgBox("Excluir o Feriado " & cmbFeriado.text & " ?", vbQuestion + vbYesNo, "Confirmação") = vbYes Then
+If MsgBox("Excluir o Feriado " & cmbFeriado.Text & " ?", vbQuestion + vbYesNo, "Confirmação") = vbYes Then
    Sql = "SELECT CODFERIADO FROM FERIADODEF WHERE CODFERIADO=" & cmbFeriado.ItemData(cmbFeriado.ListIndex)
    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
    With RdoAux
@@ -753,7 +753,7 @@ Sql = Sql & " ORDER BY DIA,MES,ANO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-       lstAll.AddItem Format(!DIA, "00") & "/" & Format(!Mes, "00") & "/" & Format(!Ano, "0000") & " - " & !NOMEFERIADO
+       lstAll.AddItem Format(!DIA, "00") & "/" & Format(!mes, "00") & "/" & Format(!ano, "0000") & " - " & !NOMEFERIADO
       .MoveNext
     Loop
 End With
@@ -775,8 +775,8 @@ End Sub
 
 Private Sub cmdSelAll_Click()
 Dim sData As Date
-If lstAll.text = "" Then Exit Sub
-sData = CDate(Left$(lstAll.text, 10))
+If lstAll.Text = "" Then Exit Sub
+sData = CDate(Left$(lstAll.Text, 10))
 
 cmdSelAll.Visible = False
 cmdCancelAll.Visible = False
@@ -813,13 +813,13 @@ End Sub
 Private Sub Le()
 Limpa
 If grdFer.Rows = 1 Then Exit Sub
-cmbFeriado.text = grdFer.TextMatrix(grdFer.Row, 2)
-txtObs.text = grdFer.TextMatrix(grdFer.Row, 3)
+cmbFeriado.Text = grdFer.TextMatrix(grdFer.Row, 2)
+txtObs.Text = grdFer.TextMatrix(grdFer.Row, 3)
 
 End Sub
 
 Private Sub Limpa()
-txtObs.text = ""
+txtObs.Text = ""
 End Sub
 
 Private Sub CarregaLista()
@@ -832,7 +832,7 @@ Sql = Sql & "WHERE  MES = " & Mv.Month & " AND ANO =" & Mv.Year
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-       grdFer.AddItem !CODFERIADO & Chr(9) & Format(!DIA, "00") & "/" & Format(!Mes, "00") & "/" & Format(!Ano, "0000") & Chr(9) & !NOMEFERIADO & Chr(9) & SubNull(!OBSERVACAO)
+       grdFer.AddItem !CODFERIADO & Chr(9) & Format(!DIA, "00") & "/" & Format(!mes, "00") & "/" & Format(!ano, "0000") & Chr(9) & !NOMEFERIADO & Chr(9) & SubNull(!OBSERVACAO)
       .MoveNext
     Loop
    .Close
@@ -844,23 +844,23 @@ Private Sub Grava()
 On Error GoTo Erro
 If Evento = "Novo" Then
     Sql = "INSERT FERIADODEF(DIA,MES,ANO,CODFERIADO,OBSERVACAO) VALUES("
-    Sql = Sql & Mv.Day & "," & Mv.Month & "," & Mv.Year & "," & cmbFeriado.ItemData(cmbFeriado.ListIndex) & ",'" & txtObs.text & "')"
+    Sql = Sql & Mv.Day & "," & Mv.Month & "," & Mv.Year & "," & cmbFeriado.ItemData(cmbFeriado.ListIndex) & ",'" & txtObs.Text & "')"
     cn.Execute Sql, rdExecDirect
 Else
-    Sql = "UPDATE FERIADODEF SET OBSERVACAO='" & Mask(txtObs.text) & "' WHERE "
+    Sql = "UPDATE FERIADODEF SET OBSERVACAO='" & Mask(txtObs.Text) & "' WHERE "
     Sql = Sql & "DIA=" & Mv.Day & " AND MES=" & Mv.Month & " AND ANO=" & Mv.Year & " AND CODFERIADO=" & cmbFeriado.ItemData(cmbFeriado.ListIndex)
     cn.Execute Sql, rdExecDirect
 End If
 
 
 If Evento = "Novo" Then
-   grdFer.AddItem cmbFeriado.ItemData(cmbFeriado.ListIndex) & Chr(9) & Mv.Value & Chr(9) & cmbFeriado.text & Chr(9) & txtObs.text
+   grdFer.AddItem cmbFeriado.ItemData(cmbFeriado.ListIndex) & Chr(9) & Mv.value & Chr(9) & cmbFeriado.Text & Chr(9) & txtObs.Text
    grdFer.Row = grdFer.Rows - 1
    grdFer.ColSel = 3
-   Log Form, Me.Caption, Inclusão, "Inserido Feriado " & cmbFeriado.text & " na data " & Mv.Value
+   Log Form, Me.Caption, Inclusão, "Inserido Feriado " & cmbFeriado.Text & " na data " & Mv.value
  ElseIf Evento = "Alterar" Then
-   grdFer.TextMatrix(grdFer.Row, 3) = txtObs.text
-   Log Form, Me.Caption, Alteração, "Alterado Feriado " & cmbFeriado.text & " na data " & Mv.Value
+   grdFer.TextMatrix(grdFer.Row, 3) = txtObs.Text
+   Log Form, Me.Caption, Alteração, "Alterado Feriado " & cmbFeriado.Text & " na data " & Mv.value
 End If
 
 Exit Sub

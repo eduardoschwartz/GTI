@@ -5,17 +5,57 @@ Begin VB.Form frmEmissaoGuia3
    BackColor       =   &H00FBFBE3&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Composição da guia"
-   ClientHeight    =   4035
-   ClientLeft      =   11970
-   ClientTop       =   6030
+   ClientHeight    =   4050
+   ClientLeft      =   8970
+   ClientTop       =   7035
    ClientWidth     =   8700
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   4035
+   ScaleHeight     =   4050
    ScaleWidth      =   8700
    ShowInTaskbar   =   0   'False
+   Begin prjChameleon.chameleonButton cmdTeste 
+      Height          =   330
+      Left            =   3735
+      TabIndex        =   12
+      ToolTipText     =   "Imprimir as parcelas"
+      Top             =   4230
+      Width           =   1095
+      _ExtentX        =   1931
+      _ExtentY        =   582
+      BTYPE           =   3
+      TX              =   "TESTE"
+      ENAB            =   -1  'True
+      BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      COLTYPE         =   2
+      FOCUSR          =   0   'False
+      BCOL            =   12632256
+      BCOLO           =   12632256
+      FCOL            =   0
+      FCOLO           =   0
+      MCOL            =   13026246
+      MPTR            =   1
+      MICON           =   "frmEmissaoGuia3.frx":0000
+      PICN            =   "frmEmissaoGuia3.frx":001C
+      UMCOL           =   -1  'True
+      SOFT            =   0   'False
+      PICPOS          =   0
+      NGREY           =   0   'False
+      FX              =   0
+      HAND            =   0   'False
+      CHECK           =   0   'False
+      VALUE           =   0   'False
+   End
    Begin VB.ListBox lstIPTU 
       Appearance      =   0  'Flat
       Height          =   420
@@ -68,8 +108,8 @@ Begin VB.Form frmEmissaoGuia3
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmEmissaoGuia3.frx":0000
-         PICN            =   "frmEmissaoGuia3.frx":001C
+         MICON           =   "frmEmissaoGuia3.frx":0176
+         PICN            =   "frmEmissaoGuia3.frx":0192
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -149,8 +189,8 @@ Begin VB.Form frmEmissaoGuia3
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmEmissaoGuia3.frx":0176
-         PICN            =   "frmEmissaoGuia3.frx":0192
+         MICON           =   "frmEmissaoGuia3.frx":02EC
+         PICN            =   "frmEmissaoGuia3.frx":0308
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -158,6 +198,45 @@ Begin VB.Form frmEmissaoGuia3
          FX              =   0
          HAND            =   0   'False
          CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton cmdSelectAll 
+         Height          =   330
+         Left            =   5445
+         TabIndex        =   13
+         ToolTipText     =   "Imprimir as parcelas"
+         Top             =   495
+         Width           =   1590
+         _ExtentX        =   2805
+         _ExtentY        =   582
+         BTYPE           =   3
+         TX              =   "Selecionar tudo"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   0
+         FCOLO           =   0
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmEmissaoGuia3.frx":0462
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   -1  'True
          VALUE           =   0   'False
       End
       Begin VB.Label Label2 
@@ -319,7 +398,7 @@ End If
 End Sub
 
 Private Sub cmdDDList_Click()
-Dim nAno As Integer, x As Integer, Y As Integer
+Dim nAno As Integer, x As Integer, y As Integer
 
 If cmdDDList.value = True Then
     frDDList.Height = 2130
@@ -328,15 +407,15 @@ Else
     For x = 0 To lstAno.ListCount - 1
         nAno = lstAno.List(x)
         If lstAno.Selected(x) = True Then
-            For Y = 1 To lvDebito.ListItems.Count
-                If lvDebito.ListItems(Y).Text = nAno Then
-                    lvDebito.ListItems(Y).Checked = True
+            For y = 1 To lvDebito.ListItems.Count
+                If lvDebito.ListItems(y).Text = nAno Then
+                    lvDebito.ListItems(y).Checked = True
                 End If
             Next
         Else
-            For Y = 1 To lvDebito.ListItems.Count
-                If lvDebito.ListItems(Y).Text = nAno Then
-                    lvDebito.ListItems(Y).Checked = False
+            For y = 1 To lvDebito.ListItems.Count
+                If lvDebito.ListItems(y).Text = nAno Then
+                    lvDebito.ListItems(y).Checked = False
                 End If
             Next
         End If
@@ -368,8 +447,9 @@ If frmMdi.frTeste.Visible = True Then
     Exit Sub
 End If
 
+nQtdeParc = 0
 For x = 1 To lvDebito.ListItems.Count
-    If lvDebito.ListItems(x).Checked Then
+    If lvDebito.ListItems(x).Checked And Val(lvDebito.ListItems(x).SubItems(3)) > 0 And lvDebito.ListItems(x).SubItems(6) = "NÃO PAGO" Then
         nQtdeParc = nQtdeParc + 1
     End If
 Next
@@ -378,6 +458,9 @@ If nQtdeParc = 0 Then
     MsgBox "Selecione a(s) parcela(s) à serem impressas.", vbCritical, "Erro"
 Else
     nSid = Int(Rnd(100) * 1000000)
+    If cmbTipoGuia.ListIndex = 1 Then
+        nQtdeParc = 12
+    End If
     Grava_Boleto nSid, nQtdeParc
     
     
@@ -386,6 +469,8 @@ Else
     If cmbTipoGuia.ListIndex <> 1 Then
         frmReport.ShowReport3 "FICHACOMPENSACAO", frmMdi.HWND, Me.HWND, nSid
     ElseIf cmbTipoGuia.ListIndex = 1 Then
+   '     MsgBox "Emissão de IPTU apenas pelo Site.", vbCritical, "Erro"
+
         Calculo_IPTU
         frmReport.ShowReport3 "FICHACOMPENSACAO_IPTU", frmMdi.HWND, Me.HWND, nSid
         
@@ -396,6 +481,18 @@ Else
     Unload Me
 End If
 
+End Sub
+
+Private Sub cmdSelectAll_Click()
+'If cmdSelectAll.value = True Then
+For x = 1 To lvDebito.ListItems.Count
+    lvDebito.ListItems(x).Checked = cmdSelectAll.value
+Next
+End Sub
+
+Private Sub cmdTeste_Click()
+If NomeDeLogin <> "SCHWARTZ" Then Exit Sub
+EmiteBoletoTeste
 End Sub
 
 Private Sub Form_Load()
@@ -444,6 +541,9 @@ Dim itmX As ListItem, x As Integer, nLanc As Integer, Achou As Boolean
 lstAno.Clear
 lvDebito.ListItems.Clear
 nLanc = cmbLanc.ItemData(cmbLanc.ListIndex)
+If nLanc = 1 Then
+    CarregaListaDebitoGeral
+End If
 
 For x = 1 To UBound(aListaDebitoGeral)
     With aListaDebitoGeral(x)
@@ -457,21 +557,23 @@ For x = 1 To UBound(aListaDebitoGeral)
             Next
             If Not Achou Then
                 If nLanc = 1 Then 'IPTU APENAS ANO ATUAL
-                    'If .nAno = Year(Now) Then
-                    If CDate(.sVencto) >= CDate(Format(Now, "dd/mm/yyyy")) Then
+                    If .nAno = Year(Now) Then
+'                    If CDate(.sVencto) >= CDate(Format(Now, "dd/mm/yyyy")) Then
                         lstAno.AddItem .nAno
                     End If
                 End If
             End If
         
             If nLanc = 1 Then 'IPTU APENAS ANO ATUAL
-                'If .nAno <> Year(Now) Then
-                If CDate(.sVencto) < CDate(Format(Now, "dd/mm/yyyy")) Then
+                If .nAno <> Year(Now) Then
+                'If CDate(.sVencto) < CDate(Format(Now, "dd/mm/yyyy")) Then
                     GoTo Proximo
                 End If
             End If
                     
-            If CDate(Format(.sVencto, "dd/mm/yyyy")) >= CDate(Format(Now, "dd/mm/yyyy")) Then
+                    
+                    
+            If (CDate(Format(.sVencto, "dd/mm/yyyy")) >= CDate(Format(Now, "dd/mm/yyyy"))) Or nLanc = 1 Then
                 Set itmX = lvDebito.ListItems.Add(, CStr(.nAno) & Format(.nLanc, "00") & Format(.nSeq, "00") & Format(.nParc, "00") & Format(.nCompl, "00"), CStr(.nAno))
                 itmX.SubItems(1) = Format(.nLanc, "00") & "-" & .sLanc
                 itmX.SubItems(2) = Format(.nSeq, "00")
@@ -534,7 +636,9 @@ Dim nCompl As Integer, sDataVencto As String, nValorParc As Double, sNossoNumero
 Dim dDataBase As String, nFatorVencto As Integer, sQuintoGrupo As String, sBarra As String, sDigitavel2 As String, nNumDoc As Long
 Dim sObs As String, sNome As String, sDoc As String, sEndereco As String, sBairro As String, sCidade As String, sCep As String, sInsc As String
 Dim sQuadra As String, sLote As String, sUF As String, nPos As Integer, sCampo1 As String
-Dim sCampo2 As String, sCampo3 As String, sCampo4 As String, sCampo5 As String
+Dim sCampo2 As String, sCampo3 As String, sCampo4 As String, sCampo5 As String, sParcela As String
+
+
 
 With frmEmissaoGuia
     sNome = .txtNome.Text
@@ -553,7 +657,29 @@ Sql = "delete from ficha_compensacao where sid=" & nSid
 cn.Execute Sql, rdExecDirect
 
 nCodReduz = Val(frmEmissaoGuia.txtCodigo.Text)
+Sql = "select * from laseriptu where codreduzido=" & nCodReduz & " and ano=" & Year(Now)
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+If RdoAux.RowCount > 0 Then
+    nQtdeParc = RdoAux!qtdeparc
+Else
+    nQtdeParc = 1
+End If
+
 nPos = 1
+nQtdeParc = 0
+Dim h As Integer
+For h = 1 To (lvDebito.ListItems.Count)
+    nParc = lvDebito.ListItems(h).SubItems(3)
+    If nParc <> 0 And nParc <> 92 And nParc <> 93 Then
+        nQtdeParc = nQtdeParc + 1
+    End If
+Next
+
+If cmbTipoGuia.ListIndex = 1 Then
+    nQtdeParc = 12
+End If
+
+
 For x = 1 To lvDebito.ListItems.Count
     If lvDebito.ListItems(x).Checked Then
         With lvDebito.ListItems(x)
@@ -587,36 +713,46 @@ For x = 1 To lvDebito.ListItems.Count
                                     
            '**** GERADOR DE CÓDIGO DE BARRAS ********
             sNossoNumero = "2873532"
-        dDataBase = "07/10/1997"
-        nFatorVencto = CDate(sDataVencto) - CDate(dDataBase)
-        sQuintoGrupo = Format(nFatorVencto, "0000")
-        sQuintoGrupo = sQuintoGrupo & Format(RetornaNumero(FormatNumber(nValorParc, 2)), "0000000000")
-        sBarra = "0019" & Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(nValorParc, 2)), "0000000000") & "000000287353200"
-        sBarra = sBarra & CStr(nNumDoc) & "17"
-        
-        sCampo1 = "0019" & Mid(sBarra, 20, 5)
-        sDigitavel = sCampo1 & Val(Calculo_DV10(sCampo1))
-        sCampo2 = Mid(sBarra, 24, 10)
-        sDigitavel = sDigitavel & sCampo2 & Val(Calculo_DV10(sCampo2))
-        sCampo3 = Mid(sBarra, 34, 10)
-        sDigitavel = sDigitavel & sCampo3 & Val(Calculo_DV10(sCampo3))
-        sCampo5 = Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(nValorParc, 2)), "0000000000")
-        sCampo4 = Val(Calculo_DV11(sBarra))
-        sDigitavel = sDigitavel & sCampo4 & sCampo5
-        sBarra = Left(sBarra, 4) & sCampo4 & Mid(sBarra, 5, Len(sBarra) - 4)
-        sDigitavel2 = Left(sDigitavel, 5) & "." & Mid(sDigitavel, 6, 5) & " " & Mid(sDigitavel, 11, 5) & "." & Mid(sDigitavel, 16, 6) & " "
-        sDigitavel2 = sDigitavel2 & Mid(sDigitavel, 22, 5) & "." & Mid(sDigitavel, 27, 6) & " " & Mid(sDigitavel, 33, 1) & " " & Right(sDigitavel, 14)
-        sBarra = Gera2of5Str(sBarra)
+            dDataBase = "07/10/1997"
+            nFatorVencto = CDate(sDataVencto) - CDate(dDataBase)
+            sQuintoGrupo = Format(nFatorVencto, "0000")
+            sQuintoGrupo = sQuintoGrupo & Format(RetornaNumero(FormatNumber(nValorParc, 2)), "0000000000")
+            sBarra = "0019" & Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(nValorParc, 2)), "0000000000") & "000000287353200"
+            sBarra = sBarra & CStr(nNumDoc) & "17"
             
+            sCampo1 = "0019" & Mid(sBarra, 20, 5)
+            sDigitavel = sCampo1 & Val(Calculo_DV10(sCampo1))
+            sCampo2 = Mid(sBarra, 24, 10)
+            sDigitavel = sDigitavel & sCampo2 & Val(Calculo_DV10(sCampo2))
+            sCampo3 = Mid(sBarra, 34, 10)
+            sDigitavel = sDigitavel & sCampo3 & Val(Calculo_DV10(sCampo3))
+            sCampo5 = Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(nValorParc, 2)), "0000000000")
+            sCampo4 = Val(Calculo_DV11(sBarra))
+            sDigitavel = sDigitavel & sCampo4 & sCampo5
+            sBarra = Left(sBarra, 4) & sCampo4 & Mid(sBarra, 5, Len(sBarra) - 4)
+            sDigitavel2 = Left(sDigitavel, 5) & "." & Mid(sDigitavel, 6, 5) & " " & Mid(sDigitavel, 11, 5) & "." & Mid(sDigitavel, 16, 6) & " "
+            sDigitavel2 = sDigitavel2 & Mid(sDigitavel, 22, 5) & "." & Mid(sDigitavel, 27, 6) & " " & Mid(sDigitavel, 33, 1) & " " & Right(sDigitavel, 14)
+            sBarra = Gera2of5Str(sBarra)
             
+            If nParc = 0 Then
+                If nCompl = 0 Then
+                    sParc = "UNICA 1"
+                ElseIf nCompl = 91 Then
+                    sParc = "UNICA 2"
+                ElseIf nCompl = 92 Then
+                    sParc = "UNICA 3"
+                End If
+            Else
+                sParc = Format(nParc, "00") & "/" & Format(nQtdeParc, "00")
+            End If
             
             sObs = ""
             sNumDoc = "287353200" & Format(nNumDoc, "00000000")
-            Sql = "Insert FICHA_COMPENSACAO(SID,SEQ,CODIGO,NOME,CPF,ENDERECO,BAIRRO,CIDADE,CEP,DOCUMENTO,VALOR,VENCIMENTO,PARCELA,DIGITAVEL,CODBARRA,OBS,INSCRICAO,QUADRA,LOTE,UF) VALUES("
+            Sql = "Insert FICHA_COMPENSACAO(SID,SEQ,CODIGO,NOME,CPF,ENDERECO,BAIRRO,CIDADE,CEP,DOCUMENTO,VALOR,VENCIMENTO,PARCELA,DIGITAVEL,CODBARRA,OBS,INSCRICAO,QUADRA,LOTE,UF,PARCELA_DESC) VALUES("
             Sql = Sql & nSid & "," & x & "," & nCodReduz & ",'" & Left(Mask(sNome), 80) & "','" & RetornaNumero(sDoc) & "','" & Mask(sEndereco) & "','" & Left(Mask(sBairro), 25) & "','"
             Sql = Sql & Mask(sCidade) & "','" & sCep & "'," & sNumDoc & "," & Virg2Ponto(Format(nValorParc, "#0.00")) & ",'" & Format(sDataVencto, "mm/dd/yyyy") & "','"
             Sql = Sql & Format(nPos, "00") & "/" & Format(nQtdeParc, "00") & "','" & sDigitavel2 & "','" & Mask(sBarra) & "','" & sObs & "','" & sInsc & "','"
-            Sql = Sql & Mask(sQuadra) & "','" & Mask(sLote) & "','" & sUF & "')"
+            Sql = Sql & Mask(sQuadra) & "','" & Mask(sLote) & "','" & sUF & "','" & sParc & "')"
             cn.Execute Sql, rdExecDirect
                        
             nPos = nPos + 1
@@ -625,7 +761,178 @@ For x = 1 To lvDebito.ListItems.Count
     End If
 Next
 
+End Sub
+
+Private Sub CarregaListaDebitoGeral()
+Dim nCodigo As Long, nEval As Integer, Achou As Boolean, x As Integer, k As Integer
+Dim Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, qd As New rdoQuery, bFind As Boolean
+
+Ocupado
+nCodigo = Val(frmEmissaoGuia.txtCodigo.Text)
+Achou = False
+ReDim aListaDebitoGeral(0)
+
+Set qd.ActiveConnection = cn
+qd.QueryTimeout = 0
+On Error Resume Next
+RdoAux.Close
+On Error GoTo 0
+
+qd.Sql = "{ Call spEXTRATO2VIAIPTU(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
+qd(0) = nCodigo
+qd(1) = nCodigo
+qd(2) = 1950: qd(3) = 2050
+qd(4) = 0: qd(5) = 99
+qd(6) = 0: qd(7) = 9999
+qd(8) = 0: qd(9) = 999
+qd(10) = 0: qd(11) = 99
+qd(12) = 0: qd(13) = 99
+qd(14) = Format(CDate(Right$(frmMdi.Sbar.Panels(6).Text, 10)), "mm/dd/yyyy")
+qd(15) = NomeDeLogin
+Set RdoAux = qd.OpenResultset(rdOpenKeyset)
+With RdoAux
+    If .RowCount > 0 Then
+'        ReDim Preserve aListaDebitoGeral(UBound(aListaDebitoGeral) + 1)
+        nEval = UBound(aListaDebitoGeral)
+        
+        Do Until .EOF
+            nEval = UBound(aListaDebitoGeral)
+            Achou = False
+            For x = 1 To nEval
+                If aListaDebitoGeral(x).nAno = !AnoExercicio And aListaDebitoGeral(x).nLanc = !CodLancamento And aListaDebitoGeral(x).nSeq = !SeqLancamento And _
+                   aListaDebitoGeral(x).nParc = !NumParcela And aListaDebitoGeral(x).nCompl = !CODCOMPLEMENTO Then
+                   Achou = True
+                   Exit For
+                End If
+            Next
+            
+            If Not Achou Then
+                If !statuslanc = 3 Or !statuslanc = 42 Or !statuslanc = 43 Then
+                    ReDim Preserve aListaDebitoGeral(UBound(aListaDebitoGeral) + 1)
+                    nEval = UBound(aListaDebitoGeral)
+                    aListaDebitoGeral(nEval).nAno = !AnoExercicio
+                    aListaDebitoGeral(nEval).nLanc = !CodLancamento
+                    aListaDebitoGeral(nEval).sLanc = !DESCLANCAMENTO
+                    aListaDebitoGeral(nEval).nSeq = !SeqLancamento
+                    aListaDebitoGeral(nEval).nParc = !NumParcela
+                    aListaDebitoGeral(nEval).nCompl = !CODCOMPLEMENTO
+                    aListaDebitoGeral(nEval).nSituacao = !statuslanc
+                    aListaDebitoGeral(nEval).sSituacao = !Situacao
+                    aListaDebitoGeral(nEval).sVencto = Format(!DataVencimento, "dd/mm/yyyy")
+                    aListaDebitoGeral(nEval).sDA = IIf(IsNull(!datainscricao), "N", "S")
+                    aListaDebitoGeral(nEval).sAj = IIf(IsNull(!dataajuiza), "N", "S")
+                    aListaDebitoGeral(nEval).nCodTributo = !CodTributo
+                    aListaDebitoGeral(nEval).nValorTributo = FormatNumber(!ValorTributo, 2)
+                    aListaDebitoGeral(nEval).nValorAtual = FormatNumber(!ValorTotal, 2)
+                End If
+            Else
+                bFind = False
+                For k = 1 To UBound(aListaDebitoGeral)
+                    If aListaDebitoGeral(k).nAno = !AnoExercicio And aListaDebitoGeral(k).nLanc = !CodLancamento And _
+                       aListaDebitoGeral(k).nSeq = !SeqLancamento And aListaDebitoGeral(k).nParc = !NumParcela And _
+                       aListaDebitoGeral(k).nCompl = !CODCOMPLEMENTO And aListaDebitoGeral(k).nCodTributo = !CodTributo Then
+                       bFind = True
+                       Exit For
+                    End If
+                Next
+                
+                If Not bFind Then
+                    aListaDebitoGeral(x).nValorTributo = FormatNumber(aListaDebitoGeral(x).nValorTributo + !ValorTributo, 2)
+                    aListaDebitoGeral(x).nValorAtual = FormatNumber(aListaDebitoGeral(x).nValorAtual + !ValorTotal, 2)
+                End If
+            End If
+Proximo:
+            
+           .MoveNext
+        Loop
+    End If
+   .Close
+End With
+Liberado
+
+End Sub
 
 
+Private Sub EmiteBoletoTeste()
+
+Dim Sql As String, RdoAux As rdoResultset, x As Integer, nCodReduz As Long, nAno As Integer, nLanc As Integer, nSeq As Integer, nParc As Integer
+Dim nCompl As Integer, sDataVencto As String, nValorParc As Double, sNossoNumero As String, sDigitavel As String, sDv As String
+Dim dDataBase As String, nFatorVencto As Integer, sQuintoGrupo As String, sBarra As String, sDigitavel2 As String, nNumDoc As Long
+Dim sObs As String, sNome As String, sDoc As String, sEndereco As String, sBairro As String, sCidade As String, sCep As String, sInsc As String
+Dim sQuadra As String, sLote As String, sUF As String, nPos As Integer, sCampo1 As String
+Dim sCampo2 As String, sCampo3 As String, sCampo4 As String, sCampo5 As String, sParcela As String, nSid As Long
+nSid = Int(Rnd(100) * 1000000)
+
+With frmEmissaoGuia
+    sNome = .txtNome.Text
+    sEndereco = .txtEndereco.Text
+    sBairro = .txtBairro.Text
+    sDoc = .txtDoc.Text
+    sCidade = .txtCidade.Text
+    sUF = .txtUF.Text
+    sCep = .txtCep.Text
+    sQuadra = .txtQuadra.Text
+    sLote = .txtLote.Text
+    sInsc = .txtInscricao.Text
+End With
+
+Sql = "delete from ficha_compensacao where sid=" & nSid
+cn.Execute Sql, rdExecDirect
+
+nCodReduz = Val(frmEmissaoGuia.txtCodigo.Text)
+
+nPos = 1
+nQtdeParc = 1
+nNumDoc = 20993830
+nValorParc = 10.79
+sDataVencto = "15/02/2023"
+                                    
+'**** GERADOR DE CÓDIGO DE BARRAS ********
+sNossoNumero = "2873532"
+dDataBase = "07/10/1997"
+nFatorVencto = CDate(sDataVencto) - CDate(dDataBase)
+sQuintoGrupo = Format(nFatorVencto, "0000")
+sQuintoGrupo = sQuintoGrupo & Format(RetornaNumero(FormatNumber(nValorParc, 2)), "0000000000")
+sBarra = "0019" & Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(nValorParc, 2)), "0000000000") & "000000287353200"
+sBarra = sBarra & CStr(nNumDoc) & "17"
+
+sCampo1 = "0019" & Mid(sBarra, 20, 5)
+sDigitavel = sCampo1 & Val(Calculo_DV10(sCampo1))
+sCampo2 = Mid(sBarra, 24, 10)
+sDigitavel = sDigitavel & sCampo2 & Val(Calculo_DV10(sCampo2))
+sCampo3 = Mid(sBarra, 34, 10)
+sDigitavel = sDigitavel & sCampo3 & Val(Calculo_DV10(sCampo3))
+sCampo5 = Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(nValorParc, 2)), "0000000000")
+sCampo4 = Val(Calculo_DV11(sBarra))
+sDigitavel = sDigitavel & sCampo4 & sCampo5
+sBarra = Left(sBarra, 4) & sCampo4 & Mid(sBarra, 5, Len(sBarra) - 4)
+sDigitavel2 = Left(sDigitavel, 5) & "." & Mid(sDigitavel, 6, 5) & " " & Mid(sDigitavel, 11, 5) & "." & Mid(sDigitavel, 16, 6) & " "
+sDigitavel2 = sDigitavel2 & Mid(sDigitavel, 22, 5) & "." & Mid(sDigitavel, 27, 6) & " " & Mid(sDigitavel, 33, 1) & " " & Right(sDigitavel, 14)
+sBarra = Gera2of5Str(sBarra)
+
+If nParc = 0 Then
+    If nCompl = 0 Then
+        sParc = "UNICA 1"
+    ElseIf nCompl = 91 Then
+        sParc = "UNICA 2"
+    ElseIf nCompl = 92 Then
+        sParc = "UNICA 3"
+    End If
+Else
+    sParc = Format(nParc, "00") & "/" & Format(nQtdeParc, "00")
+End If
+
+sObs = ""
+sNumDoc = "287353200" & Format(nNumDoc, "00000000")
+Sql = "Insert FICHA_COMPENSACAO(SID,SEQ,CODIGO,NOME,CPF,ENDERECO,BAIRRO,CIDADE,CEP,DOCUMENTO,VALOR,VENCIMENTO,PARCELA,DIGITAVEL,CODBARRA,OBS,INSCRICAO,QUADRA,LOTE,UF,PARCELA_DESC) VALUES("
+Sql = Sql & nSid & "," & x & "," & nCodReduz & ",'" & Left(Mask(sNome), 80) & "','" & RetornaNumero(sDoc) & "','" & Mask(sEndereco) & "','" & Left(Mask(sBairro), 25) & "','"
+Sql = Sql & Mask(sCidade) & "','" & sCep & "'," & sNumDoc & "," & Virg2Ponto(Format(nValorParc, "#0.00")) & ",'" & Format(sDataVencto, "mm/dd/yyyy") & "','"
+Sql = Sql & Format(nPos, "00") & "/" & Format(nQtdeParc, "00") & "','" & sDigitavel2 & "','" & Mask(sBarra) & "','" & sObs & "','" & sInsc & "','"
+Sql = Sql & Mask(sQuadra) & "','" & Mask(sLote) & "','" & sUF & "','" & sParc & "')"
+cn.Execute Sql, rdExecDirect
+           
+frmReport.ShowReport3 "FICHACOMPENSACAO", frmMdi.HWND, Me.HWND, nSid
+Sql = "delete from ficha_compensacao where sid=" & nSid
+cn.Execute Sql, rdExecDirect
 
 End Sub

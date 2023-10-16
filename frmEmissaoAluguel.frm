@@ -436,13 +436,14 @@ Begin VB.Form frmEmissaoAluguel
       _ExtentY        =   4948
       _Version        =   393216
       Rows            =   1
+      Cols            =   3
       FixedCols       =   0
       BackColorFixed  =   15658734
       FocusRect       =   0
       SelectionMode   =   1
       AllowUserResizing=   1
       Appearance      =   0
-      FormatString    =   "^Código       |<Nome                                                                        "
+      FormatString    =   "^Código       |<Nome                                                                        |Id"
    End
    Begin MSFlexGridLib.MSFlexGrid grdTemp 
       Height          =   1260
@@ -765,11 +766,11 @@ Private Sub cmbTipo_Click()
 Limpa
 If cmbTipo.ListIndex = -1 Then Exit Sub
 grdMain.Rows = 1
-Sql = "SELECT CODREDUZIDO,NOME FROM MANUTENCAOALUGUEL WHERE CODLANCAMENTO=" & cmbTipo.ItemData(cmbTipo.ListIndex)
+Sql = "SELECT ID,CODREDUZIDO,NOME FROM MANUTENCAOALUGUEL WHERE CODLANCAMENTO=" & cmbTipo.ItemData(cmbTipo.ListIndex)
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-        grdMain.AddItem Format(!CODREDUZIDO, "000000") & Chr(9) & !Nome
+        grdMain.AddItem Format(!CODREDUZIDO, "000000") & Chr(9) & !Nome & Chr(9) & !id
        .MoveNext
     Loop
 End With
@@ -860,14 +861,17 @@ With RdoAux
 End With
 If cmbTipo.ListCount > 0 Then cmbTipo.ListIndex = 0
 cmbAno.Text = Year(Now)
+grdMain.COLWIDTH(2) = 0
 End Sub
 
 Private Sub grdMain_Click()
+Dim nId As Integer
+nId = Val(grdMain.TextMatrix(grdMain.Row, 2))
 Limpa
 With grdMain
     If .Rows = 1 Then Exit Sub
-    Sql = "SELECT * FROM MANUTENCAOALUGUEL WHERE CODREDUZIDO=" & Val(.TextMatrix(.Row, 0)) & " AND "
-    Sql = Sql & "CODLANCAMENTO=" & cmbTipo.ItemData(cmbTipo.ListIndex)
+    'Sql = "SELECT * FROM MANUTENCAOALUGUEL WHERE CODREDUZIDO=" & Val(.TextMatrix(.Row, 0)) & " AND "
+    Sql = "SELECT * FROM MANUTENCAOALUGUEL WHERE ID=" & nId
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         lblValorTotal.Caption = FormatNumber(!ValorTotal, 2)
@@ -1259,7 +1263,7 @@ For nNumParc = 1 To Val(lblNumParc.Caption)
     nLastCod = nLastCod + 1
     grdTemp.AddItem nCodReduz & Chr(9) & nAno & Chr(9) & nCodLanc & Chr(9) & nSeq & Chr(9) & nNumParc & Chr(9) & 0 & Chr(9) & sVencimento & Chr(9) & FormatNumber(IIf(nNumParc = 0, nValorTotal, nValorParc), 2) & Chr(9) & nLastCod
 
-PROXIMO:
+Proximo:
 Next
 'Exit Sub
 'DADOS CABEÇALHO
@@ -1514,7 +1518,7 @@ With xImovel
     End If
 End With
 
-fim:
+Fim:
 Liberado
 
 End Sub
@@ -1713,27 +1717,16 @@ Sql = "insert boletoguiacapa(usuario,computer,sid,seq,codtributo,desctributo,val
 Sql = Sql & cmbTipo.ItemData(cmbTipo.ListIndex) & ",'" & Left(cmbTipo.Text, 50) & "'," & Virg2Ponto(RemovePonto(lblValorTotal.Caption)) & ")"
 cn.Execute Sql, rdExecDirect
 
-'Sql = "select max(seqlancamento)as maximo from debitoparcela where codreduzido=" & nCodReduz & " and anoexercicio=" & Val(cmbAno.Text) & " and "
-'Sql = Sql & "codlancamento=" & cmbTipo.ItemData(cmbTipo.ListIndex)
-'Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-'nSeq = RdoAux2!maximo + 1
-'RdoAux2.Close
 
 
 'GERAÇÃO DOS DÉBITOS
 For nParc = 1 To Val(lblNumParc.Caption)
     sVencimento = mskVenc(nParc).Text
-    If CDate(sVencimento) < Now Then GoTo PROXIMO
+    If CDate(sVencimento) < Now Then GoTo Proximo
     
     nAno = Year(CDate(sVencimento))
     nCompl = 0
-    
-'    Sql = "delete from debitoparcela WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND seqlancamento=" & nSeq & " AND NUMPARCELA=" & nParc
-'    cn.Execute Sql, rdExecDirect
-'    Sql = "delete from debitotributo WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND seqlancamento=" & nSeq & " AND NUMPARCELA=" & nParc
-'    cn.Execute Sql, rdExecDirect
-'    Sql = "delete from parceladocumento WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND seqlancamento=" & nSeq & " AND NUMPARCELA=" & nParc
-'    cn.Execute Sql, rdExecDirect
+
     
     'VERIFICA PRÓXIMA SEQUENCIA DE LANÇAMENTO
     Sql = "SELECT COUNT(*) AS CONTADOR FROM DEBITOPARCELA WHERE CODREDUZIDO=" & nCodReduz
@@ -1755,10 +1748,7 @@ For nParc = 1 To Val(lblNumParc.Caption)
     End With
           
     'GRAVA DEBITOPARCELA
-'    Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,DATAVENCIMENTO,DATADEBASE,"
-'    Sql = Sql & "USUARIO) VALUES(" & nCodReduz & "," & nAno & "," & nLanc & "," & nSeq & "," & nParc & "," & nCompl & ","
-'    Sql = Sql & 3 & ",'" & Format(sVencimento, "mm/dd/yyyy") & "','" & Format(Right$(frmMdi.Sbar.Panels(6).Text, 10), "mm/dd/yyyy") & "','"
- '   Sql = Sql & Left$(NomeDeLogin, 25) & "')"
+
     Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,DATAVENCIMENTO,DATADEBASE,"
     Sql = Sql & "USERID) VALUES(" & nCodReduz & "," & nAno & "," & nLanc & "," & nSeq & "," & nParc & "," & nCompl & ","
     Sql = Sql & 3 & ",'" & Format(sVencimento, "mm/dd/yyyy") & "','" & Format(Right$(frmMdi.Sbar.Panels(6).Text, 10), "mm/dd/yyyy") & "',"
@@ -1793,7 +1783,7 @@ For nParc = 1 To Val(lblNumParc.Caption)
     sNumDoc2 = CStr(nNumGuia) & RetornaDVNumDoc(nNumGuia)
     sNumDoc3 = CStr(nNumGuia) & Modulo11(nNumGuia)
     
-    If bBoleto Then
+'    If bBoleto Then
         '**** GERADOR DE CÓDIGO DE BARRAS ********
         sNossoNumero = "2873532"
         sDigitavel = "001900000"
@@ -1818,49 +1808,27 @@ For nParc = 1 To Val(lblNumParc.Caption)
         sDigitavel2 = Left(sDigitavel, 5) & "." & Mid(sDigitavel, 6, 5) & " " & Mid(sDigitavel, 11, 5) & "." & Mid(sDigitavel, 16, 6) & " "
         sDigitavel2 = sDigitavel2 & Mid(sDigitavel, 22, 5) & "." & Mid(sDigitavel, 27, 6) & " " & Mid(sDigitavel, 33, 1) & " " & Right(sDigitavel, 14)
         sBarra = Gera2of5Str(sBarra)
-    Else
-        sValor = nValorGuia
-        dDataVencto = CDate(sVencimento)
-       ' nNumDoc = Val(sNumDoc2)
-        sDadosLanc = "ALUGUEL"
-        NumBarra2 = Gera2of5Cod(sValor, dDataVencto, nNumDoc, nCodReduz)
-        NumBarra2a = Left$(NumBarra2, 13)
-        NumBarra2b = Mid$(NumBarra2, 14, 13)
-        NumBarra2c = Mid$(NumBarra2, 27, 13)
-        NumBarra2d = Right$(NumBarra2, 13)
+
     
-        StrBarra2 = Gera2of5Str(Left$(NumBarra2a, 11) & Left$(NumBarra2b, 11) & Left$(NumBarra2c, 11) & Left$(NumBarra2d, 11))
-        sBarra = StrBarra2
-    End If
-    '*******************************************
-    
-    Sql = "insert boletoguia(usuario,computer,sid,seq,codreduzido,nome,cpf,endereco,numimovel,complemento,bairro,cidade,uf,fulllanc,numdoc,numparcela,totparcela,datavencto,numdoc2,"
-    Sql = Sql & "digitavel,codbarra,valorguia,obs,numbarra2a,numbarra2b,numbarra2c,numbarra2d) values('" & NomeDeLogin & "','" & NomeDoComputador & "'," & nSid & "," & nParc & "," & nCodReduz & ",'" & Left(Mask(sNomeResp), 80) & "','" & sCPF & "','"
-    Sql = Sql & Left(Mask(sEndImovel), 80) & "'," & nNumImovel & ",'" & Left(sComplImovel, 30) & "','" & Left(Mask(sBairroImovel), 25) & "','" & "JABOTICABAL" & "','" & "SP" & "','" & Mask(sFullTrib) & "','"
-    Sql = Sql & CStr(nNumGuia) & "'," & nParc & "," & Val(lblNumParc.Caption) & ",'" & Format(sVencimento, "mm/dd/yyyy") & "','" & sNumDoc & "','" & sDigitavel2 & "','" & Mask(sBarra) & "',"
-    Sql = Sql & Virg2Ponto(Format(nValorParc, "#0.00")) & ",'" & "" & "','" & NumBarra2a & "','" & NumBarra2b & "','" & NumBarra2c & "','" & NumBarra2d & "')"
+    Sql = "Insert FICHA_COMPENSACAO(SID,SEQ,CODIGO,NOME,CPF,ENDERECO,BAIRRO,CIDADE,CEP,DOCUMENTO,VALOR,VENCIMENTO,PARCELA,DIGITAVEL,CODBARRA,OBS,INSCRICAO,QUADRA,LOTE,UF) VALUES("
+    Sql = Sql & nSid & "," & nParc & "," & nCodReduz & ",'" & Left(Mask(sNomeResp), 80) & "','" & sCPF & "','" & Mask(sEndImovel) & "','" & Left(Mask(sBairroImovel), 25) & "','"
+    Sql = Sql & Mask(sCidadeEntrega) & "','" & sCepEntrega & "'," & nNumGuia & "," & Virg2Ponto(Format(nValorParc, "#0.00")) & ",'" & Format(sVencimento, "mm/dd/yyyy") & "','"
+    Sql = Sql & Format(nParc, "00") & "/" & Format(Val(lblNumParc.Caption), "00") & "','" & sDigitavel2 & "','" & Mask(sBarra) & "','" & "" & "','" & sInscricao & "','"
+    Sql = Sql & "" & "','" & "" & "','" & sUFEntrega & "')"
     cn.Execute Sql, rdExecDirect
-PROXIMO:
+    
+    Sql = "insert ficha_compensacao_documento(numero_documento,data_vencimento,valor_documento,nome,cpf,endereco,bairro,cep,cidade,uf) values(" & nNumGuia & ",'"
+    Sql = Sql & Format(sVencimento, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(nValorParc)) & ",'" & Mask(Left(sNomeResp, 40)) & "','" & RetornaNumero(sCPF) & "','"
+    Sql = Sql & Mask(Left(sEndImovel, 40)) & "','" & Mask(Left(sBairroImovel, 15)) & "','" & RetornaNumero(sCepEntrega) & "','" & Mask(Left(sCidadeEntrega, 30)) & "','" & sUFEntrega & "')"
+    cn.Execute Sql, rdExecDirect
+    
+    
+Proximo:
 Next
 
 'EXIBE RELATORIO
-If bBoleto Then
-    If frmMdi.frTeste.Visible = False Then
-        frmReport.ShowReport2 "BOLETOGUIA", frmMdi.HWND, Me.HWND, nSid, nNumGuia
-    End If
-Else
-    If frmMdi.frTeste.Visible = False Then
-        frmReport.ShowReport2 "BOLETOGUIA_V4", frmMdi.HWND, Me.HWND, nSid, nNumGuia
-    Else
-        frmReport.ShowReport2 "BOLETOGUIA_V4TMP", frmMdi.HWND, Me.HWND, nSid, nNumGuia
-    End If
-End If
+frmReport.ShowReport3 "FICHACOMPENSACAO", frmMdi.HWND, Me.HWND, nSid
 
-Sql = "delete from boletoguiacapa where sid=" & nSid
-cn.Execute Sql, rdExecDirect
-
-Sql = "delete from boletoguia where sid=" & nSid
-cn.Execute Sql, rdExecDirect
 
 
 End Sub

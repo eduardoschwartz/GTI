@@ -5,15 +5,15 @@ Begin VB.Form frmUsuario
    BackColor       =   &H00EEEEEE&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Cadastro de Usuários"
-   ClientHeight    =   6990
-   ClientLeft      =   14265
-   ClientTop       =   1620
-   ClientWidth     =   5625
+   ClientHeight    =   7755
+   ClientLeft      =   10485
+   ClientTop       =   3690
+   ClientWidth     =   5610
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
-   ScaleHeight     =   6990
-   ScaleWidth      =   5625
+   ScaleHeight     =   7755
+   ScaleWidth      =   5610
    Begin VB.Frame pn3 
       BackColor       =   &H00EEEEEE&
       Height          =   5325
@@ -99,7 +99,7 @@ Begin VB.Form frmUsuario
       Left            =   4470
       TabIndex        =   23
       ToolTipText     =   "Sair da Tela"
-      Top             =   6585
+      Top             =   7350
       Width           =   1035
       _ExtentX        =   1826
       _ExtentY        =   556
@@ -140,7 +140,7 @@ Begin VB.Form frmUsuario
       Left            =   4470
       TabIndex        =   18
       ToolTipText     =   "Cancelar Edição"
-      Top             =   6585
+      Top             =   7350
       Width           =   1035
       _ExtentX        =   1826
       _ExtentY        =   556
@@ -180,7 +180,7 @@ Begin VB.Form frmUsuario
       Left            =   90
       TabIndex        =   19
       ToolTipText     =   "Novo Registro"
-      Top             =   6585
+      Top             =   7350
       Width           =   1035
       _ExtentX        =   1826
       _ExtentY        =   556
@@ -220,7 +220,7 @@ Begin VB.Form frmUsuario
       Left            =   1140
       TabIndex        =   20
       ToolTipText     =   "Editar Registro"
-      Top             =   6585
+      Top             =   7350
       Width           =   1035
       _ExtentX        =   1826
       _ExtentY        =   556
@@ -260,7 +260,7 @@ Begin VB.Form frmUsuario
       Left            =   2190
       TabIndex        =   21
       ToolTipText     =   "Excluir Registro"
-      Top             =   6585
+      Top             =   7350
       Width           =   1035
       _ExtentX        =   1826
       _ExtentY        =   556
@@ -300,7 +300,7 @@ Begin VB.Form frmUsuario
       Left            =   3420
       TabIndex        =   22
       ToolTipText     =   "Gravar os Dados"
-      Top             =   6585
+      Top             =   7350
       Width           =   1035
       _ExtentX        =   1826
       _ExtentY        =   556
@@ -322,7 +322,7 @@ Begin VB.Form frmUsuario
       BCOLO           =   12632256
       FCOL            =   0
       FCOLO           =   0
-      MCOL            =   13026246
+      MCOL            =   12632256
       MPTR            =   1
       MICON           =   "frmUserProtocolo.frx":064A
       PICN            =   "frmUserProtocolo.frx":0666
@@ -376,11 +376,53 @@ Begin VB.Form frmUsuario
    End
    Begin VB.Frame pn1 
       BackColor       =   &H00EEEEEE&
-      Height          =   6060
+      Height          =   6780
       Left            =   0
       TabIndex        =   7
       Top             =   360
       Width           =   5595
+      Begin VB.Frame Frame1 
+         Caption         =   "Permite Criar Processos"
+         ForeColor       =   &H00000080&
+         Height          =   690
+         Left            =   135
+         TabIndex        =   38
+         Top             =   4500
+         Width           =   5280
+         Begin VB.CheckBox chkIterno 
+            Appearance      =   0  'Flat
+            BackColor       =   &H00EEEEEE&
+            Caption         =   "Internos"
+            ForeColor       =   &H80000008&
+            Height          =   195
+            Left            =   3465
+            TabIndex        =   41
+            Top             =   360
+            Width           =   1275
+         End
+         Begin VB.CheckBox chkNaoFisico 
+            Appearance      =   0  'Flat
+            BackColor       =   &H00EEEEEE&
+            Caption         =   "não Físicos"
+            ForeColor       =   &H80000008&
+            Height          =   195
+            Left            =   1890
+            TabIndex        =   40
+            Top             =   360
+            Width           =   1320
+         End
+         Begin VB.CheckBox chkFisico 
+            Appearance      =   0  'Flat
+            BackColor       =   &H00EEEEEE&
+            Caption         =   "Físicos"
+            ForeColor       =   &H80000008&
+            Height          =   240
+            Left            =   495
+            TabIndex        =   39
+            Top             =   340
+            Width           =   1185
+         End
+      End
       Begin VB.TextBox Text1 
          Appearance      =   0  'Flat
          Height          =   315
@@ -454,7 +496,7 @@ Begin VB.Form frmUsuario
          Left            =   585
          TabIndex        =   31
          ToolTipText     =   "Carregar imagem da assinatura"
-         Top             =   4815
+         Top             =   5670
          Width           =   495
          _ExtentX        =   873
          _ExtentY        =   476
@@ -493,7 +535,7 @@ Begin VB.Form frmUsuario
          Left            =   585
          TabIndex        =   35
          ToolTipText     =   "Carregar imagem da assinatura"
-         Top             =   5580
+         Top             =   6345
          Width           =   495
          _ExtentX        =   873
          _ExtentY        =   476
@@ -534,14 +576,14 @@ Begin VB.Form frmUsuario
          Index           =   4
          Left            =   135
          TabIndex        =   37
-         Top             =   5310
+         Top             =   6075
          Width           =   945
       End
       Begin VB.Image Image2 
          Height          =   555
          Left            =   1170
          Stretch         =   -1  'True
-         Top             =   5310
+         Top             =   6075
          Width           =   2085
       End
       Begin VB.Label lblAss2 
@@ -549,7 +591,7 @@ Begin VB.Form frmUsuario
          Height          =   240
          Left            =   135
          TabIndex        =   36
-         Top             =   5580
+         Top             =   6345
          Visible         =   0   'False
          Width           =   330
       End
@@ -559,15 +601,15 @@ Begin VB.Form frmUsuario
          Height          =   195
          Left            =   4080
          TabIndex        =   34
-         Top             =   4710
+         Top             =   5565
          Width           =   435
       End
       Begin VB.Label Label3 
          Caption         =   "Id..:"
          Height          =   195
-         Left            =   3720
+         Left            =   3690
          TabIndex        =   33
-         Top             =   4710
+         Top             =   5565
          Width           =   375
       End
       Begin VB.Label lblAss 
@@ -575,7 +617,7 @@ Begin VB.Form frmUsuario
          Height          =   240
          Left            =   135
          TabIndex        =   32
-         Top             =   4815
+         Top             =   5670
          Visible         =   0   'False
          Width           =   330
       End
@@ -583,7 +625,7 @@ Begin VB.Form frmUsuario
          Height          =   555
          Left            =   1170
          Stretch         =   -1  'True
-         Top             =   4545
+         Top             =   5400
          Width           =   2085
       End
       Begin VB.Label Label2 
@@ -593,7 +635,7 @@ Begin VB.Form frmUsuario
          Index           =   3
          Left            =   135
          TabIndex        =   30
-         Top             =   4545
+         Top             =   5400
          Width           =   945
       End
       Begin VB.Label Label2 
@@ -673,13 +715,13 @@ Begin VB.Form frmUsuario
       End
    End
    Begin vbalDTab6.vbalDTabControl TabUser 
-      Height          =   6375
+      Height          =   7095
       Left            =   0
       TabIndex        =   5
       Top             =   45
       Width           =   5610
       _ExtentX        =   9895
-      _ExtentY        =   11245
+      _ExtentY        =   12515
       AllowScroll     =   0   'False
       TabAlign        =   0
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -969,6 +1011,9 @@ If Tipo = "INICIAR" Then
        End If
    Next
    chkFiscal.Enabled = False
+   chkFisico.Enabled = False
+   chkNaoFisico.Enabled = False
+   chkIterno.Enabled = False
    lstSetor.Enabled = False
    lblSenha.Enabled = False: lblSenha2.Enabled = False
    lstUser.Enabled = True
@@ -987,6 +1032,11 @@ ElseIf Tipo = "INCLUIR" Then
        End If
    Next
    chkFiscal.Enabled = True
+   If NomeDeLogin = "FABIANO.PIRES" Or NomeDeLogin = "PRISCILAANAMI" Or NomeDeLogin = "SCHWARTZ" Then
+        chkFisico.Enabled = True
+        chkIterno.Enabled = True
+        chkNaoFisico.Enabled = True
+   End If
    lstUser.Enabled = False
    lstSetor.Enabled = True
 End If
@@ -1023,6 +1073,9 @@ txtSenha.Text = ""
 txtSenha2.Text = ""
 Text1.Text = ""
 chkFiscal.value = vbUnchecked
+chkFisico.value = vbUnchecked
+chkNaoFisico.value = vbUnchecked
+
 For j = 0 To lstSetor.ListCount - 1
     lstSetor.Selected(j) = False
 Next
@@ -1041,7 +1094,7 @@ Dim nCod As Integer, j As Integer
 txtSenha.Text = "************"
 txtSenha2.Text = "************"
 
-Sql = "SELECT id,NOMELOGIN,FISCAL FROM USUARIO WHERE NOMECOMPLETO='" & Mask(lstUser.Text) & "' and ativo=1"
+Sql = "SELECT id,NOMELOGIN,FISCAL,PROCESSO_FISICO,PROCESSO_NAOFISICO FROM USUARIO WHERE NOMECOMPLETO='" & Mask(lstUser.Text) & "' and ativo=1"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     lblCod.Caption = Format(!id, "0000")
@@ -1049,6 +1102,12 @@ With RdoAux
     txtLogin.Text = !NomeLogin
     If Not IsNull(!fiscal) Then
         chkFiscal = IIf(!fiscal, 1, 0)
+    End If
+    If Not IsNull(!processo_fisico) Then
+        chkFisico = IIf(!processo_fisico, 1, 0)
+    End If
+    If Not IsNull(!processo_naofisico) Then
+        chkNaoFisico = IIf(!processo_naofisico, 1, 0)
     End If
    .Close
 End With
@@ -1166,8 +1225,9 @@ If Evento = "Novo" Then
         RdoAux.Close
         lblCod.Caption = Format(nCodigo, "0000")
        'adiciona o usuário na tabela de usuários
-        Sql = "INSERT USUARIO (id,NOMELOGIN,NOMECOMPLETO,ATIVO,FISCAL,SENHA,externo) VALUES(" & nCodigo & ",'"
-        Sql = Sql & sLogin & "','" & Trim$(Mask(txtNome.Text)) & "',1," & IIf(chkFiscal.value = vbChecked, 1, 0) & ",'" & Encrypt128(Mask(txtSenha.Text), "everest") & "',0)"
+        Sql = "INSERT USUARIO (id,NOMELOGIN,NOMECOMPLETO,ATIVO,FISCAL,SENHA,externo,GRUPO,PROCESSO_FISICO,PROCESSO_NAOFISICO,PROCESSO_INTERNO) VALUES(" & nCodigo & ",'"
+        Sql = Sql & sLogin & "','" & Trim$(Mask(txtNome.Text)) & "',1," & IIf(chkFiscal.value = vbChecked, 1, 0) & ",'" & Encrypt128(Mask(txtSenha.Text), "himalaia")
+        Sql = Sql & "',0,'PROTOCOLO'" & "," & IIf(chkFisico.value = vbChecked, 1, 0) & "," & IIf(chkNaoFisico.value = vbChecked, 1, 0) & "," & IIf(chkIterno.value = vbChecked, 1, 0) & ")"
         cn.Execute Sql, rdExecDirect
        'adiciona os centro de custos
        On Error Resume Next
@@ -1193,8 +1253,9 @@ If Evento = "Novo" Then
 Else
     nCodigo = Val(lblCod.Caption)
    'altera nome do usuário
-    Sql = "UPDATE USUARIO SET NOMECOMPLETO='" & Trim$(txtNome.Text) & "',FISCAL=" & IIf(chkFiscal.value = vbChecked, 1, 0) & " WHERE "
-    Sql = Sql & "NOMELOGIN='" & sLogin & "'"
+    Sql = "UPDATE USUARIO SET NOMECOMPLETO='" & Trim$(txtNome.Text) & "',FISCAL=" & IIf(chkFiscal.value = vbChecked, 1, 0) & ","
+    Sql = Sql & "PROCESSO_FISICO=" & IIf(chkFisico.value = vbChecked, 1, 0) & ",PROCESSO_NAOFISICO=" & IIf(chkNaoFisico.value = vbChecked, 1, 0)
+    Sql = Sql & ",PROCESSO_INTERNO=" & IIf(chkIterno.value = vbChecked, 1, 0) & " WHERE NOMELOGIN='" & sLogin & "'"
     cn.Execute Sql, rdExecDirect
     'apaga o centro de custos
     Sql = "DELETE FROM USUARIOCC WHERE USERID=" & Val(lblCod.Caption)

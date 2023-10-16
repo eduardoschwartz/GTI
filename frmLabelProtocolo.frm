@@ -498,7 +498,7 @@ With lvEtiq
                         End If
                     End If
                     nCodCidadao = !CodCidadao
-                    If nCodCidadao = 0 Then GoTo PROXIMO
+                    If nCodCidadao = 0 Then GoTo Proximo
                     
                     
                     If IsNull(!tipoend) Then
@@ -637,11 +637,11 @@ With lvEtiq
                .Close
             End With
         End If
-PROXIMO:
+Proximo:
     Next
 End With
 
-fim:
+Fim:
 frmReport.ShowReport "ETIQUETAPROTOCOLO", frmMdi.HWND, Me.HWND
 
 Sql = "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'"
@@ -697,7 +697,7 @@ Sql = Sql & " ORDER BY PROCESSOGTI.ANO, PROCESSOGTI.NUMERO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-        Set itmX = lvEtiq.ListItems.Add(, "E" & Format(!Ano, "0000") & Format(!Numero, "000000"), !Ano)
+        Set itmX = lvEtiq.ListItems.Add(, "E" & Format(!ano, "0000") & Format(!Numero, "000000"), !ano)
         itmX.SubItems(1) = !Numero & "-" & RetornaDVProcesso(!Numero)
         If Not IsNull(!nomecidadao) Then
             itmX.SubItems(2) = SubNull(!nomecidadao)
@@ -744,7 +744,7 @@ With RdoAux
         sBairro = SubNull(!DescBairro)
         sCidade = SubNull(!descCidade)
         sUF = SubNull(!SiglaUF)
-        sCompl = SubNull(!COMPL)
+        sCompl = SubNull(!Compl)
         sCep = SubNull(!Cep)
                 
         If Not IsNull(RdoAux!validade_tipo) Then
@@ -962,7 +962,7 @@ With lvEtiq
             End With
             nSeqP = nSeqP + 1
             Sql = "INSERT ETIQUETAGTI (USUARIO,SEQ,CAMPO1,CAMPO2,CAMPO3,CAMPO4,CAMPO5,PROCESSO) VALUES('"
-            Sql = Sql & NomeDeLogin & "'," & nSeqP & ",'" & sProc & "','" & "Abertura:" & sData & "','" & "Validade: " & sValidade & "','" & "" & "','" & Left$(Mask(sCompl), 50) & "','" & sProc & "')"
+            Sql = Sql & NomeDeLogin & "'," & nSeqP & ",'" & sProc & "','" & "Abertura:" & sData & "','" & "Validade: " & sValidade & "','" & "" & "','" & Mask(Left$(sCompl, 50)) & "','" & sProc & "')"
             cn.Execute Sql, rdExecDirect
             nSeqP = nSeqP + 1
             On Error GoTo 0
@@ -1030,11 +1030,11 @@ With lvEtiq
                  cn.Execute Sql, rdExecDirect
             Next
         End If
-PROXIMO:
+Proximo:
     Next
 End With
 
-fim:
+Fim:
 'rpt.RecordSelectionFormula = "{ETIQUETAGTI.USUARIO}='" & NomeDoUsuario & "'"
 frmReport.ShowReport "ETIQUETAPROTOCOLO3", frmMdi.HWND, Me.HWND
 

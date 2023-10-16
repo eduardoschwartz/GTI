@@ -390,48 +390,6 @@ Begin VB.MDIForm frmMdi
       Width           =   12450
       Begin prjChameleon.chameleonButton btBar 
          Height          =   555
-         Index           =   12
-         Left            =   11835
-         TabIndex        =   36
-         ToolTipText     =   "Agenda"
-         Top             =   0
-         Visible         =   0   'False
-         Width           =   555
-         _ExtentX        =   979
-         _ExtentY        =   979
-         BTYPE           =   8
-         TX              =   ""
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   15197159
-         BCOLO           =   15197159
-         FCOL            =   12648447
-         FCOLO           =   0
-         MCOL            =   0
-         MPTR            =   99
-         MICON           =   "frmMdi.frx":09C6
-         PICN            =   "frmMdi.frx":0CE0
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   -1  'True
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin prjChameleon.chameleonButton btBar 
-         Height          =   555
          Index           =   11
          Left            =   6675
          TabIndex        =   35
@@ -460,8 +418,8 @@ Begin VB.MDIForm frmMdi
          FCOLO           =   0
          MCOL            =   15197159
          MPTR            =   99
-         MICON           =   "frmMdi.frx":1354
-         PICN            =   "frmMdi.frx":166E
+         MICON           =   "frmMdi.frx":09C6
+         PICN            =   "frmMdi.frx":0CE0
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -501,8 +459,8 @@ Begin VB.MDIForm frmMdi
          FCOLO           =   0
          MCOL            =   0
          MPTR            =   99
-         MICON           =   "frmMdi.frx":1AC9
-         PICN            =   "frmMdi.frx":1DE3
+         MICON           =   "frmMdi.frx":113B
+         PICN            =   "frmMdi.frx":1455
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -542,8 +500,8 @@ Begin VB.MDIForm frmMdi
          FCOLO           =   0
          MCOL            =   15197159
          MPTR            =   99
-         MICON           =   "frmMdi.frx":2346
-         PICN            =   "frmMdi.frx":2660
+         MICON           =   "frmMdi.frx":19B8
+         PICN            =   "frmMdi.frx":1CD2
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -583,8 +541,8 @@ Begin VB.MDIForm frmMdi
          FCOLO           =   0
          MCOL            =   15197159
          MPTR            =   99
-         MICON           =   "frmMdi.frx":32B2
-         PICN            =   "frmMdi.frx":35CC
+         MICON           =   "frmMdi.frx":2924
+         PICN            =   "frmMdi.frx":2C3E
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -624,8 +582,8 @@ Begin VB.MDIForm frmMdi
          FCOLO           =   0
          MCOL            =   15197159
          MPTR            =   99
-         MICON           =   "frmMdi.frx":421E
-         PICN            =   "frmMdi.frx":4538
+         MICON           =   "frmMdi.frx":3890
+         PICN            =   "frmMdi.frx":3BAA
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -665,8 +623,8 @@ Begin VB.MDIForm frmMdi
          FCOLO           =   0
          MCOL            =   15197159
          MPTR            =   99
-         MICON           =   "frmMdi.frx":518A
-         PICN            =   "frmMdi.frx":54A4
+         MICON           =   "frmMdi.frx":47FC
+         PICN            =   "frmMdi.frx":4B16
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -706,8 +664,8 @@ Begin VB.MDIForm frmMdi
          FCOLO           =   0
          MCOL            =   15197159
          MPTR            =   99
-         MICON           =   "frmMdi.frx":60F6
-         PICN            =   "frmMdi.frx":6410
+         MICON           =   "frmMdi.frx":5768
+         PICN            =   "frmMdi.frx":5A82
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -747,8 +705,8 @@ Begin VB.MDIForm frmMdi
          FCOLO           =   0
          MCOL            =   15197159
          MPTR            =   99
-         MICON           =   "frmMdi.frx":6910
-         PICN            =   "frmMdi.frx":6C2A
+         MICON           =   "frmMdi.frx":5F82
+         PICN            =   "frmMdi.frx":629C
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -788,8 +746,8 @@ Begin VB.MDIForm frmMdi
          FCOLO           =   0
          MCOL            =   15197159
          MPTR            =   99
-         MICON           =   "frmMdi.frx":787C
-         PICN            =   "frmMdi.frx":7B96
+         MICON           =   "frmMdi.frx":6EEE
+         PICN            =   "frmMdi.frx":7208
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -808,9 +766,9 @@ Begin VB.MDIForm frmMdi
          Width           =   3390
          Begin VB.ComboBox cmbDV 
             Height          =   315
-            ItemData        =   "frmMdi.frx":87E8
+            ItemData        =   "frmMdi.frx":7E5A
             Left            =   720
-            List            =   "frmMdi.frx":87F5
+            List            =   "frmMdi.frx":7E67
             Style           =   2  'Dropdown List
             TabIndex        =   14
             Top             =   135
@@ -828,7 +786,7 @@ Begin VB.MDIForm frmMdi
             BackColor       =   &H00E7E3E7&
             Height          =   285
             Left            =   2790
-            Picture         =   "frmMdi.frx":880E
+            Picture         =   "frmMdi.frx":7E80
             Style           =   1  'Graphical
             TabIndex        =   12
             ToolTipText     =   "Retorna digito verificador"
@@ -896,8 +854,8 @@ Begin VB.MDIForm frmMdi
          FCOLO           =   0
          MCOL            =   15197159
          MPTR            =   99
-         MICON           =   "frmMdi.frx":8958
-         PICN            =   "frmMdi.frx":8C72
+         MICON           =   "frmMdi.frx":7FCA
+         PICN            =   "frmMdi.frx":82E4
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -937,8 +895,8 @@ Begin VB.MDIForm frmMdi
          FCOLO           =   255
          MCOL            =   0
          MPTR            =   99
-         MICON           =   "frmMdi.frx":98C4
-         PICN            =   "frmMdi.frx":9BDE
+         MICON           =   "frmMdi.frx":8F36
+         PICN            =   "frmMdi.frx":9250
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -978,8 +936,8 @@ Begin VB.MDIForm frmMdi
          FCOLO           =   0
          MCOL            =   15197159
          MPTR            =   99
-         MICON           =   "frmMdi.frx":A263
-         PICN            =   "frmMdi.frx":A57D
+         MICON           =   "frmMdi.frx":98D5
+         PICN            =   "frmMdi.frx":9BEF
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -996,6 +954,7 @@ Begin VB.MDIForm frmMdi
          TabIndex        =   37
          ToolTipText     =   "Histórico de Atualizações"
          Top             =   45
+         Visible         =   0   'False
          Width           =   555
          _ExtentX        =   979
          _ExtentY        =   979
@@ -1019,8 +978,50 @@ Begin VB.MDIForm frmMdi
          FCOLO           =   0
          MCOL            =   15197159
          MPTR            =   99
-         MICON           =   "frmMdi.frx":B1CF
-         PICN            =   "frmMdi.frx":B4E9
+         MICON           =   "frmMdi.frx":A841
+         PICN            =   "frmMdi.frx":AB5B
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   -1  'True
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton btBar 
+         Height          =   555
+         Index           =   12
+         Left            =   11835
+         TabIndex        =   36
+         ToolTipText     =   "Agenda"
+         Top             =   0
+         Visible         =   0   'False
+         Width           =   555
+         _ExtentX        =   979
+         _ExtentY        =   979
+         BTYPE           =   8
+         TX              =   ""
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   15197159
+         BCOLO           =   15197159
+         FCOL            =   12648447
+         FCOLO           =   0
+         MCOL            =   0
+         MPTR            =   99
+         MICON           =   "frmMdi.frx":B435
+         PICN            =   "frmMdi.frx":B74F
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1279,7 +1280,6 @@ Dim sRet As String
 Dim evOpen As Integer
 Dim bOpen As Boolean
 
-
 Private Sub FormHagana()
 
 evOpen = 1
@@ -1288,6 +1288,7 @@ End Sub
 
 
 Private Sub btBar_Click(Index As Integer)
+
 
 Select Case Index
     Case 0
@@ -1348,6 +1349,8 @@ Select Case Index
             MsgBox "Você não possui permissão para acessar este módulo!!!", vbCritical, "Segurança do GTI"
         End If
     Case 8
+        MsgBox "Emissão de alvará somente pela internet.", vbInformation, "Atenção"
+        Exit Sub
         If m_cMenuMob.Enabled(m_cMenuMob.IndexForKey("mnuAlvara")) Then
             frmAlvaraNovo.show
             frmAlvaraNovo.ZOrder (0)
@@ -1368,6 +1371,9 @@ Select Case Index
            frmLogin.show vbModal
         End If
     Case 10
+        MsgBox "A partir de 30/09/2021 as certidões só poderão ser emitidas através dos serviços disponíveis no site.", vbInformation, "Atenção"
+        Exit Sub
+
         sRet = RetEventUserForm("frmCertidao")
         If NomeDeLogin <> "SCHWARTZ" Then
             If InStr(1, sRet, Format(evOpen, "000"), vbBinaryCompare) > 0 Then
@@ -1384,13 +1390,13 @@ Select Case Index
         frmChat.show
         frmChat.ZOrder (0)
     Case 12
-        If NomeDeLogin <> "SCHWARTZ" Then
-            MsgBox "Em construção"
-            Exit Sub
-        End If
+        'If NomeDeLogin <> "SCHWARTZ" Then
+        '    MsgBox "Em construção"
+        '    Exit Sub
+        'End If
         'frmAgenda.show
         'frmAgenda.ZOrder (0)
-        frmRTF.show
+        'frmRTF.show
      Case 13
         Gera_WhatsNew
 End Select
@@ -1449,9 +1455,9 @@ SENHA:
             Set frm = frmAutorizaNota
         Case "mnuITBI"
             Set frm = frmITBI
-        Case "mnuDeca"
-            Set frm = Nothing
-            Deca
+'        Case "mnuDeca"
+'            Set frm = Nothing
+'            Deca
         Case "mnuRequerimentoProc"
             Set frm = frmRequerimento
         Case "mnuGare"
@@ -1484,6 +1490,13 @@ SENHA:
             Set frm = frmParcelamentoBloqueio
         Case "mnuPagamentoMensalParc"
             Set frm = frmRelParcPago
+        Case "mnuParcelamentoWeb"
+            Set frm = Nothing
+            If frTeste.Visible = False Then
+                frmReport.ShowReport3 "PARCELAMENTOWEB", frmMdi.HWND, Me.HWND
+            Else
+                frmReport.ShowReport3 "PARCELAMENTOWEBTMP", frmMdi.HWND, Me.HWND
+            End If
         Case "mnuGuiaPratico1"
             Set frm = frmGuiaPratico1
         Case "mnuGuiaPratico2"
@@ -1500,8 +1513,9 @@ SENHA:
         Case "mnuTermConf"
             Set frm = frmConfissaoDivida
         Case "mnuCobrancaJudicial"
-            Set frm = Nothing
-            frmReport.ShowReport "COMUNICADOJUDICIAL", frmMdi.HWND, Me.HWND
+            Set frm = frmComunicado
+'            Set frm = Nothing
+'            frmReport.ShowReport "COMUNICADOJUDICIAL", frmMdi.HWND, Me.HWND
         Case "mnuEmiteDoc"
             Set frm = Nothing
             frmReport.ShowReport2 "DOCEMITIDO", frmMdi.HWND, Me.HWND
@@ -1669,6 +1683,8 @@ If (lIndex > 0) Then
         Set frm = frmSisObras
     Case "mnuConversorSisObra"
         Set frm = frmConversorSisObraPref
+    Case "mnuRelIsencao"
+        Set frm = frmRelatorioIsencao
     End Select
     If Not frm Is Nothing Then
         frm.show
@@ -1695,6 +1711,8 @@ If (lIndex > 0) Then
              Set frm = frmEscContab
         Case "mnuHorarioFuncionamento"
              Set frm = frmHorarioFuncionamento
+        Case "mnuUsoPlataforma"
+            Set frm = frmUsoPlataforma
         Case "mnuTabAtivTL"
             Set frm = frmAtiv
         Case "mnuTabAtivISS"
@@ -1703,6 +1721,8 @@ If (lIndex > 0) Then
              Set frm = frmVigSanitaria
         Case "mnuVRE"
              Set frm = frmDadosVRE
+        Case "mnuImportaMei"
+             Set frm = frmImportaMei
         Case "mnuVRERedeSim"
              Set frm = frmImportaRedeSim
         Case "mnuCnsEmpresa"
@@ -1725,6 +1745,8 @@ If (lIndex > 0) Then
              Set frm = frmDocNF
         Case "mnuCnsISSVarPago"
              Set frm = frmIssVariavelPago
+        Case "mnuSimulaCusto"
+             Set frm = frmSimulaCustoTaxa
         Case "mnuCnae"
              Set frm = frmCnaeNovo
         Case "mnuSuspende"
@@ -1744,6 +1766,10 @@ If (lIndex > 0) Then
         Case "mnuSalaEmp"
              Set frm = frmSalaEmpreendedor
         Case "mnuAlvara"
+            Liberado
+            MsgBox "Emissão de alvará somente pela internet.", vbInformation, "Atenção"
+            Exit Sub
+
             Set frm = frmAlvaraNovo
         Case "mnuSituacaoAlvara"
             Set frm = frmSituacaoAlvara
@@ -1826,6 +1852,9 @@ If (lIndex > 0) Then
         Case "mnuRelMEI"
             Set frm = Nothing
             frmReport.ShowReport "EMPRESAMEI", frmMdi.HWND, Me.HWND
+        Case "mnuRelMEIExcluido"
+            Set frm = Nothing
+            BuildRelMei
         Case "mnuIssPagoAtividade"
             Set frm = frmIssPagoAtividade
         Case "mnuResumoIssCCivil"
@@ -1879,6 +1908,9 @@ If (lIndex > 0) Then
 '        Set frm = frmGravaFoto
     Case "mnuGeraDebito"
         Set frm = frmGeraDebito
+    Case "mnuSecondScreen"
+        Set frm = New frmDebitoImob
+        
 '    Case "mnuConversor"
  '       Set frm = frmConversor
    ' Case "mnuExporta"
@@ -2078,6 +2110,14 @@ If (lIndex > 0) Then
     Case "mnuAssuntoDoc"
         Set frm = Nothing
         frmReport.ShowReport2 "ASSUNTO_DOC", frmMdi.HWND, Me.HWND
+    Case "mnuProcessoDaniela"
+        Set frm = Nothing
+        frmReport.ShowReport3 "PROCESSODANIELA", frmMdi.HWND, Me.HWND
+    Case "mnuListaProcessoAtendente"
+        Set frm = Nothing
+        frmReport.ShowReport3 "PROCESSO_ATENDENTE", frmMdi.HWND, Me.HWND
+    Case "mnuAssuntoPeriodo"
+        Set frm = frmAssuntoPeriodo
     End Select
     If Not frm Is Nothing Then
         frm.show
@@ -2177,11 +2217,15 @@ If (lIndex > 0) Then
             Set frm = frmDividaAtiva
         Case "mnuEmiteLivro"
             Set frm = frmGeraLivro
+        Case "mnuEmiteLivroNovo"
+            Set frm = frmEmissaoLivroDivida
         Case "mnuAjuizaAuto"
             Set frm = Nothing
             AjuizaAuto
         Case "mnuCartaCobranca"
             Set frm = frmCobrancaAmigavel
+        Case "mnuTransfereDivida"
+            Set frm = frmTransfereDivida
         Case "mnuRelAjuizamento"
             Set frm = frmRelAjuiza
         Case "mnuListaDevedor"
@@ -2191,7 +2235,7 @@ If (lIndex > 0) Then
         Case "mnu2vianotificacao"
             Set frm = frm2vianotificacaoiss
         Case "mnuNotificacao2"
-            Set frm = frmNotificacao2
+'            Set frm = frmNotificacao2
         Case "mnuAvisoDebito"
             Set frm = frmAvisoDebito
         Case "mnuDebitoAjPago"
@@ -2200,7 +2244,10 @@ If (lIndex > 0) Then
         Case "mnuPagamentoCC"
             Set frm = Nothing
             frmReport.ShowReport3 "PAGAMENTOCARTACOBRANCA", frmMdi.HWND, Me.HWND
-        
+        Case "mnuRelatorioDevedor"
+            Set frm = frmRelatorioDevedor
+        Case "mnuDevedorTopN"
+            Set frm = frmNDevedor
         Case "mnuDocEmitido"
             Set frm = Nothing
             frmReport.ShowReport2 "DOCUMENTOSEMITIDOS", frmMdi.HWND, Me.HWND
@@ -2219,6 +2266,24 @@ If (lIndex > 0) Then
             Set frm = frmValorPago
         Case "mnuGeraLote"
             Set frm = frmFichaCompensacaoLote
+        Case "mnuscsecretaria"
+            Set frm = frmsc_secretaria
+        Case "mnuscunidadeagua"
+            Set frm = frmsc_unidade_agua
+        Case "mnuscunidadeenergia"
+            Set frm = frmsc_unidade_energia
+        Case "mnuscunidadetelefonefixo"
+            Set frm = frmsc_telefonia_fixa
+        Case "mnuscunidadetelefonecelular"
+            Set frm = frmsc_telefonia_celular
+        Case "mnuscunidadeinternet"
+            Set frm = frmsc_conexao_internet
+        Case "mnuscunidadecorreio"
+            Set frm = frmsc_taxa_correio
+        Case "mnuscrelatorio"
+            Set frm = frmsc_relatorio
+        Case "mnuscarquivosaaej"
+            Set frm = frmsc_arquivo_saaej
 
     End Select
     If Not frm Is Nothing Then
@@ -2402,7 +2467,7 @@ Next
 End Sub
 
 Private Sub mnuCertidaoDebito_Click()
-Dim z As Variant, sNumProc As String, nCodReduz As Long, qd As New rdoQuery, RdoAux As rdoResultset, aCodigo() As String
+Dim z As Variant, sNumProc As String, nCodReduz As Long, qd As New rdoQuery, RdoAux As rdoResultset, aCodigo() As String, RdoAux2 As rdoResultset
 Dim XPos, YPos, x As Integer, nSuspenso As Long
 XPos = Screen.Width / 2 - 3000
 YPos = Screen.Height / 2 - 1000
@@ -2472,6 +2537,20 @@ For x = 0 To UBound(aCodigo)
                 If .rdoColumns(0).value = 3 Then
                     frmReport.ShowReport "CDBNEGIM", frmMdi.HWND, Me.HWND
                 ElseIf .rdoColumns(0).value = 4 Then
+                    Sql = "select * from debitoparcela where codreduzido=" & CodCidadao & " and anoexercicio<" & Year(Now) & " and statuslanc=3"
+                    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                    If RdoAux2.RowCount = 0 Then
+                        Sql = "select * from debitoparcela where codreduzido=" & CodCidadao & " and anoexercicio=" & Year(Now) & " and codlancamento<>1 and statuslanc=3"
+                        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                        If RdoAux2.RowCount = 0 Then
+                            Sql = "select * from debitoparcela where codreduzido=" & CodCidadao & " and anoexercicio=" & Year(Now) & " and codlancamento=1 and numparcela>0 and statuslanc=3"
+                            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                            If RdoAux2.RowCount > 0 Then
+                                frmReport.ShowReport "CDBNEGIM", frmMdi.HWND, Me.HWND
+                                Exit Sub
+                            End If
+                        End If
+                    End If
                     frmReport.ShowReport "CDBPOSIM", frmMdi.HWND, Me.HWND
                 ElseIf .rdoColumns(0).value = 5 Then
                     frmReport.ShowReport "CDBPSNIM", frmMdi.HWND, Me.HWND, nSuspenso
@@ -2706,10 +2785,9 @@ End If
 
 End Sub
 
-
 Private Sub Timer1_Timer()
 lngTimer = lngTimer + 1
-If NomeDeLogin = "SCHWARTZ" Or NomeDeLogin = "RITA" Or NomeDeLogin = "LUIZH" Or NomeDeLogin = "RENATA" Or NomeDeLogin = "ROSE" Then
+If NomeDeLogin = "SCHWARTZ" Or NomeDeLogin = "RITA" Or NomeDeLogin = "PRISCILAANAMI" Or NomeDeLogin = "RENATA" Or NomeDeLogin = "ROSE" Then
     If lngTimer > 1200 Then
         
         lngTimer = 0
@@ -2779,7 +2857,7 @@ End Sub
 Private Sub Timer3_Timer()
 On Error Resume Next
 If FlagServico >= 15 Then
-    If NomeDeLogin = "RODRIGOC" Or NomeDeLogin = "LUIZH" Or NomeDeLogin = "NOELI" Or NomeDeLogin = "LEANDRO" Or NomeDeLogin = "RITA" Or NomeDeLogin = "DANIELAR" Or NomeDeLogin = "SCHWARTZ" Then
+    If NomeDeLogin = "RODRIGOC" Or NomeDeLogin = "RENATA" Or NomeDeLogin = "RODRIGOC" Or NomeDeLogin = "LEANDRO" Or NomeDeLogin = "RITA" Or NomeDeLogin = "DANIELAR" Or NomeDeLogin = "SCHWARTZ" Then
         frmServico.show 1
         frmServico.Refresh
         frmServico.btVerificar_Click
@@ -2854,7 +2932,7 @@ With RdoAux
         Sql = Sql & Left(sEndEntrega & " " & sComplEntrega, 60) & "','" & sCepEntrega & "   " & sBairroEntrega & "','" & sCidEntrega & "   " & sUFEntrega & "')"
         cn.Execute Sql, rdExecDirect
         xId = xId + 1
-PROXIMO2:
+Proximo2:
        .MoveNext
     Loop
    .Close
@@ -2995,6 +3073,7 @@ With m_cMenuImob
     h = .AddItem("Tipo de proprietário", "", 1, i, , , , "mnuEspolio")
     h = .AddItem("Correção de Bairros", "", 1, i, , , , "mnuCorrigeBairro")
     i = .AddItem("Relatórios", "", 1, , , , , "mnuRelatorioImob")
+    h = .AddItem("Relatório de isenção", "", 1, i, , , , "mnuRelIsencao")
     h = .AddItem("Certidão de averbação", "", 1, i, , , , "mnuAverbacao")
     h = .AddItem("Rol dos imoveis cadastrados", "", 1, i, , , , "mnuRolImovel")
     h = .AddItem("Devedor anual de IPTU", "", 1, i, , , , "mnuDevedorIPTU")
@@ -3029,6 +3108,7 @@ With m_cMenuMob
     h = .AddItem("Empresas", "", 1, i, , , , "mnuCadMobiliario")
     h = .AddItem("Escritorio Contabil", "", 1, i, , , , "mnuEscContab")
     h = .AddItem("Horário de funcionamento por atividade", "", 1, i, , , , "mnuHorarioFuncionamento")
+    h = .AddItem("Autorização uso de plataforma", "", 1, i, , , , "mnuUsoPlataforma")
     h = .AddItem("Atividades do mobiliário", "", 1, i, , , , "mnuAtividadeCadMob")
     i = .AddItem("Taxa de Licença", "", 1, h, , , , "mnuTabAtivTL")
     i = .AddItem("Cobrança de ISS", "", 1, h, , , , "mnuTabAtivISS")
@@ -3040,13 +3120,15 @@ With m_cMenuMob
     h = .AddItem("Notas fiscais por documento", "", 1, i, , , , "mnuCnsNFDoc")
     h = .AddItem("ISS variável pago nos últimos 5 anos", "", 1, i, , , , "mnuCnsISSVarPago")
     h = .AddItem("Tabela CNAE Fiscal 2.0", "", 1, i, , , , "mnuCnae")
+    h = .AddItem("Simular custo de Taxa de Licença/ISS Fixo", "", 1, i, , , , "mnuSimulaCusto")
     i = .AddItem("Atividades", "", 1, , , , , "mnuAtividadeMob")
     h = .AddItem("Suspensão/Reativação", "", 1, i, , , , "mnuSuspende")
     h = .AddItem("Notificação de ISS eletrônico", "", 1, i, , , , "mnuNotificaISS")
     h = .AddItem("Sala do empreendedor", "", 1, i, , , , "mnuSalaEmp")
     h = .AddItem("Nova GIA", "", 1, i, , , , "mnuNovaGIA")
-    h = .AddItem("Integração VRE", "", 1, i, , , , "mnuVRE")
-    h = .AddItem("Importar dados da RedeSim", "", 1, i, , , , "mnuVRERedeSim")
+    h = .AddItem("Integração VRE-Redesim", "", 1, i, , , , "mnuVRE")
+    h = .AddItem("Importação e geração de débito - MEI", "", 1, i, , , , "mnuImportaMei")
+'    h = .AddItem("Importar dados da RedeSim", "", 1, i, , , , "mnuVRERedeSim")
     j = .AddItem("Produtividade", "", 1, , , , , "mnuProdutividade")
     h = .AddItem("Cadastro de eventos", "", 1, j, , , , "mnuProdutEvento")
     h = .AddItem("Controle diário de tarefas", "", 1, j, , , , "mnuProdutTarefa")
@@ -3087,6 +3169,7 @@ With m_cMenuMob
     h = .AddItem("Relatório de empresas por sócio", "", 1, i, , , , "mnuEmpresaSocio")
     h = .AddItem("Lista de Empresas com ISS Estimado", "", 1, i, , , , "mnuRelEstimado")
     h = .AddItem("Lista de Empresas incluidas no MEI", "", 1, i, , , , "mnuRelMEI")
+    h = .AddItem("Lista de Empresas excluídas do MEI por período", "", 1, i, , , , "mnuRelMEIExcluido")
     h = .AddItem("Iss pago por atividade", "", 1, i, , , , "mnuIssPagoAtividade")
     h = .AddItem("Resumo iss construção civil", "", 1, i, , , , "mnuResumoIssCCivil")
     h = .AddItem("Notas fiscais emitidas na CONSIST por período", "", 1, i, , , False, "mnuNFEmitida")
@@ -3110,7 +3193,7 @@ With m_cMenuAtende
     i = .AddItem("Movimento econômico", "", 1, , , , , "mnuMovimento")
     i = .AddItem("Autorização de talão de nota fiscal", "", 1, , , , , "mnuAutorizaNF")
     i = .AddItem("Emissão de ITBI", "", 1, , , , , "mnuITBI")
-    i = .AddItem("Declaração cadastral (DECA)", "", 1, , , , , "mnuDeca")
+    'i = .AddItem("Declaração cadastral (DECA)", "", 1, , , , , "mnuDeca")
     i = .AddItem("Requerimento p/abertura de processo", "", 1, , , , , "mnuRequerimentoProc")
     i = .AddItem("Depósito CRI", "", 1, , , , , "mnuDepositoCRI")
     i = .AddItem("Recolhimento aos cofres municipais", "", 1, , , , , "mnuGuiaPratico1")
@@ -3129,6 +3212,7 @@ With m_cMenuAtende
     h = .AddItem("Mala direta p/parcelamento bloqueado", "", 1, i, , , , "mnuMalaDiretaParc")
     h = .AddItem("Desbloquear parcelamentos", "", 1, i, , , , "mnuDesbloquearParc")
     h = .AddItem("Pagamento mensal de parcelamentos", "", 1, i, , , , "mnuPagamentoMensalParc")
+    h = .AddItem("Parcelamentos gerados na web", "", 1, i, , , , "mnuParcelamentoWeb")
     i = .AddItem("Relatórios", "", 1, , , , , "mnuRelatorioAte")
     h = .AddItem("Emissão de 2ª Via", "", 1, i, , , , "mnu2Via")
     'h = .AddItem("Emissão de 2ª Via Especial", "", 1, i, , , , "mnu2ViaEspecial")
@@ -3187,11 +3271,25 @@ With m_cMenuTrib
     i = .AddItem("Cobrança de aluguel", "", 1, , , , , "mnuAlugueis")
     h = .AddItem("Manutenção dos aluguéis", "", 1, i, , , , "mnuManAluguel")
     h = .AddItem("Emissão dos boletos de cobrança", "", 1, i, , , , "mnuImpAluguel")
+    i = .AddItem("Controle de Consumo", "", 1, , , , , "mnuConsumo")
+    h = .AddItem("Importação de arquivo SAAEJ", "", 1, i, , , , "mnuscarquivosaaej")
+    h = .AddItem("Cadastro de secretarias", "", 1, i, , , , "mnuscsecretaria")
+    h = .AddItem("Controle das unidades", "", 1, i, , , , "mnuscunidades")
+    z = .AddItem("Consumo de Água", "", 1, h, , , , "mnuscunidadeagua")
+    z = .AddItem("Consumo de Energia", "", 1, h, , , , "mnuscunidadeenergia")
+    z = .AddItem("Telefonia Fixa", "", 1, h, , , , "mnuscunidadetelefonefixo")
+    z = .AddItem("Telefonia Celular", "", 1, h, , , , "mnuscunidadetelefonecelular")
+    z = .AddItem("Conexão de Internet", "", 1, h, , , , "mnuscunidadeinternet")
+    z = .AddItem("Taxas do Correio", "", 1, h, , , , "mnuscunidadecorreio")
+    h = .AddItem("Relatórios", "", 1, i, , , , "mnuscrelatorio")
     i = .AddItem("Divida Ativa", "", 1, , , , , "mnuDividaAtivaT")
+    h = .AddItem("Transferência de Dívida", "", 1, i, , , , "mnuTransfereDivida")
     h = .AddItem("Encerramento dos livros", "", 1, i, , , , "mnuDividaAtiva")
     h = .AddItem("Emissão dos livros DA", "", 1, i, , , , "mnuEmiteLivro")
+    'h = .AddItem("Emissão dos livros DA (Novo)", "", 1, i, , , , "mnuEmiteLivroNovo")
     h = .AddItem("Ajuizamento automático", "", 1, i, , , , "mnuAjuizaAuto")
     h = .AddItem("Resumo do pagamento das cartas de cobrança", "", 1, i, , , , "mnuPagamentoCC")
+    h = .AddItem("Relatório de devedores", "", 1, i, , , , "mnuRelatorioDevedor")
     i = .AddItem("Outros", "", 1, , , , , "mnuOutrosT")
     h = .AddItem("Autoriza complementos", "", 1, i, , , , "mnuDebitoCompl")
     h = .AddItem("Emissão de Guias p/Ambulantes", "", 1, i, , , , "mnuGuiaAmbulante")
@@ -3214,6 +3312,7 @@ With m_cMenuTrib
    ' h = .AddItem("2ª via de Notificação de ISS", "", 1, i, , , , "mnu2vianotificacao")
     h = .AddItem("Pagamento em Duplicidade", "", 1, i, , , , "mnuPagamentoDuplicidade")
     h = .AddItem("Resumo ISS Construção Civil", "", 1, i, , , , "mnuResumoISSCivil")
+    h = .AddItem("Lista Top N devedores", "", 1, i, , , , "mnuDevedorTopN")
     
 End With
 
@@ -3244,6 +3343,10 @@ With m_cMenuProt
     i = .AddItem("Processos que estão em um C.Custo", "", 1, , , , , "mnuProcessoCC")
     i = .AddItem("Qtde de Processos por Ano", "", 1, , , , , "mnuProcessoAno")
     i = .AddItem("Lista de assuntos por documento", "", 1, , , , , "mnuAssuntoDoc")
+'    i = .AddItem("Processos Setor de Mov.Econômica", "", 1, , , , , "mnuProcessoDaniela")
+    i = .AddItem("Lista de Processos por atendente", "", 1, , , , , "mnuListaProcessoAtendente")
+    i = .AddItem("Qtde de assuntos por período", "", 1, , , , , "mnuAssuntoPeriodo")
+    
 End With
 
 Set m_cMenuOutro = New cPopupMenu
@@ -3254,17 +3357,18 @@ With m_cMenuOutro
     .ButtonHighlight = True
     .InActiveMenuForeColor = &H400000
     .MenuBackgroundColor = &H8000000F
-    i = .AddItem("Administrador", "", 1, , , , , "mnuAdmin")
-    h = .AddItem("Segurança", "", 1, i, , , , "mnuSeguranca")
-    z = .AddItem("Cadastro de usuários", "", 1, h, , , , "mnuUser")
-    z = .AddItem("Segurança por evento", "", 1, h, , , , "mnuSegEvento")
-    z = .AddItem("Segurança por usuário", "", 1, h, , , , "mnuAtribSeg")
-    z = .AddItem("Alterar usuário", "", 1, h, , , , "mnuChangeLogin")
-    z = .AddItem("Security by User", "", 1, h, , , , "mnuSecurityByUser")
     
+        i = .AddItem("Administrador", "", 1, , , , , "mnuAdmin")
+        h = .AddItem("Segurança", "", 1, i, , , , "mnuSeguranca")
+        z = .AddItem("Cadastro de usuários", "", 1, h, , , , "mnuUser")
+        z = .AddItem("Segurança por evento", "", 1, h, , , , "mnuSegEvento")
+        z = .AddItem("Segurança por usuário", "", 1, h, , , , "mnuAtribSeg")
+        z = .AddItem("Alterar usuário", "", 1, h, , , , "mnuChangeLogin")
+        z = .AddItem("Security by User", "", 1, h, , , , "mnuSecurityByUser")
     h = .AddItem("Sql Builder", "", 1, i, , , , "mnuSql")
 '    h = .AddItem("Grava Foto", "", 1, i, , , , "mnuGravaFoto")
     h = .AddItem("Geração manual de débitos", "", 1, i, , , , "mnuGeraDebito")
+    h = .AddItem("Segunda tela de débitos", "", 1, i, , , , "mnuSecondScreen")
     h = .AddItem("Baixa ISS-DAM", "", 1, i, , , , "mnuBaixaIss")
    ' i = .AddItem("Integração com ISS Eletrônico", "", 1, , , , , "mnuExporta")
     i = .AddItem("Integração com Sistema de Cobrança", "", 1, , , , , "mnuIntegrativa")
@@ -3272,7 +3376,7 @@ With m_cMenuOutro
     i = .AddItem("Secretaria de Obras", "", 1, , , , , "mnuSecretariaObra")
     h = .AddItem("Parâmetros", "", 1, i, , , , "mnuParamObra")
     p = .AddItem("Relatórios", "", 1, i, , , , "mnuRelatorioAtendimento")
-    
+
     z = .AddItem("Tabela de Equipes", "", 1, h, , , , "mnuTabelaEquipe")
     z = .AddItem("Tabela de Funcionários", "", 1, h, , , , "mnuTabelaFuncionario")
     z = .AddItem("Tabela de Assuntos", "", 1, h, , , , "mnutabelaAssunto")
@@ -3473,7 +3577,7 @@ Sql = Sql & "Where (debitoparcela.CodLancamento = 36) And (debitoparcela.statusl
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-        ax = FillSpace(!CODREDUZIDO, 8) & FillSpace(!nomecidadao, 42) & " " & !statuslanc & " " & Format(!DataVencimento, "dd/mm/yyyy") & " " & !NUMPROCESSO & " " & FillLeft(Format(!ValorTributo, "#0.00"), 11) & " " & SubNull(!obs)
+        ax = FillSpace(!CODREDUZIDO, 8) & FillSpace(!nomecidadao, 42) & " " & !statuslanc & " " & Format(!DataVencimento, "dd/mm/yyyy") & " " & !numprocesso & " " & FillLeft(Format(!VALORTRIBUTO, "#0.00"), 11) & " " & SubNull(!obs)
         Print #FF1, ax
        .MoveNext
     Loop
@@ -3588,7 +3692,7 @@ With RdoAux
             Sql = "SELECT parceladocumento.codreduzido, debitotributo.valortributo FROM parceladocumento INNER JOIN debitotributo ON parceladocumento.codreduzido = debitotributo.codreduzido AND parceladocumento.anoexercicio = debitotributo.anoexercicio AND parceladocumento.codlancamento = debitotributo.codlancamento AND "
             Sql = Sql & "parceladocumento.SeqLancamento = debitotributo.SeqLancamento And parceladocumento.NumParcela = debitotributo.NumParcela And parceladocumento.CODCOMPLEMENTO = debitotributo.CODCOMPLEMENTO Where parceladocumento.NumDocumento = " & nNumDoc
             Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-            nValorDoc = RdoAux3!ValorTributo
+            nValorDoc = RdoAux3!VALORTRIBUTO
             RdoAux3.Close
 
             '***** GRAVA BAIXA NA GISS ***************
@@ -3613,8 +3717,8 @@ End With
 
 Sql = "SELECT codreduzido, anoexercicio, codlancamento, seqlancamento, numparcela, codcomplemento, seqpag, datapagamento, datarecebimento, valorpago,CodBanco,"
 Sql = Sql & "CodAgencia, restituido, NumDocumento, valorpagoreal, intacto, ValorTarifa, arquivobanco, valordif, datapagamentocalc, dataintegracao, contacorrente "
-Sql = Sql & "From debitopago WHERE (numdocumento BETWEEN 2000000 AND 2200000) AND (numdocumento NOT IN (SELECT num_documento FROM GTI_Eicon.dbo.tb_inter_baixa_detalhe)) "
-Sql = Sql & " AND (anoexercicio > 2015) ORDER BY numdocumento"
+Sql = Sql & "From debitopago WHERE (numdocumento BETWEEN 2000000 AND 2500000) AND (numdocumento NOT IN (SELECT num_documento FROM GTI_Eicon.dbo.tb_inter_baixa_detalhe)) "
+Sql = Sql & " AND (anoexercicio > 2021) ORDER BY numdocumento"
 
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
@@ -3622,13 +3726,13 @@ With RdoAux
         DoEvents
         '***** GRAVA BAIXA NA GISS ***************
         Sql = "insert tb_inter_baixa(cod_cliente,cod_banco,num_sequencia,timestamp,data_geracao,nome_arquivo,data_movimento) values("
-        Sql = Sql & 2177 & "," & !CodBanco & "," & 0 & ",'" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "','" & Format(Now, "mm/dd/yyyy") & "','"
-        Sql = Sql & !arquivobanco & "','" & Format(!datarecebimento, "mm/dd/yyyy") & "')"
+        Sql = Sql & 2177 & "," & Val(SubNull(!CodBanco)) & "," & 0 & ",'" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "','" & Format(Now, "mm/dd/yyyy") & "','"
+        Sql = Sql & SubNull(!arquivobanco) & "','" & Format(!datarecebimento, "mm/dd/yyyy") & "')"
         cnEicon.Execute Sql, rdExecDirect
         
         Sql = "insert tb_inter_baixa_detalhe(cod_cliente,cod_banco,num_sequencia,num_documento,linha,timestamp,valor_titulo,valor_pago,data_pagamento,valor_encargos,"
-        Sql = Sql & "descricao_linha_t,descricao_linha_u) values(" & 2177 & "," & !CodBanco & "," & 0 & "," & !NumDocumento & "," & !SEQPAG & ",'" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "',"
-        Sql = Sql & Virg2Ponto(CStr(!valorpagoreal)) & "," & Virg2Ponto(CStr(!valorpagoreal)) & ",'" & Format(!DataPagamento, "mm/dd/yyyy") & "'," & 0 & ",'"
+        Sql = Sql & "descricao_linha_t,descricao_linha_u) values(" & 2177 & "," & Val(SubNull(!CodBanco)) & "," & 0 & "," & !NumDocumento & "," & !SEQPAG & ",'" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "',"
+        Sql = Sql & Virg2Ponto(CStr(!ValorPagoreal)) & "," & Virg2Ponto(CStr(!ValorPagoreal)) & ",'" & Format(!DataPagamento, "mm/dd/yyyy") & "'," & 0 & ",'"
         Sql = Sql & "" & "','" & "" & "')"
         cnEicon.Execute Sql, rdExecDirect
     
@@ -3696,3 +3800,50 @@ Close #FF1
 ret = Shell("NOTEPAD" & " " & sNomeArq, vbNormalFocus)
 
 End Sub
+
+Private Sub BuildRelMei()
+Dim Sql As String, RdoAux As rdoResultset, ax As String, sNomeArq As String
+Dim z As Variant, z2 As Variant
+
+Data1:
+    z = InputBox("Digite a data inicial.", "Entre com a informação")
+    If z = "" Then GoTo Data1
+    If Not IsDate(z) Then GoTo Data1
+Data2:
+    z2 = InputBox("Digite a data final.", "Entre com a informação")
+    If z2 = "" Then GoTo Data2
+    If Not IsDate(z2) Then GoTo Data2
+
+On Error Resume Next
+Close #FF1
+sNomeArq = sPathBin & "\MEI.TXT"
+FF1 = FreeFile()
+Open sNomeArq For Output As FF1
+
+Print #FF1, "**************************************************************"
+Print #FF1, "EMPRESA QUE DEIXARAM DE SER MEI ENTRE " & z & " E " & z2
+Print #FF1, "IMPRESSO EM " & Format(Now, "dd/mm/yyyy") & " - Fonte: GTI"
+Print #FF1, "**************************************************************"
+ax = ""
+Print #FF1, ax
+ax = FillSpace("CÓDIGO", 8) & FillSpace("RAZÃO SOCIAL", 42) & " " & FillSpace("CNPJ", 16) & " " & FillSpace("DATA FIM", 9) & "  " & FillSpace("ATIVIDADE", 40)
+Print #FF1, ax
+Print #FF1, "******************************************************************************************************************************************************************************************************"
+
+Sql = "SELECT CODIGO,razaosocial,cnpj,DATAFIM,ativextenso FROM periodomei INNER JOIN mobiliario ON codigomob = periodomei.codigo "
+Sql = Sql & " WHERE DATAFIM BETWEEN  '" & Format(z, "mm/dd/yyyy") & "' and '" & Format(z2, "mm/dd/yyyy") & "' ORDER BY DATAFIM,CODIGO"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    Do Until .EOF
+        ax = FillSpace(!Codigo, 8) & FillSpace(!RazaoSocial, 42) & " " & FillSpace(!Cnpj, 16) & " " & Format(!Datafim, "dd/mm/yyyy") & " " & Left(SubNull(!ativextenso), 40)
+        Print #FF1, ax
+       .MoveNext
+    Loop
+   .Close
+End With
+
+Close #FF1
+ret = Shell("NOTEPAD" & " " & sNomeArq, vbNormalFocus)
+
+End Sub
+

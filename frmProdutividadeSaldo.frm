@@ -755,8 +755,8 @@ Sql = Sql & " AND MESREF=" & nMes & " ORDER BY ANO DESC,MES"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-        nAnoRef = !Ano
-        nMesRef = !Mes
+        nAnoRef = !ano
+        nMesRef = !mes
         For x = 1 To grdMain.Rows - 2
             If nMesRef = Val(grdMain.TextMatrix(x, 6)) And nAnoRef = Val(grdMain.TextMatrix(x, 7)) Then
                 Exit For
@@ -852,14 +852,14 @@ Do Until RdoAux.EOF
     With RdoAux2
         Do Until .EOF
             If nFirstMonth = 0 Then
-                nFirstMonth = !Mes
-                nFirstYear = !Ano
+                nFirstMonth = !mes
+                nFirstYear = !ano
             End If
             nPos = UBound(aTabela) + 1
             ReDim Preserve aTabela(nPos)
             aTabela(nPos).nCodFiscal = nCodFiscal
-            aTabela(nPos).nAno = !Ano
-            aTabela(nPos).nMes = !Mes
+            aTabela(nPos).nAno = !ano
+            aTabela(nPos).nMes = !mes
             aTabela(nPos).nSaldo = !Saldo
             aTabela(nPos).nPontos = !Pontos
             aTabela(nPos).nUtilizado = !utilizados
@@ -1041,7 +1041,7 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         nDia = Day(!Data)
-        nSomaTarefa = !Valor * !QTDE
+        nSomaTarefa = !valor * !QTDE
         nSomaMes = nSomaMes + nSomaTarefa
         aPontos(nDia) = aPontos(nDia) + nSomaTarefa
        .MoveNext

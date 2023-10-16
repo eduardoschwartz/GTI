@@ -4,53 +4,53 @@ Begin VB.Form frmGuiaPratico3
    BackColor       =   &H00EEEEEE&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Requerimento p/autorização especial de estacionamento"
-   ClientHeight    =   5070
-   ClientLeft      =   4290
-   ClientTop       =   3660
-   ClientWidth     =   9420
+   ClientHeight    =   2640
+   ClientLeft      =   1815
+   ClientTop       =   3225
+   ClientWidth     =   9075
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
-   ScaleHeight     =   5070
-   ScaleWidth      =   9420
+   ScaleHeight     =   2640
+   ScaleWidth      =   9075
    Begin VB.CheckBox chK 
       BackColor       =   &H00EEEEEE&
-      Caption         =   "Morador, decretos Municipais: 5192 de 18 de novembro de 2008 e 5299 de junho de 2009."
+      Caption         =   "MORADOR (Decreto Municipal Nº 5178/2021)"
       Height          =   195
       Index           =   2
       Left            =   180
-      TabIndex        =   8
-      Top             =   3105
+      TabIndex        =   9
+      Top             =   2205
       Width           =   7260
    End
    Begin VB.CheckBox chK 
       BackColor       =   &H00EEEEEE&
-      Caption         =   "304 deficiente, de 18 de dezembro de 2008 do CONTRAM;"
+      Caption         =   "PCD (Nos termos da Lei Federal Nº 9503/1997 e Resolução CONTRAN Nº 965/2022)"
       Height          =   195
       Index           =   1
       Left            =   180
-      TabIndex        =   7
-      Top             =   2835
-      Width           =   7260
+      TabIndex        =   8
+      Top             =   1890
+      Width           =   7170
    End
    Begin VB.CheckBox chK 
       BackColor       =   &H00EEEEEE&
-      Caption         =   "303 idoso, de 18 de dezembro de 2008 do CONTRAM;"
+      Caption         =   "IDOSO (Nos termos da Lei Federal Nº 9503/1997 e Resolução CONTRAN Nº 965/2022)"
       Height          =   195
       Index           =   0
       Left            =   180
-      TabIndex        =   6
-      Top             =   2565
-      Width           =   7260
+      TabIndex        =   7
+      Top             =   1575
+      Width           =   7125
    End
    Begin VB.Frame Frame1 
       BackColor       =   &H00EEEEEE&
       Caption         =   "Observação"
       Height          =   960
       Index           =   2
-      Left            =   135
+      Left            =   90
       TabIndex        =   33
-      Top             =   3600
+      Top             =   6120
       Width           =   9015
       Begin VB.TextBox txtObs 
          Appearance      =   0  'Flat
@@ -58,7 +58,7 @@ Begin VB.Form frmGuiaPratico3
          Left            =   45
          MultiLine       =   -1  'True
          ScrollBars      =   2  'Vertical
-         TabIndex        =   9
+         TabIndex        =   10
          Top             =   225
          Width           =   8880
       End
@@ -68,9 +68,9 @@ Begin VB.Form frmGuiaPratico3
       BackColor       =   &H00EEEEEE&
       Enabled         =   0   'False
       Height          =   285
-      Left            =   6480
-      TabIndex        =   5
-      Top             =   1935
+      Left            =   6525
+      TabIndex        =   6
+      Top             =   5535
       Width           =   1455
    End
    Begin VB.TextBox txtRenavam 
@@ -78,9 +78,9 @@ Begin VB.Form frmGuiaPratico3
       BackColor       =   &H00EEEEEE&
       Enabled         =   0   'False
       Height          =   285
-      Left            =   3870
-      TabIndex        =   4
-      Top             =   1980
+      Left            =   3915
+      TabIndex        =   5
+      Top             =   5580
       Width           =   1455
    End
    Begin VB.TextBox txtCor 
@@ -88,9 +88,9 @@ Begin VB.Form frmGuiaPratico3
       BackColor       =   &H00EEEEEE&
       Enabled         =   0   'False
       Height          =   285
-      Left            =   900
-      TabIndex        =   3
-      Top             =   1980
+      Left            =   945
+      TabIndex        =   4
+      Top             =   5580
       Width           =   1590
    End
    Begin VB.TextBox txtAno 
@@ -98,9 +98,9 @@ Begin VB.Form frmGuiaPratico3
       BackColor       =   &H00EEEEEE&
       Enabled         =   0   'False
       Height          =   285
-      Left            =   8055
-      TabIndex        =   2
-      Top             =   1485
+      Left            =   8100
+      TabIndex        =   3
+      Top             =   5085
       Width           =   870
    End
    Begin VB.TextBox txtModelo 
@@ -108,9 +108,9 @@ Begin VB.Form frmGuiaPratico3
       BackColor       =   &H00EEEEEE&
       Enabled         =   0   'False
       Height          =   285
-      Left            =   5175
-      TabIndex        =   1
-      Top             =   1485
+      Left            =   5220
+      TabIndex        =   2
+      Top             =   5085
       Width           =   1905
    End
    Begin VB.TextBox txtMarca 
@@ -118,17 +118,17 @@ Begin VB.Form frmGuiaPratico3
       BackColor       =   &H00EEEEEE&
       Enabled         =   0   'False
       Height          =   285
-      Left            =   1935
-      TabIndex        =   0
-      Top             =   1485
+      Left            =   1980
+      TabIndex        =   1
+      Top             =   5085
       Width           =   1950
    End
    Begin prjChameleon.chameleonButton cmdCnsImovel 
       Height          =   315
-      Left            =   8820
-      TabIndex        =   11
+      Left            =   8505
+      TabIndex        =   0
       ToolTipText     =   "Consulta Cidadão"
-      Top             =   45
+      Top             =   90
       Width           =   465
       _ExtentX        =   820
       _ExtentY        =   556
@@ -165,10 +165,10 @@ Begin VB.Form frmGuiaPratico3
    End
    Begin prjChameleon.chameleonButton cmdPrint 
       Height          =   315
-      Left            =   8235
-      TabIndex        =   10
+      Left            =   7830
+      TabIndex        =   11
       ToolTipText     =   "Imprimir Requerimento"
-      Top             =   4635
+      Top             =   1935
       Width           =   1035
       _ExtentX        =   1826
       _ExtentY        =   556
@@ -218,9 +218,9 @@ Begin VB.Form frmGuiaPratico3
       EndProperty
       Height          =   225
       Index           =   12
-      Left            =   5535
+      Left            =   5580
       TabIndex        =   32
-      Top             =   2025
+      Top             =   5625
       Width           =   840
    End
    Begin VB.Label Label1 
@@ -238,9 +238,9 @@ Begin VB.Form frmGuiaPratico3
       EndProperty
       Height          =   225
       Index           =   11
-      Left            =   2700
+      Left            =   2745
       TabIndex        =   31
-      Top             =   2025
+      Top             =   5625
       Width           =   1110
    End
    Begin VB.Label Label1 
@@ -258,9 +258,9 @@ Begin VB.Form frmGuiaPratico3
       EndProperty
       Height          =   225
       Index           =   10
-      Left            =   180
+      Left            =   225
       TabIndex        =   30
-      Top             =   2025
+      Top             =   5625
       Width           =   660
    End
    Begin VB.Label Label1 
@@ -278,9 +278,9 @@ Begin VB.Form frmGuiaPratico3
       EndProperty
       Height          =   225
       Index           =   9
-      Left            =   7290
+      Left            =   7335
       TabIndex        =   29
-      Top             =   1530
+      Top             =   5130
       Width           =   660
    End
    Begin VB.Label Label1 
@@ -298,9 +298,9 @@ Begin VB.Form frmGuiaPratico3
       EndProperty
       Height          =   225
       Index           =   8
-      Left            =   4095
+      Left            =   4140
       TabIndex        =   28
-      Top             =   1530
+      Top             =   5130
       Width           =   975
    End
    Begin VB.Label Label1 
@@ -318,15 +318,15 @@ Begin VB.Form frmGuiaPratico3
       EndProperty
       Height          =   225
       Index           =   7
-      Left            =   180
+      Left            =   225
       TabIndex        =   27
-      Top             =   1530
+      Top             =   5130
       Width           =   1695
    End
    Begin VB.Line Line1 
       BorderColor     =   &H00808080&
       X1              =   135
-      X2              =   9270
+      X2              =   9000
       Y1              =   1395
       Y2              =   1395
    End
@@ -622,7 +622,7 @@ cn.Execute Sql, rdExecDirect
 Sql = "INSERT REPORTTMP(USUARIO,MEMO1) VALUES('" & NomeDeLogin & "','" & Mask(txtObs.Text) & "')"
 cn.Execute Sql, rdExecDirect
 
-frmReport.ShowReport2 "GUIAPRATICO3", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport2 "GUIAPRATICO3", frmMdi.HWND, Me.HWND
 
 Sql = "DELETE FROM REPORTTMP WHERE USUARIO='" & NomeDeLogin & "'"
 cn.Execute Sql, rdExecDirect
@@ -669,10 +669,10 @@ Sql = "SELECT * FROM vwFULLCIDADAO WHERE CODCIDADAO=" & Val(lblCodRequerente.Cap
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
 With RdoAux
     Do Until .EOF
-        lblRG.Caption = SubNull(!rg) & " " & SubNull(!ORGAO)
-        lblCPF.Caption = SubNull(!CPF)
+        lblRG.Caption = SubNull(!rg) & " " & SubNull(!Orgao)
+        lblCPF.Caption = SubNull(!cpf)
         If lblCPF.Caption <> "" Then
-            lblCPF.Caption = Format(RdoAux!CPF, "00#\.###\.###-##")
+            lblCPF.Caption = Format(RdoAux!cpf, "00#\.###\.###-##")
         End If
         If lblCPF.Caption = "" Then
             If Not IsNull(!Cnpj) Then
@@ -696,7 +696,7 @@ With RdoAux
 '                lblCidade.Caption = !DESCCidade
             'End If
      '   End If
-        lblFone.Caption = SubNull(!TELEFONE)
+        lblFone.Caption = SubNull(!telefone)
        .MoveNext
     Loop
    .Close
@@ -725,7 +725,7 @@ ElseIf Val(nCodReduz) >= 100000 And Val(nCodReduz) < 500000 Then
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         If .RowCount > 0 Then
-            sNome = !razaosocial
+            sNome = !RazaoSocial
         Else
             MsgBox "Código não cadastrado", vbCritical, "Atenção"
         End If

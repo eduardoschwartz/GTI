@@ -24,9 +24,9 @@ Begin VB.Form frmProdutividadeEvento
       _ExtentX        =   2302
       _ExtentY        =   556
       _Version        =   393216
-      Format          =   133234689
+      Format          =   156237825
       CurrentDate     =   40968
-      MaxDate         =   43830
+      MaxDate         =   45291
       MinDate         =   40544
    End
    Begin prjChameleon.chameleonButton cmdAlterar 
@@ -299,9 +299,9 @@ Begin VB.Form frmProdutividadeEvento
       _ExtentX        =   2302
       _ExtentY        =   556
       _Version        =   393216
-      Format          =   133234689
+      Format          =   156303361
       CurrentDate     =   40968
-      MaxDate         =   43830
+      MaxDate         =   45291
       MinDate         =   40544
    End
    Begin VB.Label lblSeq 
@@ -385,7 +385,7 @@ With RdoAux
        Set itmX = lvMain.ListItems.Add(, , Format(!Seq, "000"))
        itmX.SubItems(1) = !Nome
        itmX.SubItems(2) = Format(!dataini, "dd/mm/yyyy")
-       itmX.SubItems(3) = Format(!datafim, "dd/mm/yyyy")
+       itmX.SubItems(3) = Format(!Datafim, "dd/mm/yyyy")
        .MoveNext
     Loop
    .Close
@@ -498,7 +498,7 @@ dDataFim1 = CDate(mskDataFim.value)
 For x = 1 To lvMain.ListItems.Count
     If Not bNovo Then
         If lvMain.ListItems(x).Text = lblSeq.Caption Then
-            GoTo proximo
+            GoTo Proximo
         End If
     End If
             
@@ -520,7 +520,7 @@ For x = 1 To lvMain.ListItems.Count
         bAchou = True
         Exit For
     End If
-proximo:
+Proximo:
 Next
 
 'pesquisa inversa
@@ -530,7 +530,7 @@ dDataFim2 = CDate(mskDataFim.value)
 For x = 1 To lvMain.ListItems.Count
     If Not bNovo Then
         If lvMain.ListItems(x).Text = lblSeq.Caption Then
-            GoTo PROXIMO2
+            GoTo proximo2
         End If
     End If
             
@@ -552,7 +552,7 @@ For x = 1 To lvMain.ListItems.Count
         bAchou = True
         Exit For
     End If
-PROXIMO2:
+proximo2:
 Next
 
 If bAchou Then

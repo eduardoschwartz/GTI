@@ -272,7 +272,6 @@ Begin VB.Form frmChat
       _ExtentY        =   7276
       _Version        =   393217
       BackColor       =   -2147483633
-      Enabled         =   -1  'True
       ReadOnly        =   -1  'True
       ScrollBars      =   2
       Appearance      =   0
@@ -530,7 +529,7 @@ Centraliza Me
 bRunOnce = True
 ReDim aNome(0)
 ReDim aChat(0)
-On Error GoTo fim
+On Error GoTo Fim
 Dim c As cTab
 With vTab
     Set c = .Tabs.Add("Tab1", , "Usuários")
@@ -574,7 +573,7 @@ With RdoAux
     Loop
    .Close
 End With
-fim:
+Fim:
 End Sub
 
 Private Sub CarregaUser()
@@ -586,6 +585,8 @@ Inicio:
 ReDim aNomeTmp(0)
 Sql = "SELECT * FROM USUARIO WHERE NOMELOGIN<>'" & NomeDeLogin & "' AND ATIVO=1"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+
+
 With RdoAux
     Do Until .EOF
         
@@ -603,7 +604,7 @@ With RdoAux
             aNomeTmp(UBound(aNomeTmp)).sData = "01/01/1990"
         End If
         If DateDiff("d", CDate(aNomeTmp(UBound(aNomeTmp)).sData), Now) > 0 And aNomeTmp(UBound(aNomeTmp)).bLogado Then
-            If NomeDeLogin <> "SCHWARTZ" Then
+            If NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "DANIELAR" Then
                 Sql = "UPDATE USUARIO SET LOGON=0,DATALOGON=null WHERE NOMELOGIN='" & !NomeLogin & "'"
                 cn.Execute Sql, rdExecDirect
             End If
@@ -611,7 +612,7 @@ With RdoAux
 Proximo:
        .MoveNext
     
-    Loop
+     Loop
    .Close
 End With
 
@@ -624,7 +625,7 @@ If UBound(aNome) = 0 Then
     Next
 End If
 
-On Error GoTo fim
+On Error GoTo Fim
 For x = 1 To UBound(aNomeTmp)
     If aNomeTmp(x).bLogado <> aNome(x).bLogado Then
         Set oListItem = ListViewFindItem(aNomeTmp(x).sNomeLogin, lvMain, 1)
@@ -687,13 +688,13 @@ Next
 
 Me.Caption = "Comunicador interno do GTI - " & y + 1 & " usuários conectados."
 frmMdi.Sbar.Panels(1).Text = y + 1 & " usuários conectados."
-If InStr(1, cn.Connect, "SERVER=192.") > 0 Then
-    frmMdi.Sbar.Panels(1).Text = y + 1 & " usuários conectados."
-Else
-    frmMdi.Sbar.Panels(1).Text = y + 1 & " usuários conectados (Base Local)."
-End If
+'If InStr(1, cn.Connect, "SERVER=192.") > 0 Then
+    frmMdi.Sbar.Panels(1).Text = y + 1 & " usuários conectados. (" + Mid(cn.Connect, InStr(1, cn.Connect, "SERVER=", vbBinaryCompare) + 7, 15) + ")"
+'Else
+'    frmMdi.Sbar.Panels(1).Text = y + 1 & " usuários conectados (Base Local)."
+'End If
         
-fim:
+Fim:
 Exit Sub
 Erro:
 'MsgBox Err.Description
@@ -737,7 +738,7 @@ Select Case m_cMenuOpcoes.ItemKey(ItemNumber)
             bInvisivel = False
             Sql = "update usuario set logon=1 where nomelogin='" & NomeDeLogin & "'"
         End If
-        cn.Execute Sql, rdExecDirect
+        'cn.Execute Sql, rdExecDirect
     Case "mnuExibir"
         On Error Resume Next
         MsgBox RetornaUsuarioFullName2(lvMain.SelectedItem.Text), vbOKOnly, "Nome completo do usuário: " & lvMain.SelectedItem.Text
@@ -999,6 +1000,7 @@ Sql = "SELECT * FROM USUARIO WHERE NOMELOGIN<>'" & NomeDeLogin & "' AND ATIVO=1"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
+        
         If IsNull(!logon) Then
             bLogado = False
         Else

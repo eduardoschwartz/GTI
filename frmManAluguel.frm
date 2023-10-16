@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Object = "{F48120B2-B059-11D7-BF14-0010B5B69B54}#1.0#0"; "esMaskEdit.ocx"
 Begin VB.Form frmManAluguel 
@@ -386,7 +386,7 @@ Begin VB.Form frmManAluguel
       _ExtentY        =   3942
       _Version        =   393216
       Rows            =   1
-      Cols            =   3
+      Cols            =   4
       FixedCols       =   0
       BackColorFixed  =   15658734
       FocusRect       =   0
@@ -394,6 +394,24 @@ Begin VB.Form frmManAluguel
       AllowUserResizing=   1
       Appearance      =   0
       FormatString    =   $"frmManAluguel.frx":0B01
+   End
+   Begin VB.Label Label7 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Id: "
+      Height          =   195
+      Left            =   6120
+      TabIndex        =   25
+      Top             =   2970
+      Width           =   510
+   End
+   Begin VB.Label lblId 
+      Caption         =   "0"
+      ForeColor       =   &H00000080&
+      Height          =   195
+      Left            =   6750
+      TabIndex        =   24
+      Top             =   2970
+      Width           =   600
    End
    Begin VB.Label Label1 
       BackStyle       =   0  'Transparent
@@ -495,11 +513,11 @@ Limpa
 txtCod.Text = ""
 If cmbTipo.ListIndex = -1 Then Exit Sub
 grdMain.Rows = 1
-Sql = "SELECT CODREDUZIDO,NOME,DESCRICAO FROM MANUTENCAOALUGUEL WHERE CODLANCAMENTO=" & cmbTipo.ItemData(cmbTipo.ListIndex)
+Sql = "SELECT ID,CODREDUZIDO,NOME,DESCRICAO FROM MANUTENCAOALUGUEL WHERE CODLANCAMENTO=" & cmbTipo.ItemData(cmbTipo.ListIndex)
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-        grdMain.AddItem Format(!CODREDUZIDO, "000000") & Chr(9) & !Nome & Chr(9) & SubNull(!descricao)
+        grdMain.AddItem Format(!CODREDUZIDO, "000000") & Chr(9) & !Nome & Chr(9) & SubNull(!Descricao) & Chr(9) & !id
        .MoveNext
     Loop
 End With
@@ -534,14 +552,16 @@ lIndex = m_cMenuContrib.ShowPopupMenu(cmdCnsImovel.Left, cmdCnsImovel.Top, cmdCn
 End Sub
 
 Private Sub cmdExcluir_Click()
+Dim df As Integer, nId As Integer
+nId = Val(lblId.Caption)
 If lblNome.Caption = "" Then
     MsgBox "Selecione o inquilino", vbExclamation, "Atenção"
     Exit Sub
 End If
 
 If MsgBox("Excluir este inquilino ?", vbQuestion + vbYesNo, "Confirmação") = vbYes Then
-    Sql = "DELETE FROM MANUTENCAOALUGUEL WHERE CODREDUZIDO=" & Val(grdMain.TextMatrix(grdMain.Row, 0)) & " AND "
-    Sql = Sql & "CODLANCAMENTO=" & cmbTipo.ItemData(cmbTipo.ListIndex)
+    Sql = "DELETE FROM MANUTENCAOALUGUEL WHERE ID=" & nId
+    'Sql = Sql & "CODLANCAMENTO=" & cmbTipo.ItemData(cmbTipo.ListIndex)
     cn.Execute Sql, rdExecDirect
     Limpa
     If grdMain.Rows > 2 Then
@@ -556,7 +576,8 @@ End If
 End Sub
 
 Private Sub cmdGravar_Click()
-Dim df As Integer
+Dim df As Integer, nId As Integer
+nId = Val(lblId.Caption)
 If lblNome.Caption = "" Then
    MsgBox "Selecione o Inquilino.", vbExclamation, "Atenção"
    Exit Sub
@@ -618,12 +639,13 @@ End If
 
 If Evento = "Novo" Then
     Sql = "SELECT * FROM MANUTENCAOALUGUEL WHERE CODREDUZIDO=" & Val(txtCod.Text) & " AND CODLANCAMENTO=" & cmbTipo.ItemData(cmbTipo.ListIndex)
+    Sql = "SELECT * FROM MANUTENCAOALUGUEL WHERE ID=" & nId
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         If .RowCount > 0 Then
-            MsgBox "Inquilino ja cadastrado neste tipo de aluguel.", vbExclamation, "atenção"
-            Exit Sub
-        Else
+  '          MsgBox "Inquilino ja cadastrado neste tipo de aluguel.", vbExclamation, "atenção"
+   '         Exit Sub
+    '    Else
             Sql = "INSERT MANUTENCAOALUGUEL(CODREDUZIDO,CODLANCAMENTO,NOME,VALORTOTAL,DATAVENCTO,MULTA,JUROS,DESCRICAO) VALUES("
             Sql = Sql & Val(txtCod.Text) & "," & cmbTipo.ItemData(cmbTipo.ListIndex) & ",'" & Left(Mask(lblNome.Caption), 50) & "'," & Virg2Ponto(txtValor.Text) & ",'"
             Sql = Sql & Format(mskDataVencto.Text, "mm/dd/yyyy") & "'," & Virg2Ponto(txtPercMulta.Text) & ","
@@ -636,13 +658,15 @@ If Evento = "Novo" Then
 Else
     Sql = "UPDATE MANUTENCAOALUGUEL SET VALORTOTAL=" & Virg2Ponto(RemovePonto(txtValor.Text)) & " ,DATAVENCTO='" & Format(mskDataVencto.Text, "mm/dd/yyyy") & "' ,"
     Sql = Sql & "MULTA=" & Virg2Ponto(txtPercMulta.Text) & " ,JUROS=" & Virg2Ponto(txtPercJuros.Text) & " ,DESCRICAO='" & Mask(txtDesc.Text) & "' "
-    Sql = Sql & "Where CODREDUZIDO = " & Val(grdMain.TextMatrix(grdMain.Row, 0)) & " And CODLANCAMENTO=" & cmbTipo.ItemData(cmbTipo.ListIndex)
+    Sql = Sql & " where id=" & nId
+'    Sql = Sql & "Where CODREDUZIDO = " & Val(grdMain.TextMatrix(grdMain.Row, 0)) & " And CODLANCAMENTO=" & cmbTipo.ItemData(cmbTipo.ListIndex)
     cn.Execute Sql, rdExecDirect
     grdMain.TextMatrix(grdMain.Row, 2) = Mask(txtDesc.Text)
 End If
 
 Eventos "INICIAR"
 Evento = ""
+cmbTipo_Click
 End Sub
 
 
@@ -696,6 +720,7 @@ With RdoAux
    .Close
 End With
 If cmbTipo.ListCount > 0 Then cmbTipo.ListIndex = 0
+grdMain.COLWIDTH(3) = 0
 Eventos "INICIAR"
 End Sub
 
@@ -704,23 +729,31 @@ Set m_cMenuContrib = Nothing
 End Sub
 
 Private Sub grdMain_Click()
+Dim nId As Integer
 Limpa
 With grdMain
+    nId = Val(grdMain.TextMatrix(grdMain.Row, 3))
     If .Rows = 1 Then Exit Sub
-    Sql = "SELECT * FROM MANUTENCAOALUGUEL WHERE CODREDUZIDO=" & Val(.TextMatrix(.Row, 0)) & " AND "
-    Sql = Sql & "CODLANCAMENTO=" & cmbTipo.ItemData(cmbTipo.ListIndex)
+    'Sql = "SELECT * FROM MANUTENCAOALUGUEL WHERE CODREDUZIDO=" & Val(.TextMatrix(.Row, 0)) & " AND "
+    Sql = "SELECT * FROM MANUTENCAOALUGUEL WHERE id=" & nId
+    'Sql = Sql & "CODLANCAMENTO=" & cmbTipo.ItemData(cmbTipo.ListIndex)
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
+        lblId.Caption = !id
         txtCod.Text = !CODREDUZIDO
         lblNome.Caption = !Nome
         txtValor.Text = FormatNumber(!ValorTotal, 2)
         mskDataVencto.Text = Format(!DataVencto, "dd/mm/yyyy")
         txtPercJuros.Text = FormatNumber(!Juros, 2)
-        txtPercMulta.Text = FormatNumber(!Multa, 2)
-        txtDesc.Text = SubNull(!descricao)
+        txtPercMulta.Text = FormatNumber(!multa, 2)
+        txtDesc.Text = SubNull(!Descricao)
     End With
 End With
 
+End Sub
+
+Private Sub grdMain_RowColChange()
+grdMain_Click
 End Sub
 
 Private Sub m_cMenuContrib_Click(ItemNumber As Long)
@@ -892,7 +925,7 @@ Private Sub MontaMenu()
 
    Set m_cMenuContrib = New cPopupMenu
    With m_cMenuContrib
-      .hwndOwner = Me.hwnd
+      .hwndOwner = Me.HWND
       .GradientHighlight = True
       
       i = .AddItem("Mobiliário", "", 1, , , , , "mnuMob")

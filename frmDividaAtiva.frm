@@ -7,8 +7,8 @@ Begin VB.Form frmDividaAtiva
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Encerramento do Livro de Divida Ativa"
    ClientHeight    =   3525
-   ClientLeft      =   2925
-   ClientTop       =   2700
+   ClientLeft      =   5040
+   ClientTop       =   3075
    ClientWidth     =   6570
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
@@ -31,7 +31,7 @@ Begin VB.Form frmDividaAtiva
       Height          =   315
       ItemData        =   "frmDividaAtiva.frx":0004
       Left            =   1980
-      List            =   "frmDividaAtiva.frx":0065
+      List            =   "frmDividaAtiva.frx":0006
       Style           =   2  'Dropdown List
       TabIndex        =   1
       Top             =   180
@@ -45,7 +45,7 @@ Begin VB.Form frmDividaAtiva
       Width           =   1095
       _ExtentX        =   1931
       _ExtentY        =   503
-      MouseIcon       =   "frmDividaAtiva.frx":0123
+      MouseIcon       =   "frmDividaAtiva.frx":0008
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -91,8 +91,8 @@ Begin VB.Form frmDividaAtiva
       FCOLO           =   0
       MCOL            =   12632256
       MPTR            =   1
-      MICON           =   "frmDividaAtiva.frx":013F
-      PICN            =   "frmDividaAtiva.frx":015B
+      MICON           =   "frmDividaAtiva.frx":0024
+      PICN            =   "frmDividaAtiva.frx":0040
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -131,8 +131,8 @@ Begin VB.Form frmDividaAtiva
       FCOLO           =   0
       MCOL            =   12632256
       MPTR            =   1
-      MICON           =   "frmDividaAtiva.frx":02B5
-      PICN            =   "frmDividaAtiva.frx":02D1
+      MICON           =   "frmDividaAtiva.frx":019A
+      PICN            =   "frmDividaAtiva.frx":01B6
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -172,8 +172,8 @@ Begin VB.Form frmDividaAtiva
       FCOLO           =   0
       MCOL            =   65280
       MPTR            =   1
-      MICON           =   "frmDividaAtiva.frx":033F
-      PICN            =   "frmDividaAtiva.frx":035B
+      MICON           =   "frmDividaAtiva.frx":0224
+      PICN            =   "frmDividaAtiva.frx":0240
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -410,7 +410,7 @@ With RdoAux
             End If
            .Close
        End With
-       If Not IsNull(!DATAABERTURA) Then lblDataIni.Caption = Format(!DATAABERTURA, "dd/mm/yyyy")
+       If Not IsNull(!DataAbertura) Then lblDataIni.Caption = Format(!DataAbertura, "dd/mm/yyyy")
        If Not IsNull(!dataencerramento) Then
           mskDataFim.Text = Format(!dataencerramento, "dd/mm/yyyy")
           mskDataFim.Locked = True
@@ -472,9 +472,13 @@ Unload Me
 End Sub
 
 Private Sub Form_Load()
+Dim x As Integer
 Centraliza Me
+For x = 2004 To Year(Now)
+    cmbAno.AddItem x
+Next
 
-'cmbAno.Text = Year(Now)
+cmbAno.Text = Year(Now)
 Sql = "SELECT CODTIPO, DESCTIPO FROM TIPOLIVRO "
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
@@ -526,9 +530,11 @@ With RdoAux
 End With
 sTributosDA = Chomp(sTributosDA, chomp_righT, 1)
 
+
 lblLog.Caption = "Analisando Livro...."
 lblLog.Refresh
-Sql = "SELECT MAX(PAGINALIVRO) AS MAXIMO FROM DEBITOPARCELA WHERE numerolivro=" & Val(lblNumero.Caption) & " and anoexercicio=" & cmbAno.Text & " and (statuslanc=3)"
+'Sql = "SELECT MAX(PAGINALIVRO) AS MAXIMO FROM DEBITOPARCELA WHERE numerolivro=" & Val(lblNumero.Caption) & " and anoexercicio=" & cmbAno.Text & " and (statuslanc=3)"
+Sql = "SELECT MAX(PAGINALIVRO) AS MAXIMO FROM DEBITOPARCELA WHERE  anoexercicio=" & cmbAno.Text & " and statuslanc in (3,42,43)"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If IsNull(!maximo) Then
@@ -543,13 +549,14 @@ lblLog.Caption = "Analisando Lançamentos...."
 lblLog.Refresh
 
 
-Sql = "SELECT MAX(numcertidao) AS MAXIMO FROM DEBITOPARCELA WHERE numerolivro=" & Val(lblNumero.Caption) & " and anoexercicio=" & Val(cmbAno.Text) & " and (statuslanc=3)"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-If Not IsNull(RdoAux!maximo) Then
-    xId = RdoAux!maximo + 1
-Else
+'Sql = "SELECT MAX(numcertidao) AS MAXIMO FROM DEBITOPARCELA WHERE numerolivro=" & Val(lblNumero.Caption) & " and anoexercicio=" & Val(cmbAno.Text) & " and (statuslanc=3)"
+'Sql = "SELECT MAX(numcertidao) AS MAXIMO FROM DEBITOPARCELA WHERE  anoexercicio=" & Val(cmbAno.Text) & " and statuslanc in (3,42,43)"
+'Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+'If Not IsNull(RdoAux!maximo) Then
+'    xId = RdoAux!maximo + 1
+'Else
     xId = 1
-End If
+'End If
 
 'Sql = "SELECT DISTINCT CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO FROM vwDIVIDAATIVA WHERE " & sTypeBook & " AND YEAR(DATAVENCIMENTO)=" & Val(cmbAno.Text) & " AND (" & sLancamentoDA & ") AND NUMPARCELA>0 AND (statuslanc=3) "
 Sql = "SELECT DISTINCT CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO FROM vwDIVIDAATIVA WHERE YEAR(DATAVENCIMENTO)=" & Val(cmbAno.Text) & " AND (" & sLancamentoDA & ") AND NUMPARCELA>0 AND (statuslanc=3) "
@@ -562,13 +569,13 @@ With RdoAux
     lblLog.Caption = "Iniciando Atualização...."
     lblLog.Refresh
     Do Until .EOF
-        'If !CODREDUZIDO = 102755 Then MsgBox "TESTE"
+        'If !CODREDUZIDO = 38 Then MsgBox "TESTE"
         If xId Mod 100 = 0 Then
             CallPb xId, CLng(lblTotal.Caption)
         End If
         Sql = "UPDATE DEBITOPARCELA SET NUMEROLIVRO=" & Val(lblNumero.Caption) & " ,PAGINALIVRO=" & nPagina
-        Sql = Sql & " ,DATAINSCRICAO='" & Format(mskDataFim.Text, "mm/dd/yyyy") & "',NUMCERTIDAO=" & xId & " WHERE CODREDUZIDO=" & !CODREDUZIDO
-        Sql = Sql & " AND ANOEXERCICIO=" & !AnoExercicio & " AND CODLANCAMENTO=" & !CodLancamento & " AND (STATUSLANC=3) "
+        Sql = Sql & " ,DATAINSCRICAO='" & Format(mskDataFim.Text, "mm/dd/yyyy") & "',NUMCERTIDAO=" & nPagina & " WHERE CODREDUZIDO=" & !CODREDUZIDO
+        Sql = Sql & " AND ANOEXERCICIO=" & !AnoExercicio & " AND CODLANCAMENTO=" & !CodLancamento & " AND STATUSLANC in (3,42,43) "
         Sql = Sql & " AND DATAINSCRICAO IS NULL"
         cn.Execute Sql, rdExecDirect
         nPos = nPos + 1
@@ -580,7 +587,7 @@ With RdoAux
         nTotal = nTotal - 1
         lblFalta.Caption = nTotal
         lblFalta.Refresh
-proximo:
+Proximo:
         xId = xId + 1
        .MoveNext
        DoEvents

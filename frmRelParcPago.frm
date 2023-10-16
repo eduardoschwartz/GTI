@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmRelParcPago 
    BorderStyle     =   1  'Fixed Single
@@ -7,12 +7,12 @@ Begin VB.Form frmRelParcPago
    ClientHeight    =   3930
    ClientLeft      =   5820
    ClientTop       =   3075
-   ClientWidth     =   5235
+   ClientWidth     =   6765
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    ScaleHeight     =   3930
-   ScaleWidth      =   5235
+   ScaleWidth      =   6765
    Begin VB.Frame Frame1 
       Height          =   465
       Left            =   90
@@ -120,8 +120,8 @@ Begin VB.Form frmRelParcPago
       Left            =   90
       TabIndex        =   3
       Top             =   585
-      Width           =   5070
-      _ExtentX        =   8943
+      Width           =   6600
+      _ExtentX        =   11642
       _ExtentY        =   4974
       View            =   3
       LabelEdit       =   1
@@ -149,6 +149,46 @@ Begin VB.Form frmRelParcPago
          Text            =   "Valor"
          Object.Width           =   2540
       EndProperty
+   End
+   Begin prjChameleon.chameleonButton cmdExcel 
+      Height          =   345
+      Left            =   5355
+      TabIndex        =   11
+      ToolTipText     =   "Enviar dados para o Excel"
+      Top             =   90
+      Width           =   1170
+      _ExtentX        =   2064
+      _ExtentY        =   609
+      BTYPE           =   3
+      TX              =   "Excel"
+      ENAB            =   -1  'True
+      BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      COLTYPE         =   2
+      FOCUSR          =   0   'False
+      BCOL            =   12632256
+      BCOLO           =   12632256
+      FCOL            =   0
+      FCOLO           =   0
+      MCOL            =   16777215
+      MPTR            =   1
+      MICON           =   "frmRelParcPago.frx":01DF
+      PICN            =   "frmRelParcPago.frx":01FB
+      UMCOL           =   -1  'True
+      SOFT            =   0   'False
+      PICPOS          =   0
+      NGREY           =   0   'False
+      FX              =   0
+      HAND            =   0   'False
+      CHECK           =   0   'False
+      VALUE           =   0   'False
    End
    Begin VB.Label Label1 
       BackStyle       =   0  'Transparent
@@ -189,7 +229,7 @@ Private Sub cmdCalc_Click()
 Dim Sql As String, RdoAux As rdoResultset, z As Long, nValor As Double
 nValor = 0
 Ocupado
-z = SendMessage(lvMain.hwnd, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvMain.HWND, LVM_DELETEALLITEMS, 0, 0)
 Sql = "SELECT debitopago.codreduzido, debitopago.anoexercicio, debitopago.codlancamento, debitopago.seqlancamento, debitopago.numparcela, debitopago.codcomplemento, "
 Sql = Sql & "debitopago.seqpag, debitopago.datapagamento, debitopago.datarecebimento, debitopago.valorpago, debitopago.codbanco, debitopago.codagencia,"
 Sql = Sql & "debitopago.restituido, debitopago.numdocumento, debitopago.valorpagoreal, debitopago.intacto, debitopago.valortarifa, debitopago.arquivobanco, debitopago.valordif,"
@@ -202,8 +242,8 @@ With RdoAux
     Do Until .EOF
         Set itmX = lvMain.ListItems.Add(, , SubNull(!numprocesso))
         itmX.SubItems(1) = !CODREDUZIDO
-        itmX.SubItems(2) = FormatNumber(!valorpagoreal, 2)
-        nValor = nValor + !valorpagoreal
+        itmX.SubItems(2) = FormatNumber(!ValorPagoreal, 2)
+        nValor = nValor + !ValorPagoreal
        .MoveNext
     Loop
    .Close
@@ -217,18 +257,65 @@ End Sub
 
 Private Sub Limpa()
 Dim z As Long
-z = SendMessage(lvMain.hwnd, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvMain.HWND, LVM_DELETEALLITEMS, 0, 0)
 lblQtde.Caption = "0000"
 lblTotal.Caption = "0,00"
 
 End Sub
 
+Private Sub cmdExcel_Click()
+If lvMain.ListItems.Count = 0 Then Exit Sub
+
+Dim x As Long, y As Long, ax As String, Scr_hdc As Long, z As Long
+Dim cnExcel As ADODB.Connection, Rs As ADODB.Recordset, nCont As Integer, sFile As String
+Scr_hdc = GetDesktopWindow()
+Set cnExcel = New ADODB.Connection
+sFile = "Rel" & Format(Now, "ddmmyyyyhhmmss") & ".xls"
+cnExcel.ConnectionString = "provider=Microsoft.Jet.OLEDB.4.0; data source=" & sPathBin & "\" & sFile & "; Extended Properties=""Excel 8.0;HDR=YES"""
+cnExcel.Open
+
+ax = ""
+For y = 1 To lvMain.ColumnHeaders.Count
+    ax = ax & RemoveSpace(lvMain.ColumnHeaders(y).Text) & " char(255), "
+Next
+ax = Left(ax, Len(ax) - 2)
+cnExcel.Execute "Create Table Table1(" & ax & ")"
+
+Set Rs = New ADODB.Recordset
+Rs.Open "[Table1$]", cnExcel, adOpenDynamic, adLockOptimistic, adCmdTable
+
+
+For x = 1 To lvMain.ListItems.Count
+    Rs.AddNew
+    nCont = 0
+    Rs.Fields(nCont).value = lvMain.ListItems(x).Text
+    nCont = nCont + 1
+    For y = 2 To lvMain.ColumnHeaders.Count
+         
+         Rs.Fields(nCont).value = Left(lvMain.ListItems(x).SubItems(y - 1), 100)
+         nCont = nCont + 1
+    
+        
+    Next
+    Rs.Update
+Next
+
+
+ cnExcel.Close
+Set Rs = Nothing
+Set cnExcel = Nothing
+
+z = ShellExecute(Scr_hdc, "Open", sFile, "", sPathBin, SW_SHOWNORMAL)
+
+
+End Sub
+
 Private Sub Form_Load()
-Dim X As Integer
+Dim x As Integer
 Centraliza Me
 
-For X = 2011 To Year(Now)
-    cmbAno.AddItem (CStr(X))
+For x = 2011 To Year(Now)
+    cmbAno.AddItem (CStr(x))
 Next
 
 cmbMes.ListIndex = Month(Now) - 1

@@ -3,22 +3,41 @@ Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmSimplesCNPJ_Receita 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Exportação de CNPJ para a Rec.Federal"
-   ClientHeight    =   795
+   ClientHeight    =   1365
    ClientLeft      =   6405
    ClientTop       =   4620
    ClientWidth     =   5415
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   795
+   ScaleHeight     =   1365
    ScaleWidth      =   5415
+   Begin VB.OptionButton optTipo 
+      Caption         =   "Arquivo Exclusão"
+      Height          =   240
+      Index           =   1
+      Left            =   2430
+      TabIndex        =   4
+      Top             =   855
+      Value           =   -1  'True
+      Width           =   1725
+   End
+   Begin VB.OptionButton optTipo 
+      Caption         =   "Arquivo Inicial"
+      Height          =   240
+      Index           =   0
+      Left            =   540
+      TabIndex        =   3
+      Top             =   855
+      Width           =   1725
+   End
    Begin VB.CommandButton cmdImportar 
       Caption         =   "Importar"
       Enabled         =   0   'False
       Height          =   330
-      Left            =   3645
+      Left            =   3735
       TabIndex        =   2
-      Top             =   1125
+      Top             =   1530
       Width           =   1410
    End
    Begin prjChameleon.chameleonButton cmdExec 
@@ -91,13 +110,89 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Type tLaser
     Codigo As Long
-    Ano As Integer
+    ano As Integer
     Area_Terreno As Double
     Area_Predial As Double
 End Type
 
 
 Private Sub cmdExec_Click()
+If optTipo(0).value = True Then
+    If MsgBox("Deseja gerar o arquivo inicial?", vbQuestion + vbYesNo, "Confirmação") = vbYes Then
+        Arquivo_Inicial
+    End If
+Else
+    If MsgBox("Deseja gerar o arquivo de exclusão?", vbQuestion + vbYesNo, "Confirmação") = vbYes Then
+        Arquivo_Exclusao
+    End If
+End If
+
+End Sub
+
+Private Sub cmdImportar_Click()
+Simples_Cnpj
+End Sub
+
+Private Sub Form_Load()
+Centraliza Me
+End Sub
+
+
+Private Sub CallPb(nVal As Long, nTot As Long)
+If nVal > 0 Then
+    PBar.Color = &HC0C000
+Else
+    PBar.Color = vbWhite
+End If
+If ((nVal * 100) / nTot) <= 100 Then
+   PBar.value = (nVal * 100) / nTot
+Else
+   PBar.value = 100
+End If
+
+Me.Refresh
+If cGetInputState() <> 0 Then DoEvents
+
+End Sub
+
+Private Sub Simples_Cnpj()
+Dim nCodReduz As Long, Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, nPos2 As Integer, bFind As Boolean
+Dim nPos As Long, nTot As Long, a2019() As tLaser, a2020() As tLaser, x As Integer, y As Integer
+On Error GoTo Erro
+
+Sql = "SELECT cnpj From simplestmp order by cnpj"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    nTot = .RowCount
+    nPos = 1
+    Do Until .EOF
+        If nPos Mod 50 = 0 Then
+           CallPb nPos, nTot
+        End If
+        Sql = "insert simples_cnpj_receita(cnpj) values('" & !Cnpj & "')"
+        cn.Execute Sql, rdExecDirect
+        
+        nPos = nPos + 1
+        DoEvents
+       .MoveNext
+    Loop
+   .Close
+End With
+
+
+MsgBox "Fim"
+
+
+Exit Sub
+
+Erro:
+'MsgBox rdoErrors(1).Description
+Resume Next
+
+End Sub
+
+Private Sub Arquivo_Inicial()
+
 Dim Sql As String, RdoAux As rdoResultset, nPos As Long, nTot As Long, sCNPJ As String, nCodReduz As Long
 Dim RdoAux2 As rdoResultset, dData As Date, nSit As Integer, nEncerrada As Integer, nReg As Integer, nPosReg As Integer
 
@@ -165,7 +260,7 @@ With RdoAux
             Else
                 nSit = 0
                 RdoAux2.Close
-                Sql = "select * from debitoparcela where codreduzido=" & nCodReduz & " and datavencimento<'" & Format("31/12/2018", "mm/dd/yyyy") & "' and codlancamento in (3,5,6,13) and (statuslanc=3 or statuslanc=42 or statuslanc=43 or statuslanc=39 or statuslanc=40 or statuslanc=41 or statuslanc=39)"
+                Sql = "select * from debitoparcela where codreduzido=" & nCodReduz & " and datavencimento<'" & Format("31/12/2022", "mm/dd/yyyy") & "' and codlancamento in (3,5,6,13) and (statuslanc=3 or statuslanc=42 or statuslanc=43 or statuslanc=39 or statuslanc=40 or statuslanc=41 or statuslanc=39)"
                 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 If RdoAux2.RowCount > 0 Then
                     nSit = 1
@@ -209,6 +304,7 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     .Move nPos
     nPosReg = 1
+    'Print #1, "INI00000000000"
     Print #1, "00000000000000"
     Do Until .EOF
 '        If nPosReg >= 200 Then
@@ -221,7 +317,7 @@ With RdoAux
        .MoveNext
     Loop
     Print #1, "99999999999999"
-    GoTo fim
+    GoTo Fim
 End With
 
 Proximo:
@@ -230,73 +326,153 @@ nReg = nReg + 1
 GoTo Inicio
 
 
-fim:
+Fim:
 Close #1
 Liberado
 MsgBox "Gravação concluída", vbInformation, "Informação"
 
-
 End Sub
 
-Private Sub cmdImportar_Click()
-Simples_Cnpj
-End Sub
+Private Sub Arquivo_Exclusao()
 
-Private Sub Form_Load()
-Centraliza Me
-End Sub
+Dim Sql As String, RdoAux As rdoResultset, nPos As Long, nTot As Long, sCNPJ As String, nCodReduz As Long
+Dim RdoAux2 As rdoResultset, dData As Date, nSit As Integer, nEncerrada As Integer, nReg As Integer, nPosReg As Integer
 
+Ocupado
 
-Private Sub CallPb(nVal As Long, nTot As Long)
-If nVal > 0 Then
-    pBar.Color = &HC0C000
-Else
-    pBar.Color = vbWhite
-End If
-If ((nVal * 100) / nTot) <= 100 Then
-   pBar.value = (nVal * 100) / nTot
-Else
-   pBar.value = 100
-End If
+Sql = "update simples_cnpj_receita set situacao=null,data=null,codreduz=null,encerrada=null"
+cn.Execute Sql, rdExecDirect
 
-Me.Refresh
-If cGetInputState() <> 0 Then DoEvents
-
-End Sub
-
-Private Sub Simples_Cnpj()
-Dim nCodReduz As Long, Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, nPos2 As Integer, bFind As Boolean
-Dim nPos As Long, nTot As Long, a2019() As tLaser, a2020() As tLaser, x As Integer, y As Integer
-On Error GoTo Erro
-
-Sql = "SELECT cnpj From simplestmp order by cnpj"
+nPos = 1
+'Sql = "select * from simples_cnpj_receita where cnpj='7786772000140' order by cnpj"
+Sql = "select * from simples_cnpj_receita where regularizada is null order by cnpj"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     nTot = .RowCount
-    nPos = 1
     Do Until .EOF
-        If nPos Mod 50 = 0 Then
-           CallPb nPos, nTot
+       If nPos Mod 10 = 0 Then
+            CallPb nPos, nTot
+            DoEvents
         End If
-        Sql = "insert simples_cnpj_receita(cnpj) values('" & !Cnpj & "')"
-        cn.Execute Sql, rdExecDirect
-        
+        sCNPJ = !Cnpj
+        nCodReduz = 0
+        Sql = "select codigomob from mobiliario where convert(bigint,cnpj)=" & Val(sCNPJ)
+        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        If RdoAux2.RowCount > 0 Then
+            If RdoAux2.RowCount > 1 Then
+                nCodReduz = RdoAux2!codigomob
+                RdoAux2.Close
+                Sql = "select codigomob from mobiliario where convert(bigint,cnpj)=" & Val(sCNPJ) & " and dataencerramento is null"
+                Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                If RdoAux2.RowCount > 0 Then
+                   nCodReduz = RdoAux2!codigomob
+                End If
+            Else
+                nCodReduz = RdoAux2!codigomob
+'                If nCodReduz = 120087 Then MsgBox "teste"
+            End If
+            RdoAux2.Close
+        Else
+            RdoAux2.Close
+            Sql = "select codcidadao from cidadao where cnpj='" & sCNPJ & "'"
+            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            If RdoAux2.RowCount > 0 Then
+                nCodReduz = RdoAux2!CodCidadao
+            End If
+        End If
+        If nCodReduz = 0 Then
+            Sql = "update simples_cnpj_receita set situacao=1, data='" & Format(Now, "mm/dd/yyyy") & "' where cnpj='" & sCNPJ & "'"
+            cn.Execute Sql, rdExecDirect
+        Else
+            Sql = "select * from periodosn where codigo=" & nCodReduz & " order by dataini desc"
+            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            If RdoAux2.RowCount > 0 Then
+                dData = RdoAux2!dataini
+            Else
+                dData = Format(Now, "mm/dd/yyyy")
+            End If
+            RdoAux2.Close
+            
+            nEncerrada = 0
+            Sql = "select codigomob,dataencerramento from mobiliario where codigomob=" & nCodReduz
+            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            If Not IsNull(RdoAux2!dataencerramento) And nCodReduz < 500000 Then
+                nEncerrada = 1
+                nSit = 1
+            Else
+                nSit = 0
+                RdoAux2.Close
+                Sql = "select * from debitoparcela where codreduzido=" & nCodReduz & " and datavencimento<'" & Format("31/12/2022", "mm/dd/yyyy") & "' and codlancamento in (3,5,6,13) and (statuslanc=3 or statuslanc=42 or statuslanc=43 or statuslanc=39 or statuslanc=40 or statuslanc=41 or statuslanc=39)"
+                Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                If RdoAux2.RowCount > 0 Then
+                    nSit = 1
+                End If
+                RdoAux2.Close
+            End If
+            
+            If nSit = 0 Then
+                'SUSPENÇÃO
+                 Sql = "SELECT CODTIPOEVENTO,DATAPROCEVENTO FROM MOBILIARIOEVENTO WHERE CODMOBILIARIO=" & nCodReduz
+                 Sql = Sql & " ORDER BY DATAEVENTO DESC"
+                 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                 With RdoAux2
+                     If .RowCount > 0 Then
+                         If !CODTIPOEVENTO = 2 Then
+                            nSit = 1
+                         End If
+                     End If
+                    .Close
+                 End With
+            End If
+            
+            If nSit = 0 Then
+                Sql = "update simples_cnpj_receita set regularizada=1 where cnpj='" & sCNPJ & "'"
+                cn.Execute Sql, rdExecDirect
+            End If
+        End If
+                
         nPos = nPos + 1
-        DoEvents
        .MoveNext
     Loop
    .Close
 End With
 
+nReg = 1
+nPos = 1
 
-MsgBox "Fim"
+Inicio:
+Open sPathBin & "\cnpjsimplesexc.txt" For Output As #1
+Sql = "select * from simples_cnpj_receita where regularizada=1 order by cnpj"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    .Move nPos
+    nPosReg = 1
+    Print #1, "EXC00000000000"
+    'Print #1, "00000000000000"
+    Do Until .EOF
+'        If nPosReg >= 200 Then
+'            GoTo Proximo
+'        End If
+        Print #1, Format(!Cnpj, "00000000000000")
+        
+        nPosReg = nPosReg + 1
+        nPos = nPos + 1
+       .MoveNext
+    Loop
+    Print #1, "99999999999999"
+    GoTo Fim
+End With
+
+Proximo:
+Close #1
+nReg = nReg + 1
+GoTo Inicio
 
 
-Exit Sub
-
-Erro:
-MsgBox rdoErrors(1).Description
-Resume Next
+Fim:
+Close #1
+Liberado
+MsgBox "Gravação concluída", vbInformation, "Informação"
 
 End Sub
 

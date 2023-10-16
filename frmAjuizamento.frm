@@ -262,7 +262,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Dim RdoAux As rdoResultset, sql As String, RdoAux2 As rdoResultset
+Dim RdoAux As rdoResultset, Sql As String, RdoAux2 As rdoResultset
 Dim sAno As String, sLanc As String, sSeq As String, sParc As String
 Dim sComp As String, nCodReduz As Long
 Dim nLivro As Integer, nPagina As Integer, sTypeBook As String, nPos As Integer
@@ -281,10 +281,10 @@ For x = 1 To grdTemp.Rows - 1
     sParc = IIf(grdTemp.TextMatrix(x, 3) = "Unica", "00", grdTemp.TextMatrix(x, 3))
     sComp = grdTemp.TextMatrix(x, 4)
     
-    sql = "UPDATE DEBITOPARCELA SET DATAAJUIZA=NULL WHERE CODREDUZIDO=" & nCodReduz
-    sql = sql & " AND ANOEXERCICIO=" & Val(sAno) & " AND CODLANCAMENTO=" & Val(sLanc)
-    sql = sql & " AND SEQLANCAMENTO=" & Val(sSeq) & " AND NUMPARCELA=" & Val(sParc) & " AND CODCOMPLEMENTO=" & Val(sComp)
-    cn.Execute sql, rdExecDirect
+    Sql = "UPDATE DEBITOPARCELA SET DATAAJUIZA=NULL WHERE CODREDUZIDO=" & nCodReduz
+    Sql = Sql & " AND ANOEXERCICIO=" & Val(sAno) & " AND CODLANCAMENTO=" & Val(sLanc)
+    Sql = Sql & " AND SEQLANCAMENTO=" & Val(sSeq) & " AND NUMPARCELA=" & Val(sParc) & " AND CODCOMPLEMENTO=" & Val(sComp)
+    cn.Execute Sql, rdExecDirect
 Next
 
 Unload Me
@@ -312,10 +312,10 @@ For x = 1 To grdTemp.Rows - 1
     sComp = grdTemp.TextMatrix(x, 4)
     
     'sql = "UPDATE DEBITOPARCELA SET NUMCERTIDAO=" & Val(lblNumero.Caption) & " ,DATAAJUIZA='" & Format(mskDataAj.text, "mm/dd/yyyy") & "' WHERE CODREDUZIDO=" & nCodReduz
-    sql = "UPDATE DEBITOPARCELA SET DATAAJUIZA='" & Format(mskDataAj.Text, "mm/dd/yyyy") & "' WHERE CODREDUZIDO=" & nCodReduz
-    sql = sql & " AND ANOEXERCICIO=" & Val(sAno) & " AND CODLANCAMENTO=" & Val(sLanc)
-    sql = sql & " AND SEQLANCAMENTO=" & Val(sSeq) & " AND NUMPARCELA=" & Val(sParc) & " AND CODCOMPLEMENTO=" & Val(sComp)
-    cn.Execute sql, rdExecDirect
+    Sql = "UPDATE DEBITOPARCELA SET DATAAJUIZA='" & Format(mskDataAj.Text, "mm/dd/yyyy") & "' WHERE CODREDUZIDO=" & nCodReduz
+    Sql = Sql & " AND ANOEXERCICIO=" & Val(sAno) & " AND CODLANCAMENTO=" & Val(sLanc)
+    Sql = Sql & " AND SEQLANCAMENTO=" & Val(sSeq) & " AND NUMPARCELA=" & Val(sParc) & " AND CODCOMPLEMENTO=" & Val(sComp)
+    cn.Execute Sql, rdExecDirect
 Next
 
 Unload Me
@@ -336,10 +336,10 @@ Dim sQuadra As String, sLote As String, sCIDADE2 As String, sCEP2 As String, sUF
 Dim sLANCAMENTO As String, sDOCUMENTO As String, aAno() As Integer, sTributo As String, bJuros As Boolean, bMulta As Boolean
 
 ReDim aAno(0)
-sql = "DELETE FROM RELATORIOAJUIZAMENTO"
-cn.Execute sql, rdExecDirect
-sql = "DELETE FROM RELATORIOAJUIZAMENTODETALHE"
-cn.Execute sql, rdExecDirect
+Sql = "DELETE FROM RELATORIOAJUIZAMENTO"
+cn.Execute Sql, rdExecDirect
+Sql = "DELETE FROM RELATORIOAJUIZAMENTODETALHE"
+cn.Execute Sql, rdExecDirect
 
 nCodReduz = Val(frmDebitoImob.txtCod.Text)
 sNome = ""
@@ -363,6 +363,14 @@ nValorTotal = "2.000,54"
 
 If nCodReduz < 100000 Then 'IMOVEL
     With xImovel
+        Sql = "SELECT * FROM vwFULLIMOVEL WHERE codreduzido=" & nCodReduz
+        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        If Val(SubNull(RdoAux2!Cnpj)) = 0 Then
+            sDOCUMENTO = SubNull(RdoAux2!cpf)
+        Else
+            sDOCUMENTO = SubNull(RdoAux2!Cnpj)
+        End If
+        RdoAux2.Close
        .CarregaImovel nCodReduz
         sInscricao = .Inscricao
         sQuadra = .Li_Quadras
@@ -377,18 +385,18 @@ If nCodReduz < 100000 Then 'IMOVEL
             sCEP1 = "00000-000"
         End If
         sUF1 = "SP"
-        sql = "SELECT ENDENTREGA.CODREDUZIDO,ENDENTREGA.EE_CODLOG, ENDENTREGA.EE_NOMELOG,ENDENTREGA.EE_NUMIMOVEL,"
-        sql = sql & "ENDENTREGA.EE_COMPLEMENTO, ENDENTREGA.EE_UF,ENDENTREGA.EE_CIDADE, ENDENTREGA.EE_BAIRRO,"
-        sql = sql & "ENDENTREGA.EE_CEP, ENDENTREGA.EE_LOTEAMENTO,ENDENTREGA.EE_DESCBAIRRO , Cidade.DESCCIDADE "
-        sql = sql & "FROM ENDENTREGA INNER JOIN  CIDADE ON ENDENTREGA.EE_UF = CIDADE.SIGLAUF AND "
-        sql = sql & "ENDENTREGA.Ee_Cidade = Cidade.CODCIDADE WHERE CODREDUZIDO = " & nCodReduz
-        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+        Sql = "SELECT ENDENTREGA.CODREDUZIDO,ENDENTREGA.EE_CODLOG, ENDENTREGA.EE_NOMELOG,ENDENTREGA.EE_NUMIMOVEL,"
+        Sql = Sql & "ENDENTREGA.EE_COMPLEMENTO, ENDENTREGA.EE_UF,ENDENTREGA.EE_CIDADE, ENDENTREGA.EE_BAIRRO,"
+        Sql = Sql & "ENDENTREGA.EE_CEP, ENDENTREGA.EE_LOTEAMENTO,ENDENTREGA.EE_DESCBAIRRO , Cidade.DESCCIDADE "
+        Sql = Sql & "FROM ENDENTREGA INNER JOIN  CIDADE ON ENDENTREGA.EE_UF = CIDADE.SIGLAUF AND "
+        Sql = Sql & "ENDENTREGA.Ee_Cidade = Cidade.CODCIDADE WHERE CODREDUZIDO = " & nCodReduz
+        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         If RdoAux2.RowCount > 0 Then
             If RdoAux2!Ee_NomeLog <> "" Then
                 sEND2 = RdoAux2!Ee_NomeLog & " Nº " & CStr(RdoAux2!Ee_NumImovel)
                 sCOMPL2 = RdoAux2!Ee_Complemento
                 sBAIRRO2 = SubNull(RdoAux2!Ee_DESCBairro)
-                sCIDADE2 = SubNull(RdoAux2!desccidade)
+                sCIDADE2 = SubNull(RdoAux2!descCidade)
                 sCEP2 = Format(RdoAux2!Ee_Cep, "00000-000")
                 sUF2 = SubNull(RdoAux2!Ee_Uf)
             Else
@@ -407,24 +415,25 @@ If nCodReduz < 100000 Then 'IMOVEL
             sCEP2 = sCEP1
             sUF2 = sUF1
         End If
+        
         RdoAux2.Close
     End With
 ElseIf nCodReduz > 100000 And nCodReduz < 500000 Then 'EMPRESA
-    sql = "SELECT CODIGOMOB,DVMOB,RAZAOSOCIAL,NOMEFANTASIA,CNPJ,CPF,INSCESTADUAL,"
-    sql = sql & "DATAABERTURA,NUMPROCESSO,DATAPROCESSO,ATIVEXTENSO,SIGLAUF,CODCIDADE,CODBAIRRO,"
-    sql = sql & "DESCCIDADE,DESCBAIRRO,DESCUF,CODLOGRADOURO,NOMELOGR,"
-    sql = sql & "NUMERO,COMPLEMENTO,CEP,DATAENCERRAMENTO,NUMPROCENCERRAMENTO,DATAPROCENCERRAMENTO,"
-    sql = sql & "HORARIO,DESCHORARIO,HOMEPAGE,NOMECONTATO,FONECONTATO,FAXCONTATO,CARGOCONTATO,"
-    sql = sql & "EMAILCONTATO,RESPCONTABIL,CAPITALSOCIAL,QTDEEMPREGADO,QTDEPROF,RG,ORGAO "
-    sql = sql & " FROM vwCNSMOBILIARIO WHERE CODIGOMOB=" & nCodReduz
-    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    Sql = "SELECT CODIGOMOB,DVMOB,RAZAOSOCIAL,NOMEFANTASIA,CNPJ,CPF,INSCESTADUAL,"
+    Sql = Sql & "DATAABERTURA,NUMPROCESSO,DATAPROCESSO,ATIVEXTENSO,SIGLAUF,CODCIDADE,CODBAIRRO,"
+    Sql = Sql & "DESCCIDADE,DESCBAIRRO,DESCUF,CODLOGRADOURO,NOMELOGR,"
+    Sql = Sql & "NUMERO,COMPLEMENTO,CEP,DATAENCERRAMENTO,NUMPROCENCERRAMENTO,DATAPROCENCERRAMENTO,"
+    Sql = Sql & "HORARIO,DESCHORARIO,HOMEPAGE,NOMECONTATO,FONECONTATO,FAXCONTATO,CARGOCONTATO,"
+    Sql = Sql & "EMAILCONTATO,RESPCONTABIL,CAPITALSOCIAL,QTDEEMPREGADO,QTDEPROF,RG,ORGAO "
+    Sql = Sql & " FROM vwCNSMOBILIARIO WHERE CODIGOMOB=" & nCodReduz
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         sInscricao = Format(!codigomob, "0000000") & "-" & !DVMOB
         sQuadra = ""
         sLote = ""
         sNome = !RazaoSocial
-        If Not IsNull(!CPF) Then
-           sDOCUMENTO = Format(Trim(!CPF), "000\.000\.000-00")
+        If Not IsNull(!cpf) Then
+           sDOCUMENTO = Format(Trim(!cpf), "000\.000\.000-00")
         ElseIf Not IsNull(!Cnpj) Then
            sDOCUMENTO = Format(Trim(!Cnpj), "00\.000\.000/0000-00")
         ElseIf Not IsNull(!rg) Then
@@ -433,24 +442,24 @@ ElseIf nCodReduz > 100000 And nCodReduz < 500000 Then 'EMPRESA
            sDOCUMENTO = ""
         End If
 
-        sql = "SELECT CODIGOMOB,INSCESTADUAL,CNPJ,CPF,RAZAOSOCIAL,CODLOGRADOURO,DESCCIDADE,SIGLAUF,CODCIDADE,ABREVTIPOLOG,ABREVTITLOG,NOMELOGRADOURO,NUMERO,CODBAIRRO,CEP,COMPLEMENTO,DATAENCERRAMENTO,NOMELOGR "
-        sql = sql & " FROM vwCNSMOBILIARIO WHERE CODIGOMOB=" & nCodReduz
-        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+        Sql = "SELECT CODIGOMOB,INSCESTADUAL,CNPJ,CPF,RAZAOSOCIAL,CODLOGRADOURO,DESCCIDADE,SIGLAUF,CODCIDADE,ABREVTIPOLOG,ABREVTITLOG,NOMELOGRADOURO,NUMERO,CODBAIRRO,CEP,COMPLEMENTO,DATAENCERRAMENTO,NOMELOGR "
+        Sql = Sql & " FROM vwCNSMOBILIARIO WHERE CODIGOMOB=" & nCodReduz
+        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             If .RowCount > 0 Then
-                sNumInsc = !INSCESTADUAL
+                sNumInsc = !inscestadual
                 sEND1 = Trim$(SubNull(!AbrevTipoLog)) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & SubNull(!NomeLogradouro) & " nº " & Val(SubNull(!Numero))
                 sCOMPL1 = SubNull(!Complemento)
-                sql = "SELECT  DESCBAIRRO From BAIRRO WHERE  siglauf = '" & !SiglaUF & "' And codcidade = " & !CodCidade & " And codbairro = " & !CodBairro
-                Set RdoAux3 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+                Sql = "SELECT  DESCBAIRRO From BAIRRO WHERE  siglauf = '" & !SiglaUF & "' And codcidade = " & !CodCidade & " And codbairro = " & !CodBairro
+                Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 With RdoAux3
                     sBAIRRO1 = SubNull(!DescBairro)
                    .Close
                 End With
-                sql = "SELECT  DESCCIDADE From CIDADE WHERE  siglauf = '" & !SiglaUF & "' And codcidade = " & !CodCidade
-                Set RdoAux3 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+                Sql = "SELECT  DESCCIDADE From CIDADE WHERE  siglauf = '" & !SiglaUF & "' And codcidade = " & !CodCidade
+                Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 With RdoAux3
-                    sCIDADE1 = SubNull(!desccidade)
+                    sCIDADE1 = SubNull(!descCidade)
                    .Close
                 End With
                 sCEP1 = RetornaCEP(!CodLogradouro, !Numero)
@@ -460,26 +469,26 @@ ElseIf nCodReduz > 100000 And nCodReduz < 500000 Then 'EMPRESA
                 sUF1 = SubNull(!SiglaUF)
             End If
         End With
-        sql = "SELECT * FROM MOBILIARIOENDENTREGA WHERE CODMOBILIARIO=" & nCodReduz
-        Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+        Sql = "SELECT * FROM MOBILIARIOENDENTREGA WHERE CODMOBILIARIO=" & nCodReduz
+        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
                 If .RowCount > 0 Then
-                    sEND2 = SubNull(!NomeLogradouro) & " nº " & !numimovel
+                    sEND2 = SubNull(!NomeLogradouro) & " nº " & !NUMIMOVEL
                     sCOMPL2 = SubNull(!Complemento)
                     sUF2 = SubNull(!UF)
                     If !CodCidade > 0 Then
-                        sql = "SELECT  DESCCIDADE From CIDADE WHERE  siglauf = '" & !UF & "' And codcidade = " & !CodCidade
-                        Set RdoAux3 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+                        Sql = "SELECT  DESCCIDADE From CIDADE WHERE  siglauf = '" & !UF & "' And codcidade = " & !CodCidade
+                        Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                         With RdoAux3
-                            sCIDADE2 = SubNull(!desccidade)
+                            sCIDADE2 = SubNull(!descCidade)
                            .Close
                         End With
                     Else
-                        sCIDADE2 = SubNull(!desccidade)
+                        sCIDADE2 = SubNull(!descCidade)
                     End If
                     If !CodBairro > 0 Then
-                        sql = "SELECT  DESCBAIRRO From BAIRRO WHERE  siglauf = '" & !UF & "' And codcidade = " & !CodCidade & " And codbairro = " & !CodBairro
-                        Set RdoAux3 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+                        Sql = "SELECT  DESCBAIRRO From BAIRRO WHERE  siglauf = '" & !UF & "' And codcidade = " & !CodCidade & " And codbairro = " & !CodBairro
+                        Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                         With RdoAux3
                             sBAIRRO2 = SubNull(!DescBairro)
                            .Close
@@ -487,7 +496,7 @@ ElseIf nCodReduz > 100000 And nCodReduz < 500000 Then 'EMPRESA
                     Else
                         sBAIRRO2 = SubNull(!DescBairro)
                     End If
-                    sCEP2 = RetornaCEP(!CodLogradouro, !numimovel)
+                    sCEP2 = RetornaCEP(!CodLogradouro, !NUMIMOVEL)
                     If Len(sCEP2) <> 9 Then
                         sCEP2 = "00000-000"
                     End If
@@ -505,14 +514,14 @@ ElseIf nCodReduz > 100000 And nCodReduz < 500000 Then 'EMPRESA
         
     End With
 Else 'OUTROS
-    sql = "SELECT cidadao.codcidadao, cidadao.nomecidadao, cidadao.cpf, cidadao.cnpj, cidadao.codlogradouro, vwLOGRADOURO.ABREVTIPOLOG, "
-    sql = sql & "vwLOGRADOURO.ABREVTITLOG, vwLOGRADOURO.NOMELOGRADOURO, cidadao.numimovel, cidadao.complemento, cidadao.codbairro,"
-    sql = sql & "bairro.descbairro, cidadao.codcidade, cidade.desccidade, cidadao.siglauf, cidadao.cep, cidadao.nomelogradouro AS nomelogradouro2"
-    sql = sql & " FROM cidadao RIGHT OUTER JOIN bairro ON cidadao.siglauf = bairro.siglauf AND "
-    sql = sql & "cidadao.codcidade = bairro.codcidade AND cidadao.codbairro = bairro.codbairro INNER JOIN cidade ON bairro.siglauf = cidade.siglauf AND "
-    sql = sql & "bairro.codcidade = cidade.codcidade LEFT OUTER JOIN  vwLOGRADOURO ON cidadao.codlogradouro = vwLOGRADOURO.CODLOGRADOURO "
-    sql = sql & "WHERE Cidadao.codcidadao = " & nCodReduz
-    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    Sql = "SELECT cidadao.codcidadao, cidadao.nomecidadao, cidadao.cpf, cidadao.cnpj, cidadao.codlogradouro, vwLOGRADOURO.ABREVTIPOLOG, "
+    Sql = Sql & "vwLOGRADOURO.ABREVTITLOG, vwLOGRADOURO.NOMELOGRADOURO, cidadao.numimovel, cidadao.complemento, cidadao.codbairro,"
+    Sql = Sql & "bairro.descbairro, cidadao.codcidade, cidade.desccidade, cidadao.siglauf, cidadao.cep, cidadao.nomelogradouro AS nomelogradouro2"
+    Sql = Sql & " FROM cidadao RIGHT OUTER JOIN bairro ON cidadao.siglauf = bairro.siglauf AND "
+    Sql = Sql & "cidadao.codcidade = bairro.codcidade AND cidadao.codbairro = bairro.codbairro INNER JOIN cidade ON bairro.siglauf = cidade.siglauf AND "
+    Sql = Sql & "bairro.codcidade = cidade.codcidade LEFT OUTER JOIN  vwLOGRADOURO ON cidadao.codlogradouro = vwLOGRADOURO.CODLOGRADOURO "
+    Sql = Sql & "WHERE Cidadao.codcidadao = " & nCodReduz
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         If .RowCount > 0 Then
             sInscricao = Format(!CodCidadao, "0000000")
@@ -520,18 +529,23 @@ Else 'OUTROS
             sQuadra = ""
             sLote = ""
             If Not IsNull(!NomeLogradouro) Then
-               sEND1 = Trim$(!AbrevTipoLog) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro & " Nº " & RdoAux!numimovel
+               sEND1 = Trim$(!AbrevTipoLog) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro & " Nº " & RdoAux!NUMIMOVEL
             Else
-               sEND1 = !NOMELOGRADOURO2 & " Nº " & RdoAux!numimovel
+               sEND1 = !NOMELOGRADOURO2 & " Nº " & RdoAux!NUMIMOVEL
             End If
             sCOMPL1 = SubNull(!Complemento)
             sBAIRRO1 = SubNull(!DescBairro)
-            sCIDADE1 = SubNull(!desccidade)
+            sCIDADE1 = SubNull(!descCidade)
             sCEP1 = !Cep
             If Len(sCEP1) <> 9 Then
                 sCEP1 = "00000-000"
             End If
             sUF1 = SubNull(!SiglaUF)
+        End If
+        If Val(SubNull(!Cnpj)) = 0 Then
+            sDOCUMENTO = SubNull(!cpf)
+        Else
+            sDOCUMENTO = SubNull(!Cnpj)
         End If
         sEND2 = sEND1 '205-250
         sCOMPL2 = sCOMPL1 '251-270
@@ -557,7 +571,7 @@ With grdTemp
         On Error Resume Next
         RdoAux.Close
         On Error GoTo 0
-        qd.sql = "{ Call spEXTRATONEW(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
+        qd.Sql = "{ Call spEXTRATONEW(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
         qd(0) = nCodReduz
         qd(1) = nCodReduz
         qd(2) = nAno
@@ -581,47 +595,47 @@ With grdTemp
                 ReDim Preserve aCodTrib(UBound(aCodTrib) + 1)
                 aCodTrib(UBound(aCodTrib)) = !CodTributo
                 
-                sql = "INSERT RELATORIOAJUIZAMENTODETALHE (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,"
-                sql = sql & "CODCOMPLEMENTO,DATAVENCIMENTO,PRINCIPAL,CORRECAO,MULTA,JUROS,INSCRICAO,DATAINSCRICAO,"
-                sql = sql & "LIVRO,PAGINA,VALORTOTAL,LANCAMENTO,TRIBUTO) VALUES(" & !CODREDUZIDO & "," & !AnoExercicio & "," & !CodLancamento & "," & !SeqLancamento & "," & !NumParcela & ","
-                sql = sql & !CODCOMPLEMENTO & ",'" & Format(!DataVencimento, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(!ValorTributo)) & ","
-                sql = sql & Virg2Ponto(CStr(!ValorCorrecao)) & "," & Virg2Ponto(CStr(!ValorMulta)) & "," & Virg2Ponto(CStr(!ValorJuros)) & ","
-                sql = sql & SubNull(!CERTIDAO) & ",'" & Format(!datainscricao, "mm/dd/yyyy") & "'," & !NUMLIVRO & "," & !PAGINA & ",'"
-                sql = sql & CStr(!ValorTotal) & "','" & "" & "','" & !abrevtributo & "')"
-                cn.Execute sql, rdExecDirect
-                sLANCAMENTO = sLANCAMENTO & !abrevtributo & ", "
+                Sql = "INSERT RELATORIOAJUIZAMENTODETALHE (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,"
+                Sql = Sql & "CODCOMPLEMENTO,DATAVENCIMENTO,PRINCIPAL,CORRECAO,MULTA,JUROS,INSCRICAO,DATAINSCRICAO,"
+                Sql = Sql & "LIVRO,PAGINA,VALORTOTAL,LANCAMENTO,TRIBUTO) VALUES(" & !CODREDUZIDO & "," & !AnoExercicio & "," & !CodLancamento & "," & !SeqLancamento & "," & !NumParcela & ","
+                Sql = Sql & !CODCOMPLEMENTO & ",'" & Format(!DataVencimento, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(!VALORTRIBUTO)) & ","
+                Sql = Sql & Virg2Ponto(CStr(!valorcorrecao)) & "," & Virg2Ponto(CStr(!ValorMulta)) & "," & Virg2Ponto(CStr(!ValorJuros)) & ","
+                Sql = Sql & SubNull(!CERTIDAO) & ",'" & Format(!datainscricao, "mm/dd/yyyy") & "'," & !NUMLIVRO & "," & !PAGINA & ",'"
+                Sql = Sql & CStr(!ValorTotal) & "','" & "" & "','" & !abrevTributo & "')"
+                cn.Execute Sql, rdExecDirect
+                sLANCAMENTO = sLANCAMENTO & !abrevTributo & ", "
                .MoveNext
             Loop
            .Close
         End With
         sLANCAMENTO = Left$(sLANCAMENTO, Len(sLANCAMENTO) - 2)
-        sql = "UPDATE RELATORIOAJUIZAMENTODETALHE SET LANCAMENTO='" & sLANCAMENTO & "' WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND "
-        sql = sql & "CODLANCAMENTO=" & nLanc & " AND SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nNumParc & " AND CODCOMPLEMENTO=" & nCompl
-        cn.Execute sql, rdExecDirect
+        Sql = "UPDATE RELATORIOAJUIZAMENTODETALHE SET LANCAMENTO='" & sLANCAMENTO & "' WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND "
+        Sql = Sql & "CODLANCAMENTO=" & nLanc & " AND SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nNumParc & " AND CODCOMPLEMENTO=" & nCompl
+        cn.Execute Sql, rdExecDirect
     
         '*** BUSCA O ARTIGO ****
         nCodTributo = 0
         For z = 1 To UBound(aCodTrib)
-            sql = "SELECT * FROM TRIBUTOARTIGO WHERE CODTRIBUTO=" & aCodTrib(z)
-            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurReadOnly)
+            Sql = "SELECT * FROM TRIBUTOARTIGO WHERE CODTRIBUTO=" & aCodTrib(z)
+            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
             If RdoAux2.RowCount > 0 Then
                 nCodTributo = aCodTrib(z)
                 RdoAux2.Close
             End If
         Next
         If nCodTributo > 0 Then
-            sql = "UPDATE RELATORIOAJUIZAMENTODETALHE SET CODTRIBUTO=" & nCodTributo & " WHERE CODREDUZIDO=" & nCodReduz & " AND "
-            sql = sql & "CODLANCAMENTO=" & nLanc & " AND SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nNumParc & " AND "
-            sql = sql & "CODCOMPLEMENTO=" & nCompl
-            cn.Execute sql, rdExecDirect
+            Sql = "UPDATE RELATORIOAJUIZAMENTODETALHE SET CODTRIBUTO=" & nCodTributo & " WHERE CODREDUZIDO=" & nCodReduz & " AND "
+            Sql = Sql & "CODLANCAMENTO=" & nLanc & " AND SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nNumParc & " AND "
+            Sql = Sql & "CODCOMPLEMENTO=" & nCompl
+            cn.Execute Sql, rdExecDirect
         End If
         '***********************
     
     Next
 
 
-    sql = "SELECT DISTINCT(ANOEXERCICIO) FROM RELATORIOAJUIZAMENTODETALHE"
-    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    Sql = "SELECT DISTINCT(ANOEXERCICIO) FROM RELATORIOAJUIZAMENTODETALHE"
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         Do Until .EOF
             ReDim Preserve aAno(UBound(aAno) + 1)
@@ -631,38 +645,38 @@ With grdTemp
        .Close
     End With
     For ax = 1 To UBound(aAno)
-        sql = "SELECT SUM(PRINCIPAL) AS VALORLANC, SUM(CORRECAO) AS VALORCOR, SUM(MULTA) AS VALORMULTA,SUM(JUROS) AS VALORJUROS "
-        sql = sql & "FROM RELATORIOAJUIZAMENTODETALHE WHERE ANOEXERCICIO=" & aAno(ax)
-        Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+        Sql = "SELECT SUM(PRINCIPAL) AS VALORLANC, SUM(CORRECAO) AS VALORCOR, SUM(MULTA) AS VALORMULTA,SUM(JUROS) AS VALORJUROS "
+        Sql = Sql & "FROM RELATORIOAJUIZAMENTODETALHE WHERE ANOEXERCICIO=" & aAno(ax)
+        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             nValorTotal = FormatNumber(!VALORLANC + !VALORCOR + !ValorMulta + !ValorJuros, 2)
            .Close
            sValorTotal = "R$ " & nValorTotal & " (" & Extenso(nValorTotal) & ")"
-           sql = "UPDATE RELATORIOAJUIZAMENTODETALHE SET VALORTOTAL='" & sValorTotal & "' WHERE ANOEXERCICIO=" & aAno(ax)
-           cn.Execute sql, rdExecDirect
+           Sql = "UPDATE RELATORIOAJUIZAMENTODETALHE SET VALORTOTAL='" & sValorTotal & "' WHERE ANOEXERCICIO=" & aAno(ax)
+           cn.Execute Sql, rdExecDirect
         End With
     Next
 
-    sql = "SELECT SUM(PRINCIPAL) AS VALORLANC, SUM(CORRECAO) AS VALORCOR, SUM(MULTA) AS VALORMULTA,SUM(JUROS) AS VALORJUROS "
-    sql = sql & "FROM RELATORIOAJUIZAMENTODETALHE "
-    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    Sql = "SELECT SUM(PRINCIPAL) AS VALORLANC, SUM(CORRECAO) AS VALORCOR, SUM(MULTA) AS VALORMULTA,SUM(JUROS) AS VALORJUROS "
+    Sql = Sql & "FROM RELATORIOAJUIZAMENTODETALHE "
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         nValorTotal = FormatNumber(!VALORLANC + !VALORCOR + !ValorMulta + !ValorJuros, 2)
        .Close
     End With
-    sql = "INSERT RELATORIOAJUIZAMENTO (NOME,END1,COMPL1,BAIRRO1,CIDADE1,CEP1,UF1,INSCRICAO,CODREDUZ,"
-    sql = sql & "END2,COMPL2,BAIRRO2,QUADRA,LOTE,CIDADE2,CEP2,UF2,VALORTOTAL,LANCAMENTO,DOCUMENTO) VALUES('"
-    sql = sql & Mask(sNome) & "','" & Mask(sEND1) & "','" & Mask(sCOMPL1) & "','" & Mask(sBAIRRO1) & "','" & Mask(sCIDADE1) & "','"
-    sql = sql & sCEP1 & "','" & sUF1 & "','" & sInscricao & "'," & nCodReduz & ",'" & Mask(sEND2) & "','"
-    sql = sql & Mask(sCOMPL2) & "','" & Mask(sBAIRRO2) & "','" & sQuadra & "','" & sLote & "','"
-    sql = sql & Mask(sCIDADE2) & "','" & Left$(sCEP2, 9) & "','" & sUF2 & "'," & Virg2Ponto(CStr(nValorTotal)) & ",'" & Mask(sLANCAMENTO) & "','" & sDOCUMENTO & "')"
-    cn.Execute sql, rdExecDirect
+    Sql = "INSERT RELATORIOAJUIZAMENTO (NOME,END1,COMPL1,BAIRRO1,CIDADE1,CEP1,UF1,INSCRICAO,CODREDUZ,"
+    Sql = Sql & "END2,COMPL2,BAIRRO2,QUADRA,LOTE,CIDADE2,CEP2,UF2,VALORTOTAL,LANCAMENTO,DOCUMENTO) VALUES('"
+    Sql = Sql & Mask(sNome) & "','" & Mask(sEND1) & "','" & Mask(sCOMPL1) & "','" & Mask(sBAIRRO1) & "','" & Mask(sCIDADE1) & "','"
+    Sql = Sql & sCEP1 & "','" & sUF1 & "','" & sInscricao & "'," & nCodReduz & ",'" & Mask(sEND2) & "','"
+    Sql = Sql & Mask(sCOMPL2) & "','" & Mask(sBAIRRO2) & "','" & sQuadra & "','" & sLote & "','"
+    Sql = Sql & Mask(sCIDADE2) & "','" & Left$(sCEP2, 9) & "','" & sUF2 & "'," & Virg2Ponto(CStr(nValorTotal)) & ",'" & Mask(sLANCAMENTO) & "','" & sDOCUMENTO & "')"
+    cn.Execute Sql, rdExecDirect
 
 End With
 
 'EXIBE RELATORIO
 
-frmReport.ShowReport "AJUIZAMENTO", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport "AJUIZAMENTO", frmMdi.HWND, Me.HWND
 
 Exit Sub
 
@@ -739,13 +753,13 @@ End With
 
 If frmDebitoImob.lblAjuiza.Caption = "N" Then
     cn.QueryTimeout = 0
-    sql = "SELECT MAX(NUMCERTIDAO) AS MAXIMO From DEBITOPARCELA WHERE ANOEXERCICIO = " & Year(Now)
-    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    Sql = "SELECT MAX(NUMCERTIDAO) AS MAXIMO From DEBITOPARCELA WHERE ANOEXERCICIO = " & Year(Now)
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
-         If IsNull(!MAXIMO) Then
+         If IsNull(!maximo) Then
             lblNumero.Caption = 1
          Else
-            lblNumero.Caption = !MAXIMO + 1
+            lblNumero.Caption = !maximo + 1
          End If
         .Close
     End With
@@ -757,7 +771,7 @@ End Sub
 Private Sub CloseBook(nTipo As Integer)
 Dim sTributosDA As String, sLancamentoDA As String, sTypeBook As String
 Dim nPos As Integer, nPagina As Integer
-Pb.Value = 0
+Pb.value = 0
 
 If nTipo = 1 Then 'IPTU
     sLancamentoDA = "CODLANCAMENTO=1 OR CODLANCAMENTO=29"
@@ -770,8 +784,8 @@ ElseIf nTipo = 3 Then 'TAXAS
     sTypeBook = "CODREDUZIDO > 500000"
 End If
 
-sql = "SELECT CODTRIBUTO FROM TRIBUTO WHERE DA=1 ORDER BY CODTRIBUTO"
-Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+Sql = "SELECT CODTRIBUTO FROM TRIBUTO WHERE DA=1 ORDER BY CODTRIBUTO"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         sTributosDA = sTributosDA & !CodTributo & ","
@@ -780,21 +794,21 @@ With RdoAux
 End With
 sTributosDA = Chomp(sTributosDA, chomp_righT, 1)
 
-sql = "SELECT MAX(PAGINALIVRO) AS MAXIMO FROM DEBITOPARCELA WHERE ANOEXERCICIO=" & Val(cmbAno.Text) & " AND " & sTypeBook
-Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+Sql = "SELECT MAX(PAGINALIVRO) AS MAXIMO FROM DEBITOPARCELA WHERE ANOEXERCICIO=" & Val(cmbAno.Text) & " AND " & sTypeBook
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
-    If IsNull(!MAXIMO) Then
+    If IsNull(!maximo) Then
        lblPag.Caption = 1
     Else
-        If !MAXIMO > 0 Then
-            sql = "SELECT COUNT(CODREDUZIDO) AS CONTADOR FROM DEBITOPARCELA WHERE ANOEXERCICIO=" & Val(cmbAno.Text) & " AND " & sTypeBook & " AND PAGINALIVRO=" & !MAXIMO
-            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+        If !maximo > 0 Then
+            Sql = "SELECT COUNT(CODREDUZIDO) AS CONTADOR FROM DEBITOPARCELA WHERE ANOEXERCICIO=" & Val(cmbAno.Text) & " AND " & sTypeBook & " AND PAGINALIVRO=" & !maximo
+            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux2
-                nPos = !CONTADOR
+                nPos = !contador
                 If nPos < 31 Then
-                   nPagina = RdoAux!MAXIMO
+                   nPagina = RdoAux!maximo
                 Else
-                   nPagina = RdoAux!MAXIMO + 1
+                   nPagina = RdoAux!maximo + 1
                 End If
                .Close
             End With
@@ -806,17 +820,17 @@ With RdoAux
 End With
 
 
-sql = "SELECT DISTINCT CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO FROM vwDIVIDAATIVA WHERE " & sTypeBook & " AND ANOEXERCICIO=2003 AND (" & sLancamentoDA & ") AND NUMPARCELA>0 AND STATUSLANC=3"
-sql = sql & " AND NUMEROLIVRO=0 and CODTRIBUTO IN (SELECT CODTRIBUTO FROM TRIBUTO WHERE DA=1) ORDER BY CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO"
-Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+Sql = "SELECT DISTINCT CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO FROM vwDIVIDAATIVA WHERE " & sTypeBook & " AND ANOEXERCICIO=2003 AND (" & sLancamentoDA & ") AND NUMPARCELA>0 AND STATUSLANC=3"
+Sql = Sql & " AND NUMEROLIVRO=0 and CODTRIBUTO IN (SELECT CODTRIBUTO FROM TRIBUTO WHERE DA=1) ORDER BY CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     nTotal = .RowCount
     Do Until .EOF
-        sql = "UPDATE DEBITOPARCELA SET NUMEROLIVRO=" & Val(lblNumero.Caption) & " ,PAGINALIVRO=" & nPagina
-        sql = sql & " ,DATAINSCRICAO='" & Format(mskDataFim.Text, "mm/dd/yyyy") & "' WHERE CODREDUZIDO=" & !CODREDUZIDO
-        sql = sql & " AND ANOEXERCICIO=" & !AnoExercicio & " AND CODLANCAMENTO=" & !CodLancamento & " AND STATUSLANC=3 "
-        sql = sql & " AND NUMEROLIVRO=0"
-        cn.Execute sql, rdExecDirect
+        Sql = "UPDATE DEBITOPARCELA SET NUMEROLIVRO=" & Val(lblNumero.Caption) & " ,PAGINALIVRO=" & nPagina
+        Sql = Sql & " ,DATAINSCRICAO='" & Format(mskDataFim.Text, "mm/dd/yyyy") & "' WHERE CODREDUZIDO=" & !CODREDUZIDO
+        Sql = Sql & " AND ANOEXERCICIO=" & !AnoExercicio & " AND CODLANCAMENTO=" & !CodLancamento & " AND STATUSLANC=3 "
+        Sql = Sql & " AND NUMEROLIVRO=0"
+        cn.Execute Sql, rdExecDirect
         nPos = nPos + 1
         If nPos > 31 Then
             nPos = 1

@@ -488,10 +488,10 @@ Begin VB.Form frmProdutividadeControle
          _ExtentX        =   2302
          _ExtentY        =   556
          _Version        =   393216
-         Format          =   172621825
-         CurrentDate     =   40968
-         MaxDate         =   43830
-         MinDate         =   40544
+         Format          =   127795201
+         CurrentDate     =   44201
+         MaxDate         =   45291
+         MinDate         =   42370
       End
       Begin VB.Label Label1 
          BackStyle       =   0  'Transparent
@@ -1090,7 +1090,7 @@ With RdoAux
    .Close
 End With
 
-If NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "NOELI" Then
+If NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "RODRIGOC" Then
     If Not ProdIsBossLogin() Then
         cmbFiscal.Text = RetornaUsuarioFullName()
         cmbFiscal_Click
@@ -1150,9 +1150,9 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         Set itmX = lvMain.ListItems.Add(, , !Item)
-        itmX.SubItems(1) = !descricao
+        itmX.SubItems(1) = !Descricao
         itmX.SubItems(2) = "1,00"
-        itmX.SubItems(3) = FormatNumber(!Valor, 2)
+        itmX.SubItems(3) = FormatNumber(!valor, 2)
        .MoveNext
     Loop
    .Close
@@ -1208,7 +1208,7 @@ With RdoAux
         ReDim Preserve aDia(UBound(aDia) + 1)
         aDia(UBound(aDia)).nSeq = !Seq
         aDia(UBound(aDia)).sNumProc = !Processo
-        aDia(UBound(aDia)).nAnoproc = !Ano
+        aDia(UBound(aDia)).nAnoproc = !ano
         aDia(UBound(aDia)).nNumproc = !Numero
        .MoveNext
     Loop

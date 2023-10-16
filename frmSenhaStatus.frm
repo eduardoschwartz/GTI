@@ -5,75 +5,21 @@ Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmSenhaStatus 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Controle de Senhas"
-   ClientHeight    =   5910
-   ClientLeft      =   4065
+   ClientHeight    =   6420
+   ClientLeft      =   13650
    ClientTop       =   3300
    ClientWidth     =   8310
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
-   ScaleHeight     =   5910
+   ScaleHeight     =   6420
    ScaleWidth      =   8310
-   Begin Tributacao.jcFrames frTela 
-      Height          =   4740
-      Index           =   0
-      Left            =   45
-      Top             =   630
-      Width           =   8205
-      _ExtentX        =   14473
-      _ExtentY        =   8361
-      RoundedCornerTxtBox=   -1  'True
-      Caption         =   "Senhas chamadas por guiche e banda"
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Arial"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ColorFrom       =   0
-      ColorTo         =   0
-      Begin MSFlexGridLib.MSFlexGrid grdMain 
-         Height          =   4245
-         Left            =   45
-         TabIndex        =   8
-         Top             =   450
-         Width           =   8520
-         _ExtentX        =   15028
-         _ExtentY        =   7488
-         _Version        =   393216
-         Rows            =   14
-         Cols            =   8
-         RowHeightMin    =   300
-         BackColorFixed  =   4194304
-         ForeColorFixed  =   12648447
-         BackColorSel    =   16777215
-         ForeColorSel    =   8388608
-         BackColorBkg    =   -2147483633
-         FocusRect       =   0
-         GridLinesFixed  =   0
-         BorderStyle     =   0
-         Appearance      =   0
-         FormatString    =   "                 |^D.Ativ.      |^2ª Via    |^Prefer.    |^Pat        |^REFIS   |^Pr.Refis |^Total         "
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "Arial"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-      End
-   End
    Begin prjChameleon.chameleonButton cmdRefresh 
       Height          =   315
       Left            =   2610
       TabIndex        =   12
       ToolTipText     =   "Atualizar lista"
-      Top             =   5490
+      Top             =   5985
       Width           =   1080
       _ExtentX        =   1905
       _ExtentY        =   556
@@ -117,7 +63,7 @@ Begin VB.Form frmSenhaStatus
       _ExtentX        =   2328
       _ExtentY        =   582
       _Version        =   393216
-      Format          =   72220673
+      Format          =   165806081
       CurrentDate     =   40414
    End
    Begin prjChameleon.chameleonButton cmdAnterior 
@@ -125,7 +71,7 @@ Begin VB.Form frmSenhaStatus
       Left            =   90
       TabIndex        =   1
       ToolTipText     =   "Tela Anterior"
-      Top             =   5490
+      Top             =   5985
       Width           =   1080
       _ExtentX        =   1905
       _ExtentY        =   556
@@ -165,7 +111,7 @@ Begin VB.Form frmSenhaStatus
       Left            =   1215
       TabIndex        =   0
       ToolTipText     =   "Próxima Tela"
-      Top             =   5490
+      Top             =   5985
       Width           =   1080
       _ExtentX        =   1905
       _ExtentY        =   556
@@ -201,13 +147,67 @@ Begin VB.Form frmSenhaStatus
       VALUE           =   0   'False
    End
    Begin Tributacao.jcFrames frTela 
-      Height          =   4740
+      Height          =   5145
+      Index           =   0
+      Left            =   45
+      Top             =   630
+      Width           =   8205
+      _ExtentX        =   14473
+      _ExtentY        =   9075
+      RoundedCornerTxtBox=   -1  'True
+      Caption         =   "Senhas chamadas por guiche e banda"
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ColorFrom       =   0
+      ColorTo         =   0
+      Begin MSFlexGridLib.MSFlexGrid grdMain 
+         Height          =   4560
+         Left            =   90
+         TabIndex        =   8
+         Top             =   450
+         Width           =   8520
+         _ExtentX        =   15028
+         _ExtentY        =   8043
+         _Version        =   393216
+         Rows            =   15
+         Cols            =   8
+         RowHeightMin    =   300
+         BackColorFixed  =   4194304
+         ForeColorFixed  =   12648447
+         BackColorSel    =   16777215
+         ForeColorSel    =   8388608
+         BackColorBkg    =   -2147483633
+         FocusRect       =   0
+         GridLinesFixed  =   0
+         BorderStyle     =   0
+         Appearance      =   0
+         FormatString    =   "                 |^Prefeit.    |^Preferen. |^Pat.        |^Boletos   |        |      |^Total      "
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+      End
+   End
+   Begin Tributacao.jcFrames frTela 
+      Height          =   5145
       Index           =   1
       Left            =   60
       Top             =   630
       Width           =   8205
       _ExtentX        =   14473
-      _ExtentY        =   8361
+      _ExtentY        =   9075
       RoundedCornerTxtBox=   -1  'True
       Caption         =   "Senhas emitidas por hora"
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -393,7 +393,7 @@ Dim x As Integer
 Centraliza Me
 nTela = 0
 With grdMain
-    For x = 1 To 12
+    For x = 1 To 13
         .TextMatrix(x, 0) = "Guiche " & Format(x, "00")
     Next
     .TextMatrix(.Rows - 1, 0) = "Total"
@@ -422,7 +422,7 @@ End Sub
 
 Private Sub Atualiza()
 Dim Sql As String, RdoAux As rdoResultset, aSenha() As SENHA, nPos As Integer, nTotal3 As Integer
-Dim a As Integer, b As Integer, aTotal(12, 6) As Integer, nTotal As Long, nTotal2 As Long
+Dim a As Integer, b As Integer, aTotal(13, 6) As Integer, nTotal As Long, nTotal2 As Long
 Dim aHora(12, 4) As Long, nDif As Integer
 
 ReDim aSenha(0)
@@ -443,7 +443,7 @@ With RdoAux
         aSenha(nPos).nGuiche = Val(SubNull(!GUICHE))
         nTotal3 = nTotal3 + 1
         If Not IsNull(!GUICHE) Then
-            If !GUICHE > 0 And !GUICHE <= 12 Then
+            If !GUICHE > 0 And !GUICHE <= 13 Then
                 aTotal(!GUICHE, !BANDA) = aTotal(!GUICHE, !BANDA) + 1
             End If
         End If
@@ -454,14 +454,14 @@ End With
 
 lblSenhaGerada.Caption = nTotal3
 
-For a = 1 To 12
+For a = 1 To 13
     For b = 1 To 6
         grdMain.TextMatrix(a, b) = ""
     Next
 Next
 
 With grdMain
-    For a = 1 To 12
+    For a = 1 To 13
         nTotal = 0
         For b = 1 To 6
            .TextMatrix(a, b) = aTotal(a, b)
@@ -475,7 +475,7 @@ With grdMain
     nTotal2 = 0
     For a = 1 To 6
         nTotal = 0
-        For b = 1 To 12
+        For b = 1 To 13
             nTotal = nTotal + Val(.TextMatrix(b, a))
         Next
         .col = a

@@ -312,7 +312,7 @@ Dim Sql As String, RdoAux As rdoResultset
 
 Private Sub cmdCalculo_Click()
 Dim nPos As Long, sNumProc As String, nAnoproc As Integer, nNumproc As Long, nSeq As Integer, nValorTributo As Double, RdoAux2 As rdoResultset, RdoAux3 As rdoResultset, ax As String
-Dim nValor587 As Double, nValorTributoOld As Double, RdoAux5 As rdoResultset
+Dim nValor587 As Double, nValorTributoOld As Double, RdoAux5 As rdoResultset, nStatus As Integer
 'If NomeDeLogin <> "SCHWARTZ" Then Exit Sub
 
 If Val(txtAno.Text) > Year(Now) + 3 Or Val(txtAno.Text) < Year(Now) Then
@@ -355,9 +355,22 @@ If Opt(0).value Then
             '    End If
                 '*** executa desbloqueio
                 If MsgBox("Deseja desbloquear este parcelamento?", vbQuestion + vbYesNo, "Confirmação") = vbNo Then Exit Sub
-                nNumproc = Left$(txtNumProc.Text, InStr(1, txtNumProc.Text, "/", vbBinaryCompare) - 2)
+                nNumproc = Val(Left$(txtNumProc.Text, InStr(1, txtNumProc.Text, "/", vbBinaryCompare) - 2))
                 nAnoproc = Right$(txtNumProc.Text, 4)
                 sNumProc = CStr(nNumproc) & "/" & CStr(nAnoproc)
+                Sql = "SELECT CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,seqlancamento,NUMPARCELA,CODCOMPLEMENTO From debitoparcela Where CODREDUZIDO=" & Val(txtCod.Text) & " AND ANOEXERCICIO>=" & Val(txtAno.Text) & " AND CODLANCAMENTO=20 AND NUMPROCESSO='" & sNumProc & "'"
+                Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                nSeq = RdoAux3!SeqLancamento
+                RdoAux3.Close
+                
+'                Sql = "SELECT CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,seqlancamento,NUMPARCELA,CODCOMPLEMENTO From debitopago Where CODREDUZIDO=" & Val(txtCod.Text) & " AND CODLANCAMENTO=20 AND SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=1"
+'                Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+'                If RdoAux3.RowCount = 0 Then
+'                    MsgBox "O desbloqueio do parcelamento só é permitido após a confirmação de pagamento da primeira parcela!", vbCritical, "Desbloqueio não liberado"
+'                    Exit Sub
+'                End If
+                
+                
                 Sql = "SELECT CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,seqlancamento,NUMPARCELA,CODCOMPLEMENTO From debitoparcela Where CODREDUZIDO=" & Val(txtCod.Text) & " AND ANOEXERCICIO>=" & Val(txtAno.Text) & " AND CODLANCAMENTO=20 AND NUMPROCESSO='" & sNumProc & "'"
                 Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 With RdoAux3
@@ -457,7 +470,7 @@ Else
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         Do Until .EOF
-            If IsNull(!numprocesso) Then GoTo proximo
+            If IsNull(!numprocesso) Then GoTo Proximo
             If nPos Mod 10 = 0 Then
                 CallPb nPos, CLng(Val(txtNum.Text))
 '                MsgBox !CODREDUZIDO
@@ -465,7 +478,7 @@ Else
             nPos = nPos + 1
             '**grava na tabela processobloqueio
             sNumProc = !numprocesso
-            If sNumProc = "" Then GoTo proximo
+            If sNumProc = "" Then GoTo Proximo
             nNumproc = Val(Left$(sNumProc, Len(sNumProc) - 5))
             nAnoproc = Val(Right$(sNumProc, 4))
             
@@ -527,7 +540,7 @@ Else
 '            Sql = "UPDATE debitoparcela Set statuslanc=3 Where (CODREDUZIDO = " & !CODREDUZIDO & ") And (AnoExercicio = " & Val(txtAno.text) & ") And (CodLancamento = 20) And (SeqLancamento = " & !SeqLancamento & ") "
 '            cn.Execute Sql, rdExecDirect
             
-proximo:
+Proximo:
            .MoveNext
         Loop
        .Close
@@ -777,7 +790,7 @@ DEST:
                 End If
             End With
         Next
-proximo:
+Proximo:
        .MoveNext
     Loop
    .Close
@@ -913,7 +926,7 @@ With RdoAux
            Loop
           .Close
         End With
-proximo:
+Proximo:
        .MoveNext
     Loop
    .Close
@@ -935,10 +948,10 @@ If NomeDeLogin <> "SCHWARTZ" Then
     Opt(1).Enabled = False
 End If
 
-If NomeDeLogin = "SCHWARTZ" Or NomeDeLogin = "ISRAEL" Or NomeDeLogin = "IORIO" Or NomeDeLogin = "RENATA" Or NomeDeLogin = "GLEISE" Or _
-NomeDeLogin = "SOLANGE" Or IsAtendente Then
+'If NomeDeLogin = "SCHWARTZ" Or NomeDeLogin = "ISRAEL" Or NomeDeLogin = "IORIO" Or NomeDeLogin = "RENATA" Or NomeDeLogin = "GLEISE" Or _
+'NomeDeLogin = "SOLANGE" Or IsAtendente Then
     cmdCalculo.Enabled = True
-End If
+'End If
 txtAno.ListIndex = 0
 End Sub
 
@@ -957,30 +970,13 @@ End If
 End Sub
 
 Private Sub txtAno_Click()
-If txtAno.ListIndex = 0 Then
-    txtPerc.Text = "4,15"
-ElseIf txtAno.ListIndex = 1 Then
-    txtPerc.Text = "6,25"
-ElseIf txtAno.ListIndex = 2 Then
-    txtPerc.Text = "4,34"
-ElseIf txtAno.ListIndex = 3 Then
-    txtPerc.Text = "4,70"
-ElseIf txtAno.ListIndex = 4 Then
-    txtPerc.Text = "7,31"
-ElseIf txtAno.ListIndex = 5 Then
-    txtPerc.Text = "5,2824"
-ElseIf txtAno.ListIndex = 6 Then
-    txtPerc.Text = "5,86"
-ElseIf txtAno.ListIndex = 7 Then
-    txtPerc.Text = "6,7465"
-ElseIf txtAno.ListIndex = 8 Then
-    txtPerc.Text = "9,4932"
-ElseIf txtAno.ListIndex = 9 Then
-    txtPerc.Text = "8,4764"
-ElseIf txtAno.ListIndex = 10 Then
-    txtPerc.Text = "2,5377"
-ElseIf txtAno.ListIndex = 11 Then
-    txtPerc.Text = "4,53"
+Dim RdoAux As rdoResultset, Sql As String
+Sql = "select ipca from ufir where anoufir=" & Val(txtAno.Text)
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+If RdoAux.RowCount > 0 Then
+    txtPerc.Text = RdoAux!ipca
+Else
+    txtPerc.Text = 0
 End If
 
 End Sub

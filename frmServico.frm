@@ -188,14 +188,14 @@ End Type
     
 Private Sub CallPb(nVal As Long, nTot As Long)
 If nVal > 0 Then
-    pBar.Color = &HC0C000
+    PBar.Color = &HC0C000
 Else
-    pBar.Color = vbWhite
+    PBar.Color = vbWhite
 End If
 If ((nVal * 100) / nTot) <= 100 Then
-   pBar.value = (nVal * 100) / nTot
+   PBar.value = (nVal * 100) / nTot
 Else
-   pBar.value = 100
+   PBar.value = 100
 End If
 
 Me.Refresh
@@ -250,8 +250,8 @@ End If
 Me.show
 Me.Refresh
 Conecta UL, UP
-Sql = "update machines set gti_server_version='" & App.Major & "." & App.Minor & "." & App.Revision & "' where computer='" & NomeDoComputador & "'"
-cn.Execute Sql, rdExecDirect
+'Sql = "update machines set gti_server_version='" & App.Major & "." & App.Minor & "." & App.Revision & "' where computer='" & NomeDoComputador & "'"
+'cn.Execute Sql, rdExecDirect
 
 'Timer.Interval = 60000 '1 min
 'Timer.Enabled = True
@@ -315,7 +315,12 @@ If CheckUpdate Then
    Exit Sub
 End If
 
-'If NomeDeLogin = "SCHWARTZ" Then Exit Sub
+If NomeDeLogin = "SCHWARTZ" Then Exit Sub
+
+'If NomeDeLogin = "SCHWARTZ" Then
+'    AtualizaBaixaGiss
+'    Exit Sub
+'End If
 
 'Exit Sub
 btVerificar.Enabled = False
@@ -395,6 +400,7 @@ If RdoAux.RowCount > 0 Then
     AtualizaEmpresaFora
 End If
 On Error Resume Next
+
 RdoAux.Close
 
 Sql = "select * from tb_inter_boletos_giss where controle is null"
@@ -496,7 +502,7 @@ With RdoAux
     Do Until .EOF
         CallPb nPos, nTot
         Sql = "insert tb_inter_lista_atividades(cod_atividade,desc_atividade,data_inicio,prestacao_servico,aliquota) "
-        Sql = Sql & "values(" & !codatividade & ",'" & Mask(!descatividade) & "','" & Format(!Data, "mm/dd/yyyy") & "','S'," & Virg2Ponto(Format(!Aliquota, "0.0")) & ")"
+        Sql = Sql & "values(" & !codatividade & ",'" & Mask(!DESCATIVIDADE) & "','" & Format(!Data, "mm/dd/yyyy") & "','S'," & Virg2Ponto(Format(!Aliquota, "0.0")) & ")"
         cnEicon2.Execute Sql, rdExecDirect
         nPos = nPos + 1
        .MoveNext
@@ -505,7 +511,7 @@ With RdoAux
 End With
 
 txtMsg.Text = MsgDefault
-pBar.value = 0
+PBar.value = 0
 Liberado
 cnEicon2.Close
 End Sub
@@ -555,7 +561,7 @@ With RdoAux
             sIE = RetornaNumero(SubNull(!inscestadual))
             sRazao = !RazaoSocial
             sFantasia = SubNull(!NOMEFANTASIA)
-            sNumProcesso = SubNull(!NUMPROCESSO)
+            sNumProcesso = SubNull(!numprocesso)
             If Len(SubNull(!Cnpj)) = 14 Then
                 sTipoEmpresa = "J"
                 sDoc = RetornaNumero(!Cnpj)
@@ -622,11 +628,11 @@ With RdoAux
         Sql = "insert tb_inter_empresas(cod_cliente,num_cadastro,timestamp,inscricao,inscricao_estadual,nome_empresa,nome_fantasia,"
         Sql = Sql & "num_processo,tipo_empresa,cpf_cnpj,data_abertura,data_encerramento,tipo_logradouro,titulo_logradouro,logradouro,"
         Sql = Sql & "num_imovel,complemento,bairro,cep,cidade,estado,ddd,telefone,fax,email,regime_empresa,status_empresa,classificacao,area_ocupada) "
-        Sql = Sql & "values(2177," & nCodigo & ",'" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "'," & nCodigo & "," & IIf(Val(sIE) > 0, Val(sIE), "Null") & ",'" & Mask(sRazao) & "',"
+        Sql = Sql & "values(2177," & nCodigo & ",'" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "'," & nCodigo & "," & IIf(Val(sIE) > 0, Val(sIE), "Null") & ",'" & Left(Mask(sRazao), 120) & "',"
         Sql = Sql & IIf(sFantasia <> "", "'" & Mask(sFantasia) & "'", "Null") & "," & IIf(sNumProcesso <> "", "'" & sNumProcesso & "'", "Null") & ",'" & sTipoEmpresa & "'," & IIf(Val(sDoc) > 0, Val(sDoc), "Null") & ",'" & Format(sDataAbertura, "m/dd/yyyy") & "',"
         Sql = Sql & IIf(IsDate(sDataEncerramento), "'" & Format(sDataEncerramento, "mm/dd/yyyy") & "'", "Null") & "," & IIf(sTipoLog <> "", "'" & sTipoLog & "'", "Null") & ","
-        Sql = Sql & IIf(sTitLog <> "", "'" & sTitLog & "'", "Null") & ",'" & Mask(sNomeLog) & "'," & IIf(nNumImovel > 0, "'" & CStr(nNumImovel) & "'", "Null") & "," & IIf(sCompl <> "", "'" & Left(sCompl, 40) & "'", "Null") & ",'"
-        Sql = Sql & sBairro & "'," & IIf(Val(sCep) > 0, Val(sCep), "Null") & ",'" & sCidade & "','" & sUF & "'," & IIf(Val(sDDD) > 0, Val(sDDD), "Null") & "," & IIf(Val(sFone) > 0, Val(sFone), "Null") & "," & IIf(Val(sFax) > 0, Val(sFax), "Null") & "," & IIf(sEmail <> "", "'" & sEmail & "'", "Null") & ","
+        Sql = Sql & IIf(sTitLog <> "", "'" & sTitLog & "'", "Null") & ",'" & Mask(sNomeLog) & "'," & IIf(nNumImovel > 0, "'" & CStr(nNumImovel) & "'", "Null") & "," & IIf(sCompl <> "", "'" & Mask(Left(sCompl, 40)) & "'", "Null") & ",'"
+        Sql = Sql & Mask(sBairro) & "'," & IIf(Val(sCep) > 0, Val(sCep), "Null") & ",'" & sCidade & "','" & sUF & "'," & IIf(Val(sDDD) > 0, Val(sDDD), "Null") & "," & IIf(Val(sFone) > 0, Val(sFone), "Null") & "," & IIf(Val(sFax) > 0, Val(sFax), "Null") & "," & IIf(sEmail <> "", "'" & sEmail & "'", "Null") & ","
         Sql = Sql & IIf(sRegime <> "", "'" & sRegime & "'", "Null") & ",'" & IIf(IsDate(sDataEncerramento), "E", "A") & "'," & "Null" & "," & RetornaNumero(FormatNumber(nArea, 2)) & ")"
         cnEicon.Execute Sql, rdExecDirect
         
@@ -774,7 +780,7 @@ With RdoAux
             Sql = "select valortributo from debitotributo where codreduzido=" & nCodigo & " and numparcela=1 and codtributo=12 and anoexercicio=" & Year(Now)
             Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             If RdoAux2.RowCount > 0 Then
-                nValor = RdoAux2!ValorTributo * 12
+                nValor = RdoAux2!VALORTRIBUTO * 12
             End If
         End If
         
@@ -801,7 +807,7 @@ Proximo:
     Loop
     RdoAux.Close
 End With
-pBar.value = 0
+PBar.value = 0
 Sql = "delete from eicon_empresa"
 cn.Execute Sql, rdExecDirect
 
@@ -1046,7 +1052,7 @@ Dim nCodigo As Long, sDataIni As String, sDataFim As String, nPos As Long, nTot 
 
 ConectaEicon2
 
-pBar.value = 0
+PBar.value = 0
 nPos = 0
 Sql = "SELECT periodomei.id, periodomei.codigo, periodomei.datainicio, periodomei.datafim, periodomei.cnpj_base, periodomei.data_exportacao, mobiliario.cnpj "
 Sql = Sql & "FROM periodomei INNER JOIN mobiliario ON periodomei.codigo = mobiliario.codigomob where data_exportacao is null order by id"
@@ -1125,7 +1131,7 @@ End With
 'End With
 
 cnEicon2.Close
-pBar.value = 0
+PBar.value = 0
 Exit Sub
 Erro:
 'MsgBox Err.Description
@@ -1141,7 +1147,7 @@ Dim nCodigo As Long, sDataIni As String, sDataFim As String, nPos As Long, nTot 
 
 ConectaEicon2
 
-pBar.value = 0
+PBar.value = 0
 nPos = 0
 Sql = "SELECT optante_simples.codigo, optante_simples.data_inicio, optante_simples.data_final, optante_simples.cnpj_base, optante_simples.timestamp, optante_simples.data_exportacao, mobiliario.cnpj "
 Sql = Sql & "FROM optante_simples INNER JOIN mobiliario ON optante_simples.codigo = mobiliario.codigomob where data_exportacao is null order by timestamp"
@@ -1210,7 +1216,7 @@ End With
 'End With
 
 cnEicon2.Close
-pBar.value = 0
+PBar.value = 0
 Exit Sub
 Erro:
 MsgBox Err.Description
@@ -1226,7 +1232,7 @@ Dim sCep As String, sFone As String, sEmail As String, sBairro As String, sCidad
 Dim nCodCidadao As Long
 
 ConectaEicon2
-pBar.value = 0
+PBar.value = 0
 nPos = 0
 Sql = "select * from tb_inter_empresas_giss where controle is null order by cpf_cnpj"
 Set RdoAux = cnEicon2.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -1333,7 +1339,7 @@ Proximo:
 End With
 
 cnEicon2.Close
-pBar.value = 0
+PBar.value = 0
 Exit Sub
 Erro:
 MsgBox Err.Description
@@ -1410,12 +1416,22 @@ With RdoAux
         End If
         RdoAux2.Close
         
+NOVAMENTE:
         '** Grava Parcela **
 '        Sql = "insert debitoparcela(codreduzido,anoexercicio,codlancamento,seqlancamento,numparcela,codcomplemento,statuslanc,datavencimento,datadebase,usuario) values("
 '        Sql = Sql & nCodigo & "," & nAno & ",5," & nMaxSeq & ",1,0,3,'" & Format(!Data_Vencimento, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "','Giss Online')"
         Sql = "insert debitoparcela(codreduzido,anoexercicio,codlancamento,seqlancamento,numparcela,codcomplemento,statuslanc,datavencimento,datadebase,userid) values("
         Sql = Sql & nCodigo & "," & nAno & ",5," & nMaxSeq & ",1,0,3,'" & Format(!Data_Vencimento, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "',477)"
         cn.Execute Sql, rdExecDirect
+        
+        Sql = "select * from debitoparcela where codreduzido=" & nCodigo & " and anoexercicio=" & nAno & " and codlancamento=5 and seqlancamento=" & nMaxSeq
+        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        If RdoAux2.RowCount = 0 Then
+            GoTo NOVAMENTE
+        End If
+        RdoAux2.Close
+        'se não conseguiu gravar tenta novamente até conseguir
+        
         
         '** Grava Tributo **
         Sql = "insert debitotributo(codreduzido,anoexercicio,codlancamento,seqlancamento,numparcela,codcomplemento,codtributo,valortributo) values("
@@ -1605,4 +1621,65 @@ Resume Next
 
 End Sub
 
+Private Sub AtualizaBaixaGiss()
+Dim RdoAux As rdoResultset, Sql As String, nCodReduz As Long, nNumDoc As Long, nSeqPag As Integer, RdoAux3 As rdoResultset
+Dim RdoAux2 As rdoResultset, nAno As Integer, nLanc As Integer, nSeq As Integer, nParc As Integer, nCompl As Integer
 
+ConectaEicon2
+
+Sql = "SELECT num_documento,num_cadastro,valor_pago,data_pagamento FROM tb_inter_baixa_detalhe_giss WHERE controle IS NULL AND num_cadastro BETWEEN 100000 AND 200000"
+Set RdoAux = cnEicon2.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    Do Until .EOF
+        If !num_documento = 2224949 Then MsgBox "teste"
+        nCodReduz = !num_cadastro
+        nNumDoc = !num_documento
+        Sql = "select * from parceladocumento where numdocumento=" & nNumDoc
+        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        With RdoAux2
+            If .RowCount > 0 Then
+                nAno = !AnoExercicio
+                nLanc = !CodLancamento
+                nSeq = !SeqLancamento
+                nParc = !NumParcela
+                nCompl = !CODCOMPLEMENTO
+            End If
+        End With
+    
+        Sql = "SELECT MAX(SEQPAG) AS MAXIMO FROM DEBITOPAGO WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND "
+        Sql = Sql & "SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nParc & " AND CODCOMPLEMENTO = " & nCompl
+        Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        With RdoAux3
+            If IsNull(!maximo) Then
+                nSeqPag = 0
+            Else
+                If .RowCount = 0 Then
+                   nSeqPag = 0
+                Else
+                   nSeqPag = !maximo + 1
+                End If
+            End If
+            .Close
+        End With
+    
+        Sql = "INSERT DEBITOPAGO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,SEQPAG,DATAPAGAMENTO,DATARECEBIMENTO,VALORPAGO,VALORPAGOREAL,NUMDOCUMENTO) VALUES(" & nCodReduz & ","
+        Sql = Sql & nAno & "," & nLanc & "," & nSeq & "," & nParc & "," & nCompl & "," & nSeqPag & ",'" & Format(RdoAux!Data_Pagamento, "mm/dd/yyyy") & "','" & Format(RdoAux!Data_Pagamento, "mm/dd/yyyy") & "',"
+        Sql = Sql & Virg2Ponto(CStr(RdoAux!valor_pago)) & "," & Virg2Ponto(CStr(RdoAux!valor_pago)) & "," & nNumDoc & ")"
+        cn.Execute Sql, rdExecDirect
+    
+        Sql = "UPDATE DEBITOPARCELA SET STATUSLANC=2 WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND "
+        Sql = Sql & "SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nParc & " AND CODCOMPLEMENTO = " & nCompl
+        cn.Execute Sql, rdExecDirect
+    
+       .MoveNext
+    Loop
+   .Close
+End With
+
+
+cnEicon2.Close
+
+
+
+
+End Sub

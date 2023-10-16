@@ -2000,7 +2000,7 @@ nSetor = Mid$(lblIC.Caption, 3, 2)
 
 For x = 1 To nQtdeImovel
    'BUSCA O PROXIMO CÓDIGO DE IMÓVEL
-    Sql = "SELECT MAX(CODREDUZIDO) AS MAXIMO FROM CADIMOB WHERE CODREDUZIDO<40000"
+    Sql = "SELECT MAX(CODREDUZIDO) AS MAXIMO FROM CADIMOB WHERE CODREDUZIDO<50000"
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         nNovoCod = !maximo + 1
@@ -2068,7 +2068,7 @@ For x = 1 To nQtdeImovel
            'GRAVA NA TABELA AREAS
             Sql = "INSERT AREAS (CODREDUZIDO,SEQAREA,TIPOAREA,AREACONSTR,USOCONSTR,TIPOCONSTR,CATCONSTR,DATAAPROVA,NUMPROCESSO,DATAPROCESSO,QTDEPAV) VALUES(" & nNovoCod & ","
             Sql = Sql & !SEQAREA & ",'" & !TIPOAREA & "'," & Virg2Ponto(!AREACONSTR) & "," & !USOCONSTR & "," & !TIPOCONSTR & "," & !CATCONSTR & ",'"
-            Sql = Sql & Format(!DATAAPROVA, "mm/dd/yyyy") & "','" & !NUMPROCESSO & "','" & Format(!DATAPROCESSO, "mm/dd/yyyy") & "'," & !QTDEPAV & ")"
+            Sql = Sql & Format(!DATAAPROVA, "mm/dd/yyyy") & "','" & !numprocesso & "','" & Format(!DATAPROCESSO, "mm/dd/yyyy") & "'," & !QTDEPAV & ")"
             cn.Execute Sql, rdExecDirect
            .MoveNext
         Loop
@@ -2137,7 +2137,7 @@ Sql = "UPDATE PROCESSOREPARC SET CODIGORESP=" & aNovosCodigos(1) & " WHERE CODIG
 cn.Execute Sql, rdExecDirect
 
 'STATUS TRANSFERIDO
-Sql = "UPDATE DEBITOPARCELA SET STATUSLANC=13 WHERE CODREDUZIDO=" & Val(txtCod.Text) & " AND STATUSLANC=3"
+Sql = "UPDATE DEBITOPARCELA SET STATUSLANC=13 WHERE CODREDUZIDO=" & Val(txtCod.Text) & " AND (STATUSLANC=3 OR STATUSLANC=42 OR STATUSLANC=43)"
 cn.Execute Sql, rdExecDirect
 
 'OPTANTES DA
