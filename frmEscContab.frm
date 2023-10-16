@@ -6,8 +6,8 @@ Begin VB.Form frmEscContab
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Cadastro de Escritórios Contabeis"
    ClientHeight    =   3975
-   ClientLeft      =   10530
-   ClientTop       =   5415
+   ClientLeft      =   7440
+   ClientTop       =   5220
    ClientWidth     =   7545
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
@@ -36,7 +36,7 @@ Begin VB.Form frmEscContab
    Begin prjChameleon.chameleonButton cmdPrint 
       Height          =   315
       Left            =   3195
-      TabIndex        =   36
+      TabIndex        =   35
       Top             =   3630
       Width           =   1005
       _ExtentX        =   1773
@@ -75,7 +75,7 @@ Begin VB.Form frmEscContab
    Begin prjChameleon.chameleonButton cmdEtiqueta 
       Height          =   315
       Left            =   5340
-      TabIndex        =   35
+      TabIndex        =   34
       ToolTipText     =   "Imprimir Detalhe"
       Top             =   3630
       Width           =   1125
@@ -115,7 +115,7 @@ Begin VB.Form frmEscContab
    Begin prjChameleon.chameleonButton cmdSair 
       Height          =   315
       Left            =   6480
-      TabIndex        =   31
+      TabIndex        =   30
       ToolTipText     =   "Sair da Tela"
       Top             =   3630
       Width           =   1035
@@ -155,7 +155,7 @@ Begin VB.Form frmEscContab
    Begin prjChameleon.chameleonButton cmdConsultar 
       Height          =   315
       Left            =   4230
-      TabIndex        =   26
+      TabIndex        =   25
       ToolTipText     =   "Consulta Cidadãos Cadastrados"
       Top             =   3630
       Width           =   1095
@@ -173,7 +173,7 @@ Begin VB.Form frmEscContab
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      COLTYPE         =   1
+      COLTYPE         =   2
       FOCUSR          =   0   'False
       BCOL            =   12632256
       BCOLO           =   12632256
@@ -195,7 +195,7 @@ Begin VB.Form frmEscContab
    Begin prjChameleon.chameleonButton cmdCancel 
       Height          =   315
       Left            =   6390
-      TabIndex        =   27
+      TabIndex        =   26
       ToolTipText     =   "Cancelar Edição"
       Top             =   3630
       Width           =   1035
@@ -235,7 +235,7 @@ Begin VB.Form frmEscContab
    Begin prjChameleon.chameleonButton cmdNovo 
       Height          =   315
       Left            =   30
-      TabIndex        =   28
+      TabIndex        =   27
       ToolTipText     =   "Novo Registro"
       Top             =   3630
       Width           =   1035
@@ -275,7 +275,7 @@ Begin VB.Form frmEscContab
    Begin prjChameleon.chameleonButton cmdAlterar 
       Height          =   315
       Left            =   1080
-      TabIndex        =   29
+      TabIndex        =   28
       ToolTipText     =   "Editar Registro"
       Top             =   3630
       Width           =   1035
@@ -315,7 +315,7 @@ Begin VB.Form frmEscContab
    Begin prjChameleon.chameleonButton cmdExcluir 
       Height          =   315
       Left            =   2130
-      TabIndex        =   30
+      TabIndex        =   29
       ToolTipText     =   "Excluir Registro"
       Top             =   3630
       Width           =   1035
@@ -355,7 +355,7 @@ Begin VB.Form frmEscContab
    Begin prjChameleon.chameleonButton cmdGravar 
       Height          =   315
       Left            =   5310
-      TabIndex        =   32
+      TabIndex        =   31
       ToolTipText     =   "Gravar os Dados"
       Top             =   3630
       Width           =   1035
@@ -397,7 +397,7 @@ Begin VB.Form frmEscContab
       Height          =   1785
       Left            =   30
       Sorted          =   -1  'True
-      TabIndex        =   25
+      TabIndex        =   24
       TabStop         =   0   'False
       Top             =   4050
       Width           =   7515
@@ -406,7 +406,7 @@ Begin VB.Form frmEscContab
       BackColor       =   &H00EEEEEE&
       Height          =   3585
       Left            =   30
-      TabIndex        =   14
+      TabIndex        =   13
       Top             =   0
       Width           =   7515
       Begin VB.ListBox lstNomeLog 
@@ -414,10 +414,10 @@ Begin VB.Form frmEscContab
          BackColor       =   &H00C0FFFF&
          Height          =   1785
          ItemData        =   "frmEscContab.frx":0D24
-         Left            =   1110
+         Left            =   1125
          List            =   "frmEscContab.frx":0D26
-         TabIndex        =   43
-         Top             =   1500
+         TabIndex        =   42
+         Top             =   1485
          Visible         =   0   'False
          Width           =   5835
       End
@@ -427,7 +427,7 @@ Begin VB.Form frmEscContab
          Left            =   4320
          Sorted          =   -1  'True
          Style           =   2  'Dropdown List
-         TabIndex        =   45
+         TabIndex        =   44
          Top             =   2160
          Width           =   3150
       End
@@ -437,7 +437,7 @@ Begin VB.Form frmEscContab
          Left            =   1110
          Sorted          =   -1  'True
          Style           =   2  'Dropdown List
-         TabIndex        =   44
+         TabIndex        =   43
          Top             =   2520
          Width           =   2460
       End
@@ -464,15 +464,15 @@ Begin VB.Form frmEscContab
          Appearance      =   0  'Flat
          Height          =   285
          Left            =   1110
-         MaxLength       =   40
-         TabIndex        =   13
+         MaxLength       =   300
+         TabIndex        =   12
          Top             =   3180
          Width           =   5805
       End
       Begin esMaskEdit.esMaskedEdit mskCEP 
          Height          =   285
          Left            =   4335
-         TabIndex        =   11
+         TabIndex        =   10
          Top             =   2490
          Width           =   1440
          _ExtentX        =   2540
@@ -502,7 +502,7 @@ Begin VB.Form frmEscContab
          Height          =   255
          Left            =   1110
          Locked          =   -1  'True
-         TabIndex        =   15
+         TabIndex        =   14
          Text            =   "0"
          Top             =   210
          Width           =   405
@@ -540,7 +540,7 @@ Begin VB.Form frmEscContab
          Left            =   1110
          Sorted          =   -1  'True
          Style           =   2  'Dropdown List
-         TabIndex        =   10
+         TabIndex        =   9
          Top             =   2160
          Width           =   2445
       End
@@ -549,14 +549,14 @@ Begin VB.Form frmEscContab
          Height          =   285
          Left            =   1110
          MaxLength       =   200
-         TabIndex        =   12
+         TabIndex        =   11
          Top             =   2850
          Width           =   6345
       End
       Begin prjChameleon.chameleonButton cmdEmail 
          Height          =   345
          Left            =   6960
-         TabIndex        =   34
+         TabIndex        =   33
          ToolTipText     =   "Abrir Email"
          Top             =   3150
          Width           =   495
@@ -643,13 +643,22 @@ Begin VB.Form frmEscContab
          Text            =   "__.___.___/____-__"
          HideSelection   =   -1  'True
       End
+      Begin VB.TextBox txtCompl 
+         Appearance      =   0  'Flat
+         Height          =   285
+         Left            =   3555
+         MaxLength       =   30
+         TabIndex        =   45
+         Top             =   1845
+         Width           =   3885
+      End
       Begin VB.Label Label1 
          BackStyle       =   0  'Transparent
          Caption         =   "Complemento.:"
          Height          =   225
          Index           =   15
          Left            =   2400
-         TabIndex        =   42
+         TabIndex        =   41
          Top             =   1860
          Width           =   1065
       End
@@ -659,7 +668,7 @@ Begin VB.Form frmEscContab
          Height          =   225
          Index           =   14
          Left            =   3960
-         TabIndex        =   41
+         TabIndex        =   40
          Top             =   210
          Width           =   315
       End
@@ -669,7 +678,7 @@ Begin VB.Form frmEscContab
          Height          =   225
          Index           =   13
          Left            =   90
-         TabIndex        =   40
+         TabIndex        =   39
          Top             =   876
          Width           =   975
       End
@@ -679,7 +688,7 @@ Begin VB.Form frmEscContab
          Height          =   225
          Index           =   12
          Left            =   90
-         TabIndex        =   39
+         TabIndex        =   38
          Top             =   1209
          Width           =   975
       End
@@ -689,7 +698,7 @@ Begin VB.Form frmEscContab
          Height          =   225
          Index           =   11
          Left            =   4290
-         TabIndex        =   38
+         TabIndex        =   37
          Top             =   1200
          Width           =   660
       End
@@ -699,7 +708,7 @@ Begin VB.Form frmEscContab
          Height          =   225
          Index           =   10
          Left            =   1620
-         TabIndex        =   37
+         TabIndex        =   36
          Top             =   210
          Width           =   480
       End
@@ -709,7 +718,7 @@ Begin VB.Form frmEscContab
          Height          =   225
          Index           =   4
          Left            =   90
-         TabIndex        =   33
+         TabIndex        =   32
          Top             =   3210
          Width           =   975
       End
@@ -719,7 +728,7 @@ Begin VB.Form frmEscContab
          Height          =   225
          Index           =   0
          Left            =   90
-         TabIndex        =   24
+         TabIndex        =   23
          Top             =   210
          Width           =   975
       End
@@ -729,7 +738,7 @@ Begin VB.Form frmEscContab
          Height          =   225
          Index           =   1
          Left            =   90
-         TabIndex        =   23
+         TabIndex        =   22
          Top             =   543
          Width           =   915
       End
@@ -739,7 +748,7 @@ Begin VB.Form frmEscContab
          Height          =   225
          Index           =   2
          Left            =   90
-         TabIndex        =   22
+         TabIndex        =   21
          Top             =   1875
          Width           =   975
       End
@@ -749,7 +758,7 @@ Begin VB.Form frmEscContab
          Height          =   225
          Index           =   3
          Left            =   90
-         TabIndex        =   21
+         TabIndex        =   20
          Top             =   1542
          Width           =   975
       End
@@ -759,7 +768,7 @@ Begin VB.Form frmEscContab
          Height          =   225
          Index           =   5
          Left            =   90
-         TabIndex        =   20
+         TabIndex        =   19
          Top             =   2535
          Width           =   975
       End
@@ -769,7 +778,7 @@ Begin VB.Form frmEscContab
          Height          =   225
          Index           =   6
          Left            =   3720
-         TabIndex        =   19
+         TabIndex        =   18
          Top             =   2190
          Width           =   555
       End
@@ -779,7 +788,7 @@ Begin VB.Form frmEscContab
          Height          =   225
          Index           =   7
          Left            =   90
-         TabIndex        =   18
+         TabIndex        =   17
          Top             =   2220
          Width           =   975
       End
@@ -789,7 +798,7 @@ Begin VB.Form frmEscContab
          Height          =   225
          Index           =   8
          Left            =   3720
-         TabIndex        =   17
+         TabIndex        =   16
          Top             =   2520
          Width           =   585
       End
@@ -799,19 +808,10 @@ Begin VB.Form frmEscContab
          Height          =   225
          Index           =   9
          Left            =   90
-         TabIndex        =   16
+         TabIndex        =   15
          Top             =   2874
          Width           =   975
       End
-   End
-   Begin VB.TextBox txtCompl 
-      Appearance      =   0  'Flat
-      Height          =   285
-      Left            =   3600
-      MaxLength       =   30
-      TabIndex        =   9
-      Top             =   1820
-      Width           =   3885
    End
 End
 Attribute VB_Name = "frmEscContab"
@@ -826,7 +826,7 @@ Dim Evento As String
 Dim sRet As String, bExec As Boolean, bExec2 As Boolean
 Dim evEdit As Integer, evNew As Integer, evDel As Integer
 Dim bEdit As Boolean, bNew As Boolean, bDel As Boolean
-
+Public CodigoEscritorio As Integer
 
 Private Sub cmbCidade_Click()
 If Not bExec Then Exit Sub
@@ -882,27 +882,17 @@ Private Sub cmdAlterar_Click()
 End Sub
 
 Private Sub cmdCancel_Click()
-    Le
+    Le 0
     Eventos "INICIAR"
     Evento = ""
 End Sub
 
 Private Sub cmdConsultar_Click()
-
-If Me.Height > 6000 Then
-   cmdConsultar.Caption = "Consultar"
-   Me.Height = 4420
-Else
-   cmdConsultar.Caption = "Selecionar"
-   Me.Height = 6300
+ frmCnsContabil.show 1
+If CodigoEscritorio > 0 Then
+    Le CodigoEscritorio
 End If
-cmdNovo.Enabled = Not cmdNovo.Enabled
-cmdAlterar.Enabled = Not cmdAlterar.Enabled
-cmdExcluir.Enabled = Not cmdExcluir.Enabled
-cmdGravar.Enabled = Not cmdGravar.Enabled
-cmdCancel.Enabled = Not cmdCancel.Enabled
 
-Centraliza Me
 End Sub
 
 Private Sub cmdEmail_Click()
@@ -922,17 +912,24 @@ Dim sEndEntrega As String, sBairroEntrega As String, sCidEntrega As String, sCep
 Sql = "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'"
 cn.Execute Sql, rdExecDirect
 
-Sql = "SELECT * FROM ESCRITORIOCONTABIL"
+Sql = "SELECT Bairro.DescBairro,escritoriocontabil.codigoesc,escritoriocontabil.codbairro,escritoriocontabil.nomeesc ,escritoriocontabil.nomelogradouro ,escritoriocontabil.numero ,escritoriocontabil.uf "
+Sql = Sql & " ,cidade.desccidade ,escritoriocontabil.cep From dbo.escritoriocontabil INNER JOIN dbo.bairro ON escritoriocontabil.uf = bairro.siglauf "
+Sql = Sql & "AND escritoriocontabil.codcidade = bairro.codcidade  AND escritoriocontabil.codbairro = bairro.codbairro INNER JOIN dbo.cidade ON bairro.siglauf = cidade.siglauf "
+Sql = Sql & " AND bairro.codcidade = cidade.codcidade"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
 Do Until .EOF
-    sCodInscricao = !codigoesc
+    sCodInscricao = !CODIGOESC
     sContribuinte = !NOMEESC
     sEndEntrega = SubNull(!NomeLogradouro) & ", " & SubNull(!Numero)
-    sBairroEntrega = SubNull(!NOMEBairro)
-    sCidEntrega = SubNull(!NomeCidade)
+    If !CodBairro <> 999 Then
+        sBairroEntrega = SubNull(!DescBairro)
+    Else
+        sBairroEntrega = ""
+    End If
+    sCidEntrega = SubNull(!descCidade)
     sCepEntrega = SubNull(!Cep)
-    sComplEntrega = ""
+    'sComplEntrega = ""
     sUFEntrega = SubNull(!UF)
     
     Sql = "INSERT ETIQUETAGTI (USUARIO,SEQ,CAMPO1,CAMPO2,CAMPO3,CAMPO4,CAMPO5) VALUES('"
@@ -940,13 +937,13 @@ Do Until .EOF
     Sql = Sql & sEndEntrega & " " & sComplEntrega & "','" & sCepEntrega & "   " & sBairroEntrega & "','" & sCidEntrega & "   " & sUFEntrega & "')"
     cn.Execute Sql, rdExecDirect
     xId = xId + 1
-proximo:
+Proximo:
    .MoveNext
     Loop
    .Close
 End With
 
-frmReport.ShowReport "ETIQUETACONSIST", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport "ETIQUETACONSIST", frmMdi.HWND, Me.HWND
 
 Sql = "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'"
 cn.Execute Sql, rdExecDirect
@@ -955,6 +952,7 @@ cn.Execute Sql, rdExecDirect
 End Sub
 
 Private Sub cmdExcluir_Click()
+Dim RdoAux As rdoResultset, Sql As String
 
 On Error GoTo Erro
     If Val(txtCod.Text) = 0 Then
@@ -963,6 +961,15 @@ On Error GoTo Erro
     End If
     
     If MsgBox("Excluir este Escritório de Contabilidade ?", vbQuestion + vbYesNoCancel, "Atenção") = vbYes Then
+       Sql = "SELECT codigomob,respcontabil FROM mobiliario WHERE respcontabil= " & Val(txtCod.Text)
+       Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+       If RdoAux.RowCount > 0 Then
+       
+            MsgBox "Não é possivel excluir este escritório pois existem empresas cadastrados com ela.", vbExclamation, "Atenção"
+            Exit Sub
+       End If
+    
+    
        Sql = "DELETE FROM ESCRITORIOCONTABIL WHERE CODIGOESC=" & Val(txtCod.Text)
        cn.Execute Sql, rdExecDirect
        Log Form, Me.Caption, Exclusão, "Excluído registro " & Format(txtCod.Text, "000") & "-" & txtNome.Text
@@ -1030,7 +1037,7 @@ Private Sub cmdNovo_Click()
 End Sub
 
 Private Sub cmdPrint_Click()
-frmReport.ShowReport "CONTADOR", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport "CONTADOR", frmMdi.HWND, Me.HWND
 End Sub
 
 Private Sub cmdSair_Click()
@@ -1038,6 +1045,9 @@ Private Sub cmdSair_Click()
 End Sub
 
 Private Sub Form_Activate()
+If CodigoEscritorio > 0 Then
+    Le CodigoEscritorio
+End If
 Liberado
 End Sub
 
@@ -1062,7 +1072,7 @@ bExec2 = True
 CarregaLista
 bExec2 = False
 bExec = True
-Le
+Le 0
 Eventos "INICIAR"
 
 End Sub
@@ -1077,7 +1087,7 @@ Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux2
     Do Until .EOF
        lstEsc.AddItem !NOMEESC
-       lstEsc.ItemData(lstEsc.NewIndex) = !codigoesc
+       lstEsc.ItemData(lstEsc.NewIndex) = !CODIGOESC
       .MoveNext
     Loop
    .Close
@@ -1144,21 +1154,22 @@ FormHagana
 
 End Sub
 
-Private Sub Le()
+Private Sub Le(CodigoEscritorio)
 Dim x As Integer
-If Val(txtCod.Text) = 0 Then
-   Limpa
-   Exit Sub
-End If
+'If Val(txtCod.Text) = 0 Then
+'   Limpa
+'   Exit Sub
+'End If
 
 Sql = "SELECT escritoriocontabil.*,logradouro.endereco "
-Sql = Sql & "FROM ESCRITORIOCONTABIL  LEFT OUTER JOIN logradouro ON escritoriocontabil.codlogradouro = logradouro.codlogradouro WHERE CODIGOESC=" & Val(txtCod.Text)
+Sql = Sql & "FROM ESCRITORIOCONTABIL  LEFT OUTER JOIN logradouro ON escritoriocontabil.codlogradouro = logradouro.codlogradouro WHERE CODIGOESC=" & CodigoEscritorio
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If .RowCount = 0 Then
         .Close
         Exit Sub
     End If
+    txtCod.Text = CodigoEscritorio
     txtNome.Text = !NOMEESC
     If Val(SubNull(!CodLogradouro)) = 0 Then
         txtNomeLog.Text = SubNull(!NomeLogradouro)
@@ -1191,10 +1202,10 @@ With RdoAux
     Next
     
     txtFone.Text = SubNull(!telefone)
-    txtEmail.Text = SubNull(!email)
+    txtEmail.Text = SubNull(!Email)
     chkCarne.value = IIf(!RECEBECARNE, vbChecked, vbUnchecked)
     txtCRC.Text = SubNull(!CRC)
-    If Not IsNull(!CPF) Then mskCPF.Text = Format(Trim(!CPF), "000\.000\.000-00")
+    If Not IsNull(!cpf) Then mskCPF.Text = Format(Trim(!cpf), "000\.000\.000-00")
     If Not IsNull(!Cnpj) Then mskCNPJ.Text = Format(Trim(!Cnpj), "00\.000\.000/0000-00")
     If Not IsNull(!rg) Then txtRG.Text = !rg
     txtIM.Text = SubNull(!IM)
@@ -1291,14 +1302,14 @@ If Not bDel Then cmdExcluir.Enabled = False
 End Sub
 
 Private Sub lstCidade_Click()
-If bExec Then Le
+If bExec Then Le CodigoEscritorio
 End Sub
 
 Private Sub lstEsc_Click()
 If lstEsc.ListIndex > -1 Then
     Limpa
     txtCod.Text = lstEsc.ItemData(lstEsc.ListIndex)
-    Le
+    Le CodigoEscritorio
 End If
 End Sub
 

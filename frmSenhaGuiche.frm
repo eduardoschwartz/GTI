@@ -4,15 +4,15 @@ Begin VB.Form frmSenhaGuiche
    BackColor       =   &H00404040&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Guiche Nº "
-   ClientHeight    =   5205
-   ClientLeft      =   6090
-   ClientTop       =   2220
+   ClientHeight    =   5220
+   ClientLeft      =   6915
+   ClientTop       =   3930
    ClientWidth     =   3135
    Icon            =   "frmSenhaGuiche.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
-   ScaleHeight     =   5205
+   ScaleHeight     =   5220
    ScaleWidth      =   3135
    Begin VB.Timer Timer1 
       Interval        =   1000
@@ -38,7 +38,7 @@ Begin VB.Form frmSenhaGuiche
       _ExtentX        =   4868
       _ExtentY        =   900
       BTYPE           =   14
-      TX              =   "DIVIDA ATIVA"
+      TX              =   "PREFEITURA"
       ENAB            =   -1  'True
       BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
@@ -73,12 +73,12 @@ Begin VB.Form frmSenhaGuiche
       Left            =   180
       TabIndex        =   2
       TabStop         =   0   'False
-      Top             =   735
+      Top             =   765
       Width           =   2760
       _ExtentX        =   4868
       _ExtentY        =   900
       BTYPE           =   14
-      TX              =   "2ª VIA IPTU"
+      TX              =   "PREFERÊNCIAL"
       ENAB            =   -1  'True
       BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
@@ -113,12 +113,12 @@ Begin VB.Form frmSenhaGuiche
       Left            =   180
       TabIndex        =   3
       TabStop         =   0   'False
-      Top             =   1320
+      Top             =   1365
       Width           =   2760
       _ExtentX        =   4868
       _ExtentY        =   900
       BTYPE           =   14
-      TX              =   "PREFERÊNCIAL"
+      TX              =   "PAT"
       ENAB            =   -1  'True
       BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
@@ -153,12 +153,12 @@ Begin VB.Form frmSenhaGuiche
       Left            =   180
       TabIndex        =   4
       TabStop         =   0   'False
-      Top             =   1905
+      Top             =   1950
       Width           =   2760
       _ExtentX        =   4868
       _ExtentY        =   900
       BTYPE           =   14
-      TX              =   "SENHA PAT"
+      TX              =   "REFIS"
       ENAB            =   -1  'True
       BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
@@ -193,12 +193,13 @@ Begin VB.Form frmSenhaGuiche
       Left            =   180
       TabIndex        =   12
       TabStop         =   0   'False
-      Top             =   2475
+      Top             =   2520
+      Visible         =   0   'False
       Width           =   2760
       _ExtentX        =   4868
       _ExtentY        =   900
       BTYPE           =   14
-      TX              =   "REFIS"
+      TX              =   ""
       ENAB            =   -1  'True
       BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
@@ -272,12 +273,13 @@ Begin VB.Form frmSenhaGuiche
       Left            =   180
       TabIndex        =   14
       TabStop         =   0   'False
-      Top             =   3060
+      Top             =   3105
+      Visible         =   0   'False
       Width           =   2760
       _ExtentX        =   4868
       _ExtentY        =   900
       BTYPE           =   14
-      TX              =   "PREF. REFIS"
+      TX              =   ""
       ENAB            =   -1  'True
       BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
@@ -459,7 +461,7 @@ Dim Sql As String, RdoAux As rdoResultset, nMinute As Long, nSeconds As Long, nS
 Dim Hora1 As Date, Hora2 As Date
 Dim Daycount As Long, SecondsRemaining As Integer, HourCount As Integer
 Dim MinutesCount As Integer, SecondsCount As Integer
-If nGuiche = 0 Or nGuiche > 12 Then
+If nGuiche = 0 Or nGuiche > 20 Then
     MsgBox "Voce não pode acessar o sistema de senhas!", vbCritical, "Acesso Negado"
     Exit Sub
 End If
@@ -471,7 +473,7 @@ Sql = Sql & "DAY(DATAENTRADA)=" & Day(Now) & " AND BANDA=" & Index + 1 & " AND D
 Sql = Sql & "ORDER BY SENHA"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
-    If .RowCount = 0 Then GoTo fim
+    If .RowCount = 0 Then GoTo Fim
     lblSenha.Caption = Format(!SENHA, "000")
     lblBanda.Caption = cmdSenha(Index).Caption
     lblHora.Caption = !HORAENTRADA
@@ -498,7 +500,7 @@ With RdoAux
     
    .Close
 End With
-fim:
+Fim:
 Liberado
 Text1.SetFocus
 Exit Sub
@@ -526,12 +528,12 @@ For x = 0 To 5
     aCount(x) = 0
 Next
 
-cmdSenha(0).Caption = "DIVIDA ATIVA (0)"
-cmdSenha(1).Caption = "2ª VIA IPTU (0)"
-cmdSenha(2).Caption = "PREFERENCIAL (0)"
-cmdSenha(3).Caption = "SENHA PAT (0)"
-cmdSenha(4).Caption = "REFIS (0)"
-cmdSenha(5).Caption = "PREF. REFIS (0)"
+cmdSenha(0).Caption = "PREFEITURA (0)"
+cmdSenha(1).Caption = "PREFERÊNCIAL (0)"
+cmdSenha(2).Caption = "PAT (0)"
+cmdSenha(3).Caption = "REFIS (0)"
+'cmdSenha(4).Caption = "PAGAMENTO (0)"
+'cmdSenha(5).Caption = "PREF VACINA (0)"
 
 Sql = "SELECT * FROM SSPAC WHERE YEAR(DATAENTRADA)=" & Year(dData) & " AND MONTH(DATAENTRADA)=" & Month(dData) & " AND "
 Sql = Sql & "DAY(DATAENTRADA)=" & Day(dData) & " AND DATACHAMADA IS NULL"
@@ -542,17 +544,17 @@ With RdoAux
         aCount(!BANDA - 1) = (aCount(!BANDA - 1)) + 1
        Select Case !BANDA - 1
             Case 0
-                cmdSenha(!BANDA - 1).Caption = "DIVIDA ATIVA (" & aCount(!BANDA - 1) & ")"
+                cmdSenha(!BANDA - 1).Caption = "PREFEITURA (" & aCount(!BANDA - 1) & ")"
             Case 1
-                cmdSenha(!BANDA - 1).Caption = "2ª VIA IPTU (" & aCount(!BANDA - 1) & ")"
+                cmdSenha(!BANDA - 1).Caption = "PREFERÊNCIAL (" & aCount(!BANDA - 1) & ")"
             Case 2
-                cmdSenha(!BANDA - 1).Caption = "PREFERENCIAL (" & aCount(!BANDA - 1) & ")"
+                cmdSenha(!BANDA - 1).Caption = "PAT (" & aCount(!BANDA - 1) & ")"
             Case 3
-                cmdSenha(!BANDA - 1).Caption = "SENHA PAT (" & aCount(!BANDA - 1) & ")"
-            Case 4
                 cmdSenha(!BANDA - 1).Caption = "REFIS (" & aCount(!BANDA - 1) & ")"
-            Case 5
-                cmdSenha(!BANDA - 1).Caption = "PREF. REFIS (" & aCount(!BANDA - 1) & ")"
+'            Case 4
+'                cmdSenha(!BANDA - 1).Caption = "PAGAMENTO (" & aCount(!BANDA - 1) & ")"
+'            Case 5
+'                cmdSenha(!BANDA - 1).Caption = "PREF VACINA (" & aCount(!BANDA - 1) & ")"
         End Select
         cmdSenha(!BANDA - 1).Enabled = True
         .MoveNext

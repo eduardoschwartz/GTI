@@ -7,8 +7,8 @@ Begin VB.Form frmParcelamentoNovo
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Parcelamento de Dívida (Alteração LC 07/1992 em 2017)"
    ClientHeight    =   8205
-   ClientLeft      =   6315
-   ClientTop       =   3480
+   ClientLeft      =   7605
+   ClientTop       =   3510
    ClientWidth     =   13995
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
@@ -275,6 +275,7 @@ Begin VB.Form frmParcelamentoNovo
       Begin VB.CheckBox chkRefis 
          Appearance      =   0  'Flat
          Caption         =   "Refis"
+         Enabled         =   0   'False
          ForeColor       =   &H000000C0&
          Height          =   255
          Left            =   8430
@@ -1205,10 +1206,10 @@ For x = 1 To lvOrigem.ListItems.Count
     End If
 Next
 
-If bAjN And bAjS Then
-    MsgBox "Não é permitido parcelar débitos ajuizados e não ajuizados no mesmo parcelamento.", vbCritical, "ERRO"
-    Exit Sub
-End If
+'If bAjN And bAjS Then
+'    MsgBox "Não é permitido parcelar débitos ajuizados e não ajuizados no mesmo parcelamento.", vbCritical, "ERRO"
+'    Exit Sub
+'End If
 
 If bAjN Then
     lblAj.Caption = "N"
@@ -1229,7 +1230,7 @@ End If
 
 '****** REFIS *************
 If (bRefisAtivo Or bRefisAtivoDI) And chkRefis.value = vbChecked Then
-    If Year(Now) = 2020 Then
+    If Year(Now) = 2023 Then
         '******** 2017 ********
         If lblDI.Caption = "S" Then
             '** DISTRITO INDUSTRIAL **
@@ -1255,9 +1256,9 @@ InicioData:
             '*** OUTROS ***
             
             For x = 1 To lvOrigem.ListItems.Count
-                If lvOrigem.ListItems(x).Checked And CDate(lvOrigem.ListItems(x).SubItems(5)) > CDate("06/30/2020") Then
+                If lvOrigem.ListItems(x).Checked And CDate(lvOrigem.ListItems(x).SubItems(5)) > CDate("31/12/2023") Then
 '                    If Val(Left(lvOrigem.ListItems(x).SubItems(1), 2)) <> 62 Then
-                        MsgBox "No Refis só podem entrar débitos vencidos até 30/06/2020", vbCritical, "Atenção"
+                        MsgBox "No Refis só podem entrar débitos vencidos até 31/12/2023", vbCritical, "Atenção"
                         Exit Sub
  '                   End If
                 End If
@@ -1265,12 +1266,12 @@ InicioData:
             
             
             
-            If CDate(mskVencto.Text) <= CDate("19/10/2020") Then
-                nPlano = 44
-            ElseIf CDate(mskVencto.Text) >= CDate("20/10/2020") And CDate(mskVencto.Text) <= CDate("30/11/2020") Then
-                nPlano = 45
-            ElseIf CDate(mskVencto.Text) >= CDate("01/12/2020") And CDate(mskVencto.Text) <= CDate("22/12/2020") Then
-                nPlano = 46
+            If CDate(mskVencto.Text) <= CDate("31/08/2023") Then
+                nPlano = 62
+            ElseIf CDate(mskVencto.Text) >= CDate("01/09/2023") And CDate(mskVencto.Text) <= CDate("31/10/2023") Then
+                nPlano = 63
+            ElseIf CDate(mskVencto.Text) >= CDate("01/11/2023") And CDate(mskVencto.Text) <= CDate("22/12/2023") Then
+                nPlano = 64
             End If
                                     
             Sql = "select nome,desconto from plano where codigo=" & nPlano
@@ -1392,8 +1393,10 @@ Limpa
 
 If bRefisAtivo Then
     chkRefis.value = vbChecked
+    chkRefis.Enabled = True
 Else
     chkRefis.value = vbUnchecked
+    chkRefis.Enabled = False
 End If
 
 End Sub
@@ -1708,7 +1711,7 @@ End Sub
 Private Sub mnuSimulado_Click()
 Dim Sql As String, RdoAux As rdoResultset, x As Integer, y As Integer, nValorEntrada As Double, nValorParcela As Double, sExercicio As String
 Dim aAno() As Integer, bFind As Boolean, xImovel As clsImovel, nCodReduz As Long, sEndereco As String, nNumero As Integer, sComplemento As String
-Dim sBairro As String, sCidade As String, sCep As String, sUF As String, sFullEndereco As String
+Dim sBairro As String, sCidade As String, sCep As String, sUF As String, sFullEndereco As String, sTipoPessoa As String
 
 nCodReduz = Val(txtCod.Text)
 If lvDestino.ListItems.Count = 0 Then
@@ -1732,6 +1735,35 @@ For x = 1 To lvOrigem.ListItems.Count
         End If
     End If
 Next
+
+'**** SIMULADO ISS CONSTRUÇÃO CIVIL NÃO VENCIDO APENAS COM 12 PARCELAS
+Dim bISSCivilSim As Boolean, bISSCivilNao As Boolean, nLanc As Integer, sVencto As String, bVencidoSim As Boolean, bVencidoNao As Boolean, nMaxParcela As Integer
+bISSCivilSim = False: bISSCivilNao = False: bVencidoSim = False: bVencidoNao = False: nMaxParcela = 0
+
+For x = 1 To lvOrigem.ListItems.Count
+    nLanc = Val(Left(lvOrigem.ListItems(x).SubItems(1), 2))
+    sVencto = lvOrigem.ListItems(x).SubItems(5)
+    If sVencto <> "" Then
+        If nLanc = 65 Or nLanc = 62 Then
+            bISSCivilSim = True
+        Else
+            bISSCivilNao = True
+        End If
+        If CDate(sVencto) >= CDate(Format(Now, "dd/mm/yyyy")) Then
+            bVencidoNao = True
+        Else
+            bVencidoSim = True
+        End If
+    End If
+Next
+
+If bISSCivilSim = True And bISSCivilNao = False And bVencidoNao = True And bVencidoSim = False Then
+    nMaxParcela = 12
+Else
+    nMaxParcela = Val(cmbQtde.List(cmbQtde.ListCount - 1))
+End If
+
+'***********************************************************************
 
 If nCodReduz < 100000 Then
     Set xImovel = New clsImovel
@@ -1780,8 +1812,27 @@ sExercicio = Left(sExercicio, Len(sExercicio) - 1)
 Sql = "delete from parcelamento_simulado where usuario='" & NomeDeLogin & "'"
 cn.Execute Sql, rdExecDirect
 
+If Len(txtDoc.Text) = 14 Then
+    sTipoPessoa = "F"
+Else
+    sTipoPessoa = "J"
+End If
 
-For x = Val(cmbQtde.List(0)) To Val(cmbQtde.List(cmbQtde.ListCount - 1))
+If chkRefis.value = vbChecked Then
+    'CarregaValorMinimo
+    nValor_Minimo_Fisica = 70
+    nValor_Minimo_Juridica = 200
+    
+Else
+    CarregaValorMinimo
+    nValor_Minimo_Fisica = 50
+    nValor_Minimo_Juridica = 200
+
+End If
+
+
+'For x = Val(cmbQtde.List(0)) To Val(cmbQtde.List(cmbQtde.ListCount - 1))
+For x = Val(cmbQtde.List(0)) To nMaxParcela
     For y = 1 To UBound(aDestino)
         If aDestino(y).Qtde_Parcela = x And aDestino(y).Numero_Parcela = 1 Then
             nValorEntrada = aDestino(y).valor_parcela
@@ -1789,10 +1840,18 @@ For x = Val(cmbQtde.List(0)) To Val(cmbQtde.List(cmbQtde.ListCount - 1))
             nValorParcela = aDestino(y).valor_parcela
         End If
     Next
+    
+    If sTipoPessoa = "F" Then
+        If nValorParcela < nValor_Minimo_Fisica Then Exit For
+    Else
+        If nValorParcela < nValor_Minimo_Juridica Then Exit For
+    End If
+    
     Sql = "insert parcelamento_simulado(usuario,codigo,qtde_parcela,nome,documento,exercicios,valor_entrada,valor_parcela,endereco) values('"
     Sql = Sql & NomeDeLogin & "'," & Val(txtCod.Text) & "," & x & ",'" & Left(Mask(txtNome.Text), 50) & "','" & txtDoc.Text & "','" & sExercicio & "',"
     Sql = Sql & Virg2Ponto(CStr(nValorEntrada)) & "," & Virg2Ponto(CStr(nValorParcela)) & ",'" & Mask(sFullEndereco) & "')"
     cn.Execute Sql, rdExecDirect
+
 Next
 
 If frmMdi.frTeste.Visible = True Then
@@ -1999,9 +2058,8 @@ Set RdoAux = qd.OpenResultset(rdOpenForwardOnly)
 With RdoAux
     Do Until .EOF
     
-        'If !Data_Vencimento >= CDate(Format(Now, "dd/mm/yyyy")) And !lancamento <> 69 And !lancamento <> 10 And !lancamento <> 48 And !lancamento <> 76 And !lancamento <> 65 And !lancamento <> 62 Then
-        If !Data_Vencimento >= CDate(Format(Now, "dd/mm/yyyy")) And !lancamento <> 65 And !lancamento <> 62 And !lancamento <> 16 And !lancamento <> 38 And !lancamento <> 76 Then
-        'If !Data_Vencimento >= CDate(Format(Now, "dd/mm/yyyy")) And !lancamento <> 65 And !lancamento <> 16 Then
+        'If !Data_Vencimento >= CDate(Format(Now, "dd/mm/yyyy")) And !lancamento <> 65 And !lancamento <> 62 And !lancamento <> 16 And !lancamento <> 38 And !lancamento <> 76 And !lancamento <> 71 Then
+        If !Data_Vencimento >= CDate(Format("31/12/2023", "dd/mm/yyyy")) And !lancamento <> 65 And !lancamento <> 62 And !lancamento <> 16 And !lancamento <> 38 And !lancamento <> 76 And !lancamento <> 71 Then
             GoTo Proximo
         End If
     
@@ -2024,13 +2082,13 @@ With RdoAux
         itmX.SubItems(5) = Format(!Data_Vencimento, "dd/mm/yyyy")
         itmX.SubItems(6) = !ajuizado
         itmX.SubItems(7) = FormatNumber(!Valor_Principal, 2)
-        If !Data_Vencimento > CDate("01/04/2020") And !Data_Vencimento < CDate("01/07/2020") Then
-            itmX.SubItems(8) = FormatNumber(0, 2)
-            itmX.SubItems(9) = FormatNumber(0, 2)
-        Else
+'        If !Data_Vencimento > CDate("01/04/2020") And !Data_Vencimento < CDate("01/07/2020") Then
+'            itmX.SubItems(8) = FormatNumber(0, 2)
+'            itmX.SubItems(9) = FormatNumber(0, 2)
+ '       Else
             itmX.SubItems(8) = FormatNumber(!Valor_Juros, 2)
             itmX.SubItems(9) = FormatNumber(!Valor_Multa, 2)
-        End If
+  '      End If
         itmX.SubItems(10) = FormatNumber(!Valor_Correcao, 2)
         itmX.SubItems(11) = !qtde_parcelamento
         itmX.SubItems(12) = !perc_penalidade & "%"
@@ -2140,7 +2198,7 @@ Private Sub CarregaDestino()
 
 Dim RdoAux As rdoResultset, Sql As String, qd As New rdoQuery, t As Integer, bFind As Boolean, bAjuizado As Boolean, c As Integer, nQtdeParc As Integer
 Dim nSomaPrincipal As Double, nSomaJuros As Double, nSomaMulta As Double, nSomaCorrecao As Double, nTotal As Double, sTipoPessoa As String
-Dim lvSI As ListSubItem, nPlano As Integer, nValorMinF As Double, nValorMinJ As Double
+Dim lvSI As ListSubItem, nPlano As Integer, nValorMinF As Double, nValorMinJ As Double, nSomaAjuizado As Double
 
 nPlano = 0
 
@@ -2179,8 +2237,12 @@ ShowWait True
 ReDim aDestino(0)
 
 If chkRefis.value = vbChecked Then
-    CarregaValorMinimo
+    'CarregaValorMinimo
+    nValor_Minimo_Fisica = 70
+    nValor_Minimo_Juridica = 200
+    
 Else
+    CarregaValorMinimo
     nValor_Minimo_Fisica = 50
     nValor_Minimo_Juridica = 200
 End If
@@ -2195,6 +2257,9 @@ With lvOrigem
         nSomaMulta = nSomaMulta + CDbl(.ListItems(t).SubItems(9))
         nSomaCorrecao = nSomaCorrecao + CDbl(.ListItems(t).SubItems(10))
         nTotal = nTotal + CDbl(.ListItems(t).SubItems(14))
+        If .ListItems(t).SubItems(6) = "S" Then
+            nSomaAjuizado = nSomaAjuizado + ((CDbl(.ListItems(t).SubItems(7)) + CDbl(.ListItems(t).SubItems(8)) + CDbl(.ListItems(t).SubItems(9)) + CDbl(.ListItems(t).SubItems(10))) * 0.1)
+        End If
     Next
 End With
 
@@ -2264,17 +2329,17 @@ Next y
 nPlano = Val(txtPlano.Tag)
 
 If chkRefis.value = vbChecked Then
-    nValorMinF = 100
-    nValorMinJ = 250
+    nValorMinF = 70
+    nValorMinJ = 200
 Else
     Sql = "SELECT valor From parcelamento_valor_minimo WHERE distritoindustrial = 0 AND tipo = 'F' AND ano = " & Year(Now)
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-    nValorMinF = RdoAux!Valor
+    nValorMinF = RdoAux!valor
     RdoAux.Close
     
     Sql = "SELECT valor From parcelamento_valor_minimo WHERE distritoindustrial = 0 AND tipo = 'J' AND ano = " & Year(Now)
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-    nValorMinJ = RdoAux!Valor
+    nValorMinJ = RdoAux!valor
     RdoAux.Close
 End If
 
@@ -2284,7 +2349,7 @@ RdoAux3.Close
 On Error GoTo 0
 
 
-qd.Sql = "{ Call spParcelamentoDestino(?,?,?,?,?,?,?,?,?,?,?)}"
+qd.Sql = "{ Call spParcelamentoDestino2(?,?,?,?,?,?,?,?,?,?,?,?)}"
 qd(0) = nPlano
 qd(1) = Format(mskVencto.Text, "mm/dd/yyyy")
 qd(2) = IIf(lblAj.Caption = "S", 1, 0)
@@ -2295,12 +2360,13 @@ qd(6) = nSomaMulta
 qd(7) = nSomaCorrecao
 qd(8) = nTotal
 qd(9) = CDbl(lblValorAdicional.Caption)
+qd(10) = CDbl(lblValorAdicional.Caption)
 If lblDI.Caption = "S" Then
     qd(10) = IIf(sTipoPessoa = "F", nValor_Minimo_FisicaDI, nValor_Minimo_JuridicaDI)
 Else
     qd(10) = IIf(sTipoPessoa = "F", nValorMinF, nValorMinJ)
 End If
-
+qd(11) = nSomaAjuizado
 Set RdoAux = qd.OpenResultset(rdOpenKeyset, rdConcurReadOnly)
 With RdoAux
     Do Until .EOF
@@ -2330,6 +2396,33 @@ If bRefisAtivo And chkRefis.value = vbChecked Then
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     nQtdeParcMax = Val(RdoAux!Qtde_Parcela)
 End If
+
+
+'**** SIMULADO ISS CONSTRUÇÃO CIVIL NÃO VENCIDO APENAS COM 12 PARCELAS
+Dim bISSCivilSim As Boolean, bISSCivilNao As Boolean, nLanc As Integer, sVencto As String, bVencidoSim As Boolean, bVencidoNao As Boolean, nMaxParcela As Integer
+bISSCivilSim = False: bISSCivilNao = False: bVencidoSim = False: bVencidoNao = False: nMaxParcela = 0
+
+For x = 1 To lvOrigem.ListItems.Count
+    nLanc = Val(Left(lvOrigem.ListItems(x).SubItems(1), 2))
+    sVencto = lvOrigem.ListItems(x).SubItems(5)
+    If sVencto <> "" Then
+        If nLanc = 65 Or nLanc = 62 Then
+            bISSCivilSim = True
+        Else
+            bISSCivilNao = True
+        End If
+        If CDate(sVencto) >= CDate(Format(Now, "dd/mm/yyyy")) Then
+            bVencidoNao = True
+        Else
+            bVencidoSim = True
+        End If
+    End If
+Next
+
+If bISSCivilSim = True And bISSCivilNao = False And bVencidoNao = True And bVencidoSim = False Then
+    nQtdeParcMax = 12
+End If
+
 
 
 'preenche lista das qtdes de parcela
@@ -2378,24 +2471,24 @@ Dim Sql As String, RdoAux As rdoResultset
 
 Sql = "select valor from parcelamento_valor_minimo where ano=" & Year(Now) & " and distritoindustrial=0 and tipo='F'"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-nValor_Minimo_Fisica = FormatNumber(RdoAux!Valor, 2)
+nValor_Minimo_Fisica = FormatNumber(RdoAux!valor, 2)
 RdoAux.Close
 
 Sql = "select valor from parcelamento_valor_minimo where ano=" & Year(Now) & " and distritoindustrial=0 and tipo='J'"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-nValor_Minimo_Juridica = FormatNumber(RdoAux!Valor, 2)
+nValor_Minimo_Juridica = FormatNumber(RdoAux!valor, 2)
 RdoAux.Close
 
 
 
 Sql = "select valor from parcelamento_valor_minimo where ano=" & Year(Now) & " and distritoindustrial=1 and tipo='F'"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-nValor_Minimo_FisicaDI = FormatNumber(RdoAux!Valor, 2)
+nValor_Minimo_FisicaDI = FormatNumber(RdoAux!valor, 2)
 RdoAux.Close
 
 Sql = "select valor from parcelamento_valor_minimo where ano=" & Year(Now) & " and distritoindustrial=1 and tipo='J'"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-nValor_Minimo_JuridicaDI = FormatNumber(RdoAux!Valor, 2)
+nValor_Minimo_JuridicaDI = FormatNumber(RdoAux!valor, 2)
 RdoAux.Close
 
 End Sub
@@ -2465,10 +2558,10 @@ With lvOrigem
                         End If
                     Next
                     
-                    nValorTributo = !ValorTributo
+                    nValorTributo = !VALORTRIBUTO
                     nValorJuros = !ValorJuros
                     nValorMulta = !ValorMulta
-                    nValorCorrecao = !ValorCorrecao
+                    nValorCorrecao = !valorcorrecao
                     
                     If chkJuros.value = vbUnchecked Then nValorJuros = 0
                     If chkMulta.value = vbUnchecked Then nValorMulta = 0
@@ -2500,7 +2593,9 @@ With lvOrigem
                 lblT.Caption = Format(CDbl(lblT.Caption) + CDbl(grdTributo.TextMatrix(y, 6)), "#0.00")
             Next
             For y = 1 To grdTributo.Rows - 1
-                grdTributo.TextMatrix(y, 7) = Format(CDbl(grdTributo.TextMatrix(y, 6)) * 100 / CDbl(lblT.Caption), "#0.00")
+                If CDbl(lblT.Caption) > 0 Then
+                    grdTributo.TextMatrix(y, 7) = Format(CDbl(grdTributo.TextMatrix(y, 6)) * 100 / CDbl(lblT.Caption), "#0.00")
+                End If
             Next
         End If
     Next
@@ -2517,12 +2612,12 @@ Dim nCodLogr As Long, sEndEntrega As String, nNumEntrega As Integer, sBairroEntr
 Dim sUFEntrega As String, sNumInsc As String, sValorParc As String, nNumDoc As Long, sBarra As String, sDigitavel2 As String, nValorGuia As Double, nNumGuia As Long
 Dim sNumDoc2 As String, sNumDoc3 As String, nFatorVencto As Long, sNumDoc As String, nSid As Long, sDigitavel As String, sNossoNumero As String, sCPF As String
 Dim dDataBase As Date, sTipoEnd As String, bBoleto As Boolean, nValorDif As Double
-Dim sValor As String, dDataVencto As Date, nLastCod As Long, sEndereco As String, sObs As String
+Dim sValor As String, dDataVencto As Date, nLastCod As Long, sEndereco As String, sObs As String, RdoAux As rdoResultset
 
 dDataBase = CDate(Mid$(frmMdi.Sbar.Panels(6).Text, 12, 2) & "/" & Mid$(frmMdi.Sbar.Panels(6).Text, 15, 2) & "/" & Right$(frmMdi.Sbar.Panels(6).Text, 4))
 sNumProc = CStr(nNumproc) & "/" & CStr(nAnoproc)
-nPlano = 0
-
+'nPlano = 0
+ nPlano = Val(txtPlano.Tag)
 'BUSCA ULTIMA SEQUENCIA
 Sql = "SELECT COUNT(*) AS CONTADOR FROM DEBITOPARCELA WHERE CODREDUZIDO=" & Val(txtCod.Text) & " AND CODLANCAMENTO=20"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -2605,25 +2700,26 @@ With lvDestino
             Next
         End With
         
-        'RETORNA ULTIMO DOCUMENTO
-        Sql = "SELECT MAX(NUMDOCUMENTO) AS MAXIMO FROM NUMDOCUMENTO"
-        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-        With RdoAux
-            nLastCod = !maximo + 1
-           .Close
-        End With
-        
-        ' Grava NumDocumento
-        Sql = "INSERT NUMDOCUMENTO (NUMDOCUMENTO,DATADOCUMENTO,CODBANCO,CODAGENCIA,VALORPAGO,VALORTAXADOC,ISENTOMJ,PERCISENCAO,TIPODOC,emissor,valorguia) VALUES("
-        Sql = Sql & nLastCod & ",'" & Format(dDataBase, "mm/dd/yyyy") & "'," & 0 & "," & 0 & "," & 0 & "," & 0 & "," & 0 & "," & 0 & ",2,'" & NomeDeLogin & " (PARCELAMENTO)" & "'," & Virg2Ponto(RemovePonto(CStr(.ListItems(x).SubItems(13)))) & ")"
-        cn.Execute Sql, rdExecDirect
-        
-        nPlano = Val(txtPlano.Tag)
-        'Grava PARCELADOCUMENTO
-        Sql = "INSERT PARCELADOCUMENTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,NUMDOCUMENTO,PLANO) VALUES(" & Val(txtCod.Text) & ","
-        Sql = Sql & nAno & "," & nLanc & "," & nSeq & "," & nParc & "," & nCompl & "," & nLastCod & "," & nPlano & ")"
-        cn.Execute Sql, rdExecDirect
-       
+        If nAno = Year(Now) Then
+            'RETORNA ULTIMO DOCUMENTO
+            Sql = "SELECT MAX(NUMDOCUMENTO) AS MAXIMO FROM NUMDOCUMENTO"
+            Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            With RdoAux
+                nLastCod = !maximo + 1
+               .Close
+            End With
+            
+            ' Grava NumDocumento
+            Sql = "INSERT NUMDOCUMENTO (NUMDOCUMENTO,DATADOCUMENTO,CODBANCO,CODAGENCIA,VALORPAGO,VALORTAXADOC,ISENTOMJ,PERCISENCAO,TIPODOC,emissor,valorguia) VALUES("
+            Sql = Sql & nLastCod & ",'" & Format(dDataBase, "mm/dd/yyyy") & "'," & 0 & "," & 0 & "," & 0 & "," & 0 & "," & 0 & "," & 0 & ",2,'" & NomeDeLogin & " (PARCELAMENTO)" & "'," & Virg2Ponto(RemovePonto(CStr(.ListItems(x).SubItems(13)))) & ")"
+            cn.Execute Sql, rdExecDirect
+            
+            nPlano = Val(txtPlano.Tag)
+            'Grava PARCELADOCUMENTO
+            Sql = "INSERT PARCELADOCUMENTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,NUMDOCUMENTO,PLANO) VALUES(" & Val(txtCod.Text) & ","
+            Sql = Sql & nAno & "," & nLanc & "," & nSeq & "," & nParc & "," & nCompl & "," & nLastCod & "," & nPlano & ")"
+            cn.Execute Sql, rdExecDirect
+        End If
         lvDestino.ListItems(x).SubItems(14) = nLastCod
     Next
 End With
@@ -2653,6 +2749,22 @@ With lvOrigem
         End If
     Next
 End With
+  
+Sql = "select * from origemreparc where numprocesso='" & sNumProc & "'"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+If RdoAux.RowCount = 0 Then
+    MsgBox "Ocorreu um erro neste parcelamento e não é possível continuar!", vbCritical, "ERRO FATAL"
+    Exit Sub
+End If
+
+Sql = "select * from destinoreparc where numprocesso='" & sNumProc & "'"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+If RdoAux.RowCount = 0 Then
+    MsgBox "Ocorreu um erro neste parcelamento e não é possível continuar!", vbCritical, "ERRO FATAL"
+    Exit Sub
+End If
+
+  
   
 nSid = Int(Rnd(100) * 1000000)
 
@@ -2795,7 +2907,7 @@ Select Case Val(txtCod.Text)
 
            .Close
         End With
-fim:
+Fim:
     Case 500000 To 800000
         sTipoImposto = "REPARCEL."
         sTipoEnd = "R"
@@ -2884,11 +2996,12 @@ End Select
         nNumGuia = lvDestino.ListItems(x).SubItems(14)
         nValorGuia = lvDestino.ListItems(x).SubItems(13)
         sDataVencto = lvDestino.ListItems(x).SubItems(2)
-        
-        Sql = "insert ficha_compensacao_documento(numero_documento,data_vencimento,valor_documento,nome,cpf,endereco,bairro,cep,cidade,uf) values(" & nNumGuia & ",'"
-        Sql = Sql & Format(sDataVencto, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(nValorGuia)) & ",'" & Mask(Left(sNomeResp, 40)) & "','" & RetornaNumero(txtDoc.Text) & "','"
-        Sql = Sql & Mask(Left(sEndImovel, 40)) & "','" & Mask(Left(sBairroImovel, 15)) & "','" & RetornaNumero(sCepEntrega) & "','" & Mask(Left(sCidadeEntrega, 30)) & "','" & sUFEntrega & "')"
-        cn.Execute Sql, rdExecDirect
+        If Val(Right$(sDataVencto, 4)) = Year(Now) Then
+            Sql = "insert ficha_compensacao_documento(numero_documento,data_vencimento,valor_documento,nome,cpf,endereco,bairro,cep,cidade,uf) values(" & nNumGuia & ",'"
+            Sql = Sql & Format(sDataVencto, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(nValorGuia)) & ",'" & Mask(Left(sNomeResp, 40)) & "','" & RetornaNumero(txtDoc.Text) & "','"
+            Sql = Sql & Mask(Left(sEndImovel, 40)) & "','" & Mask(Left(sBairroImovel, 15)) & "','" & RetornaNumero(sCepEntrega) & "','" & Mask(Left(sCidadeEntrega, 30)) & "','" & sUFEntrega & "')"
+            cn.Execute Sql, rdExecDirect
+        End If
     Next
 'End If
     'imprimir primeira parcela
@@ -3056,14 +3169,26 @@ With grdTributo
                             FormatNumber(nValorP1 * nPerc / 100, 2) & Chr(9) & "" & Chr(9) & FormatNumber((nValorPN * nPerc / 100), 2)
     End If
     nSomaTotal1 = 0: nSomaTotalN = 0
+    
+    nLinhaMaior = 1
+    nMaiorValor = 0
     For y = 1 To grdDestino.Rows - 1
+        If CDbl(grdDestino.TextMatrix(y, 5)) > nMaiorValor Then
+            nMaiorValor = CDbl(grdDestino.TextMatrix(y, 5))
+            nLinhaMaior = y
+        End If
         nSomaTotal1 = nSomaTotal1 + CDbl(grdDestino.TextMatrix(y, 5))
         nSomaTotalN = nSomaTotalN + CDbl(grdDestino.TextMatrix(y, 7))
     Next
+    
+    
+    
+    
+    
     nDif1 = (nSomaTotal1 - CDbl(lvDestino.ListItems(1).SubItems(13))) * (-1)
     nDifN = (nSomaTotalN - CDbl(lvDestino.ListItems(2).SubItems(13))) * (-1)
-    grdDestino.TextMatrix(1, 6) = FormatNumber(nDif1, 2)
-    grdDestino.TextMatrix(1, 8) = FormatNumber(nDifN, 2)
+    grdDestino.TextMatrix(nLinhaMaior, 6) = FormatNumber(nDif1, 2)
+    grdDestino.TextMatrix(nLinhaMaior, 8) = FormatNumber(nDifN, 2)
     grdDestino.AddItem "" & Chr(9) & "TOTAL==>" & Chr(9) & "" & Chr(9) & "" & Chr(9) & "" & Chr(9) & FormatNumber(nSomaTotal1, 2) & Chr(9) & FormatNumber(nDif1, 2) & Chr(9) & FormatNumber(nSomaTotalN, 2) & Chr(9) & FormatNumber(nDifN, 2)
 End With
    

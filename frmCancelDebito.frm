@@ -348,7 +348,7 @@ End If
 evDel = 4: evSus = 17
 If InStr(1, sRet, Format(evDel, "000"), vbBinaryCompare) > 0 Then bDel = True
 bSupervisor = bDel
-    If NomeDeLogin <> "JOSIANE" And NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "ANA" And NomeDeLogin <> "NOELI" And NomeDeLogin <> "RITA" And NomeDeLogin <> "ALBERTO" And NomeDeLogin <> "JOSEANE" And NomeDeLogin <> "ROSE" And NomeDeLogin <> "RICARDO.MARTINEZ" And NomeDeLogin <> "REGIANE" Then
+    If NomeDeLogin <> "JOSIANE" And NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "ANA" And NomeDeLogin <> "RODRIGOC" And NomeDeLogin <> "RITA" And NomeDeLogin <> "ALBERTO" And NomeDeLogin <> "JOSEANE" And NomeDeLogin <> "ROSE" And NomeDeLogin <> "RICARDO.MARTINEZ" And NomeDeLogin <> "NOELI" And NomeDeLogin <> "ROBERTA.SILVA" Then
         If cmbTipo.ListIndex = 3 Or cmbTipo.ListIndex = 5 Then
             If InStr(1, sRet, Format(evSus, "000"), vbBinaryCompare) = 0 Then
                 MsgBox "O Usuário " & NomeDeLogin & " não possue permissão para suspender este(s) lancamento(s).", vbCritical, "Alerta de Segurança"
@@ -361,14 +361,14 @@ Achou = False
 For x = 1 To grdTemp.Rows - 1
     With grdTemp
         nLanc = Val(Left$(.TextMatrix(x, 1), 3))
-        If nLanc <> 11 And nLanc <> 10 And nLanc <> 11 And nLanc <> 59 Then
+        If nLanc <> 11 And nLanc <> 10 And nLanc <> 11 And nLanc <> 59 And nLanc <> 42 And nLanc <> 48 Then
             Achou = True
         End If
     End With
 Next
 If Achou Then
 'If cmbTipo.ListIndex = 0  Then
-    If NomeDeLogin <> "JOSIANE" And NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "ANA" And NomeDeLogin <> "NOELI" And NomeDeLogin <> "RITA" And NomeDeLogin <> "JOSEANE" And NomeDeLogin <> "ROSE" And NomeDeLogin <> "LUIZH" And NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "WILLIAN.LIMA" And NomeDeLogin <> "GLEISE" Then
+    If NomeDeLogin <> "JOSIANE" And NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "ANA" And NomeDeLogin <> "RODRIGOC" And NomeDeLogin <> "RITA" And NomeDeLogin <> "JOSEANE" And NomeDeLogin <> "ROSE" And NomeDeLogin <> "PRISCILAANAMI" And NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "ELTON.DIAS" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "LEANDRO" And NomeDeLogin <> "LUCIANO.RAMOS" And NomeDeLogin <> "RODRIGOG" And NomeDeLogin <> "NOELI" And NomeDeLogin <> "ROBERTA.SILVA" Then
         MsgBox "O Usuário " & NomeDeLogin & " possui permissão para Cancelar débitos ou alterar o status, apenas de lançamentos de Taxas.", vbCritical, "Alerta de Segurança"
         Exit Sub
         End If
@@ -383,54 +383,54 @@ If cmbTipo.ListIndex = 0 Then
     End If
     Achou = False
     
-    With grdTemp
-        For x = 1 To grdTemp.Rows - 1
-            If CDate(grdTemp.TextMatrix(x, 10)) <> Format(Now, "dd/mm/yyyy") Then
-               Achou = True
-               Exit For
-            End If
-        Next
-    End With
+'    With grdTemp
+ '       For x = 1 To grdTemp.Rows - 1
+ '           If CDate(grdTemp.TextMatrix(x, 6)) < Format(Now, "dd/mm/yyyy") Then
+ '              Achou = True
+  '             Exit For
+ '           End If
+ '       Next
+  '  End With
 
-    If Achou And Not bSupervisor Then
-        ButtonText(0) = "Supervisor"
-        ButtonText(1) = "Cancelar"
-        'Set up the CBT hook
-        hInst = GetWindowLong(Me.HWND, GWL_HINSTANCE)
-        Thread = GetCurrentThreadId()
-        hHook = SetWindowsHookEx(WH_CBT, AddressOf Manipulate, hInst, Thread)
-        retval = MsgBox("O Usuário " & sNomeUser & " não possue permissão para cancelar parcelas vencidas." & vbCrLf & "Solicite um Supervisor ou cancele a operação", vbInformation + vbYesNo, "Alerta de Segurança")
-        If retval = vbYes Then
-          '  frmMonitor.show vbModal
-        Else
-            Exit Sub
-        End If
-    End If
+'    If Achou And Not bSupervisor And NomeDeLogin <> "ORLANDO.FILHO" Then
+'        ButtonText(0) = "Supervisor"
+'        ButtonText(1) = "Cancelar"
+'        'Set up the CBT hook
+'        hInst = GetWindowLong(Me.HWND, GWL_HINSTANCE)
+'        Thread = GetCurrentThreadId()
+ '       hHook = SetWindowsHookEx(WH_CBT, AddressOf Manipulate, hInst, Thread)
+ '       retval = MsgBox("O Usuário " & sNomeUser & " não possue permissão para cancelar parcelas vencidas." & vbCrLf & "Solicite um Supervisor ou cancele a operação", vbInformation + vbYesNo, "Alerta de Segurança")
+ '       If retval = vbYes Then
+'          '  frmMonitor.show vbModal
+'        Else
+'            Exit Sub
+'        End If
+'    End If
     
-    If lblSup.Caption = 0 Then
-        Achou = False
-        For x = 1 To grdTemp.Rows - 1
-            If CDate(grdTemp.TextMatrix(x, 10)) <> Format(Now, "dd/mm/yyyy") Then
-                Achou = True
-                Exit For
-            End If
-        Next
-        If Achou And Not bSupervisor Then
-            ButtonText(0) = "Supervisor"
-            ButtonText(1) = "Cancelar"
-            'Set up the CBT hook
-            hInst = GetWindowLong(Me.HWND, GWL_HINSTANCE)
-            Thread = GetCurrentThreadId()
-            hHook = SetWindowsHookEx(WH_CBT, AddressOf Manipulate, hInst, Thread)
-            retval = MsgBox("O Usuário " & sNomeUser & "  não possue permissão para cancelar parcelas com Data Base antiga." & vbCrLf & "Solicite um Supervisor ou cancele a operação", vbInformation + vbYesNo, "Alerta de Segurança")
-            If retval = vbYes Then
-                
-                ' frmMonitor.show vbModal
-            Else
-                Exit Sub
-            End If
-        End If
-   End If
+'    If lblSup.Caption = 0 Then
+'        Achou = False
+'        For x = 1 To grdTemp.Rows - 1
+'            If CDate(grdTemp.TextMatrix(x, 6)) < Format(Now, "dd/mm/yyyy") Then
+'                Achou = True
+'                Exit For
+'            End If
+'        Next
+ '       If Achou And Not bSupervisor And NomeDeLogin <> "ORLANDO.FILHO" Then
+ '           ButtonText(0) = "Supervisor"
+ '           ButtonText(1) = "Cancelar"
+ '           'Set up the CBT hook
+ '           hInst = GetWindowLong(Me.HWND, GWL_HINSTANCE)
+ '           Thread = GetCurrentThreadId()
+ '           hHook = SetWindowsHookEx(WH_CBT, AddressOf Manipulate, hInst, Thread)
+ '           retval = MsgBox("O Usuário " & sNomeUser & "  não possue permissão para cancelar parcelas vencidas." & vbCrLf & "Solicite um Supervisor ou cancele a operação", vbInformation + vbYesNo, "Alerta de Segurança")
+ '           If retval = vbYes Then
+ '
+ ''               ' frmMonitor.show vbModal
+ '           Else
+ '               Exit Sub
+  '          End If
+  '      End If
+ '  End If
 ElseIf cmbTipo.ListIndex = 1 Then
     nStatus = 8 'cancelado por recurso
     If Not IsDate(mskDataProc.Text) Then
@@ -553,10 +553,10 @@ If MsgBox("Executar a operação selecionada nos débitos acima selecionados ?", vb
             Set RdoAux = qd.OpenResultset(rdOpenKeyset)
             With RdoAux
                 Do Until .EOF
-                    nVP = nVP + !ValorTributo
+                    nVP = nVP + !VALORTRIBUTO
                     nVJ = nVJ + !ValorJuros
                     nVM = nVM + !ValorMulta
-                    nVC = nVC + !ValorCorrecao
+                    nVC = nVC + !valorcorrecao
                     nVT = nVT + !ValorTotal
                     nLivro = Val(SubNull(!NUMLIVRO))
                     nPagina = Val(SubNull(!PAGINA))
@@ -668,6 +668,7 @@ If sValidaProc <> "OK" Then
     
 End If
 LimpaMascara mskDataProc
+On Error Resume Next
 If ExtraiNumeroProcesso(txtProc.Text) <> "" Then
     mskDataProc.Text = Format(RetornaDataProcesso(ExtraiNumeroProcesso(txtProc.Text), ExtraiAnoProcesso(txtProc.Text)), "dd/mm/yyyy")
 Else

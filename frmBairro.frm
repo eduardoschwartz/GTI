@@ -505,7 +505,7 @@ If Not bExec Then Exit Sub
 Limpa
 Ocupado
 CarregaLista
-le
+Le
 'If cmbCidade.Text = "JABOTICABAL" Then
 If cmbCidade.Text = "JABOTICABAL" And Not bEsp Then
     cmdNovo.Enabled = False: cmdAlterar.Enabled = False: cmdExcluir.Enabled = False
@@ -551,7 +551,7 @@ Private Sub cmdAlterar_Click()
 End Sub
 
 Private Sub cmdCancel_Click()
-    le
+    Le
     Eventos "INICIAR"
     Evento = ""
 End Sub
@@ -570,7 +570,7 @@ On Error GoTo Erro
        Log Form, Me.Caption, Exclusão, "Excluído registro " & Format(txtCod.Text, "000") & "-" & txtDesc.Text & " na UF " & Left$(cmbUF.Text, 2) & " e cidade " & cmbCidade.Text
        Limpa
        CarregaLista
-       le
+       Le
     End If
     
 Exit Sub
@@ -607,7 +607,7 @@ Sql = "UPDATE CADIMOB SET LI_QUADRAS='" & txtQuadra.Text & "' WHERE LI_CODBAIRRO
 cn.Execute Sql, rdExecDirect
 
 txtQuadra.Text = ""
-le
+Le
 End Sub
 
 Private Sub cmdNovo_Click()
@@ -675,7 +675,7 @@ End Sub
 
 Private Sub Form_Load()
  
-If NomeDeLogin <> "FACTORE" And NomeDeLogin <> "HELOISA" And NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "MARIELA" And NomeDeLogin <> "REGINA" And NomeDeLogin <> "TICYANNE.OKIMASU" Then
+If NomeDeLogin <> "DAYANE.IGLESIAS" And NomeDeLogin <> "HELOISA" And NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "MARIELA" And NomeDeLogin <> "REGINA" And NomeDeLogin <> "TICYANNE.OKIMASU" And NomeDeLogin <> "MICHELLE.POLETTI" Then
     frQuadra.Enabled = False
 Else
 cmdNovo.Enabled = True
@@ -706,7 +706,7 @@ End If
 
 lstBairro.Clear
 CarregaLista
-le
+Le
 Liberado
 
 End Sub
@@ -763,7 +763,7 @@ FormHagana
 
 End Sub
 
-Private Sub le()
+Private Sub Le()
 Dim Sql As String, RdoAux As rdoResultset
 
 If lstBairro.ListIndex = -1 Then Exit Sub
@@ -810,7 +810,7 @@ End With
 End Sub
 
 Private Sub lstbairro_Click()
-le
+Le
 End Sub
 
 Private Sub Grava()
@@ -820,7 +820,7 @@ Dim OldCidade As String, OldBairro As String
 OldCidade = cmbCidade.Text
 OldBairro = txtDesc.Text
 
-If cmbCidade.ItemData(cmbCidade.ListIndex) = 413 And NomeDeLogin <> "FACTORE" And NomeDeLogin <> "HELOISA" And NomeDeLogin <> "SCHWARTZ" Then
+If cmbCidade.ItemData(cmbCidade.ListIndex) = 413 And NomeDeLogin <> "DAYANE.IGLESIAS" And NomeDeLogin <> "HELOISA" And NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "MICHELLE.POLETTI" Then
     MsgBox "Não é permitido inserir/alterar bairros em Jaboticabal.", vbCritical, "Atenção"
     Exit Sub
 End If
@@ -838,15 +838,21 @@ If Evento = "Novo" Then
     Sql = "INSERT BAIRRO (SIGLAUF,CODCIDADE,CODBAIRRO,DESCBAIRRO) VALUES('"
     Sql = Sql & Left$(cmbUF.Text, 2) & "'," & cmbCidade.ItemData(cmbCidade.ListIndex) & ","
     Sql = Sql & MaxCod & ",'" & Mask(txtDesc.Text) & "')"
+    cn.Execute Sql, rdExecDirect
+
 Else
     Sql = "UPDATE BAIRRO SET DESCBAIRRO='" & Mask(txtDesc.Text) & "' WHERE "
     Sql = Sql & "SIGLAUF='" & Left$(cmbUF.Text, 2) & "' AND CODCIDADE=" & cmbCidade.ItemData(cmbCidade.ListIndex)
     Sql = Sql & " AND CODBAIRRO=" & Val(txtCod.Text)
+    cn.Execute Sql, rdExecDirect
 End If
-cn.Execute Sql, rdExecDirect
+
+
+
 
 
 If Evento = "Novo" Then
+    
    txtCod.Text = MaxCod
    Log Form, Me.Caption, Inclusão, "Inserido registro " & Format(MaxCod, "000") & "-" & txtDesc.Text & " na UF " & Left$(cmbUF.Text, 2) & " e cidade " & cmbCidade.Text
  ElseIf Evento = "Alterar" Then
@@ -856,7 +862,7 @@ End If
 cmbCidade.Text = OldCidade
 cmbCidade_Click
 lstBairro.Text = OldBairro
-le
+Le
 
 If sUF <> "" Then
     If sFormCall = "frmCadImob" Then

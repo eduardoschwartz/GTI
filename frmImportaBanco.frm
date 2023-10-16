@@ -4,15 +4,15 @@ Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
 Begin VB.Form frmImportaBanco 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Importação de Arquivos Bancários"
-   ClientHeight    =   5100
-   ClientLeft      =   12930
-   ClientTop       =   3735
+   ClientHeight    =   5130
+   ClientLeft      =   9045
+   ClientTop       =   3885
    ClientWidth     =   8325
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   5100
+   ScaleHeight     =   5130
    ScaleWidth      =   8325
    Begin VB.CommandButton Command3 
       Caption         =   "Importar"
@@ -237,6 +237,7 @@ txtResult.Text = ""
 lstArq.Clear
 
 With cDialog
+    
     .FileName = "" 'Clear the filename
     .CancelError = True
     .MaxFileSize = 30000
@@ -437,10 +438,10 @@ End If
 End Function
 
 Private Sub ImportaArquivo(sFileName As String, sFileTitle As String)
-Dim fso As FileSystemObject, TS As TextStream, Row As String, sTipoArq As String, x As Integer, nRegImportado As Integer, z As Long, nRetorno As Integer
+Dim fso As FileSystemObject, TS As TextStream, row As String, sTipoArq As String, x As Integer, nRegImportado As Integer, z As Long, nRetorno As Integer
 Dim nCodBanco As Integer, sNomeBanco As String, sTipoReg As String, sDataPag As String, sDataCredito As String, sAgencia As String, sContaDeposito As String
 Dim nNumDoc As Long, nValorPago As Double, sSitRetorno As String, Sql As String, aDataCredito() As String, RdoAux As rdoResultset, nCodReduz As Long, nCodMov As Integer
-Dim sDataVencto As String, sCNPJ As String, nAno As Integer, nMes As Integer, nValorPrincipal As Double, nValorMulta As Double, nValorJuros As Double, sDataOpcao As String
+Dim sDataVencto As String, sCnpj As String, nAno As Integer, nMes As Integer, nValorPrincipal As Double, nValorMulta As Double, nValorJuros As Double, sDataOpcao As String
 Dim nValorGuia As Double, sConvenio As String, sCodMov As String, sConta As String, bFind As Boolean, nCodBancoReceptor As Integer, nPos As Long, nTot As Long
 Dim nContN As Integer, nContI As Integer, nContP As Integer, nNumDocSimples As Long
 
@@ -448,27 +449,27 @@ On Error GoTo Erro
 nContN = 0: nContI = 0: nContP = 0
 lblFileNumber.Caption = "Importando arquivo " & nFilePos & " de " & nFileTot
 lblFileName.Caption = sFileTitle
-pBar.value = 0
+PBar.value = 0
 nTot = FileRowCount(sFileName)
 
-Sql = "SELECT MAX(numero_documento) AS MAXIMO FROM importacao_banco where numero_documento<2000000"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
-
-nNumDocSimples = Val(SubNull(RdoAux!maximo)) + 1
-RdoAux.Close
     
 ReDim aDataCredito(0)
 Set fso = New FileSystemObject
 
 Set TS = fso.OpenTextFile(sFileName, ForReading)
-Row = TS.ReadLine
-If Left(Row, 1) = "A" And InStr(1, Row, "DEBITO AUT") = 0 Then  'ARQUIVO NORMAL
+row = TS.ReadLine
+If Left(row, 1) = "A" And InStr(1, row, "DEBITO AUT") = 0 Then  'ARQUIVO NORMAL
     sTipoArq = "NORMAL"
-ElseIf Left(Row, 15) = "100000001DAF607" Then 'ARQUIVO SIMPLES
+ElseIf Left(row, 15) = "100000001DAF607" Then 'ARQUIVO SIMPLES
     sTipoArq = "SIMPLES"
-ElseIf Left(Row, 8) = "00100000" Or Left(Row, 8) = "03300000" Then  'ARQUIVO COBRANÇA BANCO DO BRASIL OU SANTANDER
+    Sql = "SELECT MAX(numero_documento) AS MAXIMO FROM importacao_banco where numero_documento<2000000"
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
+    
+    nNumDocSimples = Val(SubNull(RdoAux!maximo)) + 1
+    RdoAux.Close
+ElseIf Left(row, 8) = "00100000" Or Left(row, 8) = "03300000" Then  'ARQUIVO COBRANÇA BANCO DO BRASIL OU SANTANDER
     sTipoArq = "COBRANCA"
-ElseIf InStr(1, Row, "DEBITO AUT") > 0 Then 'ARQUIVO DEBITO AUTOMATICO
+ElseIf InStr(1, row, "DEBITO AUT") > 0 Then 'ARQUIVO DEBITO AUTOMATICO
     sTipoArq = "DEBAUT"
 End If
 TS.Close
@@ -494,30 +495,32 @@ nPos = 1: nRegImportado = 0
 Set TS = fso.OpenTextFile(sFileName, ForReading)
 Do Until TS.AtEndOfStream
     If nPos Mod 10 = 0 Then CallPb nPos, nTot
-    Row = TS.ReadLine
+    row = TS.ReadLine
     If nPos = 1 Then
-        nCodBanco = Mid(Row, 43, 3)
-        sNomeBanco = Trim(Mid(Row, 46, 20))
+        nCodBanco = Mid(row, 43, 3)
+        sNomeBanco = Trim(Mid(row, 46, 20))
     Else
-        sTipoReg = Left(Row, 1)
+        sTipoReg = Left(row, 1)
         If sTipoReg = "G" Then
-            sDataCredito = ConvDataSerial(Mid(Row, 30, 8))
+            sDataCredito = ConvDataSerial(Mid(row, 30, 8))
             z = BinarySearchString(aDataCredito, sDataCredito)
             If z = -1 Then
                 ReDim Preserve aDataCredito(UBound(aDataCredito) + 1)
                 aDataCredito(UBound(aDataCredito)) = sDataCredito
                 Sql = "select * from importacao_banco where codigo_banco=" & nCodBanco & " and data_credito='" & Format(sDataCredito, "mm/dd/yyyy") & "' and nome_arquivo='" & sFileTitle & "'"
                 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-                If RdoAux.RowCount > 0 Then GoTo ARQUIVO_EXISTENTE
+                If RdoAux.RowCount > 0 Then
+                   GoTo ARQUIVO_EXISTENTE
+                End If
                 RdoAux.Close
             End If
-            sDataPag = ConvDataSerial(Mid(Row, 22, 8))
-            sDataVencto = ConvDataSerial(Mid(Row, 57, 8))
-            nNumDoc = CLng(Mid(Row, 65, 9))
-            nValorPago = CDbl(Mid(Row, 82, 12)) / 100
-            sAgencia = Mid(Row, 2, 4)
-            sConta = Val(Trim(RetornaNumero(Mid(Row, 6, 16))))
-            sConvenio = Trim(RetornaNumero(Mid(Row, 3, 20)))
+            sDataPag = ConvDataSerial(Mid(row, 22, 8))
+            sDataVencto = ConvDataSerial(Mid(row, 57, 8))
+            nNumDoc = CLng(Mid(row, 65, 9))
+            nValorPago = CDbl(Mid(row, 82, 12)) / 100
+            sAgencia = Mid(row, 2, 4)
+            sConta = Val(Trim(RetornaNumero(Mid(row, 6, 16))))
+            sConvenio = Trim(RetornaNumero(Mid(row, 3, 20)))
             Sql = "select numdocumento from numdocumento where numdocumento=" & nNumDoc
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             If RdoAux.RowCount > 0 Then
@@ -548,17 +551,17 @@ nPos = 1
 Set TS = fso.OpenTextFile(sFileName, ForReading)
 Do Until TS.AtEndOfStream
     If nPos Mod 10 = 0 Then CallPb nPos, nTot
-    Row = TS.ReadLine
+    row = TS.ReadLine
     If nPos = 1 Then
-        nCodBanco = Mid(Row, 76, 3)
+        nCodBanco = Mid(row, 76, 3)
         sNomeBanco = RetornaNomeBanco(nCodBanco)
         If sNomeBanco = "" Then
             sNomeBanco = "Sem convênio"
         End If
     Else
-        sTipoReg = Left(Row, 1)
+        sTipoReg = Left(row, 1)
         If sTipoReg = "2" Then
-            sDataCredito = ConvDataSerial(Mid(Row, 10, 8))
+            sDataCredito = ConvDataSerial(Mid(row, 10, 8))
             z = BinarySearchString(aDataCredito, sDataCredito)
             If z = -1 Then
                 ReDim Preserve aDataCredito(UBound(aDataCredito) + 1)
@@ -568,38 +571,38 @@ Do Until TS.AtEndOfStream
                 If RdoAux.RowCount > 0 Then GoTo ARQUIVO_EXISTENTE
                 RdoAux.Close
             End If
-            sDataPag = ConvDataSerial(Mid(Row, 10, 8))
-            sDataVencto = ConvDataSerial(Mid(Row, 18, 8))
-            nValorPrincipal = CDbl(Mid(Row, 107, 17)) / 100
-            nValorMulta = CDbl(Mid(Row, 141, 17)) / 100
-            nValorJuros = CDbl(Mid(Row, 124, 17)) / 100
+            sDataPag = ConvDataSerial(Mid(row, 10, 8))
+            sDataVencto = ConvDataSerial(Mid(row, 18, 8))
+            nValorPrincipal = CDbl(Mid(row, 107, 17)) / 100
+            nValorMulta = CDbl(Mid(row, 141, 17)) / 100
+            nValorJuros = CDbl(Mid(row, 124, 17)) / 100
             nValorGuia = nValorPrincipal + nValorJuros + nValorMulta
-            nAno = Val(Mid(Row, 101, 4))
-            nMes = Val(Mid(Row, 105, 2))
-            sCNPJ = Mid(Row, 75, 14)
-            Sql = "select codigomob from mobiliario where cnpj='" & sCNPJ & "'"
+            nAno = Val(Mid(row, 101, 4))
+            nMes = Val(Mid(row, 105, 2))
+            sCnpj = Mid(row, 75, 14)
+            Sql = "select codigomob from mobiliario where cnpj='" & sCnpj & "'"
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             If RdoAux.RowCount > 0 Then
                 nCodReduz = RdoAux!codigomob
                 RdoAux.Close
             Else
-                Sql = "select codcidadao from cidadao where cnpj='" & sCNPJ & "'"
+                Sql = "select codcidadao from cidadao where cnpj='" & sCnpj & "'"
                 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 If RdoAux.RowCount > 0 Then
                     nCodReduz = RdoAux!CodCidadao
                 End If
             End If
             
-            sAgencia = Mid(Row, 223, 4)
+            sAgencia = Mid(row, 223, 4)
             'sSitRetorno = "CNPJ: " & Format(sCNPJ, "0#\.###\.###/####-##")
             
             nCodigoSimples = nCodReduz
             
-            nNumDoc = GravaSimples(sCNPJ, sDataVencto, nAno, nMes, nValorGuia, sFileTitle, sDataCredito, nCodBanco, sAgencia)
+            nNumDoc = GravaSimples(sCnpj, sDataVencto, nAno, nMes, nValorGuia, sFileTitle, sDataCredito, nCodBanco, sAgencia)
             If nNumDoc > 0 Then
                 Sql = "insert importacao_banco(codigo_banco,data_credito,nome_arquivo,data_pagamento,valor_pago,numero_documento,agencia,data_vencimento,simples_nacional,cnpj,ano,mes,codigo_reduzido) values("
                 Sql = Sql & nCodBanco & ",'" & Format(sDataCredito, "mm/dd/yyyy") & "','" & sFileTitle & "','" & Format(sDataPag, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(nValorGuia)) & ","
-                Sql = Sql & nNumDocSimples & ",'" & sAgencia & "','" & Format(sDataVencto, "mm/dd/yyyy") & "'," & 1 & ",'" & sCNPJ & "'," & nAno & "," & nMes & "," & nCodigoSimples & ")"
+                Sql = Sql & nNumDocSimples & ",'" & sAgencia & "','" & Format(sDataVencto, "mm/dd/yyyy") & "'," & 1 & ",'" & sCnpj & "'," & nAno & "," & nMes & "," & nCodigoSimples & ")"
                 cn.Execute Sql, rdExecDirect
             End If
             nNumDocSimples = nNumDocSimples + 1
@@ -619,29 +622,29 @@ nPos = 1
 Set TS = fso.OpenTextFile(sFileName, ForReading)
 Do Until TS.AtEndOfStream
     If nPos Mod 10 = 0 Then CallPb nPos, nTot
-    Row = TS.ReadLine
+    row = TS.ReadLine
     If nPos = 1 Then
        'Header de arquivo
-        nCodBanco = Left(Row, 3)
-        sNomeBanco = Trim(Mid(Row, 103, 30))
-        sConvenio = Mid(Row, 35, 7)
+        nCodBanco = Left(row, 3)
+        sNomeBanco = Trim(Mid(row, 103, 30))
+        sConvenio = Mid(row, 35, 7)
     ElseIf nPos = 2 Then
        'Header de lote, nada a importar
     Else
-        If Left(Row, 8) = "00199999" Or (Left(Row, 3) = "033" And Mid(Row, 14, 1) = " ") Then
+        If Left(row, 8) = "00199999" Or (Left(row, 3) = "033" And Mid(row, 14, 1) = " ") Then
            'Trailer de Lote
             Exit Do
         Else
-            sTipoReg = Mid(Row, 14, 1)
+            sTipoReg = Mid(row, 14, 1)
             If sTipoReg = "T" Then
-                sCodMov = Mid(Row, 16, 2)
-                If sCodMov = "06" Or sCodMov = "17" Then
-                    If Mid(Row, 45, 2) = "00" Then
-                        nNumDoc = Val(Mid(Row, 47, 8))
-                    ElseIf Mid(Row, 45, 1) <> "0" Then
-                        nNumDoc = Val(Mid(Row, 45, 8))
+                sCodMov = Mid(row, 16, 2)
+                If sCodMov = "06" Or sCodMov = "17" Or sCodMov = "61" Then
+                    If Mid(row, 45, 2) = "00" Then
+                        nNumDoc = Val(Mid(row, 47, 8))
+                    ElseIf Mid(row, 45, 1) <> "0" Then
+                        nNumDoc = Val(Mid(row, 45, 8))
                     Else
-                        nNumDoc = Val(Mid(Row, 46, 8))
+                        nNumDoc = Val(Mid(row, 46, 8))
                     End If
                     If nNumDoc > 200000 And nNumDoc < 300000 Then
                         nNumDoc = Val(Mid(sReg, 45, 10))
@@ -655,16 +658,17 @@ Do Until TS.AtEndOfStream
                         sSitRetorno = "01-DOCUMENTO NÃO ENCONTRADO"
                     End If
                     RdoAux.Close
-                    nCodBancoReceptor = Val(Mid(Row, 97, 3))
-                    sAgencia = Mid(Row, 100, 5)
-                    sConta = Val(Mid(Row, 24, 13))
-                    sDataVencto = ConvDataSerialBB(Mid(Row, 74, 8))
-                    nValorPago = CDbl(Mid(Row, 84, 15) / 100)
+                    nRetorno = Val(Mid(row, 214, 2))
+                    nCodBancoReceptor = Val(Mid(row, 97, 3))
+                    sAgencia = Mid(row, 100, 5)
+                    sConta = Val(Mid(row, 24, 13))
+                    sDataVencto = ConvDataSerialBB(Mid(row, 74, 8))
+                    nValorPago = CDbl(Mid(row, 84, 15) / 100)
                     'next line read U
-                    Row = TS.ReadLine
-                    sDataCredito = ConvDataSerialBB(Mid(Row, 146, 8))
+                    row = TS.ReadLine
+                    sDataCredito = ConvDataSerialBB(Mid(row, 146, 8))
                     If Not IsDate(sDataCredito) Then
-                        sDataCredito = ConvDataSerialBB(Mid(Row, 138, 8))
+                        sDataCredito = ConvDataSerialBB(Mid(row, 138, 8))
                     End If
                     z = BinarySearchString(aDataCredito, sDataCredito)
                     If z = -1 Then
@@ -675,9 +679,9 @@ Do Until TS.AtEndOfStream
         '                If RdoAux.RowCount > 0 Then GoTo ARQUIVO_EXISTENTE
                         RdoAux.Close
                     End If
-                    sDataPag = ConvDataSerialBB(Mid(Row, 138, 8))
-                    If Val(Mid(Row, 78, 15)) > 0 Then
-                        nValorPago = CDbl(Mid(Row, 78, 15) / 100)
+                    sDataPag = ConvDataSerialBB(Mid(row, 138, 8))
+                    If Val(Mid(row, 78, 15)) > 0 Then
+                        nValorPago = CDbl(Mid(row, 78, 15) / 100)
                     End If
                     If sDataVencto = "00/00/0000" Or Not IsDate(sDataVencto) Then
                         sDataVencto = sDataPag
@@ -696,9 +700,9 @@ Do Until TS.AtEndOfStream
                     
                     If nNumDoc > 0 Then
                         If sCodMov = "06" Or (sCodMov = "17" And bFind = False) Then
-                            Sql = "insert importacao_banco(codigo_banco,data_credito,nome_arquivo,data_pagamento,valor_pago,numero_documento,agencia,situacao_retorno,data_vencimento,convenio,conta_corrente,codigo_banco_receptor) values("
+                            Sql = "insert importacao_banco(codigo_banco,data_credito,nome_arquivo,data_pagamento,valor_pago,numero_documento,agencia,situacao_retorno,data_vencimento,convenio,conta_corrente,codigo_banco_receptor,retorno) values("
                             Sql = Sql & nCodBanco & ",'" & Format(sDataCredito, "mm/dd/yyyy") & "','" & sFileTitle & "','" & Format(sDataPag, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(nValorPago)) & ","
-                            Sql = Sql & nNumDoc & ",'" & sAgencia & "','" & sSitRetorno & "','" & Format(sDataVencto, "mm/dd/yyyy") & "','" & sConvenio & "','" & sConta & "'," & nCodBancoReceptor & ")"
+                            Sql = Sql & nNumDoc & ",'" & sAgencia & "','" & sSitRetorno & "','" & Format(sDataVencto, "mm/dd/yyyy") & "','" & sConvenio & "','" & sConta & "'," & nCodBancoReceptor & "," & nRetorno & ")"
                             cn.Execute Sql, rdExecDirect
                             nRegImportado = nRegImportado + 1
                         End If
@@ -726,14 +730,14 @@ nPos = 1
 Set TS = fso.OpenTextFile(sFileName, ForReading)
 Do Until TS.AtEndOfStream
     If nPos Mod 10 = 0 Then CallPb nPos, nTot
-    Row = TS.ReadLine
+    row = TS.ReadLine
     If nPos = 1 Then
-        nCodBanco = Mid(Row, 43, 3)
-        sNomeBanco = Trim(Mid(Row, 46, 20))
+        nCodBanco = Mid(row, 43, 3)
+        sNomeBanco = Trim(Mid(row, 46, 20))
     Else
-        sTipoReg = Left(Row, 1)
+        sTipoReg = Left(row, 1)
         If sTipoReg = "F" Then
-            sDataCredito = ConvDataSerial(Mid(Row, 45, 8))
+            sDataCredito = ConvDataSerial(Mid(row, 45, 8))
             z = BinarySearchString(aDataCredito, sDataCredito)
             If z = -1 Then
                 ReDim Preserve aDataCredito(UBound(aDataCredito) + 1)
@@ -745,12 +749,12 @@ Do Until TS.AtEndOfStream
             End If
             sDataPag = sDataCredito
             sDataVencto = sDataCredito
-            nCodReduz = Val(Mid(Row, 11, 6))
-            nValorPago = CDbl(Mid(Row, 53, 15)) / 100
-            sAgencia = Mid(Row, 27, 4)
-            sContaDeposito = Trim(Mid(Row, 31, 9))
+            nCodReduz = Val(Mid(row, 11, 6))
+            nValorPago = CDbl(Mid(row, 53, 15)) / 100
+            sAgencia = Mid(row, 27, 4)
+            sContaDeposito = Trim(Mid(row, 31, 9))
             nCodBancoReceptor = nCodBanco
-            nRetorno = Val(Mid(Row, 68, 2))
+            nRetorno = Val(Mid(row, 214, 2))
             
             Select Case nRetorno
                 Case "00"
@@ -809,22 +813,22 @@ Do Until TS.AtEndOfStream
                .Close
             End With
             If nNumDoc > 0 Then
-                Sql = "insert importacao_banco(codigo_banco,data_credito,nome_arquivo,data_pagamento,valor_pago,numero_documento,debito_automatico,agencia,situacao_retorno,data_vencimento,conta_deposito,codigo_reduzido,codigo_banco_receptor) values("
+                Sql = "insert importacao_banco(codigo_banco,data_credito,nome_arquivo,data_pagamento,valor_pago,numero_documento,debito_automatico,agencia,data_vencimento,conta_deposito,codigo_reduzido,codigo_banco_receptor,retorno) values("
                 Sql = Sql & nCodBanco & ",'" & Format(sDataCredito, "mm/dd/yyyy") & "','" & sFileTitle & "','" & Format(sDataPag, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(nValorPago)) & ","
-                Sql = Sql & nNumDoc & ",1" & ",'" & sAgencia & "','" & sSitRetorno & "','" & Format(sDataVencto, "mm/dd/yyyy") & "','" & sContaDeposito & "'," & nCodReduz & "," & Val(nCodBancoReceptor) & ")"
+                Sql = Sql & nNumDoc & ",1" & ",'" & sAgencia & "','" & Format(sDataVencto, "mm/dd/yyyy") & "','" & sContaDeposito & "'," & nCodReduz & "," & Val(nCodBancoReceptor) & "," & nRetorno & ")"
                 cn.Execute Sql, rdExecDirect
                 nRegImportado = nRegImportado + 1
             End If
         ElseIf sTipoReg = "B" Then
-            nCodReduz = Val(Mid(Row, 11, 6))
-            sAgencia = Mid(Row, 27, 4)
-            sConta = Mid(Row, 31, 14)
-            sDataOpcao = ConvDataSerial(Mid(Row, 45, 8))
-            nCodMov = Mid(Row, 150, 1)
-           
-            Sql = "SELECT * FROM DEBITOAUTOMATICO WHERE CODREDUZ=" & nCodReduz & " AND CODBANCO=" & nCodBanco
-            Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-            If RdoAux.RowCount > 0 Then
+            nCodReduz = Val(Mid(row, 11, 6))
+            sAgencia = Mid(row, 27, 4)
+            sConta = Mid(row, 31, 14)
+            sDataOpcao = ConvDataSerial(Mid(row, 45, 8))
+            nCodMov = Mid(row, 150, 1)
+           sDataCredito = ConvDataSerial(Mid(row, 45, 8))
+'            Sql = "SELECT * FROM DEBITOAUTOMATICO WHERE CODREDUZ=" & nCodReduz & " AND CODBANCO=" & nCodBanco
+'            Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+'            If RdoAux.RowCount > 0 Then
                If nCodMov = 1 Then 'EXCLUSAO
                   If CDate(sDataOpcao) > Format(RdoAux!DataOpcao, "dd/mm/yyyy") Then
                       Sql = "DELETE FROM DEBITOAUTOMATICO WHERE CODREDUZ=" & nCodReduz & " AND CODBANCO=" & nCodBanco
@@ -833,12 +837,7 @@ Do Until TS.AtEndOfStream
                   Else
                       nContI = nContI + 1
                   End If
-               Else
-                  nContI = nContI + 1
-               End If
-               dDataOpcao = Format(RdoAux!DataOpcao, "dd/mm/yyyy")
-            Else
-               If nCodMov = 2 Then 'INCLUSAO
+               ElseIf nCodMov = 2 Then 'INCLUSAO
                   Sql = "DELETE FROM DEBITOAUTOMATICO WHERE CODREDUZ=" & nCodReduz
                   cn.Execute Sql, rdExecDirect
                    
@@ -846,11 +845,14 @@ Do Until TS.AtEndOfStream
                   Sql = Sql & nCodReduz & "," & nCodBanco & "," & sAgencia & "," & sConta & ",'" & Format(sDataOpcao, "mm/dd/yyyy") & "'," & nCodReduz & ")"
                   cn.Execute Sql, rdExecDirect
                   nContP = nContP + 1
-               Else
-                  nContI = nContI + 1
                End If
-            End If
-            RdoAux.Close
+ '           Else
+ '              nContI = nContI + 1
+'            End If
+'               dDataOpcao = Format(RdoAux!DataOpcao, "dd/mm/yyyy")
+'            Else
+ '           End If
+  '          RdoAux.Close
         
             
         End If
@@ -869,6 +871,7 @@ Exit Sub
 
 ARQUIVO_EXISTENTE:
 txtResult.Text = txtResult.Text & vbCrLf & "O arquivo " & sFileName & " " & sNomeBanco & " já está baixado, portanto foi ignorado."
+'Resume Next
 Exit Sub
 
 Erro:
@@ -887,14 +890,14 @@ Else
 End If
 End Sub
 
-Private Function GravaSimples(sCNPJ As String, sDataVencto As String, nAno As Integer, nMes As Integer, nValor As Double, sArquivo As String, sDataCredito As String, nCodBanco As Integer, sAgencia As String) As Long
+Private Function GravaSimples(sCnpj As String, sDataVencto As String, nAno As Integer, nMes As Integer, nValor As Double, sArquivo As String, sDataCredito As String, nCodBanco As Integer, sAgencia As String) As Long
 Dim nNumDoc As Long, Sql As String, RdoAux As rdoResultset, nCodReduz As Long, nNumParc As Integer, bAchou As Boolean, nSeq As Integer, nCompl As Integer, dDataVencto As Date, RdoAux3 As rdoResultset, RdoAux4 As rdoResultset
 On Error GoTo Erro
 DoEvents
 
 'BUSCA CÓDIGO
-Sql = "SELECT CODIGOMOB,CNPJ FROM MOBILIARIO WHERE DATAENCERRAMENTO IS NULL and CONVERT(BIGINT, cnpj) = " & Val(sCNPJ)
-Sql = Sql & " OR CNPJ='" & Format(sCNPJ, "00\.000\.000/0000-00") & "' AND DATAENCERRAMENTO IS NULL ORDER BY CODIGOMOB DESC"
+Sql = "SELECT CODIGOMOB,CNPJ FROM MOBILIARIO WHERE DATAENCERRAMENTO IS NULL and CONVERT(BIGINT, cnpj) = " & Val(sCnpj)
+Sql = Sql & " OR CNPJ='" & Format(sCnpj, "00\.000\.000/0000-00") & "' AND DATAENCERRAMENTO IS NULL ORDER BY CODIGOMOB DESC"
 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux2
     If .RowCount > 0 Then
@@ -902,25 +905,25 @@ With RdoAux2
         .Close
     Else
         .Close
-        Sql = "SELECT CODCIDADAO,CNPJ FROM CIDADAO WHERE CNPJ = '" & RetornaNumero(sCNPJ) & "' OR "
-        Sql = Sql & "CNPJ='" & Format(sCNPJ, "00\.000\.000/0000-00") & "' ORDER BY CODCIDADAO DESC"
+        Sql = "SELECT CODCIDADAO,CNPJ FROM CIDADAO WHERE CNPJ = '" & RetornaNumero(sCnpj) & "' OR "
+        Sql = Sql & "CNPJ='" & Format(sCnpj, "00\.000\.000/0000-00") & "' ORDER BY CODCIDADAO DESC"
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             If .RowCount > 0 Then
                 nCodReduz = !CodCidadao
             Else
                 'CNPJ NÃO LOCALIZADO
-                Sql = "SELECT * FROM SIMPLESCNPJ WHERE CNPJ='" & sCNPJ & "' AND ANOCOMP=" & nAno & " AND MESCOMP=" & nMes
+                Sql = "SELECT * FROM SIMPLESCNPJ WHERE CNPJ='" & sCnpj & "' AND ANOCOMP=" & nAno & " AND MESCOMP=" & nMes
                 Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 If RdoAux3.RowCount = 0 Then
                     Sql = "INSERT SIMPLESCNPJ (CNPJ,ARQUIVOSHORT,BANCO,DATAARRECADA,DATAVENCTO,ANOCOMP,MESCOMP,PRINCIPAL,JUROS,"
-                    Sql = Sql & "MULTA,AGENCIA,CODREDUZIDO) VALUES('" & RetornaNumero(sCNPJ) & "','" & sArquivo & "'," & nCodBanco & ",'" & Format(sDataCredito, "mm/dd/yyyy") & "','"
+                    Sql = Sql & "MULTA,AGENCIA,CODREDUZIDO) VALUES('" & RetornaNumero(sCnpj) & "','" & sArquivo & "'," & nCodBanco & ",'" & Format(sDataCredito, "mm/dd/yyyy") & "','"
                     Sql = Sql & Format(sDataVencto, "mm/dd/yyyy") & "'," & nAno & "," & nMes & "," & Virg2Ponto(CStr(nValor)) & "," & Virg2Ponto(0) & "," & Virg2Ponto(0) & ",'"
                     Sql = Sql & sAgencia & "'," & 0 & ")"
    '                 cn.Execute Sql, rdExecDirect
                 End If
                 RdoAux3.Close
-                GoTo fim
+                GoTo Fim
             End If
         End With
     End If
@@ -953,7 +956,7 @@ With RdoAux3
             nSeq = !SeqLancamento
             nCompl = !CODCOMPLEMENTO '---------------> PARCELA PRONTA PARA USO
             nNumDoc = 0
-            GoTo fim
+            GoTo Fim
         Else
            'SE NÃO ACHAR
            .MoveFirst
@@ -1009,7 +1012,7 @@ If RdoAux.RowCount = 0 Then
     
     Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,DATAVENCIMENTO,DATADEBASE,CODMOEDA,USERID) "
     Sql = Sql & "VALUES(" & nCodReduz & "," & nAno & "," & 5 & "," & nSeq & "," & nNumParc & "," & nCompl & ","
-    Sql = Sql & 3 & ",'" & Format(sDataVencto, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "'," & 1 & ",236)"
+    Sql = Sql & 3 & ",'" & Format(sDataVencto, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "'," & 1 & "," & RetornaUsuarioID(NomeDeLogin) & ")"
   '  cn.Execute Sql, rdExecDirect
     
     Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,"
@@ -1030,16 +1033,16 @@ RdoAux.Close
 
 'PROCURA SE O DEBITO JA FOI BAIXADO
 Sql = "SELECT * FROM COMPLEMENTOSIMPLES WHERE ARQUIVOBANCO='" & sArquivo & "' AND DATACREDITO='" & Format(sDataCredito, "mm/dd/yyyy") & "' AND "
-Sql = Sql & "CNPJ='" & sCNPJ & "' AND ANO=" & nAno & " AND MES=" & nMes
+Sql = Sql & "CNPJ='" & sCnpj & "' AND ANO=" & nAno & " AND MES=" & nMes
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 If RdoAux.RowCount = 0 Then
     Sql = "INSERT COMPLEMENTOSIMPLES(CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,ARQUIVOBANCO,DATACREDITO,VALOR,CNPJ,ANO,MES) VALUES(" & nCodReduz & ","
     Sql = Sql & nAno & "," & 5 & "," & nSeq & "," & nNumParc & "," & nCompl & ",'" & sArquivo & "','" & Format(sDataCredito, "mm/dd/yyyy") & "',"
-    Sql = Sql & Virg2Ponto(CStr(nValor)) & ",'" & sCNPJ & "'," & nAno & "," & nMes & ")"
+    Sql = Sql & Virg2Ponto(CStr(nValor)) & ",'" & sCnpj & "'," & nAno & "," & nMes & ")"
 '    cn.Execute Sql, rdExecDirect
     RdoAux.Close
 End If
-fim:
+Fim:
 
 nCodigoSimples = nCodReduz
 GravaSimples = nNumDoc
@@ -1064,14 +1067,14 @@ End Function
 
 Private Sub CallPb(nVal As Long, nTot As Long)
 If nVal > 0 Then
-    pBar.Color = &HC0C000
+    PBar.Color = &HC0C000
 Else
-    pBar.Color = vbWhite
+    PBar.Color = vbWhite
 End If
 If ((nVal * 100) / nTot) <= 100 Then
-   pBar.value = (nVal * 100) / nTot
+   PBar.value = (nVal * 100) / nTot
 Else
-   pBar.value = 100
+   PBar.value = 100
 End If
 
 Me.Refresh
@@ -1128,7 +1131,7 @@ Function GetFileNameFromPath(strFullPath As String) As String
 End Function
 
 Private Sub Grava_Arquivo_Banco(sFullPath As String, sNomeArq As String, sDataCredito As String, nCodBanco As Integer, nCodAgencia As Integer, bDA As Boolean)
-Dim nSeq As Integer, Sql As String, RdoAux3 As rdoResultset
+Dim nSeq As Integer, Sql As String, RdoAux3 As rdoResultset, RdoAux As rdoResultset, bFind As Boolean
 
 'cria os diretorios
 If Dir$(sPathArqBanco & "\" & Right$(sDataCredito, 4), vbDirectory) = "" Then
@@ -1145,22 +1148,54 @@ If Dir$(sPathArqBanco & "\" & Right$(sDataCredito, 4) & "\" & Mid$(sDataCredito,
 End If
 If Dir$(sPathArqBanco & "\" & Right$(sDataCredito, 4) & "\" & Mid$(sDataCredito, 4, 2) & "\" & Left$(sDataCredito, 2) & "\" & sNomeArq) = "" Then
    FileCopy sFullPath, sPathArqBanco & "\" & Right$(sDataCredito, 4) & "\" & Mid$(sDataCredito, 4, 2) & "\" & Left$(sDataCredito, 2) & "\" & sNomeArq
-   Sql = "SELECT * FROM ARQUIVOBANCO WHERE DATACREDITO='" & Format(CDate(sDataCredito), "mm/dd/yyyy") & "'"
-   Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-   If RdoAux3.RowCount = 0 Then
-      nSeq = 1
-      RdoAux3.Close
-   Else
-      Sql = "SELECT MAX(SEQ) AS MAXIMO FROM ARQUIVOBANCO WHERE DATACREDITO='" & Format(CDate(sDataCredito), "mm/dd/yyyy") & "'"
-      Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-      nSeq = RdoAux3!maximo + 1
-      RdoAux3.Close
-   End If
-   Sql = "INSERT ARQUIVOBANCO(DATACREDITO,SEQ,CODBANCO,CODAGENCIA,DATAINCLUSAO,NOMEARQ,DA) VALUES('"
-   Sql = Sql & Format(CDate(sDataCredito), "mm/dd/yyyy") & "'," & nSeq & "," & nCodBanco & "," & nCodAgencia & ",'"
-   Sql = Sql & Format(Now, "mm/dd/yyyy") & "','" & sNomeArq & "'," & IIf(bDA, 1, 0) & ")"
-   cn.Execute Sql, rdExecDirect
 End If
+
+
+'Sql = "SELECT * FROM ARQUIVOBANCO WHERE DATACREDITO='" & Format(CDate(sDataCredito), "mm/dd/yyyy") & "' AND NOMEARQ='" & sNomeArq & "'"
+Sql = "SELECT * FROM ARQUIVOBANCO WHERE DATACREDITO='" & Format(CDate(sDataCredito), "mm/dd/yyyy") & "'"
+Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+If RdoAux3.RowCount = 0 Then
+   nSeq = 1
+   RdoAux3.Close
+Else
+   Sql = "SELECT MAX(SEQ) AS MAXIMO FROM ARQUIVOBANCO WHERE DATACREDITO='" & Format(CDate(sDataCredito), "mm/dd/yyyy") & "'"
+   Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+   nSeq = RdoAux3!maximo + 1
+   RdoAux3.Close
+End If
+Sql = "INSERT ARQUIVOBANCO(DATACREDITO,SEQ,CODBANCO,CODAGENCIA,DATAINCLUSAO,NOMEARQ,DA) VALUES('"
+Sql = Sql & Format(CDate(sDataCredito), "mm/dd/yyyy") & "'," & nSeq & "," & nCodBanco & "," & nCodAgencia & ",'"
+Sql = Sql & Format(Now, "mm/dd/yyyy") & "','" & sNomeArq & "'," & IIf(bDA, 1, 0) & ")"
+cn.Execute Sql, rdExecDirect
+
+
+Sql = "SELECT DISTINCT data_credito FROM importacao_banco WHERE Nome_Arquivo ='" & sNomeArq & "'"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    Do Until .EOF
+        If !data_credito <> sDataCredito Then
+        
+            Sql = "SELECT * FROM ARQUIVOBANCO WHERE DATACREDITO='" & Format(!datacretdito, "mm/dd/yyyy") & "' AND NOMEARQ='" & sNomeArq & "'"
+            Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            If RdoAux3.RowCount = 0 Then
+                RdoAux3.Close
+                Sql = "SELECT MAX(SEQ) AS MAXIMO FROM ARQUIVOBANCO WHERE DATACREDITO='" & Format(CDate(!data_credito), "mm/dd/yyyy") & "' AND NOMEARQ='" & sNomeArq & "'"
+                Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                nSeq = RdoAux3!maximo + 1
+                RdoAux3.Close
+                
+                
+                Sql = "INSERT ARQUIVOBANCO(DATACREDITO,SEQ,CODBANCO,CODAGENCIA,DATAINCLUSAO,NOMEARQ,DA) VALUES('"
+                Sql = Sql & Format(!data_credito, "mm/dd/yyyy") & "'," & nSeq & "," & nCodBanco & "," & nCodAgencia & ",'"
+                Sql = Sql & Format(Now, "mm/dd/yyyy") & "','" & sNomeArq & "'," & IIf(bDA, 1, 0) & ")"
+                cn.Execute Sql, rdExecDirect
+            End If
+        End If
+       .MoveNext
+    Loop
+   .Close
+End With
+
 
 
 End Sub

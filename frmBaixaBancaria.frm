@@ -8,8 +8,8 @@ Begin VB.Form frmBaixaBancaria
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Baixa bancária"
    ClientHeight    =   5925
-   ClientLeft      =   1590
-   ClientTop       =   2220
+   ClientLeft      =   8805
+   ClientTop       =   4950
    ClientWidth     =   11220
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
@@ -1187,7 +1187,7 @@ Private Type Registro
     sSitRetorno As String
     bExiste As Boolean
     bIsentoMJ As Boolean
-    sCNPJ As String
+    sCnpj As String
     nAno As Integer
     nMes As Integer
     sDataVencto As Date
@@ -1195,6 +1195,7 @@ Private Type Registro
     nSomaTributo As Double
     sDataPagCalc As Date
     sConta As String
+    bPagoPix As Boolean
 End Type
 
 Private Type Documento
@@ -1223,7 +1224,8 @@ Private Type Documento
     sDp As String
     nSeqReg As Integer
     bExiste As Boolean
-    sCNPJ As String
+    sCnpj As String
+    bPagoPix As Boolean
 End Type
 
 Private Type TRIBUTO
@@ -1374,7 +1376,7 @@ Else
     End With
     
     CarregaParcela nNumDoc, grdReg.TextMatrix(grdReg.Rows - 1, 11), mskDataCred.Text
-    CarregaDocumento grdReg.TextMatrix(grdReg.Row, 0), grdReg.TextMatrix(grdReg.Row, 11), grdReg.TextMatrix(grdReg.Row, 9)
+    CarregaDocumento grdReg.TextMatrix(grdReg.row, 0), grdReg.TextMatrix(grdReg.row, 11), grdReg.TextMatrix(grdReg.row, 9)
     txtNumDoc.Text = "":  LimpaMascara mskDataPag: txtAgencia.Text = "": txtValorPago.Text = ""
     
 End If
@@ -1418,7 +1420,7 @@ With txtErro
                         .Text = .Text & "--------------------------------------------------" & vbCrLf
                         bExec = False
                     End If
-                    .Text = .Text & Format(aRegistro(x).sCNPJ, "0#\.###\.###/####-##") & vbCrLf
+                    .Text = .Text & Format(aRegistro(x).sCnpj, "0#\.###\.###/####-##") & vbCrLf
                 End If
             End If
         Next
@@ -1455,7 +1457,7 @@ If lstArq.ListIndex > -1 Then
     If grdReg.Rows = 1 Then
         
         MsgBox "Não existem registros para baixar, verifique o arquivo.", vbExclamation, "Atenção"
-        GoTo fim
+        GoTo Fim
     End If
    
     '*** VERIFICA BAIXA NO ARQUIVO ***
@@ -1484,7 +1486,7 @@ If lstArq.ListIndex > -1 Then
             CarregaDocumento grdReg.TextMatrix(1, 0), grdReg.TextMatrix(1, 11), grdReg.TextMatrix(1, 9)
          End If
     End If
-fim:
+Fim:
     cmdOpcoes.Enabled = True: cmdLoad.Enabled = True: lstArq.Enabled = True
 End If
 End Sub
@@ -1505,10 +1507,10 @@ ReDim aDocTmp(0): ReDim aRegistroTmp(0)
 If grdReg.Rows = 1 Then
     MsgBox "Não existem documentos.", vbCritical, "Atenção"
 Else
-    If grdReg.Row = 0 Then
+    If grdReg.row = 0 Then
         MsgBox "Selecione o documento que deseja remover.", vbCritical, "Atenção"
     Else
-        nNumDoc = Val(grdReg.TextMatrix(grdReg.Row, 0))
+        nNumDoc = Val(grdReg.TextMatrix(grdReg.row, 0))
         
         For nLinha = 1 To UBound(aRegistro)
             If aRegistro(nLinha).nNumDoc <> nNumDoc Then
@@ -1595,8 +1597,8 @@ Else
     
         grdParc.Rows = 1
         If grdReg.Rows > 2 Then
-            grdReg.RemoveItem (grdReg.Row)
-            grdReg.Row = 1
+            grdReg.RemoveItem (grdReg.row)
+            grdReg.row = 1
             CarregaDocumento grdReg.TextMatrix(1, 0), grdReg.TextMatrix(1, 11), grdReg.TextMatrix(1, 9)
         Else
             grdReg.Rows = 1
@@ -1623,7 +1625,7 @@ Private Sub grdReg_Click()
 If grdReg.Rows = 1 Then Exit Sub
 If grdReg.MouseRow > 0 Then Exit Sub
 
-grdReg.Row = 1
+grdReg.row = 1
 grdReg.RowSel = grdReg.Rows - 1
 grdReg.col = grdReg.MouseCol
 grdReg.Sort = flexSortNumericAscending
@@ -1632,10 +1634,10 @@ End Sub
 
 Private Sub grdReg_RowColChange()
 On Error Resume Next
-If grdReg.Row > 0 Then CarregaDocumento grdReg.TextMatrix(grdReg.Row, 0), grdReg.TextMatrix(grdReg.Row, 11), grdReg.TextMatrix(grdReg.Row, 9)
+If grdReg.row > 0 Then CarregaDocumento grdReg.TextMatrix(grdReg.row, 0), grdReg.TextMatrix(grdReg.row, 11), grdReg.TextMatrix(grdReg.row, 9)
 End Sub
 
-Private Sub CarregaDocumento(nNumDoc As Long, nSeqDoc As Integer, sCNPJ As String)
+Private Sub CarregaDocumento(nNumDoc As Long, nSeqDoc As Integer, sCnpj As String)
 Dim nLinha As Integer
 grdParc.Rows = 1
 
@@ -1651,7 +1653,7 @@ For nLinha = 1 To UBound(aDoc)
         End With
     Else
         With aDoc(nLinha)
-            If .sCNPJ = RetornaNumero(sCNPJ) And .nSeqReg = nSeqDoc And .bExiste Then
+            If .sCnpj = RetornaNumero(sCnpj) And .nSeqReg = nSeqDoc And .bExiste Then
                 grdParc.AddItem .nCodReduz & Chr(9) & .nAno & Chr(9) & .nLanc & Chr(9) & .nSeq & Chr(9) & .nParc & Chr(9) & .nCompl & Chr(9) & .sDataVencto & Chr(9) & _
                 Format(.sSit, "00") & Chr(9) & FormatNumber(.nValorPrincipal, 2) & Chr(9) & FormatNumber(.nValorMulta, 2) & Chr(9) & FormatNumber(.nValorJuros, 2) & Chr(9) & _
                 FormatNumber(.nValorCorrecao, 2) & Chr(9) & FormatNumber(.nValorTotal, 2) & Chr(9) & FormatNumber(.nValorTarifa, 2) & Chr(9) & FormatNumber(.nValorDif, 2) & Chr(9) & _
@@ -1736,6 +1738,34 @@ For nLinha = 0 To UBound(aRegistro)
 Next
 
 'If nNumDoc = 15200191 Then MsgBox "teste"
+If cnEicon.Connect = Empty Then ConectaEicon
+'*************************************
+'Corrige documentos que vieram da Giss
+'*************************************
+If nNumDoc < 2500000 Then
+    Sql = "select * from parceladocumento where numdocumento=" & nNumDoc
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    With RdoAux
+        Do Until .EOF
+            Sql = "select * from debitoparcela where codreduzido=" & !CODREDUZIDO & " and anoexercicio=" & !AnoExercicio & " and codlancamento=5 and seqlancamento=" & !SeqLancamento
+            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            If RdoAux2.RowCount = 0 Then
+                Sql = "select * FROM tb_inter_boletos_giss WHERE num_documento=" & nNumDoc
+                Set RdoAux3 = cnEicon.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            
+                Sql = "insert debitoparcela(codreduzido,anoexercicio,codlancamento,seqlancamento,numparcela,codcomplemento,statuslanc,datavencimento,datadebase,userid) values("
+                Sql = Sql & !CODREDUZIDO & "," & !AnoExercicio & ",5," & !SeqLancamento & ",1,0,3,'" & Format(RdoAux3!Data_Vencimento, "mm/dd/yyyy") & "','" & Format(RdoAux3!TimeStamp, "mm/dd/yyyy") & "',477)"
+                cn.Execute Sql, rdExecDirect
+                
+            End If
+           .MoveNext
+        Loop
+       .Close
+    End With
+End If
+'*************************************
+
+
 
 nQtdeLanc = 0: nSeqReg = 0
 Sql = "SELECT parceladocumento.codreduzido, parceladocumento.anoexercicio, parceladocumento.codlancamento, debitoparcela.numerolivro, debitoparcela.paginalivro, debitoparcela.dataajuiza, "
@@ -1815,7 +1845,7 @@ With RdoAux
             Set RdoAux2 = qd.OpenResultset(rdOpenKeyset)
             Do Until RdoAux2.EOF
                 dDataVencto = RdoAux2!DataVencimentoCalc
-                nValorPrincipal = nValorPrincipal + RdoAux2!ValorTributo
+                nValorPrincipal = nValorPrincipal + RdoAux2!VALORTRIBUTO
                 If Not bIsento Then
                     nValorMulta = RdoAux2!ValorMulta
                     nValorJuros = RdoAux2!ValorJuros
@@ -1823,17 +1853,17 @@ With RdoAux
                     nValorMulta = 0
                     nValorJuros = 0
                 End If
-                nValorCorrecao = nValorCorrecao + CDbl(SubNull(RdoAux2!ValorCorrecao))
+                nValorCorrecao = nValorCorrecao + CDbl(SubNull(RdoAux2!valorcorrecao))
                 
                 If Not bIsento Then
-                    nValorTotal = nValorTotal + (RdoAux2!ValorTributo + RdoAux2!ValorMulta + RdoAux2!ValorJuros + CDbl(SubNull(RdoAux2!ValorCorrecao)))
+                    nValorTotal = nValorTotal + (RdoAux2!VALORTRIBUTO + RdoAux2!ValorMulta + RdoAux2!ValorJuros + CDbl(SubNull(RdoAux2!valorcorrecao)))
                 Else
                     If nPercDesconto > 0 Then
                         nValorMulta = nValorMulta + ((100 - nPercDesconto) * RdoAux2!ValorMulta / 100)
                         nValorJuros = nValorJuros + ((100 - nPercDesconto) * RdoAux2!ValorJuros / 100)
-                        nValorTotal = nValorTotal + (RdoAux2!ValorTributo + CDbl(SubNull(RdoAux2!ValorCorrecao) + nValorMulta + nValorJuros))
+                        nValorTotal = nValorTotal + (RdoAux2!VALORTRIBUTO + CDbl(SubNull(RdoAux2!valorcorrecao) + nValorMulta + nValorJuros))
                    Else
-                        nValorTotal = nValorTotal + (RdoAux2!ValorTributo + CDbl(SubNull(RdoAux2!ValorCorrecao)))
+                        nValorTotal = nValorTotal + (RdoAux2!VALORTRIBUTO + CDbl(SubNull(RdoAux2!valorcorrecao)))
                    End If
                    
                 End If
@@ -1849,7 +1879,7 @@ With RdoAux
                 aTrib(nLast).nParc = !NumParcela
                 aTrib(nLast).nCompl = !CODCOMPLEMENTO
                 aTrib(nLast).nCodTrib = RdoAux2!CodTributo
-                aTrib(nLast).nValorPrincipal = RdoAux2!ValorTributo
+                aTrib(nLast).nValorPrincipal = RdoAux2!VALORTRIBUTO
                 If Not bIsento Then
                     aTrib(nLast).nValorMulta = RdoAux2!ValorMulta
                     aTrib(nLast).nValorJuros = RdoAux2!ValorJuros
@@ -1857,7 +1887,7 @@ With RdoAux
                     aTrib(nLast).nValorMulta = 0
                     aTrib(nLast).nValorJuros = 0
                 End If
-                aTrib(nLast).nValorCorrecao = RdoAux2!ValorCorrecao
+                aTrib(nLast).nValorCorrecao = RdoAux2!valorcorrecao
                 aTrib(nLast).nValorTarifa = 0
                 bNewDoc = False
                 aTrib(nLast).nValorTotal = aTrib(nLast).nValorPrincipal + aTrib(nLast).nValorJuros + aTrib(nLast).nValorMulta + aTrib(nLast).nValorCorrecao + aTrib(nLast).nValorTarifa
@@ -1875,7 +1905,7 @@ With RdoAux
                             aTrib(nLast).sDA = "S"
                             GoTo Continua
                         End If
-                        sNumProc = !NUMPROCESSO
+                        sNumProc = !numprocesso
                        .Close
                     End With
                     
@@ -2078,7 +2108,7 @@ For nLinha = 1 To UBound(aDoc)
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux
                 If .RowCount > 0 Then
-                   If Format(!Datarecebimento, "dd/mm/yyyy") <> Format(CDate(sDataCredito), "dd/MM/yyyy") Or Val(SubNull(!NumDocumento)) <> nNumDoc Then
+                   If Format(!datarecebimento, "dd/mm/yyyy") <> Format(CDate(sDataCredito), "dd/MM/yyyy") Or Val(SubNull(!NumDocumento)) <> nNumDoc Then
                        sDup = "S"
                    End If
                 Else
@@ -2157,7 +2187,7 @@ DoEvents
 End Sub
 
 Private Sub LimpaTela()
-    pBar.value = 0
+    PBar.value = 0
     lblDC.Caption = ""
     lblDB.Caption = ""
     lblAS.Caption = "N"
@@ -2301,9 +2331,9 @@ End Select
 End Sub
 
 Private Sub EfetuaBaixa()
-Dim nLinha As Integer, nLinha2 As Integer, Sql As String, aDocTmp() As Documento, nStatus As Integer, nSeqPag As Integer, sCNPJ As String, nNumDoc As Long
+Dim nLinha As Integer, nLinha2 As Integer, Sql As String, aDocTmp() As Documento, nStatus As Integer, nSeqPag As Integer, sCnpj As String, nNumDoc As Long
 Dim RdoAux As rdoResultset, sNomeArq As String, nComplCP As Integer, RdoAux2 As rdoResultset, aTribProp() As TributoProp, k As Integer, nSomaTrib As Double, nSeq2 As Integer
-Dim sNumProc As String, nNumproc As Long, nAnoproc As Integer, nSeq As Integer
+Dim sNumProc As String, nNumproc As Long, nAnoproc As Integer, nSeq As Integer, RdoAux3 As rdoResultset, nValorPago As Double, nValorPagoReal As Double, sDataVencto As String
 
 If grdReg.Rows = 1 Then
     MsgBox "Arquivo não carregado.", vbExclamation, "Atenção"
@@ -2329,13 +2359,13 @@ Else
 End If
 
 cmdOpcoes.Enabled = False: lstArq.Enabled = False: cmdLoad.Enabled = False
-pBar.value = 0
+PBar.value = 0
 
 If lblAS.Caption = "S" Then 'SOMENTE PARA SIMPLES NACIONAL
     '*** VALIDAÇÃO DE DOCUMENTOS***
     For nLinha = 1 To UBound(aRegistro)
         If aRegistro(nLinha).nNumDoc = 0 Then
-            sCNPJ = aRegistro(nLinha).sCNPJ
+            sCnpj = aRegistro(nLinha).sCnpj
             Sql = "SELECT MAX(NUMDOCUMENTO) AS MAXIMO FROM NUMDOCUMENTO"
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
             nNumDoc = RdoAux!maximo + 1
@@ -2346,7 +2376,7 @@ If lblAS.Caption = "S" Then 'SOMENTE PARA SIMPLES NACIONAL
     
             aRegistro(nLinha).nNumDoc = nNumDoc
             For nLinha2 = 1 To UBound(aDoc)
-                If aDoc(nLinha2).sCNPJ = aRegistro(nLinha).sCNPJ Then
+                If aDoc(nLinha2).sCnpj = aRegistro(nLinha).sCnpj Then
                     aDoc(nLinha2).nNumDoc = nNumDoc
                    'CRIA PARCELA DOCUMENTO
                    On Error Resume Next
@@ -2376,7 +2406,7 @@ If lblAS.Caption = "S" Then 'SOMENTE PARA SIMPLES NACIONAL
                 Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,"
                 Sql = Sql & "NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,DATAVENCIMENTO,DATADEBASE,CODMOEDA,USERID) "
                 Sql = Sql & "VALUES(" & .nCodReduz & "," & .nAno & "," & .nLanc & "," & .nSeq & "," & .nParc & "," & .nCompl & ","
-                Sql = Sql & 2 & ",'" & Format(.sDataVencto, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "'," & 1 & ",236)"
+                Sql = Sql & 2 & ",'" & Format(.sDataVencto, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "'," & 1 & "," & RetornaUsuarioID(NomeDeLogin) & ")"
                 cn.Execute Sql, rdExecDirect
                 
                 Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,"
@@ -2392,10 +2422,11 @@ If lblAS.Caption = "S" Then 'SOMENTE PARA SIMPLES NACIONAL
     '******************************
 End If
 
+Dim pagoPix As Boolean
 For nLinha = 1 To UBound(aRegistro)
     CallPb CLng(nLinha), CLng(UBound(aRegistro))
     If Val(Left(aRegistro(nLinha).sSitRetorno, 2)) > 0 Then GoTo Proximo 'APENAS SIT.RETORNO NORMAL PODE SER BAIXADO
-
+    pagoPix = aRegistro(nLinha).bPagoPix
     If aRegistro(nLinha).sDataCred <> lblDC.Caption Then GoTo Proximo
     ReDim aDocTmp(0)
     If aRegistro(nLinha).bExiste Then
@@ -2445,7 +2476,7 @@ For nLinha = 1 To UBound(aRegistro)
                     Sql = Sql & "ANOEXERCICIO=" & aDocTmp(nLinha2).nAno & " AND CODLANCAMENTO=" & aDocTmp(nLinha2).nLanc & " AND "
                     Sql = Sql & "SEQLANCAMENTO=" & aDocTmp(nLinha2).nSeq & " AND NUMPARCELA = " & aDocTmp(nLinha2).nParc & " AND CODCOMPLEMENTO=" & aDocTmp(nLinha2).nCompl
                     Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-                    sNumProc = SubNull(RdoAux2!NUMPROCESSO)
+                    sNumProc = SubNull(RdoAux2!numprocesso)
                     RdoAux2.Close
                     
                     If sNumProc <> "" Then
@@ -2575,13 +2606,16 @@ For nLinha = 1 To UBound(aRegistro)
                 If aRegistro(nLinha).sDataPagCalc = "00:00:00" Or aRegistro(nLinha).sDataPagCalc = "01/01/1900" Then
                     aRegistro(nLinha).sDataPagCalc = grdReg.TextMatrix(1, 2)
                 End If
-                Sql = "INSERT DEBITOPAGO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,"
-                Sql = Sql & "SEQPAG,DATAPAGAMENTO,DATARECEBIMENTO,VALORPAGO,CODBANCO,CODAGENCIA,NUMDOCUMENTO,VALORPAGOREAL,VALORTARIFA,ARQUIVOBANCO,VALORDIF,DATAPAGAMENTOCALC,CONTACORRENTE) VALUES(" & aDocTmp(nLinha2).nCodReduz & ","
+                
+                nValorPago = aDocTmp(nLinha2).nValorCompensado + Abs(aDocTmp(nLinha2).nValorDif)
+                nValorPagoReal = aDocTmp(nLinha2).nValorCompensado
+                If nValorPagoReal = 0 Then nValorPagoReal = nValorPago
+                Sql = "INSERT DEBITOPAGO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,SEQPAG,DATAPAGAMENTO,DATARECEBIMENTO,VALORPAGO,"
+                Sql = Sql & "CODBANCO,CODAGENCIA,NUMDOCUMENTO,VALORPAGOREAL,VALORTARIFA,ARQUIVOBANCO,VALORDIF,DATAPAGAMENTOCALC,CONTACORRENTE,PAGOCOMPIX) VALUES(" & aDocTmp(nLinha2).nCodReduz & ","
                 Sql = Sql & aDocTmp(nLinha2).nAno & "," & aDocTmp(nLinha2).nLanc & "," & aDocTmp(nLinha2).nSeq & "," & aDocTmp(nLinha2).nParc & "," & aDocTmp(nLinha2).nCompl & "," & nSeqPag & ",'"
-                'Sql = Sql & Format(aRegistro(nLinha).sDataPag, "mm/dd/yyyy") & "','" & Format(lblDC.Caption, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(aDocTmp(nLinha2).nValorCompensado + Abs(aDocTmp(nLinha2).nValorDif))) & ","
-                Sql = Sql & Format(aRegistro(nLinha).sDataPag, "mm/dd/yyyy") & "','" & Format(aRegistro(nLinha).sDataCred, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(aDocTmp(nLinha2).nValorCompensado + Abs(aDocTmp(nLinha2).nValorDif))) & ","
-                Sql = Sql & Val(Left(lblBanco.Caption, 3)) & ",'" & Val(RetornaNumero(aRegistro(nLinha).sAgencia)) & "'," & aDocTmp(nLinha2).nNumDoc & "," & Virg2Ponto(CStr(aDocTmp(nLinha2).nValorCompensado)) & ","
-                Sql = Sql & Virg2Ponto(CStr(aDocTmp(nLinha2).nValorTarifa)) & ",'" & Left(sNomeArq, 50) & "'," & Virg2Ponto(CStr(aDocTmp(nLinha2).nValorDif)) & ",'" & Format(aRegistro(nLinha).sDataPagCalc, "mm/dd/yyyy") & "','" & aRegistro(nLinha).sConta & "')"
+                Sql = Sql & Format(aRegistro(nLinha).sDataPag, "mm/dd/yyyy") & "','" & Format(aRegistro(nLinha).sDataCred, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(nValorPago)) & ","
+                Sql = Sql & Val(Left(lblBanco.Caption, 3)) & ",'" & Val(RetornaNumero(aRegistro(nLinha).sAgencia)) & "'," & aDocTmp(nLinha2).nNumDoc & "," & Virg2Ponto(CStr(nValorPagoReal)) & ","
+                Sql = Sql & Virg2Ponto(CStr(aDocTmp(nLinha2).nValorTarifa)) & ",'" & Left(sNomeArq, 50) & "'," & Virg2Ponto(CStr(aDocTmp(nLinha2).nValorDif)) & ",'" & Format(aRegistro(nLinha).sDataPagCalc, "mm/dd/yyyy") & "','" & aRegistro(nLinha).sConta & "'," & IIf(pagoPix, 1, 0) & ")"
                 cn.Execute Sql, rdExecDirect
                 
                 'SE FOR SIMPLES GRAVA NA TABELA DE COMPLEMENTO
@@ -2590,9 +2624,30 @@ For nLinha = 1 To UBound(aRegistro)
                     Sql = "INSERT COMPLEMENTOSIMPLES(CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,ARQUIVOBANCO,DATACREDITO,VALOR,CNPJ,ANO,MES) VALUES(" & aDocTmp(nLinha2).nCodReduz & ","
                     'Sql = Sql & aDocTmp(nLinha2).nAno & "," & aDocTmp(nLinha2).nLanc & "," & aDocTmp(nLinha2).nSeq & "," & aDocTmp(nLinha2).nParc & "," & aDocTmp(nLinha2).nCompl & ",'" & sNomeArq & "','" & Format(lblDC.Caption, "mm/dd/yyyy") & "',"
                     Sql = Sql & aDocTmp(nLinha2).nAno & "," & aDocTmp(nLinha2).nLanc & "," & aDocTmp(nLinha2).nSeq & "," & aDocTmp(nLinha2).nParc & "," & aDocTmp(nLinha2).nCompl & ",'" & sNomeArq & "','" & Format(aRegistro(nLinha).sDataCred, "mm/dd/yyyy") & "',"
-                    Sql = Sql & Virg2Ponto(CStr(aDocTmp(nLinha2).nValorCompensado)) & ",'" & aRegistro(nLinha).sCNPJ & "'," & aRegistro(nLinha).nAno & "," & aRegistro(nLinha).nMes & ")"
+                    Sql = Sql & Virg2Ponto(CStr(aDocTmp(nLinha2).nValorCompensado)) & ",'" & aRegistro(nLinha).sCnpj & "'," & aRegistro(nLinha).nAno & "," & aRegistro(nLinha).nMes & ")"
                     cn.Execute Sql, rdExecDirect
                     On Error GoTo 0
+                End If
+                
+                'SE FOR TAXA DE ACOSTAMENTO ALTERAR O STATUS DA GUIA PARA PAGO, NA TABELA RODO_USO_PLATAFORMA
+                If aDocTmp(nLinha2).nLanc = 52 Then
+                    'busca por todos os documentos gerados para este lançamento ,e caso algum seja o original, dar baixa por ele.
+                    Sql = "select numdocumento from parceladocumento where codreduzido=" & aDocTmp(nLinha2).nCodReduz & " and anoexercicio=" & aDocTmp(nLinha2).nAno & " and codlancamento=52 and seqlancamento=" & aDocTmp(nLinha2).nSeq
+                    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                    With RdoAux2
+                        Do Until .EOF
+                            nNumDoc = !NumDocumento
+                            Sql = "SELECT * FROM rodo_uso_plataforma WHERE numero_guia=" & nNumDoc
+                            Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                            If RdoAux3.RowCount > 0 Then
+                                Sql = "update rodo_uso_plataforma set situacao=6 where numero_guia=" & nNumDoc
+                                cn.Execute Sql, rdExecDirect
+                                Exit Do
+                            End If
+                           .MoveNext
+                        Loop
+                       .Close
+                    End With
                 End If
                 
                 'SE TIVER DIFERENÇA ACIMA DE R$2,00 GERA COMPLEMENTO
@@ -2617,7 +2672,8 @@ For nLinha = 1 To UBound(aRegistro)
                             Sql = "SELECT * FROM DEBITOPARCELA WHERE CODREDUZIDO=" & .nCodReduz & " AND ANOEXERCICIO=" & .nAno & " AND CODLANCAMENTO=" & .nLanc & " AND "
                             Sql = Sql & "SEQLANCAMENTO=" & .nSeq & " AND NUMPARCELA=" & .nParc
                             Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-                            sNumProc = SubNull(RdoAux2!NUMPROCESSO)
+                            sNumProc = SubNull(RdoAux2!numprocesso)
+                            sDataVencto = RdoAux2!DataVencimento
                             RdoAux2.Close
                             
                             'GERA O COMPLEMENTO EM DEBITOPARCELA E DEBITOTRIBUTO
@@ -2628,7 +2684,8 @@ For nLinha = 1 To UBound(aRegistro)
                             Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,"
                             Sql = Sql & "NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,DATAVENCIMENTO,DATADEBASE,CODMOEDA,NUMPROCESSO,USERID) "
                             Sql = Sql & "VALUES(" & .nCodReduz & "," & .nAno & "," & .nLanc & "," & .nSeq & "," & .nParc & "," & nComplCP & ","
-                            Sql = Sql & 25 & ",'" & Format(lblDC.Caption, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "'," & 1 & ",'" & sNumProc & "',236)"
+                            Sql = Sql & 25 & ",'" & Format(sDataVencto, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "'," & 1 & ",'" & sNumProc & "'," & RetornaUsuarioID(NomeDeLogin) & ")"
+                            'Sql = Sql & 25 & ",'" & Format(lblDC.Caption, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "'," & 1 & ",'" & sNumProc & "'," & RetornaUsuarioID(NomeDeLogin) & ")"
                             cn.Execute Sql, rdExecDirect
                             
                             'GERA MATRIZ PROPORCIONAL DE TRIBUTOS
@@ -2639,8 +2696,8 @@ For nLinha = 1 To UBound(aRegistro)
                                 Do Until .EOF
                                     ReDim Preserve aTribProp(UBound(aTribProp) + 1)
                                     aTribProp(UBound(aTribProp)).nCodTrib = !CodTributo
-                                    aTribProp(UBound(aTribProp)).nValorTrib = !ValorTributo
-                                    nSomaTrib = nSomaTrib + !ValorTributo
+                                    aTribProp(UBound(aTribProp)).nValorTrib = !VALORTRIBUTO
+                                    nSomaTrib = nSomaTrib + !VALORTRIBUTO
                                    .MoveNext
                                 Loop
                                .Close
@@ -2686,7 +2743,7 @@ For nLinha = 1 To UBound(aRegistro)
 '                            Sql = "INSERT OBSPARCELA(CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,SEQ,OBS,USUARIO,DATA) VALUES(" & .nCodReduz & "," & .nAno & ","
 '                            Sql = Sql & .nLanc & "," & .nSeq & "," & .nParc & "," & nComplCP & "," & nSeq2 & ",'" & sObs & "','GTI AUTOMÁTICO','" & Format(sData, "mm/dd/yyyy") & "')"
                             Sql = "INSERT OBSPARCELA(CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,SEQ,OBS,USERID,DATA) VALUES(" & .nCodReduz & "," & .nAno & ","
-                            Sql = Sql & .nLanc & "," & .nSeq & "," & .nParc & "," & nComplCP & "," & nSeq2 & ",'" & sObs & "',236,'" & Format(sData, "mm/dd/yyyy") & "')"
+                            Sql = Sql & .nLanc & "," & .nSeq & "," & .nParc & "," & nComplCP & "," & nSeq2 & ",'" & sObs & "'," & RetornaUsuarioID(NomeDeLogin) & ",'" & Format(sData, "mm/dd/yyyy") & "')"
                             cn.Execute Sql, rdExecDirect
                                                        
                             
@@ -2716,7 +2773,7 @@ DocumentoErro:
 Proximo:
 Next
 
-pBar.value = 0
+PBar.value = 0
 cmdOpcoes.Enabled = True: lstArq.Enabled = True: cmdLoad.Enabled = True
 
 lblDB.Caption = Format(Now, "dd/mm/yyyy")
@@ -2743,7 +2800,7 @@ cn.Execute Sql, rdExecDirect
 'GravaAnalise
 
 MsgBox "Baixa efetuada com sucesso.", vbInformation, "Informação"
-pBar.value = 0
+PBar.value = 0
 
 If lstArq.Visible = False Then
     ReDim aReg(0): ReDim aDoc(0)
@@ -2784,7 +2841,7 @@ cmdOpcoes.Enabled = False: lstArq.Enabled = False: cmdLoad.Enabled = False
 Sql = "DELETE FROM RECEITACLASSIFICAR WHERE DATARECEITA='" & Format(cmbDataCredito.Text, "mm/dd/yyyy") & "' AND NOMEARQ='" & lstArq.Text & "'"
 cn.Execute Sql, rdExecDirect
 
-pBar.value = 0
+PBar.value = 0
 For nLinha = 1 To UBound(aRegistro)
     CallPb CLng(nLinha), CLng(UBound(aRegistro))
     ReDim aDocTmp(0)
@@ -2910,7 +2967,7 @@ Else
     End If
 End If
 
-pBar.value = 0
+PBar.value = 0
 
 Sql = "DELETE FROM ANALISE2 WHERE USUARIO='" & NomeDeLogin & "' AND DATARECEITA='" & Format(lblDC.Caption, "mm/dd/yyyy") & "' AND CODBANCO=" & Val(Left(lblBanco.Caption, 3)) & " AND ARQUIVO='" & lstArq.Text & "'"
 'cn.Execute Sql, rdExecDirect
@@ -2996,14 +3053,14 @@ End Sub
 
 Private Sub CallPb(nVal As Long, nTot As Long)
 If nVal > 0 Then
-    pBar.Color = &HC0C000
+    PBar.Color = &HC0C000
 Else
-    pBar.Color = vbWhite
+    PBar.Color = vbWhite
 End If
 If ((nVal * 100) / nTot) <= 100 Then
-   pBar.value = (nVal * 100) / nTot
+   PBar.value = (nVal * 100) / nTot
 Else
-   pBar.value = 100
+   PBar.value = 100
 End If
 
 Me.Refresh
@@ -3033,7 +3090,7 @@ If Dir$(sFullPath) = "" Then
     Exit Sub
 End If
 
-nPos = 0: nTot = 0: pBar.value = 0: nValorEfetivo = 0
+nPos = 0: nTot = 0: PBar.value = 0: nValorEfetivo = 0
 Ocupado
 lblAS.Caption = "N": lblAC.Caption = "N": lblDA.Caption = "N"
 
@@ -3225,7 +3282,7 @@ Test1:
                        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                        With RdoAux2
                            If .RowCount > 0 Then
-                              nValorTaxa = FormatNumber(!ValorTributo, 2)
+                              nValorTaxa = FormatNumber(!VALORTRIBUTO, 2)
                            Else
                               nValorTaxa = "0,00"
                            End If
@@ -3268,7 +3325,8 @@ Test1:
                         Next
                         Sql = "insert tb_inter_baixa_detalhe(cod_cliente,cod_banco,num_sequencia,num_documento,linha,timestamp,valor_titulo,valor_pago,data_pagamento,valor_encargos,"
                         Sql = Sql & "descricao_linha_t,descricao_linha_u) values(" & 2177 & "," & Val(Left(lblBanco.Caption, 3)) & "," & 0 & "," & nNumDoc & "," & nPos & ",'" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "',"
-                        Sql = Sql & Virg2Ponto(CStr(aDoc(x).nValorTotal)) & "," & Virg2Ponto(CStr(aRegistro(UBound(aRegistro)).nValorPago)) & ",'" & Format(aRegistro(UBound(aRegistro)).sDataPag, "mm/dd/yyyy") & "'," & 0 & ",'"
+'                        Sql = Sql & Virg2Ponto(CStr(aDoc(x).nValorTotal)) & "," & Virg2Ponto(CStr(aRegistro(UBound(aRegistro)).nValorPago)) & ",'" & Format(aRegistro(UBound(aRegistro)).sDataPag, "mm/dd/yyyy") & "'," & 0 & ",'"
+                        Sql = Sql & Virg2Ponto(CStr(aDoc(x).nValorTotal)) & "," & Virg2Ponto(CStr(aDoc(x).nValorTotal)) & ",'" & Format(aRegistro(UBound(aRegistro)).sDataPag, "mm/dd/yyyy") & "'," & 0 & ",'"
                         Sql = Sql & "" & "','" & "" & "')"
                         cnEicon.Execute Sql, rdExecDirect
                     
@@ -3315,8 +3373,8 @@ Test1:
 CloseFile1:
 Close #FF1
 Liberado
-pBar.Color = vbWhite
-pBar.value = 0
+PBar.Color = vbWhite
+PBar.value = 0
 nErro = 0
 cmbDataCredito.Clear
 
@@ -3427,12 +3485,12 @@ Open sFullPath For Binary Access Read Write As FF1
                 sAno = Mid(sReg, 101, 4)
                 sMes = Mid(sReg, 105, 2)
                 sAgencia = Mid(sReg, 223, 4)
-                sCNPJ = Mid(sReg, 75, 14)
+                sCnpj = Mid(sReg, 75, 14)
                 
                 nSeq = 0
                 bAchou = False
                 For R = 1 To UBound(aRegistro)
-                    If aRegistro(R).sCNPJ = Mid(sReg, 75, 14) Then
+                    If aRegistro(R).sCnpj = Mid(sReg, 75, 14) Then
                         bAchou = True
                         nSeq = nSeq + 1
                     End If
@@ -3444,11 +3502,11 @@ Open sFullPath For Binary Access Read Write As FF1
                 aRegistro(UBound(aRegistro)).sDataPag = ConvDataSerial(Mid(sReg, 10, 8))
                 aRegistro(UBound(aRegistro)).nValorPago = nValorGuia
                 aRegistro(UBound(aRegistro)).sAgencia = Mid(sReg, 223, 4)
-                aRegistro(UBound(aRegistro)).sCNPJ = Mid(sReg, 75, 14)
+                aRegistro(UBound(aRegistro)).sCnpj = Mid(sReg, 75, 14)
                 aRegistro(UBound(aRegistro)).nAno = Val(Mid(sReg, 101, 4))
                 aRegistro(UBound(aRegistro)).nMes = Val(Mid(sReg, 105, 2))
                 aRegistro(UBound(aRegistro)).nValorTarifaBancaria = 0
-                aRegistro(UBound(aRegistro)).sSitRetorno = "CNPJ: " & Format(aRegistro(UBound(aRegistro)).sCNPJ, "0#\.###\.###/####-##")
+                aRegistro(UBound(aRegistro)).sSitRetorno = "CNPJ: " & Format(aRegistro(UBound(aRegistro)).sCnpj, "0#\.###\.###/####-##")
                 aRegistro(UBound(aRegistro)).bExiste = True
                 aRegistro(UBound(aRegistro)).sDataPagCalc = RetornaDiaUtil(CDate(aRegistro(UBound(aRegistro)).sDataPag))
                 If Not bAchou Then
@@ -3465,7 +3523,7 @@ Open sFullPath For Binary Access Read Write As FF1
                     If .RowCount > 0 Then
                         'CARREGA PARCELA GRAVADA
                         ReDim Preserve aDoc(UBound(aDoc) + 1)
-                        aDoc(UBound(aDoc)).sCNPJ = aRegistro(UBound(aRegistro)).sCNPJ
+                        aDoc(UBound(aDoc)).sCnpj = aRegistro(UBound(aRegistro)).sCnpj
                         aDoc(UBound(aDoc)).nCodReduz = !CODREDUZIDO
                         aDoc(UBound(aDoc)).nAno = !AnoExercicio
                         aDoc(UBound(aDoc)).nLanc = !CodLancamento
@@ -3489,8 +3547,8 @@ Open sFullPath For Binary Access Read Write As FF1
                     Else
                         'DEFINIR NOVA PARCELA
                         'BUSCA CÓDIGO
-                        Sql = "SELECT CODIGOMOB,CNPJ FROM MOBILIARIO WHERE DATAENCERRAMENTO IS NULL and CONVERT(BIGINT, cnpj) = " & Val(aRegistro(UBound(aRegistro)).sCNPJ)
-                        Sql = Sql & " OR CNPJ='" & Format(aRegistro(UBound(aRegistro)).sCNPJ, "00\.000\.000/0000-00") & "' AND DATAENCERRAMENTO IS NULL ORDER BY CODIGOMOB DESC"
+                        Sql = "SELECT CODIGOMOB,CNPJ FROM MOBILIARIO WHERE DATAENCERRAMENTO IS NULL and CONVERT(BIGINT, cnpj) = " & Val(aRegistro(UBound(aRegistro)).sCnpj)
+                        Sql = Sql & " OR CNPJ='" & Format(aRegistro(UBound(aRegistro)).sCnpj, "00\.000\.000/0000-00") & "' AND DATAENCERRAMENTO IS NULL ORDER BY CODIGOMOB DESC"
                         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                         With RdoAux2
                             If .RowCount > 0 Then
@@ -3498,8 +3556,8 @@ Open sFullPath For Binary Access Read Write As FF1
                                 .Close
                             Else
                                 .Close
-                                Sql = "SELECT CODCIDADAO,CNPJ FROM CIDADAO WHERE CNPJ = '" & RetornaNumero(aRegistro(UBound(aRegistro)).sCNPJ) & "' OR "
-                                Sql = Sql & "CNPJ='" & Format(aRegistro(UBound(aRegistro)).sCNPJ, "00\.000\.000/0000-00") & "' ORDER BY CODCIDADAO DESC"
+                                Sql = "SELECT CODCIDADAO,CNPJ FROM CIDADAO WHERE CNPJ = '" & RetornaNumero(aRegistro(UBound(aRegistro)).sCnpj) & "' OR "
+                                Sql = Sql & "CNPJ='" & Format(aRegistro(UBound(aRegistro)).sCnpj, "00\.000\.000/0000-00") & "' ORDER BY CODCIDADAO DESC"
                                 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                                 With RdoAux2
                                     If .RowCount > 0 Then
@@ -3507,11 +3565,11 @@ Open sFullPath For Binary Access Read Write As FF1
                                     Else
                                         'CNPJ NÃO LOCALIZADO
                                         aRegistro(UBound(aRegistro)).bExiste = False
-                                        Sql = "SELECT * FROM SIMPLESCNPJ WHERE CNPJ='" & aRegistro(UBound(aRegistro)).sCNPJ & "' AND ANOCOMP=" & aRegistro(UBound(aRegistro)).nAno & " AND MESCOMP=" & aRegistro(UBound(aRegistro)).nMes
+                                        Sql = "SELECT * FROM SIMPLESCNPJ WHERE CNPJ='" & aRegistro(UBound(aRegistro)).sCnpj & "' AND ANOCOMP=" & aRegistro(UBound(aRegistro)).nAno & " AND MESCOMP=" & aRegistro(UBound(aRegistro)).nMes
                                         Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                                         If RdoAux3.RowCount = 0 Then
                                             Sql = "INSERT SIMPLESCNPJ (CNPJ,ARQUIVOSHORT,BANCO,DATAARRECADA,DATAVENCTO,ANOCOMP,MESCOMP,PRINCIPAL,JUROS,"
-                                            Sql = Sql & "MULTA,AGENCIA,CODREDUZIDO) VALUES('" & RetornaNumero(aRegistro(UBound(aRegistro)).sCNPJ) & "','" & lstArq.Text & "'," & Val(Left(lblBanco.Caption, 3)) & ",'" & Format(aRegistro(UBound(aRegistro)).sDataCred, "mm/dd/yyyy") & "','"
+                                            Sql = Sql & "MULTA,AGENCIA,CODREDUZIDO) VALUES('" & RetornaNumero(aRegistro(UBound(aRegistro)).sCnpj) & "','" & lstArq.Text & "'," & Val(Left(lblBanco.Caption, 3)) & ",'" & Format(aRegistro(UBound(aRegistro)).sDataCred, "mm/dd/yyyy") & "','"
                                             Sql = Sql & Format(aRegistro(UBound(aRegistro)).sDataVencto, "mm/dd/yyyy") & "'," & aRegistro(UBound(aRegistro)).nAno & "," & aRegistro(UBound(aRegistro)).nMes & "," & Virg2Ponto(CStr(aRegistro(UBound(aRegistro)).nValorPago)) & "," & Virg2Ponto(0) & "," & Virg2Ponto(0) & ",'"
                                             Sql = Sql & aRegistro(UBound(aRegistro)).sAgencia & "'," & 0 & ")"
                                             cn.Execute Sql, rdExecDirect
@@ -3591,7 +3649,7 @@ Open sFullPath For Binary Access Read Write As FF1
                                  nNumParc = 1
                              End If
                              ReDim Preserve aDoc(UBound(aDoc) + 1)
-                             aDoc(UBound(aDoc)).sCNPJ = aRegistro(UBound(aRegistro)).sCNPJ
+                             aDoc(UBound(aDoc)).sCnpj = aRegistro(UBound(aRegistro)).sCnpj
                              aDoc(UBound(aDoc)).nCodReduz = nCodReduz
                              aDoc(UBound(aDoc)).nAno = Val(sAno)
                              aDoc(UBound(aDoc)).nLanc = 5
@@ -3630,7 +3688,7 @@ CONTSN:
     Wend
 CloseFile2:
 Close #FF1
-pBar.value = 0
+PBar.value = 0
 Liberado
 nErro = 0
 
@@ -3721,7 +3779,7 @@ Test2:
                     If RdoAux.RowCount > 0 Then
                         ReDim Preserve aRegistro(UBound(aRegistro) + 1)
                         aRegistro(UBound(aRegistro)).nNumDoc = nNumDoc
-                        If nNumDoc = 14294407 Then MsgBox "teste"
+                       ' If nNumDoc = 14294407 Then MsgBox "teste"
                         aRegistro(UBound(aRegistro)).nSeq = nSeqReg
                         aRegistro(UBound(aRegistro)).nValorTarifaBancaria = (CDbl(Mid(sReg, 194, 15)) / 100)
                        'LOGO EM SEGUIDA LE OS REGISTROS TIPO U
@@ -3891,7 +3949,7 @@ cmbDataCredito.ListIndex = 0
 '    lblDC.Caption = "Sem Registros"
 'End If
 
-pBar.value = 0
+PBar.value = 0
 Liberado
 
 Exit Sub
@@ -3906,6 +3964,7 @@ nValorGuia = 0
 ConectaEicon
 Open sFullPath For Binary Access Read Write As FF1
 
+nTot = nTot * 2
 '*** LAYOUT NOVO ***
 While Not EOF(FF1)
     On Error GoTo CloseFile3bb
@@ -3925,6 +3984,7 @@ While Not EOF(FF1)
                 'nNumDoc = Val(Mid(sReg, 45, 9))
                 
                 
+                
                 If Mid(sReg, 45, 2) = "00" Then
                     nNumDoc = Val(Mid(sReg, 47, 8))
                 ElseIf Mid(sReg, 45, 1) <> "0" Then
@@ -3932,7 +3992,12 @@ While Not EOF(FF1)
                 Else
                     nNumDoc = Val(Mid(sReg, 46, 8))
                 End If
-                'If nNumDoc = 2103745 Then MsgBox "teste"
+'                If nNumDoc = 21462105 Then
+                
+'                   MsgBox "teste"
+'               Else
+ ''                 GoTo proximoBB
+ '              End If
                ' nNumDoc = Val(Mid(sReg, 106, 8))
                ' If nNumDoc = 0 Then
                '     nNumDoc = Val(Mid(sReg, 45, 9))
@@ -3956,18 +4021,31 @@ Test2bb:
             If RdoAux.RowCount > 0 Then
                 ReDim Preserve aRegistro(UBound(aRegistro) + 1)
                 aRegistro(UBound(aRegistro)).nNumDoc = nNumDoc
+                                If Val(Mid(sReg, 214, 2)) = 61 Then
+                    aRegistro(UBound(aRegistro)).bPagoPix = True
+                Else
+                    aRegistro(UBound(aRegistro)).bPagoPix = False
+                End If
+
 '                If nNumDoc = 2058074 Then MsgBox "teste"
                 aRegistro(UBound(aRegistro)).nSeq = nSeqReg
                 aRegistro(UBound(aRegistro)).nValorTarifaBancaria = (CDbl(Mid(sReg, 194, 15)) / 100)
                  aRegistro(UBound(aRegistro)).sConta = Mid(sReg, 30, 7)
                  aRegistro(UBound(aRegistro)).sDataVencto = Left$(Mid(sReg, 74, 8), 2) & "/" & Mid$(Mid(sReg, 74, 8), 3, 2) & "/" & Right$(Mid(sReg, 74, 8), 4)
+          '       aRegistro(UBound(aRegistro)).sDataVencto = "18/02/2021"
 '                aRegistro(UBound(aRegistro)).nValorPago = CDbl(Mid(sReg, 78, 19) / 100)
                'LOGO EM SEGUIDA LE OS REGISTROS TIPO U
                 Input #FF1, sReg
                 sLinhaU = sReg
                 aRegistro(UBound(aRegistro)).sDataDoc = Format(RdoAux!Datadocumento, "dd/mm/yyyy")
                 aRegistro(UBound(aRegistro)).sDataPag = Left$(Mid(sReg, 138, 8), 2) & "/" & Mid$(Mid(sReg, 138, 8), 3, 2) & "/" & Right$(Mid(sReg, 138, 8), 4)
-                aRegistro(UBound(aRegistro)).sDataCred = Left$(Mid(sReg, 146, 8), 2) & "/" & Mid$(Mid(sReg, 146, 8), 3, 2) & "/" & Right$(Mid(sReg, 146, 8), 4)
+                If Left$(Mid(sReg, 146, 8), 2) & "/" & Mid$(Mid(sReg, 146, 8), 3, 2) & "/" & Right$(Mid(sReg, 146, 8), 4) = "00/00/0000" Then
+                   aRegistro(UBound(aRegistro)).sDataCred = sDataGeracao
+                Else
+                   aRegistro(UBound(aRegistro)).sDataCred = Left$(Mid(sReg, 146, 8), 2) & "/" & Mid$(Mid(sReg, 146, 8), 3, 2) & "/" & Right$(Mid(sReg, 146, 8), 4)
+                End If
+
+             '   aRegistro(UBound(aRegistro)).sDataCred = Left$(Mid(sReg, 146, 8), 2) & "/" & Mid$(Mid(sReg, 146, 8), 3, 2) & "/" & Right$(Mid(sReg, 146, 8), 4)
                 aRegistro(UBound(aRegistro)).nValorPago = CDbl(Mid(sReg, 78, 15) / 100)
              '   aRegistro(UBound(aRegistro)).nValorPago = CDbl(Mid(sReg, 93, 15) / 100)
                 aRegistro(UBound(aRegistro)).sAgencia = sAgencia
@@ -4014,7 +4092,11 @@ Test2bb:
                     aRegistro(UBound(aRegistro)).nSeq = nSeqReg
                     aRegistro(UBound(aRegistro)).sDataDoc = "01/01/1900"
                     aRegistro(UBound(aRegistro)).sDataPag = Left$(Mid(sReg, 138, 8), 2) & "/" & Mid$(Mid(sReg, 138, 8), 3, 2) & "/" & Right$(Mid(sReg, 138, 8), 4)
-                    aRegistro(UBound(aRegistro)).sDataCred = Left$(Mid(sReg, 146, 8), 2) & "/" & Mid$(Mid(sReg, 146, 8), 3, 2) & "/" & Right$(Mid(sReg, 146, 8), 4)
+                    If Left$(Mid(sReg, 146, 8), 2) & "/" & Mid$(Mid(sReg, 146, 8), 3, 2) & "/" & Right$(Mid(sReg, 146, 8), 4) = "00/00/0000" Then
+                        aRegistro(UBound(aRegistro)).sDataCred = sDataGeracao
+                    Else
+                        aRegistro(UBound(aRegistro)).sDataCred = Left$(Mid(sReg, 146, 8), 2) & "/" & Mid$(Mid(sReg, 146, 8), 3, 2) & "/" & Right$(Mid(sReg, 146, 8), 4)
+                    End If
                     aRegistro(UBound(aRegistro)).nValorPago = CDbl(Mid(sReg, 78, 15) / 100)
                     aRegistro(UBound(aRegistro)).sAgencia = Mid(sReg, 109, 4)
                     aRegistro(UBound(aRegistro)).nValorTarifa = 0
@@ -4083,8 +4165,9 @@ For nPos = 1 To UBound(aRegistro)
 '        End If
 '    End With
 Next
-
-cmbDataCredito.ListIndex = 0
+If cmbDataCredito.ListCount > 0 Then
+    cmbDataCredito.ListIndex = 0
+End If
 
 'lblValorEfetivo.Caption = FormatNumber(nValorEfetivo, 2)
 'For nPos = 1 To UBound(aDoc)
@@ -4108,7 +4191,7 @@ cmbDataCredito.ListIndex = 0
 '    lblDC.Caption = "Sem Registros"
 'End If
 
-pBar.value = 0
+PBar.value = 0
 Liberado
 
 Exit Sub
@@ -4194,8 +4277,9 @@ Open sFullPath For Binary Access Read Write As FF1
                 Sql = Sql & "situacaolancamento ON debitoparcela.statuslanc = situacaolancamento.codsituacao INNER JOIN parceladocumento ON debitoparcela.codreduzido = parceladocumento.codreduzido AND "
                 Sql = Sql & "debitoparcela.anoexercicio = parceladocumento.anoexercicio AND debitoparcela.codlancamento = parceladocumento.codlancamento AND "
                 Sql = Sql & "debitoparcela.seqlancamento = parceladocumento.seqlancamento AND debitoparcela.numparcela = parceladocumento.numparcela AND debitoparcela.CODCOMPLEMENTO = parceladocumento.CODCOMPLEMENTO "
-                'Sql = Sql & "WHERE (DEBITOPARCELA.SEQLANCAMENTO=0) AND (DEBITOPARCELA.STATUSLANC=3) AND (DEBITOPARCELA.CODREDUZIDO = " & nCodReduz & ") AND (DEBITOPARCELA.CODLANCAMENTO = 1) AND "
-                Sql = Sql & "WHERE (DEBITOPARCELA.SEQLANCAMENTO=0) AND (DEBITOPARCELA.CODREDUZIDO = " & nCodReduz & ") AND (DEBITOPARCELA.CODLANCAMENTO = 1) AND "
+                Sql = Sql & "WHERE  (DEBITOPARCELA.STATUSLANC<>45) AND (DEBITOPARCELA.CODREDUZIDO = " & nCodReduz & ") AND (DEBITOPARCELA.CODLANCAMENTO = 1) AND "
+                'Sql = Sql & "WHERE (DEBITOPARCELA.SEQLANCAMENTO=0) AND (DEBITOPARCELA.CODREDUZIDO = " & nCodReduz & ") AND (DEBITOPARCELA.CODLANCAMENTO = 1) AND "
+                
                 Sql = Sql & "(DEBITOPARCELA.NUMPARCELA > 0) AND (DEBITOPARCELA.DATAVENCIMENTO = '" & Format(sDataVencto, "mm/dd/yyyy") & "')"
                 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 With RdoAux
@@ -4260,7 +4344,7 @@ Open sFullPath For Binary Access Read Write As FF1
 CloseFile4:
 Close #FF1
 Liberado
-pBar.value = 0
+PBar.value = 0
 
 nErro = 0
 cmbDataCredito.Clear
@@ -4330,7 +4414,7 @@ With RdoAux
         ReDim Preserve aTribF(UBound(aTribF) + 1)
         nLast = UBound(aTribF)
         aTribF(nLast).nCodTrib = !CodTributo
-        aTribF(nLast).sAbrevTrib = !ABREVTRIBUTO
+        aTribF(nLast).sAbrevTrib = !abrevTributo
         aTribF(nLast).Ficha = !Ficha
         aTribF(nLast).FichaJrMulta = !FichaJrMulta
         aTribF(nLast).FichaDivida = !FichaDivida
@@ -4358,7 +4442,7 @@ With RdoAux
         nLast = UBound(aFicha)
         aFicha(nLast).Ficha = !Ficha
         aFicha(nLast).Natureza = !Natureza
-        aFicha(nLast).Desc = SubNull(!descta)
+        aFicha(nLast).Desc = SubNull(!DESCTA)
         aFicha(nLast).Vinculo = !Vinculo
         aFicha(nLast).Perc = !Perc
        .MoveNext

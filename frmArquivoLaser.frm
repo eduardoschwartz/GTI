@@ -275,7 +275,7 @@ ElseIf Opt(3).value = True Then
 ElseIf Opt(4).value = True Then
    GeraVS
 ElseIf Opt(5).value = True Then
-    nAno = 2020
+   'nAno = 2023
    GeraCIP
 End If
 Liberado
@@ -283,7 +283,7 @@ Liberado
 End Sub
 
 Private Sub cmdRel_Click()
-Dim dData As String, sCNPJ As String, dDataS As String, sDivida As String
+Dim dData As String, sCnpj As String, dDataS As String, sDivida As String
 Open sPathBin & "\EMPRESAS.TXT" For Output As #1
 Sql = "SELECT CODIGOMOB,RAZAOSOCIAL,CNPJ,DATAENCERRAMENTO FROM MOBILIARIO ORDER BY CODIGOMOB"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -295,9 +295,9 @@ With RdoAux
            dData = "00/00/0000"
         End If
         If IsNull(!Cnpj) Or !Cnpj = 0 Or !Cnpj = "" Then
-            sCNPJ = "0"
+            sCnpj = "0"
         Else
-            sCNPJ = Left(!Cnpj, 2) & "." & Mid(!Cnpj, 3, 3) & "." & Mid(!Cnpj, 6, 3) & "/" & Mid(!Cnpj, 9, 4) & "-" & Right(!Cnpj, 2)
+            sCnpj = Left(!Cnpj, 2) & "." & Mid(!Cnpj, 3, 3) & "." & Mid(!Cnpj, 6, 3) & "/" & Mid(!Cnpj, 9, 4) & "-" & Right(!Cnpj, 2)
         End If
         
         Sql = "SELECT CODTIPOEVENTO,DATAPROCEVENTO FROM MOBILIARIOEVENTO WHERE CODMOBILIARIO=" & !codigomob
@@ -328,7 +328,7 @@ With RdoAux
         End With
 
 
-        ax = !codigomob & "#" & !RazaoSocial & "#" & sCNPJ & "#" & dData & "#" & dDataS & "#" & sDivida
+        ax = !codigomob & "#" & !RazaoSocial & "#" & sCnpj & "#" & dData & "#" & dDataS & "#" & sDivida
         Print #1, ax
        .MoveNext
     Loop
@@ -346,7 +346,7 @@ End Sub
 Private Sub Form_Load()
 Centraliza Me
 Set xImovel = New clsImovel
-nAno = 2021
+nAno = 2023
 CarregaEnderecoContabil
 End Sub
 
@@ -686,8 +686,8 @@ With RdoAux
                         With RdoAux3
                             x = 1
                             Do Until .EOF
-                                aDescTrib(x) = FillSpace(!ABREVTRIBUTO, 15)
-                                aValorTributo(x) = FillLeft(!ValorTributo, 17)
+                                aDescTrib(x) = FillSpace(!abrevTributo, 15)
+                                aValorTributo(x) = FillLeft(!VALORTRIBUTO, 17)
                                 x = x + 1
                                .MoveNext
                             Loop
@@ -710,7 +710,7 @@ With RdoAux
                         With RdoAux3
                             x = 1
                             Do Until .EOF
-                                aValorTributoUnica(x) = FillLeft(!ValorTributo, 17)
+                                aValorTributoUnica(x) = FillLeft(!VALORTRIBUTO, 17)
                                 x = x + 1
                                .MoveNext
                             Loop
@@ -891,8 +891,8 @@ FIMTL:
                         With RdoAux3
                             x = 1
                             Do Until .EOF
-                                aDescTrib(x) = FillSpace(!ABREVTRIBUTO, 15)
-                                aValorTributo(x) = FillLeft(!ValorTributo, 17)
+                                aDescTrib(x) = FillSpace(!abrevTributo, 15)
+                                aValorTributo(x) = FillLeft(!VALORTRIBUTO, 17)
                                 x = x + 1
                                .MoveNext
                             Loop
@@ -915,7 +915,7 @@ FIMTL:
                         With RdoAux3
                             x = 1
                             Do Until .EOF
-                                aValorTributoUnica(x) = FillLeft(!ValorTributo, 17)
+                                aValorTributoUnica(x) = FillLeft(!VALORTRIBUTO, 17)
                                 x = x + 1
                                .MoveNext
                             Loop
@@ -1101,7 +1101,7 @@ FIMFIXO:
                                 
                                 aValorTributo(x) = FillLeft(FormatNumber(!valoriss * RetornaAliquotaISS(!codatividade, Now) * nUfir, 2), 17)
                                 aCodTrib(x) = FillSpace(Left$(!codatividade, 15), 15)
-                                aDescTrib(x) = FillSpace(Left$(!descatividade, 50), 50)
+                                aDescTrib(x) = FillSpace(Left$(!DESCATIVIDADE, 50), 50)
 '                                aValorTributo(x) = FillLeft(!VALORTRIBUTO, 17)
 '                                aDescTrib(x) = FillSpace(!ABREVTRIBUTO, 15)
                                 x = x + 1
@@ -1129,7 +1129,7 @@ FIMFIXO:
                         With RdoAux3
                             x = 1
                             Do Until .EOF
-                                aValorTributoUnica(x) = FillLeft(!ValorTributo, 17)
+                                aValorTributoUnica(x) = FillLeft(!VALORTRIBUTO, 17)
                                 x = x + 1
                                .MoveNext
                             Loop
@@ -1288,7 +1288,7 @@ FIMFIXO:
                                 If x > 10 Then Exit Do
                                 aValorTributo(x) = FillLeft(!valoriss, 17)
                                 aCodTrib(x) = FillSpace(Left$(!codatividade, 15), 15)
-                                aDescTrib(x) = FillSpace(Left$(!descatividade, 50), 50)
+                                aDescTrib(x) = FillSpace(Left$(!DESCATIVIDADE, 50), 50)
 '                                aValorTributo(x) = FillLeft(!VALORTRIBUTO, 17)
 '                                aDescTrib(x) = FillSpace(!ABREVTRIBUTO, 15)
                                 x = x + 1
@@ -1316,7 +1316,7 @@ FIMFIXO:
                         With RdoAux3
                             x = 1
                             Do Until .EOF
-                                aValorTributoUnica(x) = FillLeft(!ValorTributo, 17)
+                                aValorTributoUnica(x) = FillLeft(!VALORTRIBUTO, 17)
                                 x = x + 1
                                .MoveNext
                             Loop
@@ -1818,16 +1818,16 @@ Dim nExpParc As Double, nExpUnica As Double, sNossoNumero As String
 Dim sExercicio As String, sContribuinte As String, sFantasia As String, sEnd As String, sCompl As String, sBairro As String, sCep As String
 Dim sEndEntrega As String, sComplEntrega As String, sBairroEntrega As String, sCidEntrega As String, sCepEntrega As String, sUFEntrega As String, sNumEntrega As String
 Dim sTipoImposto As String, sInscricao As String, sQtdeParc As String, sCodAtiv As String, sDescAtiv As String, sCodInscricao As String
-Dim aDescParc(0 To 2) As String, sDescParc As String
+Dim aDescParc(0 To 4) As String, sDescParc As String
 Dim aCodTrib(0 To 5) As String, sCodTrib As String
 Dim aDescTrib(0 To 5) As String, sDescTrib As String
-Dim aVencParc(0 To 2) As String, sVencParc As String
-Dim aValorTributoUnica(0 To 2) As String, sValorTributoUnica As String
+Dim aVencParc(0 To 4) As String, sVencParc As String
+Dim aValorTributoUnica(0 To 4) As String, sValorTributoUnica As String
 Dim aValorTributo(0 To 5) As String, sValorTributo As String
-Dim aValorParc(0 To 2) As String, sValorParc As String
-Dim aValorParcSEXP(0 To 2) As String, sValorParcSEXP As String
-Dim aMesAno(0 To 2) As String, sMesAno As String, sMes As String
-Dim aNumDoc(0 To 2) As String, sNumDoc As String
+Dim aValorParc(0 To 4) As String, sValorParc As String
+Dim aValorParcSEXP(0 To 4) As String, sValorParcSEXP As String
+Dim aMesAno(0 To 4) As String, sMesAno As String, sMes As String
+Dim aNumDoc(0 To 4) As String, sNumDoc As String
 Dim nTotalTrib As Double, sTotalTrib As String
 Dim nTotalTribUnica As Double, sTotalTribUnica As String
 Dim dDataBase As Date, nUfir As Double
@@ -1835,7 +1835,7 @@ Dim tDado As String, tEnd As String, tNum As Integer
 Dim tCidade As String, tBairro As String, bAchou As Boolean, sCPF As String
 Dim sValorEXP As String, strLinha1 As String, strLinha2 As String, aCodDup() As Long, sCod As String, l As Integer, k As Integer
 
-Dim aDigitavel(0 To 2) As String, sDigitavel As String, aCodBarra(0 To 2) As String, sCodBarra As String
+Dim aDigitavel(0 To 4) As String, sDigitavel As String, aCodBarra(0 To 4) As String, sCodBarra As String
 Dim nFatorVencto As Long, sQuintoGrupo As String, sBarra As String, nParc As Integer
 Dim sCampo1 As String, sCampo2 As String, sCampo3 As String, sCampo4 As String, sCampo5 As String, sDigitavel2 As String
 
@@ -1873,7 +1873,8 @@ cn.Execute Sql, rdExecDirect
 Open sPathBin & "\LASERVIGSANIT.TXT" For Output As #1
 
 Sql = "SELECT DISTINCT CODREDUZIDO From DEBITOPARCELA "
-Sql = Sql & "WHERE (ANOEXERCICIO = " & nAno & ") AND (CODLANCAMENTO = 13) AND DATADEBASE='01/01/2020'   ORDER BY CODREDUZIDO"
+Sql = Sql & "WHERE codreduzido between 100000 and 200000 and   (ANOEXERCICIO = " & nAno & ") AND (CODLANCAMENTO = 13) "
+Sql = Sql & "AND (CODLANCAMENTO = 13) AND DATADEBASE='01/01/2023'   ORDER BY CODREDUZIDO"
  
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
@@ -1992,13 +1993,13 @@ With RdoAux
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             nSomaTrib = 0
-            For x = 0 To 2
+            For x = 0 To nQtdeParcS
                 aMesAno(x) = ""
             Next
-            For x = 1 To 2
+            For x = 1 To nQtdeParcS
                 aValorTributo(x) = ""
             Next
-            For x = 0 To 2
+            For x = 0 To nQtdeParcS
                 aValorParc(x) = ""
             Next
             If .RowCount < 3 Then
@@ -2034,11 +2035,11 @@ With RdoAux
                If !NumParcela = 0 Then
                    aMesAno(!NumParcela) = "UNICA"
                Else
-                   aMesAno(!NumParcela) = sMes & "/02"
+                   aMesAno(!NumParcela) = sMes & "/" & sQtdeParc
                End If
                aNumDoc(!NumParcela) = FillLeft(!NumDocumento, 8)
                aVencParc(!NumParcela) = Format(!DataVencimento, "dd/mm/yyyy")
-               aValorParc(!NumParcela) = FillLeft(RemovePonto(Format(!ValorTributo, "#0.00")), 13)
+               aValorParc(!NumParcela) = FillLeft(RemovePonto(Format(!VALORTRIBUTO, "#0.00")), 13)
           
                 '******************
                 ' Linha Digitável
@@ -2081,42 +2082,24 @@ With RdoAux
             x = 1
             
             'Sql = "SELECT * FROM MOBILIARIOATIVIDADEVS2 WHERE CODMOBILIARIO=" & nCodReduz
-            Sql = "SELECT DISTINCT mobiliariovs.codigo, mobiliariovs.cnae, mobiliariovs.criterio, mobiliariovs.qtde, cnae.descricao, cnaecriteriodesc.descricao AS criteriodesc, cnaecriteriodesc.valor "
-            Sql = Sql & "FROM mobiliariovs INNER JOIN cnae_criterio ON mobiliariovs.cnae = cnae_criterio.cnae INNER JOIN cnaecriteriodesc ON mobiliariovs.criterio = cnaecriteriodesc.criterio LEFT OUTER JOIN "
-            Sql = Sql & "cnae ON mobiliariovs.cnae = cnae.cnae Where mobiliariovs.Codigo = " & nCodReduz
+'            Sql = "SELECT DISTINCT mobiliariovs.codigo, mobiliariovs.cnae, mobiliariovs.criterio, mobiliariovs.qtde, cnae.descricao, cnaecriteriodesc.descricao AS criteriodesc, cnaecriteriodesc.valor "
+'            Sql = Sql & "FROM mobiliariovs INNER JOIN cnae_criterio ON mobiliariovs.cnae = cnae_criterio.cnae INNER JOIN cnaecriteriodesc ON mobiliariovs.criterio = cnaecriteriodesc.criterio LEFT OUTER JOIN "
+'            Sql = Sql & "cnae ON mobiliariovs.cnae = cnae.cnae Where mobiliariovs.Codigo = " & nCodReduz
+            Sql = "SELECT mobiliariovs.codigo,mobiliariovs.cnae,mobiliariovs.criterio,mobiliariovs.qtde,cnae.descricao AS CNAE_NOME ,cnae_criterio_descricao.descricao AS CRITERIO_NOME,"
+            Sql = Sql & "cnae_aliquota.valor,cnae_aliquota.ano From dbo.Cnae INNER JOIN dbo.mobiliariovs ON cnae.cnae = mobiliariovs.cnae "
+            Sql = Sql & "INNER JOIN dbo.cnae_criterio_descricao ON cnae_criterio_descricao.codigo = mobiliariovs.criterio INNER JOIN dbo.cnae_aliquota "
+            Sql = Sql & "ON mobiliariovs.cnae = cnae_aliquota.cnae AND mobiliariovs.criterio = cnae_aliquota.criterio Where mobiliariovs.codigo = " & nCodReduz & " AND cnae_aliquota.ano = " & nAno
+
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux
                 Do Until .EOF
-'                    sCnae = Format(!divisao, "00") & !grupo & Left(Format(!classe, "00"), 1) & "-" & Right$(Format(!classe, "00"), 1) & "/" & Format(!subclasse, "00")
-'                    Sql = "SELECT * FROM CNAESUBCLASSE WHERE DIVISAO=" & !divisao & " AND GRUPO=" & !grupo & " AND CLASSE=" & !classe & " AND SUBCLASSE=" & !subclasse
-'                    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-'                    With RdoAux2
-'                        sDesc = !descricao
-'                       .Close
-'                    End With
-'                    Sql = "SELECT cnaecriterio.criterio,cnaecriteriodesc.descricao,cnaecriterio.valor From cnaecriteriodesc INNER JOIN cnaecriterio ON "
-'                    Sql = Sql & "(cnaecriteriodesc.criterio = cnaecriterio.criterio) WHERE DIVISAO=" & !divisao & " AND GRUPO=" & !grupo & " AND CLASSE=" & !classe & " AND SUBCLASSE=" & !subclasse & " AND cnaecriterio.CRITERIO=" & !criterio
-'                    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-'                    With RdoAux2
-'                        If .RowCount > 0 Then
-'                            sDesc2 = !descricao
-'                        End If
-'                       .Close
-'                    End With
-                   
                     If x > 5 Then Exit Do
-                    aValorTributo(x) = FillLeft((FormatNumber(!Valor * !QTDE, 2)), 13)
-'                    aCodTrib(x) = FillSpace(Left$(sCnae, 15), 9)
-'                    If sDesc2 = "não especificado" Then
-'                        aDescTrib(x) = FillSpace(Left$(sDesc, 50), 50)
-'                    Else
-'                        aDescTrib(x) = FillSpace(Left$(sDesc & "-" & sDesc2, 50), 50)
-'                    End If
+                    aValorTributo(x) = FillLeft((FormatNumber(!valor * !Qtde, 2)), 13)
                     aCodTrib(x) = FillSpace(Left$(!Cnae, 15), 7)
-                    If Left(SubNull(!criteriodesc), 6) = "não es" Then
-                        aDescTrib(x) = FillSpace(Left$(SubNull(!Descricao), 50), 50)
+                    If Left(SubNull(!CNAE_NOME), 6) = "não es" Then
+                        aDescTrib(x) = FillSpace(Left$(SubNull(!CNAE_NOME), 50), 50)
                     Else
-                        aDescTrib(x) = FillSpace(Left$(!Descricao & "-" & !criteriodesc, 50), 50)
+                        aDescTrib(x) = FillSpace(Left$(!CNAE_NOME, 50), 50)
                     End If
 
                     x = x + 1
@@ -2140,44 +2123,44 @@ With RdoAux
         
         aDescParc(0) = "UNICA"
         For x = 1 To Val(sQtdeParc)
-            aDescParc(x) = Format(x, "00") & "/02"
+            aDescParc(x) = Format(x, "00") & "/" & sQtdeParc
         Next
-        For x = nQtdeParcS + 1 To 2
+        For x = nQtdeParcS + 1 To nQtdeParcS
             aDescParc(x) = "00/00"
         Next
         sDescParc = ""
-        For x = 0 To 2
+        For x = 0 To nQtdeParcS
             sDescParc = sDescParc & aDescParc(x)
         Next
         
         sMesAno = ""
 '        aMesAno(0) = FillLeft(" ", 6)
         If aMesAno(0) = "" Then GoTo Proximo
-        For x = nQtdeParcS + 1 To 2
+        For x = nQtdeParcS + 1 To nQtdeParcS
             If aMesAno(x) = "" Then
                aMesAno(x) = "      "
             End If
         Next
-        For x = 0 To 2
+        For x = 0 To nQtdeParcS
             sMesAno = sMesAno & FillLeft(aMesAno(x), 13)
         Next
         
-        For x = nQtdeParcS + 1 To 2
+        For x = nQtdeParcS + 1 To nQtdeParcS
             aVencParc(x) = "00/00/0000"
         Next
         sVencParc = ""
         sValorParc = ""
-        For x = 0 To 2
+        For x = 0 To nQtdeParcS
             sVencParc = sVencParc & aVencParc(x)
             sValorParc = sValorParc & aValorParc(x)
         Next
                 
-        For x = Val(sQtdeParc) + 1 To 2
+        For x = Val(sQtdeParc) + 1 To nQtdeParcS
             aNumDoc(x) = "000000000"
         Next
         sNumDoc = ""
         sNossoNumero = ""
-        For x = 0 To 2
+        For x = 0 To nQtdeParcS
             If Val(aNumDoc(x)) > 0 Then
                 sNossoNumero = sNossoNumero & "287353200" & Format(aNumDoc(x), "00000000")
             Else
@@ -2195,7 +2178,7 @@ With RdoAux
             sValorTributo = sValorTributo & aValorTributo(x)
         Next
         sValorParc = ""
-        For x = 0 To 2
+        For x = 0 To nQtdeParcS
             If aValorParc(x) = "" Then
                aValorParc(x) = FillLeft("0,00", 13)
             End If
@@ -2203,12 +2186,12 @@ With RdoAux
         Next
         
         sDigitavel = aDigitavel(0)
-        For x = 1 To Val(sQtdeParc)
+        For x = 1 To nQtdeParcS
             sDigitavel = sDigitavel & aDigitavel(x)
         Next
 
         sCodBarra = aCodBarra(0)
-        For x = 1 To Val(sQtdeParc)
+        For x = 1 To nQtdeParcS
             sCodBarra = sCodBarra & aCodBarra(x)
         Next
 
@@ -2330,9 +2313,9 @@ cn.Execute Sql, rdExecDirect
 Open sPathBin & "\LASERISSFIXOTL.TXT" For Output As #1
 
 Sql = "SELECT DISTINCT CODREDUZIDO From DEBITOPARCELA "
-'Sql = Sql & "WHERE (ANOEXERCICIO = " & nAno & ") AND (CODLANCAMENTO = 14 OR CODLANCAMENTO=6 ) AND DATADEBASE='01/01/2020'"
-Sql = Sql & "WHERE (ANOEXERCICIO = " & nAno & ") AND (CODLANCAMENTO = 14 OR CODLANCAMENTO=6 )"
-'Sql = Sql & " and codreduzido =118703"
+Sql = Sql & "WHERE (ANOEXERCICIO = " & nAno & ") AND (CODLANCAMENTO = 14 OR CODLANCAMENTO=6 ) AND DATADEBASE='01/01/2023'"
+'Sql = Sql & "WHERE (ANOEXERCICIO = " & nAno & ") AND (CODLANCAMENTO = 14 OR CODLANCAMENTO=6 )"
+'Sql = Sql & " and codreduzido =123990"
 Sql = Sql & " ORDER BY CODREDUZIDO"
 
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -2357,10 +2340,10 @@ With RdoAux
             If .RowCount > 0 Then
                 If Val(!codatividade) > 0 Then
                     nCodAtividadeTL = !codatividade
-                    sAtividadeTL = !descatividade
+                    sAtividadeTL = !DESCATIVIDADE
                     
                     
-                    sAtividade = !descatividade
+                    sAtividade = !DESCATIVIDADE
                     Select Case !CODIGOALIQ
                         Case 1
                             nValorAliq = FormatNumber(!VALORALIQ1, 3)
@@ -2384,7 +2367,7 @@ With RdoAux
         With RdoAux
             If .RowCount > 0 Then
                 sCodAtividadeISS = Format(!codatividade, "00000")
-                sAtividadeISS = !descatividade
+                sAtividadeISS = !DESCATIVIDADE
                 sValorAliqISS = FormatNumber(!valoriss, 3)
             End If
            .Close
@@ -2572,9 +2555,9 @@ fimend:
                aNumDoc(!NumParcela) = !NumDocumento
                aVencParc(!NumParcela) = Format(!DataVencimento, "dd/mm/yyyy")
                If aValorParc(!NumParcela) = "" Then
-                    aValorParc(!NumParcela) = !Valor
+                    aValorParc(!NumParcela) = !valor
                Else
-                    aValorParc(!NumParcela) = aValorParc(!NumParcela) + !Valor
+                    aValorParc(!NumParcela) = aValorParc(!NumParcela) + !valor
                End If
               
                 '******************
@@ -2643,8 +2626,8 @@ fimend:
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             Do Until .EOF
-                aDescTrib(x) = FillSpace(!ABREVTRIBUTO, 25)
-                aValorTributo(x) = FillLeft(Format(!ValorTributo * 3, "#0.00"), 13)
+                aDescTrib(x) = FillSpace(!abrevTributo, 25)
+                aValorTributo(x) = FillLeft(Format(!VALORTRIBUTO * 3, "#0.00"), 13)
                 x = x + 1
                .MoveNext
             Loop
@@ -2922,15 +2905,15 @@ With RdoAux
                 Do Until .EOF
                    aCodProc(!NumParcela) = Format(!CODREDUZIDO, "00000000") & ".00." & !AnoExercicio & "." & Format(!CodLancamento, "00") & "." & Format(!SeqLancamento, "00") & "." & Format(!NumParcela, "00") & "." & !CODCOMPLEMENTO & ".0"
                    If !NumParcela = 0 Then
-                      nSomaUnica = !ValorTributo + CDbl(sTxExpParc)
+                      nSomaUnica = !VALORTRIBUTO + CDbl(sTxExpParc)
                       aVencParc(0) = Format(!DataVencimento, "dd/mm/yyyy")
                       aNumDoc(0) = Format(!NumDocumento & RetornaDVNumDoc(!NumDocumento), "000000000000000")
                       aNosNum(0) = FillLeft(!NumDocumento, 13)
                       aDataVencto(0) = Format(!DataVencimento, "dd/mm/yyyy")
                    Else
-                      nValorParc = !ValorTributo + CDbl(sTxExpParc)
+                      nValorParc = !VALORTRIBUTO + CDbl(sTxExpParc)
                       sDataDoc = Format(!Datadocumento, "dd/mm/yyyy") '561-570
-                      nSomaTrib = nSomaTrib + !ValorTributo + CDbl(sTxExpParc)
+                      nSomaTrib = nSomaTrib + !VALORTRIBUTO + CDbl(sTxExpParc)
                       aVencParc(!NumParcela) = Format(!DataVencimento, "dd/mm/yyyy")
                       aNumDoc(!NumParcela) = Format(!NumDocumento & RetornaDVNumDoc(!NumDocumento), "000000000000000")
                       aNosNum(!NumParcela) = FillLeft(!NumDocumento, 13)
@@ -3144,12 +3127,12 @@ Sql = "TRUNCATE TABLE LASERTMP"
 cn.Execute Sql, rdExecDirect
 cmdGerar.Enabled = False
 Open sPathBin & "\LASERIPTU.TXT" For Output As #1
-nAno = 2020
-Sql = "delete from cip_semregistro where ano=2020"
+nAno = 2023
+Sql = "delete from cip_semregistro where ano=" & nAno
 cn.Execute Sql, rdExecDirect
 
-Sql = "SELECT DISTINCT CODREDUZIDO FROM DEBITOPARCELA WHERE ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=79"
-'Sql = Sql & "and CODREDUZIDO =3179"
+Sql = "SELECT DISTINCT CODREDUZIDO FROM DEBITOPARCELA WHERE ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=79 "
+'Sql = Sql & "and CODREDUZIDO =27249"
 Sql = Sql & " ORDER BY CODREDUZIDO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
@@ -3168,7 +3151,8 @@ With RdoAux
  '           GoTo proximo
  '       End If
         tTipo = 0: sCPF = ""
-        Sql = "SELECT CODREDUZIDO,CPF,CNPJ FROM vwCONSULTAIMOVELPROP WHERE CODREDUZIDO=" & !CODREDUZIDO
+        'Sql = "SELECT CODREDUZIDO,CPF,CNPJ FROM vwCONSULTAIMOVELPROP WHERE CODREDUZIDO=" & !CODREDUZIDO
+        Sql = "SELECT CODREDUZIDO,CPF,CNPJ FROM vwfullimovel WHERE CODREDUZIDO=" & !CODREDUZIDO
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             If Not IsNull(!cpf) Then
@@ -3188,7 +3172,7 @@ With RdoAux
         sCPF = FillSpace(sCPF, 14)
         
         If Trim(sCPF) = "" Then
-            Sql = "insert cip_semregistro(ano,codigo) values(2020," & nCodReduz & ")"
+            Sql = "insert cip_semregistro(ano,codigo) values(" & nAno & "," & nCodReduz & ")"
             cn.Execute Sql, rdExecDirect
            tTipo = 3
         End If
@@ -3248,7 +3232,8 @@ With RdoAux
             
             If UCase$(Trim(sCidEntrega)) <> "JABOTICABAL" Then
                 If tTipo <> 3 Then
-                    tTipo = 2
+                    'tTipo = 2
+                    tTipo = 0
                 End If
             Else
                 If sCepEntrega = "00000-000" Or sCepEntrega = "" Then
@@ -3300,7 +3285,8 @@ With RdoAux
             Sql = Sql & "NUMDOCUMENTO ON PARCELADOCUMENTO.NumDocumento = NumDocumento.NumDocumento Inner Join DEBITOPARCELA ON DEBITOTRIBUTO.CODREDUZIDO = DEBITOPARCELA.CODREDUZIDO AND "
             Sql = Sql & "DEBITOTRIBUTO.ANOEXERCICIO = DEBITOPARCELA.ANOEXERCICIO AND DEBITOTRIBUTO.CODLANCAMENTO = DEBITOPARCELA.CODLANCAMENTO AND DEBITOTRIBUTO.SEQLANCAMENTO = DEBITOPARCELA.SEQLANCAMENTO AND "
             Sql = Sql & "DEBITOTRIBUTO.NUMPARCELA = DEBITOPARCELA.NUMPARCELA AND DEBITOTRIBUTO.CODCOMPLEMENTO = DEBITOPARCELA.CODCOMPLEMENTO "
-            Sql = Sql & "WHERE DEBITOPARCELA.CODREDUZIDO = " & Val(RdoAux!CODREDUZIDO) & " AND DEBITOTRIBUTO.ANOEXERCICIO = " & Val(sExercicio) & " AND DEBITOTRIBUTO.CODLANCAMENTO = 79 "
+            'Sql = Sql & "WHERE DEBITOPARCELA.CODREDUZIDO = " & Val(RdoAux!CODREDUZIDO) & " AND DEBITOTRIBUTO.ANOEXERCICIO = " & Val(sExercicio) & " AND DEBITOTRIBUTO.CODLANCAMENTO = 79  AND DEBITOPARCELA.SEQLANCAMENTO=1"
+            Sql = Sql & "WHERE DEBITOPARCELA.CODREDUZIDO = " & Val(RdoAux!CODREDUZIDO) & " AND DEBITOTRIBUTO.ANOEXERCICIO = " & Val(sExercicio) & " AND DEBITOTRIBUTO.CODLANCAMENTO = 79  "
             Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux2
                 nSomaTrib = 0: nSomaUnica = 0: aNumDoc(0) = 999
@@ -3308,7 +3294,7 @@ With RdoAux
                 
                    aCodProc(!NumParcela) = Format(!CODREDUZIDO, "00000000") & ".00." & !AnoExercicio & "." & Format(!CodLancamento, "00") & "." & Format(!SeqLancamento, "00") & "." & Format(!NumParcela, "00") & "." & !CODCOMPLEMENTO & ".0"
                    If !NumParcela = 0 Then
-                      nSomaUnica = !ValorTributo
+                      nSomaUnica = !VALORTRIBUTO
                       aVencParc(0) = Format(!DataVencimento, "dd/mm/yyyy")
                       'aNumDoc(0) = Format(!NumDocumento & RetornaDVNumDoc(!NumDocumento), "000000000")
                       aNumDoc(0) = Format(!NumDocumento, "000000000")
@@ -3323,16 +3309,16 @@ With RdoAux
                       End If
                       aDataVencto(0) = Format(!DataVencimento, "dd/mm/yyyy")
                    Else
-                      nValorParc = !ValorTributo
+                      nValorParc = !VALORTRIBUTO
                       sDataDoc = Format(!Datadocumento, "dd/mm/yyyy") '561-570
-                      nSomaTrib = nSomaTrib + !ValorTributo
+                      nSomaTrib = nSomaTrib + !VALORTRIBUTO
                       aVencParc(!NumParcela) = Format(!DataVencimento, "dd/mm/yyyy")
                       'aNumDoc(!NumParcela) = Format(!NumDocumento & RetornaDVNumDoc(!NumDocumento), "000000000")
                       aNumDoc(!NumParcela) = Format(!NumDocumento, "00000000")
                       If tTipo = 3 Then
                         'MsgBox "ERRO FATAL"
 '                        Exit Sub
-                         Sql = "INSERT BOLETOSEMREGISTRO(NUMDOCUMENTO,TIPO,ANO) VALUES(" & !NumDocumento & ",'CIP',2020)"
+                         Sql = "INSERT BOLETOSEMREGISTRO(NUMDOCUMENTO,TIPO,ANO) VALUES(" & !NumDocumento & ",'CIP'," & nAno & ")"
                          cn.Execute Sql, rdExecDirect
                          aNosNum(!NumParcela) = FillLeft("267847800" & !NumDocumento, 17)
                       Else
@@ -3521,7 +3507,7 @@ With RdoAux
 End With
 Close #1
 
-Open sPathBin & "\CIP_TERRENO.TXT" For Output As #2
+Open sPathBin & "\CIP_BALCAO.TXT" For Output As #2
 Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO FROM LASERTMP WHERE TIPO=1 ORDER BY CIDADE,ENDERECO,NUMERO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
@@ -3609,7 +3595,7 @@ With RdoAux
         
         Sql = "SELECT VALOR FROM CARNE WHERE CODIGO=" & !CODREDUZIDO
         Set RdoAux4 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-        nValorParcIPTU = RdoAux4!Valor / 9
+        nValorParcIPTU = RdoAux4!valor / 9
         RdoAux4.Close
         
         'If xId = 50 Then GoTo ORDENA
@@ -3795,7 +3781,7 @@ With RdoAux
                 Do Until .EOF
                    aCodProc(!NumParcela) = Format(!CODREDUZIDO, "00000000") & ".00." & !AnoExercicio & "." & Format(!CodLancamento, "00") & "." & Format(!SeqLancamento, "00") & "." & Format(!NumParcela, "00") & "." & !CODCOMPLEMENTO & ".0"
                    If !NumParcela = 0 Then
-                      nSomaUnica = !ValorTributo + CDbl(sTxExpParc)
+                      nSomaUnica = !VALORTRIBUTO + CDbl(sTxExpParc)
                       aVencParc(0) = Format(!DataVencimento, "dd/mm/yyyy")
                       aNumDoc(0) = Format(!NumDocumento & RetornaDVNumDoc(!NumDocumento), "000000000000000")
                       'aNosNum(0) = "023 " & Format(!NumDocumento, "0000000") & " " & "0"
@@ -3804,9 +3790,9 @@ With RdoAux
                       'sNosNum = sNosNum & FillLeft(aNosNum(x) & Modulo11(aNosNum(x)), 13)
                       aDataVencto(0) = Format(!DataVencimento, "dd/mm/yyyy")
                    Else
-                      nValorParc = !ValorTributo + CDbl(sTxExpParc)
+                      nValorParc = !VALORTRIBUTO + CDbl(sTxExpParc)
                       sDataDoc = Format(!Datadocumento, "dd/mm/yyyy") '561-570
-                      nSomaTrib = nSomaTrib + !ValorTributo + CDbl(sTxExpParc)
+                      nSomaTrib = nSomaTrib + !VALORTRIBUTO + CDbl(sTxExpParc)
                       aVencParc(!NumParcela) = Format(!DataVencimento, "dd/mm/yyyy")
                       aNumDoc(!NumParcela) = Format(!NumDocumento & RetornaDVNumDoc(!NumDocumento), "000000000000000")
                       'aNosNum(!NumParcela) = "023 " & Format(!NumDocumento, "0000000") & " " & "0"
@@ -4046,7 +4032,7 @@ Open sPathBin & "\LASERFORA.TXT" For Binary Access Read Write As #1
     Loop
  Close #1
 
-fim:
+Fim:
 Pb.value = 100
 
 frmReport.ShowReport "ETIQUETACONSIST", frmMdi.HWND, Me.HWND
@@ -4490,10 +4476,10 @@ With RdoAux
                     With RdoAux3
                         x = 1
                         Do Until .EOF
-                            aDescTrib(x) = FillSpace(!ABREVTRIBUTO, 15)
-                            aValorTributo(x) = FillLeft(FormatNumber(!ValorTributo, 2), 17)
+                            aDescTrib(x) = FillSpace(!abrevTributo, 15)
+                            aValorTributo(x) = FillLeft(FormatNumber(!VALORTRIBUTO, 2), 17)
                             If !CodTributo = 14 Or !CodTributo = 11 Then
-                                aValorTributoUnica(x) = FillLeft(FormatNumber(!ValorTributo * 3, 2), 17)
+                                aValorTributoUnica(x) = FillLeft(FormatNumber(!VALORTRIBUTO * 3, 2), 17)
                                 nDesc5Perc = FormatNumber(aValorTributoUnica(x) * 0.05, 2)
                             End If
                             x = x + 1
@@ -4521,7 +4507,7 @@ With RdoAux
                             If !CodTributo <> 14 And !CodTributo <> 11 Then
  '                               aValorTributoUnica(x) = FillLeft(FormatNumber(!VALORTRIBUTO + (!VALORTRIBUTO * 0.05), 2), 17)
  '                           Else
-                                aValorTributoUnica(x) = FillLeft(FormatNumber(!ValorTributo, 2), 17)
+                                aValorTributoUnica(x) = FillLeft(FormatNumber(!VALORTRIBUTO, 2), 17)
                             End If
                             x = x + 1
                            .MoveNext
@@ -4723,7 +4709,7 @@ With RdoAux
     Do Until .EOF
         ReDim Preserve aEnd(UBound(aEnd) + 1)
         nLast = UBound(aEnd)
-        aEnd(nLast).nCodigo = !codigoesc
+        aEnd(nLast).nCodigo = !CODIGOESC
         aEnd(nLast).sNome = !NOMEESC
         If (!UF = "SP" And !CodCidade = 413) Then
             aEnd(nLast).sLogradouro = SubNull(!endereco_resumido)
@@ -5020,8 +5006,8 @@ fimend:
                     With RdoAux3
                         x = 1
                         Do Until .EOF
-                              aDescTrib(x) = FillSpace(!ABREVTRIBUTO, 15)
-                              aValorTributo(x) = FillLeft(FormatNumber(!ValorTributo, 2), 17)
+                              aDescTrib(x) = FillSpace(!abrevTributo, 15)
+                              aValorTributo(x) = FillLeft(FormatNumber(!VALORTRIBUTO, 2), 17)
                               If !CodTributo = 14 Or !CodTributo = 11 Then
                               End If
                               x = x + 1
@@ -5039,7 +5025,7 @@ fimend:
 
                        If .RowCount > 0 And bTxLic Then
                            aDescTrib(x) = FillSpace("ISS FIXO", 15)
-                           aValorTributo(x) = FillLeft(FormatNumber(!ValorTributo, 2), 17)
+                           aValorTributo(x) = FillLeft(FormatNumber(!VALORTRIBUTO, 2), 17)
                            x = x + 1
                        End If
                       .Close
@@ -5074,11 +5060,11 @@ fimend:
                                     Sql = Sql & "ANOEXERCICIO=" & RdoAux2!AnoExercicio & " AND CODLANCAMENTO=" & RdoAux2!CodLancamento & " AND "
                                     Sql = Sql & "SEQLANCAMENTO=" & RdoAux2!SeqLancamento & " AND NUMPARCELA=" & 0 & " AND CODCOMPLEMENTO=" & RdoAux2!CODCOMPLEMENTO & " AND DEBITOTRIBUTO.CODTRIBUTO=14"
                                     Set RdoAux4 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-                                    nValorTribUnica = RdoAux4!ValorTributo * 3
-                                    nValorUnicaInteiraTLL = FormatNumber(RdoAux4!ValorTributo, 2)
+                                    nValorTribUnica = RdoAux4!VALORTRIBUTO * 3
+                                    nValorUnicaInteiraTLL = FormatNumber(RdoAux4!VALORTRIBUTO, 2)
                                 End If
                                 aValorTributoUnica(x).nCodTributo = !CodTributo
-                                aValorTributoUnica(x).nValorTributo = FillLeft(FormatNumber(!ValorTributo, 2), 17)
+                                aValorTributoUnica(x).nValorTributo = FillLeft(FormatNumber(!VALORTRIBUTO, 2), 17)
                             End If
                             
                            .MoveNext
@@ -5091,8 +5077,8 @@ fimend:
                         If .RowCount > 0 Then
                             x = x + 1
                             aValorTributoUnica(x).nCodTributo = !CodTributo
-                            aValorTributoUnica(x).nValorTributo = FillLeft(FormatNumber(!ValorTributo * 3, 2), 17)
-                            nValorTribUnica = !ValorTributo * 3
+                            aValorTributoUnica(x).nValorTributo = FillLeft(FormatNumber(!VALORTRIBUTO * 3, 2), 17)
+                            nValorTribUnica = !VALORTRIBUTO * 3
                             If !CodTributo = 14 Then
                                 nValorUnicaInteiraTLL = nValorTribUnica - (nValorTribUnica * 5 / 100)
                             ElseIf !CodTributo = 11 Then
@@ -5301,12 +5287,13 @@ Dim aDescParc(0 To 14) As String, sDescParc As String, nFolhas As Integer
 Dim aVencParc(0 To 14) As String, sVencParc As String
 Dim aValorParc(0 To 14) As String, sValorParc As String
 Dim aNumDoc(0 To 14) As String, sNumDoc As String
-Dim aNosNum(0 To 14) As String, sNosNum As String
+Dim aNosNum(0 To 14) As String, sNosNum As String, nSeq As Integer
 Dim aDigitavel(0 To 14) As String, sDigitavel As String, aCodBarra(0 To 14) As String, sCodBarra As String
 Dim sNossoNumero As String, dDataBase As String, nFatorVencto As Long, sQuintoGrupo As String, sBarra As String
 Dim sCampo1 As String, sCampo2 As String, sCampo3 As String, sCampo4 As String, sCampo5 As String, sDigitavel2 As String
 Dim NumBarra2 As String, NumBarra2a As String, NumBarra2b As String, NumBarra2c As String, NumBarra2d As String
 
+nSeq = 1
 'GoTo ORDENA
 Sql = "DELETE FROM LASERTMP WHERE CALCULO=1"
 cn.Execute Sql, rdExecDirect
@@ -5316,8 +5303,8 @@ xId = 1
 sAgencia = "0269-0 / 74000-4"
 Sql = "SELECT CODREDUZIDO, VVT, VVC, VVI, IMPOSTOPREDIAL,IMPOSTOTERRITORIAL, NATUREZA, AREACONSTRUCAO,"
 Sql = Sql & "TESTADAPRINC,VALORTOTALPARC,VALORTOTALUNICA,QTDEPARC,TXEXPPARC,TXEXPUNICA From LASERIPTU "
-Sql = Sql & "WHERE  ANO=" & nAno
-'Sql = Sql & " and CODREDUZIDO =18102 "
+Sql = Sql & "WHERE  ANO=" & nAno & " AND SEQ=" & nSeq
+'Sql = Sql & " and CODREDUZIDO =  27258                                                                    "
 Sql = Sql & " ORDER BY CODREDUZIDO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
@@ -5446,7 +5433,7 @@ With RdoAux
             Sql = Sql & "NUMDOCUMENTO ON PARCELADOCUMENTO.NumDocumento = NumDocumento.NumDocumento Inner Join DEBITOPARCELA ON DEBITOTRIBUTO.CODREDUZIDO = DEBITOPARCELA.CODREDUZIDO AND "
             Sql = Sql & "DEBITOTRIBUTO.ANOEXERCICIO = DEBITOPARCELA.ANOEXERCICIO AND DEBITOTRIBUTO.CODLANCAMENTO = DEBITOPARCELA.CODLANCAMENTO AND DEBITOTRIBUTO.SEQLANCAMENTO = DEBITOPARCELA.SEQLANCAMENTO AND "
             Sql = Sql & "DEBITOTRIBUTO.NUMPARCELA = DEBITOPARCELA.NUMPARCELA AND DEBITOTRIBUTO.CODCOMPLEMENTO = DEBITOPARCELA.CODCOMPLEMENTO "
-            Sql = Sql & "WHERE DEBITOPARCELA.CODREDUZIDO = " & Val(RdoAux!CODREDUZIDO) & " AND DEBITOTRIBUTO.ANOEXERCICIO = " & Val(sExercicio) & " AND DEBITOTRIBUTO.CODLANCAMENTO = 1 AND DEBITOTRIBUTO.CODTRIBUTO <> 3"
+            Sql = Sql & "WHERE DEBITOPARCELA.CODREDUZIDO = " & Val(RdoAux!CODREDUZIDO) & " AND DEBITOTRIBUTO.ANOEXERCICIO = " & Val(sExercicio) & " AND DEBITOTRIBUTO.CODLANCAMENTO = 1 AND debitoparcela.SEQLANCAMENTO=" & nSeq & " AND DEBITOTRIBUTO.CODTRIBUTO <> 3"
             Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux2
                 Do Until .EOF
@@ -5461,7 +5448,7 @@ With RdoAux
                     Else
                         nParc = !NumParcela
                     End If
-                    aValorParc(nParc) = !ValorTributo
+                    aValorParc(nParc) = !VALORTRIBUTO
                     aVencParc(nParc) = Format(!DataVencimento, "dd/mm/yyyy")
                     aNumDoc(nParc) = Format(!NumDocumento, "00000000")
                     aNosNum(nParc) = "287353200" & Format(!NumDocumento, "00000000")

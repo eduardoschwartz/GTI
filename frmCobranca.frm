@@ -417,7 +417,8 @@ lblNumRemessa.Caption = Format(RdoAux!valparam + 1, "00000000")
 RdoAux.Close
 
 sDataArquivo = Format(Now, "dd") & Format(Now, "mm") & Right(Format(Now, "yyyy"), 2)
-sArquivo = "\\192.168.200.130\ATUALIZAGTI\COBRANCA\COB_" & sDataArquivo & "_" & lblNumRemessa.Caption & ".TXT"
+'sArquivo = "\\192.168.200.130\ATUALIZAGTI\COBRANCA\COB_" & sDataArquivo & "_" & lblNumRemessa.Caption & ".TXT"
+sArquivo = "C:\CADASTRO\COBRANCA\COB_" & sDataArquivo & "_" & lblNumRemessa.Caption & ".TXT"
 txtFile.Text = sArquivo
 End Sub
 
@@ -474,15 +475,18 @@ Else
         Sql = Sql & "debitoparcela.codlancamento = debitotributo.codlancamento AND debitoparcela.seqlancamento = debitotributo.seqlancamento AND debitoparcela.numparcela = debitotributo.numparcela AND debitoparcela.codcomplemento = debitotributo.codcomplemento INNER JOIN "
         Sql = Sql & "parceladocumento ON debitoparcela.codreduzido = parceladocumento.codreduzido AND debitoparcela.anoexercicio = parceladocumento.anoexercicio AND debitoparcela.codlancamento = parceladocumento.codlancamento AND debitoparcela.seqlancamento = parceladocumento.seqlancamento AND "
         Sql = Sql & "debitoparcela.numparcela = parceladocumento.numparcela AND debitoparcela.codcomplemento = parceladocumento.codcomplemento INNER JOIN vwFULLIMOVEL ON debitoparcela.codreduzido = vwFULLIMOVEL.codreduzido "
-        Sql = Sql & "WHERE (   debitoparcela.codreduzido BETWEEN 36001 AND 40000)  AND (debitoparcela.anoexercicio = 2020) AND (debitoparcela.codlancamento = 1) AND (debitoparcela.seqlancamento = 0) AND (debitoparcela.codcomplemento = 0 or debitoparcela.codcomplemento = 91 or debitoparcela.codcomplemento = 92)   order by parceladocumento.numdocumento"
-'        Sql = Sql & "where parceladocumento.codreduzido in (select codigo from codtmp) AND (debitoparcela.anoexercicio = 2020) AND (debitoparcela.codlancamento = 1) AND (debitoparcela.seqlancamento = 0) AND (debitoparcela.codcomplemento = 0 or debitoparcela.codcomplemento = 91 or debitoparcela.codcomplemento = 92)  and (debitoparcela.userid is null)  and numdocumento<17000000 order by parceladocumento.numdocumento"
+        Sql = Sql & "WHERE (debitoparcela.codreduzido BETWEEN 36 AND 38)  AND (debitoparcela.anoexercicio = 2024) AND (debitoparcela.codlancamento = 1) AND (debitoparcela.seqlancamento = 0) AND (debitoparcela.codcomplemento = 0 or debitoparcela.codcomplemento = 91 or debitoparcela.codcomplemento = 92)   order by parceladocumento.numdocumento"
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             nTotBar = .RowCount
             Do Until .EOF
                 'If !CODREDUZIDO > 4000 Then GoTo fim
+                'If !CODREDUZIDO = 2749 Then MsgBox "teste"
                 If .AbsolutePosition Mod 50 = 0 Then
                     CallPb CLng(.AbsolutePosition), nTotBar
+                End If
+                If RetornaNumero(SubNull(!cpf)) = "" And RetornaNumero(SubNull(!Cnpj)) = "" Then
+                    GoTo PROXIMOIPTU
                 End If
                 If Trim(SubNull(!cpf)) = "" And Trim(SubNull(!Cnpj)) = "" Then
                     GoTo PROXIMOIPTU
@@ -500,13 +504,13 @@ Else
                    sCPFCNPJ = !Cnpj
                    nTipoDoc = 2
                 End If
-'                If !CODREDUZIDO = 973 Then MsgBox "tester"
+'                If !CODREDUZIDO = 973 Then MsgBox "teste"
                 ReDim Preserve aBoletos(UBound(aBoletos) + 1)
                 aBoletos(UBound(aBoletos)).sNossoNumero = "287353200" & CStr(!NumDocumento)
                 aBoletos(UBound(aBoletos)).sNumDocumento = CStr(!NumDocumento)
                 aBoletos(UBound(aBoletos)).sDataVencimento = Format(!DataVencimento, "dd") & Format(!DataVencimento, "mm") & Format(!DataVencimento, "yyyy")
-                aBoletos(UBound(aBoletos)).sValorNominal = FillLeft(RetornaNumero(CStr(!ValorTributo * 100)), 15)
-                If Val(aBoletos(UBound(aBoletos)).sValorNominal) <> RetornaNumero(FormatNumber(!ValorTributo, 2)) Then
+                aBoletos(UBound(aBoletos)).sValorNominal = FillLeft(RetornaNumero(CStr(!VALORTRIBUTO * 100)), 15)
+                If Val(aBoletos(UBound(aBoletos)).sValorNominal) <> RetornaNumero(FormatNumber(!VALORTRIBUTO, 2)) Then
                     Sql = "insert errocob values(" & !CODREDUZIDO & "," & !NumParcela & "," & !CODCOMPLEMENTO & ")"
                     cn.Execute Sql, rdExecDirect
                 End If
@@ -540,13 +544,14 @@ PROXIMOIPTU:
         Sql = Sql & "vwFULLEMPRESA.cnpj, vwFULLEMPRESA.cpf, vwFULLEMPRESA.LOGRADOURO, vwFULLEMPRESA.numero, vwFULLEMPRESA.complemento,vwFULLEMPRESA.CodLogradouro , vwFULLEMPRESA.Cep, vwFULLEMPRESA.DescBairro, vwFULLEMPRESA.desccidade, vwFULLEMPRESA.SiglaUF "
         Sql = Sql & "FROM debitoparcela INNER JOIN parceladocumento ON debitoparcela.codreduzido = parceladocumento.codreduzido AND debitoparcela.anoexercicio = parceladocumento.anoexercicio AND "
         Sql = Sql & "debitoparcela.codlancamento = parceladocumento.codlancamento AND debitoparcela.seqlancamento = parceladocumento.seqlancamento AND debitoparcela.numparcela = parceladocumento.numparcela AND debitoparcela.codcomplemento = parceladocumento.codcomplemento INNER JOIN "
-        Sql = Sql & "vwFULLEMPRESA ON debitoparcela.codreduzido = vwFULLEMPRESA.codigomob WHERE (debitoparcela.anoexercicio = 2020) AND (debitoparcela.codlancamento = 6 OR debitoparcela.codlancamento = 14) and (debitoparcela.seqlancamento = 0) and (debitoparcela.codcomplemento = 0) AND (debitoparcela.statuslanc = 18) "
+        Sql = Sql & "vwFULLEMPRESA ON debitoparcela.codreduzido = vwFULLEMPRESA.codigomob WHERE (debitoparcela.anoexercicio = 2023) AND (debitoparcela.codlancamento = 6 OR debitoparcela.codlancamento = 14) and (debitoparcela.seqlancamento = 0) and (debitoparcela.codcomplemento = 0) AND (debitoparcela.statuslanc = 18) "
         Sql = Sql & "GROUP BY debitoparcela.codreduzido, debitoparcela.datadebase, debitoparcela.datavencimento, parceladocumento.numdocumento, vwFULLEMPRESA.razaosocial,vwFULLEMPRESA.cnpj, vwFULLEMPRESA.cpf, vwFULLEMPRESA.LOGRADOURO, vwFULLEMPRESA.numero, vwFULLEMPRESA.complemento,"
         Sql = Sql & "vwFULLEMPRESA.codlogradouro, vwFULLEMPRESA.cep, vwFULLEMPRESA.descbairro, vwFULLEMPRESA.desccidade, vwFULLEMPRESA.descuf, vwFULLEMPRESA.SiglaUF "
         Sql = Sql & "HAVING (debitoparcela.codreduzido BETWEEN 100000 AND 300000) "
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             Do Until .EOF
+                
                 nNumDoc = !NumDocumento
                 Sql = "SELECT SUM(debitotributo.valortributo) AS somatributo FROM parceladocumento INNER JOIN "
                 Sql = Sql & "debitotributo ON parceladocumento.codreduzido = debitotributo.codreduzido AND parceladocumento.anoexercicio = debitotributo.anoexercicio AND "
@@ -612,7 +617,7 @@ PROXIMOISS:
         Sql = Sql & "parceladocumento ON debitoparcela.codreduzido = parceladocumento.codreduzido AND debitoparcela.anoexercicio = parceladocumento.anoexercicio AND "
         Sql = Sql & "debitoparcela.codlancamento = parceladocumento.codlancamento AND debitoparcela.seqlancamento = parceladocumento.seqlancamento AND "
         Sql = Sql & "debitoparcela.numparcela = parceladocumento.numparcela AND debitoparcela.codcomplemento = parceladocumento.codcomplemento INNER JOIN "
-        Sql = Sql & "vwFULLEMPRESA ON debitoparcela.codreduzido = vwFULLEMPRESA.codigomob WHERE (debitoparcela.anoexercicio = 2020) AND (debitoparcela.codlancamento = 13) and (debitoparcela.seqlancamento = 0) and (debitoparcela.codcomplemento = 0) AND (debitoparcela.statuslanc = 18) "
+        Sql = Sql & "vwFULLEMPRESA ON debitoparcela.codreduzido = vwFULLEMPRESA.codigomob WHERE (debitoparcela.anoexercicio = 2023) AND (debitoparcela.codlancamento = 13) and (debitoparcela.seqlancamento = 0) and (debitoparcela.codcomplemento = 0) AND (debitoparcela.statuslanc = 18) "
         Sql = Sql & "GROUP BY debitoparcela.codreduzido, debitoparcela.datadebase, debitoparcela.datavencimento, parceladocumento.numdocumento, vwFULLEMPRESA.razaosocial,"
         Sql = Sql & "vwFULLEMPRESA.cnpj, vwFULLEMPRESA.cpf, vwFULLEMPRESA.LOGRADOURO, vwFULLEMPRESA.numero, vwFULLEMPRESA.complemento,"
         Sql = Sql & "vwFULLEMPRESA.CodLogradouro,vwFULLEMPRESA.cep , vwFULLEMPRESA.DescBairro, vwFULLEMPRESA.desccidade, vwFULLEMPRESA.descuf, vwFULLEMPRESA.SiglaUF "
@@ -671,7 +676,7 @@ PROXIMOVS:
         Sql = Sql & "debitoparcela.codlancamento = debitotributo.codlancamento AND debitoparcela.seqlancamento = debitotributo.seqlancamento AND debitoparcela.numparcela = debitotributo.numparcela AND debitoparcela.codcomplemento = debitotributo.codcomplemento INNER JOIN "
         Sql = Sql & "parceladocumento ON debitoparcela.codreduzido = parceladocumento.codreduzido AND debitoparcela.anoexercicio = parceladocumento.anoexercicio AND debitoparcela.codlancamento = parceladocumento.codlancamento AND debitoparcela.seqlancamento = parceladocumento.seqlancamento AND "
         Sql = Sql & "debitoparcela.numparcela = parceladocumento.numparcela AND debitoparcela.codcomplemento = parceladocumento.codcomplemento INNER JOIN vwFULLIMOVEL ON debitoparcela.codreduzido = vwFULLIMOVEL.codreduzido "
-        Sql = Sql & "WHERE (debitoparcela.codreduzido < 100000) AND (debitoparcela.anoexercicio = 2020) AND (debitoparcela.codlancamento = 79) "
+        Sql = Sql & "WHERE (debitoparcela.codreduzido < 100000) AND (debitoparcela.anoexercicio = 2023) AND (debitoparcela.codlancamento = 79) "
 '        Sql = Sql & "WHERE (debitoparcela.codreduzido =39174) AND (debitoparcela.anoexercicio = 2020) AND (debitoparcela.codlancamento = 79) AND (debitoparcela.statuslanc = 18)"
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
@@ -701,10 +706,11 @@ PROXIMOVS:
                 'aBoletos(UBound(aBoletos)).sNumDocumento = CStr(!NumDocumento) & CStr(RetornaDVNumDoc(!NumDocumento))
                 aBoletos(UBound(aBoletos)).sNumDocumento = CStr(!NumDocumento)
                 aBoletos(UBound(aBoletos)).sDataVencimento = Format(!DataVencimento, "dd") & Format(!DataVencimento, "mm") & Format(!DataVencimento, "yyyy")
-                aBoletos(UBound(aBoletos)).sValorNominal = FillLeft(RetornaNumero(CStr(!ValorTributo * 100)), 15)
+                aBoletos(UBound(aBoletos)).sValorNominal = FillLeft(RetornaNumero(CStr(!VALORTRIBUTO * 100)), 15)
                 aBoletos(UBound(aBoletos)).sDataBase = Format(Now, "dd") & Format(Now, "mm") & Format(Now, "yyyy")
                 aBoletos(UBound(aBoletos)).nTipoInscricao = CStr(nTipoDoc)
                 aBoletos(UBound(aBoletos)).nNumeroInscricao = sCPFCNPJ
+                If Val(sCPFCNPJ) = 0 Then MsgBox "teste"
                 aBoletos(UBound(aBoletos)).sNome = Left(!nomecidadao, 40)
                 aBoletos(UBound(aBoletos)).sEndereco = Left(!Logradouro & ", " & CStr(!Li_Num) & " " & SubNull(!Li_Compl), 40)
                 aBoletos(UBound(aBoletos)).sBairro = Left(SubNull(!DescBairro), 15)
@@ -723,37 +729,37 @@ PROXIMOCIP:
            .Close
         End With
     ElseIf cmbLista.ListIndex = 4 Then 'CARTA COBRANÇA
-        Sql = "SELECT * FROM CARTA_COBRANCA WHERE REMESSA=4 "
+        Sql = "SELECT * FROM CARTA_COBRANCA WHERE REMESSA=5 "
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             Do Until .EOF
                 
-'                If Not IsNull(!cpf_cnpj) Then
-'                    If Trim(!cpf_cnpj) <> "" Then
-'                        sCPFCNPJ = RetornaNumero(!cpf_cnpj)
-'                        If ValidaCGC(sCPFCNPJ) Then
-'                           nTipoDoc = 2
-'                        Else
-'                           nTipoDoc = 1
-'                        End If
- '                   Else
- '                       sCPFCNPJ = !cpf_cnpj
- '                       If ValidaCGC(sCPFCNPJ) Then
- '                          nTipoDoc = 2
- '                       Else
- '                          nTipoDoc = 1
- '                       End If
- '                   End If
-'                ElseIf Not IsNull(!cpf_cnpj) Then
-'                    sCPFCNPJ = !cpf_cnpj
-'                    If ValidaCGC(sCPFCNPJ) Then
-'                       nTipoDoc = 2
-'                    Else
-'                       nTipoDoc = 1
-'                    End If
+                If Not IsNull(!cpf_cnpj) Then
+                    If Trim(!cpf_cnpj) <> "" Then
+                        sCPFCNPJ = RetornaNumero(!cpf_cnpj)
+                        If ValidaCGC(sCPFCNPJ) Then
+                           nTipoDoc = 2
+                        Else
+                           nTipoDoc = 1
+                        End If
+                    Else
+                        sCPFCNPJ = !cpf_cnpj
+                        If ValidaCGC(sCPFCNPJ) Then
+                           nTipoDoc = 2
+                        Else
+                           nTipoDoc = 1
+                        End If
+                    End If
+                ElseIf Not IsNull(!cpf_cnpj) Then
+                    sCPFCNPJ = !cpf_cnpj
+                    If ValidaCGC(sCPFCNPJ) Then
+                       nTipoDoc = 2
+                    Else
+                       nTipoDoc = 1
+                    End If
 
-  '              End If
-                nTipoDoc = !tipodoc
+               End If
+                'nTipoDoc = !tipodoc
                 sCPFCNPJ = !cpf_cnpj
                 ReDim Preserve aBoletos(UBound(aBoletos) + 1)
                 aBoletos(UBound(aBoletos)).sNossoNumero = "287353200" & CStr(!numero_documento)
@@ -786,7 +792,7 @@ PROXIMOCIP:
     End If
 End If
 
-fim:
+Fim:
 'MsgBox "FIM"
 
 End Sub
@@ -798,7 +804,8 @@ Dim aHeaderArquivo() As HeaderArquivo, FF1 As Integer, sHeaderArquivo As String
 Dim aTrailerArquivo() As TrailerArquivo, sTrailerArquivo As String, nQtdeRegistroArquivo As Long, nQtdeRegistroLote As Long, aHeaderLote() As HeaderLote, sHeaderLote As String
 Dim aTrailerLote() As TrailerLote, sTrailerLote As String, aSegmentoP() As SegmentoP, sSegmentoP As String, aSegmentoQ() As SegmentoQ, sSegmentoQ As String, sEndereco As String
 
-sArquivo = "D:\Trabalho\GTI\Diversos\remessaiptu.txt"
+'sArquivo = "E:\Work\GTI\Diversos\IPTU2023\Cobranca\remessaiptu.txt"
+sArquivo = "E:\Work\GTI\Diversos\IPTU2024\Cobranca\remessaiptu.txt"
 FF1 = FreeFile()
 Open sArquivo For Output As FF1
 
@@ -892,10 +899,13 @@ Print #FF1, sHeaderLote
 '*********************************
 '******** Segmento P e Q *********
 '*********************************
-
+PBar.value = 0
 nContador = 1
 'nInicio = 49999
 For nPosReg = 1 To UBound(aBoletos)
+    If nPosReg Mod 50 = 0 Then
+        CallPb nPosReg, UBound(aBoletos)
+    End If
     ReDim aSegmentoP(1): ReDim aSegmentoQ(1)
     With aSegmentoP(1)
     
@@ -905,7 +915,8 @@ For nPosReg = 1 To UBound(aBoletos)
         .nSeqReg = FillLeft(CStr(nContador), 5)
         .sCodSegmento = "P"
         .sUsoFebraban1 = " "
-        .nCodMovimento = "01"
+        .nCodMovimento = "01" 'entrada de título
+        '.nCodMovimento = "02" 'pedido de baixa
         .nAgencia = "00269"
         .sDvAgencia = "0"
         If nTipo <> 3 Then
@@ -922,7 +933,7 @@ For nPosReg = 1 To UBound(aBoletos)
         .nFormaCadastro = "1"
         .sTipoDocumento = "1"
         .nIdentificacaoEmissao = "2"
-        .sIdentificacaoDistribuicao = "2"
+        .sIdentificacaoDistribuicao = "P"
         .sNumeroDocumento = FillSpace(aBoletos(nPosReg).sNumDocumento, 15)
         .nDataVencimento = aBoletos(nPosReg).sDataVencimento
         .nValorNominal = FillLeft(aBoletos(nPosReg).sValorNominal, 15)
@@ -953,6 +964,12 @@ For nPosReg = 1 To UBound(aBoletos)
         sSegmentoP = sSegmentoP & .nValorNominal & .nAgenciaCobranca & .sDvAgenciaCobranca & .nEspecieTitulo & .sAceite & .nDataEmissao & .nCodigoJuros & .nDataJuros & .nJurosMora
         sSegmentoP = sSegmentoP & .nCodigoDesconto1 & .nDataDesconto1 & .nValorConcedido & .nValorIOF & .nValorAbatimento & .sIdentificaTitulo & .nCodigoProtesto & .nNumDiasProtesto & .nCodigoBaixa
         sSegmentoP = sSegmentoP & .sNumDiasBaixa & .nCodigoMoeda & .nNumeroContrato & .sUsoLivre
+        
+        If Len(Trim(sSegmentoP)) < 239 Then
+            MsgBox "erro"
+        End If
+        
+        
         On Error Resume Next
         Sql = "insert registro_cobranca (numdocumento,dataregistro) values(" & CLng(Left(Trim(.sNumeroDocumento), 8)) & ",'" & Format(Now, "mm/dd/yyyy hh:mm") & "')"
         cn.Execute Sql, rdExecDirect
@@ -968,9 +985,10 @@ For nPosReg = 1 To UBound(aBoletos)
         .nSeqReg = FillLeft(CStr(nContador), 5)
         .sCodSegmento = "Q"
         .sUsoFebraban1 = " "
-        .nCodMovimento = "01"
+        .nCodMovimento = "01" 'inclusão de boleto
+        '.nCodMovimento = "02" 'pedido de baixa
         .nTipoInscricao = aBoletos(nPosReg).nTipoInscricao
-        .nNumeroInscricao = FillLeft(aBoletos(nPosReg).nNumeroInscricao, 15)
+        .nNumeroInscricao = FillLeft(RetornaNumero(aBoletos(nPosReg).nNumeroInscricao), 15)
         .sNome = FillSpace(aBoletos(nPosReg).sNome, 40)
         .sEndereco = linebreak(FillSpace(aBoletos(nPosReg).sEndereco, 40))
         .sBairro = FillSpace(aBoletos(nPosReg).sBairro, 15)

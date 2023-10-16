@@ -97,7 +97,7 @@ Dim RdoAux As rdoResultset, Sql As String, sTipo As String, nTotal As Double, sH
 Dim sTexto1 As String, sTexto2 As String, sTexto3 As String, bHeader As Boolean, bDam As Boolean
 Dim z As Variant, RdoAux2 As rdoResultset, z2 As Variant, z3 As Variant, z4 As Variant, z5 As Variant, z6 As Variant, z7 As Variant
 Dim sNumProc As String, nNumproc As Long, nAno As Integer, bAchou As Boolean, aTributo() As String, x As Integer
-Dim sNome As String, sEnd As String, sCidade As String, sUF As String, sBairro As String, sRG As String
+Dim sNome As String, sEnd As String, sCidade As String, sUF As String, sBairro As String, sRG As String, sFone As String
 
 If bLocal Then
     Exit Function
@@ -414,7 +414,7 @@ Data2:
     Case "ARRECADACAOSN"
             frmReport.Caption = "Arrecadação do Simples Nacional"
             rpt.RecordSelectionFormula = rpt.RecordSelectionFormula & " AND {ARRECADACAOSN.COMPUTER}='" & NomeDoUsuario & "'"
-    Case "PROCESSOENVIADO"
+    Case "PROCESSOENVIADO", "PROCESSOENVIADODATA"
             frmReport.Caption = "Processos enviados por Centro de Custo"
             rpt.FormulaFields(1).Text = "'" & frmProcessosEnviados.mskData.Text & " e " & frmProcessosEnviados.mskData2.Text & "'"
             rpt.RecordSelectionFormula = "{PROCESSOENVIO.COMPUTER}='" & NomeDeLogin & "'"
@@ -461,22 +461,22 @@ Data2:
     Case "ISSMENSAL"
             frmReport.Caption = "ISS MENSAL"
             rpt.RecordSelectionFormula = "{ISSMENSAL.COMPUTER}='" & NomeDoUsuario & "'"
-            If frmISSMensal.OptTipo(0).value = True Then
+            If frmISSMensal.optTipo(0).value = True Then
                 sTipo = "ESTIMADO"
-            ElseIf frmISSMensal.OptTipo(1).value = True Then
+            ElseIf frmISSMensal.optTipo(1).value = True Then
                 sTipo = "VARIÁVEL"
-            ElseIf frmISSMensal.OptTipo(2).value = True Then
+            ElseIf frmISSMensal.optTipo(2).value = True Then
                 sTipo = "FIXO"
             End If
             rpt.FormulaFields(2).Text = "'" & sTipo & "'"
     Case "ISSMENSALNAOPAGO"
             frmReport.Caption = "ISS MENSAL NÃO PAGO"
-            rpt.RecordSelectionFormula = "{vwISSMENSALNAOPAGO.CODLANCAMENTO}=" & IIf(frmISSMensal.OptTipo(0).value = True, 3, 5)
-            rpt.FormulaFields(2).Text = "'" & IIf(frmISSMensal.OptTipo(0).value, "ESTIMADO", "VARIÁVEL") & "'"
+            rpt.RecordSelectionFormula = "{vwISSMENSALNAOPAGO.CODLANCAMENTO}=" & IIf(frmISSMensal.optTipo(0).value = True, 3, 5)
+            rpt.FormulaFields(2).Text = "'" & IIf(frmISSMensal.optTipo(0).value, "ESTIMADO", "VARIÁVEL") & "'"
     Case "ISSMENSALFORA"
             frmReport.Caption = "ISS MENSAL"
             rpt.RecordSelectionFormula = "{ISSMENSAL.COMPUTER}='" & NomeDoUsuario & "'"
-            rpt.FormulaFields(2).Text = "'" & IIf(frmISSMensal.OptTipo(0).value, "ESTIMADO", "VARIÁVEL") & "'"
+            rpt.FormulaFields(2).Text = "'" & IIf(frmISSMensal.optTipo(0).value, "ESTIMADO", "VARIÁVEL") & "'"
     Case "LISTARURAL"
             frmReport.Caption = "Cadastro das Propriedades Rurais"
             If NomeDeLogin = "FABIO" Or NomeDeLogin = "SCHWARTZ" Then
@@ -492,7 +492,7 @@ Data2:
             If Val(z) > 0 Then
                rpt.FormulaFields(2).Text = z
             End If
-    Case "EXTRATO", "EXTRATOFULL", "EXTRATOFORUM", "EXTRATO3"
+    Case "EXTRATO", "EXTRATOFULL", "EXTRATOFORUM", "EXTRATO3", "EXTRATO_TMP", "EXTRATOFULL_TMP"
             rpt.RecordSelectionFormula = "{EXTRATOTMP.COMPUTER}='" & NomeDeLogin & "'"
             frmReport.Caption = "Extrato de Lançamento(s)"
             rpt.FormulaFields(6).Text = "'Gerado pelo Sistema Tributário Municipal (GTI) - Os débitos foram atualizados até: " & Format(dDataAtualiza, "dd/mm/yyyy") & "'"
@@ -784,6 +784,7 @@ Exit Function
             Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             On Error Resume Next
             With RdoAux2
+                sFone = SubNull(!fTELEFONE)
                 If .RowCount > 0 Then
                      sNome = !nomecidadao
                      If Val(SubNull(!FCodLogradouro)) > 0 Then
@@ -857,6 +858,7 @@ Exit Function
             rpt.FormulaFields(5).Text = "'" & sUF & "'"
             rpt.FormulaFields(6).Text = "'" & Mask(sBairro) & "'"
             rpt.FormulaFields(11).Text = "'......." & frmProcesso.lblNumProc.Caption & "'"
+            rpt.FormulaFields(12).Text = "'" & sFone & "'"
             
                 Sql = "SELECT PROCESSOEND.CODLOGR,PROCESSOEND.NUMERO, vwLOGRADOURO.ABREVTIPOLOG, vwLOGRADOURO.ABREVTITLOG,"
                 Sql = Sql & "vwLOGRADOURO.NomeLogradouro FROM PROCESSOEND INNER JOIN "
@@ -877,45 +879,51 @@ Exit Function
             
      Case "COMUNICADOJUDICIAL"
             frmReport.Caption = "Comunicado judicial"
-            z = InputBox("Digite o código/inscrição", "Informação requerida")
-            sTexto1 = ""
-            Liberado
-            If Val(z) > 0 And Val(z) < 100000 Then 'IMOVEL
-                Sql = "SELECT NOMECIDADAO FROM vwFULLIMOVEL WHERE CODREDUZIDO=" & Val(z)
-                Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-                If RdoAux.RowCount > 0 Then
-                    sTexto1 = SubNull(RdoAux!nomecidadao)
-                Else
-                    MsgBox "Cadastro não existe", vbCritical, "Erro"
-                    Exit Function
+'            z = InputBox("Digite o código/inscrição", "Informação requerida")
+'            sTexto1 = ""
+'            Liberado
+'            If Val(z) > 0 And Val(z) < 100000 Then 'IMOVEL
+'                Sql = "SELECT NOMECIDADAO FROM vwFULLIMOVEL WHERE CODREDUZIDO=" & Val(z)
+'                Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+'                If RdoAux.RowCount > 0 Then
+'                    sTexto1 = SubNull(RdoAux!Nomecidadao)
+'                Else
+'                    MsgBox "Cadastro não existe", vbCritical, "Erro"
+'                    Exit Function
+'                End If
+'                RdoAux.Close
+'            ElseIf Val(z) >= 100000 And Val(z) < 300000 Then 'EMPRESA
+'                Sql = "SELECT RAZAOSOCIAL FROM vwFULLEMPRESA WHERE CODIGOMOB=" & Val(z)
+'                Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+'                If RdoAux.RowCount > 0 Then
+'                    sTexto1 = RdoAux!RazaoSocial
+'                Else
+'                    MsgBox "Cadastro não existe", vbCritical, "Erro"
+'                    Exit Function
+'                End If
+'                RdoAux.Close
+'            ElseIf Val(z) >= 500000 And Val(z) < 700000 Then 'CIDADAO
+'                Sql = "SELECT NOMECIDADAO FROM CIDADAO WHERE CODCIDADAO=" & Val(z)
+'                Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+'                If RdoAux.RowCount > 0 Then
+'                    sTexto1 = RdoAux!Nomecidadao
+'                Else
+'                    MsgBox "Cadastro não existe", vbCritical, "Erro"
+'                    Exit Function
+'                End If
+'                RdoAux.Close
+'            End If
+'            z1 = InputBox("Digite o número da execução fiscal", "Informação requerida")
+            z1 = ""
+            For x = 0 To frmComunicado.mainList.ListCount - 1
+                If frmComunicado.mainList.Selected(x) = True Then
+                    z1 = z1 & frmComunicado.mainList.List(x) & ", "
                 End If
-                RdoAux.Close
-            ElseIf Val(z) >= 100000 And Val(z) < 300000 Then 'EMPRESA
-                Sql = "SELECT RAZAOSOCIAL FROM vwFULLEMPRESA WHERE CODIGOMOB=" & Val(z)
-                Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-                If RdoAux.RowCount > 0 Then
-                    sTexto1 = RdoAux!RazaoSocial
-                Else
-                    MsgBox "Cadastro não existe", vbCritical, "Erro"
-                    Exit Function
-                End If
-                RdoAux.Close
-            ElseIf Val(z) >= 500000 And Val(z) < 700000 Then 'CIDADAO
-                Sql = "SELECT NOMECIDADAO FROM CIDADAO WHERE CODCIDADAO=" & Val(z)
-                Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-                If RdoAux.RowCount > 0 Then
-                    sTexto1 = RdoAux!nomecidadao
-                Else
-                    MsgBox "Cadastro não existe", vbCritical, "Erro"
-                    Exit Function
-                End If
-                RdoAux.Close
-            End If
-            z1 = InputBox("Digite o número da execução fiscal", "Informação requerida")
-            
-            rpt.FormulaFields(1).Text = "'" & Mask(CStr(z)) & "'"
+            Next
+            z1 = Left(z1, Len(z1) - 2)
+            rpt.FormulaFields(1).Text = "'" & Mask(CStr(frmComunicado.txtCodigo.Text)) & "'"
             rpt.FormulaFields(2).Text = "'" & Mask(CStr(z1)) & "'"
-            rpt.FormulaFields(3).Text = "'" & Mask(CStr(sTexto1)) & "'"
+            rpt.FormulaFields(3).Text = "'" & Mask(CStr(frmComunicado.txtNome.Text)) & "'"
      Case "COMUNICADODOC"
             rpt.RecordSelectionFormula = "{PROCESSOGTI.ANO}=" & Val(frmProcesso.lblAno.Caption) & " And {PROCESSOGTI.NUMERO}=" & Val(Left$(frmProcesso.lblNumProc.Caption, Len(frmProcesso.lblNumProc.Caption) - 2))
             Sql = "SELECT * FROM VWCIDADAO WHERE CODCIDADAO=" & Val(frmProcesso.lblCodCid.Caption)
@@ -1047,7 +1055,7 @@ If UCase$(sReport) = "CARNE" Then
 End If
 
 Select Case UCase$(sReport)
-    Case "CARNETMP", "CONFDIVIDATMP", "SIMULADOTMP", "BOLETOGUIATMP", "CALCULOPARCELAMENTOTMP", "DAMTMP", "ANALISE2_TMP"
+    Case "CARNETMP", "CONFDIVIDATMP", "SIMULADOTMP", "BOLETOGUIATMP", "CALCULOPARCELAMENTOTMP", "DAMTMP", "ANALISE2_TMP", "EXTRATO_TMP", "EXTRATOFULL_TMP"
         rpt.Database.Tables(1).SetLogOnInfo IPServer, "TributacaoTeste", UL, UP
     Case Else
         rpt.Database.Tables(1).SetLogOnInfo IPServer, "Tributacao", UL, UP
@@ -1761,14 +1769,14 @@ Data4:
     
     Case "NOTIFICACAO3", "NOTIFICACAO4"
             If UCase(NomeDeLogin) = "LUIZ.FERRETI" Then
-                rpt.RecordSelectionFormula = "{NOTIFICACAOISS.USUARIO}='NOELI'"
+                rpt.RecordSelectionFormula = "{NOTIFICACAOISS.USUARIO}='RODRIGOC'"
             Else
                 rpt.RecordSelectionFormula = "{NOTIFICACAOISS.USUARIO}='" & NomeDeLogin & "'"
             End If
     Case "REQUERIPTU"
             rpt.RecordSelectionFormula = "{REPORTTMP.USUARIO}='" & NomeDeLogin & "'"
             frmReport.Caption = "Requerimento para Isenção de IPTU"
-            If frmRequerIPTU.OptTipo(0).value = True Then
+            If frmRequerIPTU.optTipo(0).value = True Then
                 z = "isenção de IPTU"
                 rpt.FormulaFields(4).Text = "'ISENÇÃO DE IPTU'"
             Else
@@ -1872,8 +1880,16 @@ DataR2:
     Case "REFISPARC"
         frmReport.Caption = "Relatório do Refis parcelado"
         rpt.RecordSelectionFormula = "{EXTRATOTMP.COMPUTER}='" & NomeDeLogin & "'"
-        rpt.FormulaFields(1).Text = "'2020'"
-        GeraRefis (nAno)
+        rpt.FormulaFields(1).Text = "'2023'"
+DataP1:
+            z = InputBox("Digite a data inicial.", "Entre com a informação")
+            If z = "" Then GoTo DataP1
+            If Not IsDate(z) Then GoTo DataP1
+DataP2:
+            z2 = InputBox("Digite a data final.", "Entre com a informação")
+            If z2 = "" Then GoTo DataP2
+            If Not IsDate(z2) Then GoTo DataP2
+        GeraRefis CStr(z), CStr(z2)
     Case "QTDEPROCESSOSANO"
         frmReport.Caption = "Qtde de processos tramitados no ano"
         z = InputBox("Digite o Ano", "Informação requerida")
@@ -2067,7 +2083,7 @@ End Select
 If sReport <> "DAM" And sReport <> "DAMHONORARIO" And sReport <> "DAMTMP" Then
     rpt.PaperSize = crPaperA4
 End If
-
+'rpt.FormulaFields(1).Text = "'2019'"
 If Left(sReport, 3) = "BOL" Then
     Sql = "select * from machines2 where computer='" & NomeDoComputador & "'"
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -2295,6 +2311,7 @@ Dim sTexto1 As String, sTexto2 As String, sTexto3 As String, sHor As String, sSe
 Dim z As Variant, RdoAux2 As rdoResultset, z2 As Variant, z3 As Variant, z4 As Variant, z5 As Variant, fso As New FileSystemObject
 Dim sNumProc As String, nNumproc As Long, bAchou As Boolean, aTributo() As String, x As Integer, y As Integer, nAnoproc As Integer
 Dim qd As New rdoQuery, bHeader As Boolean, nLanc As Integer, nParc As Integer, nCompl As Integer
+Dim nMes As Integer
 
 If UCase(sReport) = "BOLETOGUIA2" Then
     bHeader = True
@@ -2323,7 +2340,7 @@ End If
 
 Select Case UCase(sReport)
     Case "EMPRESA_QTDEATIVIDADE"
-        rpt.FormulaFields(1).Text = "'DATA DE ABERTURA ENTRE:" & frmCnsAvancadaMob.mskDataAbeIni.Text & " E " & frmCnsAvancadaMob.mskDataAbeFim.Text & "'"
+        rpt.FormulaFields(1).Text = frmCnsAvancadaMob.mskDataAbeIni.Text & " E " & frmCnsAvancadaMob.mskDataAbeFim.Text & "'"
     Case "DADOS_IMOVEL"
         rpt.RecordSelectionFormula = "{dados_imovel_rpt.codigo}=" & nNumDoc
     Case "Resumo_Pagto_Banco"
@@ -2334,6 +2351,15 @@ Select Case UCase(sReport)
         rpt.RecordSelectionFormula = "{resumo_pagto_banco_ficha.userid}=" & RetornaUsuarioID(NomeDeLogin)
     Case "Resumo_Pagamento_Analise"
         rpt.RecordSelectionFormula = "{resumo_pagto_banco_ficha.userid}=" & RetornaUsuarioID(NomeDeLogin)
+    Case "DEVEDORTOPN"
+        frmReport.Caption = "Lista de Top N Devedores"
+        rpt.RecordSelectionFormula = "{devedortopn.userid}=" & RetornaUsuarioID(NomeDeLogin)
+        rpt.DiscardSavedData
+        'rpt.ParameterFields.Item(1).AddCurrentValue "3"
+        rpt.FormulaFields(1).Text = nNumDoc
+        rpt.FormulaFields(2).Text = "'" & frmNDevedor.dtDataDe.value & "'"
+        rpt.FormulaFields(3).Text = "'" & frmNDevedor.dtDataAte.value & "'"
+       ' rpt.EnableParameterPrompting = True
     Case "ALVARAFUNCIONAMENTO"
         rpt.FormulaFields(1).Text = "'" & frmAlvaraNovo.txtCodigo.Text & "'"
         rpt.FormulaFields(2).Text = "'" & frmAlvaraNovo.lblNome.Caption & "'"
@@ -2344,9 +2370,22 @@ Select Case UCase(sReport)
         rpt.FormulaFields(7).Text = "'" & frmAlvaraNovo.lblAtividade.Caption & "'"
         rpt.FormulaFields(8).Text = "'" & frmAlvaraNovo.lblHorario.Caption & "'"
         rpt.FormulaFields(9).Text = "'" & frmAlvaraNovo.lblCPF.Caption & "'"
+        rpt.RecordSelectionFormula = "{assinatura.usuario}='" & NomeDeLogin & "'"
+    Case "ALVARAFUNCIONAMENTOVRE"
+        rpt.FormulaFields(1).Text = "'" & frmAlvaraNovo.txtCodigo.Text & "'"
+        rpt.FormulaFields(2).Text = "'" & Mask(frmAlvaraNovo.lblNome.Caption) & "'"
+        rpt.FormulaFields(3).Text = "'" & frmAlvaraNovo.sControle & "'"
+        rpt.FormulaFields(4).Text = "'" & frmAlvaraNovo.txtNumProc.Text & "'"
+        rpt.FormulaFields(5).Text = "'" & Mask(frmAlvaraNovo.sEndereco) & "'"
+        rpt.FormulaFields(6).Text = "'" & frmAlvaraNovo.lblBairro.Caption & "'"
+        rpt.FormulaFields(7).Text = "'" & frmAlvaraNovo.lblAtividade.Caption & "'"
+        rpt.FormulaFields(8).Text = "'" & frmAlvaraNovo.lblHorario.Caption & "'"
+        rpt.FormulaFields(9).Text = "'" & frmAlvaraNovo.lblCPF.Caption & "'"
+        rpt.FormulaFields(10).Text = "'" & frmAlvaraNovo.dtDataVre.value & "'"
+        rpt.FormulaFields(11).Text = "'" & Mask(frmAlvaraNovo.txtProtocolo.Text) & "'"
     Case "ALVARAFUNCIONAMENTOPROVISORIO"
         rpt.FormulaFields(1).Text = "'" & frmAlvaraNovo.txtCodigo.Text & "'"
-        rpt.FormulaFields(2).Text = "'" & frmAlvaraNovo.lblNome.Caption & "'"
+        rpt.FormulaFields(2).Text = "'" & Mask(frmAlvaraNovo.lblNome.Caption) & "'"
         rpt.FormulaFields(3).Text = "'" & frmAlvaraNovo.sControle & "'"
         rpt.FormulaFields(4).Text = "'" & frmAlvaraNovo.txtNumProc.Text & "'"
         rpt.FormulaFields(5).Text = "'" & Mask(frmAlvaraNovo.sEndereco) & "'"
@@ -2369,6 +2408,14 @@ Data2:
         rpt.FormulaFields(1).Text = "'PERÍODO DE " & z & " À " & z2 & "'"
     Case "CALCULO_PARCELAMENTO2", "CALCULO_PARCELAMENTO2_TMP"
             frmReport.Caption = "Calculo de Parcelamento"
+         '   If Trim(frmParcelamentoNovo.txtNumProc.Text) = "" Then
+          '      Liberado
+           '     MsgBox "Digite o nº do processo.", vbCritical, "Erro"
+                
+            '    Exit Function
+            
+            'End If
+            On Error Resume Next
             If FormParcelamento = "frmParcelamentoNovo" Then
                 nNumproc = Left$(frmParcelamentoNovo.txtNumProc.Text, InStr(1, frmParcelamentoNovo.txtNumProc.Text, "/", vbBinaryCompare) - 2)
                 nAnoproc = Right$(frmParcelamentoNovo.txtNumProc.Text, 4)
@@ -2465,6 +2512,8 @@ Data2:
                 rpt.FormulaFields(10).Text = "'" & SubNull(!DescBairro) & "'"
                .Close
             End With
+    Case "PARCELAMENTO_CANCEL"
+        rpt.RecordSelectionFormula = "{parcelamento_cancel_header.userid}=" & RetornaUsuarioID(NomeDeLogin)
             
     Case "DECA"
         rpt.RecordSelectionFormula = "{REPORTTMP.USUARIO}='" & NomeDeLogin & "'"
@@ -2611,12 +2660,15 @@ DataCC2:
         rpt.FormulaFields(38).Text = "'" & "" & "'"
         rpt.FormulaFields(39).Text = "'" & "" & "'"
         rpt.FormulaFields(40).Text = "'" & "" & "'"
-        Sql = "select * from escritoriocontabil where codigoesc=" & Val(frmCadMob.txtCodEsc.Text)
+        Sql = "SELECT escritoriocontabil.codigoesc,escritoriocontabil.nomeesc,escritoriocontabil.codlogradouro,escritoriocontabil.nomelogradouro ,escritoriocontabil.numero ,escritoriocontabil.codbairro,"
+        Sql = Sql & "escritoriocontabil.cep ,escritoriocontabil.uf ,escritoriocontabil.telefone ,escritoriocontabil.email ,escritoriocontabil.recebecarne,escritoriocontabil.crc ,escritoriocontabil.rg,"
+        Sql = Sql & "escritoriocontabil.cnpj ,escritoriocontabil.cpf ,escritoriocontabil.codcidade ,escritoriocontabil.complemento ,escritoriocontabil.im ,bairro.descbairro FROM dbo.bairro "
+        Sql = Sql & "INNER JOIN dbo.escritoriocontabil ON bairro.siglauf = escritoriocontabil.uf AND bairro.codcidade = escritoriocontabil.codcidade AND bairro.codbairro = escritoriocontabil.codbairro where codigoesc=" & Val(frmCadMob.txtCodEsc.Text)
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         If RdoAux.RowCount > 0 Then
             rpt.FormulaFields(41).Text = "'" & RdoAux!NOMEESC & "'"
             rpt.FormulaFields(42).Text = "'" & SubNull(RdoAux!NomeLogradouro) & "'"
-            rpt.FormulaFields(43).Text = "'" & SubNull(RdoAux!NOMEBairro) & "'"
+            rpt.FormulaFields(43).Text = "'" & SubNull(RdoAux!DescBairro) & "'"
             rpt.FormulaFields(44).Text = "'" & SubNull(RdoAux!telefone) & "'"
             rpt.FormulaFields(45).Text = "'" & SubNull(RdoAux!Numero) & "'"
             rpt.FormulaFields(46).Text = "'" & SubNull(RdoAux!Cep) & "'"
@@ -2645,8 +2697,24 @@ DataCC2:
         rpt.FormulaFields(66).Text = "'" & "" & "'" 'fone7
         rpt.FormulaFields(67).Text = "'" & "" & "'" 'cidade C
         rpt.FormulaFields(68).Text = "'" & "" & "'" 'uf c
+        
+        'rpt.ParameterFields(1) = "CONTADOR_EMAIL;TESTE;TRUE"
+        rpt.EnableParameterPrompting = False
+        rpt.ParameterFields.Item(1).AddCurrentValue "teeste"
+        
+        
     Case "FICHACOMPENSACAO", "FICHACOMPENSACAO_Rocada"
         rpt.RecordSelectionFormula = "{FICHA_COMPENSACAO.SID}=" & nNumDoc
+    Case "PROCESSODANIELA"
+DataCC3:
+        z = InputBox("Digite a data inicial.", "Entre com as datas desejadas")
+        If z = "" Then GoTo DataCC3
+        If Not IsDate(z) Then GoTo DataCC3
+DataCC4:
+        z2 = InputBox("Digite a data final.", "Entre com as datas desejadas")
+        If z2 = "" Then GoTo DataCC4
+        If Not IsDate(z2) Then GoTo DataCC4
+        GeraProcessoDaniela CStr(z), CStr(z2)
     Case "FICHACOMPENSACAO_IPTU"
         rpt.RecordSelectionFormula = "{FICHA_COMPENSACAO.SID}=" & nNumDoc
         With frmEmissaoGuia3.lstIPTU
@@ -2660,17 +2728,64 @@ DataCC2:
                 Exit For
             End If
         Next
+    Case "PARCELAMENTOWEB", "PARCELAMENTOWEBTMP"
+DataCC5:
+        z = InputBox("Digite a data inicial.", "Entre com as datas desejadas")
+        If z = "" Then GoTo DataCC5
+        If Not IsDate(z) Then GoTo DataCC5
+DataCC6:
+        z2 = InputBox("Digite a data final.", "Entre com as datas desejadas")
+        If z2 = "" Then GoTo DataCC6
+        If Not IsDate(z2) Then GoTo DataCC6
+        rpt.FormulaFields(1).Text = "'" & z & "'"
+        rpt.FormulaFields(2).Text = "'" & z2 & "'"
+        rpt.RecordSelectionFormula = "{parcelamento_web_master.data_geracao}>=#" & CDate(Format(z, "mm/dd/yyyy")) & "# and {parcelamento_web_master.data_geracao} <=#" & CDate(Format(z2, "mm/dd/yyyy")) & "# and {parcelamento_web_master.qtde_parcela}>0 and {parcelamento_web_master.processo_extenso}<>'Null'"
+    Case "SC_AGUAMENSAL"
+        nAno = Val(frmsc_relatorio.cmbAno.Text)
+        nMes = Val(frmsc_relatorio.cmbMes.ItemData(frmsc_relatorio.cmbMes.ListIndex))
+        frmReport.Caption = "Consumo mensal de água"
+        rpt.RecordSelectionFormula = "{sc_ligacao_agua_consumo.ano}=" & nAno & " and {sc_ligacao_agua_consumo.mes} =" & nMes
+        rpt.FormulaFields(1).Text = "'" & nMes & "'"
+        rpt.FormulaFields(2).Text = "'" & nAno & "'"
+    Case "SC_ENERGIAMENSAL"
+        nAno = Val(frmsc_relatorio.cmbAno.Text)
+        nMes = Val(frmsc_relatorio.cmbMes.ItemData(frmsc_relatorio.cmbMes.ListIndex))
+        frmReport.Caption = "Consumo mensal de energia"
+        rpt.RecordSelectionFormula = "{sc_ligacao_energia_consumo.ano}=" & nAno & " and {sc_ligacao_energia_consumo.mes} =" & nMes
+        rpt.FormulaFields(1).Text = "'" & nMes & "'"
+        rpt.FormulaFields(2).Text = "'" & nAno & "'"
+    Case "SC_TELEFONEFIXOMENSAL"
+        nAno = Val(frmsc_relatorio.cmbAno.Text)
+        nMes = Val(frmsc_relatorio.cmbMes.ItemData(frmsc_relatorio.cmbMes.ListIndex))
+        frmReport.Caption = "Consumo mensal de telefonia fixa"
+        rpt.RecordSelectionFormula = "{sc_ligacao_telefonia_fixa_consumo.ano}=" & nAno & " and {sc_ligacao_telefonia_fixa_consumo.mes} =" & nMes
+        rpt.FormulaFields(1).Text = "'" & nMes & "'"
+        rpt.FormulaFields(2).Text = "'" & nAno & "'"
+    Case "PROCESSO_ATENDENTE"
+DataPA1:
+            z = InputBox("Digite a data inicial.", "Entre com a informação")
+            If z = "" Then GoTo DataPA1
+            If Not IsDate(z) Then GoTo DataPA1
+DataPA2:
+            z2 = InputBox("Digite a data final.", "Entre com a informação")
+            If z2 = "" Then GoTo DataPA2
+            If Not IsDate(z2) Then GoTo DataPA2
+        rpt.RecordSelectionFormula = "{vwlistaprocessos.dataentrada}>=#" & CDate(Format(z, "mm/dd/yyyy")) & "# AND {vwlistaprocessos.dataentrada}<=#" & CDate(Format(z2, "mm/dd/yyyy")) & "#"
+        frmReport.Caption = "Lista de Processos por Atendente"
+        rpt.FormulaFields(1).Text = "'PERÍODO DE " & z & " À " & z2 & "'"
+        CRViewer1.EnableGroupTree = True
+        
 End Select
 
 
 
 
 Select Case UCase$(sReport)
-    Case "ALVARAFUNCIONAMENTO", "ALVARAFUNCIONAMENTOPROVISORIO"
+    Case "ALVARAFUNCIONAMENTO", "ALVARAFUNCIONAMENTOPROVISORIO", "ALVARAFUNCIONAMENTOVRE"
         
 '    Case "PAGAMENTOCARTACOBRANCA"
 '        rpt.Database.LogOnServer "PDSODBC.DLL", "odbcTributacao", "Tributacao", UL, UP
-    Case "CARNETMP", "PARCELAMENTO_SIMULADO_TMP", "CALCULO_PARCELAMENTO2_TMP", "Resumo_Pagamento_Ficha_tmp"
+    Case "CARNETMP", "PARCELAMENTO_SIMULADO_TMP", "CALCULO_PARCELAMENTO2_TMP", "Resumo_Pagamento_Ficha_tmp", "PARCELAMENTOWEBTMP"
         rpt.Database.Tables(1).SetLogOnInfo IPServer, "TributacaoTeste", UL, UP
     Case "DECA", "DECA2"
         rpt.Database.Tables(1).SetLogOnInfo IPServer, "Tributacao", UL, UP
@@ -2897,8 +3012,8 @@ MsgBox Err.Description
 Resume Next
 End Sub
 
-Private Sub GeraRefis(nAno As Integer)
-Dim RdoAux As rdoResultset, sPlano As String
+Private Sub GeraRefis(sDataIni As String, sDataFim As String)
+Dim RdoAux As rdoResultset, sPlano As String, sDataParc As String
 On Error GoTo Erro
 Ocupado
 Sql = "DELETE FROM EXTRATOTMP WHERE COMPUTER='" & NomeDeLogin & "'"
@@ -2910,15 +3025,30 @@ Sql = Sql & "debitoparcela.codlancamento = debitotributo.codlancamento AND debit
 Sql = Sql & "debitoparcela.codcomplemento = debitotributo.codcomplemento INNER JOIN parceladocumento ON debitoparcela.codreduzido = parceladocumento.codreduzido AND debitoparcela.anoexercicio = parceladocumento.anoexercicio AND "
 Sql = Sql & "debitoparcela.codlancamento = parceladocumento.codlancamento AND debitoparcela.seqlancamento = parceladocumento.seqlancamento AND debitoparcela.numparcela = parceladocumento.numparcela AND "
 Sql = Sql & "debitoparcela.codcomplemento = parceladocumento.codcomplemento INNER JOIN plano ON parceladocumento.plano = plano.codigo GROUP BY debitoparcela.codreduzido, debitoparcela.numprocesso, debitoparcela.codlancamento, "
-Sql = Sql & "parceladocumento.plano, plano.nome HAVING parceladocumento.plano IN (44,45,46) ORDER BY debitoparcela.codreduzido"
+'Sql = Sql & "parceladocumento.plano, plano.nome HAVING parceladocumento.plano IN (56,57,58)  ORDER BY debitoparcela.codreduzido"
+Sql = Sql & "parceladocumento.plano, plano.nome HAVING parceladocumento.plano IN (62,63,64)  ORDER BY debitoparcela.codreduzido"
+
 
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
     
         nCodReduz = !CODREDUZIDO
-        sNumProc = !NUMPROCESSO
+        sNumProc = !numprocesso
         sPlano = !Nome
+        
+        Sql = "SELECT * FROM PROCESSOREPARC WHERE NUMPROCESSO='" & sNumProc & "'"
+        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        'If RdoAux2!plano = 0 Then GoTo proximo
+        nQtdeParc = RdoAux2!qtdeparcela
+        sDataParc = Format(RdoAux2!datareparc, "dd/mm/yyyy")
+        bCancel = RdoAux2!Cancelado
+        RdoAux2.Close
+        
+        If CDate(sDataParc) < CDate(sDataIni) Or CDate(sDataParc) > CDate(sDataFim) Then
+            GoTo Proximo
+        End If
+        
         If nCodReduz < 100000 Then
             Sql = "SELECT NOMECIDADAO AS NOME FROM vwFULLIMOVEL WHERE CODREDUZIDO=" & nCodReduz
         ElseIf nCodReduz >= 100000 And nCodReduz < 500000 Then
@@ -2929,12 +3059,7 @@ With RdoAux
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         sNome = RdoAux2!Nome
         RdoAux2.Close
-        Sql = "SELECT * FROM PROCESSOREPARC WHERE NUMPROCESSO='" & sNumProc & "'"
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-        'If RdoAux2!plano = 0 Then GoTo proximo
-        nQtdeParc = RdoAux2!qtdeparcela
-        bCancel = RdoAux2!Cancelado
-        RdoAux2.Close
+        
         
         Sql = "SELECT COUNT(*) AS CONTADOR FROM DEBITOPARCELA WHERE CODREDUZIDO=" & nCodReduz & " AND STATUSLANC=2 AND NUMPROCESSO='" & sNumProc & "'"
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -2963,9 +3088,9 @@ With RdoAux
         RdoAux2.Close
                 
         If IsNull(nQtdeParc) Then nQtdeParc = 0
-        Sql = "INSERT EXTRATOTMP(COMPUTER,SEQ,CODREDUZIDO,DESCLANCAMENTO,NOMEPROP,ANOEXERCICIO,NUMSEQUENCIA,NUMPARCELA,VALORLANCADO,VALORCORRECAO) VALUES('"
+        Sql = "INSERT EXTRATOTMP(COMPUTER,SEQ,CODREDUZIDO,DESCLANCAMENTO,NOMEPROP,ANOEXERCICIO,NUMSEQUENCIA,NUMPARCELA,VALORLANCADO,VALORCORRECAO,DATAVENCIMENTO) VALUES('"
         Sql = Sql & NomeDeLogin & "'," & .AbsolutePosition & "," & nCodReduz & ",'" & sPlano & "','" & Left(sNome, 30) & "'," & nQtdeParc & "," & nQtdePago & "," & IIf(bCancel, 1, 0) & ","
-        Sql = Sql & Virg2Ponto(CStr(nValorTotal)) & "," & Virg2Ponto(CStr(nValorPago)) & ")"
+        Sql = Sql & Virg2Ponto(CStr(nValorTotal)) & "," & Virg2Ponto(CStr(nValorPago)) & ",'" & Format(sDataParc, "mm/dd/yyyy") & "')"
         cn.Execute Sql, rdExecDirect
 Proximo:
        .MoveNext
@@ -2988,6 +3113,7 @@ Sql = "DELETE FROM relatorio_refis WHERE usuario='" & NomeDeLogin & "'"
 cn.Execute Sql, rdExecDirect
 
 Sql = "select * from vwrefisnovo2 where  datapagamento between '" & Format(sDataIni, "mm/dd/yyyy") & "' and '" & Format(sDataFim, "mm/dd/yyyy") & "'"
+'Sql = "select * from vwrefisano"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
@@ -3021,3 +3147,285 @@ Resume Next
 
 End Sub
 
+Private Sub GeraProcessoDaniela(z As String, z2 As String)
+Dim nCodReduz As Long, Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, nPos2 As Integer, nSeq As Integer
+Dim nPos As Long, nTot As Long, sNumProc As String, nAno As Integer, nNumero As Long, nUserId As Integer
+On Error GoTo Erro
+
+
+Sql = "delete from processotmp"
+cn.Execute Sql, rdExecDirect
+
+Sql = "SELECT ano,numero,p.COMPLEMENTO,p.OBSERVACAO,p.DATAENTRADA,userid FROM processogti p "
+Sql = Sql & "WHERE DATAENTRADA BETWEEN '" & Format(z, "mm/dd/yyyy") & "' AND '" & Format(z2, "mm/dd/yyyy") & "' AND (p.USERID IN (96,414) OR p.CENTROCUSTO IN (113,117,179))"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    nTot = .RowCount
+    nPos = 1
+    Do Until .EOF
+'        If nPos Mod 10 = 0 Then
+'           CallPb nPos, nTot
+'        End If
+        nUserId = Val(SubNull(!userid))
+        Sql = "select compl from processotmp where ano=" & !ano & " and numero=" & !Numero
+        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        If RdoAux2.RowCount = 0 Then
+            sNumProc = !Numero & "-" & RetornaDVProcesso(!Numero) & "/" & !ano
+            Sql = "INSERT processotmp(ano,numero,anonumero,compl,obs,data,userid) VALUES(" & !ano & "," & !Numero & ",'" & sNumProc & "','"
+            Sql = Sql & UCase(Mask(!Complemento)) & "','" & UCase(Mask(!OBSERVACAO)) & "','" & Format(!DATAENTRADA, "mm/dd/yyyy") & "'," & nUserId & ")"
+            cn.Execute Sql, rdExecDirect
+        End If
+        nPos = nPos + 1
+        DoEvents
+       .MoveNext
+    Loop
+   .Close
+End With
+
+Sql = "SELECT p.ano,p.numero,p.COMPLEMENTO,p.OBSERVACAO,p.DATAENTRADA,t.userid FROM processogti p INNER JOIN tramitacao t ON p.ANO = t.ano AND p.NUMERO = t.numero "
+Sql = Sql & "WHERE DATAENTRADA BETWEEN '" & Format(z, "mm/dd/yyyy") & "' AND '" & Format(z2, "mm/dd/yyyy") & "' AND t.ccusto IN (113,117,179)"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    nTot = .RowCount
+    nPos = 1
+    Do Until .EOF
+'        If nPos Mod 10 = 0 Then
+'           CallPb nPos, nTot
+'        End If
+        nUserId = Val(SubNull(!userid))
+        Sql = "select compl from processotmp where ano=" & !ano & " and numero=" & !Numero
+        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        If RdoAux2.RowCount = 0 Then
+            sNumProc = !Numero & "-" & RetornaDVProcesso(!Numero) & "/" & !ano
+            Sql = "INSERT processotmp(ano,numero,anonumero,compl,obs,data,userid) VALUES(" & !ano & "," & !Numero & ",'" & sNumProc & "','"
+            Sql = Sql & UCase(Mask(!Complemento)) & "','" & UCase(Mask(!OBSERVACAO)) & "','" & Format(!DATAENTRADA, "mm/dd/yyyy") & "'," & nUserId & ")"
+            cn.Execute Sql, rdExecDirect
+        End If
+        nPos = nPos + 1
+        DoEvents
+       .MoveNext
+    Loop
+   .Close
+End With
+
+'MsgBox "Fim"
+
+
+Exit Sub
+
+Erro:
+MsgBox rdoErrors(1).Description
+Resume Next
+
+End Sub
+
+Public Function ShowReport4(sReport As String, hMDI As Long, hFormCalling As Long)
+    Dim m_Report As CRAXDRT.Report, m_Application As New CRAXDRT.Application, Sql As String, RdoAux As rdoResultset, nPos As Integer, sEnd As String, sBairro As String
+    Dim sAtividade As String
+    Set m_Report = Nothing
+    
+    If UCase(sReport) = "DECA2" Then
+        
+        Set m_Report = m_Application.OpenReport(sPathReport + "\" & sReport & ".rpt", 1)
+        m_Report.EnableParameterPrompting = False
+        m_Report.DiscardSavedData
+        nPos = 1
+        Sql = "SELECT mobiliarioproprietario.codmobiliario,mobiliarioproprietario.codcidadao,cidadao.cpf,cidadao.nomecidadao,cidadao.rg,cidadao.siglauf,cidadao.cep,cidadao.telefone,vwLOGRADOURO.endereco_resumido,"
+        Sql = Sql & "cidadao.numimovel,cidadao.complemento,cidadao.nomelogradouro,cidade.desccidade,bairro.descbairro From cidadao LEFT OUTER JOIN mobiliarioproprietario ON cidadao.codcidadao = mobiliarioproprietario.codcidadao "
+        Sql = Sql & "LEFT OUTER JOIN vwLOGRADOURO ON vwLOGRADOURO.codlogradouro = cidadao.codlogradouro INNER JOIN cidade ON cidade.siglauf = cidadao.siglauf AND cidade.codcidade = cidadao.codcidade INNER JOIN bairro "
+        Sql = Sql & "ON cidadao.siglauf = bairro.siglauf AND cidadao.codcidade = bairro.codcidade AND cidadao.codbairro = bairro.codbairro Where mobiliarioproprietario.codmobiliario = " & Val(frmCadMob.txtCodEmpresa.Text)
+        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        With RdoAux
+            Do Until .EOF
+'                sEnd = IIf(IsNull(!endereco_resumido), SubNull(!NomeLogradouro), SubNull(!endereco_resumido))
+'                sEnd = sEnd & ", " & !numimovel & " " & subnull(!complemento) & " Cep: " &
+                sBairro = SubNull(!DescBairro) & " - " & SubNull(!descCidade) & "/" & SubNull(!SiglaUF)
+                Select Case nPos
+                    Case 1
+                        m_Report.ParameterFields.GetItemByName("SOCIO_NOME1").AddCurrentValue SubNull(!nomecidadao)
+                        m_Report.ParameterFields.GetItemByName("SOCIO_RG1").AddCurrentValue SubNull(!rg)
+                        'm_Report.ParameterFields.GetItemByName("SOCIO_ENDERECO1").AddCurrentValue sEnd
+                        m_Report.ParameterFields.GetItemByName("SOCIO_ENDERECO1").AddCurrentValue frmDeca.txtRuaP(0).Text
+                        m_Report.ParameterFields.GetItemByName("SOCIO_CPF1").AddCurrentValue SubNull(!cpf)
+                        m_Report.ParameterFields.GetItemByName("SOCIO_BAIRRO1").AddCurrentValue sBairro
+                        m_Report.ParameterFields.GetItemByName("SOCIO_FONE1").AddCurrentValue SubNull(!telefone)
+                    Case 2
+                        m_Report.ParameterFields.GetItemByName("SOCIO_NOME2").AddCurrentValue SubNull(!nomecidadao)
+                        m_Report.ParameterFields.GetItemByName("SOCIO_RG2").AddCurrentValue SubNull(!rg)
+                        'm_Report.ParameterFields.GetItemByName("SOCIO_ENDERECO2").AddCurrentValue sEnd
+                        m_Report.ParameterFields.GetItemByName("SOCIO_ENDERECO2").AddCurrentValue frmDeca.txtRuaP(1).Text
+                        m_Report.ParameterFields.GetItemByName("SOCIO_CPF2").AddCurrentValue SubNull(!cpf)
+                        m_Report.ParameterFields.GetItemByName("SOCIO_BAIRRO2").AddCurrentValue sBairro
+                        m_Report.ParameterFields.GetItemByName("SOCIO_FONE2").AddCurrentValue SubNull(!telefone)
+                    Case 3
+                        m_Report.ParameterFields.GetItemByName("SOCIO_NOME3").AddCurrentValue SubNull(!nomecidadao)
+                        m_Report.ParameterFields.GetItemByName("SOCIO_RG3").AddCurrentValue SubNull(!rg)
+                        m_Report.ParameterFields.GetItemByName("SOCIO_ENDERECO3").AddCurrentValue frmDeca.txtRuaP(2).Text
+                        'm_Report.ParameterFields.GetItemByName("SOCIO_ENDERECO3").AddCurrentValue sEnd
+                        m_Report.ParameterFields.GetItemByName("SOCIO_CPF3").AddCurrentValue SubNull(!cpf)
+                        m_Report.ParameterFields.GetItemByName("SOCIO_BAIRRO3").AddCurrentValue sBairro
+                        m_Report.ParameterFields.GetItemByName("SOCIO_FONE3").AddCurrentValue SubNull(!telefone)
+                    Case 4
+                        m_Report.ParameterFields.GetItemByName("SOCIO_NOME4").AddCurrentValue SubNull(!nomecidadao)
+                        m_Report.ParameterFields.GetItemByName("SOCIO_RG4").AddCurrentValue SubNull(!rg)
+                        m_Report.ParameterFields.GetItemByName("SOCIO_ENDERECO4").AddCurrentValue frmDeca.txtRuaP(3).Text
+                        'm_Report.ParameterFields.GetItemByName("SOCIO_ENDERECO4").AddCurrentValue sEnd
+                        m_Report.ParameterFields.GetItemByName("SOCIO_CPF4").AddCurrentValue SubNull(!cpf)
+                        m_Report.ParameterFields.GetItemByName("SOCIO_BAIRRO4").AddCurrentValue sBairro
+                        m_Report.ParameterFields.GetItemByName("SOCIO_FONE4").AddCurrentValue SubNull(!telefone)
+                    Case 5
+                        m_Report.ParameterFields.GetItemByName("SOCIO_NOME5").AddCurrentValue SubNull(!nomecidadao)
+                        m_Report.ParameterFields.GetItemByName("SOCIO_RG5").AddCurrentValue SubNull(!rg)
+                        m_Report.ParameterFields.GetItemByName("SOCIO_ENDERECO5").AddCurrentValue frmDeca.txtRuaP(4).Text
+                        'm_Report.ParameterFields.GetItemByName("SOCIO_ENDERECO5").AddCurrentValue sEnd
+                        m_Report.ParameterFields.GetItemByName("SOCIO_CPF5").AddCurrentValue SubNull(!cpf)
+                        m_Report.ParameterFields.GetItemByName("SOCIO_BAIRRO5").AddCurrentValue sBairro
+                        m_Report.ParameterFields.GetItemByName("SOCIO_FONE5").AddCurrentValue SubNull(!telefone)
+                    Case 6
+                        m_Report.ParameterFields.GetItemByName("SOCIO_NOME6").AddCurrentValue SubNull(!nomecidadao)
+                        m_Report.ParameterFields.GetItemByName("SOCIO_RG6").AddCurrentValue SubNull(!rg)
+                        m_Report.ParameterFields.GetItemByName("SOCIO_ENDERECO6").AddCurrentValue frmDeca.txtRuaP(5).Text
+                        'm_Report.ParameterFields.GetItemByName("SOCIO_ENDERECO6").AddCurrentValue sEnd
+                        m_Report.ParameterFields.GetItemByName("SOCIO_CPF6").AddCurrentValue SubNull(!cpf)
+                        m_Report.ParameterFields.GetItemByName("SOCIO_BAIRRO6").AddCurrentValue sBairro
+                        m_Report.ParameterFields.GetItemByName("SOCIO_FONE6").AddCurrentValue SubNull(!telefone)
+                    Case 7
+                        m_Report.ParameterFields.GetItemByName("SOCIO_NOME7").AddCurrentValue SubNull(!nomecidadao)
+                        m_Report.ParameterFields.GetItemByName("SOCIO_RG7").AddCurrentValue SubNull(!rg)
+                        m_Report.ParameterFields.GetItemByName("SOCIO_ENDERECO7").AddCurrentValue frmDeca.txtRuaP(6).Text
+                        'm_Report.ParameterFields.GetItemByName("SOCIO_ENDERECO7").AddCurrentValue sEnd
+                        m_Report.ParameterFields.GetItemByName("SOCIO_CPF7").AddCurrentValue SubNull(!cpf)
+                        m_Report.ParameterFields.GetItemByName("SOCIO_BAIRRO7").AddCurrentValue sBairro
+                        m_Report.ParameterFields.GetItemByName("SOCIO_FONE7").AddCurrentValue SubNull(!telefone)
+                    Case 8
+                        m_Report.ParameterFields.GetItemByName("SOCIO_NOME8").AddCurrentValue SubNull(!nomecidadao)
+                        m_Report.ParameterFields.GetItemByName("SOCIO_RG8").AddCurrentValue SubNull(!rg)
+                        m_Report.ParameterFields.GetItemByName("SOCIO_ENDERECO8").AddCurrentValue frmDeca.txtRuaP(7).Text
+                        'm_Report.ParameterFields.GetItemByName("SOCIO_ENDERECO8").AddCurrentValue sEnd
+                        m_Report.ParameterFields.GetItemByName("SOCIO_CPF8").AddCurrentValue SubNull(!cpf)
+                        m_Report.ParameterFields.GetItemByName("SOCIO_BAIRRO8").AddCurrentValue sBairro
+                        m_Report.ParameterFields.GetItemByName("SOCIO_FONE8").AddCurrentValue SubNull(!telefone)
+                End Select
+                
+                nPos = nPos + 1
+               .MoveNext
+            Loop
+           .Close
+        End With
+        
+        
+        Sql = "SELECT escritoriocontabil.codigoesc,escritoriocontabil.nomeesc,escritoriocontabil.codlogradouro,escritoriocontabil.nomelogradouro ,escritoriocontabil.numero ,escritoriocontabil.codbairro,"
+        Sql = Sql & "escritoriocontabil.cep ,escritoriocontabil.uf ,escritoriocontabil.telefone ,escritoriocontabil.email ,escritoriocontabil.recebecarne,escritoriocontabil.crc ,escritoriocontabil.rg,"
+        Sql = Sql & "escritoriocontabil.cnpj ,escritoriocontabil.cpf ,escritoriocontabil.codcidade ,escritoriocontabil.complemento ,escritoriocontabil.im ,bairro.descbairro,cidade.desccidade FROM dbo.bairro "
+        Sql = Sql & "INNER JOIN dbo.escritoriocontabil ON bairro.siglauf = escritoriocontabil.uf AND bairro.codcidade = escritoriocontabil.codcidade AND bairro.codbairro = escritoriocontabil.codbairro "
+        Sql = Sql & "INNER JOIN dbo.cidade ON bairro.siglauf = cidade.siglauf AND bairro.codcidade = cidade.codcidade Where codigoesc = " & Val(frmCadMob.txtCodEsc.Text)
+        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        With RdoAux
+            If .RowCount > 0 Then
+                m_Report.ParameterFields.GetItemByName("CONTADOR_CODIGO").AddCurrentValue CStr(!CODIGOESC)
+                m_Report.ParameterFields.GetItemByName("CONTADOR_NOME").AddCurrentValue SubNull(!NOMEESC)
+                m_Report.ParameterFields.GetItemByName("CONTADOR_FONE").AddCurrentValue SubNull(!telefone)
+                m_Report.ParameterFields.GetItemByName("CONTADOR_ENDERECO").AddCurrentValue SubNull(!NomeLogradouro) & ", " & CStr(!Numero) & " " & SubNull(!Complemento)
+                m_Report.ParameterFields.GetItemByName("CONTADOR_BAIRRO").AddCurrentValue SubNull(!DescBairro)
+                m_Report.ParameterFields.GetItemByName("CONTADOR_CIDADE").AddCurrentValue SubNull(!descCidade)
+                m_Report.ParameterFields.GetItemByName("CONTADOR_UF").AddCurrentValue SubNull(!UF)
+                m_Report.ParameterFields.GetItemByName("CONTADOR_CEP").AddCurrentValue SubNull(!Cep)
+                m_Report.ParameterFields.GetItemByName("CONTADOR_EMAIL").AddCurrentValue SubNull(!Email)
+                m_Report.ParameterFields.GetItemByName("CONTADOR_CRC").AddCurrentValue SubNull(!CRC)
+                m_Report.ParameterFields.GetItemByName("CONTADOR_RG").AddCurrentValue SubNull(!rg)
+            End If
+           .Close
+        End With
+        m_Report.ParameterFields.GetItemByName("OBSERVACAO").AddCurrentValue Mask(frmDeca.txtOBSC.Text)
+        
+        m_Report.Database.Tables(1).SetLogOnInfo IPServer, "Tributacao", UL, UP
+        m_Report.PaperSize = crPaperA4
+       
+        With CRViewer1
+            .EnableExportButton = True
+            .EnablePrintButton = True
+            .EnableCloseButton = True
+            .ReportSource = m_Report
+            .ViewReport
+            Liberado
+            frmReport.show 1
+        End With
+   ElseIf UCase(sReport) = "DECA" Then
+        Set m_Report = m_Application.OpenReport(sPathReport + "\" & sReport & ".rpt", 1)
+        m_Report.EnableParameterPrompting = False
+        m_Report.DiscardSavedData
+        m_Report.ParameterFields.GetItemByName("INSCRICAO").AddCurrentValue frmCadMob.txtCodEmpresa.Text
+        m_Report.ParameterFields.GetItemByName("RAZAO_SOCIAL").AddCurrentValue frmCadMob.txtRazao.Text
+        sAtividade = frmCadMob.txtAtivExt.Text
+        m_Report.ParameterFields.GetItemByName("ATIVIDADE").AddCurrentValue Left(sAtividade, 70)
+        If Len(sAtividade) > 70 Then
+            m_Report.ParameterFields.GetItemByName("ATIVIDADE2").AddCurrentValue Mid(sAtividade, 71, Len(sAtividade) - 70)
+        End If
+        m_Report.ParameterFields.GetItemByName("ENDERECO").AddCurrentValue frmDeca.txtEnd.Text
+        m_Report.ParameterFields.GetItemByName("ANDAR").AddCurrentValue frmDeca.txtAndar.Text
+        m_Report.ParameterFields.GetItemByName("SALA").AddCurrentValue frmDeca.txtSala.Text
+        m_Report.ParameterFields.GetItemByName("BAIRRO").AddCurrentValue frmDeca.txtBairro.Text
+        m_Report.ParameterFields.GetItemByName("CEP").AddCurrentValue frmDeca.txtCep.Text
+        m_Report.ParameterFields.GetItemByName("CIDADE").AddCurrentValue frmDeca.txtCidade.Text
+        m_Report.ParameterFields.GetItemByName("ZONA").AddCurrentValue frmDeca.txtZona.Text
+        m_Report.ParameterFields.GetItemByName("FONE").AddCurrentValue frmDeca.txtFone.Text
+        m_Report.ParameterFields.GetItemByName("DATA_INICIO").AddCurrentValue frmDeca.txtDataAbe.Text
+        m_Report.ParameterFields.GetItemByName("AREA").AddCurrentValue frmDeca.txtArea.Text
+        m_Report.ParameterFields.GetItemByName("NUM_EMPREGADO").AddCurrentValue frmDeca.txtNumemp.Text
+        m_Report.ParameterFields.GetItemByName("MUNICIPIO").AddCurrentValue frmDeca.txtMunicipio.Text
+        m_Report.ParameterFields.GetItemByName("ORGAO").AddCurrentValue frmDeca.txtOrgao.Text
+        m_Report.ParameterFields.GetItemByName("NUMREG").AddCurrentValue frmDeca.txtNumReg.Text
+        m_Report.ParameterFields.GetItemByName("CAPITAL").AddCurrentValue frmDeca.txtCapital.Text
+        m_Report.ParameterFields.GetItemByName("RG").AddCurrentValue frmDeca.txtRG.Text
+        m_Report.ParameterFields.GetItemByName("CPF").AddCurrentValue frmDeca.txtCPF.Text
+        m_Report.ParameterFields.GetItemByName("DATA0").AddCurrentValue frmDeca.mskO(0).Text
+        m_Report.ParameterFields.GetItemByName("DATA2").AddCurrentValue frmDeca.mskO(2).Text
+        m_Report.ParameterFields.GetItemByName("DATA3").AddCurrentValue frmDeca.mskO(3).Text
+        m_Report.ParameterFields.GetItemByName("DATA4").AddCurrentValue frmDeca.mskO(4).Text
+        m_Report.ParameterFields.GetItemByName("DATA5").AddCurrentValue frmDeca.mskO(5).Text
+        m_Report.ParameterFields.GetItemByName("DATA6").AddCurrentValue frmDeca.mskO(6).Text
+        m_Report.ParameterFields.GetItemByName("DATA7").AddCurrentValue frmDeca.mskO(7).Text
+        m_Report.ParameterFields.GetItemByName("DATA8").AddCurrentValue frmDeca.mskO(8).Text
+        m_Report.ParameterFields.GetItemByName("DATA9").AddCurrentValue frmDeca.mskO(9).Text
+        m_Report.ParameterFields.GetItemByName("ENDENTREGA").AddCurrentValue frmDeca.txtEndEntrega.Text
+        m_Report.ParameterFields.GetItemByName("HISTORICO").AddCurrentValue frmDeca.txtHist.Text
+        If frmDeca.chkAmbulante.value = vbChecked Then
+            m_Report.ParameterFields.GetItemByName("CHKAMBULANTE2").AddCurrentValue "X"
+            m_Report.ParameterFields.GetItemByName("DESCAMBULANTE2").AddCurrentValue frmDeca.txtDescAmb.Text
+            m_Report.ParameterFields.GetItemByName("DESCAMBULANTE").AddCurrentValue frmDeca.txtDescAmbulante.Text
+            m_Report.ParameterFields.GetItemByName("TIPO_AMBULANTE").AddCurrentValue frmDeca.cmbAmbulante.Text
+        End If
+        m_Report.ParameterFields.GetItemByName("EMAILEMPRESA").AddCurrentValue frmDeca.txtEmailEmpresa.Text
+        m_Report.ParameterFields.GetItemByName("CHK0").AddCurrentValue IIf(frmDeca.chkO(0).value = vbChecked, "X", " ")
+        m_Report.ParameterFields.GetItemByName("CHK2").AddCurrentValue IIf(frmDeca.chkO(2).value = vbChecked, "X", " ")
+        m_Report.ParameterFields.GetItemByName("CHK3").AddCurrentValue IIf(frmDeca.chkO(3).value = vbChecked, "X", " ")
+        m_Report.ParameterFields.GetItemByName("CHK4").AddCurrentValue IIf(frmDeca.chkO(4).value = vbChecked, "X", " ")
+        m_Report.ParameterFields.GetItemByName("CHK5").AddCurrentValue IIf(frmDeca.chkO(5).value = vbChecked, "X", " ")
+        m_Report.ParameterFields.GetItemByName("CHK6").AddCurrentValue IIf(frmDeca.chkO(6).value = vbChecked, "X", " ")
+        m_Report.ParameterFields.GetItemByName("CHK7").AddCurrentValue IIf(frmDeca.chkO(7).value = vbChecked, "X", " ")
+        m_Report.ParameterFields.GetItemByName("CHK8").AddCurrentValue IIf(frmDeca.chkO(8).value = vbChecked, "X", " ")
+        m_Report.ParameterFields.GetItemByName("CHK9").AddCurrentValue IIf(frmDeca.chkO(9).value = vbChecked, "X", " ")
+        m_Report.ParameterFields.GetItemByName("CHKPF").AddCurrentValue IIf(frmDeca.chkT(0).value = vbChecked, "X", " ")
+        m_Report.ParameterFields.GetItemByName("CHKPJ").AddCurrentValue IIf(frmDeca.chkT(1).value = vbChecked, "X", " ")
+        m_Report.ParameterFields.GetItemByName("CHKE1").AddCurrentValue IIf(frmDeca.chkE(0).value = vbChecked, "X", " ")
+        m_Report.ParameterFields.GetItemByName("CHKE2").AddCurrentValue IIf(frmDeca.chkE(1).value = vbChecked, "X", " ")
+        m_Report.ParameterFields.GetItemByName("CHKE3").AddCurrentValue IIf(frmDeca.chkE(2).value = vbChecked, "X", " ")
+        m_Report.ParameterFields.GetItemByName("CHKE4").AddCurrentValue IIf(frmDeca.chkE(3).value = vbChecked, "X", " ")
+        m_Report.ParameterFields.GetItemByName("CHKE5").AddCurrentValue IIf(frmDeca.chkE(4).value = vbChecked, "X", " ")
+        
+        m_Report.Database.Tables(1).SetLogOnInfo IPServer, "Tributacao", UL, UP
+        m_Report.PaperSize = crPaperA4
+       
+        With CRViewer1
+            .EnableExportButton = True
+            .EnablePrintButton = True
+            .EnableCloseButton = True
+            .ReportSource = m_Report
+            .ViewReport
+            Liberado
+            frmReport.show 1
+        End With
+    
+   End If
+End Function
+    

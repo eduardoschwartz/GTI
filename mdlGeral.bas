@@ -1,6 +1,16 @@
 Attribute VB_Name = "mdlGeral"
 Private Const WM_QUIT As Long = &H12
 
+Private Type Guid
+    Data1 As Long
+    Data2 As Integer
+    Data3 As Integer
+    Data4(0 To 7) As Byte
+End Type
+
+Private Declare Sub CoCreateGuid Lib "ole32.dll" (ByRef pguid As Guid)
+Private Declare Function StringFromGUID2 Lib "ole32.dll" (ByVal rguid As Long, ByVal lpsz As Long, ByVal cchMax As Long) As Long
+
 Public bDBInternet As Boolean
 Public LoginDSN As String
 Public Const MAX_HOSTNAME_LEN = 132
@@ -53,7 +63,7 @@ End Enum
 
 Public Const MIB_DB = "07/10/1997"
 Public Const UL = "gtisys"
-Public Const UP = "everest"
+Public Const UP = "himalaia"
 
 Private Type RELMOB1
     nCodReduz As Long
@@ -143,7 +153,7 @@ End Type
 
 Public Type tProcesso
     Numero As Integer
-    Ano As Integer
+    ano As Integer
 End Type
 
 
@@ -192,7 +202,7 @@ Public bFichaCompensacao As Boolean
 Public bComercioEletronico As Boolean
 Public dcJuros As New clsDictionary
 Public dcUfir As New clsDictionary
-Public aMulta() As Multa
+Public aMulta() As multa
 Public dcFeriado As New Dictionary
 Public bSkin As Boolean
 Public sPathBin As String
@@ -488,7 +498,7 @@ Public Type PlanoDesconto
     nValor As Double
 End Type
 
-Public Type Multa
+Public Type multa
     nAno As Integer
     nMin As Integer
     nMax As Integer
@@ -560,11 +570,11 @@ Declare Function BitBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal x As Long, ByV
 Declare Function CallWindowProc Lib "user32" Alias "CallWindowProcA" (ByVal lpPrevWndFunc As Long, ByVal HWND As Long, ByVal Msg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
 Declare Sub ClientToScreen Lib "user32" (ByVal HWND As Long, lpPoint As POINTAPI)
 Declare Sub ClipCursor Lib "user32" (lpRect As Any)
-Declare Function CoInitialize Lib "OLE32.DLL" (ByVal pvReserved As Long) As Long
-Declare Sub CoUninitialize Lib "OLE32.DLL" ()
+Declare Function CoInitialize Lib "ole32.dll" (ByVal pvReserved As Long) As Long
+Declare Sub CoUninitialize Lib "ole32.dll" ()
 Declare Sub CopyMem Lib "KERNEL32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal length As Long)
 Declare Sub CopyMemory Lib "KERNEL32" Alias "RtlMoveMemory" (ByRef lpDest As Any, ByRef lpSource As Any, ByVal iLen As Long)
-Declare Sub CoTaskMemFree Lib "OLE32.DLL" (ByVal pv As Long)
+Declare Sub CoTaskMemFree Lib "ole32.dll" (ByVal pv As Long)
 Declare Function CloseHandle Lib "KERNEL32" (ByVal hObject As Long) As Long
 Declare Function CreateCaret Lib "user32" (ByVal HWND As Long, ByVal hBitmap As Long, ByVal nWidth As Long, ByVal nHeight As Long) As Long
 Declare Function CreateFont Lib "gdi32" Alias "CreateFontA" (ByVal h As Long, ByVal w As Long, ByVal e As Long, ByVal o As Long, ByVal w As Long, ByVal i As Long, ByVal U As Long, ByVal s As Long, ByVal c As Long, ByVal OP As Long, ByVal CP As Long, ByVal q As Long, ByVal PAF As Long, ByVal f As String) As Long
@@ -1037,47 +1047,48 @@ If FS.FileExists(App.Path & "\gti.ini") Then
     Close #137
     If sIP = "" Then
         Open App.Path & "\gti.ini" For Append As #138
-        Print #138, "SERVER=192.168.15.160"
+        Print #138, "SERVER=192.168.200.202"
         Close #138
     End If
 Else
     Open App.Path & "\gti.ini" For Output As #1
-    Print #1, "SERVER=192.168.15.160"
-    sIP = "192.168.15.160"
+    Print #1, "SERVER=192.168.200.202"
+    sIP = "192.168.200.202"
     Close #1
 End If
 
 IPServer = sIP
 
-    
-     
+If IPServer = "192.168.15.160" Then
+    IPServer = "192.168.200.202"
+End If
      
 If LoginDSN = "odbcTributacao" Then
-   Conn$ = "UID=gtisys;PWD=everest;" _
+   Conn$ = "UID=gtisys;PWD=himalaia;" _
     & "DATABASE=tributacao;" _
     & "SERVER=" & IPServer & ";" _
     & "DRIVER={SQL SERVER};DSN='';"
     Set cn = en.OpenConnection(dsname:="", Prompt:=rdDriverNoPrompt, Connect:=Conn$)
 ElseIf LoginDSN = "odbcTribTeste" Then
-   Conn$ = "UID=gtisys;PWD=everest;" _
+   Conn$ = "UID=gtisys;PWD=himalaia;" _
     & "DATABASE=TributacaoTeste;" _
     & "SERVER=" & IPServer & ";" _
     & "DRIVER={SQL SERVER};DSN='';"
     Set cn = en.OpenConnection(dsname:="", Prompt:=rdDriverNoPrompt, Connect:=Conn$)
 ElseIf LoginDSN = "odbcTribInternet" Then
-   Conn$ = "UID=gtisys;PWD=everest;" _
+   Conn$ = "UID=gtisys;PWD=himalaia;" _
     & "DATABASE=tributacao;" _
     & "SERVER=" & IPServer & ";" _
     & "DRIVER={SQL SERVER};DSN='';"
     Set cn = en.OpenConnection(dsname:="", Prompt:=rdDriverNoPrompt, Connect:=Conn$)
 ElseIf LoginDSN = "odbcTribLocal" Then
-    If NomeDoComputador = "GTI-PC" Then
-        Conn$ = "UID=gtisys;PWD=everest;" _
-        & "DATABASE=tributacaoBKP;" _
-        & "SERVER=" & IPServer & ";" _
+    If NomeDoComputador = "SKYNET" Then
+        Conn$ = "UID=gtisys;PWD=himalaia;" _
+        & "DATABASE=tributacao;" _
+        & "SERVER=SKYNET;" _
         & "DRIVER={SQL SERVER};DSN='';"
     Else
-        Conn$ = "UID=gtisys;PWD=everest;" _
+        Conn$ = "UID=gtisys;PWD=himalaia;" _
         & "DATABASE=tributacao;" _
         & "SERVER=" & IPServer & ";" _
         & "DRIVER={SQL SERVER};DSN='';"
@@ -1120,7 +1131,7 @@ With enInt
     .CursorDriver = rdUseOdbc
     .LoginTimeout = 20
      
-    Conn$ = "UID=integrativa;PWD=integrativa;" _
+    Conn$ = "UID=gtisys;PWD=himalaia;" _
     & "DATABASE=GTI_INTEGRATIVA;" _
     & "SERVER=" & IPServer & ";" _
     & "DRIVER={SQL SERVER};DSN='';"
@@ -1150,7 +1161,7 @@ With enInt
     .CursorDriver = rdUseOdbc
     .LoginTimeout = 20
      
-    Conn$ = "UID=gtisys;PWD=everest;" _
+    Conn$ = "UID=gtisys;PWD=himalaia;" _
     & "DATABASE=GTI;" _
     & "SERVER=GTI-PC\sqlexpress;" _
     & "DRIVER={SQL SERVER};DSN='';"
@@ -1870,9 +1881,17 @@ Dim RdoLg As rdoResultset
 Dim nConta As Integer
 Dim Num1 As Long, Num2 As Long
 Dim sBairro As String
+Dim bImpar As Boolean
+
+If Numero Mod 2 = 0 Then
+    bImpar = False
+Else
+    bImpar = True
+End If
+
 
 sBairro = ""
-Sql = "SELECT INICIAL,FINAL,BAIRRO,DESCBAIRRO FROM LOGRADOURO_BAIRRO INNER JOIN BAIRRO ON "
+Sql = "SELECT INICIAL,FINAL,BAIRRO,DESCBAIRRO,IMPAR,PAR FROM LOGRADOURO_BAIRRO INNER JOIN BAIRRO ON "
 Sql = Sql & "LOGRADOURO_BAIRRO.BAIRRO=BAIRRO.CODBAIRRO WHERE SIGLAUF='SP' AND CODCIDADE=413 AND LOGRADOURO=" & Logradouro
 Set RdoLg = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
 With RdoLg
@@ -1885,22 +1904,49 @@ With RdoLg
             RetornaLogradouroBairro.Nome = !DescBairro
        ElseIf nConta > 1 Then
             Do Until .EOF
-                  Num1 = !INICIAL
-                  Num2 = !FINAL
-                  If Numero >= Num1 And Numero <= Num2 Then
+            Num1 = !INICIAL
+            Num2 = !FINAL
+            If !Impar = 1 And !Par = 1 Then
+                If Numero >= Num1 And Numero <= Num2 Then
+                    RetornaLogradouroBairro.Codigo = !Bairro
+                    RetornaLogradouroBairro.Nome = !DescBairro
+                    Exit Do
+                ElseIf Numero >= Num1 And Num2 = 0 Then
+                    RetornaLogradouroBairro.Codigo = !Bairro
+                    RetornaLogradouroBairro.Nome = !DescBairro
+                    Exit Do
+                End If
+            Else
+                If !Impar = True And bImpar Then
+                    If Numero >= Num1 And Numero <= Num2 Then
                         RetornaLogradouroBairro.Codigo = !Bairro
                         RetornaLogradouroBairro.Nome = !DescBairro
                         Exit Do
-                  ElseIf Numero >= Num1 And Num2 = 0 Then
+                    ElseIf Numero >= Num1 And Num2 = 0 Then
                         RetornaLogradouroBairro.Codigo = !Bairro
                         RetornaLogradouroBairro.Nome = !DescBairro
                         Exit Do
-                  End If
-                 .MoveNext
-                 
-            Loop
-            .Close
-       End If
+                    End If
+                Else
+                    If !Par = True And Not bImpar Then
+                        If Numero >= Num1 And Numero <= Num2 Then
+                            RetornaLogradouroBairro.Codigo = !Bairro
+                            RetornaLogradouroBairro.Nome = !DescBairro
+                            Exit Do
+                        ElseIf Numero >= Num1 And Num2 = 0 Then
+                            RetornaLogradouroBairro.Codigo = !Bairro
+                            RetornaLogradouroBairro.Nome = !DescBairro
+                            Exit Do
+                        End If
+                    End If
+                End If
+            End If
+        'End If
+                  
+       .MoveNext
+    Loop
+   .Close
+    End If
 End With
 
 End Function
@@ -2151,7 +2197,10 @@ If UfirBase = 0 Then
     Exit Function
 End If
 
-CalculaCorrecao = (nValorDebito * UfirAtual / UfirBase) - nValorDebito
+'CalculaCorrecao = (nValorDebito * UfirAtual / UfirBase) - nValorDebito
+If UfirAtual <> UfirBase Then
+    CalculaCorrecao = (nValorDebito * UfirAtual / UfirBase)
+End If
 If CalculaCorrecao > 0 Then
    CalculaCorrecao = FormatNumber(CalculaCorrecao, 2)
 End If
@@ -3002,8 +3051,8 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
        'NUMERO DO PROCESSO ERRADO
-       nNumProcOld = Val(Left$(Trim$(!NUMPROCESSO), InStr(1, Trim$(!NUMPROCESSO), "/", vbBinaryCompare) - 1))
-       nAno = Val(Mid(Trim$(!NUMPROCESSO), InStr(1, Trim$(!NUMPROCESSO), "/", vbBinaryCompare) + 1, 4))
+       nNumProcOld = Val(Left$(Trim$(!numprocesso), InStr(1, Trim$(!numprocesso), "/", vbBinaryCompare) - 1))
+       nAno = Val(Mid(Trim$(!numprocesso), InStr(1, Trim$(!numprocesso), "/", vbBinaryCompare) + 1, 4))
        'PROCURA NO GENÉSIO
        Sql = "SELECT ANOPROCESS,NUMEROPROC FROM PROCESSO WHERE NUMEROPROC=" & nNumProcOld & " AND ANOPROCESS=" & nAno
        Set RdoGenesio = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -3021,7 +3070,7 @@ With RdoAux
                        'REGRAVA NA TABELA PROCESSOREPARC
                         Sql = "INSERT PROCESSOREPARC "
                         Sql = Sql & "SELECT '" & sNumProcNew & "',DATAPROCESSO,DATAREPARC,QTDEPARCELA,VALORENTRADA,PERCENTRADA,CALCULAMULTA,CALCULAJUROS,CODIGORESP,FUNCIONARIO,CANCELADO,DATACANCEL,FUNCIONARIOCANCEL,NUMprotocolo,PLANO FROM PROCESSOREPARC "
-                        Sql = Sql & "WHERE NUMPROCESSO='" & RdoAux!NUMPROCESSO & "'"
+                        Sql = Sql & "WHERE NUMPROCESSO='" & RdoAux!numprocesso & "'"
                         cn.Execute Sql, rdExecDirect
                      End If
                     .Close
@@ -3034,7 +3083,7 @@ With RdoAux
                        'REGRAVA NA TABELA ORIGEMREPARC
                         Sql = "INSERT ORIGEMREPARC "
                         Sql = Sql & "SELECT '" & sNumProcNew & "',CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,NUMSEQUENCIA,NUMPARCELA,CODCOMPLEMENTO FROM ORIGEMREPARC "
-                        Sql = Sql & "WHERE NUMPROCESSO='" & RdoAux!NUMPROCESSO & "'"
+                        Sql = Sql & "WHERE NUMPROCESSO='" & RdoAux!numprocesso & "'"
                         cn.Execute Sql, rdExecDirect
                      End If
                     .Close
@@ -3050,7 +3099,7 @@ With RdoAux
                        'REGRAVA NA TABELA DESTINOREPARC
                         Sql = "INSERT DESTINOREPARC "
                         Sql = Sql & "SELECT '" & sNumProcNew & "',CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,NUMSEQUENCIA,NUMPARCELA,CODCOMPLEMENTO FROM DESTINOREPARC "
-                        Sql = Sql & "WHERE NUMPROCESSO='" & RdoAux!NUMPROCESSO & "'"
+                        Sql = Sql & "WHERE NUMPROCESSO='" & RdoAux!numprocesso & "'"
                         cn.Execute Sql, rdExecDirect
                      End If
                     .Close
@@ -3063,7 +3112,7 @@ With RdoAux
                  cn.Execute Sql, rdExecDirect
                 'CORRIGE PROCESSO EM DEBITOPARCELA
                  Sql = "UPDATE DEBITOPARCELA SET NUMPROCESSO='" & sNumProcNew & "' WHERE "
-                 Sql = Sql & "NUMPROCESSO='" & RdoAux!NUMPROCESSO & "'"
+                 Sql = Sql & "NUMPROCESSO='" & RdoAux!numprocesso & "'"
                  cn.Execute Sql, rdExecDirect
             End If
            .Close
@@ -3567,6 +3616,18 @@ Sql = "SELECT NOMELOGIN FROM USUARIO WHERE NOMECOMPLETO='" & Mask(CStr(sFullName
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     RetornaUsuarioLoginName = !NomeLogin
+   .Close
+End With
+
+End Function
+
+Public Function RetornaUsuarioLogin(nUserId As Integer) As String
+Dim Sql As String, RdoAux As rdoResultset
+
+Sql = "SELECT NOMELOGIN FROM USUARIO WHERE Id=" & nUserId
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    RetornaUsuarioLogin = !NomeLogin
    .Close
 End With
 
@@ -4221,7 +4282,7 @@ bRet = False
 '    bRet = True
 'End If
 
-If NomeDeLogin = "RENATA" Or NomeDeLogin = "SOLANGE" Then
+If NomeDeLogin = "CINTIA" Or NomeDeLogin = "PRISCILAANAMI" Then
     bRet = True
 End If
 
@@ -4310,5 +4371,46 @@ With Err
 End With
 End Function
 
+Public Function sNull(texto As String)
+
+If Trim(texto) = "" Then
+    sNull = "NULL"
+Else
+    sNull = "'" & Mask(Replace(Trim(texto), "  ", " ")) & "'"
+End If
+
+End Function
+
+Public Function sNullVal(texto As String)
+
+If Trim(texto) = "" Then
+    sNullVal = "NULL"
+Else
+    sNullVal = Val(texto)
+End If
+
+End Function
 
 
+Public Function sNullData(Data As String)
+
+If Trim(Data) = "" Or Data = "__/__/____" Then
+    sNullData = "NULL"
+Else
+    sNullData = "'" & Format(Data, "mm/dd/yyyy") & "'"
+End If
+
+End Function
+
+Public Function GetGUID() As String
+    Dim MyGUID As Guid
+    Dim GUIDByte() As Byte
+    Dim GuidLen As Long
+    
+    CoCreateGuid MyGUID
+    
+    ReDim GUIDByte(80)
+    GuidLen = StringFromGUID2(VarPtr(MyGUID.Data1), VarPtr(GUIDByte(0)), UBound(GUIDByte))
+    
+    GetGUID = Left(GUIDByte, GuidLen)
+End Function

@@ -6,23 +6,23 @@ Object = "{DE8CE233-DD83-481D-844C-C07B96589D3A}#1.1#0"; "vbalSGrid6.ocx"
 Begin VB.Form frmDebitoImob 
    BackColor       =   &H00EEEEEE&
    Caption         =   "Consulta de Débitos"
-   ClientHeight    =   5895
-   ClientLeft      =   13170
-   ClientTop       =   5205
+   ClientHeight    =   6045
+   ClientLeft      =   6555
+   ClientTop       =   4800
    ClientWidth     =   11415
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    NegotiateMenus  =   0   'False
-   ScaleHeight     =   5895
+   ScaleHeight     =   6045
    ScaleWidth      =   11415
    Begin VB.Frame frReparc 
       BackColor       =   &H00C0C000&
       BorderStyle     =   0  'None
       Height          =   5205
       Left            =   585
-      TabIndex        =   14
-      Top             =   495
+      TabIndex        =   13
+      Top             =   630
       Width           =   9315
       Begin VB.CheckBox chkAntigo 
          Alignment       =   1  'Right Justify
@@ -31,7 +31,7 @@ Begin VB.Form frmDebitoImob
          ForeColor       =   &H00800000&
          Height          =   195
          Left            =   1680
-         TabIndex        =   124
+         TabIndex        =   123
          Top             =   4530
          Width           =   1725
       End
@@ -41,7 +41,7 @@ Begin VB.Form frmDebitoImob
          ForeColor       =   &H00800000&
          Height          =   585
          Left            =   300
-         TabIndex        =   17
+         TabIndex        =   16
          Top             =   3420
          Width           =   1785
          Begin VB.CheckBox chkMulta 
@@ -52,7 +52,7 @@ Begin VB.Form frmDebitoImob
             ForeColor       =   &H80000008&
             Height          =   255
             Left            =   150
-            TabIndex        =   19
+            TabIndex        =   18
             Top             =   270
             Value           =   1  'Checked
             Width           =   735
@@ -65,7 +65,7 @@ Begin VB.Form frmDebitoImob
             ForeColor       =   &H80000008&
             Height          =   255
             Left            =   930
-            TabIndex        =   18
+            TabIndex        =   17
             Top             =   270
             Value           =   1  'Checked
             Width           =   735
@@ -75,14 +75,14 @@ Begin VB.Form frmDebitoImob
          Height          =   315
          Left            =   1770
          Style           =   2  'Dropdown List
-         TabIndex        =   16
+         TabIndex        =   15
          Top             =   210
          Width           =   1695
       End
       Begin MSFlexGridLib.MSFlexGrid grdOrigem 
          Height          =   1965
          Left            =   4080
-         TabIndex        =   15
+         TabIndex        =   14
          Top             =   390
          Width           =   5145
          _ExtentX        =   9075
@@ -101,7 +101,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdSairRep 
          Height          =   315
          Left            =   60
-         TabIndex        =   20
+         TabIndex        =   19
          ToolTipText     =   "Sair da Tela de Reparcelamento"
          Top             =   4770
          Width           =   1095
@@ -141,7 +141,7 @@ Begin VB.Form frmDebitoImob
       Begin MSFlexGridLib.MSFlexGrid grdDestino 
          Height          =   2355
          Left            =   3480
-         TabIndex        =   21
+         TabIndex        =   20
          Top             =   2730
          Width           =   5745
          _ExtentX        =   10134
@@ -160,7 +160,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdCancelReparc 
          Height          =   315
          Left            =   1200
-         TabIndex        =   22
+         TabIndex        =   21
          ToolTipText     =   "Cancela Reparcelamento da SMAR"
          Top             =   4770
          Width           =   1095
@@ -200,7 +200,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdCalculo 
          Height          =   315
          Left            =   2340
-         TabIndex        =   79
+         TabIndex        =   78
          ToolTipText     =   "Exibe o cálculo do Parcelamento"
          Top             =   4770
          Width           =   1095
@@ -240,7 +240,7 @@ Begin VB.Form frmDebitoImob
       Begin VB.Label lblAno 
          Height          =   225
          Left            =   4320
-         TabIndex        =   80
+         TabIndex        =   79
          Top             =   5490
          Visible         =   0   'False
          Width           =   2595
@@ -260,7 +260,7 @@ Begin VB.Form frmDebitoImob
          ForeColor       =   &H000000C0&
          Height          =   585
          Left            =   120
-         TabIndex        =   45
+         TabIndex        =   44
          Top             =   1650
          Width           =   3405
       End
@@ -269,7 +269,7 @@ Begin VB.Form frmDebitoImob
          ForeColor       =   &H00000080&
          Height          =   225
          Left            =   2040
-         TabIndex        =   44
+         TabIndex        =   43
          Top             =   1380
          Width           =   1485
       End
@@ -279,7 +279,7 @@ Begin VB.Form frmDebitoImob
          Height          =   225
          Index           =   8
          Left            =   300
-         TabIndex        =   43
+         TabIndex        =   42
          Top             =   1380
          Width           =   1665
       End
@@ -289,7 +289,7 @@ Begin VB.Form frmDebitoImob
          Height          =   225
          Index           =   11
          Left            =   300
-         TabIndex        =   42
+         TabIndex        =   41
          Top             =   2700
          Width           =   1665
       End
@@ -298,7 +298,7 @@ Begin VB.Form frmDebitoImob
          ForeColor       =   &H00000080&
          Height          =   225
          Left            =   2040
-         TabIndex        =   41
+         TabIndex        =   40
          Top             =   2700
          Width           =   975
       End
@@ -307,7 +307,7 @@ Begin VB.Form frmDebitoImob
          ForeColor       =   &H00000080&
          Height          =   225
          Left            =   270
-         TabIndex        =   40
+         TabIndex        =   39
          Top             =   4335
          Width           =   3255
       End
@@ -317,7 +317,7 @@ Begin VB.Form frmDebitoImob
          Height          =   225
          Index           =   17
          Left            =   240
-         TabIndex        =   39
+         TabIndex        =   38
          Top             =   4170
          Width           =   2085
       End
@@ -326,7 +326,7 @@ Begin VB.Form frmDebitoImob
          ForeColor       =   &H00000080&
          Height          =   225
          Left            =   2040
-         TabIndex        =   38
+         TabIndex        =   37
          Top             =   750
          Width           =   1485
       End
@@ -335,7 +335,7 @@ Begin VB.Form frmDebitoImob
          ForeColor       =   &H00000080&
          Height          =   225
          Left            =   2040
-         TabIndex        =   37
+         TabIndex        =   36
          Top             =   1050
          Width           =   1485
       End
@@ -344,7 +344,7 @@ Begin VB.Form frmDebitoImob
          ForeColor       =   &H00000080&
          Height          =   225
          Left            =   2070
-         TabIndex        =   36
+         TabIndex        =   35
          Top             =   1710
          Width           =   1485
       End
@@ -353,7 +353,7 @@ Begin VB.Form frmDebitoImob
          ForeColor       =   &H00000080&
          Height          =   225
          Left            =   2040
-         TabIndex        =   35
+         TabIndex        =   34
          Top             =   2040
          Width           =   1485
       End
@@ -362,7 +362,7 @@ Begin VB.Form frmDebitoImob
          ForeColor       =   &H00000080&
          Height          =   225
          Left            =   2040
-         TabIndex        =   34
+         TabIndex        =   33
          Top             =   2370
          Width           =   1485
       End
@@ -372,7 +372,7 @@ Begin VB.Form frmDebitoImob
          Height          =   225
          Index           =   10
          Left            =   300
-         TabIndex        =   33
+         TabIndex        =   32
          Top             =   750
          Width           =   1665
       End
@@ -382,7 +382,7 @@ Begin VB.Form frmDebitoImob
          Height          =   225
          Index           =   9
          Left            =   300
-         TabIndex        =   32
+         TabIndex        =   31
          Top             =   1050
          Width           =   1665
       End
@@ -392,7 +392,7 @@ Begin VB.Form frmDebitoImob
          Height          =   225
          Index           =   5
          Left            =   300
-         TabIndex        =   31
+         TabIndex        =   30
          Top             =   1710
          Width           =   1665
       End
@@ -402,7 +402,7 @@ Begin VB.Form frmDebitoImob
          Height          =   225
          Index           =   6
          Left            =   300
-         TabIndex        =   30
+         TabIndex        =   29
          Top             =   2040
          Width           =   1665
       End
@@ -412,7 +412,7 @@ Begin VB.Form frmDebitoImob
          Height          =   225
          Index           =   7
          Left            =   300
-         TabIndex        =   29
+         TabIndex        =   28
          Top             =   2370
          Width           =   1665
       End
@@ -431,7 +431,7 @@ Begin VB.Form frmDebitoImob
          Height          =   255
          Index           =   2
          Left            =   285
-         TabIndex        =   28
+         TabIndex        =   27
          Top             =   270
          Width           =   1395
       End
@@ -450,7 +450,7 @@ Begin VB.Form frmDebitoImob
          Height          =   255
          Index           =   1
          Left            =   3480
-         TabIndex        =   27
+         TabIndex        =   26
          Top             =   2460
          Width           =   2325
       End
@@ -469,7 +469,7 @@ Begin VB.Form frmDebitoImob
          Height          =   255
          Index           =   0
          Left            =   4110
-         TabIndex        =   26
+         TabIndex        =   25
          Top             =   120
          Width           =   2325
       End
@@ -489,7 +489,7 @@ Begin VB.Form frmDebitoImob
          ForeColor       =   &H000000C0&
          Height          =   585
          Left            =   240
-         TabIndex        =   25
+         TabIndex        =   24
          Top             =   1620
          Width           =   3405
       End
@@ -499,7 +499,7 @@ Begin VB.Form frmDebitoImob
          Height          =   225
          Index           =   12
          Left            =   300
-         TabIndex        =   24
+         TabIndex        =   23
          Top             =   3030
          Width           =   1665
       End
@@ -509,7 +509,7 @@ Begin VB.Form frmDebitoImob
          ForeColor       =   &H00000080&
          Height          =   225
          Left            =   2040
-         TabIndex        =   23
+         TabIndex        =   22
          Top             =   3030
          Width           =   1395
       End
@@ -519,7 +519,7 @@ Begin VB.Form frmDebitoImob
       BorderStyle     =   0  'None
       Height          =   735
       Left            =   60
-      TabIndex        =   82
+      TabIndex        =   81
       Top             =   4890
       Visible         =   0   'False
       Width           =   10155
@@ -528,7 +528,7 @@ Begin VB.Form frmDebitoImob
          Caption         =   "Exibir parcela única"
          Height          =   285
          Left            =   7920
-         TabIndex        =   97
+         TabIndex        =   96
          Top             =   60
          Width           =   1905
       End
@@ -538,7 +538,7 @@ Begin VB.Form frmDebitoImob
          Left            =   8490
          List            =   "frmDebitoImob.frx":062B
          Style           =   2  'Dropdown List
-         TabIndex        =   95
+         TabIndex        =   94
          Top             =   360
          Width           =   1095
       End
@@ -548,7 +548,7 @@ Begin VB.Form frmDebitoImob
          Left            =   6690
          List            =   "frmDebitoImob.frx":064F
          Style           =   2  'Dropdown List
-         TabIndex        =   92
+         TabIndex        =   91
          Top             =   390
          Width           =   1095
       End
@@ -556,7 +556,7 @@ Begin VB.Form frmDebitoImob
          Height          =   315
          Left            =   6690
          Style           =   2  'Dropdown List
-         TabIndex        =   91
+         TabIndex        =   90
          Top             =   30
          Width           =   1095
       End
@@ -564,7 +564,7 @@ Begin VB.Form frmDebitoImob
          Height          =   315
          Left            =   3150
          Style           =   2  'Dropdown List
-         TabIndex        =   88
+         TabIndex        =   87
          Top             =   390
          Width           =   2775
       End
@@ -572,7 +572,7 @@ Begin VB.Form frmDebitoImob
          Height          =   315
          Left            =   3150
          Style           =   2  'Dropdown List
-         TabIndex        =   87
+         TabIndex        =   86
          Top             =   30
          Width           =   2775
       End
@@ -580,7 +580,7 @@ Begin VB.Form frmDebitoImob
          Height          =   315
          Left            =   840
          Style           =   2  'Dropdown List
-         TabIndex        =   84
+         TabIndex        =   83
          Top             =   390
          Width           =   1095
       End
@@ -588,7 +588,7 @@ Begin VB.Form frmDebitoImob
          Height          =   315
          Left            =   840
          Style           =   2  'Dropdown List
-         TabIndex        =   83
+         TabIndex        =   82
          Top             =   30
          Width           =   1095
       End
@@ -598,7 +598,7 @@ Begin VB.Form frmDebitoImob
          Height          =   225
          Index           =   6
          Left            =   7920
-         TabIndex        =   96
+         TabIndex        =   95
          Top             =   420
          Width           =   705
       End
@@ -608,7 +608,7 @@ Begin VB.Form frmDebitoImob
          Height          =   225
          Index           =   5
          Left            =   6060
-         TabIndex        =   94
+         TabIndex        =   93
          Top             =   420
          Width           =   705
       End
@@ -618,7 +618,7 @@ Begin VB.Form frmDebitoImob
          Height          =   225
          Index           =   4
          Left            =   6060
-         TabIndex        =   93
+         TabIndex        =   92
          Top             =   90
          Width           =   705
       End
@@ -628,7 +628,7 @@ Begin VB.Form frmDebitoImob
          Height          =   225
          Index           =   3
          Left            =   2040
-         TabIndex        =   90
+         TabIndex        =   89
          Top             =   420
          Width           =   1155
       End
@@ -638,7 +638,7 @@ Begin VB.Form frmDebitoImob
          Height          =   225
          Index           =   2
          Left            =   2040
-         TabIndex        =   89
+         TabIndex        =   88
          Top             =   90
          Width           =   1155
       End
@@ -648,7 +648,7 @@ Begin VB.Form frmDebitoImob
          Height          =   225
          Index           =   1
          Left            =   90
-         TabIndex        =   86
+         TabIndex        =   85
          Top             =   420
          Width           =   705
       End
@@ -658,7 +658,7 @@ Begin VB.Form frmDebitoImob
          Height          =   225
          Index           =   0
          Left            =   90
-         TabIndex        =   85
+         TabIndex        =   84
          Top             =   90
          Width           =   705
       End
@@ -668,7 +668,7 @@ Begin VB.Form frmDebitoImob
       BorderStyle     =   0  'None
       Height          =   435
       Left            =   8325
-      TabIndex        =   77
+      TabIndex        =   76
       Top             =   -45
       Visible         =   0   'False
       Width           =   1335
@@ -688,7 +688,7 @@ Begin VB.Form frmDebitoImob
          ForeColor       =   &H000000C0&
          Height          =   405
          Left            =   45
-         TabIndex        =   78
+         TabIndex        =   77
          Top             =   90
          Width           =   1260
       End
@@ -699,19 +699,18 @@ Begin VB.Form frmDebitoImob
       Caption         =   "Frame3"
       Height          =   675
       Left            =   30
-      TabIndex        =   67
+      TabIndex        =   66
       Top             =   0
       Width           =   11355
-      Begin VB.CheckBox chkShowAll 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00EEEEEE&
-         Caption         =   "Todos os lançamentos"
-         ForeColor       =   &H80000008&
-         Height          =   225
-         Left            =   6300
-         TabIndex        =   2
-         Top             =   90
-         Width           =   1980
+      Begin VB.ComboBox cmbShow 
+         Height          =   315
+         ItemData        =   "frmDebitoImob.frx":0666
+         Left            =   6705
+         List            =   "frmDebitoImob.frx":0673
+         Style           =   2  'Dropdown List
+         TabIndex        =   124
+         Top             =   45
+         Width           =   1320
       End
       Begin VB.CheckBox chkTodosAnos 
          Appearance      =   0  'Flat
@@ -719,9 +718,9 @@ Begin VB.Form frmDebitoImob
          Caption         =   "Todos os exercícios"
          ForeColor       =   &H00000080&
          Height          =   225
-         Left            =   4410
+         Left            =   4050
          TabIndex        =   1
-         Top             =   90
+         Top             =   135
          Width           =   1755
       End
       Begin VB.TextBox txtProp 
@@ -741,7 +740,7 @@ Begin VB.Form frmDebitoImob
          Height          =   195
          Left            =   990
          Locked          =   -1  'True
-         TabIndex        =   98
+         TabIndex        =   97
          Top             =   405
          Width           =   4470
       End
@@ -758,7 +757,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdCnsImovel 
          Height          =   345
          Left            =   2940
-         TabIndex        =   68
+         TabIndex        =   67
          ToolTipText     =   "Consulta Imóvel"
          Top             =   30
          Width           =   405
@@ -784,8 +783,8 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":0666
-         PICN            =   "frmDebitoImob.frx":0682
+         MICON           =   "frmDebitoImob.frx":0691
+         PICN            =   "frmDebitoImob.frx":06AD
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -798,7 +797,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdRefresh 
          Height          =   345
          Left            =   3420
-         TabIndex        =   69
+         TabIndex        =   68
          ToolTipText     =   "Atualizar Dados"
          Top             =   30
          Width           =   315
@@ -824,7 +823,7 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   192
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":07DC
+         MICON           =   "frmDebitoImob.frx":0807
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -834,10 +833,19 @@ Begin VB.Form frmDebitoImob
          CHECK           =   0   'False
          VALUE           =   0   'False
       End
+      Begin VB.Label Label5 
+         Caption         =   "Exibir:"
+         ForeColor       =   &H00000080&
+         Height          =   195
+         Left            =   6120
+         TabIndex        =   125
+         Top             =   105
+         Width           =   510
+      End
       Begin VB.Image imgSerasa 
          Height          =   480
          Left            =   9765
-         Picture         =   "frmDebitoImob.frx":07F8
+         Picture         =   "frmDebitoImob.frx":0823
          Stretch         =   -1  'True
          Top             =   90
          Visible         =   0   'False
@@ -846,10 +854,11 @@ Begin VB.Form frmDebitoImob
       Begin VB.Label lblDV 
          BackColor       =   &H00EEEEEE&
          Caption         =   "DV - 0"
-         Height          =   285
-         Left            =   3810
-         TabIndex        =   81
-         Top             =   120
+         Height          =   240
+         Left            =   3330
+         TabIndex        =   80
+         Top             =   405
+         Visible         =   0   'False
          Width           =   525
       End
       Begin VB.Label lblRS 
@@ -866,7 +875,7 @@ Begin VB.Form frmDebitoImob
          EndProperty
          Height          =   225
          Left            =   60
-         TabIndex        =   75
+         TabIndex        =   74
          Top             =   390
          Width           =   885
       End
@@ -885,7 +894,7 @@ Begin VB.Form frmDebitoImob
          Height          =   225
          Index           =   6
          Left            =   5550
-         TabIndex        =   74
+         TabIndex        =   73
          Top             =   390
          Width           =   795
       End
@@ -903,7 +912,7 @@ Begin VB.Form frmDebitoImob
          ForeColor       =   &H00000080&
          Height          =   225
          Left            =   990
-         TabIndex        =   73
+         TabIndex        =   72
          Top             =   390
          Visible         =   0   'False
          Width           =   3765
@@ -922,9 +931,9 @@ Begin VB.Form frmDebitoImob
          ForeColor       =   &H00000080&
          Height          =   195
          Left            =   6420
-         TabIndex        =   72
+         TabIndex        =   71
          Top             =   390
-         Width           =   3885
+         Width           =   4755
       End
       Begin VB.Label Label1 
          BackStyle       =   0  'Transparent
@@ -941,7 +950,7 @@ Begin VB.Form frmDebitoImob
          Height          =   225
          Index           =   0
          Left            =   60
-         TabIndex        =   71
+         TabIndex        =   70
          Top             =   90
          Width           =   1785
       End
@@ -959,7 +968,7 @@ Begin VB.Form frmDebitoImob
          ForeColor       =   &H00000080&
          Height          =   225
          Left            =   6495
-         TabIndex        =   70
+         TabIndex        =   69
          Top             =   90
          Visible         =   0   'False
          Width           =   3585
@@ -970,13 +979,13 @@ Begin VB.Form frmDebitoImob
       Caption         =   "Frame3"
       Height          =   5265
       Left            =   10260
-      TabIndex        =   57
+      TabIndex        =   56
       Top             =   720
       Width           =   1125
       Begin prjChameleon.chameleonButton cmdSair 
          Height          =   315
          Left            =   30
-         TabIndex        =   58
+         TabIndex        =   57
          ToolTipText     =   "Sair da Tela"
          Top             =   4815
          Width           =   1050
@@ -1002,8 +1011,8 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":2912
-         PICN            =   "frmDebitoImob.frx":292E
+         MICON           =   "frmDebitoImob.frx":293D
+         PICN            =   "frmDebitoImob.frx":2959
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1016,7 +1025,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdReparc 
          Height          =   315
          Left            =   45
-         TabIndex        =   59
+         TabIndex        =   58
          ToolTipText     =   "Tela de Reparcelamento"
          Top             =   1850
          Width           =   1050
@@ -1042,7 +1051,7 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":299C
+         MICON           =   "frmDebitoImob.frx":29C7
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1055,7 +1064,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdDoc 
          Height          =   315
          Left            =   45
-         TabIndex        =   60
+         TabIndex        =   59
          ToolTipText     =   "Documento(s) da Parcela"
          Top             =   1498
          Width           =   1050
@@ -1081,7 +1090,7 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":29B8
+         MICON           =   "frmDebitoImob.frx":29E3
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1094,7 +1103,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdExtrato 
          Height          =   315
          Left            =   45
-         TabIndex        =   61
+         TabIndex        =   60
          ToolTipText     =   "Emissão de Extrato"
          Top             =   1146
          Width           =   1050
@@ -1120,7 +1129,7 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":29D4
+         MICON           =   "frmDebitoImob.frx":29FF
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1133,7 +1142,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdDetalhe 
          Height          =   315
          Left            =   45
-         TabIndex        =   62
+         TabIndex        =   61
          ToolTipText     =   "Detalhes da Parcela"
          Top             =   794
          Width           =   1050
@@ -1159,7 +1168,7 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":29F0
+         MICON           =   "frmDebitoImob.frx":2A1B
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1172,7 +1181,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdObs 
          Height          =   315
          Left            =   45
-         TabIndex        =   63
+         TabIndex        =   62
          ToolTipText     =   "Observação"
          Top             =   442
          Width           =   1050
@@ -1198,7 +1207,7 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":2A0C
+         MICON           =   "frmDebitoImob.frx":2A37
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1211,7 +1220,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdFilter 
          Height          =   315
          Left            =   45
-         TabIndex        =   64
+         TabIndex        =   63
          ToolTipText     =   "Ativa e Desativa o Filtro"
          Top             =   90
          Width           =   1050
@@ -1237,7 +1246,7 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":2A28
+         MICON           =   "frmDebitoImob.frx":2A53
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1250,7 +1259,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdDAM 
          Height          =   315
          Left            =   45
-         TabIndex        =   65
+         TabIndex        =   64
          ToolTipText     =   "Emissão de DAM"
          Top             =   2202
          Width           =   1050
@@ -1276,7 +1285,7 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":2A44
+         MICON           =   "frmDebitoImob.frx":2A6F
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1289,7 +1298,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdAj 
          Height          =   315
          Left            =   45
-         TabIndex        =   66
+         TabIndex        =   65
          ToolTipText     =   "Outras opções"
          Top             =   2910
          Width           =   1050
@@ -1315,7 +1324,7 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":2A60
+         MICON           =   "frmDebitoImob.frx":2A8B
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1328,7 +1337,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdEF 
          Height          =   315
          Left            =   45
-         TabIndex        =   102
+         TabIndex        =   101
          ToolTipText     =   "Execuções Fiscais"
          Top             =   2554
          Width           =   1050
@@ -1354,7 +1363,7 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":2A7C
+         MICON           =   "frmDebitoImob.frx":2AA7
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1369,7 +1378,7 @@ Begin VB.Form frmDebitoImob
          Caption         =   "Label4"
          Height          =   375
          Left            =   210
-         TabIndex        =   76
+         TabIndex        =   75
          Top             =   3960
          Visible         =   0   'False
          Width           =   375
@@ -1381,13 +1390,13 @@ Begin VB.Form frmDebitoImob
       ForeColor       =   &H00C0FFFF&
       Height          =   2925
       Left            =   3390
-      TabIndex        =   53
+      TabIndex        =   52
       Top             =   1710
       Width           =   3765
       Begin MSFlexGridLib.MSFlexGrid grdDoc 
          Height          =   1980
          Left            =   90
-         TabIndex        =   54
+         TabIndex        =   53
          Top             =   330
          Width           =   3585
          _ExtentX        =   6324
@@ -1404,7 +1413,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdSairDoc 
          Height          =   375
          Left            =   3285
-         TabIndex        =   55
+         TabIndex        =   54
          ToolTipText     =   "Sair da Tela de Documento"
          Top             =   2400
          Width           =   345
@@ -1430,8 +1439,8 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":2A98
-         PICN            =   "frmDebitoImob.frx":2AB4
+         MICON           =   "frmDebitoImob.frx":2AC3
+         PICN            =   "frmDebitoImob.frx":2ADF
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1444,7 +1453,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdCnsDoc 
          Height          =   375
          Left            =   2835
-         TabIndex        =   56
+         TabIndex        =   55
          ToolTipText     =   "Consulta Documento"
          Top             =   2400
          Width           =   375
@@ -1470,8 +1479,8 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":2C0E
-         PICN            =   "frmDebitoImob.frx":2C2A
+         MICON           =   "frmDebitoImob.frx":2C39
+         PICN            =   "frmDebitoImob.frx":2C55
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1488,7 +1497,7 @@ Begin VB.Form frmDebitoImob
       Caption         =   "Frame2"
       Height          =   345
       Left            =   30
-      TabIndex        =   46
+      TabIndex        =   45
       Top             =   5640
       Width           =   10185
       Begin VB.Label Label2 
@@ -1507,7 +1516,7 @@ Begin VB.Form frmDebitoImob
          Height          =   225
          Index           =   0
          Left            =   180
-         TabIndex        =   52
+         TabIndex        =   51
          Top             =   60
          Width           =   1785
       End
@@ -1527,7 +1536,7 @@ Begin VB.Form frmDebitoImob
          Height          =   225
          Index           =   1
          Left            =   3540
-         TabIndex        =   51
+         TabIndex        =   50
          Top             =   60
          Width           =   1905
       End
@@ -1547,7 +1556,7 @@ Begin VB.Form frmDebitoImob
          Height          =   225
          Index           =   4
          Left            =   7230
-         TabIndex        =   50
+         TabIndex        =   49
          Top             =   60
          Width           =   1215
       End
@@ -1567,7 +1576,7 @@ Begin VB.Form frmDebitoImob
          ForeColor       =   &H0080FFFF&
          Height          =   225
          Left            =   2130
-         TabIndex        =   49
+         TabIndex        =   48
          Top             =   60
          Width           =   1275
       End
@@ -1587,7 +1596,7 @@ Begin VB.Form frmDebitoImob
          ForeColor       =   &H0080FFFF&
          Height          =   225
          Left            =   5490
-         TabIndex        =   48
+         TabIndex        =   47
          Top             =   60
          Width           =   1275
       End
@@ -1607,7 +1616,7 @@ Begin VB.Form frmDebitoImob
          ForeColor       =   &H0080FFFF&
          Height          =   225
          Left            =   8610
-         TabIndex        =   47
+         TabIndex        =   46
          Top             =   60
          Width           =   1275
       End
@@ -1616,7 +1625,7 @@ Begin VB.Form frmDebitoImob
       BackColor       =   &H00ADE7FF&
       Height          =   5355
       Left            =   900
-      TabIndex        =   99
+      TabIndex        =   98
       Top             =   315
       Visible         =   0   'False
       Width           =   8295
@@ -1624,7 +1633,7 @@ Begin VB.Form frmDebitoImob
          BackColor       =   &H00ADE7FF&
          Height          =   1995
          Left            =   90
-         TabIndex        =   119
+         TabIndex        =   118
          Top             =   2880
          Width           =   1320
          Begin VB.TextBox txtDocEF 
@@ -1633,14 +1642,14 @@ Begin VB.Form frmDebitoImob
             Left            =   90
             MaxLength       =   2000
             MultiLine       =   -1  'True
-            TabIndex        =   121
+            TabIndex        =   120
             Top             =   360
             Width           =   1140
          End
          Begin prjChameleon.chameleonButton cmdEfObs 
             Height          =   240
             Left            =   45
-            TabIndex        =   120
+            TabIndex        =   119
             Top             =   0
             Width           =   1230
             _ExtentX        =   2170
@@ -1665,7 +1674,7 @@ Begin VB.Form frmDebitoImob
             FCOLO           =   12582912
             MCOL            =   13026246
             MPTR            =   1
-            MICON           =   "frmDebitoImob.frx":2E04
+            MICON           =   "frmDebitoImob.frx":2E2F
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -1680,13 +1689,13 @@ Begin VB.Form frmDebitoImob
          BackColor       =   &H00ADE7FF&
          Height          =   1995
          Left            =   1440
-         TabIndex        =   116
+         TabIndex        =   115
          Top             =   2880
          Width           =   6765
          Begin MSComctlLib.ListView lvDoc 
             Height          =   1560
             Left            =   45
-            TabIndex        =   117
+            TabIndex        =   116
             Top             =   360
             Width           =   6645
             _ExtentX        =   11721
@@ -1724,7 +1733,7 @@ Begin VB.Form frmDebitoImob
          Begin prjChameleon.chameleonButton cmdEFDoc 
             Height          =   240
             Left            =   45
-            TabIndex        =   118
+            TabIndex        =   117
             Top             =   0
             Width           =   1140
             _ExtentX        =   2011
@@ -1749,7 +1758,7 @@ Begin VB.Form frmDebitoImob
             FCOLO           =   128
             MCOL            =   13026246
             MPTR            =   1
-            MICON           =   "frmDebitoImob.frx":2E20
+            MICON           =   "frmDebitoImob.frx":2E4B
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -1762,7 +1771,7 @@ Begin VB.Form frmDebitoImob
          Begin prjChameleon.chameleonButton cmdEfQtde 
             Height          =   285
             Left            =   5175
-            TabIndex        =   122
+            TabIndex        =   121
             ToolTipText     =   "Alterar quantidade do item"
             Top             =   0
             Width           =   555
@@ -1788,7 +1797,7 @@ Begin VB.Form frmDebitoImob
             FCOLO           =   128
             MCOL            =   13026246
             MPTR            =   1
-            MICON           =   "frmDebitoImob.frx":2E3C
+            MICON           =   "frmDebitoImob.frx":2E67
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -1801,7 +1810,7 @@ Begin VB.Form frmDebitoImob
          Begin prjChameleon.chameleonButton cmdEFSit 
             Height          =   285
             Left            =   5760
-            TabIndex        =   123
+            TabIndex        =   122
             ToolTipText     =   "Alterar situação do item"
             Top             =   0
             Width           =   870
@@ -1827,7 +1836,7 @@ Begin VB.Form frmDebitoImob
             FCOLO           =   128
             MCOL            =   13026246
             MPTR            =   1
-            MICON           =   "frmDebitoImob.frx":2E58
+            MICON           =   "frmDebitoImob.frx":2E83
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -1842,7 +1851,7 @@ Begin VB.Form frmDebitoImob
          Height          =   330
          Left            =   4410
          MaxLength       =   25
-         TabIndex        =   113
+         TabIndex        =   112
          Top             =   315
          Visible         =   0   'False
          Width           =   3390
@@ -1850,7 +1859,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdRetornar 
          Height          =   315
          Left            =   6960
-         TabIndex        =   103
+         TabIndex        =   102
          ToolTipText     =   "Retornar a tela de débito"
          Top             =   4950
          Width           =   1035
@@ -1876,8 +1885,8 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":2E74
-         PICN            =   "frmDebitoImob.frx":2E90
+         MICON           =   "frmDebitoImob.frx":2E9F
+         PICN            =   "frmDebitoImob.frx":2EBB
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1890,7 +1899,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdAlterarEF 
          Height          =   315
          Left            =   4785
-         TabIndex        =   105
+         TabIndex        =   104
          ToolTipText     =   "Alterar execução fiscal"
          Top             =   4950
          Width           =   1035
@@ -1916,8 +1925,8 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":2EFE
-         PICN            =   "frmDebitoImob.frx":2F1A
+         MICON           =   "frmDebitoImob.frx":2F29
+         PICN            =   "frmDebitoImob.frx":2F45
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1930,7 +1939,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdNovoEF 
          Height          =   315
          Left            =   3690
-         TabIndex        =   106
+         TabIndex        =   105
          ToolTipText     =   "Nova execução fiscal"
          Top             =   4950
          Width           =   1035
@@ -1956,8 +1965,8 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":3074
-         PICN            =   "frmDebitoImob.frx":3090
+         MICON           =   "frmDebitoImob.frx":309F
+         PICN            =   "frmDebitoImob.frx":30BB
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -1970,7 +1979,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdExcluirEF 
          Height          =   315
          Left            =   5880
-         TabIndex        =   107
+         TabIndex        =   106
          ToolTipText     =   "Excluir execução fiscal"
          Top             =   4950
          Width           =   1035
@@ -1996,8 +2005,8 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":31EA
-         PICN            =   "frmDebitoImob.frx":3206
+         MICON           =   "frmDebitoImob.frx":3215
+         PICN            =   "frmDebitoImob.frx":3231
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2010,7 +2019,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdGravarEF 
          Height          =   315
          Left            =   5880
-         TabIndex        =   108
+         TabIndex        =   107
          ToolTipText     =   "Gravar os Dados"
          Top             =   4950
          Width           =   1035
@@ -2036,8 +2045,8 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":32A8
-         PICN            =   "frmDebitoImob.frx":32C4
+         MICON           =   "frmDebitoImob.frx":32D3
+         PICN            =   "frmDebitoImob.frx":32EF
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2050,7 +2059,7 @@ Begin VB.Form frmDebitoImob
       Begin MSComctlLib.ListView lvEFOrigem 
          Height          =   2100
          Left            =   90
-         TabIndex        =   109
+         TabIndex        =   108
          Top             =   720
          Width           =   3810
          _ExtentX        =   6720
@@ -2105,7 +2114,7 @@ Begin VB.Form frmDebitoImob
       Begin MSComctlLib.ListView lvEFDest 
          Height          =   2100
          Left            =   4410
-         TabIndex        =   110
+         TabIndex        =   109
          Top             =   720
          Width           =   3630
          _ExtentX        =   6403
@@ -2161,7 +2170,7 @@ Begin VB.Form frmDebitoImob
          Cancel          =   -1  'True
          Height          =   315
          Left            =   6960
-         TabIndex        =   104
+         TabIndex        =   103
          ToolTipText     =   "Cancelar Edição"
          Top             =   4950
          Width           =   1035
@@ -2187,8 +2196,8 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":3669
-         PICN            =   "frmDebitoImob.frx":3685
+         MICON           =   "frmDebitoImob.frx":3694
+         PICN            =   "frmDebitoImob.frx":36B0
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2201,7 +2210,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdC2 
          Height          =   285
          Left            =   3960
-         TabIndex        =   111
+         TabIndex        =   110
          ToolTipText     =   "Remove centro de custos"
          Top             =   1455
          Width           =   405
@@ -2227,8 +2236,8 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   12582912
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":37DF
-         PICN            =   "frmDebitoImob.frx":37FB
+         MICON           =   "frmDebitoImob.frx":380A
+         PICN            =   "frmDebitoImob.frx":3826
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2241,7 +2250,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdC1 
          Height          =   285
          Left            =   3960
-         TabIndex        =   112
+         TabIndex        =   111
          ToolTipText     =   "Adiciona centro de custos"
          Top             =   1125
          Width           =   405
@@ -2267,8 +2276,8 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   12582912
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":3955
-         PICN            =   "frmDebitoImob.frx":3971
+         MICON           =   "frmDebitoImob.frx":3980
+         PICN            =   "frmDebitoImob.frx":399C
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2281,7 +2290,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdAllEfo 
          Height          =   225
          Left            =   3375
-         TabIndex        =   114
+         TabIndex        =   113
          ToolTipText     =   "Seleciona todos"
          Top             =   450
          Width           =   240
@@ -2307,7 +2316,7 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   32768
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":3ACB
+         MICON           =   "frmDebitoImob.frx":3AF6
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2320,7 +2329,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdDelEfo 
          Height          =   225
          Left            =   3645
-         TabIndex        =   115
+         TabIndex        =   114
          ToolTipText     =   "Remove todos"
          Top             =   450
          Width           =   240
@@ -2346,7 +2355,7 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   192
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":3AE7
+         MICON           =   "frmDebitoImob.frx":3B12
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2360,7 +2369,7 @@ Begin VB.Form frmDebitoImob
          Height          =   315
          Left            =   4410
          Style           =   2  'Dropdown List
-         TabIndex        =   101
+         TabIndex        =   100
          Top             =   315
          Width           =   3630
       End
@@ -2379,7 +2388,7 @@ Begin VB.Form frmDebitoImob
          Height          =   255
          Index           =   3
          Left            =   120
-         TabIndex        =   100
+         TabIndex        =   99
          Top             =   360
          Width           =   3675
       End
@@ -2387,7 +2396,7 @@ Begin VB.Form frmDebitoImob
    Begin vbAcceleratorSGrid6.vbalGrid grdExtrato 
       Height          =   4875
       Left            =   30
-      TabIndex        =   4
+      TabIndex        =   3
       Top             =   720
       Width           =   10185
       _ExtentX        =   17965
@@ -2414,13 +2423,13 @@ Begin VB.Form frmDebitoImob
       BorderStyle     =   0  'None
       Height          =   5085
       Left            =   1140
-      TabIndex        =   5
+      TabIndex        =   4
       Top             =   660
       Width           =   8925
       Begin prjChameleon.chameleonButton cmdCancelarObs 
          Height          =   315
          Left            =   7860
-         TabIndex        =   13
+         TabIndex        =   12
          ToolTipText     =   "Cancelar Edição"
          Top             =   4710
          Width           =   1035
@@ -2446,8 +2455,8 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":3B03
-         PICN            =   "frmDebitoImob.frx":3B1F
+         MICON           =   "frmDebitoImob.frx":3B2E
+         PICN            =   "frmDebitoImob.frx":3B4A
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2465,14 +2474,14 @@ Begin VB.Form frmDebitoImob
          MaxLength       =   5000
          MultiLine       =   -1  'True
          ScrollBars      =   2  'Vertical
-         TabIndex        =   6
+         TabIndex        =   5
          Top             =   2490
          Width           =   8805
       End
       Begin MSComctlLib.ListView lvObserv 
          Height          =   2325
          Left            =   90
-         TabIndex        =   7
+         TabIndex        =   6
          Top             =   90
          Width           =   8835
          _ExtentX        =   15584
@@ -2512,7 +2521,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdSairObs 
          Height          =   315
          Left            =   7830
-         TabIndex        =   8
+         TabIndex        =   7
          ToolTipText     =   "Sair da Tela de Observação"
          Top             =   4710
          Width           =   1035
@@ -2538,8 +2547,8 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":3C79
-         PICN            =   "frmDebitoImob.frx":3C95
+         MICON           =   "frmDebitoImob.frx":3CA4
+         PICN            =   "frmDebitoImob.frx":3CC0
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2552,7 +2561,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdExcluirObs 
          Height          =   315
          Left            =   2280
-         TabIndex        =   9
+         TabIndex        =   8
          ToolTipText     =   "Excluir Registro"
          Top             =   4740
          Width           =   1035
@@ -2578,8 +2587,8 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":3DEF
-         PICN            =   "frmDebitoImob.frx":3E0B
+         MICON           =   "frmDebitoImob.frx":3E1A
+         PICN            =   "frmDebitoImob.frx":3E36
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2592,7 +2601,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdAlterarObs 
          Height          =   315
          Left            =   1200
-         TabIndex        =   10
+         TabIndex        =   9
          ToolTipText     =   "Editar Registro"
          Top             =   4710
          Width           =   1035
@@ -2618,8 +2627,8 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":3EAD
-         PICN            =   "frmDebitoImob.frx":3EC9
+         MICON           =   "frmDebitoImob.frx":3ED8
+         PICN            =   "frmDebitoImob.frx":3EF4
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2632,7 +2641,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdNovoObs 
          Height          =   315
          Left            =   120
-         TabIndex        =   11
+         TabIndex        =   10
          ToolTipText     =   "Novo Registro"
          Top             =   4710
          Width           =   1035
@@ -2658,8 +2667,8 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":4023
-         PICN            =   "frmDebitoImob.frx":403F
+         MICON           =   "frmDebitoImob.frx":404E
+         PICN            =   "frmDebitoImob.frx":406A
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2672,7 +2681,7 @@ Begin VB.Form frmDebitoImob
       Begin prjChameleon.chameleonButton cmdGravarObs 
          Height          =   315
          Left            =   6750
-         TabIndex        =   12
+         TabIndex        =   11
          ToolTipText     =   "Gravar os Dados"
          Top             =   4710
          Width           =   1035
@@ -2698,8 +2707,8 @@ Begin VB.Form frmDebitoImob
          FCOLO           =   0
          MCOL            =   12632256
          MPTR            =   1
-         MICON           =   "frmDebitoImob.frx":4199
-         PICN            =   "frmDebitoImob.frx":41B5
+         MICON           =   "frmDebitoImob.frx":41C4
+         PICN            =   "frmDebitoImob.frx":41E0
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -2714,7 +2723,7 @@ Begin VB.Form frmDebitoImob
       Caption         =   "Label5"
       Height          =   210
       Left            =   1950
-      TabIndex        =   3
+      TabIndex        =   2
       Top             =   7050
       Visible         =   0   'False
       Width           =   1350
@@ -2763,7 +2772,7 @@ Private Type Debito
     nProt_dtremessa As Date
 End Type
 
-Private Type Multa
+Private Type multa
     nAno As Integer
     nLanc As Integer
     nSeq As Integer
@@ -2775,7 +2784,7 @@ End Type
 
 Dim RdoAux As rdoResultset, Sql As String
 Dim bSel As Boolean, nCodObs As Integer, bChangeStatus As Boolean, bExtrato As Boolean
-Dim sRet As String, bCarregado As Boolean
+Dim sRet As String, bCarregado As Boolean, ParcelamentoWeb As Boolean
 Dim evDAM As Integer, evCND As Integer, evDAT As Integer, evAJU As Integer, evADO As Integer, evEDI As Integer, evSMA As Integer, evSMOV As Integer, evCOM As Integer, evRea As Integer, evReaJ As Integer, evRP As Integer, evEF As Integer, evSer As Integer, evDelParc As Integer
 Dim bDam As Boolean, bCND As Boolean, bDAT As Boolean, bAJU As Boolean, bADO As Boolean, bEDI As Boolean, bSMA As Boolean, bSMOV As Boolean, bCOM As Boolean, bRea As Boolean, bReaJ As Boolean, bRP As Boolean, bEF As Boolean, bSer As Boolean, bDelParc As Boolean
 Dim xImovel As clsImovel, bNovoObs As Boolean, bObs As Boolean, bExecF As Boolean
@@ -2867,10 +2876,11 @@ End Sub
 
 Private Sub cmbProc_Click()
 Dim RdoAux2 As rdoResultset
-Dim sprotocolo As String
+Dim sProtocolo As String
 Dim nCodReduz As Long, nAno As Integer, nLanc As Integer, nSeq As Integer, nParc As Integer, nComp As Integer
 Dim sDataVencto As String, bTudoPago As Boolean
 
+ParcelamentoWeb = False
 grdOrigem.Rows = 1
 grdDestino.Rows = 1
 If Right$(cmbProc.Text, 4) <> "SMAR" Then
@@ -2890,13 +2900,14 @@ If Right$(cmbProc.Text, 4) <> "SMAR" Then
              lblResp.Caption = Format(!CODIGORESP, "0000000")
              'lblFunc.Caption = IIf(IsNull(!funcionario), "SMAR", !funcionario)
              lblFunc.Caption = IIf(IsNull(!NomeLogin), "SMAR", !NomeLogin)
+             If (lblFunc.Caption = "999") Then lblFunc.Caption = "Parcelamento Web"
              grdOrigem.AddItem Format(!CODREDUZIDO, "0000000") & Chr(9) & !AnoExercicio & Chr(9) & Format(!CodLancamento, "00") & Chr(9) & Format(!numsequencia, "00") & Chr(9) & _
              Format(!NumParcela, "00") & Chr(9) & Format(!CODCOMPLEMENTO, "00") & Chr(9) & Format(!DataVencimento, "dd/mm/yyyy")
             .MoveNext
         Loop
     End With
 
-    Sql = "SELECT numprocesso,numproc,anoproc,plano,nome FROM  processoreparc INNER JOIN plano ON processoreparc.plano = plano.codigo "
+    Sql = "SELECT numprocesso,numproc,anoproc,plano,nome,userweb FROM  processoreparc INNER JOIN plano ON processoreparc.plano = plano.codigo "
     Sql = Sql & "WHERE numprocesso='" & cmbProc.Text & "'"
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
@@ -2904,6 +2915,14 @@ If Right$(cmbProc.Text, 4) <> "SMAR" Then
             lblPlano.Caption = RdoAux!Nome
         Else
             lblPlano.Caption = "Sem plano"
+        End If
+        If RdoAux.RowCount > 0 Then
+            If Not IsNull(RdoAux!USerWeb) Then
+                    If RdoAux!USerWeb = True Then
+                        lblFunc.Caption = "Parcelamento Web"
+                        ParcelamentoWeb = True
+                    End If
+            End If
         End If
        .Close
     End With
@@ -2926,10 +2945,10 @@ If Right$(cmbProc.Text, 4) <> "SMAR" Then
         Sql = "SELECT NUMprotocolo FROM PROCESSOREPARC WHERE NUMPROCESSO='" & cmbProc.Text & "'"
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
-            sprotocolo = Trim(SubNull(!NUMprotocolo))
+            sProtocolo = Trim(SubNull(!NUMprotocolo))
            .Close
         End With
-        lblFunc.Caption = lblFunc.Caption & " PROT: " & sprotocolo
+        lblFunc.Caption = lblFunc.Caption & " PROT: " & sProtocolo
     End If
     Sql = "SELECT CANCELADO FROM PROCESSOREPARC WHERE NUMPROCESSO='" & cmbProc.Text & "'"
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -3084,6 +3103,13 @@ End If
 
 End Sub
 
+Private Sub cmbShow_Click()
+Ocupado
+bCarregado = False
+CarregaDebito (Val(txtCod.Text))
+Liberado
+End Sub
+
 Private Sub cmbSit_Click()
 If cmbSit.ListIndex > -1 And bExecF Then
     bCarregado = False
@@ -3123,7 +3149,8 @@ If txtObservacao.Text = "" Then
 Else
     sNomeUser = UCase(lvObserv.SelectedItem.SubItems(1))
     If NomeDeLogin = "ROSE" Or NomeDeLogin = "SCHWARTZ" Or NomeDeLogin = "JOSEANE" Or NomeDeLogin = "RHENO.SOARES" Or NomeDeLogin = "DANIELE.SILVA" Or NomeDeLogin = "MATHEUS.BOTELHO" Or NomeDeLogin = "GISELE.ALMEIDA" Or NomeDeLogin = "HENRIQUE.SOARES" Or _
-    NomeDeLogin = "WHICTOR.HOMEM" Or NomeDeLogin = "FERNANDA.SIMOLIN" Or NomeDeLogin = "IZAEL.AGOSTINI" Or NomeDeLogin = "LUIZH" Or NomeDeLogin = "LORENA.ROSA" Or NomeDeLogin = "WILLIAN.LIMA" Or NomeDeLogin = "FRANCIELY.SOUZA" Or NomeDeLogin = "AFONSO.TASSO" Or NomeDeLogin = "ROBERTA.SILVA" Then
+    NomeDeLogin = "WHICTOR.HOMEM" Or NomeDeLogin = "FERNANDA.SIMOLIN" Or NomeDeLogin = "IZAEL.AGOSTINI" Or NomeDeLogin = "NATALIA.FRACASSO" Or NomeDeLogin = "LORENA.ROSA" Or NomeDeLogin = "ELTON.DIAS" Or NomeDeLogin = "FRANCIELY.SOUZA" Or NomeDeLogin = "AFONSO.TASSO" Or _
+    NomeDeLogin = "ROBERTA.SILVA" Or NomeDeLogin = "LUCIANO.RAMOS" Or NomeDeLogin = "RODRIGOG" Then
             bNovoObs = False
             EventosObs False
     Else
@@ -3250,9 +3277,9 @@ With RdoAux
         nSomaLiquido = nSomaLiquido + !principal
         If bJurosMulta Then
             nSomaJuros = nSomaJuros + !Juros
-            nSomaMulta = nSomaMulta + !Multa
+            nSomaMulta = nSomaMulta + !multa
         End If
-        nSomaCorrecao = nSomaCorrecao + !CORRECAO
+        nSomaCorrecao = nSomaCorrecao + !Correcao
        .MoveNext
     Loop
    .Close
@@ -3305,7 +3332,7 @@ If frmMdi.frTeste.Visible = True Then
         frmReport.ShowReport "CALCULOPARCELAMENTOTMP", frmMdi.HWND, Me.HWND
     End If
 Else
-    If chkAntigo.value = vbChecked Then
+    If ParcelamentoWeb Then
         frmReport.ShowReport "CALCULOPARCELAMENTO", frmMdi.HWND, Me.HWND
     Else
         frmReport.ShowReport3 "CALCULO_PARCELAMENTO2", frmMdi.HWND, Me.HWND
@@ -3350,7 +3377,7 @@ End Sub
 
 Private Sub cmdCnsDoc_Click()
 frmDoc.show: frmDoc.ZOrder 0
-frmDoc.txtNumDoc.Text = Val(grdDoc.TextMatrix(grdDoc.Row, 0))
+frmDoc.txtNumDoc.Text = Val(grdDoc.TextMatrix(grdDoc.row, 0))
 frmDoc.txtNumDoc_KeyPress (vbKeyReturn)
 End Sub
 
@@ -3440,7 +3467,7 @@ If bRefisAtivo Then
     Achou = False
     With grdExtrato
         For x = 1 To .Rows
-            If CDate(.CellText(x, 7)) <= CDate("30/06/2020") And .CellText(x, 12) = "S" Then
+            If CDate(.CellText(x, 7)) <= CDate("31/12/2023") And .CellText(x, 12) = "S" Then
                 Achou = True
                 Exit For
             End If
@@ -3449,7 +3476,7 @@ If bRefisAtivo Then
     Achou2 = False
     With grdExtrato
         For x = 1 To .Rows
-            If CDate(.CellText(x, 7)) > CDate("30/06/2020") And .CellText(x, 12) = "S" And Val(Left$(.CellText(x, 2), 3)) <> 41 And Val(Left$(.CellText(x, 2), 3)) <> 78 Then
+            If CDate(.CellText(x, 7)) > CDate("31/12/2023") And .CellText(x, 12) = "S" And Val(Left$(.CellText(x, 2), 3)) <> 41 And Val(Left$(.CellText(x, 2), 3)) <> 78 And Val(Left$(.CellText(x, 2), 3)) <> 69 Then
                 Achou2 = True
                 Exit For
             End If
@@ -3457,7 +3484,7 @@ If bRefisAtivo Then
     End With
     
     If Achou And Achou2 Then
-        MsgBox "Não é possível emitir DAM para débitos anteriores e posteriores a 30/06/2020 na mesma DAM durante o Refis.", vbCritical, "Atenção"
+        MsgBox "Não é possível emitir DAM para débitos anteriores e posteriores a 31/12/2023 na mesma DAM durante o Refis.", vbCritical, "Atenção"
         Exit Sub
     End If
 End If
@@ -3521,8 +3548,9 @@ With grdExtrato
             nSeq = Val(.CellText(x, 3))
             nParc = IIf(.CellText(x, 4) = "Unica", 0, Val(.CellText(x, 4)))
             nCompl = Val(.CellText(x, 5))
-            sStat = .CellText(x, 8)
+            sStat = Left(.CellText(x, 6), 2)
             sVencto = .CellText(x, 7)
+            sDA = .CellText(x, 8)
             
             If Val(Left(.CellText(x, 6), 2)) <> 3 And Val(Left(.CellText(x, 6), 2)) <> 38 And Val(Left(.CellText(x, 6), 2)) <> 39 And Val(Left(.CellText(x, 6), 2)) <> 42 And Val(Left(.CellText(x, 6), 2)) <> 43 Then
                 MsgBox "Só é possível emitir DAM para lançamentos não pagos e protestados.", vbExclamation, "Atenção"
@@ -3537,12 +3565,12 @@ With grdExtrato
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux
                 If .RowCount > 0 Then
-                    If bRefisAtivo And CDate(sVencto) < CDate("31/08/2020") Then
+                    If (bRefisAtivo And CDate(sVencto) <= CDate("30/12/2022")) Or (sDA = "S") Then
                     Else
-                        MsgBox "Para débitos de ISS Váriavel gerado pela Giss será exibido o extrato da DAM porém não será impresso o boleto.", vbInformation, "Atenção"
+'                        MsgBox "Para débitos de ISS Váriavel gerado pela Giss será exibido o extrato da DAM porém não será impresso o boleto.", vbInformation, "Atenção"
                         'MsgBox "Apenas débitos de ISS Váriavel gerados pela Giss que estão ajuizados podem ser emitidos através de DAM.", vbInformation, "Atenção"
-                        bISSVariavel = True
-                        Exit For
+ '                       bISSVariavel = True
+ '                       Exit Sub
                     End If
                     ReDim Preserve aDocDAM(UBound(aDocDAM) + 1)
                     aDocDAM(UBound(aDocDAM)) = !NumDocumento
@@ -3586,7 +3614,7 @@ If Not Achou Then
 Else
     If Not bAnistia Then
         If Not ValidaMI Then
-            If NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "RENATA" And NomeDeLogin <> "JOSEANE" And NomeDeLogin <> "NOELI" And NomeDeLogin <> "LUIZH" And NomeDeLogin <> "RODRIGOC" And NomeDeLogin <> "LEANDRO" Then
+            If NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "JOSEANE" And NomeDeLogin <> "ROBERTA.SILVA" And NomeDeLogin <> "PRISCILAANAMI" And NomeDeLogin <> "RODRIGOC" And NomeDeLogin <> "LEANDRO" And NomeDeLogin <> "CINTIA" Then
                 Exit Sub
             End If
         End If
@@ -3739,8 +3767,8 @@ Sql = "SELECT distinct processocnj FROM debitoparcela WHERE CODREDUZIDO=" & Val(
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-        If Not IsNull(!ProcessoCNJ) Then
-            cmbEF.AddItem !ProcessoCNJ
+        If Not IsNull(!processocnj) Then
+            cmbEF.AddItem !processocnj
         End If
        .MoveNext
     Loop
@@ -3846,7 +3874,7 @@ If cmbEF.Visible And cmbEF.ListIndex > -1 Then
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         Do Until .EOF
-            cmbEF.AddItem !ProcessoCNJ
+            cmbEF.AddItem !processocnj
            .MoveNext
         Loop
        .Close
@@ -4019,8 +4047,8 @@ With RdoAux
                 aDebito(nEval).nAno = !AnoExercicio
                 aDebito(nEval).nLanc = !CodLancamento
                 If !CodLancamento = 20 Then
-                   If Not IsNull(!NUMPROCESSO) Then
-                      aDebito(nEval).sLanc = !descreduz & " (" & !NUMPROCESSO & ")"
+                   If Not IsNull(!numprocesso) Then
+                      aDebito(nEval).sLanc = !descreduz & " (" & !numprocesso & ")"
                    Else
                       aDebito(nEval).sLanc = !descreduz
                    End If
@@ -4048,7 +4076,7 @@ With RdoAux
                             With RdoAux2
                                 If .RowCount > 0 Then
                                     bJuros = !Juros
-                                    bMulta = !Multa
+                                    bMulta = !multa
                                 End If
                                .Close '
                             End With
@@ -4075,7 +4103,7 @@ With RdoAux
                             If .RowCount > 0 Then
                                 aDebito(nEval).nValorJuros = RdoAux!ValorJuros
                                 aDebito(nEval).nValorMulta = RdoAux!ValorMulta
-                                aDebito(nEval).nValorCorrecao = RdoAux!ValorCorrecao
+                                aDebito(nEval).nValorCorrecao = RdoAux!valorcorrecao
                                 aDebito(nEval).nCodBanco = Val(SubNull(!CodBanco))
                                 aDebito(nEval).dDataPag = Format(!DataPagamento, "dd/mm/yyyy")
                             Else
@@ -4087,7 +4115,7 @@ With RdoAux
                             End If
                            .Close
                         End With
-                        nValorAtualizado = !TOTALLANCADO + RdoAux!ValorJuros + RdoAux!ValorMulta + RdoAux!ValorCorrecao
+                        nValorAtualizado = !TOTALLANCADO + RdoAux!ValorJuros + RdoAux!ValorMulta + RdoAux!valorcorrecao
                     End If
                 Else
                     aDebito(nEval).nCodBanco = 0
@@ -4106,7 +4134,7 @@ With RdoAux
                     With RdoAux2
                         If .RowCount > 0 Then
                             bJuros = !Juros
-                            bMulta = !Multa
+                            bMulta = !multa
                         End If
                        .Close '
                     End With
@@ -4119,7 +4147,7 @@ With RdoAux
                             Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                             With RdoAux2
                                 bJuros = !Juros
-                                bMulta = !Multa
+                                bMulta = !multa
                                .Close
                             End With
                             If bJuros Then
@@ -4151,16 +4179,16 @@ With RdoAux
                             End If
                            .Close
                         End With
-                        aDebito(nEval).nValorCorrecao = aDebito(nEval).nValorCorrecao + !ValorCorrecao
+                        aDebito(nEval).nValorCorrecao = aDebito(nEval).nValorCorrecao + !valorcorrecao
                         If bJuros Then
                             aDebito(nEval).nValorJuros = aDebito(nEval).nValorJuros + !ValorJuros
                         End If
                         If bMulta Then
                             aDebito(nEval).nValorMulta = aDebito(nEval).nValorMulta + !ValorMulta
                         End If
-                        nValorAtualizado = !TOTALLANCADO + !ValorCorrecao + !ValorJuros + !ValorMulta
+                        nValorAtualizado = !TOTALLANCADO + !valorcorrecao + !ValorJuros + !ValorMulta
                     Else
-                        aDebito(nEval).nValorCorrecao = aDebito(nEval).nValorCorrecao + !ValorCorrecao
+                        aDebito(nEval).nValorCorrecao = aDebito(nEval).nValorCorrecao + !valorcorrecao
                         If bJuros Then
                             aDebito(nEval).nValorJuros = aDebito(nEval).nValorJuros + !ValorJuros
                         End If
@@ -4169,7 +4197,7 @@ With RdoAux
                         End If
                         aDebito(nEval).nCodBanco = 0
                         aDebito(nEval).dDataPag = "01/01/1900"
-                        nValorAtualizado = !TOTALLANCADO + !ValorCorrecao + !ValorJuros + !ValorMulta
+                        nValorAtualizado = !TOTALLANCADO + !valorcorrecao + !ValorJuros + !ValorMulta
                     End If
                 Else
                     If !statuslanc = 3 Or !statuslanc = 42 Or !statuslanc = 43 Then
@@ -4211,10 +4239,18 @@ For x = 1 To UBound(aDebito)
 Next
 
 'EXIBE RELATORIO
-If InStr(1, cn.Connect, "Tributacao_", vbBinaryCompare) > 0 Then
-    frmReport.ShowReport "ExtratoFull", frmMdi.HWND, Me.HWND
+If frmMdi.frTeste.Visible = False Then
+    If InStr(1, cn.Connect, "Tributacao_", vbBinaryCompare) > 0 Then
+        frmReport.ShowReport "ExtratoFull", frmMdi.HWND, Me.HWND
+    Else
+        frmReport.ShowReport "Extrato", frmMdi.HWND, Me.HWND
+    End If
 Else
-    frmReport.ShowReport "Extrato", frmMdi.HWND, Me.HWND
+    If InStr(1, cn.Connect, "Tributacao_", vbBinaryCompare) > 0 Then
+        frmReport.ShowReport "ExtratoFull_Tmp", frmMdi.HWND, Me.HWND
+    Else
+        frmReport.ShowReport "Extrato_Tmp", frmMdi.HWND, Me.HWND
+    End If
 End If
 Liberado
 'MORREK ZMANI
@@ -4339,7 +4375,7 @@ With RdoAux
 '            If !statuslanc = 12 Or !statuslanc = 5 Then GoTo Proximo
             
 '            If !CodLancamento = 20 Then GoTo Proximo
-            If !NumParcela = 0 And !statuslanc > 2 Then GoTo Proximo
+            If !NumParcela = 0 And !statuslanc = 5 Then GoTo Proximo
             If !statuslanc = 12 Then GoTo Proximo
             
             
@@ -4365,11 +4401,11 @@ With RdoAux
                 
                 aDebito(nEval).nLanc = !CodLancamento
                 If !CodLancamento = 20 Or !CodLancamento = 8 Then
-                   If Not IsNull(!NUMPROCESSO) Then
-                      If Val(Right$(!NUMPROCESSO, 4)) >= 2006 Then
-                        aDebito(nEval).sLanc = !DESCLANCAMENTO & " (" & Left$(!NUMPROCESSO, InStr(1, !NUMPROCESSO, "/", vbBinaryCompare) - 1) & "-" & RetornaDVProcesso(Left$(!NUMPROCESSO, InStr(1, !NUMPROCESSO, "/", vbBinaryCompare) - 1)) & "/" & Right$(!NUMPROCESSO, 4) & ")"
+                   If Not IsNull(!numprocesso) Then
+                      If Val(Right$(!numprocesso, 4)) >= 2006 Then
+                        aDebito(nEval).sLanc = !DESCLANCAMENTO & " (" & Left$(!numprocesso, InStr(1, !numprocesso, "/", vbBinaryCompare) - 1) & "-" & RetornaDVProcesso(Left$(!numprocesso, InStr(1, !numprocesso, "/", vbBinaryCompare) - 1)) & "/" & Right$(!numprocesso, 4) & ")"
                       Else
-                        aDebito(nEval).sLanc = !DESCLANCAMENTO & " (" & !NUMPROCESSO & ")"
+                        aDebito(nEval).sLanc = !DESCLANCAMENTO & " (" & !numprocesso & ")"
                       End If
                    Else
                       aDebito(nEval).sLanc = !DESCLANCAMENTO
@@ -4386,7 +4422,7 @@ With RdoAux
                 aDebito(nEval).sDA = IIf(IsNull(!datainscricao), "N", "S")
                 aDebito(nEval).sAj = IIf(IsNull(!dataajuiza), "N", "S")
                 aDebito(nEval).nCodTributo = !CodTributo
-                aDebito(nEval).nValorTributo = FormatNumber(!ValorTributo, 2)
+                aDebito(nEval).nValorTributo = FormatNumber(!VALORTRIBUTO, 2)
                 
                 
                 If bForum Then
@@ -4403,17 +4439,17 @@ With RdoAux
                     Sql = Sql & "DEBITOPARCELA.SEQLANCAMENTO = " & !SeqLancamento & " AND DEBITOPARCELA.NUMPARCELA = " & !NumParcela & " AND DEBITOPARCELA.CODCOMPLEMENTO = " & !CODCOMPLEMENTO & " AND DEBITOTRIBUTO.CODTRIBUTO=" & !CodTributo
                     Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                     With RdoAux2
-                        aDebito(nEval).nValorCorrecao = FormatNumber(aDebito(nEval).nValorCorrecao + !ValorCorrecao, 2)
+                        aDebito(nEval).nValorCorrecao = FormatNumber(aDebito(nEval).nValorCorrecao + !valorcorrecao, 2)
                         aDebito(nEval).nValorJuros = FormatNumber(aDebito(nEval).nValorJuros + !ValorJuros, 2)
                         aDebito(nEval).nValorMulta = FormatNumber(aDebito(nEval).nValorMulta + !ValorMulta, 2)
-                        aDebito(nEval).nValorAtual = FormatNumber(!ValorTributo + !ValorJuros + !ValorMulta + !ValorCorrecao, 2)
+                        aDebito(nEval).nValorAtual = FormatNumber(!VALORTRIBUTO + !ValorJuros + !ValorMulta + !valorcorrecao, 2)
                        .Close
                     End With
                     '***************************************************************
                 Else
                     If !statuslanc = 1 Or !statuslanc = 2 Or !statuslanc = 7 Then
-                        If Not IsNull(!valorpagoreal) Then
-                            aDebito(nEval).nValorAtual = FormatNumber(!valorpagoreal, 2)
+                        If Not IsNull(!ValorPagoreal) Then
+                            aDebito(nEval).nValorAtual = FormatNumber(!ValorPagoreal, 2)
                         Else
                             aDebito(nEval).nValorAtual = FormatNumber(0, 2)
                         End If
@@ -4421,14 +4457,14 @@ With RdoAux
                         aDebito(nEval).nValorAtual = FormatNumber(!ValorTotal, 2)
                     End If
                     
-                    If !CODREDUZIDO = 17753 And !AnoExercicio = 2020 And !NumParcela = 1 Then
+'                    If !CODREDUZIDO = 17753 And !AnoExercicio = 2020 And !NumParcela = 1 Then
                         'MsgBox "teste"
-                        aDebito(nEval).nValorJuros = FormatNumber(2.96, 2)
-                        aDebito(nEval).nValorMulta = FormatNumber(5.9, 2)
-                    Else
+'                        aDebito(nEval).nValorJuros = FormatNumber(2.96, 2)
+'                        aDebito(nEval).nValorMulta = FormatNumber(5.9, 2)
+'                    Else
                         aDebito(nEval).nValorJuros = IIf(IsNull(!ValorJuros), 0, FormatNumber(!ValorJuros, 2))
                         aDebito(nEval).nValorMulta = IIf(IsNull(!ValorMulta), 0, FormatNumber(!ValorMulta, 2))
-                    End If
+ '                   End If
                     If Not IsNull(RdoAux!NumDocumento) Then
                        Sql = "SELECT DISTINCT parceladocumento.numdocumento, plano.desconto FROM parceladocumento LEFT OUTER JOIN plano ON parceladocumento.plano = plano.codigo WHERE NUMDOCUMENTO=" & !NumDocumento
                        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
@@ -4439,12 +4475,12 @@ With RdoAux
                             End If
                        End If
                     End If
-                    aDebito(nEval).nValorCorrecao = IIf(IsNull(!ValorCorrecao), 0, FormatNumber(!ValorCorrecao, 2))
+                    aDebito(nEval).nValorCorrecao = IIf(IsNull(!valorcorrecao), 0, FormatNumber(!valorcorrecao, 2))
                 End If
             Else
                 If aDebito(nEval).nCodTributo = !CodTributo Then GoTo Proximo
             
-                aDebito(nEval).nValorTributo = FormatNumber(aDebito(nEval).nValorTributo + !ValorTributo, 2)
+                aDebito(nEval).nValorTributo = FormatNumber(aDebito(nEval).nValorTributo + !VALORTRIBUTO, 2)
                If (!statuslanc = 1 Or !statuslanc = 2 Or !statuslanc = 7) And Not bForum Then
                     'aDebito(nEval).nValorAtual = FormatNumber(aDebito(nEval).nValorAtual + !ValorTributo, 2)
                     aDebito(nEval).nValorJuros = FormatNumber(aDebito(nEval).nValorJuros + !ValorJuros, 2)
@@ -4453,7 +4489,7 @@ With RdoAux
                     Else
                         aDebito(nEval).nValorMulta = FormatNumber(aDebito(nEval).nValorMulta + 0, 2)
                     End If
-                    aDebito(nEval).nValorCorrecao = FormatNumber(aDebito(nEval).nValorCorrecao + !ValorCorrecao, 2)
+                    aDebito(nEval).nValorCorrecao = FormatNumber(aDebito(nEval).nValorCorrecao + !valorcorrecao, 2)
                ElseIf (!statuslanc = 1 Or !statuslanc = 2 Or !statuslanc = 7) And bForum Then
                     '***************************************************************
                     Sql = "SELECT DEBITOTRIBUTO.CODTRIBUTO,VALORTRIBUTO,ABREVTRIBUTO,DEBITOTRIBUTO.VALORJUROS,DEBITOTRIBUTO.VALORCORRECAO,DEBITOTRIBUTO.VALORMULTA "
@@ -4465,17 +4501,17 @@ With RdoAux
                     Sql = Sql & "DEBITOPARCELA.SEQLANCAMENTO = " & !SeqLancamento & " AND DEBITOPARCELA.NUMPARCELA = " & !NumParcela & " AND DEBITOPARCELA.CODCOMPLEMENTO = " & !CODCOMPLEMENTO & " AND DEBITOTRIBUTO.CODTRIBUTO=" & !CodTributo
                     Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                     With RdoAux2
-                        aDebito(nEval).nValorCorrecao = FormatNumber(aDebito(nEval).nValorCorrecao + !ValorCorrecao, 2)
+                        aDebito(nEval).nValorCorrecao = FormatNumber(aDebito(nEval).nValorCorrecao + !valorcorrecao, 2)
                         aDebito(nEval).nValorJuros = FormatNumber(aDebito(nEval).nValorJuros + !ValorJuros, 2)
                         aDebito(nEval).nValorMulta = FormatNumber(aDebito(nEval).nValorMulta + !ValorMulta, 2)
-                        aDebito(nEval).nValorAtual = FormatNumber(aDebito(nEval).nValorAtual + !ValorTributo + !ValorJuros + !ValorMulta + !ValorCorrecao, 2)
+                        aDebito(nEval).nValorAtual = FormatNumber(aDebito(nEval).nValorAtual + !VALORTRIBUTO + !ValorJuros + !ValorMulta + !valorcorrecao, 2)
                        .Close
                     End With
                     '***************************************************************
                Else
                     aDebito(nEval).nValorJuros = FormatNumber(aDebito(nEval).nValorJuros + !ValorJuros, 2)
                     aDebito(nEval).nValorMulta = FormatNumber(aDebito(nEval).nValorMulta + !ValorMulta, 2)
-                    aDebito(nEval).nValorCorrecao = FormatNumber(aDebito(nEval).nValorCorrecao + !ValorCorrecao, 2)
+                    aDebito(nEval).nValorCorrecao = FormatNumber(aDebito(nEval).nValorCorrecao + !valorcorrecao, 2)
                     aDebito(nEval).nValorAtual = FormatNumber(aDebito(nEval).nValorAtual + !ValorTotal, 2)
                End If
             End If
@@ -4518,12 +4554,13 @@ For x = 1 To UBound(aDebito)
                 End If
 ProximoEx:
             Next
-            If Not Achou Then GoTo PROXIMO2
+            If Not Achou Then GoTo Proximo2
         End If
     
     
         If .dDataPag = "00:00:00" Then .dDataPag = "01/01/1900"
         nSeq = nSeq + 1
+        On Error Resume Next
        'TAKLIT ET A NETUNIM
         If InStr(1, cn.Connect, "Tributacao_", vbBinaryCompare) > 0 Then
             Sql = "INSERT Tributacao_FULL..EXTRATOTMP"
@@ -4541,7 +4578,7 @@ ProximoEx:
         Sql = Sql & Virg2Ponto(CStr(.nValorAtual)) & "," & Virg2Ponto(CStr(nSaldo)) & ",'" & .sDA & "','" & .sAj & "')"
         cn.Execute Sql, rdExecDirect
     End With
-PROXIMO2:
+Proximo2:
 Next
 
 'EXIBE RELATORIO
@@ -4601,7 +4638,7 @@ Private Sub CarregaFiltro()
 Dim x As Integer, y As Integer, nAno As Integer, bAchou As Boolean, aAno() As Integer, aLanc() As String, aStatus() As String, aSeq() As String
 Ocupado
 
-If bFilterLoad Then GoTo fim
+If bFilterLoad Then GoTo Fim
 ReDim aAno(0): cmbAno1.Clear: cmbAno2.Clear: cmbLanc.Clear: cmbSit.Clear
 ReDim aLanc(1): ReDim aStatus(1): ReDim aSeq(1)
 With grdExtrato
@@ -4698,7 +4735,7 @@ If cmbSeq.ListCount > 0 Then cmbSeq.ListIndex = 0
 cmbDA.ListIndex = 0
 cmbAj.ListIndex = 0
 bFilterLoad = True
-fim:
+Fim:
 bExecF = True
 Liberado
 
@@ -5049,7 +5086,7 @@ Sql = Sql & "CODREDUZIDO=" & Val(txtCod.Text)
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
       Do Until .EOF
-            cmbProc.AddItem !NUMPROCESSO
+            cmbProc.AddItem !numprocesso
            .MoveNext
       Loop
      .Close
@@ -5169,15 +5206,19 @@ Private Sub Form_Load()
 Dim nIndex As Long, Sql As String, RdoAux As rdoResultset
 Ocupado
 MontaMenu
-If NomeDeLogin <> "RENATA" And NomeDeLogin <> "PAULOT" And NomeDeLogin <> "SOLANGE" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "LUIZH" And NomeDeLogin <> "JOSIANE" And _
-    NomeDeLogin <> "NOELI" And NomeDeLogin <> "LEANDRO" And NomeDeLogin <> "ANA" And NomeDeLogin <> "ROSANGELA" And _
-    NomeDeLogin <> "RODRIGOC" And NomeDeLogin <> "DINAMAR.OLIVEIRA" And NomeDeLogin <> "RHENO.SOARES" And NomeDeLogin <> "VALQUIRIA.FELIPE" And NomeDeLogin <> "VTVIEIRA" And NomeDeLogin <> "AFONSO.TASSO" Then
+If NomeDeLogin <> "ROBERTA.SILVA" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "CINTIA" And NomeDeLogin <> "JOSIANE" And NomeDeLogin <> "USER_TEST" And _
+    NomeDeLogin <> "RODRIGOC" And NomeDeLogin <> "ANA" And NomeDeLogin <> "ROSANGELA" And NomeDeLogin <> "PRISCILAANAMI" And _
+    NomeDeLogin <> "ANA.REIS" And NomeDeLogin <> "DINAMAR.OLIVEIRA" And NomeDeLogin <> "RHENO.SOARES" And NomeDeLogin <> "VALQUIRIA.FELIPE" And NomeDeLogin <> "VTVIEIRA" And NomeDeLogin <> "AFONSO.TASSO" Then
     
     m_cMenuOpcoes.Enabled(m_cMenuOpcoes.IndexForKey("mnuSuspenso")) = False
     m_cMenuOpcoes.Enabled(m_cMenuOpcoes.IndexForKey("mnuMultaInfracao")) = False
     m_cMenuOpcoes.Enabled(m_cMenuOpcoes.IndexForKey("mnuExtratoForum")) = False
     m_cMenuOpcoes.Enabled(m_cMenuOpcoes.IndexForKey("mnuBuscaDoc")) = False
     m_cMenuOpcoes.Enabled(m_cMenuOpcoes.IndexForKey("mnuRetidoTomador")) = False
+End If
+
+If NomeDeLogin <> "ROSE" And NomeDeLogin <> "JOSEANE" And NomeDeLogin <> "SCHWARTZ" Then
+   m_cMenuOpcoes.Enabled(m_cMenuOpcoes.IndexForKey("mnuDivideDebito")) = False
 End If
 
 Set xImovel = New clsImovel
@@ -5194,7 +5235,7 @@ grdExtrato.Enabled = True
 sRet = RetEventUserForm(Me.Name)
 FormHagana
 sEventoEF = ""
-
+cmbShow.ListIndex = 0
 Sql = "select valparam from parametros where nomeparam='REFIS_INICIO'"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 dDataIni = CDate(RdoAux!valparam)
@@ -5213,6 +5254,7 @@ dDataFimDI = CDate(RdoAux!valparam)
 
     If Now >= dDataIni And Now <= dDataFim Then
         bRefisAtivo = True
+        'bRefisAtivo = False
 
     Else
         bRefisAtivo = False
@@ -5260,7 +5302,7 @@ frDoc.Left = x
 frDoc.Top = y
 End Sub
 
-Private Sub grdExtrato_ColumnClick(ByVal lcol As Long)
+Private Sub grdExtrato_ColumnClick(ByVal lCol As Long)
 
 Dim sTag As String
 Dim iSortIndex As Long
@@ -5272,15 +5314,15 @@ Dim iSortIndex As Long
       .ClearNongrouped
       
       ' See if this column is already in the sort object:
-      iSortIndex = .IndexOf(lcol)
+      iSortIndex = .IndexOf(lCol)
       If (iSortIndex = 0) Then
          ' If not, we add it:
          iSortIndex = .Count + 1
-         .SortColumn(iSortIndex) = lcol
+         .SortColumn(iSortIndex) = lCol
       End If
    
       ' Determine which sort order to apply:
-      sTag = grdExtrato.ColumnTag(lcol)
+      sTag = grdExtrato.ColumnTag(lCol)
       If (sTag = "") Then
          sTag = "DESC"
          .SortOrder(iSortIndex) = CCLOrderAscending
@@ -5288,10 +5330,10 @@ Dim iSortIndex As Long
          sTag = ""
          .SortOrder(iSortIndex) = CCLOrderDescending
       End If
-      grdExtrato.ColumnTag(lcol) = sTag
+      grdExtrato.ColumnTag(lCol) = sTag
       
       ' Set the type of sorting:
-      .SortType(iSortIndex) = grdExtrato.ColumnSortType(lcol)
+      .SortType(iSortIndex) = grdExtrato.ColumnSortType(lCol)
    End With
    
    ' Do the sort:
@@ -5301,22 +5343,22 @@ Dim iSortIndex As Long
 
 End Sub
 
-Private Sub grdExtrato_DblClick(ByVal lrow As Long, ByVal lcol As Long)
+Private Sub grdExtrato_DblClick(ByVal lRow As Long, ByVal lCol As Long)
 Dim nLancamento As Integer, nStatus As Integer, z As Variant, sData As String, sValor As String, nAno As Integer, nSeq As Integer, nParc As Integer, nCompl As Integer
 If NomeDeLogin = "SCHWARTZ" Or NomeDeLogin = "RENATA" Or _
-    NomeDeLogin = "SOLANGE" Or NomeDeLogin = "GLEISE" Or NomeDeLogin = "LEANDRO" Or NomeDeLogin = "LUIZH" Or _
-    NomeDeLogin = "ROSANGELA" Or NomeDeLogin = "NOELI" Or _
-    NomeDeLogin = "RODRIGOC" Or NomeDeLogin = "DINAMAR.OLIVEIRA" Or IsAtendente Then
-    nAno = Val(grdExtrato.CellText(lrow, 1))
-    nLancamento = Val(Left$(grdExtrato.CellText(lrow, 2), 3))
-    nSeq = Val(grdExtrato.CellText(lrow, 3))
-    nParc = Val(grdExtrato.CellText(lrow, 4))
-    nCompl = Val(grdExtrato.CellText(lrow, 5))
-    nStatus = Val(Left$(grdExtrato.CellText(lrow, 6), 2))
-    sData = grdExtrato.CellText(lrow, 7)
-    sValor = grdExtrato.CellText(lrow, 10)
+    NomeDeLogin = "CINTIA" Or NomeDeLogin = "GLEISE" Or NomeDeLogin = "LEANDRO" Or NomeDeLogin = "PRISCILAANAMI" Or _
+    NomeDeLogin = "ROSANGELA" Or NomeDeLogin = "RODRIGOC" Or _
+    NomeDeLogin = "ANA.REIS" Or NomeDeLogin = "DINAMAR.OLIVEIRA" Or IsAtendente Then
+    nAno = Val(grdExtrato.CellText(lRow, 1))
+    nLancamento = Val(Left$(grdExtrato.CellText(lRow, 2), 3))
+    nSeq = Val(grdExtrato.CellText(lRow, 3))
+    nParc = Val(grdExtrato.CellText(lRow, 4))
+    nCompl = Val(grdExtrato.CellText(lRow, 5))
+    nStatus = Val(Left$(grdExtrato.CellText(lRow, 6), 2))
+    sData = grdExtrato.CellText(lRow, 7)
+    sValor = grdExtrato.CellText(lRow, 10)
     If (nLancamento = 36 Or nLancamento = 41 Or nLancamento = 11 Or nLancamento = 59 Or nLancamento = 52) And nStatus = 3 Then
-        If lcol = 7 Then
+        If lCol = 7 Then
 INIDATA:
             z = InputBox("Digite a nova data de vencimento", "DATA DE VENCIMENTO", sData)
             If z = "" Then Exit Sub
@@ -5328,10 +5370,10 @@ INIDATA:
                     Sql = "UPDATE DEBITOPARCELA SET DATAVENCIMENTO='" & Format(z, "mm/dd/yyyy") & "' WHERE CODREDUZIDO=" & Val(txtCod.Text) & " AND ANOEXERCICIO=" & nAno & " AND "
                     Sql = Sql & "CODLANCAMENTO=" & nLancamento & " AND SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nParc & " AND CODCOMPLEMENTO=" & nCompl
                     cn.Execute Sql, rdExecDirect
-                    grdExtrato.CellText(lrow, 7) = z
+                    grdExtrato.CellText(lRow, 7) = z
                 End If
             End If
-        ElseIf lcol = 10 Then
+        ElseIf lCol = 10 Then
 INIVALOR:
             z = InputBox("Digite o novo valor", "VALOR R$", sValor)
             If z = "" Then Exit Sub
@@ -5343,7 +5385,7 @@ INIVALOR:
                     Sql = "UPDATE DEBITOTRIBUTO SET VALORTRIBUTO=" & Virg2Ponto(RemovePonto(CStr(z))) & " WHERE CODREDUZIDO=" & Val(txtCod.Text) & " AND ANOEXERCICIO=" & nAno & " AND "
                     Sql = Sql & "CODLANCAMENTO=" & nLancamento & " AND SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nParc & " AND CODCOMPLEMENTO=" & nCompl & " AND CODTRIBUTO<>3"
                     cn.Execute Sql, rdExecDirect
-                    grdExtrato.CellText(lrow, 10) = z
+                    grdExtrato.CellText(lRow, 10) = z
                 End If
             End If
         End If
@@ -5505,8 +5547,8 @@ If KeyCode = vbKeyReturn Then
                         If .RowCount > 0 Then
                            sTexto = "Cancelado por: " & SubNull(!NomeLogin) & vbCrLf
                            sTexto = sTexto & "Data: " & Format(!DataCancel, "dd/mm/yyyy") & vbCrLf
-                           sTexto = sTexto & "Processo: " & !NUMPROCESSO & vbCrLf
-                           sTexto = sTexto & "Motivo: " & !MOTIVO
+                           sTexto = sTexto & "Processo: " & !numprocesso & vbCrLf
+                           sTexto = sTexto & "Motivo: " & !motivo
                            MsgBox sTexto, vbInformation, "Dados do Cancelamento."
                         Else
                            MsgBox "Não localizado dados sobre este cancelamento.", vbExclamation, "Atenção"
@@ -5888,8 +5930,8 @@ Select Case m_cMenuInterno.ItemKey(ItemNumber)
             If .RowCount > 0 Then
                sTexto = "Cancelado/Suspenso por: " & SubNull(!NomeLogin) & vbCrLf
                sTexto = sTexto & "Data: " & Format(!DataCancel, "dd/mm/yyyy") & vbCrLf
-               sTexto = sTexto & "Processo: " & !NUMPROCESSO & vbCrLf
-               sTexto = sTexto & "Motivo: " & !MOTIVO
+               sTexto = sTexto & "Processo: " & !numprocesso & vbCrLf
+               sTexto = sTexto & "Motivo: " & !motivo
                MsgBox sTexto, vbInformation, "Dados do Cancelamento."
             Else
                MsgBox "Não localizado dados sobre este cancelamento.", vbExclamation, "Atenção"
@@ -5944,7 +5986,7 @@ Select Case m_cMenuOpcoes.ItemKey(ItemNumber)
              For x = 1 To grdExtrato.Rows
                 If grdExtrato.CellText(x, 12) = "S" Then
                     If Val(Left$(grdExtrato.CellText(x, 2), 3)) = 3 Or Val(Left$(grdExtrato.CellText(x, 2), 3)) = 5 Or Val(Left$(grdExtrato.CellText(x, 2), 3)) = 65 Or Val(Left$(grdExtrato.CellText(x, 2), 3)) = 14 Then
-                        If NomeDeLogin <> "LUIZH" And NomeDeLogin <> "ROSE" And NomeDeLogin <> "RITA" And NomeDeLogin <> "RENATA" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "NOELI" And NomeDeLogin <> "ANA" And NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "RHENO.SOARES" And NomeDeLogin <> "VALQUIRIA.FELIPE" And NomeDeLogin <> "AFONSO.TASSO" Then
+                        If NomeDeLogin <> "NOELI" And NomeDeLogin <> "LEANDRO" And NomeDeLogin <> "RITA" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "RODRIGOC" And NomeDeLogin <> "ANA" And NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "RHENO.SOARES" And NomeDeLogin <> "VALQUIRIA.FELIPE" And NomeDeLogin <> "AFONSO.TASSO" And NomeDeLogin <> "PRISCILAANAMI" And NomeDeLogin <> "JOSEANE" And NomeDeLogin <> "ROSE" Then
                            MsgBox "Você não possui permissão para cancelar/suspender lançamentos de ISS.", vbExclamation, "Atenção"
                            Exit Sub
                         End If
@@ -5957,9 +5999,9 @@ Select Case m_cMenuOpcoes.ItemKey(ItemNumber)
                 
                 End If
             Next
-        
+            
 '        Select Case NomeDeLogin
-'            Case "RITA", "GLEISE", "RENATA", "SCHWARTZ", "ROSE", "JOSEANE", "NOELI", "ANA", "JOSIANE", "LEANDRO", "LUIZH", "DANIELAR", "SOLANGE", "PAULOT", "RHENO.SOARES", "VALQUIRIA.FELIPE", "FERNANDA.SIMOLIN"
+'            Case "RITA", "GLEISE", "RENATA", "SCHWARTZ", "ROSE", "JOSEANE", "RODRIGOC", "ANA", "JOSIANE", "LEANDRO", "LUIZH", "DANIELAR", "SOLANGE", "PAULOT", "RHENO.SOARES", "VALQUIRIA.FELIPE", "FERNANDA.SIMOLIN"
                 Achou = False
                 With grdExtrato
                     For x = 1 To .Rows
@@ -6202,7 +6244,7 @@ Select Case m_cMenuOpcoes.ItemKey(ItemNumber)
             For x = 1 To grdExtrato.Rows
                 If grdExtrato.CellText(x, 12) = "S" Then
                     If Val(Left$(grdExtrato.CellText(x, 2), 3)) = 3 Or Val(Left$(grdExtrato.CellText(x, 2), 3)) = 5 Or Val(Left$(grdExtrato.CellText(x, 2), 3)) = 65 Or Val(Left$(grdExtrato.CellText(x, 2), 3)) = 14 Then
-                        If NomeDeLogin <> "LUIZH" And NomeDeLogin <> "NOELI" Then
+                        If NomeDeLogin <> "LUIZH" And NomeDeLogin <> "RODRIGOC" Then
                            MsgBox "Você não possui permissão para Suspender lançamentos de ISS.", vbExclamation, "Atenção"
                            Exit Sub
                         End If
@@ -6242,7 +6284,7 @@ Select Case m_cMenuOpcoes.ItemKey(ItemNumber)
             frmCancelDebito.cmbTipo.Enabled = False
         End If
     Case "mnuDAMH"
-        If NomeDeLogin <> "ROSE" And NomeDeLogin <> "JOSEANE" And Not IsAtendente And NomeDeLogin <> "CARMELINO" And NomeDeLogin <> "RHENO.SOARES" And NomeDeLogin <> "VALQUIRIA.FELIPE" And NomeDeLogin <> "WHICTOR.HOMEM" And NomeDeLogin <> "FERNANDA.SIMOLIN" And NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "IZAEL.AGOSTINI" And NomeDeLogin <> "SOLANGE" And NomeDeLogin <> "RENATA" And NomeDeLogin <> "FRANCIELY.SOUZA" And NomeDeLogin <> "AFONSO.TASSO" And NomeDeLogin <> "HENRIQUE.SOARES" And NomeDeLogin <> "WILLIAN.LIMA" Then
+        If NomeDeLogin <> "ROSE" And NomeDeLogin <> "JOSEANE" And Not IsAtendente And NomeDeLogin <> "CARMELINO" And NomeDeLogin <> "RHENO.SOARES" And NomeDeLogin <> "VALQUIRIA.FELIPE" And NomeDeLogin <> "WHICTOR.HOMEM" And NomeDeLogin <> "FERNANDA.SIMOLIN" And NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "IZAEL.AGOSTINI" And NomeDeLogin <> "THAIS.OLIVEIRA" And NomeDeLogin <> "GUILHERM.MONTEIRO" And NomeDeLogin <> "FRANCIELY.SOUZA" And NomeDeLogin <> "AFONSO.TASSO" And NomeDeLogin <> "HENRIQUE.SOARES" And NomeDeLogin <> "ELTON.DIAS" And NomeDeLogin <> "LUCIANO.RAMOS" And NomeDeLogin <> "RODRIGOG" And NomeDeLogin <> "PRISCILAANAMI" And NomeDeLogin <> "NATALIA.FRACASSO" And NomeDeLogin <> "CINTIA" And NomeDeLogin <> "FILLIPE.GUSMAO" And NomeDeLogin <> "RENAN.BARBOSA" And NomeDeLogin <> "TAIS.VEIGA" Then
             MsgBox "Acesso negado!", vbCritical, "ERRO"
             Exit Sub
         End If
@@ -6319,7 +6361,7 @@ Inicio:
                 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 With RdoAux
                     If .RowCount > 0 Then
-                        sNumProc = !NUMPROCESSO
+                        sNumProc = !numprocesso
                         nNumproc = Val(Left$(sNumProc, InStr(1, sNumProc, "/", vbBinaryCompare) - 1))
                         nAnoproc = Val(Right$(sNumProc, 4))
                         .Close
@@ -6424,7 +6466,7 @@ Inicio:
                 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 With RdoAux
                     If .RowCount > 0 Then
-                        sNumProc = !NUMPROCESSO
+                        sNumProc = !numprocesso
                         nNumproc = Val(Left$(sNumProc, InStr(1, sNumProc, "/", vbBinaryCompare) - 1))
                         nAnoproc = Val(Right$(sNumProc, 4))
                         .Close
@@ -6438,6 +6480,8 @@ Inicio:
                             End If
                             RdoAux2.Close
                             Sql = "delete from debitoparcela where CODREDUZIDO=" & nCodReduz & " AND CODLANCAMENTO=" & nLanc & " AND SEQLANCAMENTO=" & nSeq
+                            cn.Execute Sql, rdExecDirect
+                            Sql = "delete from debitotributo where CODREDUZIDO=" & nCodReduz & " AND CODLANCAMENTO=" & nLanc & " AND SEQLANCAMENTO=" & nSeq
                             cn.Execute Sql, rdExecDirect
                             Sql = "delete from processoreparc where numprocesso='" & sNumProc & "'"
                             cn.Execute Sql, rdExecDirect
@@ -6502,6 +6546,8 @@ Inicio:
         GravaExtrato2 (True)
     Case "mnuSerasa"
         RetiraSerasa
+    Case "mnuDivideDebito"
+        DivideDebito
     Case "mnuChangeStatus"
         MsgBox "Selecione as parcelas que deseja alterar e pressione F12 para concluir.", vbInformation, "Alteração de Status"
         bChangeStatus = True
@@ -6677,7 +6723,7 @@ With xImovel
         lblProp.Caption = ""
         txtProp.Text = ""
         MsgBox "Imóvel não cadastrado.", vbCritical, "Atenção"
-        GoTo fim
+        GoTo Fim
     End If
     lblProp.Caption = .NomePropPrincipal
     txtProp.Text = .NomePropPrincipal
@@ -6685,7 +6731,7 @@ End With
 grdExtrato.Redraw = False
 CarregaDebito nCodigoImovel
 grdExtrato.Redraw = True
-fim:
+Fim:
 Liberado
 
 End Sub
@@ -6718,7 +6764,7 @@ End Sub
 
 Private Sub FormHagana()
 Dim nIndex As Integer
-
+If NomeDeLogin = "USER_TEST" Then Exit Sub
 evEDI = 3
 evDAM = 5
 evCND = 6
@@ -6793,7 +6839,7 @@ If Not bSer Then m_cMenuOpcoes.Enabled(nIndex) = False
 
 m_cMenuInterno.Enabled(m_cMenuInterno.IndexForKey("mnuCancelNotifISS")) = frmMdi.m_cMenuMob.Enabled(frmMdi.m_cMenuMob.IndexForKey("mnuNotificaISS"))
 
-If NomeDeLogin <> "RENATA" And NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "ROSE" And NomeDeLogin <> "RITA" And NomeDeLogin <> "JOSEANE" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "SOLANGE" And NomeDeLogin <> "ANA" And NomeDeLogin <> "LORENA.ROSA" And NomeDeLogin <> "BRUNA.SEIXAS" And NomeDeLogin <> "HENRIQUE.SOARES" And NomeDeLogin <> "WILLIAN.LIMA" Then
+If NomeDeLogin <> "RENATA" And NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "ROSE" And NomeDeLogin <> "RITA" And NomeDeLogin <> "JOSEANE" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "CINTIA" And NomeDeLogin <> "ANA" And NomeDeLogin <> "HENRIQUE.SOARES" And NomeDeLogin <> "ELTON.DIAS" And NomeDeLogin <> "LUCIANO.RAMOS" And NomeDeLogin <> "RODRIGOG" And NomeDeLogin <> "PRISCILAANAMI" Then
     m_cMenuOpcoes.Enabled(m_cMenuOpcoes.IndexForKey("mnuChangeStatus")) = False
 Else
     m_cMenuInterno.Enabled(m_cMenuInterno.IndexForKey("mnuReativar")) = True
@@ -6803,13 +6849,13 @@ End If
 End Sub
 
 Public Sub CarregaDebito(nCodImovel As Long)
-Dim aDebito() As Debito
+Dim aDebito() As Debito, aDebito2() As Debito
 Dim Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, RdoS As rdoResultset, RdoP As rdoResultset
-Dim nValorDebito As Double, Achou As Boolean, x As Integer, sExecFiscal As String
+Dim nValorDebito As Double, Achou As Boolean, x As Integer, sExecFiscal As String, y As Integer, nPos As Integer
 Dim nSomaDebito As Double, nEval As Integer, nValorCorrecao As Double, bFind As Boolean, k As Integer
 Dim nSomaVencer As Double, nSomaDebitoUnica As Double, nSomaVencerUnica As Double
 Dim sDescReduz As String, nValorAtualizado As Double, nSomaValorTributo As Double
-Dim bAjuiza As Boolean, bDA As Boolean, qd As New rdoQuery, bIsentoMJ As Boolean
+Dim bAjuiza As Boolean, bDA As Boolean, qd As New rdoQuery, bIsentoMJ As Boolean, nTipoExibir As Integer
 
 
 
@@ -6825,7 +6871,7 @@ GridHeader (True)
 'CorrigeUnica
 bChangeStatus = False
 Achou = False
-ReDim aDebito(0)
+ReDim aDebito(0): ReDim aDebito2(0)
 
 For x = 0 To Forms.Count - 1
     If Forms(x).Name = "frmFiltroDebito" Then
@@ -6846,7 +6892,8 @@ lblVencer.Caption = "0,00"
 nSomaDebito = 0
 nSomaVencer = 0
 bSel = True
-
+nTipoExibir = cmbShow.ListIndex
+If nCodImovel = 0 Then Exit Sub
 
 'CARREGA O EXTRATO
 Set qd.ActiveConnection = cn
@@ -6854,7 +6901,11 @@ qd.QueryTimeout = 0
 On Error Resume Next
 RdoAux.Close
 On Error GoTo 0
-qd.Sql = "{ Call spEXTRATONEW(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
+If nTipoExibir = 0 Then
+    qd.Sql = "{ Call spEXTRATONAOPAGO(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
+Else
+    qd.Sql = "{ Call spEXTRATONEW(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
+End If
 qd(0) = nCodImovel
 qd(1) = nCodImovel
 If cmbAno1.ListCount > 0 Then
@@ -6878,7 +6929,7 @@ Else
     qd(6) = 0: qd(7) = 9999
 End If
 qd(8) = 0: qd(9) = 999
-qd(10) = 0: qd(11) = 99
+qd(10) = 0: qd(11) = 999
 
 If cmbSit.ListIndex > 0 Then
     qd(12) = Val(Left(cmbSit.Text, 2)): qd(13) = Val(Left(cmbSit.Text, 2)) 'STATUSLANC
@@ -6895,16 +6946,15 @@ With RdoAux
         ReDim Preserve aDebito(UBound(aDebito) + 1)
         nEval = UBound(aDebito)
         Do Until .EOF
-          '  If aDebito(nEval).nAno = 2016 And aDebito(nEval).nParc = 1 And aDebito(nEval).nLanc = 13 Then MsgBox "teste"
+           ' If !AnoExercicio = 2016 And !CodLancamento = 13 Then
+           '     MsgBox "teste"
+           ' End If
             If chkTodosAnos.value = vbUnchecked Then
-                'If !AnoExercicio < Year(Now) - 5 And !statuslanc <> 3 And !statuslanc <> 19 And !statuslanc <> 20 And !statuslanc <> 25 Then
-                
                 If !AnoExercicio < Year(Now) - 5 And !statuslanc <> 3 And !statuslanc <> 19 And !statuslanc <> 25 And !statuslanc <> 20 And !statuslanc <> 40 And !statuslanc <> 42 And !statuslanc <> 43 And !statuslanc <> 38 Then
                     GoTo Proximo
                 End If
             End If
         
-'            If !SeqLancamento = 9 And !NumParcela = 21 Then MsgBox "tste"
             bJuros = False: bMulta = False: bIsentoMJ = False
             If Not IsNull(!NumDocumento) Then
                 Sql = "SELECT NUMDOCUMENTO,ISENTOMJ FROM NUMDOCUMENTO WHERE NUMDOCUMENTO=" & RdoAux!NumDocumento
@@ -6930,14 +6980,14 @@ With RdoAux
                 If Not IsNull(!datainscricao) Then GoTo Proximo
             End If
 
-            If chkShowAll.value = vbUnchecked Then
-                If !statuslanc = 5 Then GoTo Proximo
+            If nTipoExibir = 1 Then
+                If !statuslanc = 5 Or !statuslanc = 45 Then GoTo Proximo
                 If !NumParcela = 0 And !statuslanc = 5 Then GoTo Proximo
                 If !NumParcela > 0 And !statuslanc = 1 And chkUnica.value = 0 Then GoTo Proximo
                 If !NumParcela = 0 And !statuslanc = 3 And !CODCOMPLEMENTO = 0 And DateDiff("d", !DataVencimento, Now) > 0 Then GoTo Proximo
                 If !AnoExercicio = 2003 And !CodLancamento = 1 And (!statuslanc <> 2 And !statuslanc <> 1) Then GoTo Proximo
             End If
-            
+
             nEval = UBound(aDebito)
             Achou = False
             For x = 1 To nEval
@@ -6955,11 +7005,11 @@ With RdoAux
                 aDebito(nEval).nAno = !AnoExercicio
                 aDebito(nEval).nLanc = !CodLancamento
                 If !CodLancamento = 20 Or !CodLancamento = 8 Then
-                   If Not IsNull(!NUMPROCESSO) Then
-                      If Val(Right$(!NUMPROCESSO, 4)) >= 2006 Then
-                        aDebito(nEval).sLanc = !DESCLANCAMENTO & " (" & Left$(!NUMPROCESSO, InStr(1, !NUMPROCESSO, "/", vbBinaryCompare) - 1) & "-" & RetornaDVProcesso(Left$(!NUMPROCESSO, InStr(1, !NUMPROCESSO, "/", vbBinaryCompare) - 1)) & "/" & Right$(!NUMPROCESSO, 4) & ")"
+                   If Not IsNull(!numprocesso) Then
+                      If Val(Right$(!numprocesso, 4)) >= 2006 Then
+                        aDebito(nEval).sLanc = !DESCLANCAMENTO & " (" & Left$(!numprocesso, InStr(1, !numprocesso, "/", vbBinaryCompare) - 1) & "-" & RetornaDVProcesso(Left$(!numprocesso, InStr(1, !numprocesso, "/", vbBinaryCompare) - 1)) & "/" & Right$(!numprocesso, 4) & ")"
                       Else
-                        aDebito(nEval).sLanc = !DESCLANCAMENTO & " (" & !NUMPROCESSO & ")"
+                        aDebito(nEval).sLanc = !DESCLANCAMENTO & " (" & !numprocesso & ")"
                       End If
                    Else
                       aDebito(nEval).sLanc = !DESCLANCAMENTO
@@ -6976,18 +7026,18 @@ With RdoAux
                 aDebito(nEval).sDA = IIf(IsNull(!datainscricao), "N", "S")
                 aDebito(nEval).sAj = IIf(IsNull(!dataajuiza), "N", "S")
                 aDebito(nEval).nCodTributo = !CodTributo
-                aDebito(nEval).nValorTributo = FormatNumber(!ValorTributo, 2)
+                aDebito(nEval).nValorTributo = FormatNumber(!VALORTRIBUTO, 2)
                
                 
                 If !statuslanc = 1 Or !statuslanc = 2 Or !statuslanc = 7 Then
-                    If Not IsNull(!valorpagoreal) Then
-                        aDebito(nEval).nValorAtual = FormatNumber(!valorpagoreal, 2)
+                    If Not IsNull(!ValorPagoreal) Then
+                        aDebito(nEval).nValorAtual = FormatNumber(!ValorPagoreal, 2)
                     Else
                         aDebito(nEval).nValorAtual = FormatNumber(0, 2)
                     End If
                 Else
                     If bIsentoMJ Then
-                        aDebito(nEval).nValorAtual = FormatNumber(!ValorTributo + !ValorCorrecao, 2)
+                        aDebito(nEval).nValorAtual = FormatNumber(!VALORTRIBUTO + !valorcorrecao, 2)
                     Else
                         aDebito(nEval).nValorAtual = FormatNumber(!ValorTotal, 2)
                     End If
@@ -6999,8 +7049,8 @@ With RdoAux
                 End If
                 
                 sExecFiscal = ""
-                If Not IsNull(!ProcessoCNJ) Then
-                    sExecFiscal = !ProcessoCNJ
+                If Not IsNull(!processocnj) Then
+                    sExecFiscal = !processocnj
                 Else
                     If Not IsNull(!anoexecfiscal) Then
                         sExecFiscal = Format(!numexecfiscal, "00000") & "/" & !anoexecfiscal
@@ -7008,9 +7058,6 @@ With RdoAux
                 End If
                 aDebito(nEval).sExFiscal = sExecFiscal
                 aDebito(nEval).nProt_certidao = Val(SubNull(!prot_certidao))
-'                If aDebito(nEval).nProt_certidao = 0 Then
-'                   aDebito(nEval).nProt_certidao = Val(SubNull(!CERTIDAO))
-'                End If
                 If IsNull(!prot_dtremessa) Then
                     aDebito(nEval).nProt_dtremessa = CDate("01/01/1900")
                 Else
@@ -7028,12 +7075,12 @@ With RdoAux
                 Next
                 
                 If Not bFind Then
-                    aDebito(x).nValorTributo = FormatNumber(aDebito(x).nValorTributo + !ValorTributo, 2)
+                    aDebito(x).nValorTributo = FormatNumber(aDebito(x).nValorTributo + !VALORTRIBUTO, 2)
                     If !statuslanc = 1 Or !statuslanc = 2 Or !statuslanc = 7 Then
 '                         aDebito(x).nValorAtual = FormatNumber(aDebito(x).nValorAtual + !ValorTributo, 2)
                     Else
                         If bIsentoMJ Then
-                            aDebito(x).nValorAtual = FormatNumber(aDebito(x).nValorAtual + !ValorTributo + !ValorCorrecao, 2)
+                            aDebito(x).nValorAtual = FormatNumber(aDebito(x).nValorAtual + !VALORTRIBUTO + !valorcorrecao, 2)
                         Else
                             aDebito(x).nValorAtual = FormatNumber(aDebito(x).nValorAtual + !ValorTotal, 2)
                         End If
@@ -7048,8 +7095,8 @@ Proximo:
 End With
 
 '************************************************
-'CÁLCULO DE REPARCELAMENTOS MULTIPLOS DA IDIOTA DA SMAR
-GoTo CORRECAO
+'CÁLCULO DE REPARCELAMENTOS MULTIPLOS
+GoTo Correcao
 Dim nNumproc As Long, nAno As Integer, nNumSeq As Integer, nNovaSeq As Integer
 
 Sql = "SELECT * From REPARC2TMP ORDER BY NUMPROC, DATAVENCTO, NUMSEQ"
@@ -7087,7 +7134,7 @@ With RdoP
     Loop
 End With
 
-CORRECAO:
+Correcao:
 
 GoTo CORRECAO2
 
@@ -7159,7 +7206,7 @@ With RdoP
             Sql = Sql & "FROM DEBITOPARCELA INNER JOIN DEBITOTRIBUTO ON DEBITOPARCELA.CODREDUZIDO = DEBITOTRIBUTO.CODREDUZIDO AND "
             Sql = Sql & "DEBITOPARCELA.ANOEXERCICIO = DEBITOTRIBUTO.ANOEXERCICIO AND DEBITOPARCELA.CODLANCAMENTO = DEBITOTRIBUTO.CODLANCAMENTO AND "
             Sql = Sql & "DEBITOPARCELA.SEQLANCAMENTO = DEBITOTRIBUTO.SEQLANCAMENTO AND DEBITOPARCELA.NUMPARCELA = DEBITOTRIBUTO.NUMPARCELA AND "
-            Sql = Sql & "DEBITOPARCELA.CODCOMPLEMENTO = DEBITOTRIBUTO.CODCOMPLEMENTO WHERE NUMPROCESSO ='" & !NUMPROCESSO & "' AND SEQPROC=" & !SEQPROC
+            Sql = Sql & "DEBITOPARCELA.CODCOMPLEMENTO = DEBITOTRIBUTO.CODCOMPLEMENTO WHERE NUMPROCESSO ='" & !numprocesso & "' AND SEQPROC=" & !SEQPROC
             Sql = Sql & " AND CODTRIBUTO<>3 "
             Sql = Sql & "ORDER BY DEBITOPARCELA.ANOEXERCICIO,DEBITOPARCELA.NUMPARCELA,CODTRIBUTO"
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -7174,7 +7221,7 @@ With RdoP
                         End If
                     Next
                     If bAchou Then
-                        aTrib(x).nValorTributo = aTrib(x).nValorTributo + !ValorTributo
+                        aTrib(x).nValorTributo = aTrib(x).nValorTributo + !VALORTRIBUTO
                     Else
                         ReDim Preserve aTrib(UBound(aTrib) + 1)
                         aTrib(UBound(aTrib)).nAno = !AnoExercicio
@@ -7182,7 +7229,7 @@ With RdoP
                         aTrib(UBound(aTrib)).nParc = !NumParcela
                         aTrib(UBound(aTrib)).nCompl = !CODCOMPLEMENTO
                         aTrib(UBound(aTrib)).nCodTributo = nCodTributo
-                        aTrib(UBound(aTrib)).nValorTributo = !ValorTributo
+                        aTrib(UBound(aTrib)).nValorTributo = !VALORTRIBUTO
                     End If
                    .MoveNext
                 Loop
@@ -7195,6 +7242,41 @@ End With
 
 CORRECAO3:
 '************************************************
+'For x = 2 To UBound(aDebito)
+'    bFind = False
+   ' If aDebito(x).nLanc = 11 And aDebito(x).nSeq = 3 Then MsgBox "teste"
+'    For y = 1 To UBound(aDebito2)
+'        If (aDebito(x).nAno = aDebito2(y).nAno And aDebito(x).nLanc = aDebito2(y).nLanc And aDebito(x).nSeq = aDebito2(y).nSeq And aDebito(x).nParc = aDebito2(y).nParc And aDebito(x).nCompl = aDebito2(y).nCompl And aDebito(x).nCodTributo = aDebito2(y).nCodTributo) Then
+'            bFind = True
+'            Exit For
+'        End If
+'    Next
+'    If Not bFind Then
+       ' If aDebito(x).nLanc = 11 And aDebito(x).nSeq = 3 Then MsgBox "teste2"
+'        ReDim Preserve aDebito2(UBound(aDebito2) + 1)
+'        nPos = UBound(aDebito2)
+'        aDebito2(nPos).nAno = aDebito(x).nAno
+'        aDebito2(nPos).nLanc = aDebito(x).nLanc
+'        aDebito2(nPos).nSeq = aDebito(x).nSeq
+'        aDebito2(nPos).nParc = aDebito(x).nParc
+ '       aDebito2(nPos).nCompl = aDebito(x).nCompl
+ '       aDebito2(nPos).nCodTributo = aDebito(x).nCodTributo
+ '       aDebito2(nPos).nSituacao = aDebito(x).nSituacao
+ '       aDebito2(nPos).sLanc = aDebito(x).sLanc
+ '       aDebito2(nPos).sSituacao = aDebito(x).sSituacao
+'        aDebito2(nPos).sVencto = aDebito(x).sVencto
+'        aDebito2(nPos).sDA = aDebito(x).sDA
+'        aDebito2(nPos).sAj = aDebito(x).sAj
+'        aDebito2(nPos).nValorTributo = aDebito(x).nValorTributo
+'        aDebito2(nPos).nValorAtual = aDebito(x).nValorAtual
+ '       aDebito2(nPos).sNotificado = aDebito(x).sNotificado
+ '       aDebito2(nPos).sExFiscal = aDebito(x).sExFiscal
+ '       aDebito2(nPos).nProt_certidao = aDebito(x).nProt_certidao
+ '       aDebito2(nPos).nProt_dtremessa = aDebito(x).nProt_dtremessa
+' '   End If
+'Next
+
+
 For x = 2 To UBound(aDebito)
     With aDebito(x)
         grdExtrato.AddRow
@@ -7264,7 +7346,11 @@ With grdExtrato
              lblDebito.Caption = "0,00"
              lblVencer.Caption = "0,00"
              Liberado
-             MsgBox "Não existem Débitos.", vbInformation, "Atenção"
+             If nTipoExibir = 0 Then
+                MsgBox "Não existem débitos não pagos a exibir.", vbInformation, "Atenção"
+             Else
+                MsgBox "Não existem débitos.", vbInformation, "Atenção"
+             End If
              .Clear
         End If
 End With
@@ -7272,14 +7358,14 @@ End With
 
 
 
-GoTo fim
+GoTo Fim
 'MAALE TASHLUMIM LO KAIAMIM
 Sql = "SELECT DISTINCT(NUMPROCESSO) FROM VWCNSREPARCELAMENTOO WHERE "
 Sql = Sql & "CODREDUZIDO=" & nCodImovel & " AND CODIGORESP<>" & nCodImovel
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-        Sql = "SELECT * FROM VWCNSREPARCELAMENTOD WHERE NUMPROCESSO='" & !NUMPROCESSO & "'"
+        Sql = "SELECT * FROM VWCNSREPARCELAMENTOD WHERE NUMPROCESSO='" & !numprocesso & "'"
         If FiltroE > 0 Then
            Sql = Sql & " AND ANOEXERCICIO=" & FiltroE
         End If
@@ -7306,7 +7392,7 @@ With RdoAux
                  If !CodLancamento = 20 And !statuslanc = 5 Then GoTo proximo3
                  Sql = "SELECT DESCREDUZ FROM LANCAMENTO WHERE CODLANCAMENTO=" & !CodLancamento
                  Set RdoS = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-                 sDescReduz = RdoS!descreduz & " (" & !NUMPROCESSO & ")"
+                 sDescReduz = RdoS!descreduz & " (" & !numprocesso & ")"
                  Sql = "SELECT DESCSITUACAO FROM SITUACAOLANCAMENTO WHERE CODSITUACAO=" & !statuslanc
                  Set RdoS = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                  sDescSituacao = RdoS!DescSituacao
@@ -7322,11 +7408,11 @@ With RdoAux
                 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 With RdoAux2
                     If .RowCount > 0 Then
-                        nSomaValorTributo = !ValorTributo
-                        nValorAtualizado = !ValorTributo
-                        nSomaValorTributo = nSomaValorTributo + CDbl(CalculaJuros(!ValorTributo + CalculaCorrecao(!ValorTributo, !DataVencimento), !DataVencimento))
-                        nSomaValorTributo = nSomaValorTributo + CDbl(CalculaMulta(!ValorTributo + CalculaCorrecao(!ValorTributo, !DataVencimento), !DataVencimento))
-                        nSomaValorTributo = nSomaValorTributo + CDbl(CalculaCorrecao(!ValorTributo, !DataVencimento))
+                        nSomaValorTributo = !VALORTRIBUTO
+                        nValorAtualizado = !VALORTRIBUTO
+                        nSomaValorTributo = nSomaValorTributo + CDbl(CalculaJuros(!VALORTRIBUTO + CalculaCorrecao(!VALORTRIBUTO, !DataVencimento), !DataVencimento))
+                        nSomaValorTributo = nSomaValorTributo + CDbl(CalculaMulta(!VALORTRIBUTO + CalculaCorrecao(!VALORTRIBUTO, !DataVencimento), !DataVencimento))
+                        nSomaValorTributo = nSomaValorTributo + CDbl(CalculaCorrecao(!VALORTRIBUTO, !DataVencimento))
                     Else
                         nSomaValorTributo = 0
                     End If
@@ -7389,7 +7475,7 @@ With RdoAux
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             Do Until .EOF
-                If !CodLancamento = 20 And !statuslanc = 5 Then GoTo PROXIMO2
+                If !CodLancamento = 20 And !statuslanc = 5 Then GoTo Proximo2
                 Sql = "SELECT DESCREDUZ FROM LANCAMENTO WHERE CODLANCAMENTO=" & !CodLancamento
                 Set RdoS = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 sDescReduz = RdoS!descreduz & " (SMAR: " & !CODREDUZIDO & ")"
@@ -7408,7 +7494,7 @@ With RdoAux
                 With RdoAuxS
                     nSomaValorTributo = 0
                     If .RowCount > 0 Then
-                        nValorAtualizado = !ValorTributo
+                        nValorAtualizado = !VALORTRIBUTO
                     Else
                         nValorAtualizado = 0
                     End If
@@ -7454,14 +7540,14 @@ With RdoAux
                       End If
                    End If
                 End If
-PROXIMO2:
+Proximo2:
                .MoveNext
             Loop
         End With
     End If
 End With
 
-fim:
+Fim:
 'MEMALE ET A SCHUM
 lblDebito.Caption = FormatNumber(nSomaDebito, 2)
 lblVencer.Caption = FormatNumber(nSomaVencer, 2)
@@ -7650,7 +7736,7 @@ End If
 End Sub
 
 Private Function ValidaMI() As Boolean
-Dim aMI() As Multa, nTipo As Integer, nAno As Integer, nLanc As Integer, nSeq As Integer, nParc As Integer, nCompl As Integer, x As Integer, y As Integer
+Dim aMI() As multa, nTipo As Integer, nAno As Integer, nLanc As Integer, nSeq As Integer, nParc As Integer, nCompl As Integer, x As Integer, y As Integer
 ReDim aMI(0)
 
 MI = False
@@ -7676,7 +7762,7 @@ With grdExtrato
             Sql = "SELECT * FROM MULTAINFRACAO WHERE CODREDUZIDO=" & Val(txtCod.Text) & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nParc & " AND CODCOMPLEMENTO=" & nCompl
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux
-                nAno = !Ano
+                nAno = !ano
                 nLanc = !lancamento
                 nSeq = !Sequencia
                 nParc = !Parcela
@@ -7696,7 +7782,7 @@ With grdExtrato
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             If .RowCount = 0 Then GoTo Continua
-            aMI(0).nAno = !Ano
+            aMI(0).nAno = !ano
             aMI(0).nLanc = !lancamento
             aMI(0).nSeq = !Sequencia
             aMI(0).nParc = !Parcela
@@ -7750,12 +7836,12 @@ Continua:
         MI = True
     Else
         MI = False
-        GoTo fim
+        GoTo Fim
     End If
 End With
 
 
-fim:
+Fim:
 ValidaMI = True
 Exit Function
 
@@ -7822,6 +7908,8 @@ Private Sub MontaMenu()
       i = .AddItem("Retido pelo Tomador", "", 1, , , , , "mnuRetidoTomador")
       .OwnerDraw(i) = True
       i = .AddItem("Retirar marcação de SERASA no GTI", "", 1, , , , , "mnuSerasa")
+      .OwnerDraw(i) = True
+      i = .AddItem("Divisão de débito", "", 1, , , , , "mnuDivideDebito")
       .OwnerDraw(i) = True
    End With
    
@@ -7963,7 +8051,7 @@ With RdoAux
         For x = 1 To lvDoc.ListItems.Count
             If Val(Right(lvDoc.ListItems(x).Key, 3)) = !NumDoc Then
                 lvDoc.ListItems(x).Checked = True
-                lvDoc.ListItems(x).SubItems(1) = !QTDE
+                lvDoc.ListItems(x).SubItems(1) = !Qtde
                 lvDoc.ListItems(x).SubItems(2) = SubNull(!Situacao)
             End If
         Next
@@ -8021,10 +8109,44 @@ With RdoAux
     End If
    .Close
 End With
-Sql = "INSERT DEBITOOBSERVACAO(CODREDUZIDO,SEQ,USERID,DATAOBS,OBS) VALUES(" & nCodReduz & "," & nSeq & ",236,'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sObs) & "')"
+Sql = "INSERT DEBITOOBSERVACAO(CODREDUZIDO,SEQ,USERID,DATAOBS,OBS) VALUES(" & nCodReduz & "," & nSeq & "," & RetornaUsuarioID(NomeDeLogin) & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sObs) & "')"
 cn.Execute Sql, rdExecDirect
 
 MsgBox "Removida a marcação de Serasa no GTI", vbInformation, "Atenção"
 
 End Sub
 
+Private Sub DivideDebito()
+Dim Achou As Boolean, x As Integer, nCount As Integer, nPos As Integer
+Achou = False
+nCount = 0
+With grdExtrato
+    For x = 1 To .Rows
+        If .CellText(x, 12) = "S" Then
+            nCount = nCount + 1
+            Achou = True
+            nPos = x
+        End If
+    Next
+End With
+
+
+If Not Achou Then
+    MsgBox "Selecione ao menos uma parcela.", vbExclamation, "atenção"
+Else
+    If nCount > 1 Then
+        MsgBox "Selecione apenas uma parcela.", vbCritical, "Erro"
+        Exit Sub
+    End If
+
+    If Val(Left(grdExtrato.CellText(nPos, 6), 2)) <> 3 And Val(Left(grdExtrato.CellText(nPos, 6), 2)) <> 42 And Val(Left(grdExtrato.CellText(nPos, 6), 2)) <> 43 Then
+        MsgBox "Apenas débitos não pagos podem ser divididos", vbCritical, "Erro"
+        Exit Sub
+    End If
+
+
+    frmDivideDebito.show vbModal
+    'frmDivideDebito.show
+End If
+
+End Sub

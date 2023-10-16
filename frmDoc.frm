@@ -6,8 +6,8 @@ Begin VB.Form frmDoc
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Consulta/Reativação de Documento"
    ClientHeight    =   6300
-   ClientLeft      =   2805
-   ClientTop       =   3645
+   ClientLeft      =   8490
+   ClientTop       =   3720
    ClientWidth     =   10335
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
@@ -348,6 +348,25 @@ Begin VB.Form frmDoc
       CHECK           =   0   'False
       VALUE           =   0   'False
    End
+   Begin VB.Label lblPix 
+      BackStyle       =   0  'Transparent
+      Caption         =   "NÃO"
+      ForeColor       =   &H000000C0&
+      Height          =   195
+      Left            =   6795
+      TabIndex        =   36
+      Top             =   4905
+      Width           =   735
+   End
+   Begin VB.Label Label11 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Pago com PIX:"
+      Height          =   195
+      Left            =   5445
+      TabIndex        =   35
+      Top             =   4905
+      Width           =   1185
+   End
    Begin VB.Label Label12 
       BackStyle       =   0  'Transparent
       Caption         =   "Valor Guia.....:"
@@ -376,7 +395,7 @@ Begin VB.Form frmDoc
       Left            =   840
       TabIndex        =   31
       Top             =   4890
-      Width           =   6585
+      Width           =   3975
    End
    Begin VB.Label Label8 
       BackStyle       =   0  'Transparent
@@ -601,12 +620,12 @@ With grdDup
 End With
 
 If Not Achou Then
-    grdParc.TextMatrix(grdParc.Row, 12) = ""
+    grdParc.TextMatrix(grdParc.row, 12) = ""
 End If
 
 Inicio:
 For x = 1 To grdTemp.Rows - 1
-    If Val(grdTemp.TextMatrix(x, 0)) = grdParc.Row Then
+    If Val(grdTemp.TextMatrix(x, 0)) = grdParc.row Then
        If grdTemp.Rows > 2 Then
           grdTemp.RemoveItem (x)
        Else
@@ -618,7 +637,7 @@ Next
 
 For x = 1 To grdDup.Rows - 1
     If grdDup.TextMatrix(x, 5) = "S" Then
-       grdTemp.AddItem grdParc.Row & Chr(9) & grdDup.TextMatrix(x, 0) & Chr(9) & grdDup.TextMatrix(x, 6)
+       grdTemp.AddItem grdParc.row & Chr(9) & grdDup.TextMatrix(x, 0) & Chr(9) & grdDup.TextMatrix(x, 6)
     End If
 Next
 
@@ -642,7 +661,7 @@ End Sub
 
 Private Sub cmdReativa_Click()
 Dim nNumDoc As Long, nSeqPag As Integer
-Dim x As Integer, Y As Integer
+Dim x As Integer, y As Integer
 Dim nCodReduz As Long
 Dim nAnoExercicio As Integer
 Dim nCodLanc As Integer
@@ -701,10 +720,10 @@ If MsgBox("Deseja executar a restituição destes lançamentos ?", vbYesNo, "CONFIR
             nSeqLanc = .TextMatrix(x, 3)
             nNumParc = .TextMatrix(x, 4)
             nCompl = .TextMatrix(x, 5)
-            For Y = 1 To grdTemp.Rows - 1
-                If grdTemp.TextMatrix(Y, 0) = x Then
-                   nNumDoc = Val(Left$(grdTemp.TextMatrix(Y, 1), Len(grdTemp.TextMatrix(Y, 1)) - 1))
-                   nSeqPag = Val(grdTemp.TextMatrix(Y, 2))
+            For y = 1 To grdTemp.Rows - 1
+                If grdTemp.TextMatrix(y, 0) = x Then
+                   nNumDoc = Val(Left$(grdTemp.TextMatrix(y, 1), Len(grdTemp.TextMatrix(y, 1)) - 1))
+                   nSeqPag = Val(grdTemp.TextMatrix(y, 2))
                   'ATUALIZA A TABELA DEBITOPAGO
                    Sql = "SELECT * FROM DEBITOPAGO "
                    Sql = Sql & "WHERE CODREDUZIDO = " & nCodReduz & " AND ANOEXERCICIO = " & nAnoExercicio & " AND CODLANCAMENTO = " & nCodLanc & " AND "
@@ -791,15 +810,15 @@ If KeyAscii = vbKeyReturn Then
     
    With grdDup
         If .Rows = 1 Then Exit Sub
-        If .TextMatrix(.Row, 5) = "" Then
-           .TextMatrix(.Row, 5) = "S"
+        If .TextMatrix(.row, 5) = "" Then
+           .TextMatrix(.row, 5) = "S"
            For x = 0 To 6
              .col = x
              .CellBackColor = vbRed
              .CellForeColor = Branco
            Next
         Else
-           .TextMatrix(.Row, 5) = ""
+           .TextMatrix(.row, 5) = ""
            For x = 0 To 6
              .col = x
              .CellBackColor = Branco
@@ -826,13 +845,13 @@ If KeyAscii = vbKeyReturn Then
    KeyAscii = 0
    With grdParc
         If .Rows = 1 Then Exit Sub
-        If .TextMatrix(.Row, 12) = "" Then
-            nCodReduz = .TextMatrix(.Row, 1)
-            nAnoExercicio = .TextMatrix(.Row, 0)
-            nCodLanc = Val(Left$(.TextMatrix(.Row, 2), 3))
-            nSeqLanc = .TextMatrix(.Row, 3)
-            nNumParc = .TextMatrix(.Row, 4)
-            nCompl = .TextMatrix(.Row, 5)
+        If .TextMatrix(.row, 12) = "" Then
+            nCodReduz = .TextMatrix(.row, 1)
+            nAnoExercicio = .TextMatrix(.row, 0)
+            nCodLanc = Val(Left$(.TextMatrix(.row, 2), 3))
+            nSeqLanc = .TextMatrix(.row, 3)
+            nNumParc = .TextMatrix(.row, 4)
+            nCompl = .TextMatrix(.row, 5)
             Sql = "SELECT CODREDUZIDO, ANOEXERCICIO, CODLANCAMENTO, SEQLANCAMENTO, NUMPARCELA, CODCOMPLEMENTO,"
             Sql = Sql & "SEQPAG, DATAPAGAMENTO, DATARECEBIMENTO,VALORPAGO, CODBANCO, CODAGENCIA, RESTITUIDO, NumDocumento "
             Sql = Sql & "From DEBITOPAGO WHERE CODREDUZIDO = " & nCodReduz & " AND ANOEXERCICIO = " & nAnoExercicio & " AND CODLANCAMENTO = " & nCodLanc & " AND "
@@ -840,7 +859,7 @@ If KeyAscii = vbKeyReturn Then
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux
                 If .RowCount > 0 Then
-                    grdParc.TextMatrix(grdParc.Row, 12) = "S"
+                    grdParc.TextMatrix(grdParc.row, 12) = "S"
                     For x = 0 To 12
                       grdParc.col = x
                       grdParc.CellBackColor = vbRed
@@ -851,7 +870,7 @@ If KeyAscii = vbKeyReturn Then
                 End If
             End With
         Else
-           .TextMatrix(.Row, 12) = ""
+           .TextMatrix(.row, 12) = ""
            For x = 0 To 12
              .col = x
              .CellBackColor = Branco
@@ -860,12 +879,12 @@ If KeyAscii = vbKeyReturn Then
         End If
         .col = 0
         .ColSel = 12
-        If .TextMatrix(.Row, 11) = "N" And .TextMatrix(.Row, 12) = "S" Then
-           grdTemp.AddItem .Row & Chr(9) & txtNumDoc.Text & Chr(9) & "0"
-        ElseIf .TextMatrix(.Row, 11) = "N" And .TextMatrix(.Row, 12) = "" Then
+        If .TextMatrix(.row, 11) = "N" And .TextMatrix(.row, 12) = "S" Then
+           grdTemp.AddItem .row & Chr(9) & txtNumDoc.Text & Chr(9) & "0"
+        ElseIf .TextMatrix(.row, 11) = "N" And .TextMatrix(.row, 12) = "" Then
 Inicio:
            For x = 1 To grdTemp.Rows - 1
-               If Val(grdTemp.TextMatrix(x, 0)) = grdParc.Row Then
+               If Val(grdTemp.TextMatrix(x, 0)) = grdParc.row Then
                   If grdTemp.Rows > 2 Then
                      grdTemp.RemoveItem (x)
                   Else
@@ -874,10 +893,10 @@ Inicio:
                   GoTo Inicio
                End If
            Next
-        ElseIf .TextMatrix(.Row, 11) = "S" And .TextMatrix(.Row, 12) = "" Then
+        ElseIf .TextMatrix(.row, 11) = "S" And .TextMatrix(.row, 12) = "" Then
 Inicio2:
            For x = 1 To grdTemp.Rows - 1
-               If Val(grdTemp.TextMatrix(x, 0)) = grdParc.Row Then
+               If Val(grdTemp.TextMatrix(x, 0)) = grdParc.row Then
                   If grdTemp.Rows > 2 Then
                      grdTemp.RemoveItem (x)
                   Else
@@ -888,7 +907,7 @@ Inicio2:
            Next
         End If
         
-        If .TextMatrix(.Row, 11) = "S" And .TextMatrix(.Row, 12) = "S" Then
+        If .TextMatrix(.row, 11) = "S" And .TextMatrix(.row, 12) = "S" Then
            frDup.Visible = True
            grdParc.Enabled = False
            cmdReativa.Enabled = False
@@ -897,12 +916,12 @@ Inicio2:
            grdDup.SetFocus
            nNumDoc = Val(Left$(txtNumDoc.Text, Len(txtNumDoc.Text) - 1))
            
-           nCodReduz = .TextMatrix(.Row, 1)
-           nAnoExercicio = .TextMatrix(.Row, 0)
-           nCodLanc = Val(Left$(.TextMatrix(.Row, 2), 3))
-           nSeqLanc = .TextMatrix(.Row, 3)
-           nNumParc = .TextMatrix(.Row, 4)
-           nCompl = .TextMatrix(.Row, 5)
+           nCodReduz = .TextMatrix(.row, 1)
+           nAnoExercicio = .TextMatrix(.row, 0)
+           nCodLanc = Val(Left$(.TextMatrix(.row, 2), 3))
+           nSeqLanc = .TextMatrix(.row, 3)
+           nNumParc = .TextMatrix(.row, 4)
+           nCompl = .TextMatrix(.row, 5)
             
            Sql = "SELECT CODREDUZIDO,VALORPAGO,DATAPAGAMENTO,DATARECEBIMENTO,NUMDOCUMENTO,CODBANCO,SEQPAG  FROM DEBITOPAGO WHERE "
            Sql = Sql & "CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAnoExercicio & " AND CODLANCAMENTO=" & nCodLanc
@@ -983,7 +1002,7 @@ nNumDoc = Val(Left$(txtNumDoc.Text, Len(txtNumDoc.Text) - 1))
 'VALIDA DIGITO VERIFICADOR
 If Val(Right$(txtNumDoc.Text, 1)) <> RetornaDVNumDoc(nNumDoc) Then
    MsgBox "Digito Verificador Inválido", vbExclamation, "Atenção"
-   GoTo fim
+   GoTo Fim
 End If
 'VERIFICA SE O DOCUMENTO EXISTE NA TABELA NUMDOCUMENTO
 Sql = "SELECT NUMDOCUMENTO FROM NUMDOCUMENTO "
@@ -1001,7 +1020,7 @@ With RdoAux
         lblEmissor.Caption = ""
        .Close
         MsgBox "Nº de Documento não encontrado.", vbExclamation, "Atenção"
-        GoTo fim
+        GoTo Fim
    End If
    'CARREGA OS DEBITOS DESTE DOCUMENTO
     Sql = "SELECT parceladocumento.codreduzido, parceladocumento.anoexercicio, parceladocumento.codlancamento, lancamento.descreduz, parceladocumento.seqlancamento, parceladocumento.numparcela, "
@@ -1036,41 +1055,56 @@ With RdoAux
        Else
           lblValorGuia.Caption = FormatNumber(!valorguia, 2)
        End If
-       lblDataDoc.Caption = IIf(IsNull(!datadocumento), "  /  /   ", Format(!datadocumento, "dd/mm/yyyy"))
-       lblDesconto.Caption = SubNull(!Desconto) & "%"
+       lblDataDoc.Caption = IIf(IsNull(!Datadocumento), "  /  /   ", Format(!Datadocumento, "dd/mm/yyyy"))
+       lblDesconto.Caption = SubNull(!desconto) & "%"
        lblEmissor.Caption = IIf(SubNull(!NomeLogin) = "", SubNull(!emissor), !NomeLogin)
        'SE NÃO TIVER TAXADOC SINAL QUE VEIO DA SMARK ENTÃO PEGAMOS A TAXADOC DO 1º LANCAMENTO
-       If IsNull(!valortaxadoc) Or !valortaxadoc = 0 Then
+       If IsNull(!ValorTaxaDoc) Or !ValorTaxaDoc = 0 Then
           Sql = "SELECT VALORTRIBUTO FROM DEBITOTRIBUTO WHERE CODREDUZIDO = " & !CODREDUZIDO & " AND ANOEXERCICIO = " & !AnoExercicio & " AND CODLANCAMENTO = " & !CodLancamento & " AND "
           Sql = Sql & "SEQLANCAMENTO = " & !SeqLancamento & " AND NUMPARCELA = " & !NumParcela & " AND CODCOMPLEMENTO = " & !CODCOMPLEMENTO & " AND CODTRIBUTO=3"
           Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
           With RdoAux2
               If .RowCount > 0 Then
-                 lblValorTaxa.Caption = FormatNumber(!ValorTributo, 2)
+                 lblValorTaxa.Caption = FormatNumber(!VALORTRIBUTO, 2)
               Else
                  lblValorTaxa.Caption = "0,00"
               End If
              .Close
           End With
        Else
-          lblValorTaxa.Caption = FormatNumber(!valortaxadoc, 2)
+          lblValorTaxa.Caption = FormatNumber(!ValorTaxaDoc, 2)
        End If
        'DATA DE PAGAMENTO
-       Sql = "SELECT CODREDUZIDO,DATAPAGAMENTO,CODBANCO FROM DEBITOPAGO "
+       Sql = "SELECT CODREDUZIDO,DATAPAGAMENTO,CODBANCO,PAGOCOMPIX FROM DEBITOPAGO "
        Sql = Sql & "Where NumDocumento = " & nNumDoc
        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
        With RdoAux2
           If .RowCount > 0 Then
              lblDataPagto.Caption = IIf(IsNull(!DataPagamento) Or !DataPagamento = CDate("01/01/1900"), "  /  /   ", Format(!DataPagamento, "dd/mm/yyyy"))
+             If Not IsNull(!PAGOCOMPIX) Then
+                If !PAGOCOMPIX = True Then
+                    lblPix.Caption = "SIM"
+                    lblPix.ForeColor = &H8000&
+                Else
+                    lblPix.Caption = "NÃO"
+                    lblPix.ForeColor = &HC0&
+                    
+                End If
+             End If
           End If
          .Close
        End With
 
+            If lblDesconto.Caption = "%" Then
+               nPerc = 0
+            Else
+                nPerc = RetornaNumero(lblDesconto.Caption)
+            End If
         
             
         Do Until .EOF
             sVencto = Format(!DataVencimento, "dd/mm/yyyy")
-            sDataBase = Format(!datadebase, "dd/mm/yyyy")
+            sDataBase = Format(!DATADEBASE, "dd/mm/yyyy")
             nValorPrincipal = 0: nValorJuros = 0: nValorMulta = 0: nValorCorrecao = 0: nValorTotal = 0
             Set qd.ActiveConnection = cn
             On Error Resume Next
@@ -1096,28 +1130,29 @@ With RdoAux
             Set RdoTmp = qd.OpenResultset(rdOpenKeyset)
             With RdoTmp
                 Do Until .EOF
-                    nValorPrincipal = nValorPrincipal + !ValorTributo
-                    nValorJuros = nValorJuros + !ValorJuros
-                    nValorMulta = nValorMulta + !ValorMulta
-                    nValorCorrecao = nValorCorrecao + !ValorCorrecao
-                    nValorTotal = nValorTotal + !ValorTotal
+                    nValorPrincipal = nValorPrincipal + !VALORTRIBUTO
+'                    If Year(!DataVencimento) = 2020 Then
+'                        If Month(!DataVencimento) > 3 And Month(!DataVencimento) < 7 Then
+'                            nValorJuros = 0
+'                            nValorMulta = 0
+'                            GoTo Correcao
+'                        End If
+'                    End If
+                    nValorJuros = nValorJuros + !ValorJuros - ((!ValorJuros * nPerc) / 100)
+                    nValorMulta = nValorMulta + !ValorMulta - ((!ValorMulta * nPerc) / 100)
+Correcao:
+                    nValorCorrecao = nValorCorrecao + !valorcorrecao
+                    nValorTotal = nValorTotal + !VALORTRIBUTO + !ValorJuros - ((!ValorJuros * nPerc) / 100) + !ValorMulta - ((!ValorMulta * nPerc) / 100) + !valorcorrecao
                    .MoveNext
                 Loop
                .Close
             End With
         
-            If lblDesconto.Caption = "%" Then
-               nPerc = 0
-            Else
-                nPerc = RetornaNumero(lblDesconto.Caption)
-            End If
-     '       If nPerc > 0 And IsDate(lblDataPagto.Caption) Then
-            If nPerc > 0 Then
-                'nValorCorrecao = nValorCorrecao - FormatNumber(nValorCorrecao * nPerc / 100, 2)
-                nValorJuros = nValorJuros - FormatNumber(nValorJuros * nPerc / 100, 2)
-                nValorMulta = nValorMulta - FormatNumber(nValorMulta * nPerc / 100, 2)
-                nValorTotal = nValorPrincipal + nValorJuros + nValorMulta + nValorCorrecao
-            End If
+'            If nPerc > 0 Then
+'                nValorJuros = nValorJuros - FormatNumber(nValorJuros * nPerc / 100, 2)
+'                nValorMulta = nValorMulta - FormatNumber(nValorMulta * nPerc / 100, 2)
+'                nValorTotal = nValorPrincipal + nValorJuros + nValorMulta + nValorCorrecao
+'            End If
 
 
             
@@ -1160,7 +1195,7 @@ End With
 
 
 
-fim:
+Fim:
 lblWait.Visible = False
 lblWait.Refresh
 

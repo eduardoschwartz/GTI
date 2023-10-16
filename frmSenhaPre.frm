@@ -4,14 +4,14 @@ Begin VB.Form frmSenhaPre
    BackColor       =   &H00404040&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Pré-Atendimento"
-   ClientHeight    =   4335
-   ClientLeft      =   8190
-   ClientTop       =   4860
+   ClientHeight    =   4365
+   ClientLeft      =   6600
+   ClientTop       =   4455
    ClientWidth     =   3255
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
-   ScaleHeight     =   4335
+   ScaleHeight     =   4365
    ScaleWidth      =   3255
    Begin VB.TextBox txtSenha 
       Alignment       =   2  'Center
@@ -22,6 +22,7 @@ Begin VB.Form frmSenhaPre
       TabIndex        =   21
       Text            =   "0"
       Top             =   6570
+      Visible         =   0   'False
       Width           =   690
    End
    Begin VB.TextBox txtSenha 
@@ -103,7 +104,7 @@ Begin VB.Form frmSenhaPre
       _ExtentX        =   5424
       _ExtentY        =   900
       BTYPE           =   14
-      TX              =   "DIVIDA ATIVA"
+      TX              =   "PREFEITURA"
       ENAB            =   -1  'True
       BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
@@ -143,7 +144,7 @@ Begin VB.Form frmSenhaPre
       _ExtentX        =   5424
       _ExtentY        =   900
       BTYPE           =   14
-      TX              =   "2ª VIA IPTU"
+      TX              =   "PREFERÊNCIAL"
       ENAB            =   -1  'True
       BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
@@ -183,7 +184,7 @@ Begin VB.Form frmSenhaPre
       _ExtentX        =   5424
       _ExtentY        =   900
       BTYPE           =   14
-      TX              =   "PREFERENCIAL"
+      TX              =   "PAT"
       ENAB            =   -1  'True
       BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
@@ -223,7 +224,7 @@ Begin VB.Form frmSenhaPre
       _ExtentX        =   5424
       _ExtentY        =   900
       BTYPE           =   14
-      TX              =   "SENHA PAT"
+      TX              =   "REFIS"
       ENAB            =   -1  'True
       BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
@@ -298,11 +299,12 @@ Begin VB.Form frmSenhaPre
       TabIndex        =   17
       TabStop         =   0   'False
       Top             =   2520
+      Visible         =   0   'False
       Width           =   3075
       _ExtentX        =   5424
       _ExtentY        =   900
       BTYPE           =   14
-      TX              =   "REFIS"
+      TX              =   "PAGAMENTO"
       ENAB            =   -1  'True
       BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
@@ -338,11 +340,12 @@ Begin VB.Form frmSenhaPre
       TabIndex        =   20
       TabStop         =   0   'False
       Top             =   3105
+      Visible         =   0   'False
       Width           =   3075
       _ExtentX        =   5424
       _ExtentY        =   900
       BTYPE           =   14
-      TX              =   "PREF. REFIS"
+      TX              =   "PREF VACINA"
       ENAB            =   -1  'True
       BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
@@ -373,7 +376,7 @@ Begin VB.Form frmSenhaPre
    End
    Begin VB.Label Label1 
       BackStyle       =   0  'Transparent
-      Caption         =   "Mov.Econom.:"
+      Caption         =   "..................:"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -389,11 +392,12 @@ Begin VB.Form frmSenhaPre
       Left            =   495
       TabIndex        =   22
       Top             =   6570
+      Visible         =   0   'False
       Width           =   1230
    End
    Begin VB.Label Label1 
       BackStyle       =   0  'Transparent
-      Caption         =   "Refis..:"
+      Caption         =   "..................:"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -427,7 +431,7 @@ Begin VB.Form frmSenhaPre
    End
    Begin VB.Label Label1 
       BackStyle       =   0  'Transparent
-      Caption         =   "Senha PAT..:"
+      Caption         =   "Boletos.:"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -447,7 +451,7 @@ Begin VB.Form frmSenhaPre
    End
    Begin VB.Label Label1 
       BackStyle       =   0  'Transparent
-      Caption         =   "Preferêncial.:"
+      Caption         =   "Senha PAT..:"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -467,7 +471,7 @@ Begin VB.Form frmSenhaPre
    End
    Begin VB.Label Label1 
       BackStyle       =   0  'Transparent
-      Caption         =   "Prefeitura 2..:"
+      Caption         =   "Preferencial.:"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -487,7 +491,7 @@ Begin VB.Form frmSenhaPre
    End
    Begin VB.Label Label1 
       BackStyle       =   0  'Transparent
-      Caption         =   "Prefeitura 1..:"
+      Caption         =   "Prefeitura....:"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -555,10 +559,10 @@ ElseIf nBanda = 3 Then
     nSenha = Val(txtSenha(2).Text)
 ElseIf nBanda = 4 Then
     nSenha = Val(txtSenha(3).Text)
-ElseIf nBanda = 5 Then
-    nSenha = Val(txtSenha(4).Text)
-ElseIf nBanda = 6 Then
-    nSenha = Val(txtSenha(5).Text)
+'ElseIf nBanda = 5 Then
+'    nSenha = Val(txtSenha(4).Text)
+'ElseIf nBanda = 6 Then
+'    nSenha = Val(txtSenha(5).Text)
 End If
 
 Sql = "SELECT * FROM SSPAC WHERE DATAENTRADA='" & Format(Now, "mm/dd/yyyy") & "' AND SENHA=" & nSenha
@@ -700,12 +704,12 @@ Private Sub Le()
 Dim Sql As String, RdoAux As rdoResultset, dData As Date, x As Integer
 Dim aCount(5) As Integer
 dData = Now
-cmdSenha(0).Caption = "DIVIDA ATIVA (0)"
-cmdSenha(1).Caption = "2ª VIA IPTU (0)"
-cmdSenha(2).Caption = "PREFERENCIAL (0)"
-cmdSenha(3).Caption = "SENHA PAT (0)"
-cmdSenha(4).Caption = "REFIS (0)"
-cmdSenha(5).Caption = "PREF. REFIS (0)"
+cmdSenha(0).Caption = "PREFEITURA (0)"
+cmdSenha(1).Caption = "PREFERÊNCIAL (0)"
+cmdSenha(2).Caption = "PAT (0)"
+cmdSenha(3).Caption = "REFIS (0)"
+'cmdSenha(4).Caption = "PAGAMENTO (0)"
+'cmdSenha(5).Caption = "PREF VACINA (0)"
 
 Sql = "SELECT * FROM SSPAC WHERE YEAR(DATAENTRADA)=" & Year(dData) & " AND MONTH(DATAENTRADA)=" & Month(dData) & " AND "
 Sql = Sql & "DAY(DATAENTRADA)=" & Day(dData) & " AND DATACHAMADA IS NULL"
@@ -716,17 +720,17 @@ With RdoAux
         aCount(!BANDA - 1) = (aCount(!BANDA - 1)) + 1
        Select Case !BANDA - 1
             Case 0
-                cmdSenha(!BANDA - 1).Caption = "DIVIDA ATIVA (" & aCount(!BANDA - 1) & ")"
+                cmdSenha(!BANDA - 1).Caption = "PREFEITURA (" & aCount(!BANDA - 1) & ")"
             Case 1
-                cmdSenha(!BANDA - 1).Caption = "2ª VIA IPTU (" & aCount(!BANDA - 1) & ")"
-            Case 2
                 cmdSenha(!BANDA - 1).Caption = "PREFERENCIAL (" & aCount(!BANDA - 1) & ")"
+            Case 2
+                cmdSenha(!BANDA - 1).Caption = "PAT (" & aCount(!BANDA - 1) & ")"
             Case 3
-                cmdSenha(!BANDA - 1).Caption = "SENHA PAT (" & aCount(!BANDA - 1) & ")"
-            Case 4
-                cmdSenha(!BANDA - 1).Caption = "REFIS (" & aCount(!BANDA - 1) & ")"
-            Case 5
-                cmdSenha(!BANDA - 1).Caption = "PREF. REFIS (" & aCount(!BANDA - 1) & ")"
+                cmdSenha(!BANDA - 1).Caption = "REFIS(" & aCount(!BANDA - 1) & ")"
+ '           Case 4
+ '               cmdSenha(!BANDA - 1).Caption = "PAGAMENTO (" & aCount(!BANDA - 1) & ")"
+ '           Case 5
+ '               cmdSenha(!BANDA - 1).Caption = "PREF VACINA (" & aCount(!BANDA - 1) & ")"
         End Select
         .MoveNext
     Loop

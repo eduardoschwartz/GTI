@@ -8,7 +8,7 @@ Begin VB.Form frmLogradouro
    BackColor       =   &H00EEEEEE&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Cadastro de Logradouros"
-   ClientHeight    =   7125
+   ClientHeight    =   7485
    ClientLeft      =   4620
    ClientTop       =   2055
    ClientWidth     =   7440
@@ -17,7 +17,7 @@ Begin VB.Form frmLogradouro
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
-   ScaleHeight     =   7125
+   ScaleHeight     =   7485
    ScaleWidth      =   7440
    ShowInTaskbar   =   0   'False
    Begin VB.TextBox txtPesq 
@@ -31,9 +31,9 @@ Begin VB.Form frmLogradouro
    Begin prjChameleon.chameleonButton cmdSair 
       Height          =   315
       Left            =   5760
-      TabIndex        =   40
+      TabIndex        =   42
       ToolTipText     =   "Sair da Tela"
-      Top             =   6720
+      Top             =   7080
       Width           =   1035
       _ExtentX        =   1826
       _ExtentY        =   556
@@ -72,9 +72,9 @@ Begin VB.Form frmLogradouro
       Cancel          =   -1  'True
       Height          =   315
       Left            =   5760
-      TabIndex        =   34
+      TabIndex        =   36
       ToolTipText     =   "Cancelar Edição"
-      Top             =   6720
+      Top             =   7080
       Width           =   1035
       _ExtentX        =   1826
       _ExtentY        =   556
@@ -112,9 +112,9 @@ Begin VB.Form frmLogradouro
    Begin prjChameleon.chameleonButton cmdNovo 
       Height          =   315
       Left            =   90
-      TabIndex        =   35
+      TabIndex        =   37
       ToolTipText     =   "Novo Registro"
-      Top             =   6720
+      Top             =   7080
       Width           =   1035
       _ExtentX        =   1826
       _ExtentY        =   556
@@ -152,9 +152,9 @@ Begin VB.Form frmLogradouro
    Begin prjChameleon.chameleonButton cmdAlterar 
       Height          =   315
       Left            =   1140
-      TabIndex        =   36
+      TabIndex        =   38
       ToolTipText     =   "Editar Registro"
-      Top             =   6720
+      Top             =   7080
       Width           =   1035
       _ExtentX        =   1826
       _ExtentY        =   556
@@ -192,9 +192,9 @@ Begin VB.Form frmLogradouro
    Begin prjChameleon.chameleonButton cmdExcluir 
       Height          =   315
       Left            =   2190
-      TabIndex        =   37
+      TabIndex        =   39
       ToolTipText     =   "Excluir Registro"
-      Top             =   6720
+      Top             =   7080
       Width           =   1035
       _ExtentX        =   1826
       _ExtentY        =   556
@@ -232,9 +232,9 @@ Begin VB.Form frmLogradouro
    Begin prjChameleon.chameleonButton cmdGravar 
       Height          =   315
       Left            =   4680
-      TabIndex        =   38
+      TabIndex        =   40
       ToolTipText     =   "Gravar os Dados"
-      Top             =   6720
+      Top             =   7080
       Width           =   1035
       _ExtentX        =   1826
       _ExtentY        =   556
@@ -272,9 +272,9 @@ Begin VB.Form frmLogradouro
    Begin prjChameleon.chameleonButton cmdConsultar 
       Height          =   315
       Left            =   4290
-      TabIndex        =   39
+      TabIndex        =   41
       ToolTipText     =   "Consulta Cidadãos Cadastrados"
-      Top             =   6720
+      Top             =   7080
       Width           =   1065
       _ExtentX        =   1879
       _ExtentY        =   556
@@ -311,9 +311,9 @@ Begin VB.Form frmLogradouro
    End
    Begin VB.Frame Frame1 
       BackColor       =   &H00EEEEEE&
-      Height          =   4050
+      Height          =   4365
       Left            =   45
-      TabIndex        =   23
+      TabIndex        =   25
       Top             =   2610
       Width           =   7365
       Begin VB.TextBox txtAbreviado 
@@ -329,18 +329,42 @@ Begin VB.Form frmLogradouro
          BackColor       =   &H00EEEEEE&
          Caption         =   "Cadastro de Bairro"
          ForeColor       =   &H00000080&
-         Height          =   1155
+         Height          =   1425
          Left            =   45
-         TabIndex        =   42
+         TabIndex        =   44
          Top             =   2835
          Width           =   7260
+         Begin VB.CheckBox chkIB 
+            Appearance      =   0  'Flat
+            BackColor       =   &H00EEEEEE&
+            Caption         =   "&Impar"
+            ForeColor       =   &H80000008&
+            Height          =   225
+            Left            =   135
+            TabIndex        =   19
+            Top             =   675
+            Value           =   1  'Checked
+            Width           =   705
+         End
+         Begin VB.CheckBox chkPB 
+            Appearance      =   0  'Flat
+            BackColor       =   &H00EEEEEE&
+            Caption         =   "&Par"
+            ForeColor       =   &H80000008&
+            Height          =   225
+            Left            =   1005
+            TabIndex        =   20
+            Top             =   675
+            Value           =   1  'Checked
+            Width           =   585
+         End
          Begin VB.ComboBox cmbBairro 
             Appearance      =   0  'Flat
             Height          =   315
             Left            =   720
             Style           =   2  'Dropdown List
-            TabIndex        =   19
-            Top             =   630
+            TabIndex        =   21
+            Top             =   990
             Width           =   3165
          End
          Begin VB.TextBox txtBairroDe 
@@ -362,7 +386,7 @@ Begin VB.Form frmLogradouro
          Begin prjChameleon.chameleonButton cmdAddBairro 
             Height          =   285
             Left            =   3960
-            TabIndex        =   20
+            TabIndex        =   22
             ToolTipText     =   "Adicionar CEP"
             Top             =   330
             Width           =   315
@@ -401,7 +425,7 @@ Begin VB.Form frmLogradouro
          Begin prjChameleon.chameleonButton cmdDelBairro 
             Height          =   285
             Left            =   3960
-            TabIndex        =   21
+            TabIndex        =   23
             ToolTipText     =   "Remover CEP"
             Top             =   660
             Width           =   315
@@ -438,16 +462,16 @@ Begin VB.Form frmLogradouro
             VALUE           =   0   'False
          End
          Begin MSFlexGridLib.MSFlexGrid grdBairro 
-            Height          =   945
+            Height          =   1215
             Left            =   4410
-            TabIndex        =   22
+            TabIndex        =   24
             Top             =   120
             Width           =   2820
             _ExtentX        =   4974
-            _ExtentY        =   1667
+            _ExtentY        =   2143
             _Version        =   393216
             Rows            =   1
-            Cols            =   4
+            Cols            =   6
             FixedCols       =   0
             BackColorFixed  =   15658734
             FocusRect       =   0
@@ -456,7 +480,7 @@ Begin VB.Form frmLogradouro
             AllowUserResizing=   1
             BorderStyle     =   0
             Appearance      =   0
-            FormatString    =   "Inicial  |Final   |CodBairro|Bairro                                                       "
+            FormatString    =   "Inicial |Final  |CodBairro|Bairro           |Imp |Par "
          End
          Begin VB.Label Label1 
             BackStyle       =   0  'Transparent
@@ -464,7 +488,7 @@ Begin VB.Form frmLogradouro
             Height          =   195
             Index           =   12
             Left            =   150
-            TabIndex        =   45
+            TabIndex        =   47
             Top             =   360
             Width           =   855
          End
@@ -474,7 +498,7 @@ Begin VB.Form frmLogradouro
             Height          =   195
             Index           =   10
             Left            =   2025
-            TabIndex        =   44
+            TabIndex        =   46
             Top             =   360
             Width           =   885
          End
@@ -484,8 +508,8 @@ Begin VB.Form frmLogradouro
             Height          =   195
             Index           =   9
             Left            =   150
-            TabIndex        =   43
-            Top             =   675
+            TabIndex        =   45
+            Top             =   1035
             Width           =   555
          End
       End
@@ -520,7 +544,7 @@ Begin VB.Form frmLogradouro
          ForeColor       =   &H00000080&
          Height          =   1155
          Left            =   45
-         TabIndex        =   30
+         TabIndex        =   32
          Top             =   1665
          Width           =   7260
          Begin VB.CheckBox chkP 
@@ -693,7 +717,7 @@ Begin VB.Form frmLogradouro
             Height          =   195
             Index           =   7
             Left            =   2310
-            TabIndex        =   33
+            TabIndex        =   35
             Top             =   630
             Width           =   555
          End
@@ -703,7 +727,7 @@ Begin VB.Form frmLogradouro
             Height          =   195
             Index           =   6
             Left            =   150
-            TabIndex        =   32
+            TabIndex        =   34
             Top             =   630
             Width           =   885
          End
@@ -713,7 +737,7 @@ Begin VB.Form frmLogradouro
             Height          =   195
             Index           =   5
             Left            =   150
-            TabIndex        =   31
+            TabIndex        =   33
             Top             =   360
             Width           =   855
          End
@@ -771,7 +795,7 @@ Begin VB.Form frmLogradouro
          Height          =   195
          Index           =   13
          Left            =   90
-         TabIndex        =   46
+         TabIndex        =   48
          Top             =   990
          Width           =   1725
       End
@@ -781,7 +805,7 @@ Begin VB.Form frmLogradouro
          Height          =   195
          Index           =   11
          Left            =   90
-         TabIndex        =   29
+         TabIndex        =   31
          Top             =   630
          Width           =   1725
       End
@@ -791,7 +815,7 @@ Begin VB.Form frmLogradouro
          Height          =   195
          Index           =   0
          Left            =   90
-         TabIndex        =   28
+         TabIndex        =   30
          Top             =   240
          Width           =   1725
       End
@@ -801,7 +825,7 @@ Begin VB.Form frmLogradouro
          Height          =   195
          Index           =   1
          Left            =   3060
-         TabIndex        =   27
+         TabIndex        =   29
          Top             =   270
          Width           =   690
       End
@@ -811,7 +835,7 @@ Begin VB.Form frmLogradouro
          Height          =   195
          Index           =   2
          Left            =   4995
-         TabIndex        =   26
+         TabIndex        =   28
          Top             =   270
          Width           =   600
       End
@@ -821,7 +845,7 @@ Begin VB.Form frmLogradouro
          Height          =   195
          Index           =   3
          Left            =   90
-         TabIndex        =   25
+         TabIndex        =   27
          Top             =   1365
          Width           =   1725
       End
@@ -831,7 +855,7 @@ Begin VB.Form frmLogradouro
          Height          =   195
          Index           =   4
          Left            =   3540
-         TabIndex        =   24
+         TabIndex        =   26
          Top             =   1350
          Width           =   1185
       End
@@ -870,7 +894,7 @@ Begin VB.Form frmLogradouro
       Height          =   195
       Index           =   8
       Left            =   120
-      TabIndex        =   41
+      TabIndex        =   43
       Top             =   120
       Width           =   855
    End
@@ -943,7 +967,7 @@ If cmbBairro.ListIndex = -1 Then
      Exit Sub
 End If
 
-grdBairro.AddItem txtBairroDe.Text & Chr(9) & txtBairroAte.Text & Chr(9) & cmbBairro.ItemData(cmbBairro.ListIndex) & Chr(9) & cmbBairro.Text
+grdBairro.AddItem txtBairroDe.Text & Chr(9) & txtBairroAte.Text & Chr(9) & cmbBairro.ItemData(cmbBairro.ListIndex) & Chr(9) & cmbBairro.Text & Chr(9) & chkIB.value & Chr(9) & chkPB.value
 
 End Sub
 
@@ -998,11 +1022,11 @@ frmCnsRua.ZOrder 0
 End Sub
 
 Private Sub cmdDelBairro_Click()
-If grdBairro.Row = 0 Then
+If grdBairro.row = 0 Then
      MsgBox "Selecione o Bairro a ser excluido.", vbExclamation, "Atenção"
 Else
    If grdBairro.Rows > 2 Then
-      grdBairro.RemoveItem (grdBairro.Row)
+      grdBairro.RemoveItem (grdBairro.row)
    Else
       grdBairro.Rows = 1
    End If
@@ -1012,11 +1036,11 @@ End Sub
 
 Private Sub cmdDelCEP_Click()
 
-If grdCEP.Row = 0 Then
+If grdCEP.row = 0 Then
      MsgBox "Selecione o CEP a ser excluido.", vbExclamation, "Atenção"
 Else
    If grdCEP.Rows > 2 Then
-      grdCEP.RemoveItem (grdCEP.Row)
+      grdCEP.RemoveItem (grdCEP.row)
    Else
       grdCEP.Rows = 1
    End If
@@ -1062,7 +1086,7 @@ End Sub
 
 Private Sub cmdGravar_Click()
     
- If NomeDeLogin <> "FACTORE" And NomeDeLogin <> "HELOISA" And NomeDeLogin <> "SCHWARTZ" Then
+ If NomeDeLogin <> "DAYANE.IGLESIAS" And NomeDeLogin <> "HELOISA" And NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "MICHELLE.POLETTI" Then
     MsgBox "Sem permissão de gravação.", vbCritical, "Erro"
     Exit Sub
  End If
@@ -1099,7 +1123,7 @@ Private Sub cmdSair_Click()
    Unload Me
 End Sub
 
-Private Sub dgMain_ColumnClick(ByVal lcol As Long)
+Private Sub dgMain_ColumnClick(ByVal lCol As Long)
 Dim sTag As String
 Dim iSortIndex As Long
       
@@ -1110,15 +1134,15 @@ Dim iSortIndex As Long
       .ClearNongrouped
       
       ' See if this column is already in the sort object:
-      iSortIndex = .IndexOf(lcol)
+      iSortIndex = .IndexOf(lCol)
       If (iSortIndex = 0) Then
          ' If not, we add it:
          iSortIndex = .Count + 1
-         .SortColumn(iSortIndex) = lcol
+         .SortColumn(iSortIndex) = lCol
       End If
    
       ' Determine which sort order to apply:
-      sTag = dgMain.ColumnTag(lcol)
+      sTag = dgMain.ColumnTag(lCol)
       If (sTag = "") Then
          sTag = "DESC"
          .SortOrder(iSortIndex) = CCLOrderAscending
@@ -1126,10 +1150,10 @@ Dim iSortIndex As Long
          sTag = ""
          .SortOrder(iSortIndex) = CCLOrderDescending
       End If
-      dgMain.ColumnTag(lcol) = sTag
+      dgMain.ColumnTag(lCol) = sTag
       
       ' Set the type of sorting:
-      .SortType(iSortIndex) = dgMain.ColumnSortType(lcol)
+      .SortType(iSortIndex) = dgMain.ColumnSortType(lCol)
    End With
    
    ' Do the sort:
@@ -1139,7 +1163,7 @@ Dim iSortIndex As Long
 
 End Sub
 
-Private Sub dgMain_SelectionChange(ByVal lrow As Long, ByVal lcol As Long)
+Private Sub dgMain_SelectionChange(ByVal lRow As Long, ByVal lCol As Long)
 Le
 End Sub
 
@@ -1158,7 +1182,6 @@ grdBairro.COLWIDTH(2) = 0
 CarregaLista2
 dgMain.SelectedRow = 1
 Le
-
 Eventos "INICIAR"
 
 End Sub
@@ -1191,6 +1214,8 @@ If Tipo = "INICIAR" Then
 '   grdLogr.Enabled = True
    chkI.Enabled = False
    chkP.Enabled = False
+   chkIB.Enabled = False
+   chkPB.Enabled = False
 ElseIf Tipo = "INCLUIR" Then
    cmdNovo.Visible = False
    cmdAlterar.Visible = False
@@ -1215,6 +1240,8 @@ ElseIf Tipo = "INCLUIR" Then
    txtPesq.BackColor = Kde
    chkI.Enabled = True
    chkP.Enabled = True
+   chkIB.Enabled = True
+   chkPB.Enabled = True
    dgMain.Enabled = False
 '   grdLogr.Enabled = False
    cmbTipo.SetFocus
@@ -1266,7 +1293,7 @@ End With
 If grdCEP.Rows > 1 Then
     grdCEP.col = 0
     grdCEP.ColSel = 4
-    grdCEP.Row = 1
+    grdCEP.row = 1
     grdCEP_Click
 Else
     LimpaMascara mskCEP
@@ -1282,7 +1309,7 @@ Sql = Sql & "WHERE logradouro_bairro.logradouro=" & Val(txtCod.Text) & " AND sig
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
 With RdoAux
     Do Until .EOF
-         grdBairro.AddItem !INICIAL & Chr(9) & !FINAL & Chr(9) & !Bairro & Chr(9) & !DescBairro
+         grdBairro.AddItem !INICIAL & Chr(9) & !FINAL & Chr(9) & !Bairro & Chr(9) & !DescBairro & Chr(9) & IIf(!Impar, 1, 0) & Chr(9) & IIf(!Par, 1, 0)
         .MoveNext
     Loop
 End With
@@ -1308,6 +1335,8 @@ grdCEP.Rows = 1
 txtBairroDe.Text = ""
 txtBairroAte.Text = ""
 cmbBairro.ListIndex = -1
+chkIB.value = 1
+chkPB.value = 1
 
 End Sub
 
@@ -1369,8 +1398,8 @@ Sql = "DELETE FROM LOGRADOURO_BAIRRO WHERE LOGRADOURO=" & MaxCod
 cn.Execute Sql, rdExecDirect
       
 For x = 1 To grdBairro.Rows - 1
-    Sql = "INSERT LOGRADOURO_BAIRRO (LOGRADOURO,INICIAL,FINAL,BAIRRO) VALUES("
-    Sql = Sql & MaxCod & "," & grdBairro.TextMatrix(x, 0) & "," & grdBairro.TextMatrix(x, 1) & "," & grdBairro.TextMatrix(x, 2) & ")"
+    Sql = "INSERT LOGRADOURO_BAIRRO (LOGRADOURO,INICIAL,FINAL,BAIRRO,IMPAR,PAR) VALUES("
+    Sql = Sql & MaxCod & "," & grdBairro.TextMatrix(x, 0) & "," & grdBairro.TextMatrix(x, 1) & "," & grdBairro.TextMatrix(x, 2) & "," & grdBairro.TextMatrix(x, 4) & "," & grdBairro.TextMatrix(x, 5) & ")"
     cn.Execute Sql, rdExecDirect
 Next
 
@@ -1409,13 +1438,13 @@ End Sub
 
 Private Sub grdCEP_Click()
 
-If grdCEP.Row > 0 Then
-     txtCEPDe = grdCEP.TextMatrix(grdCEP.Row, 0)
-     txtCEPAte = grdCEP.TextMatrix(grdCEP.Row, 1)
-     chkI.value = grdCEP.TextMatrix(grdCEP.Row, 2)
-     chkP.value = grdCEP.TextMatrix(grdCEP.Row, 3)
-     If Len(grdCEP.TextMatrix(grdCEP.Row, 4)) = 8 Then
-          mskCEP.Text = Format(grdCEP.TextMatrix(grdCEP.Row, 4), "#####-###")
+If grdCEP.row > 0 Then
+     txtCEPDe = grdCEP.TextMatrix(grdCEP.row, 0)
+     txtCEPAte = grdCEP.TextMatrix(grdCEP.row, 1)
+     chkI.value = grdCEP.TextMatrix(grdCEP.row, 2)
+     chkP.value = grdCEP.TextMatrix(grdCEP.row, 3)
+     If Len(grdCEP.TextMatrix(grdCEP.row, 4)) = 8 Then
+          mskCEP.Text = Format(grdCEP.TextMatrix(grdCEP.row, 4), "#####-###")
      End If
 End If
 
@@ -1444,7 +1473,7 @@ Tweak txtCEPDe, KeyAscii, DecimalPositive
 End Sub
 
 Private Sub FormHagana()
-
+If NomeDeLogin = "USER_TEST" Then Exit Sub
 evNew = 2
 evEdit = 3
 evDel = 4

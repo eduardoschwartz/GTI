@@ -79,13 +79,13 @@ Begin VB.Form frmDataBase
       EndProperty
       MonthBackColor  =   16777215
       ShowToday       =   0   'False
-      StartOfWeek     =   76873729
+      StartOfWeek     =   163053569
       TitleBackColor  =   192
       TitleForeColor  =   16777215
       TrailingForeColor=   12632256
-      CurrentDate     =   43466
-      MaxDate         =   44196
-      MinDate         =   43466
+      CurrentDate     =   44197
+      MaxDate         =   45291
+      MinDate         =   43831
    End
    Begin VB.Label lblDB 
       BackStyle       =   0  'Transparent
@@ -124,13 +124,15 @@ If sOldData <> sData Then
     End If
     Ocupado
     Sql = "UPDATE PROCESSOGTI SET DATAARQUIVA='" & Format(Now, "mm/dd/yyyy") & "' "
-    Sql = Sql & " Where (FISICO = 0) And (DATAARQUIVA Is Null) And (DATACANCEL Is Null) And (DATASUSPENSO Is Null)"
+    Sql = Sql & " Where (FISICO = 0) And (DATAARQUIVA Is Null) And (DATACANCEL Is Null) And (DATASUSPENSO Is Null) AND (CODASSUNTO NOT IN (567,1109,1110))"
     cn.Execute Sql, rdExecDirect
     Liberado
 End If
 If frmMdi.frTeste.Visible = False Then
-    AtualizaIntegrativa
     AtualizaITBI
+    AtualizaNotificacaoISS
+    AtualizaUsoPlataforma
+    AtualizaIntegrativa
 End If
 
 Unload Me
@@ -139,12 +141,14 @@ End Sub
 Public Sub AtualizaITBI()
 Dim Sql As String, RdoAux As rdoResultset, nNumDoc As Long, ibti As String, RdoAux2 As rdoResultset, bPago As Boolean, sObs As String, nCodReduz As Long
 
-Sql = "SELECT * FROM itbi_main WHERE situacao_itbi=2"
+'Sql = "SELECT * FROM itbi_main WHERE situacao_itbi=2"
+Sql = "SELECT * FROM itbi_main WHERE situacao_itbi=2 AND itbi_ano>=" & (Year(Now) - 1)
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         bPago = False
         nNumDoc = !numero_guia
+        If nNumDoc = 21380663 Then MsgBox "teste"
         itbi = Format(!itbi_numero, "00000") & "/" & Format(!itbi_ano, "0000")
         Sql = "select * from debitopago where numdocumento=" & nNumDoc
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -169,7 +173,8 @@ With RdoAux
                     End If
                    .Close
                 End With
-                Sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST,USERID,DATAHIST2) VALUES(" & nCodReduz & "," & nSeq & ",'" & Format(Now, "dd/mm/yyyy") & "','" & sObs & "'," & !liberado_por & ",'" & Format(Now, "mm/dd/yyyy") & "')"
+                'Sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST,USERID,DATAHIST2) VALUES(" & nCodReduz & "," & nSeq & ",'" & Format(Now, "dd/mm/yyyy") & "','" & sObs & "'," & !liberado_por & ",'" & Format(Now, "mm/dd/yyyy") & "')"
+                Sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST,USERID,DATAHIST2) VALUES(" & nCodReduz & "," & nSeq & ",'" & Format(Now, "dd/mm/yyyy") & "','" & sObs & "'," & 236 & ",'" & Format(Now, "mm/dd/yyyy") & "')"
                 cn.Execute Sql, rdExecDirect
             End If
         End If
@@ -180,6 +185,62 @@ End With
 
 
 End Sub
+
+Public Sub AtualizaNotificacaoISS()
+Dim Sql As String, RdoAux As rdoResultset, nNumDoc As Long, ibti As String, RdoAux2 As rdoResultset, bPago As Boolean, sObs As String, nCodReduz As Long
+
+Sql = "SELECT DISTINCT numero_guia FROM notificacao_iss_web where situacao=2"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    Do Until .EOF
+        bPago = False
+        nNumDoc = !numero_guia
+        Sql = "select * from debitopago where numdocumento=" & nNumDoc
+        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        If RdoAux2.RowCount > 0 Then
+            bPago = True
+        End If
+        RdoAux2.Close
+        If bPago Then
+            Sql = "update notificacao_iss_web set situacao=6 where numero_guia=" & nNumDoc
+            cn.Execute Sql, rdExecDirect
+        End If
+       .MoveNext
+    Loop
+   .Close
+End With
+
+
+End Sub
+
+Public Sub AtualizaUsoPlataforma()
+Dim Sql As String, RdoAux As rdoResultset, nNumDoc As Long, ibti As String, RdoAux2 As rdoResultset, bPago As Boolean, sObs As String, nCodReduz As Long
+
+Sql = "SELECT DISTINCT numero_guia FROM rodo_uso_plataforma where situacao=2"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    Do Until .EOF
+        bPago = False
+        nNumDoc = !numero_guia
+        Sql = "select * from debitopago where numdocumento=" & nNumDoc
+        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        If RdoAux2.RowCount > 0 Then
+            bPago = True
+        End If
+        RdoAux2.Close
+        If bPago Then
+            Sql = "update rodo_uso_plataforma set situacao=6 where numero_guia=" & nNumDoc
+            cn.Execute Sql, rdExecDirect
+        End If
+       .MoveNext
+    Loop
+   .Close
+End With
+
+
+End Sub
+
+
 
 Private Sub Form_Load()
 Centraliza Me
@@ -196,7 +257,7 @@ End Sub
 Public Sub AtualizaIntegrativa()
 
 
-Dim nValorTaxa As Double, x As Integer, nSituacao As Integer, dDataProc As Date, sDescImposto As String, RdoAux2 As rdoResultset, Y As Integer, nPercTrib As Double
+Dim nValorTaxa As Double, x As Integer, nSituacao As Integer, dDataProc As Date, sDescImposto As String, RdoAux2 As rdoResultset, y As Integer, nPercTrib As Double
 Dim nAno As Integer, nLanc As Integer, nSeq As Integer, nParc As Integer, nCompl As Integer, sDataVencto As String, nCodTrib As Integer, nValorTributo As Double
 Dim sCodReduz As String, sNomeResp As String, sTipoImposto As String, sEndImovel As String, nNumImovel As Integer, sComplImovel As String, sBairroImovel As String
 Dim nCodLogr As Long, sEndEntrega As String, nNumEntrega As Integer, sBairroEntrega As String, sComplEntrega As String, sCepEntrega As String, sCidadeEntrega As String
@@ -222,7 +283,7 @@ With RdoAux
     nTotalRec = .RowCount
     Do Until .EOF
         nCodReduz = !CODIGORESP
-        sNumProc = !NUMPROCESSO
+        sNumProc = !numprocesso
       '  If sNumProc = "12673/2016" Then MsgBox "teste"
         bCancelado = !Cancelado
         nQtdeParc = !qtdeparcela
@@ -407,7 +468,7 @@ With RdoAux
                     Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                     With RdoAux3
                         If .RowCount > 0 Then
-                            nValorTotalHon = !ValorTributo * nQtdeParc
+                            nValorTotalHon = !VALORTRIBUTO * nQtdeParc
                         Else
                             nValorTotalHon = 0
                         End If
@@ -584,8 +645,8 @@ With RdoAux
                                 Do Until .EOF
                                     
                                     Sql = "INSERT CDADebitos(idCDA,CodTributo,Tributo,Exercicio,Lancamento,Seq,NroParcela,ComplParcela,DtVencimento,VlrOriginal,DtGeracao) values("
-                                    Sql = Sql & nCDA & "," & !CodTributo & ",'" & Mask(!ABREVTRIBUTO) & "'," & nAno & "," & nLanc & "," & nSeq & "," & nParc & ","
-                                    Sql = Sql & nCompl & ",'" & Format(dDataVencto, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(!ValorTributo)) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
+                                    Sql = Sql & nCDA & "," & !CodTributo & ",'" & Mask(!abrevTributo) & "'," & nAno & "," & nLanc & "," & nSeq & "," & nParc & ","
+                                    Sql = Sql & nCompl & ",'" & Format(dDataVencto, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(!VALORTRIBUTO)) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
                                     cnInt.Execute Sql, rdExecDirect
                                     
                                    .MoveNext
@@ -629,14 +690,14 @@ Sql = Sql & "WHERE debitopago.datarecebimento>='" & Format(Now - 30, "mm/dd/yyyy
 Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux3
     Do Until .EOF
-        sNumProc = !NUMPROCESSO
+        sNumProc = !numprocesso
         nNumproc = Val(Left$(sNumProc, InStr(1, sNumProc, "/", vbBinaryCompare) - 1))
         nAnoproc = Val(Right$(sNumProc, 4))
         
         'GRAVA NA TABELA ACORDOBAIXAS
         Sql = "insert acordobaixas(idAcordo, anoAcordo, DtBaixa, TipoBaixa, NroParcela, VlrOriginal, VlrCorrecao, VlrJuros, VlrMulta, VlrTotal, DtGeracao) values("
-        Sql = Sql & nNumproc & "," & nAnoproc & ",'" & Format(!datarecebimento, "mm/dd/yyyy") & "','PAGAMENTO'," & !NumParcela & "," & Virg2Ponto(CStr(!valorpagoreal)) & ","
-        Sql = Sql & 0 & "," & 0 & "," & 0 & "," & Virg2Ponto(CStr(!valorpagoreal)) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
+        Sql = Sql & nNumproc & "," & nAnoproc & ",'" & Format(!datarecebimento, "mm/dd/yyyy") & "','PAGAMENTO'," & !NumParcela & "," & Virg2Ponto(CStr(!ValorPagoreal)) & ","
+        Sql = Sql & 0 & "," & 0 & "," & 0 & "," & Virg2Ponto(CStr(!ValorPagoreal)) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
         cnInt.Execute Sql, rdExecDirect
         
         Sql = "update debitopago set dataintegracao='" & Format(Now, "mm/dd/yyyy") & "' where codreduzido=" & !CODREDUZIDO & " and anoexercicio=" & !AnoExercicio & " and "
@@ -671,35 +732,29 @@ Sql = Sql & "AjuizamentoCdas.Exercicio, AjuizamentoCdas.DtGeracao, AjuizamentoPr
 Sql = Sql & "AjuizamentoCdas.DtVencimento, AjuizamentoCdas.VlrOriginal, AjuizamentoProcessos.DtAjuizamento, AjuizamentoProcessos.Protocolo,"
 Sql = Sql & "AjuizamentoProcessos.IdAjuizamentoProcesso , AjuizamentoProcessos.AnoProtocolo, AjuizamentoProcessos.ProcessoCNJ "
 Sql = Sql & "FROM AjuizamentoCdas INNER JOIN AjuizamentoProcessos ON AjuizamentoCdas.CodProcesso = AjuizamentoProcessos.CodProcesso "
-Sql = Sql & "WHERE AjuizamentoProcessos.DtLeitura IS NULL "
-'Sql = Sql & "WHERE AjuizamentoCdas.DtLeitura IS NULL "
+Sql = Sql & "WHERE AjuizamentoProcessos.DtLeitura IS NULL or  AjuizamentoCdas.DtLeitura IS NULL "
 Sql = Sql & "ORDER BY AjuizamentoCdas.CodProcesso"
 
 Set RdoAux = cnInt.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-        'If !NroCertidao > 0 Then
-            Sql = "update debitoparcela set dataajuiza='" & Format(!DtAjuizamento, "mm/dd/yyyy") & "',processocnj='" & !ProcessoCNJ & "' where "
-            Sql = Sql & "codreduzido=" & !iddevedor & " and anoexercicio=" & !exercicio & " and codlancamento=" & !lancamento & " and "
-            Sql = Sql & "seqlancamento=" & !Seq & " and numparcela=" & !nroparcela
-            'Sql = Sql & " numparcela=" & !nroparcela & " and (statuslanc<5 or statuslanc=38 or statuslanc=39)"
-'            Sql = Sql & " numparcela=" & !nroparcela & " and (statuslanc=38 or statuslanc=39)"
-            'Sql = Sql & " numparcela=" & !nroparcela
-            
-            'If !NroCertidao > 0 Then
-            '    Sql = Sql & " and  numcertidao=" & !NroCertidao
-            'End If
+'            Sql = "update debitoparcela set dataajuiza='" & Format(!DtAjuizamento, "mm/dd/yyyy") & "',processocnj='" & !processocnj & "' where "
+'            Sql = Sql & "codreduzido=" & !iddevedor & " and anoexercicio=" & !exercicio & " and codlancamento=" & !lancamento & " and "
+'            Sql = Sql & "seqlancamento=" & !Seq & " and numparcela=" & !nroparcela
+
+            'voltar o sql acima  para as próximas integrações
+            Sql = "update debitoparcela set dataajuiza='" & Format(!DtAjuizamento, "mm/dd/yyyy") & "',processocnj='" & !processocnj & "' where "
+            Sql = Sql & "codreduzido=" & Val(!iddevedor) & " and anoexercicio=" & !exercicio & " and "
+            Sql = Sql & "seqlancamento=" & !Seq & " and numparcela=" & !nroparcela & " and numcertidao=" & !NroCertidao
             cn.Execute Sql, rdExecDirect
-'            If cn.RowsAffected > 0 Then
-'                MsgBox "teste"
- '           End If
+            
             
             Sql = " update ajuizamentoprocessos set dtleitura='" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "' where idajuizamentoprocesso=" & !IdAjuizamentoProcesso & " and dtleitura is null"
             cnInt.Execute Sql, rdExecDirect
             
             Sql = " update ajuizamentocdas set dtleitura='" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "' where idajuizamentocdas=" & !idajuizamentocdas & " and dtleitura is null"
             cnInt.Execute Sql, rdExecDirect
-        'End If
+
 DoEvents
        .MoveNext
     Loop
@@ -733,7 +788,7 @@ With RdoAux
         Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,"
         Sql = Sql & "NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,DATAVENCIMENTO,dataajuiza,DATADEBASE,PROCESSOCNJ,USERID) VALUES(" & nCodReduz & "," & Year(!DTDESPESA) & ","
         Sql = Sql & 78 & "," & nSeq & "," & 1 & "," & 0 & "," & 3 & ",'" & Format(!DTDESPESA, "mm/dd/yyyy") & "','" & Format(!DTDESPESA, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "','"
-        Sql = Sql & !CNJ & "',236)"
+        Sql = Sql & !CNJ & "'," & RetornaUsuarioID(NomeDeLogin) & ")"
         cn.Execute Sql, rdExecDirect
         
         nValorTributo = Ponto2Virg(!valordespesa)

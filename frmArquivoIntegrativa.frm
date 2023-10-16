@@ -35,7 +35,7 @@ Begin VB.Form frmArquivoIntegrativa
       MaxLength       =   10
       Mask            =   "99/99/9999"
       SelText         =   ""
-      Text            =   "31/12/2018"
+      Text            =   "31/12/2022"
       HideSelection   =   -1  'True
    End
    Begin VB.CommandButton cmdIntegrar 
@@ -545,7 +545,7 @@ With RdoAcordo
             CallPb nPos, nTot
         End If
         nCodReduz = !CODREDUZIDO
-        sNumProc = !NUMPROCESSO
+        sNumProc = !numprocesso
 '        nAnoProc = Val(Mid(Trim$(sNumProc), InStr(1, Trim$(sNumProc), "/", vbBinaryCompare) + 1, 4))
 '        nNumProc = Val(Left$(Trim$(sNumProc), InStr(1, Trim$(sNumProc), "/", vbBinaryCompare) - 1))
         nAnoproc = ExtraiNumeroProcesso(sNumProc)
@@ -714,7 +714,7 @@ With RdoAcordo
             Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux3
                 If .RowCount > 0 Then
-                    nValorHon = !ValorTributo * nQtdeParc
+                    nValorHon = !VALORTRIBUTO * nQtdeParc
                 Else
                     nValorHon = 0
                 End If
@@ -878,8 +878,8 @@ With RdoAcordo
                     Do Until .EOF
                         
                         Sql = "INSERT CDADebitos(idCDA,CodTributo,Tributo,Exercicio,Lancamento,Seq,NroParcela,ComplParcela,DtVencimento,VlrOriginal,DtGeracao) values("
-                        Sql = Sql & nCDA & "," & !CodTributo & ",'" & Mask(!ABREVTRIBUTO) & "'," & nAno & "," & nLanc & "," & nSeq & "," & nParc & ","
-                        Sql = Sql & nCompl & ",'" & Format(dDataVencto, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(!ValorTributo)) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
+                        Sql = Sql & nCDA & "," & !CodTributo & ",'" & Mask(!abrevTributo) & "'," & nAno & "," & nLanc & "," & nSeq & "," & nParc & ","
+                        Sql = Sql & nCompl & ",'" & Format(dDataVencto, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(!VALORTRIBUTO)) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
                '         cnInt.Execute sql, rdExecDirect
                         
                        .MoveNext
@@ -907,8 +907,8 @@ With RdoAcordo
                     Do Until .EOF
                         'GRAVA NA TABELA ACORDOBAIXAS
                          Sql = "insert acordobaixas(idAcordo, anoAcordo, DtBaixa, TipoBaixa, NroParcela, VlrOriginal, VlrCorrecao, VlrJuros, VlrMulta, VlrTotal, DtGeracao) values("
-                         Sql = Sql & nNumproc & "," & nAnoproc & ",'" & Format(RdoAux3!DataPagamento, "mm/dd/yyyy") & "','PAGAMENTO'," & RdoProcesso!NumParcela & "," & Virg2Ponto(CStr(RdoAux3!valorpagoreal)) & ","
-                         Sql = Sql & 0 & "," & 0 & "," & 0 & "," & Virg2Ponto(CStr(RdoAux3!valorpagoreal)) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
+                         Sql = Sql & nNumproc & "," & nAnoproc & ",'" & Format(RdoAux3!DataPagamento, "mm/dd/yyyy") & "','PAGAMENTO'," & RdoProcesso!NumParcela & "," & Virg2Ponto(CStr(RdoAux3!ValorPagoreal)) & ","
+                         Sql = Sql & 0 & "," & 0 & "," & 0 & "," & Virg2Ponto(CStr(RdoAux3!ValorPagoreal)) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
                          cnInt.Execute Sql, rdExecDirect
                     
                         .MoveNext
@@ -932,7 +932,7 @@ End With
 
 
 
-pBar.value = 0
+PBar.value = 0
 Set xImovel = Nothing
 Exit Sub
 Debitos:
@@ -950,7 +950,7 @@ With RdoDebito
         Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
         If RdoAux3.RowCount = 0 Then
             DoEvents
-            GoTo PROXIMO2
+            GoTo Proximo2
         End If
         
         If nPos Mod 50 = 0 Then
@@ -1015,7 +1015,7 @@ With RdoDebito
                 Sql = "select * from vwfullempresa3 where codigomob=" & nCodReduz
                 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 With RdoAux
-                    If RdoAux.RowCount = 0 Then GoTo PROXIMO2
+                    If RdoAux.RowCount = 0 Then GoTo Proximo2
                     sRazaoSocial = !RazaoSocial
                     sNome = sRazaoSocial
                     sInscricao = nCodReduz
@@ -1223,9 +1223,9 @@ With RdoDebito
         With RdoJuros
             Do Until .EOF
                 Sql = "INSERT CDADebitos(idCDA,CodTributo,Tributo,Exercicio,Lancamento,Seq,NroParcela,ComplParcela,DtVencimento,VlrOriginal,VlrMultas,VlrJuros,VlrCorrecao,DtGeracao) values("
-                Sql = Sql & nCDA & "," & !CodTributo & ",'" & Mask(!ABREVTRIBUTO) & "'," & nAno & "," & nLanc & "," & nSeq & "," & nParc & ","
-                Sql = Sql & nCompl & ",'" & Format(dDataVencto, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(!ValorTributo)) & "," & Virg2Ponto(CStr(!ValorMulta)) & ","
-                Sql = Sql & Virg2Ponto(CStr(!ValorJuros)) & "," & Virg2Ponto(CStr(!ValorCorrecao)) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
+                Sql = Sql & nCDA & "," & !CodTributo & ",'" & Mask(!abrevTributo) & "'," & nAno & "," & nLanc & "," & nSeq & "," & nParc & ","
+                Sql = Sql & nCompl & ",'" & Format(dDataVencto, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(!VALORTRIBUTO)) & "," & Virg2Ponto(CStr(!ValorMulta)) & ","
+                Sql = Sql & Virg2Ponto(CStr(!ValorJuros)) & "," & Virg2Ponto(CStr(!valorcorrecao)) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
                 cnInt.Execute Sql, rdExecDirect
                .MoveNext
             Loop
@@ -1233,7 +1233,7 @@ With RdoDebito
         End With
 
 
-PROXIMO2:
+Proximo2:
         nPos = nPos + 1
        .MoveNext
     Loop
@@ -1521,8 +1521,8 @@ With RdoAcordo
                     Do Until .EOF
                         
                         Sql = "INSERT CDADebitos(idCDA,CodTributo,Tributo,Exercicio,Lancamento,Seq,NroParcela,ComplParcela,DtVencimento,VlrOriginal,DtGeracao) values("
-                        Sql = Sql & nCDA & "," & !CodTributo & ",'" & Mask(!ABREVTRIBUTO) & "'," & nAno & "," & nLanc & "," & nSeq & "," & nParc & ","
-                        Sql = Sql & nCompl & ",'" & Format(dDataVencto, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(!ValorTributo)) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
+                        Sql = Sql & nCDA & "," & !CodTributo & ",'" & Mask(!abrevTributo) & "'," & nAno & "," & nLanc & "," & nSeq & "," & nParc & ","
+                        Sql = Sql & nCompl & ",'" & Format(dDataVencto, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(!VALORTRIBUTO)) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
                         cnInt.Execute Sql, rdExecDirect
                         
                        .MoveNext
@@ -1585,6 +1585,8 @@ Select Case nTipoRel
     Case 1
       '  If MsgBox("Executar operação solicitada?", vbQuestion + vbYesNo + vbDefaultButton2, "Confirmação") = vbNo Then Exit Sub
  '       ExportaDebitos True, nCadastro
+        'Relatorio2018
+ 
         Ajuizar
     Case 2
 '        If MsgBox("Executar operação solicitada?", vbQuestion + vbYesNo + vbDefaultButton2, "Confirmação") = vbNo Then Exit Sub
@@ -1681,8 +1683,8 @@ For x = 1 To UBound(aCdaDebito)
             Do Until .EOF
                 If !CodTributo = aCdaDebito(x).nCodTributo Then
                     Sql = "insert CDADebitosCorrecao(idCdaDebitos,DtCorrecao,VlrOriginal,VlrCorrecao,VlrJuros,VlrMulta,DtGeracao) values("
-                    Sql = Sql & aCdaDebito(x).idCdaIndex & ",'" & Format(aCdaDebito(x).dDataCorrecao, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(!ValorTributo)) & ","
-                    Sql = Sql & Virg2Ponto(CStr(!ValorCorrecao)) & "," & Virg2Ponto(CStr(!ValorJuros)) & "," & Virg2Ponto(CStr(!ValorMulta)) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
+                    Sql = Sql & aCdaDebito(x).idCdaIndex & ",'" & Format(aCdaDebito(x).dDataCorrecao, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(!VALORTRIBUTO)) & ","
+                    Sql = Sql & Virg2Ponto(CStr(!valorcorrecao)) & "," & Virg2Ponto(CStr(!ValorJuros)) & "," & Virg2Ponto(CStr(!ValorMulta)) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
                     cnInt.Execute Sql, rdExecDirect
                 End If
                .MoveNext
@@ -1706,7 +1708,7 @@ End Sub
 Private Sub Form_Load()
 
 Centraliza Me
-pBar.Color = vbWhite
+PBar.Color = vbWhite
 
 cmbCadastro.ListIndex = 0
 lstTipo.AddItem "01-Exportar débitos ajuizados"
@@ -1736,22 +1738,22 @@ Dim sEndereco As String, nNumero As Integer, sComplemento As String, nCodBairro 
 Dim SetorDevedor As String, DtInscricao As String, NroCertidao As Integer, NroLivro As Integer, NroFolha As Integer, NroOrdem As Integer
 Dim nCDA As Long, nAno As Integer, nLanc As Integer, nSeqLanc As Integer, nParc As Integer, nCompl As Integer, nCodTrib As Integer, sDescTrib As String
 Dim dtVencto As String, nValorPrincipal As Double, nCodCidadao As Long, sClassificacao As String
-Dim aCda() As typeCDA, aCdaDebito() As typeCDADebito, aParte() As Reg01
+Dim aCda() As typeCDA, aCdaDebito() As typeCDADebito, aParte() As Reg01, nValorTotal As Double
 
 
 Ocupado
 ConectaIntegrativa
 Sql = "delete from cdadebitos"
-cnInt.Execute Sql, rdExecDirect
+'cnInt.Execute Sql, rdExecDirect
 
 Sql = "delete from cadastro"
-cnInt.Execute Sql, rdExecDirect
+'cnInt.Execute Sql, rdExecDirect
 
 Sql = "delete from partes"
-cnInt.Execute Sql, rdExecDirect
+'cnInt.Execute Sql, rdExecDirect
 
 Sql = "delete from cdas"
-cnInt.Execute Sql, rdExecDirect
+'cnInt.Execute Sql, rdExecDirect
 
 cmdExec.Enabled = False
 Set qd.ActiveConnection = cn
@@ -1761,17 +1763,18 @@ If cmbCadastro.ListIndex = 0 Then
     MsgBox "selecione um cadastro"
     Exit Sub
 End If
-Sql = "SELECT  DISTINCT CODREDUZIDO FROM DEBITOPARCELA WHERE DATAVENCIMENTO<='" & Format(mskDataVencto.Text, "mm/dd/yyyy") & "' AND (STATUSLANC =3 or statuslanc=38) AND NUMPARCELA>0 AND DATAAJUIZA IS NULL AND DATAINSCRICAO IS NOT NULL "
+Sql = "SELECT  DISTINCT CODREDUZIDO FROM DEBITOPARCELA WHERE DATAVENCIMENTO<='" & Format(mskDataVencto.Text, "mm/dd/yyyy") & "' AND STATUSLANC in (3,38,39,42,43) AND NUMPARCELA>0 AND DATAAJUIZA IS NULL AND DATAINSCRICAO IS NOT NULL "
 If cmbCadastro.ListIndex = 1 Then
-    'Sql = Sql & " AND CODREDUZIDO BETWEEN 1 AND 1000 "
-    '    Sql = Sql & " AND CODREDUZIDO = 10508 "
-    Sql = Sql & " AND CODREDUZIDO < 40000 "
+    'Sql = Sql & " AND CODREDUZIDO BETWEEN 9976 AND 40000 "
+        Sql = Sql & " AND CODREDUZIDO = 8728 "
+    'Sql = Sql & " AND CODREDUZIDO < 40000 "
     Sql = Sql & " AND CODLANCAMENTO<>20 "
 ElseIf cmbCadastro.ListIndex = 2 Then
-    Sql = Sql & " AND CODREDUZIDO BETWEEN 100000 AND 300000 "
+    'Sql = Sql & " AND CODREDUZIDO BETWEEN 100000 AND 300000 "
+    Sql = Sql & " AND CODREDUZIDO = 118151 "
     Sql = Sql & " AND CODLANCAMENTO<>20 "
 ElseIf cmbCadastro.ListIndex = 3 Then
-    'Sql = Sql & " AND CODREDUZIDO =501288 "
+    'Sql = Sql & " AND CODREDUZIDO =524210 "
     Sql = Sql & " AND CODREDUZIDO BETWEEN 500000 AND 699999 "
     'Sql = Sql & " AND CODLANCAMENTO in(50,65,49,16,62,27,71,48,74) "
    Sql = Sql & " AND CODLANCAMENTO <>20 "
@@ -1817,8 +1820,8 @@ With RdoAux
         End If
         qd(0) = nCodReduz
         qd(1) = nCodReduz
-        qd(2) = 2015
-        qd(3) = 2019
+        qd(2) = 2013
+        qd(3) = 2015
         qd(4) = 1
         qd(5) = 999
         qd(6) = 0
@@ -1876,14 +1879,14 @@ With RdoAux
                 aCdaDebito(U).nParc = !NumParcela
                 aCdaDebito(U).nCompl = !CODCOMPLEMENTO
                 aCdaDebito(U).nCodTributo = !CodTributo
-                aCdaDebito(U).sDescTributo = !ABREVTRIBUTO
-                aCdaDebito(U).nPrincipal = !ValorTributo
+                aCdaDebito(U).sDescTributo = !abrevTributo
+                aCdaDebito(U).nPrincipal = !VALORTRIBUTO
                 aCdaDebito(U).nMulta = !ValorMulta
                 aCdaDebito(U).nJuros = !ValorJuros
-                aCdaDebito(U).nCorrecao = !ValorCorrecao
+                aCdaDebito(U).nCorrecao = !valorcorrecao
                 aCdaDebito(U).nMulta = !ValorMulta
                 aCdaDebito(U).nJuros = !ValorJuros
-                aCdaDebito(U).nCorrecao = !ValorCorrecao
+                aCdaDebito(U).nCorrecao = !valorcorrecao
                 aCdaDebito(U).nTotal = !ValorTotal
                 aCdaDebito(U).dDataVencto = !DataVencimento
 PROXIMODEBITO:
@@ -1894,6 +1897,17 @@ PROXIMODEBITO:
         End With
 
         If UBound(aCda) = 0 Then GoTo Proximo
+        'limita em 1301 reais
+        nValorTotal = 0
+        For x = 1 To UBound(aCdaDebito)
+            With aCdaDebito(x)
+                nValorTotal = nValorTotal + .nTotal
+            End With
+        Next
+        If nValorTotal < 1301 Then
+            GoTo Proximo
+        End If
+        
         
         For x = 1 To UBound(aCda)
             With aCda(x)
@@ -2154,7 +2168,7 @@ PROXIMODEBITO:
                 Sql = Sql & "LocalBairro,LocalCidade,LocalEstado,Quadra,Lote,EntregaCep,EntregaEndereco,EntregaNumero,EntregaComplemento,EntregaBairro,"
                 Sql = Sql & "EntregaCidade,EntregaEstado,DtGeracao) values("
                 Sql = Sql & .nCDA & ",'" & SetorDevedor & "'," & nCodReduz & ",'" & Mask(Left(SubNull(sNome), 80)) & "','" & sInscricao & "','" & sCPFCNPJ & "','" & sRGIE & "','"
-                Sql = Sql & sCep & "','" & sEndereco & "'," & nNumero & ",'" & Mask(Left(sComplemento, 50)) & "','" & sBairro & "','" & sCidade & "','" & sUF & "','"
+                Sql = Sql & sCep & "','" & sEnderecoLocal & "'," & nNumeroLocal & ",'" & Mask(Left(sComplementoLocal, 50)) & "','" & sBairroLocal & "','" & sCidadeLocal & "','" & sUFLocal & "','"
                 Sql = Sql & sQuadra & "','" & sLote & "','" & sCep & "','" & sEndereco & "'," & nNumero & ",'" & Mask(Left(sComplemento, 50)) & "','"
                 Sql = Sql & sBairro & "','" & Mask(sCidade) & "','" & sUF & "','" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "')"
                 cnInt.Execute Sql, rdExecDirect
@@ -2263,7 +2277,7 @@ Proximo:
         DoEvents
        .MoveNext
     Loop
-fim:
+Fim:
    .Close
 End With
 cmdExec.Enabled = True
@@ -2786,10 +2800,10 @@ With RdoAux
                     Else
                         aReg10(U).sDtInscricao = ""
                     End If
-                    aReg10(U).nPrincipal = RetornaNumero(FormatNumber(!ValorTributo, 2))
+                    aReg10(U).nPrincipal = RetornaNumero(FormatNumber(!VALORTRIBUTO, 2))
                     aReg10(U).nJuros = RetornaNumero(FormatNumber(!ValorJuros, 2))
                     aReg10(U).nMulta = RetornaNumero(FormatNumber(!ValorMulta, 2))
-                    aReg10(U).nCorrecao = RetornaNumero(FormatNumber(!ValorCorrecao, 2))
+                    aReg10(U).nCorrecao = RetornaNumero(FormatNumber(!valorcorrecao, 2))
                     aReg10(U).sHonorarios = 0
                     aReg10(U).nTotal = !ValorTotal
                     aReg10(U).nTotalAcumulado = !ValorTotal
@@ -2802,10 +2816,10 @@ With RdoAux
                     End If
                 Else
                     aReg10(x).nTotal = aReg10(U).nTotal + !ValorTotal
-                    aReg10(x).nPrincipal = aReg10(x).nPrincipal + RetornaNumero(FormatNumber(!ValorTributo, 2))
+                    aReg10(x).nPrincipal = aReg10(x).nPrincipal + RetornaNumero(FormatNumber(!VALORTRIBUTO, 2))
                     aReg10(x).nJuros = aReg10(x).nJuros + RetornaNumero(FormatNumber(!ValorJuros, 2))
                     aReg10(x).nMulta = aReg10(x).nMulta + RetornaNumero(FormatNumber(!ValorMulta, 2))
-                    aReg10(x).nCorrecao = aReg10(x).nCorrecao + RetornaNumero(FormatNumber(!ValorCorrecao, 2))
+                    aReg10(x).nCorrecao = aReg10(x).nCorrecao + RetornaNumero(FormatNumber(!valorcorrecao, 2))
                     aReg10(x).nTotalAcumulado = aReg10(x).nTotalAcumulado + !ValorTotal
                     
                 End If
@@ -2874,8 +2888,8 @@ With RdoAux
                 aReg20(v).sNumParcela = !NumParcela
                 aReg20(v).sSubParcela = !CODCOMPLEMENTO
                 aReg20(v).sCodReceita = !CodTributo
-                aReg20(v).sDescricao = !ABREVTRIBUTO
-                aReg20(v).sValorOriginal = RetornaNumero(FormatNumber(!ValorTributo, 2))
+                aReg20(v).sDescricao = !abrevTributo
+                aReg20(v).sValorOriginal = RetornaNumero(FormatNumber(!VALORTRIBUTO, 2))
 PROXIMODEBITO:
                 DoEvents
                .MoveNext
@@ -2935,8 +2949,8 @@ Close #1
 Liberado
 
 'cnn.Close
-pBar.value = 0
-pBar.Color = vbWhite
+PBar.value = 0
+PBar.Color = vbWhite
 MsgBox "Arquivo finalizado.", vbInformation, "Informação"
 
 Exit Sub
@@ -2981,14 +2995,14 @@ End Function
 
 Private Sub CallPb(nVal As Long, nTot As Long)
 If nVal > 0 Then
-    pBar.Color = &HC0C000
+    PBar.Color = &HC0C000
 Else
-    pBar.Color = vbWhite
+    PBar.Color = vbWhite
 End If
 If ((nVal * 100) / nTot) <= 100 Then
-   pBar.value = (nVal * 100) / nTot
+   PBar.value = (nVal * 100) / nTot
 Else
-   pBar.value = 100
+   PBar.value = 100
 End If
 
 Me.Refresh
@@ -3484,10 +3498,10 @@ With RdoAux
                     Else
                         aReg10(U).sDtInscricao = ""
                     End If
-                    aReg10(U).nPrincipal = RetornaNumero(FormatNumber(!ValorTributo, 2))
+                    aReg10(U).nPrincipal = RetornaNumero(FormatNumber(!VALORTRIBUTO, 2))
                     aReg10(U).nJuros = RetornaNumero(FormatNumber(!ValorJuros, 2))
                     aReg10(U).nMulta = RetornaNumero(FormatNumber(!ValorMulta, 2))
-                    aReg10(U).nCorrecao = RetornaNumero(FormatNumber(!ValorCorrecao, 2))
+                    aReg10(U).nCorrecao = RetornaNumero(FormatNumber(!valorcorrecao, 2))
                     aReg10(U).sHonorarios = 0
                     aReg10(U).nTotal = !ValorTotal
                     aReg10(U).nTotalAcumulado = !ValorTotal
@@ -3500,10 +3514,10 @@ With RdoAux
                     End If
                 Else
                     aReg10(x).nTotal = aReg10(U).nTotal + !ValorTotal
-                    aReg10(x).nPrincipal = aReg10(x).nPrincipal + RetornaNumero(FormatNumber(!ValorTributo, 2))
+                    aReg10(x).nPrincipal = aReg10(x).nPrincipal + RetornaNumero(FormatNumber(!VALORTRIBUTO, 2))
                     aReg10(x).nJuros = aReg10(x).nJuros + RetornaNumero(FormatNumber(!ValorJuros, 2))
                     aReg10(x).nMulta = aReg10(x).nMulta + RetornaNumero(FormatNumber(!ValorMulta, 2))
-                    aReg10(x).nCorrecao = aReg10(x).nCorrecao + RetornaNumero(FormatNumber(!ValorCorrecao, 2))
+                    aReg10(x).nCorrecao = aReg10(x).nCorrecao + RetornaNumero(FormatNumber(!valorcorrecao, 2))
                     aReg10(x).nTotalAcumulado = aReg10(x).nTotalAcumulado + !ValorTotal
                     
                 End If
@@ -3547,8 +3561,8 @@ With RdoAux
                 aReg20(v).sNumParcela = !NumParcela
                 aReg20(v).sSubParcela = !CODCOMPLEMENTO
                 aReg20(v).sCodReceita = !CodTributo
-                aReg20(v).sDescricao = !ABREVTRIBUTO
-                aReg20(v).sValorOriginal = RetornaNumero(FormatNumber(!ValorTributo, 2))
+                aReg20(v).sDescricao = !abrevTributo
+                aReg20(v).sValorOriginal = RetornaNumero(FormatNumber(!VALORTRIBUTO, 2))
 PROXIMODEBITO:
                 DoEvents
                .MoveNext
@@ -3605,8 +3619,8 @@ End With
 Close #1
 Liberado
 
-pBar.value = 0
-pBar.Color = vbWhite
+PBar.value = 0
+PBar.Color = vbWhite
 MsgBox "Arquivo finalizado.", vbInformation, "Informação"
 
 Exit Sub
@@ -3676,8 +3690,8 @@ Do Until RdoAux.EOF
             With RdoAux3
                 Do Until .EOF
                     Sql = "insert CDADebitos(idCDA, CodTributo, Tributo, Exercicio, Lancamento, Seq, NroParcela, ComplParcela, DtVencimento, vlrOriginal, DtGeracao) values("
-                    Sql = Sql & nCDA & "," & !CodTributo & ",'" & Mask(!ABREVTRIBUTO) & "'," & !AnoExercicio & "," & !CodLancamento & "," & !SeqLancamento & "," & !NumParcela & ","
-                    Sql = Sql & !CODCOMPLEMENTO & ",'" & Format(RdoAux2!DataVencimento, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(!ValorTributo)) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
+                    Sql = Sql & nCDA & "," & !CodTributo & ",'" & Mask(!abrevTributo) & "'," & !AnoExercicio & "," & !CodLancamento & "," & !SeqLancamento & "," & !NumParcela & ","
+                    Sql = Sql & !CODCOMPLEMENTO & ",'" & Format(RdoAux2!DataVencimento, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(!VALORTRIBUTO)) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
                     cnInt.Execute Sql, rdExecDirect
                    .MoveNext
                 Loop
@@ -3737,12 +3751,12 @@ If cmbCadastro.ListIndex = 0 Then
     Exit Sub
 End If
 'Sql = "SELECT  DISTINCT CODREDUZIDO FROM DEBITOPARCELA WHERE DATAVENCIMENTO<='" & Format(mskDataVencto.Text, "mm/dd/yyyy") & "' AND STATUSLANC =3 AND NUMPARCELA>0 AND DATAAJUIZA IS NULL AND DATAINSCRICAO IS NOT NULL AND PROTESTO_DATA_REMESSA IS NULL"
-Sql = "SELECT  DISTINCT CODREDUZIDO FROM DEBITOPARCELA WHERE (anoexercicio >= 2015 and anoexercicio<=2017) AND (STATUSLANC =3 or STATUSLANC =42 or STATUSLANC =43 or STATUSLANC =38 or STATUSLANC =39  ) AND NUMPARCELA>0 AND DATAAJUIZA IS NULL AND DATAINSCRICAO IS NOT NULL AND PROTESTO_DATA_REMESSA IS NULL"
+Sql = "SELECT  DISTINCT CODREDUZIDO FROM DEBITOPARCELA WHERE (anoexercicio >= 2016 and anoexercicio<=2020) AND (STATUSLANC =3 or STATUSLANC =42 or STATUSLANC =43 or STATUSLANC =38 or STATUSLANC =39  ) AND NUMPARCELA>0 AND DATAAJUIZA IS NULL AND DATAINSCRICAO IS NOT NULL AND PROTESTO_DATA_REMESSA IS NULL"
 If cmbCadastro.ListIndex = 1 Then
     Sql = Sql & " AND CODREDUZIDO BETWEEN 1 AND 40000 "
 '    Sql = Sql & " AND CODREDUZIDO = 14972 "
     'Sql = Sql & " AND CODLANCAMENTO <>5 AND CODLANCAMENTO<>20 AND CODLANCAMENTO<>11 "
-    Sql = Sql & " AND CODLANCAMENTO in (1,16,38,79) "
+    Sql = Sql & " AND CODLANCAMENTO =79 "
 ElseIf cmbCadastro.ListIndex = 2 Then
     Sql = Sql & " AND CODREDUZIDO BETWEEN 100000 AND 300000 "
     Sql = Sql & " AND CODLANCAMENTO not in (11,20)  "
@@ -3790,8 +3804,8 @@ With RdoAux
         End If
         qd(0) = nCodReduz
         qd(1) = nCodReduz
-        qd(2) = 2015
-        qd(3) = 2017
+        qd(2) = 2016
+        qd(3) = 2020
         qd(4) = 0
         qd(5) = 99
         qd(6) = 0
@@ -3811,6 +3825,7 @@ With RdoAux
 '                If Year(!DataVencimento) < 2015 Then
 '                    GoTo PROXIMODEBITO
 '                End If
+                If !CodLancamento <> 79 Then GoTo PROXIMODEBITO
 '                If !CODREDUZIDO = 23715 Then
 '                    MsgBox "tsted"
 '                End If
@@ -3849,14 +3864,14 @@ With RdoAux
                 aCdaDebito(U).nParc = !NumParcela
                 aCdaDebito(U).nCompl = !CODCOMPLEMENTO
                 aCdaDebito(U).nCodTributo = !CodTributo
-                aCdaDebito(U).sDescTributo = !ABREVTRIBUTO
-                aCdaDebito(U).nPrincipal = !ValorTributo
+                aCdaDebito(U).sDescTributo = !abrevTributo
+                aCdaDebito(U).nPrincipal = !VALORTRIBUTO
                 aCdaDebito(U).nMulta = !ValorMulta
                 aCdaDebito(U).nJuros = !ValorJuros
-                aCdaDebito(U).nCorrecao = !ValorCorrecao
+                aCdaDebito(U).nCorrecao = !valorcorrecao
                 aCdaDebito(U).nMulta = !ValorMulta
                 aCdaDebito(U).nJuros = !ValorJuros
-                aCdaDebito(U).nCorrecao = !ValorCorrecao
+                aCdaDebito(U).nCorrecao = !valorcorrecao
                 aCdaDebito(U).nTotal = !ValorTotal
                 aCdaDebito(U).dDataVencto = !DataVencimento
 PROXIMODEBITO:
@@ -4235,7 +4250,7 @@ Proximo:
         DoEvents
        .MoveNext
     Loop
-fim:
+Fim:
    .Close
 End With
 cmdExec.Enabled = True
@@ -4244,4 +4259,203 @@ Liberado
 MsgBox "Exportação finalizada.", vbInformation
 
 End Sub
+
+Private Sub Relatorio2018()
+Dim Sql As String, RdoAux As rdoResultset, nPos As Long, nTot As Long, RdoAux2 As rdoResultset, nCodReduz As Long, RdoAux3 As rdoResultset
+Dim t As Integer, s As Integer, U As Integer, v As Integer, cmdComm As ADODB.Command, clsImovel As New clsImovel
+Dim RdoDebito As rdoResultset, qd As New rdoQuery, Achou As Boolean, x As Integer, RdoTrib As rdoResultset
+Dim Rs As ADODB.Recordset, strQuery As String, nNumExec As Long, nAnoExec As Integer, sNumExec As String
+
+Dim sNomeCidadao As String, sInscricao As String, sFoneRes As String, sFoneCom As String, sCelular As String, sFoneContato As String, sEmail As String, nNumeroLocal As Integer
+Dim sCPFCNPJ As String, nCodLogradouroLocal As Integer, sEnderecoLocal As String, sComplementoLocal As String, sNumeroLocal As String, nCodBairroLocal As Integer, sBairroLocal As String, sCidadeLocal As String
+Dim sCEPLocal As String, sQuadra As String, sLote As String, sAtividade As String, sMatricula As String, sRGIE As String, nCodLogradouro As Integer, sUFLocal As String
+Dim sEndereco As String, nNumero As Integer, sComplemento As String, nCodBairro As Integer, nCodCidade As Integer, sBairro As String, sCidade As String, sCep As String, sUF As String
+Dim SetorDevedor As String, DtInscricao As String, NroCertidao As Integer, NroLivro As Integer, NroFolha As Integer, NroOrdem As Integer
+Dim nCDA As Long, nAno As Integer, nLanc As Integer, nSeqLanc As Integer, nParc As Integer, nCompl As Integer, nCodTrib As Integer, sDescTrib As String
+Dim dtVencto As String, nValorPrincipal As Double, nCodCidadao As Long, sClassificacao As String
+Dim aCda() As typeCDA, aCdaDebito() As typeCDADebito, aParte() As Reg01, nValorTotal As Double
+
+
+Ocupado
+
+cmdExec.Enabled = False
+Set qd.ActiveConnection = cn
+qd.QueryTimeout = 0
+
+If cmbCadastro.ListIndex = 0 Then
+    MsgBox "selecione um cadastro"
+    Exit Sub
+End If
+Sql = "SELECT  DISTINCT CODREDUZIDO FROM DEBITOPARCELA WHERE DATAVENCIMENTO<='" & Format(mskDataVencto.Text, "mm/dd/yyyy") & "' AND STATUSLANC in (3,38,39,42,43) AND NUMPARCELA>0 AND DATAAJUIZA IS NULL AND DATAINSCRICAO IS NOT NULL "
+If cmbCadastro.ListIndex = 1 Then
+    Sql = Sql & " AND CODREDUZIDO BETWEEN 9976 AND 40000 "
+    '    Sql = Sql & " AND CODREDUZIDO = 10508 "
+    'Sql = Sql & " AND CODREDUZIDO < 40000 "
+    Sql = Sql & " AND CODLANCAMENTO<>20 "
+ElseIf cmbCadastro.ListIndex = 2 Then
+    Sql = Sql & " AND CODREDUZIDO BETWEEN 100000 AND 300000 "
+    'Sql = Sql & " AND CODREDUZIDO = 116679 "
+    Sql = Sql & " AND CODLANCAMENTO<>20 "
+ElseIf cmbCadastro.ListIndex = 3 Then
+    'Sql = Sql & " AND CODREDUZIDO =559562 "
+    Sql = Sql & " AND CODREDUZIDO BETWEEN 500000 AND 699999 "
+    'Sql = Sql & " AND CODLANCAMENTO in(50,65,49,16,62,27,71,48,74) "
+   Sql = Sql & " AND CODLANCAMENTO <>20 "
+End If
+Sql = Sql & " ORDER BY CODREDUZIDO"
+
+
+
+'***********
+
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    nPos = 1
+    nTot = .RowCount
+    Do Until .EOF
+        nCodReduz = !CODREDUZIDO
+        If nCodReduz < 100000 Then
+            SetorDevedor = "Imobiliário"
+        ElseIf nCodReduz >= 100000 And nCodReduz < 500000 Then
+            SetorDevedor = "Mobiliário"
+        Else
+            SetorDevedor = "Cidadão"
+        End If
+            
+        If nPos Mod 10 = 0 Then
+          '  GoTo fim
+            DoEvents
+            CallPb nPos, nTot
+        End If
+        
+        '*** debito ***
+        ReDim aParte(0)
+        ReDim aCda(0)
+        ReDim aCdaDebito(0)
+        
+        On Error Resume Next
+        RdoDebito.Close
+        On Error GoTo 0
+        If nCadastro = 3 Then
+            qd.Sql = "{ Call spEXTRATOAJUIZARTAXA(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
+        Else
+            qd.Sql = "{ Call spEXTRATOAJUIZAR(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
+        End If
+        qd(0) = nCodReduz
+        qd(1) = nCodReduz
+        qd(2) = 1950
+        qd(3) = 2018
+        qd(4) = 1
+        qd(5) = 999
+        qd(6) = 0
+        qd(7) = 999
+        qd(8) = 1
+        qd(9) = 999
+        qd(10) = 0
+        qd(11) = 99
+        qd(12) = 3
+        qd(13) = 3
+        qd(14) = Format(Now, "mm/dd/yyyy")
+        qd(15) = "Integrativa"
+        qd(16) = 0
+        Set RdoDebito = qd.OpenResultset(rdOpenKeyset)
+        With RdoDebito
+            Do Until .EOF
+'                If Year(!DataVencimento) < 2015 Then
+'                    GoTo proximo
+'                End If
+              '  If !ValorJuros = 0 Then
+                    'MsgBox "teste"
+               ' End If
+                U = UBound(aCda)
+                Achou = False
+                For x = 1 To U
+                    If Val(aCda(x).nAno) = !AnoExercicio And Val(aCda(x).nLanc) = !CodLancamento And Val(aCda(x).nSeq) = !SeqLancamento And _
+                       Val(aCda(x).nParc) = !NumParcela And Val(aCda(x).nCompl) = !CODCOMPLEMENTO Then
+                        Achou = True
+                        Exit For
+                    End If
+                Next
+                
+                If Not Achou Then
+                    ReDim Preserve aCda(UBound(aCda) + 1)
+                    U = UBound(aCda)
+                    aCda(U).nAno = !AnoExercicio
+                    aCda(U).nLanc = !CodLancamento
+                    aCda(U).nSeq = !SeqLancamento
+                    aCda(U).nParc = !NumParcela
+                    aCda(U).nCompl = !CODCOMPLEMENTO
+                    On Error Resume Next
+                    aCda(U).nNumCertidao = Val(SubNull(!CERTIDAO))
+                    On Error GoTo 0
+                    aCda(U).nNumPagina = Val(SubNull(!PAGINA))
+                    aCda(U).nNumLivro = Val(SubNull(!NUMLIVRO))
+                    aCda(U).dDataInscricao = !datainscricao
+                End If
+                
+                
+                ReDim Preserve aCdaDebito(UBound(aCdaDebito) + 1)
+                U = UBound(aCdaDebito)
+                aCdaDebito(U).nAno = !AnoExercicio
+                aCdaDebito(U).nLanc = !CodLancamento
+                aCdaDebito(U).nSeq = !SeqLancamento
+                aCdaDebito(U).nParc = !NumParcela
+                aCdaDebito(U).nCompl = !CODCOMPLEMENTO
+                aCdaDebito(U).nCodTributo = !CodTributo
+                aCdaDebito(U).sDescTributo = !abrevTributo
+                aCdaDebito(U).nPrincipal = !VALORTRIBUTO
+                aCdaDebito(U).nMulta = !ValorMulta
+                aCdaDebito(U).nJuros = !ValorJuros
+                aCdaDebito(U).nCorrecao = !valorcorrecao
+                aCdaDebito(U).nMulta = !ValorMulta
+                aCdaDebito(U).nJuros = !ValorJuros
+                aCdaDebito(U).nCorrecao = !valorcorrecao
+                aCdaDebito(U).nTotal = !ValorTotal
+                aCdaDebito(U).dDataVencto = !DataVencimento
+PROXIMODEBITO:
+                DoEvents
+               .MoveNext
+            Loop
+           .Close
+        End With
+
+        If UBound(aCda) = 0 Then GoTo Proximo
+        'limita em 1301 reais
+        nValorTotal = 0
+        For x = 1 To UBound(aCdaDebito)
+            With aCdaDebito(x)
+                nValorTotal = nValorTotal + .nTotal
+            End With
+        Next
+        If nValorTotal > 200 Then
+            GoTo Proximo
+        End If
+        
+        Sql = "insert rel2018(codigo,valor) values(" & nCodReduz & "," & Virg2Ponto(CStr(nValorTotal)) & ")"
+        cn.Execute Sql, rdExecDirect
+        
+        
+'        On Error Resume Next
+'        For x = 1 To UBound(aCda)
+'            With aCda(x)
+'                Sql = "insert rel2018(codigo,valor) values(" & nCodReduz & "," & Virg2Ponto(CStr(nValorTotal)) & ")"
+'                cn.Execute Sql, rdExecDirect
+ '           End With
+  '      Next
+        
+Proximo:
+        nPos = nPos + 1
+        DoEvents
+       .MoveNext
+    Loop
+Fim:
+   .Close
+End With
+cmdExec.Enabled = True
+'cnInt.Close
+Liberado
+MsgBox "Exportação finalizada.", vbInformation
+
+End Sub
+
 

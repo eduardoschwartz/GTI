@@ -66,7 +66,7 @@ Begin VB.Form frmPagAutomatico
       ForeColor       =   -2147483630
       BackColor       =   15658734
       Appearance      =   0
-      StartOfWeek     =   152305665
+      StartOfWeek     =   76611585
       TitleBackColor  =   192
       TitleForeColor  =   12648447
       CurrentDate     =   37439
@@ -894,6 +894,9 @@ lblAux.Caption = Index
 '            sPathArqBanco = "C:\Trabalho\GTI\Bancos"
 '        End If
 '    End If
+If NomeDeLogin = "SCHWARTZ" Then
+    sPathArqBanco = "E:\Work\GTI\Banco"
+End If
     If frmBaixaBancaria.lblBanco.Caption = "000-OUTROS BANCOS" Then
         nCodBanco = 90
     Else
@@ -949,7 +952,7 @@ With RdoAux
     Do Until .EOF
         Sql = "update debitoparcela set statuslanc=2 where codreduzido=" & !CODREDUZIDO & " and anoexercicio=" & !AnoExercicio & " and codlancamento=" & !CodLancamento & " and "
         Sql = Sql & "seqlancamento=" & !SeqLancamento & " and numparcela=" & !NumParcela & " and codcomplemento=" & !CODCOMPLEMENTO
-        cn.Execute Sql, rdExecDirect
+'        cn.Execute Sql, rdExecDirect
         DoEvents
        .MoveNext
     Loop
@@ -964,7 +967,7 @@ With RdoAux
     Do Until .EOF
         Sql = "update debitoparcela set statuslanc=5 where codreduzido=" & !CODREDUZIDO & " and anoexercicio=" & !AnoExercicio & " and codlancamento=" & !CodLancamento & " and "
         Sql = Sql & "seqlancamento=" & !SeqLancamento & " and numparcela=0  and statuslanc=3"
-        cn.Execute Sql, rdExecDirect
+'        cn.Execute Sql, rdExecDirect
         DoEvents
        .MoveNext
     Loop
