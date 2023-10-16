@@ -136,8 +136,8 @@ Else
             End If
             RdoAux2.Close
             nConta = nConta + 1
-            If Not IsNull(!nomecidadao) Then
-                sNome = !nomecidadao
+            If Not IsNull(!Nomecidadao) Then
+                sNome = !Nomecidadao
             Else
                 sNome = SubNull(!Descricao)
             End If

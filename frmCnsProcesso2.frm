@@ -8,8 +8,8 @@ Begin VB.Form frmCnsProcesso2
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Consulta de Processos"
    ClientHeight    =   5700
-   ClientLeft      =   2205
-   ClientTop       =   2340
+   ClientLeft      =   16215
+   ClientTop       =   5070
    ClientWidth     =   8070
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
@@ -695,7 +695,7 @@ If mskDataEntrada.ClipText <> "" Then
     End If
 End If
 
-pBar.value = 0
+PBar.value = 0
 lblTot.Caption = "0 processos localizados."
 grdProc.Clear
 bNumProc = False: bAno = False: bReq = False: bAss = False: bCompl = False: bEntrada = False: bFis = False: bLogr = False
@@ -778,7 +778,7 @@ With RdoAux
            CallPb xId, nNumRec
            
         End If
-        sNomeCidadao = SubNull(!nomecidadao)
+        sNomeCidadao = SubNull(!Nomecidadao)
         If sNomeCidadao = "" Then
             Sql = "select nome from cidadao_removido where codigo=" & !CodCidadao
             Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -795,17 +795,17 @@ With RdoAux
                 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 If RdoAux2.RowCount > 0 Then
                     On Error Resume Next
-                    Sql = "insert cidadao(codcidadao,nomecidadao) values(" & !CodCidadao & ",'" & Mask(RdoAux2!nomecidadao) & "')"
+                    Sql = "insert cidadao(codcidadao,nomecidadao) values(" & !CodCidadao & ",'" & Mask(RdoAux2!Nomecidadao) & "')"
                     cn.Execute Sql, rdExecDirect
                     On Error GoTo 0
-                    sNomeCidadao = RdoAux2!nomecidadao
+                    sNomeCidadao = RdoAux2!Nomecidadao
                 End If
                 RdoAux2.Close
             End If
         End If
         
         grdProc.AddRow
-        grdProc.CellDetails grdProc.Rows, 1, !Ano, DT_CENTER
+        grdProc.CellDetails grdProc.Rows, 1, !ano, DT_CENTER
         grdProc.CellDetails grdProc.Rows, 2, Format(!Numero & RetornaDVProcesso(CLng(!Numero)), "000000-0"), DT_CENTER
         grdProc.CellDetails grdProc.Rows, 3, IIf(!INTERNO, !Descricao, sNomeCidadao), DT_LEFT
         'grdProc.CellDetails grdProc.Rows, 3, IIf(IsNull(!nomecidadao), SubNull(!descricao), !nomecidadao), DT_LEFT
@@ -890,7 +890,7 @@ lvProc.Sorted = True
 lvProc.SortOrder = lvwAscending
 End Sub
 
-Private Sub grdProc_ColumnClick(ByVal lcol As Long)
+Private Sub grdProc_ColumnClick(ByVal lCol As Long)
 Dim sTag As String
 Dim iSortIndex As Long
       
@@ -901,15 +901,15 @@ Dim iSortIndex As Long
       .ClearNongrouped
       
       ' See if this column is already in the sort object:
-      iSortIndex = .IndexOf(lcol)
+      iSortIndex = .IndexOf(lCol)
       If (iSortIndex = 0) Then
          ' If not, we add it:
          iSortIndex = .Count + 1
-         .SortColumn(iSortIndex) = lcol
+         .SortColumn(iSortIndex) = lCol
       End If
    
       ' Determine which sort order to apply:
-      sTag = grdProc.ColumnTag(lcol)
+      sTag = grdProc.ColumnTag(lCol)
       If (sTag = "") Then
          sTag = "DESC"
          .SortOrder(iSortIndex) = CCLOrderAscending
@@ -917,10 +917,10 @@ Dim iSortIndex As Long
          sTag = ""
          .SortOrder(iSortIndex) = CCLOrderDescending
       End If
-      grdProc.ColumnTag(lcol) = sTag
+      grdProc.ColumnTag(lCol) = sTag
       
       ' Set the type of sorting:
-      .SortType(iSortIndex) = grdProc.ColumnSortType(lcol)
+      .SortType(iSortIndex) = grdProc.ColumnSortType(lCol)
    End With
    
    ' Do the sort:
@@ -988,7 +988,7 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
        cmbAssunto.AddItem !Nome
-       cmbAssunto.ItemData(cmbAssunto.NewIndex) = !Codigo
+       cmbAssunto.ItemData(cmbAssunto.NewIndex) = !codigo
       .MoveNext
     Loop
     cmbAssunto.ListIndex = 0
@@ -1003,7 +1003,7 @@ With RdoAux
     Do Until .EOF
        sText = !Descricao
        cmbLocal.AddItem sText
-       cmbLocal.ItemData(cmbLocal.NewIndex) = !Codigo
+       cmbLocal.ItemData(cmbLocal.NewIndex) = !codigo
       .MoveNext
     Loop
     cmbLocal.ListIndex = 0
@@ -1042,9 +1042,9 @@ On Error GoTo Erro
 If cGetInputState() <> 0 Then DoEvents
 If nTotal = 0 Then Exit Sub
 If ((nPos * 100) / nTotal) <= 100 Then
-   pBar.value = (nPos * 100) / nTotal
+   PBar.value = (nPos * 100) / nTotal
 Else
-   pBar.value = 100
+   PBar.value = 100
 End If
 
 Me.Refresh

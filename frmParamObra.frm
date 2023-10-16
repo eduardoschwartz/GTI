@@ -184,11 +184,22 @@ End If
 End Sub
 
 Private Sub cmdExcluir_Click()
-Dim Sql As String
+Dim Sql As String, RdoAux As rdoResultset, nCodAssunto As Integer
 On Error GoTo Erro
+
+
 If List1.ListIndex = -1 Then
     MsgBox "Selecione um Registro!", vbCritical, "Atenção"
 Else
+    If Sigla = "AS" Then
+        nCodAssunto = List1.ItemData(List1.ListIndex)
+        Sql = "select * from registroatendimento where codassunto=" & nCodAssunto
+        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        If RdoAux.RowCount > 0 Then
+            MsgBox "Não é possível excluir este assunto pois esta sendo utilizado.", vbCritical, "Erro"
+            Exit Sub
+        End If
+    End If
     If MsgBox("Deseja excluir este Registro?", vbQuestion + vbYesNo, "Confirmação") = vbYes Then
         Sql = "DELETE FROM PARAMOBRA WHERE SIGLA='" & Sigla & "' AND CODIGO=" & List1.ItemData(List1.ListIndex)
         cn.Execute Sql, rdExecDirect
@@ -221,10 +232,10 @@ If z <> "" Then
     Sql = "SELECT MAX(CODIGO) AS MAXIMO FROM PARAMOBRA WHERE SIGLA='" & Sigla & "'"
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
-        If IsNull(!MAXIMO) Then
+        If IsNull(!maximo) Then
             nCod = 1
         Else
-            nCod = !MAXIMO + 1
+            nCod = !maximo + 1
         End If
         Sql = "INSERT PARAMOBRA(SIGLA,CODIGO,NOME) VALUES('" & Sigla & "'," & nCod & ",'" & UCase(Mask(CStr(z))) & "')"
         cn.Execute Sql, rdExecDirect
@@ -261,7 +272,7 @@ Sql = "SELECT * FROM PARAMOBRA WHERE SIGLA='" & Sigla & "'"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-        List1.AddItem !NOME
+        List1.AddItem !Nome
         List1.ItemData(List1.NewIndex) = !Codigo
        .MoveNext
     Loop

@@ -6,8 +6,8 @@ Begin VB.Form frmAtiv
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Atividades para Taxa de Licença"
    ClientHeight    =   5730
-   ClientLeft      =   2610
-   ClientTop       =   2970
+   ClientLeft      =   12420
+   ClientTop       =   6540
    ClientWidth     =   8040
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
@@ -649,7 +649,7 @@ If NomeForm = "frmCadMob" Then
    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
    If RdoAux.RowCount > 0 Then
       frmCadMob.OptHorario(0).value = True
-      frmCadMob.txtHorario_Funcionamento.Text = RdoAux!descricao
+      frmCadMob.txtHorario_Funcionamento.Text = RdoAux!Descricao
    End If
    RdoAux.Close
    frmCadMob.txtAtiv.Text = lvAtiv.SelectedItem.Text & " - " & lvAtiv.SelectedItem.SubItems(1)
@@ -845,8 +845,8 @@ With lvAtiv
             .SetFocus
             nPos = x
             'AUTOSCROLL
-            For Y = 1 To 5
-               SendKeys "{" & Mid(.ListItems(x).Text, Y, 1) & "}"
+            For y = 1 To 5
+               SendKeys "{" & Mid(.ListItems(x).Text, y, 1) & "}"
             Next
             Exit For
         End If
@@ -928,8 +928,8 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 
 With RdoAux
     Do Until .EOF
-       Set itmX = lvAtiv.ListItems.Add(, "K" & Format(!codatividade, "00000"), Format(!codatividade, "00000"))
-       itmX.SubItems(1) = !descatividade
+       Set itmX = lvAtiv.ListItems.Add(, "K" & Format(!CODATIVIDADE, "00000"), Format(!CODATIVIDADE, "00000"))
+       itmX.SubItems(1) = !DESCATIVIDADE
        itmX.SubItems(2) = FormatNumber(!VALORALIQ1, 2)
        itmX.SubItems(3) = FormatNumber(!VALORALIQ2, 2)
        itmX.SubItems(4) = FormatNumber(!VALORALIQ3, 2)

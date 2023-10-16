@@ -14,6 +14,45 @@ Begin VB.Form frmDebitoCompl
    MDIChild        =   -1  'True
    ScaleHeight     =   4395
    ScaleWidth      =   5985
+   Begin prjChameleon.chameleonButton btFix 
+      Height          =   315
+      Left            =   3060
+      TabIndex        =   4
+      ToolTipText     =   "Excluir os complementos selecionados"
+      Top             =   4005
+      Width           =   1215
+      _ExtentX        =   2143
+      _ExtentY        =   556
+      BTYPE           =   3
+      TX              =   "FIX"
+      ENAB            =   -1  'True
+      BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      COLTYPE         =   2
+      FOCUSR          =   0   'False
+      BCOL            =   12632256
+      BCOLO           =   12632256
+      FCOL            =   0
+      FCOLO           =   0
+      MCOL            =   12632256
+      MPTR            =   1
+      MICON           =   "frmDebitoCompl.frx":0000
+      UMCOL           =   -1  'True
+      SOFT            =   0   'False
+      PICPOS          =   0
+      NGREY           =   0   'False
+      FX              =   0
+      HAND            =   0   'False
+      CHECK           =   0   'False
+      VALUE           =   0   'False
+   End
    Begin prjChameleon.chameleonButton cmdPrint 
       Height          =   315
       Left            =   4680
@@ -43,8 +82,8 @@ Begin VB.Form frmDebitoCompl
       FCOLO           =   0
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frmDebitoCompl.frx":0000
-      PICN            =   "frmDebitoCompl.frx":001C
+      MICON           =   "frmDebitoCompl.frx":001C
+      PICN            =   "frmDebitoCompl.frx":0038
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -83,8 +122,8 @@ Begin VB.Form frmDebitoCompl
       FCOLO           =   0
       MCOL            =   12632256
       MPTR            =   1
-      MICON           =   "frmDebitoCompl.frx":0176
-      PICN            =   "frmDebitoCompl.frx":0192
+      MICON           =   "frmDebitoCompl.frx":0192
+      PICN            =   "frmDebitoCompl.frx":01AE
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -184,8 +223,8 @@ Begin VB.Form frmDebitoCompl
       FCOLO           =   0
       MCOL            =   12632256
       MPTR            =   1
-      MICON           =   "frmDebitoCompl.frx":0234
-      PICN            =   "frmDebitoCompl.frx":0250
+      MICON           =   "frmDebitoCompl.frx":0250
+      PICN            =   "frmDebitoCompl.frx":026C
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -201,6 +240,48 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Private Sub btfix_Click()
+Dim sql As String, RdoAux As rdoResultset, nNumDoc As Long, nCodReduz As Long, nAno As Integer, nLanc As Integer, nSeq As Integer, nParc As Integer, nCompl As Integer
+
+For x = 1 To lvMain.ListItems.Count
+    With lvMain.ListItems(x)
+        If .Checked Then
+            nCodReduz = .Text
+            nAno = .SubItems(1)
+            nLanc = .SubItems(2)
+            nSeq = .SubItems(3)
+            nParc = .SubItems(4)
+            nCompl = .SubItems(5)
+            
+            sql = "select numdocumento from debitopago where codreduzido=" & nCodReduz & " and anoexercicio=" & nAno & " and codlancamento=" & nLanc & " and "
+            sql = sql & "seqlancamento=" & nSeq & " and numparcela=" & nParc
+            Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+            nNumDoc = RdoAux!NumDocumento
+            RdoAux.Close
+            
+            sql = "update debitopago set numparcela=1,valorpago=valorpagoreal,valordif=0 where numdocumento=" & nNumDoc
+            cn.Execute sql, rdExecDirect
+            
+            sql = "update parceladocumento set numparcela=1 where numdocumento=" & nNumDoc
+            cn.Execute sql, rdExecDirect
+            
+            sql = "update debitoparcela set statuslanc=5 where codreduzido=" & nCodReduz & " and anoexercicio=2022 and codlancamento=1 and numparcela=0"
+            cn.Execute sql, rdExecDirect
+            
+            sql = "update debitoparcela set statuslanc=2 where codreduzido=" & nCodReduz & " and anoexercicio=2022 and codlancamento=1 and numparcela=1"
+            cn.Execute sql, rdExecDirect
+            
+            sql = "update debitoparcela set statuslanc=3 where codreduzido=" & nCodReduz & " and anoexercicio=2022 and codlancamento=1 and numparcela>1"
+            cn.Execute sql, rdExecDirect
+            
+            
+            'MsgBox nNumDoc
+        End If
+    End With
+Next
+CarregaLista
+End Sub
+
 Private Sub cmdAutorizar_Click()
 Dim nCodReduz As Long, nAno As Integer, nLanc As Integer, nSeq As Integer, nParc As Integer, nCompl As Integer, x As Integer
 
@@ -215,14 +296,14 @@ For x = 1 To lvMain.ListItems.Count
             nSeq = .SubItems(3)
             nParc = .SubItems(4)
             nCompl = .SubItems(5)
-            Sql = "UPDATE DEBITOPARCELA SET STATUSLANC=3 WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND "
-            Sql = Sql & "SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nParc & " AND CODCOMPLEMENTO=" & nCompl
-            cn.Execute Sql, rdExecDirect
+            sql = "UPDATE DEBITOPARCELA SET STATUSLANC=3 WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND "
+            sql = sql & "SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nParc & " AND CODCOMPLEMENTO=" & nCompl
+            cn.Execute sql, rdExecDirect
             
-            Sql = "UPDATE COMPLEMENTOPAGTO SET AUTORIZADO='S', USUARIO='" & NomeDeLogin & "',DATAEVENTO='" & Format(Now, "mm/dd/yyyy") & "' "
-            Sql = Sql & "WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND "
-            Sql = Sql & "SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nParc & " AND CODCOMPLEMENTOCP=" & nCompl
-            cn.Execute Sql, rdExecDirect
+            sql = "UPDATE COMPLEMENTOPAGTO SET AUTORIZADO='S', USUARIO='" & NomeDeLogin & "',DATAEVENTO='" & Format(Now, "mm/dd/yyyy") & "' "
+            sql = sql & "WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND "
+            sql = sql & "SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nParc & " AND CODCOMPLEMENTOCP=" & nCompl
+            cn.Execute sql, rdExecDirect
             
         End If
     End With
@@ -244,14 +325,14 @@ For x = 1 To lvMain.ListItems.Count
             nSeq = .SubItems(3)
             nParc = .SubItems(4)
             nCompl = .SubItems(5)
-            Sql = "UPDATE DEBITOPARCELA SET STATUSLANC=5 WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND "
-            Sql = Sql & "SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nParc & " AND CODCOMPLEMENTO=" & nCompl
-            cn.Execute Sql, rdExecDirect
+            sql = "UPDATE DEBITOPARCELA SET STATUSLANC=5 WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND "
+            sql = sql & "SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nParc & " AND CODCOMPLEMENTO=" & nCompl
+            cn.Execute sql, rdExecDirect
             
-            Sql = "UPDATE COMPLEMENTOPAGTO SET AUTORIZADO='N', USUARIO='" & NomeDeLogin & "',DATAEVENTO='" & Format(Now, "mm/dd/yyyy") & "' "
-            Sql = Sql & "WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND "
-            Sql = Sql & "SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nParc & " AND CODCOMPLEMENTOCP=" & nCompl
-            cn.Execute Sql, rdExecDirect
+            sql = "UPDATE COMPLEMENTOPAGTO SET AUTORIZADO='N', USUARIO='" & NomeDeLogin & "',DATAEVENTO='" & Format(Now, "mm/dd/yyyy") & "' "
+            sql = sql & "WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND "
+            sql = sql & "SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nParc & " AND CODCOMPLEMENTOCP=" & nCompl
+            cn.Execute sql, rdExecDirect
             
         End If
     End With
@@ -288,7 +369,7 @@ Print #FF1, ""
 Print #FF1, "PMJ - REPCOML1.TXT - " & Format(Now, "dd/mm/yyyy")
 
 Close #FF1
-ret = Shell("NOTEPAD2" & " " & sNomeArq, vbNormalFocus)
+ret = Shell("NOTEPAD" & " " & sNomeArq, vbNormalFocus)
 
 Liberado
 'MsgBox "Relatório disponível em " & sPathBin & "\REPORTMOB1.TXT"
@@ -296,19 +377,23 @@ Liberado
 End Sub
 
 Private Sub Form_Load()
+If NomeDeLogin <> "SCHWARTZ" Then
+    btfix.Visible = False
+End If
+
 Centraliza Me
 CarregaLista
 End Sub
 
 Private Sub CarregaLista()
-Dim itmX As ListItem, z As Long, Sql As String, RdoAux As rdoResultset
+Dim itmX As ListItem, z As Long, sql As String, RdoAux As rdoResultset
 z = SendMessage(lvMain.HWND, LVM_DELETEALLITEMS, 0, 0)
 
-Sql = "SELECT debitoparcela.codreduzido, debitoparcela.anoexercicio, debitoparcela.codlancamento, debitoparcela.seqlancamento, debitoparcela.numparcela,"
-Sql = Sql & "debitoparcela.CODCOMPLEMENTO , complementopagto.valor FROM debitoparcela INNER JOIN complementopagto ON debitoparcela.codreduzido = complementopagto.codreduzido AND debitoparcela.anoexercicio = complementopagto.anoexercicio AND "
-Sql = Sql & "debitoparcela.codlancamento = complementopagto.codlancamento AND debitoparcela.seqlancamento = complementopagto.seqlancamento AND "
-Sql = Sql & "debitoparcela.NumParcela = complementopagto.NumParcela And debitoparcela.CODCOMPLEMENTO = complementopagto.codcomplementocp Where (debitoparcela.statuslanc = 25) order by debitoparcela.codreduzido"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT debitoparcela.codreduzido, debitoparcela.anoexercicio, debitoparcela.codlancamento, debitoparcela.seqlancamento, debitoparcela.numparcela,"
+sql = sql & "debitoparcela.CODCOMPLEMENTO , complementopagto.valor FROM debitoparcela INNER JOIN complementopagto ON debitoparcela.codreduzido = complementopagto.codreduzido AND debitoparcela.anoexercicio = complementopagto.anoexercicio AND "
+sql = sql & "debitoparcela.codlancamento = complementopagto.codlancamento AND debitoparcela.seqlancamento = complementopagto.seqlancamento AND "
+sql = sql & "debitoparcela.NumParcela = complementopagto.NumParcela And debitoparcela.CODCOMPLEMENTO = complementopagto.codcomplementocp Where (debitoparcela.statuslanc = 25) order by debitoparcela.codreduzido"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         Set itmX = lvMain.ListItems.Add(, "C" & Format(!CODREDUZIDO, "000000") & CStr(!AnoExercicio) & Format(!CodLancamento, "000") & Format(!SeqLancamento, "0000") & Format(!NumParcela, "000") & Format(!CODCOMPLEMENTO, "00"), Format(!CODREDUZIDO, "000000"))

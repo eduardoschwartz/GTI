@@ -258,6 +258,10 @@ If Len(z) > 6 Then
             Sql = Sql & nAno & "," & nNumero & ")"
             cn.Execute Sql, rdExecDirect
             
+            Sql = "insert anexo(ano,numero,anoanexo,numeroanexo) values(" & nAno & "," & nNumero & ","
+            Sql = Sql & nAnoAtual & "," & nNumeroAtual & ")"
+            cn.Execute Sql, rdExecDirect
+            
             Sql = "insert anexo_log (ano,numero,ano_anexo,numero_anexo,removido,data,userid) values("
             Sql = Sql & nAnoAtual & "," & nNumeroAtual & "," & nAno & "," & nNumero & "," & 0 & ",'"
             Sql = Sql & Format(Now, "mm/dd/yyyy") & "'," & RetornaUsuarioID(NomeDeLogin) & ")"

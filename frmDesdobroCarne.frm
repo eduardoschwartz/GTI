@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmDesdobroCarne 
    BackColor       =   &H00EEEEEE&
@@ -297,7 +297,7 @@ With grdAno
 '                Sql = Sql & Format(dVencto, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "',1,'GTI')"
                 Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,"
                 Sql = Sql & "DATAVENCIMENTO,DATADEBASE,CODMOEDA,USERID) VALUES(" & nCodNovo & "," & nAno & "," & nLanc & "," & nSeq & "," & nParc & "," & nCompl & ",3,'"
-                Sql = Sql & Format(dVencto, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "',1,236)"
+                Sql = Sql & Format(dVencto, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "',1," & RetornaUsuarioID(NomeDeLogin) & ")"
                 cn.Execute Sql, rdExecDirect
                'GRAVA NA TABELA DEBITO TRIBUTO
                 Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,"
@@ -378,8 +378,8 @@ With grdAno
         Sql = "SELECT SUM(VALORTRIBUTO) AS VALORPARCELA FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & Val(txtCodAnt.Text) & " AND ANOEXERCICIO="
         Sql = Sql & .TextMatrix(x, 0) & " AND NUMPARCELA=" & RdoAux2!NumParcela & " AND CODTRIBUTO<>3"
         Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-        grdAno.TextMatrix(x, 2) = Format(RdoAux3!VALORPARCELA, "#0.00")
-        grdAno.TextMatrix(x, 3) = Format(RdoAux3!VALORPARCELA * CDbl(.TextMatrix(x, 1)), "#0.00")
+        grdAno.TextMatrix(x, 2) = Format(RdoAux3!valorparcela, "#0.00")
+        grdAno.TextMatrix(x, 3) = Format(RdoAux3!valorparcela * CDbl(.TextMatrix(x, 1)), "#0.00")
         grdAno.TextMatrix(x, 4) = "0,00"
         grdAno.TextMatrix(x, 5) = "0,00"
         grdAno.TextMatrix(x, 6) = "0,00"

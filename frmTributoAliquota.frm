@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmTributoAliquota 
    BackColor       =   &H00EEEEEE&
@@ -318,7 +318,7 @@ Begin VB.Form frmTributoAliquota
       BCOLO           =   12632256
       FCOL            =   0
       FCOLO           =   0
-      MCOL            =   13026246
+      MCOL            =   12632256
       MPTR            =   1
       MICON           =   "frmTributoAliquota.frx":05AE
       PICN            =   "frmTributoAliquota.frx":05CA
@@ -545,7 +545,7 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 
 With RdoAux
     Do Until .EOF
-       grdTrib.AddItem Format(!CodTributo, "000") & Chr(9) & !desctributo & Chr(9) & FormatNumber(!VALORALIQ, 4)
+       grdTrib.AddItem Format(!CodTributo, "000") & Chr(9) & !desctributo & Chr(9) & FormatNumber(!valoraliq, 4)
       .MoveNext
     Loop
    .Close

@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmVVDeclarado 
    BackColor       =   &H00EEEEEE&
@@ -409,7 +409,7 @@ On Error GoTo Erro
 '        Sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST,USUARIO,DATAHIST2) VALUES("
 '        Sql = Sql & Val(txtCod.Text) & "," & nSeq & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sHist) & "','" & "GTI" & "','" & Format(Now, "mm/dd/yyyy") & "')"
         Sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST,USERID,DATAHIST2) VALUES("
-        Sql = Sql & Val(txtCod.Text) & "," & nSeq & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sHist) & "'," & 236 & ",'" & Format(Now, "mm/dd/yyyy") & "')"
+        Sql = Sql & Val(txtCod.Text) & "," & nSeq & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sHist) & "'," & RetornaUsuarioID(NomeDeLogin) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
         cn.Execute Sql, rdExecDirect
        
        Limpa
@@ -474,7 +474,7 @@ If Evento = "Novo" Then
 '    Sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST,USUARIO,DATAHIST2) VALUES("
 '    Sql = Sql & Val(txtCod.Text) & "," & nSeq & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sHist) & "','" & "GTI" & "','" & Format(Now, "mm/dd/yyyy") & "')"
     Sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST,USERID,DATAHIST2) VALUES("
-    Sql = Sql & Val(txtCod.Text) & "," & nSeq & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sHist) & "'," & 236 & ",'" & Format(Now, "mm/dd/yyyy") & "')"
+    Sql = Sql & Val(txtCod.Text) & "," & nSeq & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sHist) & "'," & RetornaUsuarioID(NomeDeLogin) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
     cn.Execute Sql, rdExecDirect
     
     grdVV.AddItem Format(txtCod.Text, "000000") & Chr(9) & txtNumProc.Text & Chr(9) & FormatNumber(txtValor.Text, 2) & Chr(9) & Format(Now, "dd/mm/yyyy")
@@ -488,7 +488,7 @@ Else
 '    Sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST,USUARIO,DATAHIST2) VALUES("
 '    Sql = Sql & Val(txtCod.Text) & "," & nSeq & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sHist) & "','" & "GTI" & "','" & Format(Now, "mm/dd/yyyy") & "')"
     Sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST,USERID,DATAHIST2) VALUES("
-    Sql = Sql & Val(txtCod.Text) & "," & nSeq & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sHist) & "'," & 236 & ",'" & Format(Now, "mm/dd/yyyy") & "')"
+    Sql = Sql & Val(txtCod.Text) & "," & nSeq & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sHist) & "'," & RetornaUsuarioID(NomeDeLogin) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
     cn.Execute Sql, rdExecDirect
 
 End If
@@ -606,7 +606,7 @@ Sql = "SELECT * FROM VVDECLARADO ORDER BY CODREDUZIDO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
 With RdoAux
     Do Until .EOF
-        grdVV.AddItem Format(!CODREDUZIDO, "000000") & Chr(9) & !NumProc & Chr(9) & FormatNumber(!Valor, 2) & Chr(9) & Format(!Data, "dd/mm/yyyy")
+        grdVV.AddItem Format(!CODREDUZIDO, "000000") & Chr(9) & !NumProc & Chr(9) & FormatNumber(!valor, 2) & Chr(9) & Format(!Data, "dd/mm/yyyy")
        .MoveNext
     Loop
    .Close

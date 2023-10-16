@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmLancamento 
    BackColor       =   &H00EEEEEE&
@@ -518,14 +518,14 @@ End Sub
 
 Private Sub CarregaLista()
 
-Sql = "Select CODLANCAMENTO,DESCREDUZ,DESCFULL From LANCAMENTO ORDER BY codlancamento"
+Sql = "Select CODLANCAMENTO,DESCREDUZ,DESCFULL From LANCAMENTO ORDER BY descfull"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 
 grdLanc.Rows = 1
 With RdoAux
    .MoveFirst
     Do Until .EOF
-       grdLanc.AddItem !CodLancamento & Chr(9) & !DESCFULL & Chr(9) & !DESCREDUZ
+       grdLanc.AddItem !CodLancamento & Chr(9) & !DESCFULL & Chr(9) & !descreduz
       .MoveNext
     Loop
    .Close
@@ -584,7 +584,7 @@ Le
 End Sub
 
 Private Sub FormHagana()
-
+If NomeDeLogin = "USER_TEST" Then Exit Sub
 evNew = 2
 evEdit = 3
 evDel = 4

@@ -399,7 +399,9 @@ If Val(txtQtdePav.Text) < 2 And cmbTipoConstr.ListIndex = 1 Then
    Exit Sub
 End If
 
-If Val(txtAreaConstr.Text) = 0 Then
+If txtAreaConstr.Text = "" Then txtAreaConstr.Text = "0"
+
+If CDbl(txtAreaConstr.Text) = 0 Then
    MsgBox "Digite a Área da Construção.", vbExclamation, "Atenção"
    txtAreaConstr.SetFocus
    Exit Sub
@@ -463,7 +465,7 @@ If sTipoEvento = "Novo" Then
                     Sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST,USERID,DATAHIST2) VALUES("
                     Sql = Sql & nCodReduz & "," & nSeq & ",'" & Format(Now, "dd/mm/yyyy") & "','" & sObs & "'," & RetornaUsuarioID(NomeDeLogin) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
                     cn.Execute Sql, rdExecDirect
-                    frmCadImob.grdHist.AddItem Format(Now, "dd/mm/yyyy") & Chr(9) & nSeq & Chr(9) & sObs & Chr(9) & "GTI" & Chr(9) & Format(Now, "dd/mm/yyyy")
+                    frmCadImob.grdHist.AddItem Format(Now, "dd/mm/yyyy") & Chr(9) & nSeq & Chr(9) & sObs & Chr(9) & NomeDeLogin & Chr(9) & Format(Now, "dd/mm/yyyy")
                 End If
                .Close
             End With

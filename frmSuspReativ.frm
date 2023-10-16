@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Object = "{F48120B2-B059-11D7-BF14-0010B5B69B54}#1.0#0"; "esMaskEdit.ocx"
 Begin VB.Form frmSuspReativ 
@@ -490,7 +490,7 @@ Private Sub cmdCancel_Click()
 End Sub
 
 Private Sub cmdExcluir_Click()
-Dim nTipo As Integer
+Dim ntipo As Integer
 Dim nSeq As Integer
 
 If grdSusp.Rows = 1 Then
@@ -505,9 +505,9 @@ End If
 
 If MsgBox("Excluir este evento ?", vbYesNo + vbQuestion, "Atenção") = vbYes Then
    nSeq = Val(grdSusp.TextMatrix(grdSusp.Rows - 1, 0))
-   nTipo = Val(Left$(grdSusp.TextMatrix(grdSusp.Rows - 1, 1), 1))
+   ntipo = Val(Left$(grdSusp.TextMatrix(grdSusp.Rows - 1, 1), 1))
    Sql = "DELETE FROM MOBILIARIOEVENTO WHERE CODMOBILIARIO=" & Val(txtCod.Text) & " AND "
-   Sql = Sql & "CODTIPOEVENTO=" & nTipo & " AND SEQEVENTO=" & nSeq
+   Sql = Sql & "CODTIPOEVENTO=" & ntipo & " AND SEQEVENTO=" & nSeq
    cn.Execute Sql, rdExecDirect
    CarregaLista
 End If
@@ -516,7 +516,7 @@ End Sub
 
 Private Sub cmdGravar_Click()
 
-Dim nTipo As Integer
+Dim ntipo As Integer
 
 If cmbEvento.ListIndex = -1 Then
    MsgBox "Selecione o evento.", vbExclamation, "Atenção"
@@ -544,11 +544,11 @@ If txtNumProc.Text = "" Then
 End If
 
 If grdSusp.Rows > 1 Then
-   nTipo = Val(Left(grdSusp.TextMatrix(grdSusp.Rows - 1, 1), 1))
-   If nTipo = 2 And cmbEvento.ListIndex = 0 Then   'suspenao
+   ntipo = Val(Left(grdSusp.TextMatrix(grdSusp.Rows - 1, 1), 1))
+   If ntipo = 2 And cmbEvento.ListIndex = 0 Then   'suspenao
       MsgBox "Esta empresa já esta suspensa.", vbExclamation, "Atenção"
       Exit Sub
-   ElseIf nTipo = 3 And cmbEvento.ListIndex = 1 Then 'reativacao
+   ElseIf ntipo = 3 And cmbEvento.ListIndex = 1 Then 'reativacao
       MsgBox "Esta empresa já foi reativada.", vbExclamation, "Atenção"
       Exit Sub
    End If
@@ -699,18 +699,18 @@ cmdExcluir.Enabled = True
 End Sub
 
 Private Sub Grava()
-Dim nTipo As Integer
+Dim ntipo As Integer
 Dim nSeq As Integer
 Dim sTexto1 As String
 
 If cmbEvento.ListIndex = 0 Then
-    nTipo = 2
+    ntipo = 2
 Else
-    nTipo = 3
+    ntipo = 3
 End If
 
 Sql = "SELECT MAX(SEQEVENTO) AS MAXIMO FROM MOBILIARIOEVENTO WHERE CODMOBILIARIO=" & Val(txtCod.Text)
-Sql = Sql & " AND CODTIPOEVENTO=" & nTipo
+Sql = Sql & " AND CODTIPOEVENTO=" & ntipo
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If IsNull(!maximo) Then
@@ -721,7 +721,7 @@ With RdoAux
 End With
 
 Sql = "INSERT MOBILIARIOEVENTO (CODMOBILIARIO,CODTIPOEVENTO,SEQEVENTO,DATAEVENTO,NUMPROCEVENTO,DATAPROCEVENTO,TIPOCALCULO) VALUES("
-Sql = Sql & Val(txtCod.Text) & "," & nTipo & "," & nSeq & ",'" & Format(mskData.Text, "mm/dd/yyyy") & "','" & txtNumProc.Text & "','" & Format(mskDataProc.Text, "mm/dd/yyyy") & "'," & IIf(Opt(0).value = True, 0, 1) & ")"
+Sql = Sql & Val(txtCod.Text) & "," & ntipo & "," & nSeq & ",'" & Format(mskData.Text, "mm/dd/yyyy") & "','" & txtNumProc.Text & "','" & Format(mskDataProc.Text, "mm/dd/yyyy") & "'," & IIf(Opt(0).value = True, 0, 1) & ")"
 cn.Execute Sql, rdExecDirect
 
 
@@ -738,7 +738,7 @@ sTexto1 = "A Empresa foi " & IIf(cmbEvento.ListIndex = 0, "Suspensa", "Reativada
 'Sql = "INSERT MOBILIARIOHIST(CODMOBILIARIO,SEQ,DATAHIST,OBS,USUARIO) VALUES("
 'Sql = Sql & Val(txtCod.Text) & "," & nSeq & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sTexto1) & "','GTI')"
 Sql = "INSERT MOBILIARIOHIST(CODMOBILIARIO,SEQ,DATAHIST,OBS,USERID) VALUES("
-Sql = Sql & Val(txtCod.Text) & "," & nSeq & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sTexto1) & "',236)"
+Sql = Sql & Val(txtCod.Text) & "," & nSeq & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sTexto1) & "'," & RetornaUsuarioID(NomeDeLogin) & ")"
 cn.Execute Sql, rdExecDirect
 
 

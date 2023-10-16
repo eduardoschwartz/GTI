@@ -870,7 +870,7 @@ Le
 End Sub
 
 Private Sub FormHagana()
-
+If NomeDeLogin = "USER_TEST" Then Exit Sub
 evNew = 2
 evEdit = 3
 evDel = 4
@@ -909,7 +909,7 @@ End Sub
 Private Sub txtFicha_KeyPress(Index As Integer, KeyAscii As Integer)
 Tweak txtFicha(Index), KeyAscii, IntegerPositive
 End Sub
-Private Sub MudaFicha()
+Public Sub MudaFicha()
 Dim Sql As String, RdoAux As rdoResultset, nPos As Long, nTot As Long, RdoAux2 As rdoResultset, x As Integer
 Dim nCodReduz As Long, nFicha As Long, sNatureza As String, nFichaNova As Integer
 
@@ -931,7 +931,7 @@ With RdoAux
         cn.Execute Sql, rdExecDirect
 On Error Resume Next
         nFicha = !FichaJrMulta
-        If nFicha = 148 Then nFicha = 156
+        'If nFicha = 148 Then nFicha = 156
         Sql = "select ficha from fichacontabil where ficha_old=" & nFicha
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         nFichaNova = RdoAux2!Ficha
@@ -940,7 +940,7 @@ On Error Resume Next
         cn.Execute Sql, rdExecDirect
         
         nFicha = !FichaDivida
-        If nFicha = 148 Then nFicha = 156
+        'If nFicha = 148 Then nFicha = 156
         Sql = "select ficha from fichacontabil where ficha_old=" & nFicha
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         nFichaNova = RdoAux2!Ficha
@@ -949,7 +949,7 @@ On Error Resume Next
         cn.Execute Sql, rdExecDirect
         
         nFicha = !FichaDaJrMul
-        If nFicha = 148 Then nFicha = 156
+        'If nFicha = 148 Then nFicha = 156
         Sql = "select ficha from fichacontabil where ficha_old=" & nFicha
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         nFichaNova = RdoAux2!Ficha
@@ -996,7 +996,7 @@ On Error Resume Next
 End With
     
     
-proximo:
+Proximo:
 
 MsgBox "fim"
 

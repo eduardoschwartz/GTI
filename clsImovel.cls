@@ -145,7 +145,7 @@ With RdoC
          Imune = IIf(IsNull(!Imune), False, !Imune)
          Conjugado = IIf(IsNull(!Conjugado), False, True)
          ResideImovel = IIf(IsNull(!ResideImovel), 1, !ResideImovel)
-         IsentoCIP = IIf(IsNull(!Cip), 0, !Cip)
+         IsentoCIP = IIf(IsNull(!cip), 0, !cip)
          Ee_TipoEnd = IIf(IsNull(!Ee_TipoEnd), 0, !Ee_TipoEnd)
          Dc_QtdeEdif = Val(SubNull(!Dc_QtdeEdif))
          Dc_QtdePav = Val(SubNull(!Dc_QtdePav))
@@ -162,7 +162,7 @@ With RdoC
          DescPedologia = !DescPedologia
          DescTopografia = !DescTopografia
          CodPropPrincipal = !CodCidadao
-         NomePropPrincipal = !nomecidadao
+         NomePropPrincipal = !Nomecidadao
          DescBairro = SubNull(!DescBairro)
          DescDistrito = !DescDistrito
          Ee_CodLog = Val(SubNull(!Ee_CodLog))
@@ -240,7 +240,7 @@ With RdoC
     x = 1
     Do Until .EOF
        aProp(x, 1) = !CodCidadao
-       aProp(x, 2) = !nomecidadao
+       aProp(x, 2) = !Nomecidadao
        aProp(x, 3) = !tipoprop
        aProp(x, 4) = !principal
        Sql = "SELECT  espolio.codigo, tipousuario.nome FROM  espolio INNER JOIN  tipousuario ON espolio.tipo = tipousuario.codigo where espolio.codigo=" & !CodCidadao
@@ -274,7 +274,7 @@ With RdoC
     x = 1
     Do Until .EOF
        aProp(x, 1) = !CodCidadao
-       aProp(x, 2) = !nomecidadao
+       aProp(x, 2) = !Nomecidadao
        aProp(x, 3) = "P"
        aProp(x, 4) = 1
        x = x + 1
@@ -357,7 +357,11 @@ With RdoC
           End If
          .Close
        End With
-       FracaoIdeal = FormatNumber(SubNull(!CD_FRACAO), 2)
+       If Not IsNull(!CD_FRACAO) Then
+        FracaoIdeal = FormatNumber(SubNull(!CD_FRACAO), 2)
+       Else
+        FracaoIdeal = 0
+       End If
        If IsNull(!CD_PROP) Then
           CodProp = 0
        Else
@@ -368,7 +372,7 @@ With RdoC
        If RdoAux.RowCount = 0 Then
             Proprietario = ""
        Else
-            Proprietario = RdoAux!nomecidadao
+            Proprietario = RdoAux!Nomecidadao
        End If
        RdoAux.Close
        
@@ -1044,6 +1048,7 @@ Public Sub RetornaEndereco(nCodReduz As Long, TySeqEndereco As SeqEndereco, TyTi
 Dim Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, RdoAux3 As rdoResultset, bResidencial As Boolean, bComercial As Boolean
 Dim sCodLogradouro, sEndereco As String, sNumero As String, sComplemento As String, sCodBairro As String
 Dim sBairro As String, sCodCidade As String, sCidade As String, sCep As String, sEstado As String, sValorTotal As String
+Dim BairroReg As Bairro
 DoEvents
 If TySeqEndereco = Imobiliario Then
     Sql = "select * from vwfullimovel2 where codreduzido=" & nCodReduz
@@ -1079,6 +1084,7 @@ If TySeqEndereco = Imobiliario Then
             Sql = "select * from vwfullcidadao where codcidadao=" & !CodCidadao
             Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux3
+                sCodLogradouro = SubNull(!CodLogradouro)
                 If (SubNull(!etiqueta) = "S" And SubNull(!etiqueta2) = "S") Then
                     'sEndereco = SubNull(!Endereco)
                     sEndereco = SubNull(!endereco_resumido)
@@ -1103,11 +1109,12 @@ If TySeqEndereco = Imobiliario Then
                         sCep = RetornaNumero(SubNull(!Cep))
                     End If
                     sEstado = SubNull(!SiglaUF)
-                    GoTo fim
+                    GoTo Fim
                 End If
             
                 If (IsNull(!etiqueta2) Or SubNull(!etiqueta2) = "N") Then
                     'sEndereco = SubNull(!Endereco)
+                    
                     sEndereco = SubNull(!endereco_resumido)
                     If sEndereco = "" Then sEndereco = SubNull(!Endereco)
                     sNumero = SubNull(!NUMIMOVEL)
@@ -1130,6 +1137,7 @@ If TySeqEndereco = Imobiliario Then
                         sCep = RetornaNumero(SubNull(!Cep))
                     End If
                     sEstado = SubNull(!SiglaUF)
+                    
                 Else
                     sEndereco = SubNull(!NomeLogradouroC)
                     If sEndereco = "" Then
@@ -1313,20 +1321,21 @@ ElseIf TySeqEndereco = cidadao Then
         
         
         If bResidencial And bComercial Then
-            ButtonText(0) = "Residencial"
-            ButtonText(1) = "Comercial"
+            bComercial = False
+'            ButtonText(0) = "Residencial"
+ '           ButtonText(1) = "Comercial"
             'Set up the CBT hook
-            hInst = GetWindowLong(frmMdi.HWND, GWL_HINSTANCE)
-            Thread = GetCurrentThreadId()
-            hHook = SetWindowsHookEx(WH_CBT, AddressOf Manipulate, hInst, Thread)
-            retval = MsgBox("Selecione o tipo de endereço.", vbInformation + vbYesNo, "Tipo de endereço")
-            If retval = vbYes Then 'valor 1
-                bResidencial = True
-                bComercial = False
-            ElseIf retval = vbNo Then 'valor 2
-                bResidencial = False
-                bComercial = True
-            End If
+'            hInst = GetWindowLong(frmMdi.HWND, GWL_HINSTANCE)
+'            Thread = GetCurrentThreadId()
+'            hHook = SetWindowsHookEx(WH_CBT, AddressOf Manipulate, hInst, Thread)
+'            retval = MsgBox("Selecione o tipo de endereço.", vbInformation + vbYesNo, "Tipo de endereço")
+'            If retval = vbYes Then 'valor 1
+'                bResidencial = True
+'                bComercial = False
+'            ElseIf retval = vbNo Then 'valor 2
+ '               bResidencial = False
+ '               bComercial = True
+  '          End If
             
         End If
         
@@ -1366,7 +1375,18 @@ ElseIf TySeqEndereco = cidadao Then
     End With
 End If
 
-fim:
+Fim:
+If Val(sCodCidade) = 413 Then
+    BairroReg = RetornaLogradouroBairro(Val(sCodLogradouro), Val(sNumero))
+    sCodBairro = BairroReg.codigo
+    sBairro = BairroReg.Nome
+    If Trim(sBairro) = "Não cadastrado" Then
+        sCodBairro = 0
+        sBairro = " "
+    End If
+'Else
+'    Bairro = sBairro
+End If
 CodLogradouro = sCodLogradouro
 Endereco = sEndereco
 Numero = sNumero

@@ -604,7 +604,7 @@ s = "Excluída isenção do imóvel para o ano de " & nAno & " por " & NomeDeLogin
 'Sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST,USUARIO,DATAHIST2) VALUES("
 'Sql = Sql & Val(txtCod.Text) & "," & nSeq & ",'" & Format(Now, "dd/mm/yyyy") & "','" & Mask(s) & "','GTI','" & Format(Now, "mm/dd/yyyy") & "')"
 Sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST,USERID,DATAHIST2) VALUES("
-Sql = Sql & Val(txtCod.Text) & "," & nSeq & ",'" & Format(Now, "dd/mm/yyyy") & "','" & Mask(s) & "',236,'" & Format(Now, "mm/dd/yyyy") & "')"
+Sql = Sql & Val(txtCod.Text) & "," & nSeq & ",'" & Format(Now, "dd/mm/yyyy") & "','" & Mask(s) & "'," & RetornaUsuarioID(NomeDeLogin) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
 cn.Execute Sql, rdExecDirect
 cmdGravar_Click
 
@@ -640,7 +640,7 @@ Do Until .EOF
     Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux2
         sCodInscricao = !CodCidadao
-        sContribuinte = !NomeCidadao
+        sContribuinte = !Nomecidadao
         sEndEntrega = !Endereco & ", " & !NUMIMOVEL
         sComplEntrega = !Complemento
         If !CodLogradouro > 0 Then
@@ -666,7 +666,7 @@ Proximo:
    .Close
 End With
 Liberado
-frmReport.ShowReport "ETIQUETACONSIST", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport "ETIQUETACONSIST", frmMdi.HWND, Me.HWND
 Sql = "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'"
 cn.Execute Sql, rdExecDirect
 
@@ -846,9 +846,9 @@ With RdoAux
             End If
             
             If IsNull(!dataaltera) Then
-                grdTemp.AddItem !anoisencao & Chr(9) & sTipo & Chr(9) & sPeriodo & Chr(9) & Val(SubNull(!FILANTROPICO)) & Chr(9) & !percisencao & Chr(9) & SubNull(!numprocesso) & Chr(9) & IIf(IsNull(!DATAPROCESSO), "", Format(!DATAPROCESSO, "dd/mm/yyyy")) & Chr(9) & SubNull(!MOTIVO) & Chr(9) & SubNull(!NomeLogin)
+                grdTemp.AddItem !anoisencao & Chr(9) & sTipo & Chr(9) & sPeriodo & Chr(9) & Val(SubNull(!FILANTROPICO)) & Chr(9) & !percisencao & Chr(9) & SubNull(!NumProcesso) & Chr(9) & IIf(IsNull(!DATAPROCESSO), "", Format(!DATAPROCESSO, "dd/mm/yyyy")) & Chr(9) & SubNull(!MOTIVO) & Chr(9) & SubNull(!NomeLogin)
             Else
-                grdTemp.AddItem !anoisencao & Chr(9) & sTipo & Chr(9) & sPeriodo & Chr(9) & Val(SubNull(!FILANTROPICO)) & Chr(9) & !percisencao & Chr(9) & SubNull(!numprocesso) & Chr(9) & IIf(IsNull(!DATAPROCESSO), "", Format(!DATAPROCESSO, "dd/mm/yyyy")) & Chr(9) & SubNull(!MOTIVO) & Chr(9) & SubNull(!NomeLogin) & Chr(9) & Format(!dataaltera, "dd/mm/yyyy")
+                grdTemp.AddItem !anoisencao & Chr(9) & sTipo & Chr(9) & sPeriodo & Chr(9) & Val(SubNull(!FILANTROPICO)) & Chr(9) & !percisencao & Chr(9) & SubNull(!NumProcesso) & Chr(9) & IIf(IsNull(!DATAPROCESSO), "", Format(!DATAPROCESSO, "dd/mm/yyyy")) & Chr(9) & SubNull(!MOTIVO) & Chr(9) & SubNull(!NomeLogin) & Chr(9) & Format(!dataaltera, "dd/mm/yyyy")
             End If
            .MoveNext
         Loop

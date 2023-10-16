@@ -372,6 +372,42 @@ Private Type tLic
     AtividadesAuxiliares As String
 End Type
 
+Private Type Registro
+    Protocolo As String
+    Cnpj As String
+    Evento As String
+    NomeEmpresarial As String
+    MatrizFilial As String
+    DataAberturaEstabelecimento As Date
+    DataAberturaEmpresa As Date
+    Logradouro As String
+    Numero As String
+    Complementos As String
+    Bairro As String
+    Cep As String
+    Municipio As String
+    Referencia As String
+    EmpresaEstabelecimento As String
+    NaturezaJuridica As String
+    OrgaoRegistro As String
+    NumeroOrgaoRegistro As String
+    CapitalSocial As String
+    CpfResponsavel As String
+    NomeResponsavel As String
+    QualificacaoResponsavel As String
+    TelefoneResponsavel As String
+    EmailResponsavel As String
+    PorteEmpresa As String
+    CnaePrincipal As String
+    CnaeSecundario As String
+    AtividadeAuxiliar As String
+    TipoUnidade As String
+    FormaAtuacao As String
+    Qsa As String
+    CpfRepresentante As String
+    NomeRepresentante As String
+End Type
+
 Private Type tEvento
     Codigo As Integer
     Nome As String

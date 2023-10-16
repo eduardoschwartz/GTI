@@ -6,8 +6,8 @@ Begin VB.Form frmCancelParcelamento
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Cancelamento Manual de Parcelamento"
    ClientHeight    =   6180
-   ClientLeft      =   3495
-   ClientTop       =   2250
+   ClientLeft      =   945
+   ClientTop       =   2640
    ClientWidth     =   8580
    LinkTopic       =   "Form1"
    LockControls    =   -1  'True
@@ -34,7 +34,7 @@ Begin VB.Form frmCancelParcelamento
    End
    Begin prjChameleon.chameleonButton cmdCancelar 
       Height          =   315
-      Left            =   6090
+      Left            =   6045
       TabIndex        =   1
       ToolTipText     =   "Cancelar o parcelamento"
       Top             =   5760
@@ -149,6 +149,46 @@ Begin VB.Form frmCancelParcelamento
       AllowUserResizing=   1
       Appearance      =   0
       FormatString    =   $"frmCancelParcelamento.frx":0145
+   End
+   Begin prjChameleon.chameleonButton cmdPrint 
+      Height          =   315
+      Left            =   4860
+      TabIndex        =   42
+      ToolTipText     =   "Imprimir relatório"
+      Top             =   5760
+      Width           =   1110
+      _ExtentX        =   1958
+      _ExtentY        =   556
+      BTYPE           =   3
+      TX              =   "Imprimir"
+      ENAB            =   -1  'True
+      BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      COLTYPE         =   2
+      FOCUSR          =   0   'False
+      BCOL            =   12632256
+      BCOLO           =   12632256
+      FCOL            =   0
+      FCOLO           =   0
+      MCOL            =   13026246
+      MPTR            =   1
+      MICON           =   "frmCancelParcelamento.frx":01D8
+      PICN            =   "frmCancelParcelamento.frx":01F4
+      UMCOL           =   -1  'True
+      SOFT            =   0   'False
+      PICPOS          =   0
+      NGREY           =   0   'False
+      FX              =   0
+      HAND            =   0   'False
+      CHECK           =   0   'False
+      VALUE           =   0   'False
    End
    Begin VB.Label lblVlNComp 
       Caption         =   "Label4"
@@ -771,6 +811,8 @@ grdOrigem.Rows = 1
 
 End Sub
 
+
+
 Private Sub cmdSair_Click()
 Unload Me
 End Sub
@@ -833,7 +875,7 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If RdoAux.RowCount > 0 Then
          If sTipoCod = "I" Or sTipoCod = "C" Then
-            lblNome.Caption = !NomeCidadao
+            lblNome.Caption = !Nomecidadao
          ElseIf sTipoCod = "M" Then
             lblNome.Caption = !RazaoSocial
          End If
@@ -1339,7 +1381,7 @@ Sql = Sql & "ORDER BY destinoreparc.codreduzido, destinoreparc.numprocesso, dest
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-        sNumProc = !numprocesso
+        sNumProc = !NUMPROCESSO
         nCodReduzido = !CODREDUZIDO
         nAno = !AnoExercicio
         nLanc = !CodLancamento
@@ -1386,7 +1428,7 @@ With RdoAux
                     Else
                         nPrincipal = nPrincipal + !ValorTributo
                     End If
-proximo:
+Proximo:
                     .MoveNext
                 Loop
               End If
@@ -1403,3 +1445,119 @@ proximo:
 End With
 
 End Sub
+
+Private Sub cmdPrint_Click()
+Dim Sql As String, RdoAux As rdoResultset, nCodigo As Long, nUserID As Integer, sProcesso As String, dDataParcelamento As Date
+Dim sDataCancel As String, nQtdeParc As Integer, nQtdeParcPG As Integer, nValorTotalPago As Double, nValorHon As Double, nValorNPago As Double
+Dim nValorJurosApl As Double, nValorCorrecaoApl As Double, nValorCompensar As Double, nPercCom As Double
+Dim sNome As String, nAno As Integer, nLanc As Integer, nSeqFator As Integer, nParc As Integer, nCompl As Integer
+Dim dDataVencto As Date, nPrincipal As Double, nJuros As Double, nCorrecao As Double, nValorParcela As Double
+Dim sDataPagto As String, nValorPago As Double, x As Integer, sSituacao As String
+
+If grdDestino.Rows = 1 Then Exit Sub
+
+nUserID = RetornaUsuarioID(NomeDeLogin)
+Sql = "delete from parcelamento_cancel_header where userid=" & nUserID
+cn.Execute Sql, rdExecDirect
+Sql = "delete from parcelamento_cancel_destino where userid=" & nUserID
+cn.Execute Sql, rdExecDirect
+Sql = "delete from parcelamento_cancel_origem where userid=" & nUserID
+cn.Execute Sql, rdExecDirect
+
+
+nCodigo = Val(txtCod.Text)
+
+sNome = lblNome.Caption
+sProcesso = txtNumProc.Text
+dDataParcelamento = CDate(Format(lblDataParc.Caption, "dd/mm/yyyy"))
+If lblDataCancel.Caption <> "" Then
+    sDataCancel = Format(lblDataCancel.Caption, "dd/mm/yyyy")
+Else
+    sDataCancel = "N/D"
+End If
+nQtdeParc = Val(lblQtdeParc.Caption)
+nQtdeParcPG = Val(lblQtdePago.Caption)
+nValorTotalPago = CDbl(lblValorPago.Caption)
+nValorHon = CDbl(lblValorHonorario.Caption)
+nValorNPago = CDbl(lblValorTotal.Caption)
+nValorJurosApl = CDbl(lblValorJuros.Caption)
+nValorCorrecaoApl = CDbl(lblValorCorrecao.Caption)
+nValorCompensar = CDbl(lblValorCompensar.Caption)
+nPercCom = CDbl(Left(lblPerc.Caption, Len(lblPerc.Caption) - 1))
+
+Sql = "insert parcelamento_cancel_header(codigo,userid,nome,processo,data_parcelamento,data_cancelamento,qtde_parc,qtde_parc_paga,"
+Sql = Sql & "valor_total_pago,valor_honorario,valor_nao_pago,valor_juros_apl,valor_correcao_apl,valor_compensar,perc_comp) values("
+Sql = Sql & nCodigo & "," & nUserID & ",'" & Mask(sNome) & "','" & sProcesso & "','" & Format(dDataParcelamento, "mm/dd/yyyy") & "','"
+Sql = Sql & Format(dDataCancel, "mm/dd/yyyy") & "'," & nQtdeParc & "," & nQtdeParcPG & "," & Virg2Ponto(CStr(nValorTotalPago)) & ","
+Sql = Sql & Virg2Ponto(CStr(nValorHon)) & "," & Virg2Ponto(CStr(nValorNPago)) & "," & Virg2Ponto(CStr(nValorJurosApl)) & ","
+Sql = Sql & Virg2Ponto(CStr(nValorCorrecaoApl)) & "," & Virg2Ponto(CStr(nValorCompensar)) & "," & Virg2Ponto(CStr(nPercCom)) & ")"
+cn.Execute Sql, rdExecDirect
+
+With grdDestino
+    For x = 1 To .Rows - 1
+        nAno = .TextMatrix(x, 0)
+        nLanc = .TextMatrix(x, 1)
+        nSeq = .TextMatrix(x, 2)
+        nParc = .TextMatrix(x, 3)
+        nCompl = .TextMatrix(x, 4)
+        dDataVencto = CDate(.TextMatrix(x, 5))
+        nPrincipal = CDbl(.TextMatrix(x, 6))
+        nJuros = CDbl(.TextMatrix(x, 7))
+        nCorrecao = CDbl(.TextMatrix(x, 8))
+        sDataPagto = .TextMatrix(x, 9)
+        nValorPago = CDbl(.TextMatrix(x, 10))
+        Sql = "insert parcelamento_cancel_destino(codigo,userid,ano,lanc,seq,parc,compl,data_vencto,principal,juros,correcao,data_pagto,valor_pago) values("
+        Sql = Sql & nCodigo & "," & nUserID & "," & nAno & "," & nLanc & "," & nParc & "," & nSeq & "," & nCompl & ",'" & Format(dDataVencto, "mm/dd/yyyy") & "',"
+        Sql = Sql & Virg2Ponto(CStr(nPrincipal)) & "," & Virg2Ponto(CStr(nJuros)) & "," & Virg2Ponto(CStr(nCorrecao)) & ",'" & sDataPagto & "',"
+        Sql = Sql & Virg2Ponto(CStr(nValorPago)) & ")"
+        cn.Execute Sql, rdExecDirect
+    Next
+End With
+
+With grdOrigem
+    For x = 1 To .Rows - 1
+        nAno = .TextMatrix(x, 0)
+        nLanc = .TextMatrix(x, 1)
+        nSeq = .TextMatrix(x, 2)
+        nParc = .TextMatrix(x, 3)
+        nCompl = .TextMatrix(x, 4)
+        dDataVencto = CDate(.TextMatrix(x, 5))
+        If .TextMatrix(x, 6) = "N/A" Then
+            nPrincipal = 0
+        Else
+            nPrincipal = CDbl(.TextMatrix(x, 6))
+        End If
+        nValorParcela = CDbl(.TextMatrix(x, 7))
+        sSituacao = .TextMatrix(x, 8)
+        Sql = "insert parcelamento_cancel_origem(codigo,userid,ano,lanc,seq,parc,compl,data_vencto,vlprincipal,vlparcela,situacao) values("
+        Sql = Sql & nCodigo & "," & nUserID & "," & nAno & "," & nLanc & "," & nParc & "," & nSeq & "," & nCompl & ",'" & Format(dDataVencto, "mm/dd/yyyy") & "',"
+        Sql = Sql & Virg2Ponto(CStr(nPrincipal)) & "," & Virg2Ponto(CStr(nValorParcela)) & ",'" & sSituacao & "')"
+        cn.Execute Sql, rdExecDirect
+    Next
+End With
+
+ 
+frmReport.ShowReport3 "PARCELAMENTO_CANCEL", frmMdi.HWND, Me.HWND
+
+End Sub
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

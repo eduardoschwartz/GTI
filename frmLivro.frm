@@ -255,14 +255,14 @@ With RdoAux
             End If
            .Close
        End With
-       If Not IsNull(!DATAABERTURA) Then mskDataIni.Text = Format(!DATAABERTURA, "dd/mm/yyyy")
+       If Not IsNull(!DataAbertura) Then mskDataIni.Text = Format(!DataAbertura, "dd/mm/yyyy")
        If Not IsNull(!dataencerramento) Then lblDataFim.Caption = Format(!dataencerramento, "dd/mm/yyyy")
     Else
        bNovo = True
        Sql = "SELECT MAX(NUMERO) AS MAXIMO FROM LIVRO"
        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-       If Not IsNull(RdoAux2!MAXIMO) Then
-          nLast = RdoAux2!MAXIMO
+       If Not IsNull(RdoAux2!maximo) Then
+          nLast = RdoAux2!maximo
        Else
           nLast = 0
        End If
@@ -295,8 +295,8 @@ End With
 Sql = "SELECT MAX(ANO) AS MAXIMO FROM LIVRO WHERE CODTIPO=" & cmbTipo.ItemData(cmbTipo.ListIndex)
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
-    If Not IsNull(!MAXIMO) Then
-        nLastYear = !MAXIMO
+    If Not IsNull(!maximo) Then
+        nLastYear = !maximo
        .Close
     Else
         nLastYear = Year(Now)

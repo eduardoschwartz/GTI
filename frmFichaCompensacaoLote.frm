@@ -749,7 +749,7 @@ With RdoAux
         itmX.SubItems(2) = Format(!Datadocumento, "dd/mm/yyyy")
         itmX.SubItems(3) = Format(!valor_documento, "#0.00")
         itmX.SubItems(4) = !Nome
-        itmX.SubItems(5) = !cpf
+        itmX.SubItems(5) = RetornaNumero(!cpf)
         itmX.SubItems(6) = !Endereco
         If !Bairro = "" Then
             itmX.SubItems(7) = "CENTRO"
@@ -864,7 +864,7 @@ If fso.FolderExists(sPath) = False Then
     fso.CreateFolder (sPath)
 End If
 
-
+'sPath = "c:\tmp"
 sFileName = Format(nSeq, "000") & "11" & RetornaNumero(Format(Now, "dd/mm/yyyy"))
 sArquivo = sPath & "\" & sFileName
 ReDim aBoletos(0)
@@ -875,12 +875,18 @@ cn.Execute Sql, rdExecDirect
 
 For x = 1 To lvOrigem.ListItems.Count
     nNumDoc = CLng(lvOrigem.ListItems(x).Text)
+    'If nNumDoc = 19839006 Then MsgBox "teste"
+    
     dDataVencto = CDate(lvOrigem.ListItems(x).SubItems(1))
     nValorGuia = CDbl(lvOrigem.ListItems(x).SubItems(3))
     sNome = lvOrigem.ListItems(x).SubItems(4)
     sCPFCNPJ = lvOrigem.ListItems(x).SubItems(5)
     sEndereco = sfuncVBCRLFremoved(lvOrigem.ListItems(x).SubItems(6))
-    sBairro = sfuncVBCRLFremoved(lvOrigem.ListItems(x).SubItems(7))
+    If Len(lvOrigem.ListItems(x).SubItems(7)) > 1 Then
+        sBairro = sfuncVBCRLFremoved(lvOrigem.ListItems(x).SubItems(7))
+    Else
+        sBairro = lvOrigem.ListItems(x).SubItems(7)
+    End If
     sCep = lvOrigem.ListItems(x).SubItems(8)
     sCidade = lvOrigem.ListItems(x).SubItems(9)
     sUF = lvOrigem.ListItems(x).SubItems(10)
@@ -908,7 +914,11 @@ For x = 1 To lvOrigem.ListItems.Count
     aBoletos(UBound(aBoletos)).nNumeroInscricao = sCPFCNPJ
     aBoletos(UBound(aBoletos)).sNome = Left(sNome, 40)
     aBoletos(UBound(aBoletos)).sEndereco = sfuncVBCRLFremoved(Left(sEndereco, 40))
-    aBoletos(UBound(aBoletos)).sBairro = sfuncVBCRLFremoved(Left(sBairro, 15))
+    If Len(sBairro) > 1 Then
+        aBoletos(UBound(aBoletos)).sBairro = sfuncVBCRLFremoved(Left(sBairro, 15))
+    Else
+        aBoletos(UBound(aBoletos)).sBairro = sBairro
+    End If
     aBoletos(UBound(aBoletos)).sCep = Left(sCep, 5)
     aBoletos(UBound(aBoletos)).sSufixoCep = Right(sCep, 3)
     aBoletos(UBound(aBoletos)).sCidade = sCidade

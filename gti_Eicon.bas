@@ -9,8 +9,6 @@ Dim nCodCidadao As Long, sNome As String, nCodLogr As Long, nTipoEnd As String
 
 ConectaEicon
 
-
-
 Sql = "select codigo from eicon_empresa order by codigo"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
@@ -23,7 +21,7 @@ With RdoAux
         Sql = "select * from vwfullempresa3 where codigomob=" & nCodigo
         Set RdoEmp = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoEmp
-            sIE = RetornaNumero(SubNull(!INSCESTADUAL))
+            sIE = RetornaNumero(SubNull(!inscestadual))
             sRazao = !RazaoSocial
             sFantasia = SubNull(!NOMEFANTASIA)
             sNumProcesso = SubNull(!NUMPROCESSO)
@@ -32,10 +30,10 @@ With RdoAux
                 sDoc = RetornaNumero(!Cnpj)
             Else
                 sTipoEmpresa = "F"
-                sDoc = RetornaNumero(SubNull(!CPF))
+                sDoc = RetornaNumero(SubNull(!cpf))
             End If
             If Len(sDoc) < 2 Then sTipoEmpresa = "J"
-            sDataAbertura = Format(!DATAABERTURA, "dd/mm/yyyy")
+            sDataAbertura = Format(!DataAbertura, "dd/mm/yyyy")
             If IsNull(!dataencerramento) Then
                 sDataEncerramento = ""
             Else
@@ -48,11 +46,11 @@ With RdoAux
             sCompl = SubNull(!Complemento)
             sBairro = SubNull(!DescBairro)
             sCep = RetornaNumero(RetornaCEP(!CodLogradouro, !Numero))
-            sCidade = SubNull(!desccidade)
+            sCidade = SubNull(!descCidade)
             sUF = SubNull(!SiglaUF)
-            sFone = Left(RetornaNumero(SubNull(!FONECONTATO)), 15)
+            sFone = Left(RetornaNumero(SubNull(!fonecontato)), 15)
             sFax = Left(RetornaNumero(SubNull(!faxcontato)), 15)
-            sEmail = SubNull(!EMAILCONTATO)
+            sEmail = SubNull(!emailcontato)
             
             Sql = "select codtributo from mobiliarioatividadeiss where codmobiliario=" & nCodigo
             Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -72,7 +70,7 @@ With RdoAux
             RdoAux2.Close
             If sRegime = "V" Then sRegime = "A"
             If sRegime = "E" Then segime = "T"
-            nArea = IIf(IsNull(!AREATL), 0, !AREATL)
+            nArea = IIf(IsNull(!areatl), 0, !areatl)
            .Close
            
         End With
@@ -147,16 +145,16 @@ With RdoAux
         With RdoProp
             Do Until .EOF
                 nCodEmpresa = !codmobiliario
-                sNome = !nomecidadao
+                sNome = !Nomecidadao
                 Sql = "select num_cadastro from tb_inter_socios where num_cadastro=" & nCodEmpresa & " and nome_socio='" & sNome & "' and controle is null"
                 Set RdoAux2 = cnEicon2.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 If RdoAux2.RowCount > 0 Then
                     RdoAux2.Close
-                    GoTo PROXIMO
+                    GoTo Proximo
                 End If
                 RdoAux2.Close
                 
-                sDoc = RetornaNumero(SubNull(!CPF))
+                sDoc = RetornaNumero(SubNull(!cpf))
                 
                 If Not IsNull(etiqueta2) Then
                     sTipoEnd = "C"
@@ -183,7 +181,7 @@ With RdoAux
                     sCidade = SubNull(!descidade)
                     sUF = SubNull(!SiglaUF)
                     sFone = SubNull(!telefone)
-                    sEmail = SubNull(!email)
+                    sEmail = SubNull(!Email)
                 Else
                     sTipoLog = SubNull(!AbrevTipoLogC)
                     sTitLog = SubNull(!AbrevTitLogC)
@@ -202,7 +200,7 @@ With RdoAux
                     End If
                     sCidade = SubNull(!desccidadeC)
                     sUF = SubNull(!SiglaUF2)
-                    sFone = SubNull(!TELEFONE2)
+                    sFone = SubNull(!Telefone2)
                     sEmail = SubNull(!EMAIL2)
                 End If
                 
@@ -222,7 +220,7 @@ With RdoAux
             RdoProp.Close
         End With
         
-PROXIMO:
+Proximo:
         DoEvents
         RdoAux.MoveNext
     Loop

@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Object = "{F48120B2-B059-11D7-BF14-0010B5B69B54}#1.0#0"; "esMaskEdit.ocx"
 Begin VB.Form frmResumoProtocolo 
@@ -544,7 +544,7 @@ Attribute VB_Exposed = False
 Dim Sql As String, RdoAux As rdoResultset
 
 Private Sub chkAll_Click()
-If chkAll.Value = vbChecked Then
+If chkAll.value = vbChecked Then
     CheckAll
     cmdDDList.Enabled = False
 Else
@@ -555,7 +555,7 @@ End Sub
 
 
 Private Sub cmdDDList_Click()
-If cmdDDList.Value = True Then
+If cmdDDList.value = True Then
     frDDList.ZOrder 0
     frDDList.Height = 2580
 Else
@@ -571,7 +571,7 @@ Private Sub cmdEtiqueta_Click()
 Dim x As Integer, sAssunto As String, aCodigo() As Long
 Dim RdoAux As rdoResultset, RdoAux2 As rdoResultset, RdoAux3 As rdoResultset, Sql As String
 Dim xId As Long, nNumRec As Long, nCodLogr As Long, sCodInscricao As String, sContribuinte As String
-Dim sEnd As String, nNum As Integer, sCEP As String, sCompl As String, sBairro As String
+Dim sEnd As String, nNum As Integer, sCep As String, sCompl As String, sBairro As String
 Dim sEndEntrega As String, sBairroEntrega As String, sCidEntrega As String, sCepEntrega As String, sUFEntrega As String, sNumEntrega As String
 
 ReDim aCodigo(0)
@@ -594,8 +594,8 @@ If sAssunto = "" Then
 End If
 sAssunto = Left$(sAssunto, Len(sAssunto) - 1)
 txtAssunto.Text = sAssunto
-If chkTramite.Value = 1 Then
-    frmReport.ShowReport "TRAMITEABERTOLOCAL", frmMdi.hwnd, Me.hwnd
+If chkTramite.value = 1 Then
+    frmReport.ShowReport "TRAMITEABERTOLOCAL", frmMdi.HWND, Me.HWND
     Exit Sub
 End If
 
@@ -655,7 +655,7 @@ For x = 1 To UBound(aCodigo)
     Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux3
         sCodInscricao = Format(!CodCidadao, "000000")
-        sContribuinte = !nomecidadao
+        sContribuinte = !Nomecidadao
         If IsNull(!NomeLogradouro) Then
             sEnd = !Rua & CStr(SubNull(!NUMIMOVEL))
         Else
@@ -670,12 +670,12 @@ For x = 1 To UBound(aCodigo)
     '    If IsNull(!desccidade) Then
      '       sCidade = SubNull(!NomeCidade)
       '  Else
-            sCidade = SubNull(!desccidade)
+            sCidade = SubNull(!descCidade)
        ' End If
-        sCEP = SubNull(!Cep)
-        sUF = SubNull(!siglauf)
+        sCep = SubNull(!Cep)
+        sUF = SubNull(!SiglaUF)
         If sCidade = "JABOTICABAL" And !CodLogradouro > 0 Then
-            sCEP = RetornaCEP(!CodLogradouro, !NUMIMOVEL)
+            sCep = RetornaCEP(!CodLogradouro, !NUMIMOVEL)
         End If
         .Close
     End With
@@ -684,7 +684,7 @@ For x = 1 To UBound(aCodigo)
     sEndEntrega = sEnd
     sBairroEntrega = sBairro
     sCidEntrega = sCidade
-    sCepEntrega = sCEP
+    sCepEntrega = sCep
     sComplEntrega = sCompl
     sUFEntrega = sUF
     
@@ -697,7 +697,7 @@ For x = 1 To UBound(aCodigo)
 PROXIMO2:
    
 Next
-frmReport.ShowReport "ETIQUETACONSIST", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport "ETIQUETACONSIST", frmMdi.HWND, Me.HWND
 
 Sql = "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'"
 cn.Execute Sql, rdExecDirect
@@ -727,8 +727,8 @@ If sAssunto = "" Then
 End If
 sAssunto = Left$(sAssunto, Len(sAssunto) - 1)
 txtAssunto.Text = sAssunto
-If chkTramite.Value = 1 Then
-    frmReport.ShowReport "TRAMITEABERTOLOCAL", frmMdi.hwnd, Me.hwnd
+If chkTramite.value = 1 Then
+    frmReport.ShowReport "TRAMITEABERTOLOCAL", frmMdi.HWND, Me.HWND
     Exit Sub
 End If
 
@@ -746,7 +746,7 @@ If CDate(mskDataDe.Text) > CDate(mskDataAte.Text) Then
    MsgBox "Data inicial maior que a final.", vbExclamation, "Atenção"
    Exit Sub
 End If
-             
+Ocupado
 Sql = "DELETE FROM RESUMODIARIO WHERE USUARIO='" & NomeDoUsuario & "'"
 cn.Execute Sql, rdExecDirect
 If cmbArquivado.ListIndex = 1 Then
@@ -782,31 +782,31 @@ Sql = Sql & " ORDER BY ANO,NUMERO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
        Do Until .EOF
-            If Not IsNull(!nomecidadao) Then
-                sTexto1 = !nomecidadao
+            If Not IsNull(!Nomecidadao) Then
+                sTexto1 = !Nomecidadao
             Else
-                If Not IsNull(!DESCRICAO) Then
-                        sTexto1 = !DESCRICAO
+                If Not IsNull(!Descricao) Then
+                        sTexto1 = !Descricao
                 Else
                         sTexto1 = ""
                 End If
             End If
             On Error Resume Next
             Sql = "INSERT RESUMODIARIO(USUARIO,NUMPROCESSO,DATAENTRADA,CODASSUNTO,ASSUNTO,REQUERENTE,FISICO,INTERNO,DATADE,DATAATE,COMPLEMENTO,DATAARQUIVA,ANOPROC,NUMPROC) VALUES('"
-            Sql = Sql & NomeDoUsuario & "','" & CStr(!Numero) & "-" & RetornaDVProcesso(!Numero) & "/" & CStr(!Ano) & "','" & Format(!DATAENTRADA, "mm/dd/yyyy") & "'," & !CODASSUNTO & ",'" & Mask(Left$(!Complemento, 150)) & "','"
-            Sql = Sql & Mask(Left$(Mask(sTexto1), 30)) & "','" & IIf(!FISICO = True, "S", "N") & "','" & IIf(!INTERNO = True, "S", "N") & "','" & CStr(mskDataDe.Text) & "','" & CStr(mskDataAte.Text) & "','" & SubNull(!nome) & "','"
-            Sql = Sql & Format(!DATAARQUIVA, "mm/dd/yyyy") & "'," & !Ano & "," & !Numero & ")"
+            Sql = Sql & NomeDoUsuario & "','" & CStr(!Numero) & "-" & RetornaDVProcesso(!Numero) & "/" & CStr(!ano) & "','" & Format(!DATAENTRADA, "mm/dd/yyyy") & "'," & !CODASSUNTO & ",'" & Mask(Left$(!Complemento, 150)) & "','"
+            Sql = Sql & Mask(Left$(Mask(sTexto1), 30)) & "','" & IIf(!FISICO = True, "S", "N") & "','" & IIf(!INTERNO = True, "S", "N") & "','" & CStr(mskDataDe.Text) & "','" & CStr(mskDataAte.Text) & "','" & SubNull(!Nome) & "','"
+            Sql = Sql & Format(!DATAARQUIVA, "mm/dd/yyyy") & "'," & !ano & "," & !Numero & ")"
             cn.Execute Sql, rdExecDirect
             DoEvents
             .MoveNext
        Loop
       .Close
 End With
-
+Liberado
 If cmbOrder.ListIndex = 0 Then
-    frmReport.ShowReport "RESUMOPROTOCOLO", frmMdi.hwnd, Me.hwnd
+    frmReport.ShowReport "RESUMOPROTOCOLO", frmMdi.HWND, Me.HWND
 Else
-    frmReport.ShowReport "RESUMOPROTOCOLOREQ", frmMdi.hwnd, Me.hwnd
+    frmReport.ShowReport "RESUMOPROTOCOLOREQ", frmMdi.HWND, Me.HWND
 End If
 
 End Sub
@@ -833,8 +833,8 @@ Sql = "SELECT CODIGO,DESCRICAO FROM CENTROCUSTO ORDER BY DESCRICAO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
         Do Until .EOF
-             cmbSetor.AddItem !DESCRICAO
-             cmbSetor.ItemData(cmbSetor.NewIndex) = !Codigo
+             cmbSetor.AddItem !Descricao
+             cmbSetor.ItemData(cmbSetor.NewIndex) = !codigo
             .MoveNext
         Loop
        .Close
@@ -860,8 +860,8 @@ Sql = "SELECT CODIGO,NOME,ATIVO FROM ASSUNTO ORDER BY NOME"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-        Set itmX = lvDDList.ListItems.Add(, "C" & Format(!Codigo, "0000"), !nome)
-        itmX.SubItems(1) = Format(!Codigo, "0000")
+        Set itmX = lvDDList.ListItems.Add(, "C" & Format(!codigo, "0000"), !Nome)
+        itmX.SubItems(1) = Format(!codigo, "0000")
         itmX.SubItems(2) = IIf(!Ativo = True, "Sim", "Não")
        .MoveNext
     Loop

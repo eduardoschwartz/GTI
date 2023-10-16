@@ -5,8 +5,8 @@ Begin VB.Form frmSituacaoTributaria
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Situação Tributária"
    ClientHeight    =   5325
-   ClientLeft      =   4290
-   ClientTop       =   2850
+   ClientLeft      =   15090
+   ClientTop       =   3195
    ClientWidth     =   9420
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
@@ -206,7 +206,7 @@ With RdoAux
         grdMain.CellDetails grdMain.Rows, 2, !Nome, DT_LEFT
         sRet = Replace(!resultado, "Certidão ", "")
         grdMain.CellDetails grdMain.Rows, 3, sRet, DT_LEFT
-        grdMain.CellDetails grdMain.Rows, 4, !CPF, DT_LEFT
+        grdMain.CellDetails grdMain.Rows, 4, !cpf, DT_LEFT
         grdMain.CellDetails grdMain.Rows, 5, !Cnpj, DT_LEFT
            
        .MoveNext

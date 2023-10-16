@@ -552,17 +552,17 @@ Dim RdoAux As rdoResultset, RdoAux2 As rdoResultset, RdoAux3 As rdoResultset
 Dim nVVP As Double, nVVT As Double, nAreaTotal As Double
 Private Type PROFUNDIDADE
     Distrito As Integer
-    Codigo As Integer
+    codigo As Integer
     Min As Double
     Max As Double
 End Type
 Private Type FATORPROFUN
     Distrito As Integer
-    Codigo As Integer
+    codigo As Integer
     Fator As Double
 End Type
 Private Type GLEBA
-    Codigo As Integer
+    codigo As Integer
     Min As Double
     Max As Double
 End Type
@@ -586,8 +586,8 @@ Private Type ISSELETRO
     Numero As String
     Inscricao As String
     Sequencia As String
-    Ano As String
-    Mes As String
+    ano As String
+    mes As String
     Aliquota As Double
     Tipo As String
     DataVencto As String
@@ -731,7 +731,7 @@ Dim amiqn_guia As String, amiqn_prest_id As String, amiqn_prest_tp As Integer, a
 Dim amiqn_tom_tp As Integer, amiqn_tom_razao As String, amiqn_tom_fora As Integer, amiqn_mes As Integer, amiqn_ano As Integer, amiqn_tipo As Integer, amiqn_dt_incl As String
 Dim amist_im As Long, amist_mes As Integer, amist_ano As Integer, amist_st As Integer, amist_dt_incl As Date
 
-GoTo fim
+GoTo Fim
 
 sPathBackup = "C:\Trabalho\GTI\Diversos\tabelas e catalog\"
 GoTo AMIST
@@ -808,7 +808,7 @@ Open sPathBackup & "amibcv.txt" For Input As FF1
    Loop
 Close #FF1
 
-GoTo fim
+GoTo Fim
 AMIDE:
 lblArq.Caption = "amide.txt"
 lblArq.Refresh
@@ -1170,7 +1170,7 @@ Open sPathBackup & "amineo.txt" For Input As FF1
         DoEvents
    Loop
 Close #FF1
-GoTo fim
+GoTo Fim
 
 AMINF:
 lblArq.Caption = "aminf.txt"
@@ -1278,7 +1278,7 @@ Open sPathBackup & "aminf.txt" For Input As FF1
         DoEvents
    Loop
 Close #FF1
-GoTo fim
+GoTo Fim
 
 AMINFC:
 lblArq.Caption = "aminfc.txt"
@@ -1471,7 +1471,7 @@ Close #FF1
 
 
 
-fim:
+Fim:
 lblArq.Caption = "FIM"
 lblArq.Refresh
 
@@ -1541,7 +1541,7 @@ Dim sDataFim As String, sDataOpcao As String, nAliquota As Integer, sUsuario As 
 Dim aRecord() As String, dDataIni As Date, nPos As Long, nTot As Long
 
 Set cc = New cCommonDlg
-cc.VBGetOpenFileName fName, , , False, , , "Documento de Texto|*.txt", , App.Path & "\Bin", "Selecione o arquivo do simples nacional", , Me.hwnd, OFN_HIDEREADONLY, False
+cc.VBGetOpenFileName fName, , , False, , , "Documento de Texto|*.txt", , App.Path & "\Bin", "Selecione o arquivo do simples nacional", , Me.HWND, OFN_HIDEREADONLY, False
 
 If fName = "" Then Exit Sub
 Ocupado
@@ -1573,7 +1573,7 @@ Do While Not EOF(1)
     
     aRecord = Split(strLinha, ";")
     nCodReduz = CLng(aRecord(0))
-    If Val(nCodReduz) < 100000 Or Val(nCodReduz) > 300000 Then GoTo proximo
+    If Val(nCodReduz) < 100000 Or Val(nCodReduz) > 300000 Then GoTo Proximo
 
     sCNPJ = aRecord(1)
     sDataIni = aRecord(2)
@@ -1603,7 +1603,7 @@ Do While Not EOF(1)
             If RdoAux2.RowCount > 0 Then
                 Do Until .EOF
                     dDataIni = !dataini
-                    If IsNull(!datafim) Then
+                    If IsNull(!Datafim) Then
                         If DateDiff("d", dDataIni, CDate(sDataIni)) > 0 Then
                             Sql = "update periodosn set datafim='" & Format(CDate(sDataIni), "mm/dd/yyyy") & "' where codigo=" & nCodReduz & " and dataini='" & Format(!dataini, "mm/dd/yyyy") & "'"
                             cn.Execute Sql, rdExecDirect
@@ -1641,7 +1641,7 @@ Do While Not EOF(1)
     End If
     nPos = nPos + 1
     DoEvents
-proximo:
+Proximo:
 Loop
 Close #1
 Pb.value = 0
@@ -1657,7 +1657,7 @@ Dim fName As String, cc As cCommonDlg, aName() As String, nFile As Integer
 txtMsg.Text = ""
 Set cc = New cCommonDlg
 'cc.VBGetOpenFileName fName, , , True, , , "Documento de Texto|*.txt;*.prt", , App.Path & "\Bin", "Selecione um ou mais arquivos para importação", , Me.hwnd, OFN_HIDEREADONLY, False
-cc.VBGetOpenFileName fName, , , , , , "Importação de NF|*.txt", , App.Path & "\Bin", "Selecione o arquivo de notas para importação", , Me.hwnd, OFN_HIDEREADONLY, False
+cc.VBGetOpenFileName fName, , , , , , "Importação de NF|*.txt", , App.Path & "\Bin", "Selecione o arquivo de notas para importação", , Me.HWND, OFN_HIDEREADONLY, False
 aName = Split(fName, " ")
 
 If UBound(aName) = -1 Then Exit Sub
@@ -1894,7 +1894,7 @@ Private Sub cmdImport_Click()
 Dim fName As String, cc As cCommonDlg, aName() As String, nFile As Integer
 
 Set cc = New cCommonDlg
-cc.VBGetOpenFileName fName, , , , , , "Importação de guias|*.txt", , App.Path & "\Bin", "Selecione o arquivo de guias para importação", , Me.hwnd, OFN_HIDEREADONLY, False
+cc.VBGetOpenFileName fName, , , , , , "Importação de guias|*.txt", , App.Path & "\Bin", "Selecione o arquivo de guias para importação", , Me.HWND, OFN_HIDEREADONLY, False
 aName = Split(fName, ";")
 
 'If Dir(sPathBin & "\GUIAS.TXT") = "" Then
@@ -1937,7 +1937,7 @@ End If
 txtMsg.Text = ""
 
 Set cc = New cCommonDlg
-cc.VBGetOpenFileName fName, , , , , , "Documento sem Movimento|SEMMOV.CSV", , App.Path & "\Bin", "Selecione o arquivo sem movimento para importação", , Me.hwnd, OFN_HIDEREADONLY, False
+cc.VBGetOpenFileName fName, , , , , , "Documento sem Movimento|SEMMOV.CSV", , App.Path & "\Bin", "Selecione o arquivo sem movimento para importação", , Me.HWND, OFN_HIDEREADONLY, False
 aName = Split(fName, ";")
 Ocupado
 If UBound(aName) = 0 Then
@@ -1950,32 +1950,32 @@ If UBound(aName) = 0 Then
             aRecord = Split(strLinha, ";")
             ReDim Preserve aNota(nPos)
             aNota(nPos).Identificacao = aRecord(0)
-            aNota(nPos).Ano = aRecord(3)
+            aNota(nPos).ano = aRecord(3)
             Select Case UCase(aRecord(2))
                 Case "JANEIRO"
-                    aNota(nPos).Mes = 1
+                    aNota(nPos).mes = 1
                 Case "FEVEREIRO"
-                    aNota(nPos).Mes = 2
+                    aNota(nPos).mes = 2
                 Case "MARÇO", "MARCO"
-                    aNota(nPos).Mes = 3
+                    aNota(nPos).mes = 3
                 Case "ABRIL"
-                    aNota(nPos).Mes = 4
+                    aNota(nPos).mes = 4
                 Case "MAIO"
-                    aNota(nPos).Mes = 5
+                    aNota(nPos).mes = 5
                 Case "JUNHO"
-                    aNota(nPos).Mes = 6
+                    aNota(nPos).mes = 6
                 Case "JULHO"
-                    aNota(nPos).Mes = 7
+                    aNota(nPos).mes = 7
                 Case "AGOSTO"
-                    aNota(nPos).Mes = 8
+                    aNota(nPos).mes = 8
                 Case "SETEMBRO"
-                    aNota(nPos).Mes = 9
+                    aNota(nPos).mes = 9
                 Case "OUTUBRO"
-                    aNota(nPos).Mes = 10
+                    aNota(nPos).mes = 10
                 Case "NOVEMBRO"
-                    aNota(nPos).Mes = 11
+                    aNota(nPos).mes = 11
                 Case "DEZEMBRO"
-                    aNota(nPos).Mes = 12
+                    aNota(nPos).mes = 12
             End Select
             nPos = nPos + 1
        Loop
@@ -1987,10 +1987,10 @@ If UBound(aName) = 0 Then
         CallPb CLng(x), CLng(UBound(aNota))
 
         With aNota(x)
-            Sql = "SELECT * FROM NFISSELETROSMOV WHERE CODIGO=" & .Identificacao & "  AND ANO=" & .Ano & " AND MES=" & .Mes
+            Sql = "SELECT * FROM NFISSELETROSMOV WHERE CODIGO=" & .Identificacao & "  AND ANO=" & .ano & " AND MES=" & .mes
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
             If RdoAux.RowCount = 0 Then
-                Sql = "INSERT NFISSELETROSMOV(CODIGO,ANO,MES,SMOV) VALUES(" & .Identificacao & "," & .Ano & "," & .Mes & ",1)"
+                Sql = "INSERT NFISSELETROSMOV(CODIGO,ANO,MES,SMOV) VALUES(" & .Identificacao & "," & .ano & "," & .mes & ",1)"
                 cn.Execute Sql, rdExecDirect
             End If
             RdoAux.Close
@@ -2048,7 +2048,7 @@ With RdoAux
             If CLng(amigu_id) < 600000 Then
                 amigu_codreduzido = amigu_id
             Else
-                GoTo proximo
+                GoTo Proximo
             End If
         Else
             If Len(amigu_id) = 11 Then
@@ -2086,7 +2086,7 @@ With RdoAux
         Sql = "update obvius_amigu set amigu_codreduzido=" & amigu_codreduzido & ",amigu_numdoc=" & amigu_numdoc & " where amigu_num='" & amigu_guia & "' and "
         Sql = Sql & "amigu_seq=" & amigu_seq
         cn.Execute Sql, rdExecDirect
-proximo:
+Proximo:
         DoEvents
        .MoveNext
     Loop
@@ -2283,7 +2283,7 @@ Select Case nIndex
                     With RdoAux2
                         If .RowCount > 0 Then
                             nCodCid = !CodCidadao
-                            sNomeProp = !nomecidadao
+                            sNomeProp = !Nomecidadao
                         Else
                             nCodCid = 0
                             sNomeProp = ""
@@ -2387,8 +2387,8 @@ Select Case nIndex
                     End If
                     If !codigomob > 190000 And !codigomob < 200000 Then GoTo PROXIMOMOB
 '                    If !CODIGOMOB = 107532 Then MsgBox "TESTE"
-                    If Not IsNull(!CPF) And Val(SubNull(!CPF)) > 0 Then
-                        sDoc = Format(Val(RetornaNumero(!CPF)), "000\.000\.000-00")
+                    If Not IsNull(!cpf) And Val(SubNull(!cpf)) > 0 Then
+                        sDoc = Format(Val(RetornaNumero(!cpf)), "000\.000\.000-00")
                     ElseIf (Not IsNull(!Cnpj)) And (Val(SubNull(!Cnpj)) > 0) Then
                         sDoc = Format(Val(RetornaNumero(!Cnpj)), "000\.000\.000/0000-00")
                     Else
@@ -2416,9 +2416,9 @@ Select Case nIndex
                                 If .RowCount > 0 Then
                                     If z = 1 Then
                                         sCodProp1 = CStr(!CodCidadao)
-                                        sNomeProp1 = !nomecidadao
-                                        If Not IsNull(!CPF) Then
-                                            sCPF1 = Format(Val(RetornaNumero(!CPF)), "000\.000\.000-00")
+                                        sNomeProp1 = !Nomecidadao
+                                        If Not IsNull(!cpf) Then
+                                            sCPF1 = Format(Val(RetornaNumero(!cpf)), "000\.000\.000-00")
                                         End If
                                         If Not IsNull(!NomeLogradouro) Then
                                             sEND1 = !NomeLogradouro & " Nº " & !NUMIMOVEL
@@ -2433,9 +2433,9 @@ Select Case nIndex
                                         sUF1 = SubNull(!SiglaUF)
                                     ElseIf z = 2 Then
                                         sCodProp2 = CStr(!CodCidadao)
-                                        sNomeProp2 = !nomecidadao
-                                        If Not IsNull(!CPF) Then
-                                            sCPF2 = Format(Val(RetornaNumero(!CPF)), "000\.000\.000-00")
+                                        sNomeProp2 = !Nomecidadao
+                                        If Not IsNull(!cpf) Then
+                                            sCPF2 = Format(Val(RetornaNumero(!cpf)), "000\.000\.000-00")
                                         End If
                                         If Not IsNull(!NomeLogradouro) Then
                                             sEND2 = !NomeLogradouro & " Nº " & !NUMIMOVEL
@@ -2460,7 +2460,7 @@ Select Case nIndex
                        .Close
                     End With
                     
-                    ax = sLayout & ";" & !codigomob & ";" & sDoc & ";" & FillSpace(!RazaoSocial, 70) & ";" & FillSpace(SubNull(!NOMEFANTASIA), 70) & ";" & IIf(IsNull(!DATAABERTURA), FillSpace("", 10), Format(!DATAABERTURA, "dd/mm/yyyy")) & ";"
+                    ax = sLayout & ";" & !codigomob & ";" & sDoc & ";" & FillSpace(!RazaoSocial, 70) & ";" & FillSpace(SubNull(!NOMEFANTASIA), 70) & ";" & IIf(IsNull(!DataAbertura), FillSpace("", 10), Format(!DataAbertura, "dd/mm/yyyy")) & ";"
                     ax = ax & IIf(IsNull(!dataencerramento), FillSpace("", 10), Format(!dataencerramento, "dd/mm/yyyy")) & ";" & FillSpace(sCidade, 50) & ";" & FillSpace(!SiglaUF, 2) & ";" & FillLeft(!CodLogradouro, 6) & ";"
                     ax = ax & FillSpace(Val(SubNull(IIf(!CODTIPOLOG = 9999, 0, !CODTIPOLOG))), 15) & ";" & FillSpace(Val(SubNull(IIf(!CODTITLOG = 9999, 0, !CODTITLOG))), 15) & ";" & FillSpace(IIf(IsNull(!NomeLogradouro), SubNull(!NomeLogr), !NomeLogradouro), 50) & ";"
                     ax = ax & FillLeft(Val(SubNull(!Numero)), 4) & ";" & FillSpace(SubNull(!Complemento), 15) & ";" & FillSpace(RetornaNumero(RetornaCEP(!CodLogradouro, !Numero)), 8) & ";" & FillLeft(!codatividade, 6) & ";"
@@ -2492,8 +2492,8 @@ PROXIMOMOB:
                        CallPb nPos, CLng(nTot)
                        lblRegPerc.Caption = nPos
                     End If
-                    If Not IsNull(!CPF) Then
-                        sDoc = RetornaNumero(!CPF)
+                    If Not IsNull(!cpf) Then
+                        sDoc = RetornaNumero(!cpf)
                     ElseIf Not IsNull(!Cnpj) Then
                         sDoc = RetornaNumero(!Cnpj)
                     Else
@@ -2511,7 +2511,7 @@ PROXIMOMOB:
                         End If
                     End If
                     'GRAVA NO ARQUIVO
-                    ax = sLayout & ";" & FillLeft(!CodCidadao, 6) & ";" & FillSpace(sDoc, 11) & ";" & FillSpace(!nomecidadao, 70) & ";" & sDataNascto & ";"
+                    ax = sLayout & ";" & FillLeft(!CodCidadao, 6) & ";" & FillSpace(sDoc, 11) & ";" & FillSpace(!Nomecidadao, 70) & ";" & sDataNascto & ";"
                     ax = ax & FillLeft(CStr(nSexo), 2) & ";" & FillLeft(Val(SubNull(!CodLogradouro)), 6) & ";" & FillSpace(Val(SubNull(!CODTIPOLOG)), 15) & ";"
                     ax = ax & FillSpace(Val(SubNull(IIf(!CODTITLOG = 9999, 0, !CODTITLOG))), 15) & ";" & FillSpace(sEndereco, 50) & ";" & FillLeft(Val(SubNull(!NUMIMOVEL)), 4) & ";"
                     ax = ax & FillSpace(SubNull(!Complemento), 15) & ";" & FillSpace(RetornaNumero(RetornaCEP(Val(SubNull(!CodLogradouro)), Val(SubNull(!NUMIMOVEL)))), 8)
@@ -2534,7 +2534,7 @@ Pb.value = 100: lblRegPerc.Caption = nTot
 End Sub
 
 Private Sub ExportaConsist()
-Dim ax As String, aCodigos() As Long, x As Integer, Y As Integer, nPos As Long, nCPF As Byte, sDoc As String, sDataEncerra As String, RdoAux2 As rdoResultset, sTmp As String, sDataSimples As String
+Dim ax As String, aCodigos() As Long, x As Integer, y As Integer, nPos As Long, nCPF As Byte, sDoc As String, sDataEncerra As String, RdoAux2 As rdoResultset, sTmp As String, sDataSimples As String
 Dim sEnd As String, sCep As String, aAtiv(24) As ATIVIDADES, t As Integer, sAtiv As String, aAliq(24) As Double, bAchou As Boolean, nSimples As Single, nRegEspecial As Single
 
 Open sPathBin & "\PREFJABC.TXT" For Output As #1
@@ -2627,10 +2627,10 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenForwardOnly, rdConcurReadOnly)
 With RdoAux
     Do Until .EOF
         If !TipoISS <> 11 Then
-            ax = Format(!Item, "00000000") & FillSpace(!descatividade, 300) & Format(!Aliquota * 100, "0000") & Format(Day(!Data), "00") & Format(Month(!Data), "00") & Year(!Data) & !RETIDO
+            ax = Format(!Item, "00000000") & FillSpace(!DESCATIVIDADE, 300) & Format(!Aliquota * 100, "0000") & Format(Day(!Data), "00") & Format(Month(!Data), "00") & Year(!Data) & !RETIDO
 '            ax = Format(!codatividade, "00000000") & FillSpace("Item:" & !Item & " " & !descatividade, 300) & Format(!Aliquota * 100, "0000") & Format(Day(!Data), "00") & Format(Month(!Data), "00") & Year(!Data)
         Else
-            ax = Format(!Item, "00000000") & FillSpace(!descatividade, 300) & Format(0, "0000") & Format(Day(!Data), "00") & Format(Month(!Data), "00") & Year(!Data) & !RETIDO
+            ax = Format(!Item, "00000000") & FillSpace(!DESCATIVIDADE, 300) & Format(0, "0000") & Format(Day(!Data), "00") & Format(Month(!Data), "00") & Year(!Data) & !RETIDO
 '            ax = Format(!codatividade, "00000000") & FillSpace("Item:" & !Item & " " & !descatividade, 300) & Format(0, "0000") & Format(Day(!Data), "00") & Format(Month(!Data), "00") & Year(!Data)
         End If
         Print #1, ax
@@ -2670,17 +2670,17 @@ For x = 1 To UBound(aCodigos)
     Sql = "SELECT * FROM VWCNSMOBILIARIO WHERE CODIGOMOB=" & aCodigos(x) & " and (DATAENCERRAMENTO > '10/1/2007'or dataencerramento is null)"
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
     With RdoAux
-        If .RowCount = 0 Then GoTo proximo
+        If .RowCount = 0 Then GoTo Proximo
         ReDim aSimples(6)
-        For Y = 1 To 5
-            aSimples(Y).sDataIni = String(8, " ")
-            aSimples(Y).sDataFim = String(8, " ")
+        For y = 1 To 5
+            aSimples(y).sDataIni = String(8, " ")
+            aSimples(y).sDataFim = String(8, " ")
         Next
         
         nSimples = SNCheck(aCodigos(x))
         nRegEspecial = Val(SubNull(!REGESPECIAL))
         nCPF = IIf(IsNull(!Cnpj), 1, 0)
-        sDoc = IIf(IsNull(!CPF), SubNull(!Cnpj), SubNull(!CPF))
+        sDoc = IIf(IsNull(!cpf), SubNull(!Cnpj), SubNull(!cpf))
         sDataEncerra = "        "
         If Not IsNull(!dataencerramento) Then
             sDataEncerra = Format(!dataencerramento, "yyyymmdd")
@@ -2818,8 +2818,8 @@ proxativ:
         Do Until .EOF
             If .AbsolutePosition > 5 Then Exit Do
             aSimples(.AbsolutePosition).sDataIni = Format(!dataini, "dd/mm/yyyy")
-            If Not IsNull(!datafim) Then
-                aSimples(.AbsolutePosition).sDataFim = Format(!datafim, "dd/mm/yyyy")
+            If Not IsNull(!Datafim) Then
+                aSimples(.AbsolutePosition).sDataFim = Format(!Datafim, "dd/mm/yyyy")
             End If
            .MoveNext
         Loop
@@ -2827,15 +2827,15 @@ proxativ:
     End With
     
     sDataSimples = ""
-    For Y = 5 To 1 Step -1
+    For y = 5 To 1 Step -1
         'sDataSimples = sDataSimples & Left(aSimples(Y).sDataIni, 2) & Mid(aSimples(Y).sDataIni, 4, 2) & Right(aSimples(Y).sDataIni, 4) & Left(aSimples(Y).sDataFim, 2) & Mid(aSimples(Y).sDataFim, 4, 2) & Right(aSimples(Y).sDataFim, 4)
-        sDataSimples = sDataSimples & Right(aSimples(Y).sDataIni, 4) & Mid(aSimples(Y).sDataIni, 4, 2) & Left(aSimples(Y).sDataIni, 2) & Right(aSimples(Y).sDataFim, 4) & Mid(aSimples(Y).sDataFim, 4, 2) & Left(aSimples(Y).sDataFim, 2)
+        sDataSimples = sDataSimples & Right(aSimples(y).sDataIni, 4) & Mid(aSimples(y).sDataIni, 4, 2) & Left(aSimples(y).sDataIni, 2) & Right(aSimples(y).sDataFim, 4) & Mid(aSimples(y).sDataFim, 4, 2) & Left(aSimples(y).sDataFim, 2)
     Next
     ax = ax & sDataSimples & sAtiv
     Print #1, ax
         
 
-proximo:
+Proximo:
 Next
 
 '******* empresa retensao iss
@@ -2855,7 +2855,7 @@ With RdoAux
         With RdoAux2
             If .RowCount > 0 Then
                 nCPF = IIf(IsNull(!Cnpj), 1, 0)
-                sDoc = IIf(IsNull(!CPF) Or Trim(!CPF) = "", Trim(SubNull(!Cnpj)), Trim(SubNull(!CPF)))
+                sDoc = IIf(IsNull(!cpf) Or Trim(!cpf) = "", Trim(SubNull(!Cnpj)), Trim(SubNull(!cpf)))
                 sCep = ""
                 If !CodCidade = 413 Then
                     If Not IsNull(!NUMIMOVEL) And !CodLogradouro > 0 Then
@@ -2884,7 +2884,7 @@ With RdoAux
                 'End If
                 sEnd = Left$(sEnd, 200)
                 
-                ax = Format(!CodCidadao, "00000000") & CStr(nCPF) & Format(Val(sDoc), "00000000000000") & FillSpace(!nomecidadao, 100) & FillSpace("", 8) & FillSpace(sEnd, 200) & String(240, "0") & String(26, " ")
+                ax = Format(!CodCidadao, "00000000") & CStr(nCPF) & Format(Val(sDoc), "00000000000000") & FillSpace(!Nomecidadao, 100) & FillSpace("", 8) & FillSpace(sEnd, 200) & String(240, "0") & String(26, " ")
                 Print #1, ax
             End If
            .Close
@@ -2949,7 +2949,7 @@ End With
 
 
 Print #1, "[FIM-GUIAS-PAGAS]"
-fim:
+Fim:
 Print #1, ""
 Print #1, "[INICIO-FERIADOS]"
 Print #1, "[FIM-FERIADOS]"
@@ -3001,7 +3001,7 @@ End Function
 
 Private Sub CalculoIndividual(nCodReduz As Long)
 Dim nSomaTestada As Double, nAreaTerrenoReal As Double
-Dim nUso As Integer, nTipo As Integer, nCat As Integer, nCodBairro As Integer
+Dim nUso As Integer, ntipo As Integer, nCat As Integer, nCodBairro As Integer
 Dim bIsento As Boolean, nTestada1 As Double, x As Integer
 
 'CÁLCULO
@@ -3073,7 +3073,7 @@ With RdoAux
        'APROVEITANDO O SELECT CALCULA TAXA DE LIMPEZA
         If bTemPredial Then
              nUso = !USOCONSTR
-             nTipo = !TIPOCONSTR
+             ntipo = !TIPOCONSTR
              nCat = !CATCONSTR
              Select Case !USOCONSTR
                   Case 0
@@ -3120,7 +3120,7 @@ With RdoAux
              Exit For
         End If
     Next
-    nCodGleba = aGleba(x).Codigo
+    nCodGleba = aGleba(x).codigo
     'PROCURAMOS AGORA O VALOR DO FATOR GLEBA
     nFatorGleba = aFatorG(nCodGleba)
     '**************************
@@ -3140,14 +3140,14 @@ With RdoAux
             End If
         Next
         If x <= UBound(aProf) Then
-            nCodProfundidade = aProf(x).Codigo
+            nCodProfundidade = aProf(x).codigo
         Else
             nCodProfundidade = 1
         End If
         'PROCURAMOS AGORA O VALOR DO FATOR PROFUNDIDADE
         nFatorProfundidade = 0
         For x = 1 To UBound(aFatorF)
-            If aFatorF(x).Distrito = !Distrito And aFatorF(x).Codigo = nCodProfundidade Then
+            If aFatorF(x).Distrito = !Distrito And aFatorF(x).codigo = nCodProfundidade Then
                nFatorProfundidade = aFatorF(x).Fator
                Exit For
             End If
@@ -3188,7 +3188,7 @@ With RdoAux
         nValorVenalPredial = 0
         nFatorCategoria = 0
         For x = 1 To UBound(aFatorC)
-            If aFatorC(x).Uso = nUso And aFatorC(x).Tipo = nTipo And aFatorC(x).Categoria = nCat Then
+            If aFatorC(x).Uso = nUso And aFatorC(x).Tipo = ntipo And aFatorC(x).Categoria = nCat Then
                nFatorCategoria = aFatorC(x).Fator
                Exit For
             End If
@@ -3261,7 +3261,7 @@ With RdoAux
      Do Until .EOF
         ReDim Preserve aProf(UBound(aProf) + 1)
         aProf(UBound(aProf)).Distrito = !CODDISTRITO
-        aProf(UBound(aProf)).Codigo = !CODPROFUN
+        aProf(UBound(aProf)).codigo = !CODPROFUN
         aProf(UBound(aProf)).Min = !MINPROFUN
         aProf(UBound(aProf)).Max = !MAXPROFUN
        .MoveNext
@@ -3278,7 +3278,7 @@ With RdoAux
      Do Until .EOF
         ReDim Preserve aFatorF(UBound(aFatorF) + 1)
         aFatorF(UBound(aFatorF)).Distrito = !CODDISTRITO
-        aFatorF(UBound(aFatorF)).Codigo = !CODPROFUN
+        aFatorF(UBound(aFatorF)).codigo = !CODPROFUN
         aFatorF(UBound(aFatorF)).Fator = !FATORPROFUN
        .MoveNext
      Loop
@@ -3291,7 +3291,7 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
      Do Until .EOF
         ReDim Preserve aGleba(UBound(aGleba) + 1)
-        aGleba(UBound(aGleba)).Codigo = !CODGLEBA
+        aGleba(UBound(aGleba)).codigo = !CODGLEBA
         aGleba(UBound(aGleba)).Min = !MINGLEBA
         aGleba(UBound(aGleba)).Max = !MAXGLEBA
        .MoveNext
@@ -3305,9 +3305,9 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
      Do Until .EOF
         ReDim Preserve aFatorC(UBound(aFatorC) + 1)
-        aFatorC(UBound(aFatorC)).Uso = !coduso
+        aFatorC(UBound(aFatorC)).Uso = !CODUSO
         aFatorC(UBound(aFatorC)).Tipo = !CodTipo
-        aFatorC(UBound(aFatorC)).Categoria = !codcateg
+        aFatorC(UBound(aFatorC)).Categoria = !CODCATEG
         aFatorC(UBound(aFatorC)).Fator = !FATORCATEG
        .MoveNext
      Loop
@@ -3342,7 +3342,7 @@ With RdoAux
                     If .RowCount > 1 Then
                         If !statuslanc <> 3 Then
                             'MsgBox "STATUSLANC"
-                            GoTo proximo
+                            GoTo Proximo
                         End If
                     End If
                     nLanc = !CodLancamento
@@ -3352,7 +3352,7 @@ With RdoAux
                     Sql = Sql & "ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nParc & " AND "
                     Sql = Sql & "CODCOMPLEMENTO=" & nCompl
                     cn.Execute Sql, rdExecDirect
-proximo:
+Proximo:
                    .MoveNext
                 Loop
             Else
@@ -3481,15 +3481,15 @@ Open sPathBin & "\GUIAS.TXT" For Input As #1
         End If
         
         aLinha(UBound(aLinha)).Sequencia = Mid(strLinha, 22, 2)
-        aLinha(UBound(aLinha)).Ano = Mid(strLinha, 24, 4)
-        aLinha(UBound(aLinha)).Mes = Mid(strLinha, 28, 2)
+        aLinha(UBound(aLinha)).ano = Mid(strLinha, 24, 4)
+        aLinha(UBound(aLinha)).mes = Mid(strLinha, 28, 2)
         If aLinha(UBound(aLinha)).Identificacao = 0 Then
             aLinha(UBound(aLinha)).Aliquota = CDbl(Mid(strLinha, 30, 5)) / 100
             aLinha(UBound(aLinha)).Tipo = Mid(strLinha, 35, 2)
-            If aLinha(UBound(aLinha)).Mes <> 12 Then
-                aLinha(UBound(aLinha)).DataVencto = "15" & "/" & aLinha(UBound(aLinha)).Mes + 1 & "/" & aLinha(UBound(aLinha)).Ano
+            If aLinha(UBound(aLinha)).mes <> 12 Then
+                aLinha(UBound(aLinha)).DataVencto = "15" & "/" & aLinha(UBound(aLinha)).mes + 1 & "/" & aLinha(UBound(aLinha)).ano
             Else
-                aLinha(UBound(aLinha)).DataVencto = "15" & "/" & "1" & "/" & aLinha(UBound(aLinha)).Ano + 1
+                aLinha(UBound(aLinha)).DataVencto = "15" & "/" & "1" & "/" & aLinha(UBound(aLinha)).ano + 1
             End If
             aLinha(UBound(aLinha)).ValorPrincipal = CDbl(Mid(strLinha, 45, 11)) / 100
             If Mid(strLinha, 55, 11) <> "" Then
@@ -3516,30 +3516,30 @@ Close #1
 For x = 1 To UBound(aLinha)
     'If x = 817 Then MsgBox "teste"
     With aLinha(x)
-        If Val(.Ano) = 0 Then
-            GoTo proximo
+        If Val(.ano) = 0 Then
+            GoTo Proximo
         End If
         If Val(.Identificacao) = 0 Then
       '      If Val(.Inscricao) = 700145 Then
       '          s = 1
       '      End If
             If Val(.Inscricao) < 100000 Or Val(.Inscricao) > 800000 Then
-                GoTo proximo
+                GoTo Proximo
             End If
-            If Val(.Inscricao) > 800000 Then GoTo proximo
+            If Val(.Inscricao) > 800000 Then GoTo Proximo
             Sql = "SELECT NUMERO FROM GUIAISSELETRONICO WHERE NUMERO=" & Val(Right(.Numero, 6)) + 3000000
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
             With RdoAux
                 If .RowCount > 0 Then
                     .Close
-                    GoTo proximo
+                    GoTo Proximo
                 End If
                .Close
             End With
             
             Sql = "INSERT guiaisseletronico(numero,inscricao,sequencia,ano,mes,aliquota,tipo,datavencto,valorprincipal,valoracrescimo,"
-            Sql = Sql & "dataexportacao,identificacao) values(" & Val(Right(.Numero, 6)) + 3000000 & "," & Val(.Inscricao) & "," & Val(.Sequencia) & "," & Val(.Ano) & ","
-            Sql = Sql & Val(.Mes) & "," & Virg2Ponto(CStr(.Aliquota)) & "," & Val(.Tipo) & ",'" & Format(.DataVencto, "mm/dd/yyyy") & "',"
+            Sql = Sql & "dataexportacao,identificacao) values(" & Val(Right(.Numero, 6)) + 3000000 & "," & Val(.Inscricao) & "," & Val(.Sequencia) & "," & Val(.ano) & ","
+            Sql = Sql & Val(.mes) & "," & Virg2Ponto(CStr(.Aliquota)) & "," & Val(.Tipo) & ",'" & Format(.DataVencto, "mm/dd/yyyy") & "',"
             Sql = Sql & Virg2Ponto(CStr(.ValorPrincipal)) & "," & Virg2Ponto(CStr(.ValorAcrescimo)) & ",'" & Format(.DataExporta, "mm/dd/yyyy") & "',"
             Sql = Sql & Val(.Identificacao) & ")"
             cn.Execute Sql, rdExecDirect
@@ -3547,7 +3547,7 @@ For x = 1 To UBound(aLinha)
             'CRIA DÉBITO DE ISS VARIAVEL NO GTI
             
             'BUSCAR A ÚLTIMA SEQUENCIA DE LANCAMENTO PARA EVITAR DUPLICIDADE
-            Sql = "SELECT MAX(SEQLANCAMENTO) AS MAXIMO FROM DEBITOPARCELA WHERE (codreduzido = " & Val(.Inscricao) & ") AND ANOEXERCICIO=" & Val(.Ano) & " And (CodLancamento = 5) "
+            Sql = "SELECT MAX(SEQLANCAMENTO) AS MAXIMO FROM DEBITOPARCELA WHERE (codreduzido = " & Val(.Inscricao) & ") AND ANOEXERCICIO=" & Val(.ano) & " And (CodLancamento = 5) "
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux
                 If IsNull(!maximo) Then
@@ -3565,12 +3565,12 @@ For x = 1 To UBound(aLinha)
 '            Sql = Sql & "DATAVENCIMENTO,DATADEBASE,CODMOEDA,USUARIO) VALUES(" & Val(.Inscricao) & "," & Val(.Ano) & "," & 5 & "," & nSeq & ","
 '            Sql = Sql & 1 & "," & nCompl & ",3,'" & Format(sDataVencto, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "',0,'GTI')"
             Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,"
-            Sql = Sql & "DATAVENCIMENTO,DATADEBASE,CODMOEDA,USERID) VALUES(" & Val(.Inscricao) & "," & Val(.Ano) & "," & 5 & "," & nSeq & ","
-            Sql = Sql & 1 & "," & nCompl & ",3,'" & Format(sDataVencto, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "',0,236)"
+            Sql = Sql & "DATAVENCIMENTO,DATADEBASE,CODMOEDA,USERID) VALUES(" & Val(.Inscricao) & "," & Val(.ano) & "," & 5 & "," & nSeq & ","
+            Sql = Sql & 1 & "," & nCompl & ",3,'" & Format(sDataVencto, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "',0," & RetornaUsuarioID(NomeDeLogin) & ")"
             cn.Execute Sql, rdExecDirect
             'CRIAR O TRIBUTO PARA ELA (13 - iss variavel)
             Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,"
-            Sql = Sql & "VALORTRIBUTO) VALUES(" & Val(.Inscricao) & "," & Val(.Ano) & "," & 5 & "," & nSeq & ","
+            Sql = Sql & "VALORTRIBUTO) VALUES(" & Val(.Inscricao) & "," & Val(.ano) & "," & 5 & "," & nSeq & ","
             Sql = Sql & 1 & "," & nCompl & "," & 13 & "," & Virg2Ponto(CStr(.ValorPrincipal)) & ")"
             'Sql = Sql & 1 & "," & 0 & "," & 13 & "," & Virg2Ponto(.ValorPrincipal + .ValorAcrescimo) & ")"
             cn.Execute Sql, rdExecDirect
@@ -3588,7 +3588,7 @@ For x = 1 To UBound(aLinha)
         End If
     End With
     
-proximo:
+Proximo:
 Next
 
 MsgBox "Arquivo importado com sucesso.", vbInformation, "Informação"
@@ -3836,12 +3836,12 @@ For x = 1 To UBound(aLinha)
 '        End If
         
         If Val(.nExercicio) = 0 Then
-            GoTo proximo
+            GoTo Proximo
         End If
         
         
         If .nCodReduz = 0 Then
-            GoTo proximo
+            GoTo Proximo
         End If
         nCodReduz = .nCodReduz
         nDoc = .nNumeroDaGuia
@@ -3850,7 +3850,7 @@ For x = 1 To UBound(aLinha)
         
         bErro = False
 '        If nDoc = 3063140 Then MsgBox "teste"
-        GoTo continua
+        GoTo Continua
         Sql = "SELECT NUMERO,INSCRICAO FROM GUIAISSELETRONICO WHERE NUMERO=" & nDoc
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
         With RdoAux
@@ -3861,12 +3861,12 @@ For x = 1 To UBound(aLinha)
 '                    MsgBox "TESTE"
   '              End If
                 .Close
-                GoTo proximo
+                GoTo Proximo
                 'CORREÇÃO DO LAYOUT ERRADO DA CONSIST -- ROTINA TEMPORÁRIA
                 Sql = "SELECT NUMERO,INSCRICAO FROM GUIAISSELETRONICO WHERE NUMERO=" & nDoc & " AND TIPO=3 AND (MONTH(datavencto) = 5 or MONTH(datavencto) = 6 or MONTH(datavencto) = 7) AND (YEAR(datavencto) = 2010)"
                 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
                 If RdoAux.RowCount = 0 Then
-                    GoTo proximo
+                    GoTo Proximo
                 Else
                     
                     bErro = True
@@ -3916,10 +3916,10 @@ For x = 1 To UBound(aLinha)
 '                        Sql = "INSERT OBSPARCELA(CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,SEQ,OBS,USUARIO,DATA) VALUES(" & nCodReduzErrado & "," & nAno & ","
 '                        Sql = Sql & nLanc & "," & nSeq & "," & nParc & "," & nCompl & "," & nSeq2 & ",'" & sObs & "','GTI','" & Format(Now, "mm/dd/yyyy") & "')"
                         Sql = "INSERT OBSPARCELA(CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,SEQ,OBS,USERID,DATA) VALUES(" & nCodReduzErrado & "," & nAno & ","
-                        Sql = Sql & nLanc & "," & nSeq & "," & nParc & "," & nCompl & "," & nSeq2 & ",'" & sObs & "',236,'" & Format(Now, "mm/dd/yyyy") & "')"
+                        Sql = Sql & nLanc & "," & nSeq & "," & nParc & "," & nCompl & "," & nSeq2 & ",'" & sObs & "'," & RetornaUsuarioID(NomeDeLogin) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
                         cn.Execute Sql, rdExecDirect
                         
-                        GoTo continua
+                        GoTo Continua
                     Else
                        .Close
                     End If
@@ -3927,7 +3927,7 @@ For x = 1 To UBound(aLinha)
             End If
 '           .Close
         End With
-continua:
+Continua:
         sDataVencto = .sDataVencimento
             
         If .nMes <> 12 Then
@@ -3939,7 +3939,7 @@ continua:
 '        If Not bErro Then
             Sql = "SELECT NUMERO,INSCRICAO FROM GUIAISSELETRONICO WHERE NUMERO=" & nDoc
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
-            If RdoAux.RowCount > 0 Then GoTo proximo
+            If RdoAux.RowCount > 0 Then GoTo Proximo
 '            Sql = "DELETE FROM guiaisseletronico where numero=" & nDoc
 '            cn.Execute Sql, rdExecDirect
             
@@ -3972,7 +3972,7 @@ continua:
 '        Sql = Sql & 1 & "," & nCompl & "," & 3 & ",'" & Format(sDataVencto, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "',0,'GTI')"
         Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,"
         Sql = Sql & "DATAVENCIMENTO,DATADEBASE,CODMOEDA,USERID) VALUES(" & nCodReduz & "," & .nExercicio & "," & 5 & "," & nSeq & ","
-        Sql = Sql & 1 & "," & nCompl & "," & 3 & ",'" & Format(sDataVencto, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "',0,236)"
+        Sql = Sql & 1 & "," & nCompl & "," & 3 & ",'" & Format(sDataVencto, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "',0," & RetornaUsuarioID(NomeDeLogin) & ")"
         cn.Execute Sql, rdExecDirect
         'CRIAR O TRIBUTO PARA ELA (13 - iss variavel)
         Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,"
@@ -3994,7 +3994,7 @@ continua:
 
     End With
 
-proximo:
+Proximo:
 Next
 
 'VERIFICA GUIAS CANCELADAS
@@ -4093,9 +4093,9 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenForwardOnly, rdConcurReadOnly)
 With RdoAux
     Do Until .EOF
         If !TipoISS <> 11 Then
-            ax = Format(!codatividade, "00000000") & FillSpace(!descatividade, 300) & Format(!Aliquota * 100, "0000") & Format(Day(!Data), "00") & Format(Month(!Data), "00") & Year(!Data)
+            ax = Format(!codatividade, "00000000") & FillSpace(!DESCATIVIDADE, 300) & Format(!Aliquota * 100, "0000") & Format(Day(!Data), "00") & Format(Month(!Data), "00") & Year(!Data)
         Else
-            ax = Format(!codatividade, "00000000") & FillSpace(!descatividade, 300) & Format(0, "0000") & Format(Day(!Data), "00") & Format(Month(!Data), "00") & Year(!Data)
+            ax = Format(!codatividade, "00000000") & FillSpace(!DESCATIVIDADE, 300) & Format(0, "0000") & Format(Day(!Data), "00") & Format(Month(!Data), "00") & Year(!Data)
         End If
         Print #1, ax
        .MoveNext
@@ -4134,12 +4134,12 @@ For x = 1 To UBound(aCodigos)
     Sql = "SELECT * FROM VWCNSMOBILIARIO WHERE CODIGOMOB=" & aCodigos(x) & " and (DATAENCERRAMENTO > '10/1/2007'or dataencerramento is null)"
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
     With RdoAux
-        If .RowCount = 0 Then GoTo proximo
+        If .RowCount = 0 Then GoTo Proximo
         
         nSimples = SNCheck(aCodigos(x))
         nRegEspecial = Val(SubNull(!REGESPECIAL))
         nCPF = IIf(IsNull(!Cnpj), 1, 0)
-        sDoc = IIf(IsNull(!CPF), SubNull(!Cnpj), SubNull(!CPF))
+        sDoc = IIf(IsNull(!cpf), SubNull(!Cnpj), SubNull(!cpf))
         sDataEncerra = "        "
         If Not IsNull(!dataencerramento) Then
             sDataEncerra = Format(!dataencerramento, "yyyymmdd")
@@ -4223,7 +4223,7 @@ For x = 1 To UBound(aCodigos)
     ax = ax & IIf(nSimples = 1, "X", "")
     ax = ax & IIf(nRegEspecial = 1, "X", "")
     Print #1, ax
-proximo:
+Proximo:
 Next
 
 '******* empresa retensao iss
@@ -4243,7 +4243,7 @@ With RdoAux
         With RdoAux2
             If .RowCount > 0 Then
                 nCPF = IIf(IsNull(!Cnpj), 1, 0)
-                sDoc = IIf(IsNull(!CPF) Or Trim(!CPF) = "", Trim(SubNull(!Cnpj)), Trim(SubNull(!CPF)))
+                sDoc = IIf(IsNull(!cpf) Or Trim(!cpf) = "", Trim(SubNull(!Cnpj)), Trim(SubNull(!cpf)))
                 sCep = ""
                 If !CodCidade = 413 Then
                     If Not IsNull(!NUMIMOVEL) And !CodLogradouro > 0 Then
@@ -4272,7 +4272,7 @@ With RdoAux
  '               End If
                 sEnd = Left$(sEnd, 200)
                 
-                ax = Format(!CodCidadao, "00000000") & CStr(nCPF) & Format(Val(sDoc), "00000000000000") & FillSpace(!nomecidadao, 100) & FillSpace("", 8) & FillSpace(sEnd, 200)
+                ax = Format(!CodCidadao, "00000000") & CStr(nCPF) & Format(Val(sDoc), "00000000000000") & FillSpace(!Nomecidadao, 100) & FillSpace("", 8) & FillSpace(sEnd, 200)
                 Print #1, ax
             End If
            .Close

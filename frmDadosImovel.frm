@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "Richtx32.ocx"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "RICHTX32.OCX"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmDadosImovel 
    Appearance      =   0  'Flat
@@ -224,6 +224,7 @@ Begin VB.Form frmDadosImovel
       _ExtentY        =   10769
       _Version        =   393217
       BorderStyle     =   0
+      Enabled         =   -1  'True
       ReadOnly        =   -1  'True
       Appearance      =   0
       TextRTF         =   $"frmDadosImovel.frx":08DB
@@ -382,6 +383,10 @@ Dim aFatorC() As FATORCATEG
 Dim aFatorC98() As FATORCATEG
 Dim aGleba() As GLEBA
 Dim sEnd As String
+'Private Type Bairro
+'    Codigo As Integer
+'    Nome As String
+'End Type
 
 
 Private Sub cmdGravar_Click()
@@ -565,6 +570,12 @@ With RdoAux
     End If
     RdoAux2.Close
     
+    Dim sBairro As String
+    Dim nCodLogr As Integer, nNum As Integer
+    Dim tBairro As Bairro
+    nCodLogr = Val(xImovel.CodLogr)
+    nNum = Val(xImovel.Li_Num)
+    tBairro = RetornaLogradouroBairro(nCodLogr, nNum)
     
     sCep = RetornaCEP(Val(SubNull(!CodLogr)), Val(SubNull(!Li_Num)))
 
@@ -572,7 +583,7 @@ With RdoAux
     Sql = Sql & "topografia,pedologia,situacao,usoterreno,benfeitoria,categoria,condominio,areapredial,imunidade,reside,qtdeedif,testada,vvt,vvc,vvi,"
     Sql = Sql & "somafator,isentocip,agrupamento,iptu) values("
     Sql = Sql & nCodigo & ",'" & Mask(!nomecidadao) & "','" & sAtivo & "','" & sInscricao & "','" & IIf(sCompromissario = "", "N/A", Mask(sCompromissario)) & "','" & sMatricula & "','"
-    Sql = Sql & Mask(!Logradouro) & "'," & Val(SubNull(!Li_Num)) & ",'" & Left(SubNull(!Li_Compl), 199) & "','" & SubNull(!DescBairro) & "','" & sCep & "','"
+    Sql = Sql & Mask(!Logradouro) & "'," & Val(SubNull(!Li_Num)) & ",'" & Left(SubNull(!Li_Compl), 199) & "','" & SubNull(tBairro.Nome) & "','" & sCep & "','"
     Sql = Sql & SubNull(!Li_Quadras) & "','" & SubNull(!Li_Lotes) & "'," & Virg2Ponto(CStr(!Dt_AreaTerreno)) & "," & Virg2Ponto(CStr(!Dt_FracaoIdeal)) & ",'"
     Sql = Sql & !DescTopografia & "','" & !DescPedologia & "','" & !DescSituacao & "','" & !DescUsoTerreno & "','" & !DescBenfeitoria & "','" & !DescCategProp & "','"
     Sql = Sql & IIf(IsNull(!cd_nomecond), "N/A", IIf(!cd_nomecond = "NÃO CADASTRADO", "N/A", !cd_nomecond)) & "'," & Virg2Ponto(CStr(nArea)) & ",'"
@@ -1355,7 +1366,15 @@ With Rtb
     .SelText = xImovel.EnderecoCompleto & " " & xImovel.Li_Compl & vbCrLf: Negrito
     sEnd = xImovel.EnderecoCompleto
     .SelText = "Bairro: ": Normal
-    .SelText = xImovel.DescBairro & vbCrLf: Negrito
+    '.SelText = xImovel.DescBairro & vbCrLf: Negrito
+    Dim sBairro As String
+    Dim nCodLogr As Integer, nNum As Integer
+    Dim tBairro As Bairro
+    nCodLogr = Val(xImovel.CodLogr)
+    nNum = Val(xImovel.Li_Num)
+    tBairro = RetornaLogradouroBairro(nCodLogr, nNum)
+    .SelText = tBairro.Nome & vbCrLf: Negrito
+    
     .SelText = "Cep: ": Normal
     .SelText = RetornaCEP(xImovel.CodLogr, xImovel.Li_Num) & vbCrLf: Negrito
     .SelText = "Quadra Original: ":     Normal

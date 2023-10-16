@@ -740,7 +740,7 @@ bBoleto = False
  '   End If
 'End If
 
-fim:
+Fim:
 Unload Me
 
 End Sub
@@ -860,14 +860,14 @@ With RdoAux
     If nCodReduz < 100000 Then
         Sql = "select logradouro,li_num,nomecidadao,cpf,cnpj,descbairro,desccidade,li_uf from vwfullimovel2 where codreduzido=" & nCodReduz
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-        sNome = SubNull(RdoAux2!nomecidadao)
+        sNome = SubNull(RdoAux2!Nomecidadao)
         sEnd = SubNull(RdoAux2!Logradouro) & ", " & SubNull(RdoAux2!Li_Num) & " " & SubNull(RdoAux2!DescBairro) & " " & SubNull(RdoAux2!descCidade) & "/" & SubNull(RdoAux2!li_uf)
         If Not IsNull(RdoAux2!Cnpj) Then
             sDoc = RdoAux2!Cnpj
         End If
         If sDoc = "" Then
-            If Not IsNull(RdoAux2!CPF) Then
-                sDoc = RdoAux2!CPF
+            If Not IsNull(RdoAux2!cpf) Then
+                sDoc = RdoAux2!cpf
             End If
         Else
             sDoc = ""
@@ -876,13 +876,13 @@ With RdoAux
     ElseIf nCodReduz >= 100000 And nCodReduz <= 500000 Then
         Sql = "SELECT razaosocial, LOGRADOURO, numero, descbairro, desccidade, siglauf, cpf, cnpj FROM vwFULLEMPRESA3 where codigomob=" & nCodReduz
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-        sNome = SubNull(RdoAux2!razaosocial)
+        sNome = SubNull(RdoAux2!RazaoSocial)
         sEnd = SubNull(RdoAux2!Logradouro) & ", " & SubNull(RdoAux2!Numero) & " " & SubNull(RdoAux2!DescBairro) & " " & SubNull(RdoAux2!descCidade) & "/" & SubNull(RdoAux2!SiglaUF)
         If Not IsNull(RdoAux2!Cnpj) Then
             sDoc = Format(RdoAux2!Cnpj, "00\.000\.000/0000-00")
         Else
-            If Not IsNull(RdoAux2!CPF) Then
-                sDoc = Format(RdoAux2!CPF, "000\.000\.000-00")
+            If Not IsNull(RdoAux2!cpf) Then
+                sDoc = Format(RdoAux2!cpf, "000\.000\.000-00")
             Else
                 sDoc = ""
             End If
@@ -891,13 +891,13 @@ With RdoAux
     Else
         Sql = "SELECT nomecidadao, cpf, cnpj, ENDERECO, numimovel, DESCCIDADE, siglauf, descbairro FROM vwFULLCIDADAO where codcidadao=" & nCodReduz
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-        sNome = SubNull(RdoAux2!nomecidadao)
+        sNome = SubNull(RdoAux2!Nomecidadao)
         sEnd = SubNull(RdoAux2!Endereco) & ", " & SubNull(RdoAux2!NUMIMOVEL) & " " & SubNull(RdoAux2!DescBairro) & " " & SubNull(RdoAux2!descCidade) & " " & SubNull(RdoAux2!descCidade) & "/" & SubNull(RdoAux2!SiglaUF)
         If Not IsNull(RdoAux2!Cnpj) Then
             sDoc = Format(RdoAux2!Cnpj, "00\.000\.000/0000-00")
         Else
-            If Not IsNull(RdoAux2!CPF) Then
-                sDoc = Format(RdoAux2!CPF, "000\.000\.000-00")
+            If Not IsNull(RdoAux2!cpf) Then
+                sDoc = Format(RdoAux2!cpf, "000\.000\.000-00")
             Else
                 sDoc = ""
             End If
@@ -1071,17 +1071,17 @@ REMOVEDIGITO:
 '       .Close
 '    End With
 Continua:
-    If nCodCidadao = 0 Then GoTo fim
+    If nCodCidadao = 0 Then GoTo Fim
  '   Sql = "SELECT cidadao.codcidadao, cidadao.nomecidadao, cidadao.cpf, cidadao.cnpj, cidadao.codlogradouro, vwLOGRADOURO.ABREVTIPOLOG, "
  '   Sql = Sql & "vwLOGRADOURO.ABREVTITLOG, vwLOGRADOURO.NOMELOGRADOURO, cidadao.numimovel, cidadao.complemento,"
  '   Sql = Sql & "cidadao.nomelogradouro AS nomerua FROM  cidadao LEFT OUTER JOIN  vwLOGRADOURO ON cidadao.codlogradouro = vwLOGRADOURO.CODLOGRADOURO "
     Sql = "select * from vwfullcidadao WHERE CODCIDADAO=" & nCodCidadao
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
-        lblRequerente.Caption = SubNull(!nomecidadao)
-        If Not IsNull(!CPF) And SubNull(!CPF) <> "" Then
+        lblRequerente.Caption = SubNull(!Nomecidadao)
+        If Not IsNull(!cpf) And SubNull(!cpf) <> "" Then
             
-            lblCPF.Caption = !CPF
+            lblCPF.Caption = !cpf
         Else
             If Not IsNull(!Cnpj) Then
                 lblCPF.Caption = Format(RdoAux!Cnpj, "00\.000\.000/0000-00")
@@ -1099,7 +1099,7 @@ Continua:
        .Close
     End With
 'End If
-fim:
+Fim:
 CarregaProcesso
 
 End Sub
@@ -1117,7 +1117,7 @@ Else
     nNumproc = Val(Left$(txtNumProc.Text, Len(txtNumProc.Text) - 5))
     sNumProc = CStr(nNumproc) & RetornaDVProcesso(nNumproc)
     nAno = Val(Right$(txtNumProc.Text, 4))
-    sNumProc = sNumProc & "/" & CStr(nAno)
+    sNumProc = nNumproc & "/" & CStr(nAno)
     Sql = "SELECT * FROM vwPROCESSOPARCELA WHERE NUMPROCESSO='" & sNumProc & "' and codtributo>0"
 End If
 nCont = nCont + 1
@@ -1172,7 +1172,7 @@ With RdoAux
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux
                 If .RowCount > 0 Then
-                    lblProp.Caption = !razaosocial
+                    lblProp.Caption = !RazaoSocial
                     lblEnd.Caption = Trim$(SubNull(!AbrevTipoLog)) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro & " nº " & SubNull(!Numero)
                 End If
             End With
@@ -1181,7 +1181,7 @@ With RdoAux
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux
                 If .RowCount > 0 Then
-                    lblProp.Caption = !nomecidadao
+                    lblProp.Caption = !Nomecidadao
                 End If
                 
             End With

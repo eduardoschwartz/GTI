@@ -4,22 +4,52 @@ Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmAlvaraNovo 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Alvará de Funcionamento"
-   ClientHeight    =   3420
-   ClientLeft      =   12360
-   ClientTop       =   5535
+   ClientHeight    =   3255
+   ClientLeft      =   11070
+   ClientTop       =   5970
    ClientWidth     =   6255
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
-   ScaleHeight     =   3420
+   ScaleHeight     =   3255
    ScaleWidth      =   6255
    ShowInTaskbar   =   0   'False
    Begin VB.Frame Frame1 
-      Height          =   3375
+      Height          =   4140
       Left            =   30
       TabIndex        =   5
       Top             =   0
       Width           =   6195
+      Begin VB.TextBox txtProtocolo 
+         Appearance      =   0  'Flat
+         Height          =   285
+         Left            =   1755
+         MaxLength       =   50
+         TabIndex        =   33
+         Top             =   3645
+         Visible         =   0   'False
+         Width           =   2535
+      End
+      Begin VB.CheckBox chkRedeSim 
+         BackColor       =   &H00EEEEEE&
+         Caption         =   "Redesim/VRE"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000080&
+         Height          =   195
+         Left            =   150
+         TabIndex        =   29
+         Top             =   3345
+         Visible         =   0   'False
+         Width           =   1815
+      End
       Begin VB.TextBox txtNumProc 
          Appearance      =   0  'Flat
          Height          =   285
@@ -38,7 +68,7 @@ Begin VB.Form frmAlvaraNovo
          _ExtentX        =   2355
          _ExtentY        =   556
          _Version        =   393216
-         Format          =   149028865
+         Format          =   78118913
          CurrentDate     =   43493
       End
       Begin VB.CheckBox chkProvisorio 
@@ -109,6 +139,38 @@ Begin VB.Form frmAlvaraNovo
          HAND            =   0   'False
          CHECK           =   0   'False
          VALUE           =   0   'False
+      End
+      Begin MSComCtl2.DTPicker dtDataVre 
+         Height          =   315
+         Left            =   3000
+         TabIndex        =   30
+         Top             =   3285
+         Visible         =   0   'False
+         Width           =   1335
+         _ExtentX        =   2355
+         _ExtentY        =   556
+         _Version        =   393216
+         Format          =   78118913
+         CurrentDate     =   43493
+      End
+      Begin VB.Label lblProtocolo 
+         Caption         =   "Nº do Protocolo:"
+         Height          =   195
+         Left            =   450
+         TabIndex        =   32
+         Top             =   3690
+         Visible         =   0   'False
+         Width           =   1185
+      End
+      Begin VB.Label lblValidadeVre 
+         BackStyle       =   0  'Transparent
+         Caption         =   "Validade..:"
+         Height          =   195
+         Left            =   2160
+         TabIndex        =   31
+         Top             =   3345
+         Visible         =   0   'False
+         Width           =   780
       End
       Begin VB.Label Label1 
          BackStyle       =   0  'Transparent
@@ -336,6 +398,16 @@ Public sControle As String, sValidade As String, sEndereco As String
 Private Sub btPrint_Click()
 Dim nNumAlvara As Long, Sql As String, RdoAux As rdoResultset, nSeq As Integer
 
+If chkProvisorio.value = vbChecked And chkRedeSim.value = vbChecked Then
+    MsgBox "Selecione alvára provisório ou alvará Redesim/VRE.", vbCritical, "Erro"
+    Exit Sub
+End If
+
+If chkRedeSim.value = vbChecked And txtProtocolo.Text = "" Then
+    MsgBox "Digite o nº do protocolo Redesim/VRE.", vbCritical, "Erro"
+    Exit Sub
+End If
+
 Sql = "select max(numero) as maximo from alvara_funcionamento where ano=" & Year(Now)
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
@@ -362,8 +434,14 @@ Else
             sControle = Format(nNumAlvara, "00000") & Format(Year(Now), "0000") & "/" & Format(Val(txtCodigo.Text), "000000") & "-AN"
         End If
         
-        Sql = " insert alvara_funcionamento(ano,numero,controle,codigo,razao_social,documento,endereco,bairro,atividade,horario,validade,data_gravada) values("
-        Sql = Sql & Year(Now) & "," & nNumAlvara & ",'" & sControle & "'," & Val(txtCodigo.Text) & ",'" & Mask(lblNome.Caption) & "','" & lblCPF.Caption & "','" & Mask(sEndereco) & "','" & Mask(lblBairro.Caption) & "','" & lblAtividade.Caption & "','" & lblHorario.Caption & "','" & Format(sValidade, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "')"
+        Sql = " insert alvara_funcionamento(ano,numero,controle,codigo,razao_social,documento,endereco,bairro,atividade,horario,validade,data_gravada,data_protocolo_vre,num_protocolo_vre) values("
+        Sql = Sql & Year(Now) & "," & nNumAlvara & ",'" & sControle & "'," & Val(txtCodigo.Text) & ",'" & Mask(lblNome.Caption) & "','" & lblCPF.Caption & "','" & Mask(sEndereco) & "','"
+        Sql = Sql & Mask(lblBairro.Caption) & "','" & lblAtividade.Caption & "','" & lblHorario.Caption & "','" & Format(sValidade, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "',"
+        If chkRedeSim.value = True Then
+            Sql = Sql & Format(dtDataVre.value, "mm/dd/yyyy") & "','" & Mask(txtProtocolo.Text) & "')"
+        Else
+            Sql = Sql & "Null" & ",'" & Mask(txtProtocolo.Text) & "')"
+        End If
         cn.Execute Sql, rdExecDirect
     
     
@@ -380,8 +458,11 @@ Else
             Sql = "INSERT MOBILIARIOHIST(CODMOBILIARIO,SEQ,DATAHIST,OBS,USERID) VALUES("
             Sql = Sql & Val(txtCodigo.Text) & "," & nSeq & ",'" & Format(Now, "mm/dd/yyyy") & "','Emisão de Alvará de Funcionamento.'," & RetornaUsuarioID(NomeDeLogin) & ")"
             cn.Execute Sql, rdExecDirect
-            
-            frmReport.ShowReport3 "ALVARAFUNCIONAMENTO", frmMdi.HWND, Me.HWND
+            If chkRedeSim.value = False Then
+                frmReport.ShowReport3 "ALVARAFUNCIONAMENTO", frmMdi.HWND, Me.HWND
+            Else
+                frmReport.ShowReport3 "ALVARAFUNCIONAMENTOVRE", frmMdi.HWND, Me.HWND
+            End If
         Else
             frmReport.ShowReport3 "ALVARAFUNCIONAMENTOPROVISORIO", frmMdi.HWND, Me.HWND
         End If
@@ -398,6 +479,23 @@ Else
     dtData.Visible = False
     lblValidade.Visible = False
 End If
+End Sub
+
+Private Sub chkRedeSim_Click()
+
+If chkRedeSim.value = vbChecked Then
+    lblValidadeVre.Visible = True
+    dtDataVre.Visible = True
+    lblProtocolo.Visible = True
+    txtProtocolo.Visible = True
+Else
+    lblValidadeVre.Visible = False
+    dtDataVre.Visible = False
+    lblProtocolo.Visible = False
+    txtProtocolo.Visible = False
+    txtProtocolo.Text = ""
+End If
+
 End Sub
 
 Private Sub Form_Load()
@@ -458,14 +556,14 @@ Else
                     If RdoAux2.RowCount > 0 Then
                         MsgBox "Inscrição municipal suspensa.", vbCritical, "Erro"
                     Else
-                        lblNome.Caption = !razaosocial
+                        lblNome.Caption = !RazaoSocial
                         nDoc = Val(RetornaNumero(SubNull(!Cnpj)))
                         If nDoc > 0 Then
                             lblCPF.Caption = Format(Trim(!Cnpj), "00\.000\.000/0000-00")
                         Else
-                            nDoc = Val(RetornaNumero(SubNull(!CPF)))
+                            nDoc = Val(RetornaNumero(SubNull(!cpf)))
                             If nDoc > 0 Then
-                                lblCPF.Caption = Format(Trim(!CPF), "000\.000\.000-00")
+                                lblCPF.Caption = Format(Trim(!cpf), "000\.000\.000-00")
                             End If
                         End If
                             lblEndereco.Caption = SubNull(!Logradouro)

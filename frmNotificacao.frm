@@ -198,17 +198,17 @@ Attribute VB_Exposed = False
 'TIPOS
 Private Type PROFUNDIDADE
     Distrito As Integer
-    Codigo As Integer
+    codigo As Integer
     Min As Double
     Max As Double
 End Type
 Private Type FATORPROFUN
     Distrito As Integer
-    Codigo As Integer
+    codigo As Integer
     Fator As Double
 End Type
 Private Type GLEBA
-    Codigo As Integer
+    codigo As Integer
     Min As Double
     Max As Double
 End Type
@@ -355,7 +355,7 @@ If Opt(0).value = True Then
     
             Sql = "insert notificacao (usuario,codreduz,processo,numseq,nome,end1,end2,inscricao,ano,areat,areac,testadap,vvt,vvc,vvi,iptunovo,iptupago,dif,valorext,perc) "
             Sql = Sql & "values('"
-            Sql = Sql & NomeDeLogin & "'," & nCodReduz & ",'" & sProcesso & "'," & nSeq & ",'" & Mask(!nomecidadao) & "','" & Left(Mask(sEndereco), 70) & "','" & Left(Mask(sEndereco2), 70) & "','"
+            Sql = Sql & NomeDeLogin & "'," & nCodReduz & ",'" & sProcesso & "'," & nSeq & ",'" & Mask(!Nomecidadao) & "','" & Left(Mask(sEndereco), 70) & "','" & Left(Mask(sEndereco2), 70) & "','"
             Sql = Sql & sInsc & "'," & Val(txtAno.Text) & "," & Virg2Ponto(!AreaTerreno) & "," & Virg2Ponto(CStr(nAreaConstruida)) & "," & Virg2Ponto(!TESTADAPRINC) & ","
             'Sql = Sql & Virg2Ponto(CStr(nVVT)) & "," & Virg2Ponto(CStr(nVVC)) & "," & Virg2Ponto(CStr(nVVI)) & "," & Virg2Ponto(Format(nValorFinal, "#0.00")) & "," & Virg2Ponto(!VALORTOTALPARC * 12) & ","
             Sql = Sql & Virg2Ponto(CStr(nVVT)) & "," & Virg2Ponto(CStr(nVVC)) & "," & Virg2Ponto(CStr(nVVI)) & "," & Virg2Ponto(Format(nValorFinal, "#0.00")) & "," & Virg2Ponto(Format(nValorPago, "#0.00")) & ","
@@ -364,7 +364,7 @@ If Opt(0).value = True Then
             
             If chkEtiq.value = vbChecked Then
                 Sql = "INSERT ETIQUETAGTI (USUARIO,SEQ,CAMPO1,CAMPO2,CAMPO3,CAMPO4,CAMPO5) VALUES('"
-                Sql = Sql & NomeDeLogin & "'," & nSeq & ",'" & "" & "','" & Mask(!nomecidadao) & "','"
+                Sql = Sql & NomeDeLogin & "'," & nSeq & ",'" & "" & "','" & Mask(!Nomecidadao) & "','"
                 Sql = Sql & Left(sLogradouro, 55) & "," & nNumero2 & "','" & sCEP2 & "   " & sBAIRRO2 & "','" & sCidade & "   " & sUF & "')"
                 cn.Execute Sql, rdExecDirect
             End If
@@ -377,10 +377,10 @@ If Opt(0).value = True Then
     
     Liberado
     
-    frmReport.ShowReport2 "NOTIFICACAO2", frmMdi.hwnd, Me.hwnd
+    frmReport.ShowReport2 "NOTIFICACAO2", frmMdi.HWND, Me.HWND
     
     If chkEtiq.value = vbChecked Then
-        frmReport.ShowReport "ETIQUETACONSIST", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport "ETIQUETACONSIST", frmMdi.HWND, Me.HWND
     End If
     
     Sql = "DELETE FROM NOTIFICACAO WHERE USUARIO='" & NomeDeLogin & "'"
@@ -403,7 +403,7 @@ Else
             If .AbsolutePosition Mod 10 = 0 Then
                 CallPb .AbsolutePosition, .RowCount
             End If
-            sNome = !nomecidadao
+            sNome = !Nomecidadao
             nCodReduz = !CODREDUZIDO
 '            If nCodReduz = 1576 Then MsgBox "teste"
             nCodCidadao = !CodCidadao
@@ -440,7 +440,7 @@ Else
                 nCodCidadao = !CODCID
                 Sql = "SELECT NOMECIDADAO FROM CIDADAO WHERE CODCIDADAO=" & nCodCidadao
                 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-                sNome = RdoAux2!nomecidadao
+                sNome = RdoAux2!Nomecidadao
                 RdoAux2.Close
             End If
             
@@ -499,7 +499,7 @@ Else
 
             'insere parcelas de calculo
             If chkCalc.value = vbChecked Then
-                GoTo proximo
+                GoTo Proximo
                 Sql = "SELECT MAX(SEQLANCAMENTO) AS MAXIMO FROM DEBITOPARCELA WHERE CODREDUZIDO=" & nCodCidadao & " AND ANOEXERCICIO=2011 AND CODLANCAMENTO=65"
                 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                 With RdoAux
@@ -514,7 +514,7 @@ Else
 '                Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,DATAVENCIMENTO,DATADEBASE,USUARIO) VALUES("
 '                Sql = Sql & nCodCidadao & "," & 2011 & "," & 65 & "," & nSeq2 & "," & 1 & "," & 0 & "," & 3 & ",'" & Format(sDataVencto, "mm/dd/yyyy") & "','" & Format(sDataBase, "mm/dd/yyyy") & "','" & Left$("GTI", 25) & "')"
                 Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,DATAVENCIMENTO,DATADEBASE,USERID) VALUES("
-                Sql = Sql & nCodCidadao & "," & 2011 & "," & 65 & "," & nSeq2 & "," & 1 & "," & 0 & "," & 3 & ",'" & Format(sDataVencto, "mm/dd/yyyy") & "','" & Format(sDataBase, "mm/dd/yyyy") & "'," & 236 & ")"
+                Sql = Sql & nCodCidadao & "," & 2011 & "," & 65 & "," & nSeq2 & "," & 1 & "," & 0 & "," & 3 & ",'" & Format(sDataVencto, "mm/dd/yyyy") & "','" & Format(sDataBase, "mm/dd/yyyy") & "'," & RetornaUsuarioID(NomeDeLogin) & ")"
                 cn.Execute Sql, rdExecDirect
                 
                 Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,VALORTRIBUTO) VALUES("
@@ -528,7 +528,7 @@ Else
 '                Sql = Sql & "GTI" & "','" & Format(Now, "mm/dd/yyyy") & "')"
                 Sql = "INSERT OBSPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,SEQ,OBS,USERID,DATA) VALUES("
                 Sql = Sql & nCodCidadao & "," & 2011 & "," & 65 & "," & nSeq2 & "," & 1 & "," & 0 & "," & 0 & ",'" & Mask(sHist) & "',"
-                Sql = Sql & 236 & ",'" & Format(Now, "mm/dd/yyyy") & "')"
+                Sql = Sql & RetornaUsuarioID(NomeDeLogin) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
                 cn.Execute Sql, rdExecDirect
                 
                 sHist = "Iss construção civil lançado no código " & nCodCidadao & " processo nº " & sProcesso & " notificação nº " & nSeq
@@ -547,11 +547,11 @@ Else
 '                Sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST,USUARIO,DATAHIST2) VALUES("
 '                Sql = Sql & nCodReduz & "," & nSeq2 & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sHist) & "','" & "GTI" & "','" & Format(Now, "mm/dd/yyyy") & "')"
                 Sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST,USERID,DATAHIST2) VALUES("
-                Sql = Sql & nCodReduz & "," & nSeq2 & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sHist) & "'," & 236 & ",'" & Format(Now, "mm/dd/yyyy") & "')"
+                Sql = Sql & nCodReduz & "," & nSeq2 & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sHist) & "'," & RetornaUsuarioID(NomeDeLogin) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
                 cn.Execute Sql, rdExecDirect
             End If
 
-proximo:
+Proximo:
            .MoveNext
         Loop
        .Close
@@ -559,9 +559,9 @@ proximo:
     
     Liberado
     
-    frmReport.ShowReport2 "NOTIFICACAO3", frmMdi.hwnd, Me.hwnd
+    frmReport.ShowReport2 "NOTIFICACAO3", frmMdi.HWND, Me.HWND
     If chkEtiq.value = vbChecked Then
-        frmReport.ShowReport "ETIQUETACONSIST", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport "ETIQUETACONSIST", frmMdi.HWND, Me.HWND
     End If
     
     Sql = "DELETE FROM NOTIFICACAOISS WHERE USUARIO='" & NomeDeLogin & "'"
@@ -594,7 +594,7 @@ End Sub
 
 Private Sub CalculoIndividual(nCodReduz As Long)
 Dim nSomaTestada As Double, nAreaTerrenoReal As Double, bTemPredial As Boolean
-Dim nUso As Integer, nTipo As Integer, nCat As Integer, nCodBairro As Integer
+Dim nUso As Integer, ntipo As Integer, nCat As Integer, nCodBairro As Integer
 Dim bIsento As Boolean, nTestada1 As Double, x As Integer, nValorVenalTerritorial As Double, nValorVenalPredial As Double
 
 'CÁLCULO
@@ -677,7 +677,7 @@ With RdoAux
        'APROVEITANDO O SELECT CALCULA TAXA DE LIMPEZA
         If bTemPredial Then
              nUso = !USOCONSTR
-             nTipo = !TIPOCONSTR
+             ntipo = !TIPOCONSTR
              nCat = !CATCONSTR
         End If
     End With
@@ -696,7 +696,7 @@ With RdoAux
              Exit For
         End If
     Next
-    nCodGleba = aGleba(x).Codigo
+    nCodGleba = aGleba(x).codigo
     'PROCURAMOS AGORA O VALOR DO FATOR GLEBA
     nFatorGleba = aFatorG(nCodGleba)
     '**************************
@@ -716,11 +716,11 @@ With RdoAux
                End If
             End If
         Next
-        nCodProfundidade = aProf(x).Codigo
+        nCodProfundidade = aProf(x).codigo
         'PROCURAMOS AGORA O VALOR DO FATOR PROFUNDIDADE
         nFatorProfundidade = 0
         For x = 1 To UBound(aFatorF)
-            If aFatorF(x).Distrito = !Distrito And aFatorF(x).Codigo = nCodProfundidade Then
+            If aFatorF(x).Distrito = !Distrito And aFatorF(x).codigo = nCodProfundidade Then
                nFatorProfundidade = aFatorF(x).Fator
                Exit For
             End If
@@ -764,7 +764,7 @@ With RdoAux
         nValorVenalPredial = 0
         nFatorCategoria = 0
         For x = 1 To UBound(aFatorC)
-            If aFatorC(x).Uso = nUso And aFatorC(x).Tipo = nTipo And aFatorC(x).Categoria = nCat Then
+            If aFatorC(x).Uso = nUso And aFatorC(x).Tipo = ntipo And aFatorC(x).Categoria = nCat Then
                nFatorCategoria = aFatorC(x).Fator
                Exit For
             End If
@@ -861,7 +861,7 @@ With RdoAux
      Do Until .EOF
         ReDim Preserve aProf(UBound(aProf) + 1)
         aProf(UBound(aProf)).Distrito = !CODDISTRITO
-        aProf(UBound(aProf)).Codigo = !CODPROFUN
+        aProf(UBound(aProf)).codigo = !CODPROFUN
         aProf(UBound(aProf)).Min = !MINPROFUN
         aProf(UBound(aProf)).Max = !MAXPROFUN
        .MoveNext
@@ -877,7 +877,7 @@ With RdoAux
      Do Until .EOF
         ReDim Preserve aFatorF(UBound(aFatorF) + 1)
         aFatorF(UBound(aFatorF)).Distrito = !CODDISTRITO
-        aFatorF(UBound(aFatorF)).Codigo = !CODPROFUN
+        aFatorF(UBound(aFatorF)).codigo = !CODPROFUN
         aFatorF(UBound(aFatorF)).Fator = !FATORPROFUN
        .MoveNext
      Loop
@@ -890,7 +890,7 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
      Do Until .EOF
         ReDim Preserve aGleba(UBound(aGleba) + 1)
-        aGleba(UBound(aGleba)).Codigo = !CODGLEBA
+        aGleba(UBound(aGleba)).codigo = !CODGLEBA
         aGleba(UBound(aGleba)).Min = !MINGLEBA
         aGleba(UBound(aGleba)).Max = !MAXGLEBA
        .MoveNext
@@ -904,9 +904,9 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
      Do Until .EOF
         ReDim Preserve aFatorC(UBound(aFatorC) + 1)
-        aFatorC(UBound(aFatorC)).Uso = !coduso
+        aFatorC(UBound(aFatorC)).Uso = !CODUSO
         aFatorC(UBound(aFatorC)).Tipo = !CodTipo
-        aFatorC(UBound(aFatorC)).Categoria = !codcateg
+        aFatorC(UBound(aFatorC)).Categoria = !CODCATEG
         aFatorC(UBound(aFatorC)).Fator = !FATORCATEG
        .MoveNext
      Loop

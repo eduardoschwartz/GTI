@@ -337,7 +337,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Dim sOldDesc As String
 Dim RdoAux As rdoResultset
-Dim sql As String
+Dim Sql As String
 Dim Evento As String
 Dim sRet As String
 Dim evEdit As Integer, evNew As Integer, evDel As Integer
@@ -367,8 +367,8 @@ Private Sub cmdExcluir_Click()
     End If
     
     If MsgBox("Excluir o Despacho " & txtDesc.Text & " ?", vbQuestion + vbYesNoCancel, "Atenção") = vbYes Then
-       sql = "DELETE FROM DESPACHO WHERE CODIGO=" & txtCod.Text
-       cn.Execute sql, rdExecDirect
+       Sql = "DELETE FROM DESPACHO WHERE CODIGO=" & txtCod.Text
+       cn.Execute Sql, rdExecDirect
        Log Form, Me.Caption, Exclusão, "Excluído registro " & Format(txtCod.Text, "000") & "-" & UCase$(txtDesc.Text)
        Limpa
        CarregaLista
@@ -459,21 +459,21 @@ Private Sub Le()
 If grdDespacho.Row = 0 Then Exit Sub
 txtCod.Text = grdDespacho.TextMatrix(grdDespacho.Row, 0)
 txtDesc.Text = UCase$(grdDespacho.TextMatrix(grdDespacho.Row, 1))
-chkInativo.Value = IIf(grdDespacho.TextMatrix(grdDespacho.Row, 2) = "Sim", 0, 1)
+chkInativo.value = IIf(grdDespacho.TextMatrix(grdDespacho.Row, 2) = "Sim", 0, 1)
 
 End Sub
 
 Private Sub Limpa()
 txtCod.Text = ""
 txtDesc.Text = ""
-chkInativo.Value = 0
+chkInativo.value = 0
 End Sub
 
 Private Sub CarregaLista()
 On Error Resume Next
-sql = "Select CODIGO,DESCRICAO,ATIVO FROM DESPACHO "
-sql = sql & "ORDER BY DESCRICAO"
-Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+Sql = "Select CODIGO,DESCRICAO,ATIVO FROM DESPACHO "
+Sql = Sql & "ORDER BY DESCRICAO"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 grdDespacho.Rows = 1
 With RdoAux
    .MoveFirst
@@ -494,22 +494,22 @@ Private Sub Grava()
 Dim nCodNovo As Integer
 
 If Evento = "Novo" Then
-    sql = "SELECT MAX(CODIGO) AS MAXIMO FROM DESPACHO WHERE CODIGO < 900"
-    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    Sql = "SELECT MAX(CODIGO) AS MAXIMO FROM DESPACHO WHERE CODIGO < 900"
+    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
-        nCodNovo = !MAXIMO + 1
+        nCodNovo = !maximo + 1
        .Close
     End With
-    grdDespacho.AddItem nCodNovo & Chr(9) & UCase$(Trim$(txtDesc.Text)) & Chr(9) & IIf(chkInativo.Value = 0, "Sim", "Não")
-    sql = "INSERT DESPACHO (CODIGO,DESCRICAO,ATIVO) VALUES("
-    sql = sql & nCodNovo & ",'" & UCase$(Mask(txtDesc.Text)) & "'," & IIf(chkInativo.Value = 1, 0, 1) & ")"
+    grdDespacho.AddItem nCodNovo & Chr(9) & UCase$(Trim$(txtDesc.Text)) & Chr(9) & IIf(chkInativo.value = 0, "Sim", "Não")
+    Sql = "INSERT DESPACHO (CODIGO,DESCRICAO,ATIVO) VALUES("
+    Sql = Sql & nCodNovo & ",'" & UCase$(Mask(txtDesc.Text)) & "'," & IIf(chkInativo.value = 1, 0, 1) & ")"
 Else
     grdDespacho.TextMatrix(grdDespacho.Row, 1) = UCase$(Trim$(txtDesc.Text))
-    grdDespacho.TextMatrix(grdDespacho.Row, 2) = IIf(chkInativo.Value = 0, "Sim", "Não")
-    sql = "UPDATE DESPACHO SET DESCRICAO='" & UCase$(Mask(txtDesc.Text)) & "',ATIVO=" & IIf(chkInativo.Value = 1, 0, 1)
-    sql = sql & " WHERE CODIGO=" & Val(txtCod.Text)
+    grdDespacho.TextMatrix(grdDespacho.Row, 2) = IIf(chkInativo.value = 0, "Sim", "Não")
+    Sql = "UPDATE DESPACHO SET DESCRICAO='" & UCase$(Mask(txtDesc.Text)) & "',ATIVO=" & IIf(chkInativo.value = 1, 0, 1)
+    Sql = Sql & " WHERE CODIGO=" & Val(txtCod.Text)
 End If
-cn.Execute sql, rdExecDirect
+cn.Execute Sql, rdExecDirect
       
 End Sub
 

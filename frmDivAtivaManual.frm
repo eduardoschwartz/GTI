@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Object = "{F48120B2-B059-11D7-BF14-0010B5B69B54}#1.0#0"; "esMaskEdit.ocx"
 Begin VB.Form frmDivAtivaManual 
@@ -225,10 +225,10 @@ ConectaIntegrativa
 Sql = "SELECT max(numcertidao) as maximo from debitoparcela where numerolivro=" & Val(lblLivro.Caption)
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
-    If IsNull(!MAXIMO) Then
+    If IsNull(!maximo) Then
         nNumCert = 1
     Else
-    nNumCert = !MAXIMO + 1
+    nNumCert = !maximo + 1
     End If
    .Close
 End With
@@ -239,10 +239,10 @@ If nCodReduz < 100000 Then
     Sql = "select * from vwfullimovel where codreduzido=" & nCodReduz
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
-        sNome = !nomecidadao
+        sNome = !Nomecidadao
         sInscricao = !Inscricao
         sRG = SubNull(!rg)
-        sCPF = SubNull(!CPF)
+        sCPF = SubNull(!cpf)
         If Trim(sCPF) = "" Then
             sCPF = SubNull(!Cnpj)
         End If
@@ -283,20 +283,20 @@ ElseIf nCodReduz >= 100000 And nCodReduz < 300000 Then
     With RdoAux
         sNome = !RazaoSocial
         sInscricao = nCodReduz
-        sRG = SubNull(!INSCESTADUAL)
+        sRG = SubNull(!inscestadual)
         If Trim(sRG) = "" Then
             sRG = SubNull(!rg)
         End If
         sCPF = SubNull(!Cnpj)
         If Trim(sCPF) = "" Then
-            sCPF = SubNull(!CPF)
+            sCPF = SubNull(!cpf)
         End If
         sEndereco = !Logradouro
         nNumero = !Numero
         sCep = SubNull(!Cep)
         sComplemento = SubNull(!Complemento)
         sBairro = SubNull(!DescBairro)
-        sCidade = SubNull(!desccidade)
+        sCidade = SubNull(!descCidade)
         sUF = SubNull(!SiglaUF)
         sQuadras = ""
         sLotes = ""
@@ -321,7 +321,7 @@ ElseIf nCodReduz >= 100000 And nCodReduz < 300000 Then
                 Else
                     sBairroEntrega = SubNull(!DescBairro2)
                 End If
-                sCidadeEntrega = SubNull(!desccidade)
+                sCidadeEntrega = SubNull(!descCidade)
                 If Trim(sCidadeEntrega) = "" Then
                     sCidadeEntrega = SubNull(!desccidade2)
                 End If
@@ -389,12 +389,12 @@ Else
     With RdoAux2
         sCPF = SubNull(!Cnpj)
         If Trim(sCPF) = "" Then
-            sCPF = SubNull(!CPF)
+            sCPF = SubNull(!cpf)
         End If
         Sql = "INSERT Partes(idCDA,Tipo,Crc,Nome,CpfCnpj,RgInscrEstadual,Cep,Endereco,Numero,Complemento,Bairro,Cidade,Estado,DtGeracao) Values("
-        Sql = Sql & nCDA & ",'Principal'," & !CodCidadao & ",'" & Mask(!nomecidadao) & "','" & sCPF & "','" & SubNull(!rg) & "','" & SubNull(!Cep) & "','"
+        Sql = Sql & nCDA & ",'Principal'," & !CodCidadao & ",'" & Mask(!Nomecidadao) & "','" & sCPF & "','" & SubNull(!rg) & "','" & SubNull(!Cep) & "','"
         Sql = Sql & Mask(SubNull(!Endereco)) & "'," & Val(SubNull(!NUMIMOVEL)) & ",'" & Mask(SubNull(!Complemento)) & "','" & Mask(SubNull(!DescBairro)) & "','"
-        Sql = Sql & Mask(SubNull(!desccidade)) & "','" & SubNull(!SiglaUF) & "','" & Format(Now, "mm/dd/yyyy") & "')"
+        Sql = Sql & Mask(SubNull(!descCidade)) & "','" & SubNull(!SiglaUF) & "','" & Format(Now, "mm/dd/yyyy") & "')"
         cnInt.Execute Sql, rdExecDirect
        .Close
     End With
@@ -411,13 +411,13 @@ If nCodReduz < 100000 Then 'cadastra os proprietarios e compromissarios
         Do Until .EOF
             sCPF = SubNull(!Cnpj)
             If Trim(sCPF) = "" Then
-                sCPF = SubNull(!CPF)
+                sCPF = SubNull(!cpf)
             End If
             sTipoProp = IIf(!tipoprop = "P", "Principal", "Compromissário")
             Sql = "INSERT Partes(idCDA,Tipo,Crc,Nome,CpfCnpj,RgInscrEstadual,Cep,Endereco,Numero,Complemento,Bairro,Cidade,Estado,DtGeracao) Values("
-            Sql = Sql & nCDA & ",'" & sTipoProp & "'," & nCodReduz & ",'" & Mask(!nomecidadao) & "','" & sCPF & "','" & SubNull(!rg) & "','" & SubNull(!Cep) & "','"
+            Sql = Sql & nCDA & ",'" & sTipoProp & "'," & nCodReduz & ",'" & Mask(!Nomecidadao) & "','" & sCPF & "','" & SubNull(!rg) & "','" & SubNull(!Cep) & "','"
             Sql = Sql & Mask(SubNull(!Endereco)) & "'," & Val(SubNull(!NUMIMOVEL)) & ",'" & Mask(SubNull(!Complemento)) & "','" & Mask(SubNull(!DescBairro)) & "','"
-            Sql = Sql & Mask(SubNull(!desccidade)) & "','" & SubNull(!SiglaUF) & "','" & Format(Now, "mm/dd/yyyy") & "')"
+            Sql = Sql & Mask(SubNull(!descCidade)) & "','" & SubNull(!SiglaUF) & "','" & Format(Now, "mm/dd/yyyy") & "')"
             cnInt.Execute Sql, rdExecDirect
            .MoveNext
         Loop
@@ -430,13 +430,13 @@ ElseIf nCodReduz >= 100000 And nCodReduz < 300000 Then   'cadastra os socios
         Do Until .EOF
             sCPF = SubNull(!Cnpj)
             If Trim(sCPF) = "" Then
-                sCPF = SubNull(!CPF)
+                sCPF = SubNull(!cpf)
             End If
             sTipoProp = "Sócio"
             Sql = "INSERT Partes(idCDA,Tipo,Crc,Nome,CpfCnpj,RgInscrEstadual,Cep,Endereco,Numero,Complemento,Bairro,Cidade,Estado,DtGeracao) Values("
-            Sql = Sql & nCDA & ",'" & sTipoProp & "'," & nCodReduz & ",'" & Mask(!nomecidadao) & "','" & sCPF & "','" & SubNull(!rg) & "','" & SubNull(!Cep) & "','"
+            Sql = Sql & nCDA & ",'" & sTipoProp & "'," & nCodReduz & ",'" & Mask(!Nomecidadao) & "','" & sCPF & "','" & SubNull(!rg) & "','" & SubNull(!Cep) & "','"
             Sql = Sql & Mask(SubNull(!Endereco)) & "'," & Val(SubNull(!NUMIMOVEL)) & ",'" & Mask(SubNull(!Complemento)) & "','" & Mask(SubNull(!DescBairro)) & "','"
-            Sql = Sql & Mask(SubNull(!desccidade)) & "','" & SubNull(!SiglaUF) & "','" & Format(Now, "mm/dd/yyyy") & "')"
+            Sql = Sql & Mask(SubNull(!descCidade)) & "','" & SubNull(!SiglaUF) & "','" & Format(Now, "mm/dd/yyyy") & "')"
             cnInt.Execute Sql, rdExecDirect
            .MoveNext
         Loop
@@ -565,8 +565,13 @@ Sql = "SELECT livro.codtipo, livro.numero, livro.ano, lancamento.codlancamento F
 Sql = Sql & "livro ON lancamento.tipolivro = livro.codtipo where ano=" & Year(Now) & " and codlancamento=" & Val(grdTemp.TextMatrix(1, 1))
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
-     nTipo = !CodTipo
-     nLivro = !Numero
+    If .RowCount > 0 Then
+        nTipo = !CodTipo
+        nLivro = !Numero
+     Else
+        MsgBox "Livro não cadastrado.", vbCritical, "Erro"
+        Exit Sub
+     End If
     .Close
 End With
 
@@ -574,10 +579,10 @@ cn.QueryTimeout = 0
 Sql = "SELECT MAX(PAGINALIVRO) AS MAXIMO FROM DEBITOPARCELA WHERE numerolivro=" & nLivro
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
-    If IsNull(!MAXIMO) Then
+    If IsNull(!maximo) Then
        nPagina = 1
     Else
-        nPagina = !MAXIMO + 1
+        nPagina = !maximo + 1
     End If
    .Close
 End With
@@ -622,18 +627,18 @@ sTributosDA = Chomp(sTributosDA, chomp_righT, 1)
 Sql = "SELECT MAX(PAGINALIVRO) AS MAXIMO FROM DEBITOPARCELA WHERE ANOEXERCICIO=" & Val(cmbAno.Text) & " AND " & sTypeBook
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
-    If IsNull(!MAXIMO) Then
+    If IsNull(!maximo) Then
        lblPag.Caption = 1
     Else
-        If !MAXIMO > 0 Then
-            Sql = "SELECT COUNT(CODREDUZIDO) AS CONTADOR FROM DEBITOPARCELA WHERE ANOEXERCICIO=" & Val(cmbAno.Text) & " AND " & sTypeBook & " AND PAGINALIVRO=" & !MAXIMO
+        If !maximo > 0 Then
+            Sql = "SELECT COUNT(CODREDUZIDO) AS CONTADOR FROM DEBITOPARCELA WHERE ANOEXERCICIO=" & Val(cmbAno.Text) & " AND " & sTypeBook & " AND PAGINALIVRO=" & !maximo
             Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux2
                 nPos = !contador
                 If nPos < 31 Then
-                   nPagina = RdoAux!MAXIMO
+                   nPagina = RdoAux!maximo
                 Else
-                   nPagina = RdoAux!MAXIMO + 1
+                   nPagina = RdoAux!maximo + 1
                 End If
                .Close
             End With

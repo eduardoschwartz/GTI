@@ -316,7 +316,7 @@ Dim xImovel As clsImovel
 Private Sub cmdPrint_Click()
 Dim bRegistrado As Boolean, nCodReduz As Long, nSeq As Integer, nNumDoc As Long, nNumproc As Long, nAnoproc As Integer
 
-nNumproc = Left$(txtNumProc.Text, InStr(1, txtNumProc.Text, "/", vbBinaryCompare) - 2)
+nNumproc = Val(Left$(txtNumProc.Text, InStr(1, txtNumProc.Text, "/", vbBinaryCompare) - 2))
 nAnoproc = Right$(txtNumProc.Text, 4)
 nCodReduz = Val(txtCod.Text)
 
@@ -371,7 +371,7 @@ End Sub
 Private Sub Form_Load()
 Centraliza Me
 dDataBase = CDate(Mid$(frmMdi.Sbar.Panels(6).Text, 12, 2) & "/" & Mid$(frmMdi.Sbar.Panels(6).Text, 15, 2) & "/" & Right$(frmMdi.Sbar.Panels(6).Text, 4))
-txtAno.Text = Year(Now)
+txtAno.Text = 2022
 Set xImovel = New clsImovel
 End Sub
 
@@ -424,7 +424,7 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If RdoAux.RowCount > 0 Then
          If sTipoCod = "I" Or sTipoCod = "C" Then
-            lblNome.Caption = !nomecidadao
+            lblNome.Caption = !Nomecidadao
          ElseIf sTipoCod = "M" Then
             lblNome.Caption = !RazaoSocial
          End If
@@ -448,7 +448,7 @@ Dim nNumproc As Long, nAnoproc As Integer
 On Error Resume Next
 If Trim$(txtNumProc.Text) <> "" Then
     If InStr(1, txtNumProc.Text, "/", vbBinaryCompare) > 0 Then
-        nNumproc = Left$(txtNumProc.Text, InStr(1, txtNumProc.Text, "/", vbBinaryCompare) - 2)
+        nNumproc = Val(Left$(txtNumProc.Text, InStr(1, txtNumProc.Text, "/", vbBinaryCompare) - 2))
         nAnoproc = Right$(txtNumProc.Text, 4)
         lblNumProc.Caption = nNumproc
         lblAnoProc.Caption = nAnoproc
@@ -746,7 +746,7 @@ With RdoAux
     End If
    .Close
 End With
-Sql = "INSERT DEBITOOBSERVACAO(CODREDUZIDO,SEQ,USERID,DATAOBS,OBS) VALUES(" & Val(txtCod.Text) & "," & nSeq & ",236,'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sObs) & "')"
+Sql = "INSERT DEBITOOBSERVACAO(CODREDUZIDO,SEQ,USERID,DATAOBS,OBS) VALUES(" & Val(txtCod.Text) & "," & nSeq & "," & RetornaUsuarioID(NomeDeLogin) & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sObs) & "')"
 cn.Execute Sql, rdExecDirect
 
 If bBoleto Then
@@ -803,7 +803,7 @@ Select Case nCodReduz
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             sInsc = !Inscricao
-            sNome = !nomecidadao
+            sNome = !Nomecidadao
             sDoc = Format(SubNull(!cpf), "00000000000")
             If sDoc = "" Then
                 sDoc = Format(SubNull(!Cnpj), "00000000000000")
@@ -869,7 +869,7 @@ Select Case nCodReduz
         On Error Resume Next
         With RdoAux2
             If .RowCount > 0 Then
-                 sNome = !nomecidadao
+                 sNome = !Nomecidadao
                  If Val(SubNull(!FCodLogradouro)) > 0 Then
                      Sql = "SELECT CODLOGRADOURO,CODTIPOLOG,NOMETIPOLOG,"
                      Sql = Sql & "ABREVTIPOLOG,CODTITLOG,NOMETITLOG,"
@@ -1053,7 +1053,7 @@ With RdoAux
     End If
    .Close
 End With
-Sql = "INSERT DEBITOOBSERVACAO(CODREDUZIDO,SEQ,USERID,DATAOBS,OBS) VALUES(" & Val(txtCod.Text) & "," & nSeq & ",236,'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sObs) & "')"
+Sql = "INSERT DEBITOOBSERVACAO(CODREDUZIDO,SEQ,USERID,DATAOBS,OBS) VALUES(" & Val(txtCod.Text) & "," & nSeq & "," & RetornaUsuarioID(NomeDeLogin) & ",'" & Format(Now, "mm/dd/yyyy") & "','" & Mask(sObs) & "')"
 cn.Execute Sql, rdExecDirect
 
 frmReport.ShowReport3 "FICHACOMPENSACAO", frmMdi.HWND, Me.HWND, nSid

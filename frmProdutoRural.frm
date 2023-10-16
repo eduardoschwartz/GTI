@@ -5,8 +5,8 @@ Begin VB.Form frmProdutoRural
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Cadastro de Produtos Rurais"
    ClientHeight    =   5100
-   ClientLeft      =   10635
-   ClientTop       =   2715
+   ClientLeft      =   15570
+   ClientTop       =   5850
    ClientWidth     =   5700
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
@@ -477,7 +477,7 @@ If Evento = "Novo" Then
     Sql = "SELECT MAX(CODPRODUTO) AS MAXIMO FROM PRODUTORURAL"
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
-        nCodNovo = !MAXIMO + 1
+        nCodNovo = !maximo + 1
        .Close
     End With
     lstProd.AddItem txtDesc.Text

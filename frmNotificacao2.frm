@@ -40,7 +40,7 @@ Begin VB.Form frmNotificacao2
       _ExtentX        =   2408
       _ExtentY        =   582
       _Version        =   393216
-      Format          =   164429825
+      Format          =   153485313
       CurrentDate     =   40750
    End
    Begin VB.ComboBox cmbAno 
@@ -611,7 +611,7 @@ With RdoAux
                 
     Sql = "insert notificacaoiss(usuario,codigo,razao,processo,seq,ano,endereco,tipo,area,valoriss,valorpago,codcidadao,isspago,ano_tabela) "
     Sql = Sql & "values('"
-    Sql = Sql & IIf(NomeDeLogin = "LUIZ.FERRETI", "NOELI", NomeDeLogin) & "'," & nCodReduz & ",'" & Mask(sNome) & "','" & sProcesso & "'," & Val(txtNot.Text) & "," & nAno & ",'" & Left(Mask(sEndereco), 70) & "','" & sTipo & "',"
+    Sql = Sql & IIf(NomeDeLogin = "LUIZ.FERRETI", "RODRIGOC", NomeDeLogin) & "'," & nCodReduz & ",'" & Mask(sNome) & "','" & sProcesso & "'," & Val(txtNot.Text) & "," & nAno & ",'" & Left(Mask(sEndereco), 70) & "','" & sTipo & "',"
     Sql = Sql & Virg2Ponto(CStr(nArea)) & "," & Virg2Ponto(CStr(nValor)) & "," & Virg2Ponto(CStr(nValorTotal)) & "," & nCodCidadao & "," & Virg2Ponto(Format(nValorPago, "#0.00")) & "," & nAno_Tabela & ")"
     cn.Execute Sql, rdExecDirect
     
@@ -702,7 +702,7 @@ txtCodCidadao.Text = ""
 txtNumProc.Text = ""
 txtISSPago.Text = ""
 
-Sql = "DELETE FROM NOTIFICACAOISS WHERE USUARIO='" & IIf(NomeDeLogin = "LUIZ.FERRETI", "NOELI", NomeDeLogin) & "'"
+Sql = "DELETE FROM NOTIFICACAOISS WHERE USUARIO='" & IIf(NomeDeLogin = "LUIZ.FERRETI", "RODRIGOC", NomeDeLogin) & "'"
 cn.Execute Sql, rdExecDirect
 
 

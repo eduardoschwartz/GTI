@@ -806,7 +806,7 @@ With grdOrigem
                 Sql = Sql & "DATAAJUIZA,VALORJUROS,NUMPROCESSO,USERID) VALUES(" & Val(txtCod.Text) & "," & !AnoExercicio & "," & !CodLancamento & ","
                 Sql = Sql & !SeqLancamento & "," & !NumParcela & "," & Val(grdOrigem.TextMatrix(x, 4)) & "," & Val(Left$(grdOrigem.TextMatrix(x, 8), 2)) & ",'" & Format(grdOrigem.TextMatrix(nLinhaOriginal, 5), "mm/dd/yyyy") & "','" & Format(!DATADEBASE, "mm/dd/yyyy") & "',"
                 Sql = Sql & Val(SubNull(!CODMOEDA)) & "," & Val(SubNull(!numerolivro)) & "," & Val(SubNull(!paginalivro)) & "," & Val(SubNull(!numcertidao)) & "," & IIf(IsNull(!datainscricao), "Null", "'" & Format(!datainscricao, "mm/dd/yyyy") & "'") & "," & IIf(IsNull(!dataajuiza), "Null", "'" & Format(!dataajuiza, "mm/dd/yyyy") & "'") & "," & Val(SubNull(!ValorJuros)) & ",'"
-                Sql = Sql & txtNumProc.Text & "',236)"
+                Sql = Sql & txtNumProc.Text & "'," & RetornaUsuarioID(NomeDeLogin) & ")"
                 cn.Execute Sql, rdExecDirect
             
                'GRAVA OBS PARCELA
@@ -946,8 +946,10 @@ cmdBaixa.Enabled = False
 grdParc.Rows = 1: grdOrigem.Rows = 1
 Sql = "SELECT debitoparcela.codreduzido, COUNT(debitoparcela.codreduzido) AS contador, processoreparc.numprocesso, processoreparc.qtdeparcela "
 Sql = Sql & "FROM debitoparcela INNER JOIN processoreparc ON debitoparcela.numprocesso = processoreparc.numprocesso WHERE processoreparc.novo = 1 AND "
-Sql = Sql & "debitoparcela.codlancamento = 20 AND (debitoparcela.statuslanc = 3 or debitoparcela.statuslanc = 18) AND datediff(day,debitoparcela.datavencimento, GETDATE())>30 "
-Sql = Sql & "GROUP BY debitoparcela.codreduzido, processoreparc.numprocesso, processoreparc.qtdeparcela Having (Count(debitoparcela.CODREDUZIDO) > 2) ORDER BY debitoparcela.codreduzido"
+Sql = Sql & "debitoparcela.codlancamento = 20 AND (debitoparcela.statuslanc = 3 or debitoparcela.statuslanc = 18) AND datediff(day,debitoparcela.datavencimento, GETDATE())>90 "
+Sql = Sql & "GROUP BY debitoparcela.codreduzido, processoreparc.numprocesso, processoreparc.qtdeparcela ORDER BY debitoparcela.codreduzido"
+'Sql = Sql & "debitoparcela.codlancamento = 20 AND (debitoparcela.statuslanc = 3 or debitoparcela.statuslanc = 18) AND datediff(day,debitoparcela.datavencimento, GETDATE())>30 "
+'Sql = Sql & "GROUP BY debitoparcela.codreduzido, processoreparc.numprocesso, processoreparc.qtdeparcela Having (Count(debitoparcela.CODREDUZIDO) > 2) ORDER BY debitoparcela.codreduzido"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     x = 1: nContador = .RowCount
@@ -958,12 +960,12 @@ With RdoAux
 '    If !CODREDUZIDO <> 538957 Then
 '        GoTo PROXIMO
 '    End If
-    If x > 25 Then Exit Do
+    If x > 190 Then Exit Do
         If !CODREDUZIDO < 50000 Then
            Sql = "SELECT NOMECIDADAO FROM vwCONSULTAIMOVELPROP WHERE CODREDUZIDO=" & !CODREDUZIDO
            Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
            With RdoAux
-               sNome = SubNull(!nomecidadao)
+               sNome = SubNull(!Nomecidadao)
               .Close
            End With
         ElseIf !CODREDUZIDO >= 100000 And !CODREDUZIDO < 300000 Then
@@ -977,12 +979,12 @@ With RdoAux
            Sql = "SELECT NOMECIDADAO FROM CIDADAO WHERE CODCIDADAO=" & !CODREDUZIDO
            Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
            With RdoAux
-               sNome = SubNull(!nomecidadao)
+               sNome = SubNull(!Nomecidadao)
               .Close
            End With
         End If
-        nNumproc = Val(Left$(!NUMPROCESSO, InStr(1, !NUMPROCESSO, "/", vbBinaryCompare) - 1))
-        nAnoproc = Val(Right$(!NUMPROCESSO, 4))
+        nNumproc = Val(Left$(!NumProcesso, InStr(1, !NumProcesso, "/", vbBinaryCompare) - 1))
+        nAnoproc = Val(Right$(!NumProcesso, 4))
         sNumProc = nNumproc & "/" & nAnoproc
         
         lblStatus.Caption = "Carregando processo nº " & (nNumproc & RetornaDVProcesso(nNumproc) & "/" & nAnoproc) & " (" & x & " de " & nContador & ")"
@@ -1230,7 +1232,7 @@ With RdoAux
          Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
          With RdoAux2
               If .RowCount > 0 Then
-                  nValorPago = !valorpagoreal
+                  nValorPago = !ValorPagoreal
                   dDataPagto = !DataPagamento
                   sDataPagto = Format(!DataPagamento, "dd/mm/yyyy")
               Else
@@ -1687,7 +1689,7 @@ With RdoGrid
          Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
          With RdoAux2
               If .RowCount > 0 Then
-                  nValorPago = !valorpagoreal
+                  nValorPago = !ValorPagoreal
                   dDataPagto = !DataPagamento
                   sDataPagto = Format(!DataPagamento, "dd/mm/yyyy")
               Else

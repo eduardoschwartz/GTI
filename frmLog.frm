@@ -412,7 +412,7 @@ Begin VB.Form frmLog
          _ExtentY        =   556
          _Version        =   393216
          CustomFormat    =   "dd/mm/yyyy"
-         Format          =   50593793
+         Format          =   153092097
          CurrentDate     =   37594
       End
       Begin VB.CheckBox chkTodos 
@@ -437,7 +437,7 @@ Begin VB.Form frmLog
          _ExtentY        =   556
          _Version        =   393216
          CustomFormat    =   "dd/mm/yyyy"
-         Format          =   50593793
+         Format          =   153092097
          CurrentDate     =   37594
       End
       Begin VB.Label Label1 
@@ -472,7 +472,7 @@ Dim Sql As String
 
 Private Sub chkTodos_Click()
 
-If chkTodos.Value = 1 Then
+If chkTodos.value = 1 Then
    vcDataDe.Enabled = False
    vcDataAte.Enabled = False
 Else
@@ -484,20 +484,20 @@ End Sub
 
 Private Sub cmdAbaixo_Click()
 
-If cmdAbaixo.Value = Down Then
-   cmdAcima.Value = Up
+If cmdAbaixo.value = Down Then
+   cmdAcima.value = UP
 Else
-   cmdAcima.Value = Down
+   cmdAcima.value = Down
 End If
 
 End Sub
 
 Private Sub cmdAcima_Click()
 
-If cmdAcima.Value = Down Then
-   cmdAbaixo.Value = Up
+If cmdAcima.value = Down Then
+   cmdAbaixo.value = UP
 Else
-   cmdAbaixo.Value = Down
+   cmdAbaixo.value = Down
 End If
 
 End Sub
@@ -509,14 +509,14 @@ Dim bSecEvento As Boolean, bForm As Boolean, bData As Boolean
 Dim lStyle As Long
 Dim lR As Long, tLV As LVITEM
 Dim z As Long
-
+Exit Sub
 Ocupado
 Screen.MousePointer = vbHourglass
 lblTotLog.Caption = 0
-txtLog.text = ""
-z = SendMessage(lvLog.hwnd, LVM_DELETEALLITEMS, 0, 0)
+txtLog.Text = ""
+z = SendMessage(lvLog.HWND, LVM_DELETEALLITEMS, 0, 0)
 
-If chkTodos.Value = 0 Then bData = True
+If chkTodos.value = 0 Then bData = True
 If cmbComputer.ListIndex > 0 Then bComputador = True
 If cmbUser.ListIndex > 0 Then bUsuario = True
 If cmbEvento.ItemData(cmbEvento.ListIndex) <> 999 Then bEvento = True
@@ -526,15 +526,15 @@ If cmbTela.ListIndex > 0 Then bForm = True
 Sql = "SELECT SEQ,DATAHORAEVENTO,COMPUTADOR,USUARIO,FORM,EVENTO,SECEVENTO FROM LOGEVENTO WHERE "
 
 If bComputador Then
-   Sql = Sql & "COMPUTADOR='" & cmbComputer.text & "' AND "
+   Sql = Sql & "COMPUTADOR='" & cmbComputer.Text & "' AND "
 End If
 
 If bUsuario Then
-   Sql = Sql & "USUARIO='" & cmbUser.text & "' AND "
+   Sql = Sql & "USUARIO='" & cmbUser.Text & "' AND "
 End If
 
 If bForm Then
-   Sql = Sql & "FORM='" & cmbTela.text & "' AND "
+   Sql = Sql & "FORM='" & cmbTela.Text & "' AND "
 End If
 
 If bEvento Then
@@ -546,7 +546,7 @@ If bSecEvento Then
 End If
 
 If bData Then
-   Sql = Sql & "CONVERT(CHAR(10),DATAHORAEVENTO,110) BETWEEN '" & Format(vcDataDe.Value, "mm-dd-yyyy") & "' AND '" & Format(vcDataAte.Value, "mm-dd-yyyy") & "'"
+   Sql = Sql & "CONVERT(CHAR(10),DATAHORAEVENTO,110) BETWEEN '" & Format(vcDataDe.value, "mm-dd-yyyy") & "' AND '" & Format(vcDataAte.value, "mm-dd-yyyy") & "'"
 End If
 
 If Right$(Sql, 6) = "WHERE " Then
@@ -559,8 +559,8 @@ End If
 
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
 lblTotLog.Caption = RdoAux.RowCount
-lStyle = SendMessageByLong(lvLog.hwnd, LVM_GETEXTENDEDLISTVIEWSTYLE, 0, 0)
-SendMessageByLong lvLog.hwnd, LVM_SETEXTENDEDLISTVIEWSTYLE, 0, lStyle
+lStyle = SendMessageByLong(lvLog.HWND, LVM_GETEXTENDEDLISTVIEWSTYLE, 0, 0)
+SendMessageByLong lvLog.HWND, LVM_SETEXTENDEDLISTVIEWSTYLE, 0, lStyle
 tLV.Mask = LVIF_IMAGE
 
 With lvLog
@@ -594,7 +594,7 @@ With lvLog
            Case 3
               tLV.iImage = 7
        End Select
-       SendMessage lvLog.hwnd, LVM_SETITEM, lR - 1, tLV
+       SendMessage lvLog.HWND, LVM_SETITEM, lR - 1, tLV
       
       'Col5
        Select Case RdoAux!SECEVENTO
@@ -624,7 +624,7 @@ With lvLog
             Case Else
                tLV.iImage = 4
         End Select
-        SendMessage lvLog.hwnd, LVM_SETITEM, lR - 1, tLV
+        SendMessage lvLog.HWND, LVM_SETITEM, lR - 1, tLV
     
      'Col6
        itmX.SubItems(5) = RdoAux!Form
@@ -649,18 +649,18 @@ Private Sub Form_Load()
 
 Ocupado
 Centraliza Me
-chkTodos.Value = 0
+chkTodos.value = 0
 vcDataDe.Enabled = True
 vcDataAte.Enabled = True
-vcDataDe.Value = Format(Now, "dd/mm/yyyy")
-vcDataAte.Value = Format(Now, "dd/mm/yyyy")
+vcDataDe.value = Format(Now, "dd/mm/yyyy")
+vcDataAte.value = Format(Now, "dd/mm/yyyy")
 CarregaLista
 Liberado
 
 End Sub
 
 Private Sub CarregaLista()
-
+Exit Sub
 Sql = "SELECT DISTINCT COMPUTADOR FROM LOGEVENTO; " & _
       "SELECT DISTINCT USUARIO FROM LOGEVENTO WHERE USUARIO<>''; " & _
       "SELECT DISTINCT FORM FROM LOGEVENTO"
@@ -747,12 +747,12 @@ Dim iT As Long
       lvLog.Sorted = False
       m_iSortCol = 3
       m_eSortType = elvstDate
-      SendMessageByLong lvLog.hwnd, LVM_SORTITEMS, lvLog.hwnd, AddressOf LVWSortCompare
+      SendMessageByLong lvLog.HWND, LVM_SORTITEMS, lvLog.HWND, AddressOf LVWSortCompare
    Case Else
       ' Number column
       m_iSortCol = ColumnHeader.Index
       m_eSortType = elvstText
-      SendMessageByLong lvLog.hwnd, LVM_SORTITEMS, lvLog.hwnd, AddressOf LVWSortCompare
+      SendMessageByLong lvLog.HWND, LVM_SORTITEMS, lvLog.HWND, AddressOf LVWSortCompare
    End Select
    
 End Sub
@@ -763,9 +763,9 @@ Sql = "SELECT LOGEVENTO From LOGEVENTO WHERE SEQ=" & Val(Right$(Item.Key, Len(It
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If .RowCount > 0 Then
-        txtLog.text = SubNull(!LOGEVENTO)
+        txtLog.Text = SubNull(!LOGEVENTO)
     Else
-        txtLog.text = ""
+        txtLog.Text = ""
     End If
    .Close
 End With
