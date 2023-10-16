@@ -1,13 +1,13 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmCnsMob 
    BackColor       =   &H00EEEEEE&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Consulta de Empresas"
    ClientHeight    =   5925
-   ClientLeft      =   15795
-   ClientTop       =   3315
+   ClientLeft      =   7980
+   ClientTop       =   5205
    ClientWidth     =   8760
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
@@ -469,38 +469,43 @@ Begin VB.Form frmCnsMob
       BackColor       =   12640511
       BorderStyle     =   1
       Appearance      =   0
-      NumItems        =   7
+      NumItems        =   8
       BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Text            =   "Código"
          Object.Width           =   1693
       EndProperty
       BeginProperty ColumnHeader(2) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   1
-         Text            =   "Razão Social"
-         Object.Width           =   4304
+         Text            =   "Situação"
+         Object.Width           =   2011
       EndProperty
       BeginProperty ColumnHeader(3) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   2
-         Text            =   "Nº de CNPJ"
-         Object.Width           =   3881
+         Text            =   "Razão Social"
+         Object.Width           =   4304
       EndProperty
       BeginProperty ColumnHeader(4) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   3
-         Text            =   "Insc.Est."
-         Object.Width           =   3528
+         Text            =   "Nº de CNPJ"
+         Object.Width           =   3881
       EndProperty
       BeginProperty ColumnHeader(5) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   4
-         Text            =   "Proprietário/Sócios"
-         Object.Width           =   4233
+         Text            =   "Insc.Est."
+         Object.Width           =   3528
       EndProperty
       BeginProperty ColumnHeader(6) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   5
-         Text            =   "Nome do Logradouro"
-         Object.Width           =   4304
+         Text            =   "Proprietário/Sócios"
+         Object.Width           =   4233
       EndProperty
       BeginProperty ColumnHeader(7) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   6
+         Text            =   "Nome do Logradouro"
+         Object.Width           =   4304
+      EndProperty
+      BeginProperty ColumnHeader(8) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         SubItemIndex    =   7
          Text            =   "Nº Log."
          Object.Width           =   1411
       EndProperty
@@ -588,8 +593,8 @@ End Sub
 
 Private Sub cmdPesq_Click()
 'On Error Resume Next
-Dim itmX As ListItem
-Dim z As Long, x As Integer
+Dim itmX As ListItem, RdoAux2 As rdoResultset
+Dim z As Long, x As Integer, sSituacao As String
 
 If Val(txtCod.Text) = 0 And Trim$(txtProp.Text) = "" And Val(txtCodLogr.Text) = 0 And Val(txtNumImovel.Text) = 0 And Trim$(txtCNPJ.Text) = "" And Trim$(txtRazao.Text) = "" And Val(txtCodAtiv.Text) = 0 And Val(txtIE.Text) = 0 Then
     MsgBox "Favor selecionar ao menos um critério para busca.", vbExclamation, "Atenção"
@@ -623,11 +628,13 @@ If Val(txtCodAtiv.Text) > 0 Then bAtiv = True
 If txtNumImovel.Text <> "" Then bNum = True
 If Val(txtIE.Text) > 0 Then bIE = True
 
+sSituacao = "Ativa"
+
 If bNome Then
-    Sql = "SELECT CODIGOMOB,DVMOB,RAZAOSOCIAL,NOMEFANTASIA,CODLOGRADOURO,ABREVTIPOLOG,ABREVTITLOG,"
+    Sql = "SELECT CODIGOMOB,DVMOB,RAZAOSOCIAL,NOMEFANTASIA,CODLOGRADOURO,ABREVTIPOLOG,ABREVTITLOG,DATAENCERRAMENTO,"
     Sql = Sql & "NOMELOGRADOURO,NUMERO,CNPJ,INSCESTADUAL,CODATIVIDADE,DESCATIVIDADE,CODCIDADAO,NOMECIDADAO FROM VWCNSMOBILIARIOPROP WHERE "
 Else
-    Sql = "SELECT CODIGOMOB,DVMOB,RAZAOSOCIAL,NOMEFANTASIA,CODLOGRADOURO,ABREVTIPOLOG,ABREVTITLOG,"
+    Sql = "SELECT CODIGOMOB,DVMOB,RAZAOSOCIAL,NOMEFANTASIA,CODLOGRADOURO,ABREVTIPOLOG,ABREVTITLOG,DATAENCERRAMENTO,"
     Sql = Sql & "NOMELOGRADOURO,NUMERO,CNPJ,INSCESTADUAL,CODATIVIDADE,DESCATIVIDADE,CODCIDADAO,NOMECIDADAO FROM VWCNSMOBILIARIO WHERE "
 End If
 If bCod Then
@@ -655,27 +662,40 @@ If bNome Then
    Sql = Sql & "CODCIDADAO=" & Val(Left(txtProp.Text, 6)) & " AND "
 End If
 Sql = Left$(Sql, Len(Sql) - 5)
-
 x = 0
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
 If RdoAux.RowCount > 0 Then
-   With RdoAux
-       Do Until .EOF
-          x = x + 1
-          Set itmX = lvEmpresa.ListItems.Add(, "C" & sTr(x) & Format(!codigomob, "0000000"), Format(!codigomob, "0000000"))
-          itmX.SubItems(1) = SubNull(!razaosocial)
-          itmX.SubItems(2) = SubNull(!Cnpj)
-          itmX.SubItems(3) = SubNull(!inscestadual)
-          itmX.SubItems(4) = SubNull(!nomecidadao)
-          itmX.SubItems(5) = Trim$(SubNull(!AbrevTipoLog)) & " " & IIf(IsNull(!AbrevTitLog), "", Trim$(SubNull(!AbrevTitLog)) & " ") & Trim$(SubNull(!NomeLogradouro))
-          itmX.SubItems(6) = SubNull(!Numero)
-         .MoveNext
-       Loop
-      .Close
-   End With
+    With RdoAux
+        Do Until .EOF
+            If Not IsNull(!dataencerramento) Then
+                sSituacao = "Encerrada"
+            Else
+                Sql = "SELECT codmobiliario, DataEv, codtipoevento From vwMOBILIARIOSUSPENSO Where (codmobiliario=" & !codigomob & ") and (codtipoevento = 2)"
+                Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                If RdoAux2.RowCount > 0 Then
+                    sSituacao = "Suspensa"
+                Else
+                    sSituacao = "Ativa"
+                End If
+                RdoAux2.Close
+            End If
+       
+            x = x + 1
+            Set itmX = lvEmpresa.ListItems.Add(, "C" & sTr(x) & Format(!codigomob, "0000000"), Format(!codigomob, "0000000"))
+            itmX.SubItems(1) = sSituacao
+            itmX.SubItems(2) = SubNull(!razaosocial)
+            itmX.SubItems(3) = SubNull(!Cnpj)
+            itmX.SubItems(4) = SubNull(!inscestadual)
+            itmX.SubItems(5) = SubNull(!nomecidadao)
+            itmX.SubItems(6) = Trim$(SubNull(!AbrevTipoLog)) & " " & IIf(IsNull(!AbrevTitLog), "", Trim$(SubNull(!AbrevTitLog)) & " ") & Trim$(SubNull(!NomeLogradouro))
+            itmX.SubItems(7) = SubNull(!Numero)
+           .MoveNext
+        Loop
+       .Close
+    End With
 Else
-   Liberado
-   MsgBox "Não existem Empresas com estes parâmetros.", vbExclamation, "Atenção"
+    Liberado
+    MsgBox "Não existem Empresas com estes parâmetros.", vbExclamation, "Atenção"
 End If
 Liberado
 Screen.MousePointer = vbDefault
