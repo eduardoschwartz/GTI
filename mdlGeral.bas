@@ -1,14 +1,20 @@
 Attribute VB_Name = "mdlGeral"
+Public ServerIP_config As String
+Public FilesIP_config As String
+Public GuicheNumero_config As String
+Public GuicheTipo_config As String
+Public sIP As String
+
 Private Const WM_QUIT As Long = &H12
 
-Private Type Guid
+Private Type guid
     Data1 As Long
     Data2 As Integer
     Data3 As Integer
     Data4(0 To 7) As Byte
 End Type
 
-Private Declare Sub CoCreateGuid Lib "ole32.dll" (ByRef pguid As Guid)
+Private Declare Sub CoCreateGuid Lib "ole32.dll" (ByRef pguid As guid)
 Private Declare Function StringFromGUID2 Lib "ole32.dll" (ByVal rguid As Long, ByVal lpsz As Long, ByVal cchMax As Long) As Long
 
 Public bDBInternet As Boolean
@@ -221,9 +227,11 @@ Public cnInt As New rdoConnection
 Public cnGti As New rdoConnection
 Public enInt As rdoEnvironment
 Public cnEicon As New rdoConnection
+Public cnSmar As New rdoConnection
 'Public cnBinary  As New rdoConnection
 Public cnEicon2 As New rdoConnection
 Public enEicon As rdoEnvironment
+Public enSmar As rdoEnvironment
 Public enBinary As rdoEnvironment
 Public enBkp As rdoEnvironment
 Public en2 As rdoEnvironment
@@ -536,6 +544,12 @@ Public Type tFoto
     Arquivo As String
 End Type
 
+Public Type tTaxaSelic
+    ano As Integer
+    Mes As Integer
+    valor As Double
+End Type
+
 
 'Enum
 Public Enum Elg
@@ -699,10 +713,13 @@ Dim uwid As Long, uhgt As Long
 Dim FS As FileSystemObject, sIP As String, Data1 As String, Data2 As String
 Dim sPathOrigem As String, sPathDest As String, fo As File, fso As Folder
 Dim handle As Long
-If App.PrevInstance Then
-     MsgBox "Já existe uma cópia deste programa rodando.", vbCritical, "ATENÇÃO"
-     End
-End If
+
+'If NomeDeLogin <> "ROSE" And NomeDeLogin <> "JOSEANE" And NomeDeLogin <> "ELIVAINE" And NomeDeLogin <> "DANIELI.SCARPA" And NomeDeLogin <> "SCHWARTZ" Then
+'    If App.PrevInstance Then
+'         MsgBox "Já existe uma cópia deste programa rodando.", vbCritical, "ATENÇÃO"
+'         End
+'    End If
+'End If
 
 uwid = Screen.Width
 uhgt = Screen.Height
@@ -718,7 +735,7 @@ dDataAtualiza = Now
 
 Data1 = "": Data2 = ""
 Set FS = New FileSystemObject
-sPathOrigem = "\\192.168.200.130\atualizagti\"
+sPathOrigem = "\\172.30.30.3\atualizagti\"
 sPathDest = App.Path & "\"
 If FS.FileExists(sPathOrigem & "\GTI_SERVER.EXE") Then
     Set fso = FS.GetFolder(sPathOrigem)
@@ -849,7 +866,7 @@ End If
 End Sub
 
 Public Function Security() As Boolean
-Dim RdoAux As rdoResultset, Sql As String
+Dim rdoAux As rdoResultset, sql As String
 Dim RdoAux2 As rdoResultset
 
 Dim volume_name As String
@@ -870,15 +887,15 @@ Then
     Exit Function
 End If
 
-Sql = "SELECT VALPARAM FROM PARAMETROS WHERE NOMEPARAM='" & Left$(NomeDoComputador, 2) & serial_number & "'"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
-With RdoAux
+sql = "SELECT VALPARAM FROM PARAMETROS WHERE NOMEPARAM='" & Left$(NomeDoComputador, 2) & serial_number & "'"
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurReadOnly)
+With rdoAux
     If .RowCount = 0 Then
        Security = False
        Exit Function
     Else
-       Sql = "SELECT VALPARAM FROM PARAMETROS WHERE NOMEPARAM='CODDATAANT'"
-       Set RdoAux2 = cn.OpenResultset(Sql, rdOpenForwardOnly, rdConcurReadOnly)
+       sql = "SELECT VALPARAM FROM PARAMETROS WHERE NOMEPARAM='CODDATAANT'"
+       Set RdoAux2 = cn.OpenResultset(sql, rdOpenForwardOnly, rdConcurReadOnly)
        sKey = KeyGen(Left$(NomeDoComputador, 2) & serial_number, RdoAux2!valparam, 3)
        If Decrypt128(!valparam, "sysTribut") <> sKey Then
           Security = False
@@ -899,24 +916,24 @@ Public Sub LoadReg()
 
 'sPathArqDA = GetSetting("GTI", "PATH", "DEBITOAUTOMATICO")
 'If sPathArqDA = "" Then
-'   SaveSetting "GTI", "PATH", "DEBITOAUTOMATICO", "\\192.168.200.130\ATUALIZAGTI\DEBITOAUTOMATICO"
+'   SaveSetting "GTI", "PATH", "DEBITOAUTOMATICO", "\\172.30.30.3\ATUALIZAGTI\DEBITOAUTOMATICO"
 '   sPathArqDA = GetSetting("GTI", "PATH", "DEBITOAUTOMATICO")
 'End If
 'If bLocal Then
 '    sPathArqBanco = "C:\Trabalho\GTI\Bancos"
 'Elses
     
-    sPathArqDA = "\\192.168.200.130\ATUALIZAGTI\DEBITOAUTOMATICO"
+    sPathArqDA = "\\172.30.30.3\ATUALIZAGTI\DEBITOAUTOMATICO"
     If NomeDoComputador = "SKYNET" Then
         sPathArqBanco = "D:\TRABALHO\GTI\BANCO"
     Else
-        sPathArqBanco = "\\192.168.200.130\ATUALIZAGTI"
+        sPathArqBanco = "\\172.30.30.3\ATUALIZAGTI"
     End If
 'End If
 
 sPathAutoUpdate = GetSetting("GTI", "PATH", "AUTOUPDATE")
 If sPathAutoUpdate = "" Then
-   SaveSetting "GTI", "PATH", "AUTOUPDATE", "\\192.168.200.130\TESTES IPTU"
+   SaveSetting "GTI", "PATH", "AUTOUPDATE", "\\172.30.30.3\TESTES IPTU"
    sPathAutoUpdate = GetSetting("GTI", "PATH", "AUTOUPDATE")
 End If
 sPathHelp = GetSetting("GTI", "PATH", "HELP")
@@ -1034,34 +1051,34 @@ With en
     .LoginTimeout = 60
      
      
-sIP = ""
-Set FS = New FileSystemObject
-If FS.FileExists(App.Path & "\gti.ini") Then
-    Open App.Path & "\gti.ini" For Input As #137
-    Do While Not EOF(137)
-        Line Input #137, strLinha
-        If Left(strLinha, 6) = "SERVER" Then
-            sIP = Mid(strLinha, 8, Len(strLinha) - 7)
-        End If
-    Loop
-    Close #137
-    If sIP = "" Then
-        Open App.Path & "\gti.ini" For Append As #138
-        Print #138, "SERVER=192.168.200.202"
-        Close #138
-    End If
-Else
-    Open App.Path & "\gti.ini" For Output As #1
-    Print #1, "SERVER=192.168.200.202"
-    sIP = "192.168.200.202"
-    Close #1
-End If
+'sIP = ""
+'Set FS = New FileSystemObject
+'If FS.FileExists(App.Path & "\gti.ini") Then
+ '   Open App.Path & "\gti.ini" For Input As #137
+ '   Do While Not EOF(137)
+ '       Line Input #137, strLinha
+ '       If Left(strLinha, 6) = "SERVER" Then
+ '           sIP = Mid(strLinha, 8, Len(strLinha) - 7)
+'        End If
+'    Loop
+'    Close #137
+'    If sIP = "" Then
+'        Open App.Path & "\gti.ini" For Append As #138
+'        Print #138, "SERVER=172.30.30.4"
+'        Close #138
+'    End If
+'Else
+'    Open App.Path & "\gti.ini" For Output As #1
+'    Print #1, "SERVER=172.30.30.4"
+'    sIP = "172.30.30.4"
+'    Close #1
+'End If
 
-IPServer = sIP
+IPServer = ServerIP_config
 
-If IPServer = "192.168.15.160" Then
-    IPServer = "192.168.200.202"
-End If
+'If IPServer = "192.168.15.160" Then
+'    IPServer = "172.30.30.4"
+'End If
      
 If LoginDSN = "odbcTributacao" Then
    Conn$ = "UID=gtisys;PWD=himalaia;" _
@@ -1302,6 +1319,36 @@ ConectaEicon2 = False
 
 End Function
 
+Public Function ConectaSmar() As Boolean
+
+On Error GoTo Erro
+
+Screen.MousePointer = vbHourglass
+
+Set enSmar = rdoEngine.rdoEnvironments(0)
+enSmar.CursorDriver = rdUseOdbc
+With enSmar
+    .CursorDriver = rdUseOdbc
+    .LoginTimeout = 20
+     
+    Conn$ = "UID=" & UL & ";PWD=" & UP & ";" _
+    & "DATABASE=SMARAPD;" _
+    & "SERVER=" & IPServer & ";" _
+    & "DRIVER={SQL SERVER};DSN='';"
+    Set cnSmar = en.OpenConnection(dsname:="", Prompt:=rdDriverNoPrompt, Connect:=Conn$)
+
+End With
+
+ConectaSmar = True
+cnSmar.QueryTimeout = 180
+Screen.MousePointer = vbDefault
+Exit Function
+Erro:
+'MsgBox Err.Description
+ConectaSmar = False
+
+End Function
+
 
 Public Function SubNull(dado)
 
@@ -1426,21 +1473,21 @@ End Sub
 Public Sub Log(nEvento As Elg, sNomeForm As String, nSecEvento As EvFrm, Desc As String)
 Dim MaxCod As Long
 
-Sql = "SELECT MAX(SEQ) AS MAXIMO FROM LOGEVENTO"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-If IsNull(RdoAux!maximo) Then
+sql = "SELECT MAX(SEQ) AS MAXIMO FROM LOGEVENTO"
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+If IsNull(rdoAux!maximo) Then
     MaxCod = 1
 Else
-    MaxCod = RdoAux!maximo + 1
+    MaxCod = rdoAux!maximo + 1
 End If
-RdoAux.Close
+rdoAux.Close
 
 'Sql = "INSERT LOGEVENTO (SEQ,DATAHORAEVENTO,COMPUTADOR,USUARIO,FORM,EVENTO,SECEVENTO,LOGEVENTO) VALUES("
 'Sql = Sql & MaxCod & ",'" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "','" & NomeDoComputador & "','" & NomeDeLogin & "','"
 'Sql = Sql & Left$(sNomeForm, 30) & "'," & nEvento & "," & nSecEvento & ",'" & Left$(Mask(Desc), 500) & "')"
-Sql = "INSERT LOGEVENTO (SEQ,DATAHORAEVENTO,COMPUTADOR,USERID,FORM,EVENTO,SECEVENTO,LOGEVENTO) VALUES("
-Sql = Sql & MaxCod & ",'" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "','" & NomeDoComputador & "'," & RetornaUsuarioID(NomeDeLogin) & ",'"
-Sql = Sql & Left$(sNomeForm, 30) & "'," & nEvento & "," & nSecEvento & ",'" & Left$(Mask(Desc), 500) & "')"
+sql = "INSERT LOGEVENTO (SEQ,DATAHORAEVENTO,COMPUTADOR,USERID,FORM,EVENTO,SECEVENTO,LOGEVENTO) VALUES("
+sql = sql & MaxCod & ",'" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "','" & NomeDoComputador & "'," & RetornaUsuarioID(NomeDeLogin) & ",'"
+sql = sql & Left$(sNomeForm, 30) & "'," & nEvento & "," & nSecEvento & ",'" & Left$(Mask(Desc), 500) & "')"
 'cn.Execute Sql, rdExecDirect
 
 End Sub
@@ -1799,12 +1846,12 @@ Screen.MousePointer = vbDefault
 End Sub
 
 Public Function RetornaBairro(Cep As String) As Bairro
-Dim RdoAux As rdoResultset, Sql As String
+Dim rdoAux As rdoResultset, sql As String
 
-Sql = "SELECT cep.codbairro, bairro.descbairro FROM cep INNER JOIN bairro ON cep.codbairro = bairro.codbairro "
-Sql = Sql & "WHERE (bairro.siglauf = 'SP') AND (bairro.codcidade = 413) AND (cep.cep = '" & Cep & "')"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+sql = "SELECT cep.codbairro, bairro.descbairro FROM cep INNER JOIN bairro ON cep.codbairro = bairro.codbairro "
+sql = sql & "WHERE (bairro.siglauf = 'SP') AND (bairro.codcidade = 413) AND (cep.cep = '" & Cep & "')"
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
     If .RowCount > 0 Then
         RetornaBairro.Codigo = !CodBairro
         RetornaBairro.Nome = !DescBairro
@@ -1818,7 +1865,7 @@ End With
 End Function
 
 Public Function RetornaCEP(Logradouro As Long, Numero As Integer) As String
-Dim Sql As String
+Dim sql As String
 Dim RdoS As rdoResultset
 Dim nConta As Integer
 Dim Impar As Integer, Par As Integer
@@ -1832,9 +1879,9 @@ Else
      Impar = 1
 End If
 sCep = ""
-Sql = "SELECT CEP,VALOR1,VALOR2,IMPAR,PAR FROM CEP "
-Sql = Sql & "WHERE CODLOGR=" & Logradouro
-Set RdoS = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
+sql = "SELECT CEP,VALOR1,VALOR2,IMPAR,PAR FROM CEP "
+sql = sql & "WHERE CODLOGR=" & Logradouro
+Set RdoS = cn.OpenResultset(sql, rdOpenKeyset, rdConcurReadOnly)
 With RdoS
        nConta = .RowCount
        If nConta = 0 Then
@@ -1876,7 +1923,7 @@ End With
 End Function
 
 Public Function RetornaLogradouroBairro(Logradouro As Integer, Numero As Integer) As Bairro
-Dim Sql As String
+Dim sql As String
 Dim RdoLg As rdoResultset
 Dim nConta As Integer
 Dim Num1 As Long, Num2 As Long
@@ -1891,9 +1938,10 @@ End If
 
 
 sBairro = ""
-Sql = "SELECT INICIAL,FINAL,BAIRRO,DESCBAIRRO,IMPAR,PAR FROM LOGRADOURO_BAIRRO INNER JOIN BAIRRO ON "
-Sql = Sql & "LOGRADOURO_BAIRRO.BAIRRO=BAIRRO.CODBAIRRO WHERE SIGLAUF='SP' AND CODCIDADE=413 AND LOGRADOURO=" & Logradouro
-Set RdoLg = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
+sql = "SELECT INICIAL,FINAL,BAIRRO,DESCBAIRRO,IMPAR,PAR FROM LOGRADOURO_BAIRRO INNER JOIN BAIRRO ON "
+sql = sql & "LOGRADOURO_BAIRRO.BAIRRO=BAIRRO.CODBAIRRO WHERE SIGLAUF='SP' AND CODCIDADE=413 AND LOGRADOURO=" & Logradouro
+'Sql = "SELECT * FROM VWBAIRROCEP WHERE CODLOGR=" & Logradouro
+Set RdoLg = cn.OpenResultset(sql, rdOpenKeyset, rdConcurReadOnly)
 With RdoLg
        nConta = .RowCount
        If nConta = 0 Then
@@ -1969,15 +2017,15 @@ End Function
 Public Function RetEventUserForm(sNomeForm As String) As String
 
 Dim sRetorno As String
-Dim RdoAux As rdoResultset, Sql As String
-Sql = "SELECT DISTINCT SEG_USERACESS.CODEVENTO "
-Sql = Sql & "FROM SEG_USERACESS INNER JOIN  SEG_TELASISTEMA ON "
-Sql = Sql & "SEG_USERACESS.CODTELA = SEG_TELASISTEMA.CODTELA  Inner Join SEG_EVENTO ON "
-Sql = Sql & "SEG_USERACESS.CODEVENTO = SEG_EVENTO.CODEVENTO WHERE "
-Sql = Sql & "SEG_USERACESS.NOMEUSUARIO='" & LastUser & "' AND "
-Sql = Sql & "SEG_TELASISTEMA.NOMEFORM='" & sNomeForm & "'"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
-With RdoAux
+Dim rdoAux As rdoResultset, sql As String
+sql = "SELECT DISTINCT SEG_USERACESS.CODEVENTO "
+sql = sql & "FROM SEG_USERACESS INNER JOIN  SEG_TELASISTEMA ON "
+sql = sql & "SEG_USERACESS.CODTELA = SEG_TELASISTEMA.CODTELA  Inner Join SEG_EVENTO ON "
+sql = sql & "SEG_USERACESS.CODEVENTO = SEG_EVENTO.CODEVENTO WHERE "
+sql = sql & "SEG_USERACESS.NOMEUSUARIO='" & LastUser & "' AND "
+sql = sql & "SEG_TELASISTEMA.NOMEFORM='" & sNomeForm & "'"
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurRowVer)
+With rdoAux
        Do Until .EOF
             sRetorno = sRetorno & "#" & Format(!codevento, "000")
            .MoveNext
@@ -1989,7 +2037,7 @@ RetEventUserForm = sRetorno
 End Function
 
 Public Function ValidaFeriado(sDataFeriado As String) As Integer
-Dim RdoAux As rdoResultset, Sql As String
+Dim rdoAux As rdoResultset, sql As String
 Dim dDataFeriado As Date
 On Error Resume Next
 ValidaFeriado = 0
@@ -2062,7 +2110,7 @@ End Function
 Public Function CalculaJuros(nValorDebito As Double, dDataVencto As Date, Optional dDataNow As Date) As Double
 Dim nNumMes As Integer
 Dim nValorPerc As Double
-Dim RdoAux As rdoResultset, Sql As String
+Dim rdoAux As rdoResultset, sql As String
 Dim sDataVencto As String, nDia As Integer, nMes As Integer, nAno As Integer
 
 If dDataNow = "00:00:00" Then
@@ -2126,7 +2174,7 @@ End Function
 Public Function CalculaMulta(nValorDebito As Double, dDataVencto As Date, Optional dDataNow As Date, Optional bDA As Boolean) As Double
 Dim nNumDia As Integer
 Dim nValorPerc As Double
-Dim RdoAux As rdoResultset, Sql As String
+Dim rdoAux As rdoResultset, sql As String
 If dDataNow = "00:00:00" Then
     dDataNow = Now
 End If
@@ -2170,7 +2218,7 @@ End Function
 
 Public Function CalculaCorrecao(nValorDebito As Double, dDataBase As Date, Optional dDataNow As Date) As Double
 
-Dim RdoAux As rdoResultset, Sql As String
+Dim rdoAux As rdoResultset, sql As String
 Dim UfirAtual As Double
 Dim UfirBase As Double
 
@@ -2571,37 +2619,37 @@ Public Sub DefaultAccess(sUser As String)
 If Left$(sUser, 1) <> "[" Then
     sUser = "[" & sUser & "]"
 End If
-Sql = "USE Tributacao"
+sql = "USE Tributacao"
 'cn.Execute Sql, rdExecDirect
-Sql = "GRANT SELECT,INSERT,UPDATE ON PARAMETROS TO " & sUser
+sql = "GRANT SELECT,INSERT,UPDATE ON PARAMETROS TO " & sUser
 'cn.Execute Sql, rdExecDirect
 
 'LOG
-Sql = "GRANT SELECT,INSERT ON LOGEVENTO TO " & sUser
+sql = "GRANT SELECT,INSERT ON LOGEVENTO TO " & sUser
 'cn.Execute Sql, rdExecDirect
 'Sql = "GRANT EXEC ON spGRAVALOG TO " & sUser
 'cn.Execute Sql, rdExecDirect
 
 'SEGURANCA
-Sql = "GRANT SELECT ON SEG_EVENTO TO " & sUser
+sql = "GRANT SELECT ON SEG_EVENTO TO " & sUser
 'cn.Execute Sql, rdExecDirect
-Sql = "GRANT SELECT ON SEG_EVENTOACESSO TO " & sUser
+sql = "GRANT SELECT ON SEG_EVENTOACESSO TO " & sUser
 'cn.Execute Sql, rdExecDirect
-Sql = "GRANT SELECT ON SEG_USUARIO TO " & sUser
+sql = "GRANT SELECT ON SEG_USUARIO TO " & sUser
 'cn.Execute Sql, rdExecDirect
-Sql = "GRANT SELECT ON SEG_GRUPO TO " & sUser
+sql = "GRANT SELECT ON SEG_GRUPO TO " & sUser
 'cn.Execute Sql, rdExecDirect
-Sql = "GRANT SELECT ON SEG_USERACESS TO " & sUser
+sql = "GRANT SELECT ON SEG_USERACESS TO " & sUser
 'cn.Execute Sql, rdExecDirect
-Sql = "GRANT SELECT ON SEG_GRUPOACESSO TO " & sUser
+sql = "GRANT SELECT ON SEG_GRUPOACESSO TO " & sUser
 'cn.Execute Sql, rdExecDirect
-Sql = "GRANT SELECT ON SEG_TELASISTEMA TO " & sUser
+sql = "GRANT SELECT ON SEG_TELASISTEMA TO " & sUser
 'cn.Execute Sql, rdExecDirect
-Sql = "GRANT SELECT ON SEG_MENUACESSO TO " & sUser
+sql = "GRANT SELECT ON SEG_MENUACESSO TO " & sUser
 'cn.Execute Sql, rdExecDirect
 
 'PARAMETROS
-Sql = "GRANT SELECT,INSERT ON PARAMETROS TO " & sUser
+sql = "GRANT SELECT,INSERT ON PARAMETROS TO " & sUser
 'cn.Execute Sql, rdExecDirect
 
 End Sub
@@ -2703,7 +2751,7 @@ End Function
 
 Public Function ValidaProcesso(sNumProcesso As String) As String
 Dim nAno As Integer, nNumproc As Long
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, rdoAux As rdoResultset
 
 If Trim$(sNumProcesso) = "" Then
     ValidaProcesso = "Nº de Processo inválido."
@@ -2734,9 +2782,9 @@ nAno = Val(Mid(Trim$(sNumProcesso), InStr(1, Trim$(sNumProcesso), "/", vbBinaryC
 nNumproc = Val(Left$(Trim$(sNumProcesso), InStr(1, Trim$(sNumProcesso), "/", vbBinaryCompare) - 1))
 
 If NovoProtocolo = 0 Then
-    Sql = "SELECT * FROM PROCESSO WHERE ANOPROCESS=" & nAno & " AND NUMEROPROC=" & nNumproc
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-    With RdoAux
+    sql = "SELECT * FROM PROCESSO WHERE ANOPROCESS=" & nAno & " AND NUMEROPROC=" & nNumproc
+    Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    With rdoAux
         If .RowCount = 0 Then
             ValidaProcesso = "Processo não Cadastrado."
             Exit Function
@@ -2761,9 +2809,9 @@ If NovoProtocolo = 0 Then
        .Close
     End With
 Else
-    Sql = "SELECT * FROM PROCESSOGTI WHERE ANO=" & nAno & " AND NUMERO=" & nNumproc
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-    With RdoAux
+    sql = "SELECT * FROM PROCESSOGTI WHERE ANO=" & nAno & " AND NUMERO=" & nNumproc
+    Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    With rdoAux
         If .RowCount = 0 Then
             ValidaProcesso = "Processo não Cadastrado."
             Exit Function
@@ -2793,7 +2841,7 @@ End Function
 
 Public Function ValidaProcesso2(sNumProcesso As String) As String
 Dim nAno As Integer, nNumproc As Long
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, rdoAux As rdoResultset
 
 If Trim$(sNumProcesso) = "" Then
     ValidaProcesso2 = "Nº de Processo inválido."
@@ -2824,9 +2872,9 @@ nAno = Val(Mid(Trim$(sNumProcesso), InStr(1, Trim$(sNumProcesso), "/", vbBinaryC
 nNumproc = Val(Left$(Trim$(sNumProcesso), InStr(1, Trim$(sNumProcesso), "/", vbBinaryCompare) - 2))
 
 If NovoProtocolo = 0 Then
-    Sql = "SELECT * FROM PROCESSO WHERE ANOPROCESS=" & nAno & " AND NUMEROPROC=" & nNumproc
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-    With RdoAux
+    sql = "SELECT * FROM PROCESSO WHERE ANOPROCESS=" & nAno & " AND NUMEROPROC=" & nNumproc
+    Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    With rdoAux
         If .RowCount = 0 Then
             ValidaProcesso2 = "Processo não Cadastrado."
             Exit Function
@@ -2851,9 +2899,9 @@ If NovoProtocolo = 0 Then
        .Close
     End With
 Else
-    Sql = "SELECT * FROM PROCESSOGTI WHERE ANO=" & nAno & " AND NUMERO=" & nNumproc
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-    With RdoAux
+    sql = "SELECT * FROM PROCESSOGTI WHERE ANO=" & nAno & " AND NUMERO=" & nNumproc
+    Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    With rdoAux
         If .RowCount = 0 Then
             ValidaProcesso2 = "Processo não Cadastrado."
             Exit Function
@@ -2929,35 +2977,35 @@ End Sub
 
 
 Public Function RetornaDataProcesso(nNumproc As Long, nAno As Integer) As Date
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, rdoAux As rdoResultset
 
 If NovoProtocolo = 0 Then
-    Sql = "SELECT * FROM PROCESSO WHERE ANOPROCESS=" & nAno & " AND NUMEROPROC=" & nNumproc
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-    With RdoAux
+    sql = "SELECT * FROM PROCESSO WHERE ANOPROCESS=" & nAno & " AND NUMEROPROC=" & nNumproc
+    Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    With rdoAux
         If .RowCount = 0 Then
             RetornaDataProcesso = "01/01/1899"
         Else
-            If !DATAREATIV > CDate("01/01/1900") Then
-                RetornaDataProcesso = Format(!DATAREATIV, "dd/mm/yyyy")
-            Else
+'            If !DATAREATIV > CDate("01/01/1900") Then
+'                RetornaDataProcesso = Format(!DATAREATIV, "dd/mm/yyyy")
+'            Else
                 RetornaDataProcesso = Format(!DATAENTRAD, "dd/mm/yyyy")
-            End If
+'            End If
         End If
        .Close
     End With
 Else
-    Sql = "SELECT * FROM PROCESSOGTI WHERE ANO=" & nAno & " AND NUMERO=" & nNumproc
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-    With RdoAux
+    sql = "SELECT * FROM PROCESSOGTI WHERE ANO=" & nAno & " AND NUMERO=" & nNumproc
+    Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    With rdoAux
         If .RowCount = 0 Then
             RetornaDataProcesso = "01/01/1899"
         Else
-            If !DATAREATIVA > CDate("01/01/1900") Then
-                RetornaDataProcesso = Format(!DATAREATIVA, "dd/mm/yyyy")
-            Else
+'            If !DATAREATIVA > CDate("01/01/1900") Then
+'                RetornaDataProcesso = Format(!DATAREATIVA, "dd/mm/yyyy")
+'            Else
                 RetornaDataProcesso = Format(!DATAENTRADA, "dd/mm/yyyy")
-            End If
+'            End If
         End If
        .Close
     End With
@@ -3043,19 +3091,19 @@ RetornaDVProcesso = nDigito
 End Function
 
 Public Sub ConsertaProcesso()
-Dim Sql As String, RdoAux As rdoResultset, RdoGenesio As rdoResultset, RdoAux2 As rdoResultset
+Dim sql As String, rdoAux As rdoResultset, RdoGenesio As rdoResultset, RdoAux2 As rdoResultset
 Dim sNumProcOld As String, nNumProcNew As Long, nAno As Integer, sNumProcNew As String
 
-Sql = "SELECT NUMPROCESSO FROM PROCESSOREPARC"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+sql = "SELECT NUMPROCESSO FROM PROCESSOREPARC"
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
     Do Until .EOF
        'NUMERO DO PROCESSO ERRADO
-       nNumProcOld = Val(Left$(Trim$(!numprocesso), InStr(1, Trim$(!numprocesso), "/", vbBinaryCompare) - 1))
-       nAno = Val(Mid(Trim$(!numprocesso), InStr(1, Trim$(!numprocesso), "/", vbBinaryCompare) + 1, 4))
+       nNumProcOld = Val(Left$(Trim$(!NumProcesso), InStr(1, Trim$(!NumProcesso), "/", vbBinaryCompare) - 1))
+       nAno = Val(Mid(Trim$(!NumProcesso), InStr(1, Trim$(!NumProcesso), "/", vbBinaryCompare) + 1, 4))
        'PROCURA NO GENÉSIO
-       Sql = "SELECT ANOPROCESS,NUMEROPROC FROM PROCESSO WHERE NUMEROPROC=" & nNumProcOld & " AND ANOPROCESS=" & nAno
-       Set RdoGenesio = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+       sql = "SELECT ANOPROCESS,NUMEROPROC FROM PROCESSO WHERE NUMEROPROC=" & nNumProcOld & " AND ANOPROCESS=" & nAno
+       Set RdoGenesio = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
        With RdoGenesio
             If .RowCount = 0 Then
                 'NÃO ENCONTROU, CALCULA DV
@@ -3063,57 +3111,57 @@ With RdoAux
                 'RECONSTROI NUMERO DO PROCESSO
                  sNumProcNew = CStr(nNumProcNew) & "/" & CStr(nAno)
                 'VERIFICA SE JA EXISTE NA PROCESSOREPARC
-                 Sql = "SELECT * FROM PROCESSOREPARC WHERE NUMPROCESSO='" & sNumProcNew & "'"
-                 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                 sql = "SELECT * FROM PROCESSOREPARC WHERE NUMPROCESSO='" & sNumProcNew & "'"
+                 Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                  With RdoAux2
                      If .RowCount = 0 Then
                        'REGRAVA NA TABELA PROCESSOREPARC
-                        Sql = "INSERT PROCESSOREPARC "
-                        Sql = Sql & "SELECT '" & sNumProcNew & "',DATAPROCESSO,DATAREPARC,QTDEPARCELA,VALORENTRADA,PERCENTRADA,CALCULAMULTA,CALCULAJUROS,CODIGORESP,FUNCIONARIO,CANCELADO,DATACANCEL,FUNCIONARIOCANCEL,NUMprotocolo,PLANO FROM PROCESSOREPARC "
-                        Sql = Sql & "WHERE NUMPROCESSO='" & RdoAux!numprocesso & "'"
-                        cn.Execute Sql, rdExecDirect
+                        sql = "INSERT PROCESSOREPARC "
+                        sql = sql & "SELECT '" & sNumProcNew & "',DATAPROCESSO,DATAREPARC,QTDEPARCELA,VALORENTRADA,PERCENTRADA,CALCULAMULTA,CALCULAJUROS,CODIGORESP,FUNCIONARIO,CANCELADO,DATACANCEL,FUNCIONARIOCANCEL,NUMprotocolo,PLANO FROM PROCESSOREPARC "
+                        sql = sql & "WHERE NUMPROCESSO='" & rdoAux!NumProcesso & "'"
+                        cn.Execute sql, rdExecDirect
                      End If
                     .Close
                  End With
                 'VERIFICA SE JA EXISTE NA ORIGEMREPARC
-                 Sql = "SELECT * FROM ORIGEMREPARC WHERE NUMPROCESSO='" & sNumProcNew & "'"
-                 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                 sql = "SELECT * FROM ORIGEMREPARC WHERE NUMPROCESSO='" & sNumProcNew & "'"
+                 Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                  With RdoAux2
                      If .RowCount = 0 Then
                        'REGRAVA NA TABELA ORIGEMREPARC
-                        Sql = "INSERT ORIGEMREPARC "
-                        Sql = Sql & "SELECT '" & sNumProcNew & "',CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,NUMSEQUENCIA,NUMPARCELA,CODCOMPLEMENTO FROM ORIGEMREPARC "
-                        Sql = Sql & "WHERE NUMPROCESSO='" & RdoAux!numprocesso & "'"
-                        cn.Execute Sql, rdExecDirect
+                        sql = "INSERT ORIGEMREPARC "
+                        sql = sql & "SELECT '" & sNumProcNew & "',CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,NUMSEQUENCIA,NUMPARCELA,CODCOMPLEMENTO FROM ORIGEMREPARC "
+                        sql = sql & "WHERE NUMPROCESSO='" & rdoAux!NumProcesso & "'"
+                        cn.Execute sql, rdExecDirect
                      End If
                     .Close
                  End With
                 'APAGA DA TABELA ORIGEMREPARC
-                 Sql = "DELETE FROM ORIGEMREPARC WHERE NUMPROCESSO='" & CStr(nNumProcOld) & "/" & CStr(nAno) & "'"
-                 cn.Execute Sql, rdExecDirect
+                 sql = "DELETE FROM ORIGEMREPARC WHERE NUMPROCESSO='" & CStr(nNumProcOld) & "/" & CStr(nAno) & "'"
+                 cn.Execute sql, rdExecDirect
                 'VERIFICA SE JA EXISTE NA DESTINOREPARC
-                 Sql = "SELECT * FROM DESTINOREPARC WHERE NUMPROCESSO='" & sNumProcNew & "'"
-                 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                 sql = "SELECT * FROM DESTINOREPARC WHERE NUMPROCESSO='" & sNumProcNew & "'"
+                 Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                  With RdoAux2
                      If .RowCount = 0 Then
                        'REGRAVA NA TABELA DESTINOREPARC
-                        Sql = "INSERT DESTINOREPARC "
-                        Sql = Sql & "SELECT '" & sNumProcNew & "',CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,NUMSEQUENCIA,NUMPARCELA,CODCOMPLEMENTO FROM DESTINOREPARC "
-                        Sql = Sql & "WHERE NUMPROCESSO='" & RdoAux!numprocesso & "'"
-                        cn.Execute Sql, rdExecDirect
+                        sql = "INSERT DESTINOREPARC "
+                        sql = sql & "SELECT '" & sNumProcNew & "',CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,NUMSEQUENCIA,NUMPARCELA,CODCOMPLEMENTO FROM DESTINOREPARC "
+                        sql = sql & "WHERE NUMPROCESSO='" & rdoAux!NumProcesso & "'"
+                        cn.Execute sql, rdExecDirect
                      End If
                     .Close
                  End With
                 'APAGA DA TABELA DESTINOREPARC
-                 Sql = "DELETE FROM DESTINOREPARC WHERE NUMPROCESSO='" & sNumProcOld & "'"
-                 cn.Execute Sql, rdExecDirect
+                 sql = "DELETE FROM DESTINOREPARC WHERE NUMPROCESSO='" & sNumProcOld & "'"
+                 cn.Execute sql, rdExecDirect
                 'APAGA DA TABELA PROCESSOREPARC
-                 Sql = "DELETE FROM PROCESSOREPARC WHERE NUMPROCESSO='" & sNumProcOld & "'"
-                 cn.Execute Sql, rdExecDirect
+                 sql = "DELETE FROM PROCESSOREPARC WHERE NUMPROCESSO='" & sNumProcOld & "'"
+                 cn.Execute sql, rdExecDirect
                 'CORRIGE PROCESSO EM DEBITOPARCELA
-                 Sql = "UPDATE DEBITOPARCELA SET NUMPROCESSO='" & sNumProcNew & "' WHERE "
-                 Sql = Sql & "NUMPROCESSO='" & RdoAux!numprocesso & "'"
-                 cn.Execute Sql, rdExecDirect
+                 sql = "UPDATE DEBITOPARCELA SET NUMPROCESSO='" & sNumProcNew & "' WHERE "
+                 sql = sql & "NUMPROCESSO='" & rdoAux!NumProcesso & "'"
+                 cn.Execute sql, rdExecDirect
             End If
            .Close
        End With
@@ -3174,7 +3222,7 @@ End Sub
 
 Public Function CloseApplication() As Boolean
 On Error GoTo Erro
-    Dim blnRtn As Boolean, RdoAux As rdoResultset
+    Dim blnRtn As Boolean, rdoAux As rdoResultset
     Dim error As Long
     Dim FixedInfoSize As Long
     Dim AdapterInfoSize As Long
@@ -3190,7 +3238,7 @@ On Error GoTo Erro
     Dim Buffer2 As IP_ADAPTER_INFO
     Dim FixedInfoBuffer() As Byte
     Dim AdapterInfoBuffer() As Byte
-    Dim sIP As String
+    
 
     ' Get the main IP configuration information for this machine
     ' using a FIXED_INFO structure.
@@ -3237,17 +3285,17 @@ On Error GoTo Erro
     Next
     
     
-    Sql = "select * from machines where usuario='" & NomeDeLogin & "'"
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-    If RdoAux.RowCount = 0 Then
-        Sql = "insert machines (usuario,ip,computer,nome,data,gti_version) values('" & NomeDeLogin & "','" & sIP & "','" & NomeDoComputador & "','" & NomeDoUsuario & "','" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "','" & App.Major & "." & App.Minor & "." & App.Revision & "')"
-        cn.Execute Sql, rdExecDirect
+    sql = "select * from machines where usuario='" & NomeDeLogin & "'"
+    Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    If rdoAux.RowCount = 0 Then
+        sql = "insert machines (usuario,ip,computer,nome,data,gti_version) values('" & NomeDeLogin & "','" & sIP & "','" & NomeDoComputador & "','" & NomeDoUsuario & "','" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "','" & App.Major & "." & App.Minor & "." & App.Revision & "')"
+        cn.Execute sql, rdExecDirect
     Else
-        Sql = "update machines set ip='" & sIP & "',computer='" & NomeDoComputador & "',nome='" & NomeDoUsuario & "',data='" & Format(Now, sDataFormat & " hh:mm:ss") & "',gti_version='" & App.Major & "." & App.Minor & "." & App.Revision & "' where usuario='" & NomeDeLogin & "'"
-        cn.Execute Sql, rdExecDirect
+        sql = "update machines set ip='" & sIP & "',computer='" & NomeDoComputador & "',nome='" & NomeDoUsuario & "',data='" & Format(Now, sDataFormat & " hh:mm:ss") & "',gti_version='" & App.Major & "." & App.Minor & "." & App.Revision & "' where usuario='" & NomeDeLogin & "'"
+        cn.Execute sql, rdExecDirect
         
     End If
-    RdoAux.Close
+    rdoAux.Close
 '     On Error Resume Next
 '     cn.Close
 '     Conecta "usergti", "cvrcs04"
@@ -3380,19 +3428,19 @@ Public Function Modulo11(ByVal nNumero As Long) As Integer
 End Function
 
 Public Sub AtualizaPropDuplicado(nCodReduz As Long, nCodCidadao As Long)
-Dim RdoAux As rdoResultset, Sql As String
+Dim rdoAux As rdoResultset, sql As String
 
 'APAGA O IMOVEL DA TABELA DE DUPLICADOS
-Sql = "DELETE FROM PROPRIETARIODUPLICADO WHERE CODREDUZIDO=" & nCodReduz
-cn.Execute Sql, rdExecDirect
+sql = "DELETE FROM PROPRIETARIODUPLICADO WHERE CODREDUZIDO=" & nCodReduz
+cn.Execute sql, rdExecDirect
 
 'SÓ VAI INSERIR SE JA TIVER ALGUM OUTRO IMOVEL CADASTRADO COM O MESMO CIDADAO
-Sql = "SELECT CODREDUZIDO,CODCIDADAO FROM PROPRIETARIODUPLICADO WHERE CODCIDADAO=" & nCodCidadao
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+sql = "SELECT CODREDUZIDO,CODCIDADAO FROM PROPRIETARIODUPLICADO WHERE CODCIDADAO=" & nCodCidadao
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
     If .RowCount > 0 Then
-        Sql = "INSERT PROPRIETARIODUPLICADO(CODREDUZIDO,CODCIDADAO) VALUES(" & nCodReduz & "," & nCodCidadao & ")"
-        cn.Execute Sql, rdExecDirect
+        sql = "INSERT PROPRIETARIODUPLICADO(CODREDUZIDO,CODCIDADAO) VALUES(" & nCodReduz & "," & nCodCidadao & ")"
+        cn.Execute sql, rdExecDirect
     End If
    .Close
 End With
@@ -3400,13 +3448,13 @@ End With
 End Sub
 
 Public Function RetornaAliquotaISS(nCodigo As Integer, dData As Date)
-Dim Sql As String, RdoAux As rdoResultset, aData() As AliquotaISS, x As Integer
+Dim sql As String, rdoAux As rdoResultset, aData() As AliquotaISS, x As Integer
 
 ReDim aData(0)
 
-Sql = "SELECT * FROM TABELAISS WHERE CODIGOATIV=" & nCodigo & " ORDER BY DATA"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
-With RdoAux
+sql = "SELECT * FROM TABELAISS WHERE CODIGOATIV=" & nCodigo & " ORDER BY DATA"
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurReadOnly)
+With rdoAux
     Do Until .EOF
         ReDim Preserve aData(UBound(aData) + 1)
         aData(UBound(aData)).dData = Format(!Data, "dd/mm/yyyy")
@@ -3436,11 +3484,11 @@ End If
 End Function
 
 Public Function ImovelAreaUnica(nCodCidadao As Long) As Boolean
-Dim x As Integer, Sql As String, RdoTmp As rdoResultset, RdoTmp2 As rdoResultset
+Dim x As Integer, sql As String, RdoTmp As rdoResultset, RdoTmp2 As rdoResultset
 
 x = 0
-Sql = "SELECT CODREDUZIDO FROM PROPRIETARIO WHERE CODCIDADAO=" & nCodCidadao
-Set RdoTmp = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
+sql = "SELECT CODREDUZIDO FROM PROPRIETARIO WHERE CODCIDADAO=" & nCodCidadao
+Set RdoTmp = cn.OpenResultset(sql, rdOpenKeyset, rdConcurReadOnly)
 With RdoTmp
     Do Until .EOF
         x = x + 1
@@ -3556,13 +3604,13 @@ Function InternetGetFile(sURLFileName As String, sSaveToFile As String, Optional
     
 End Function
 
-Private Function FillLeft(sTexto As String, nTamanho As Integer) As String
+Public Function FillLeft(sTexto As String, nTamanho As Integer) As String
 
 FillLeft = Space(nTamanho - Len(sTexto)) & sTexto
 
 End Function
 
-Private Function FillSpace(sPalavra As String, nTamanho As Integer) As String
+Public Function FillSpace(sPalavra As String, nTamanho As Integer) As String
 Dim sTmp As String
 
 If Len(sPalavra) > nTamanho Then sPalavra = Left(sPalavra, nTamanho)
@@ -3572,11 +3620,11 @@ FillSpace = sTmp
 End Function
 
 Public Function RetornaUsuarioFullName() As String
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, rdoAux As rdoResultset
 
-Sql = "SELECT NOMECOMPLETO FROM USUARIO WHERE NOMELOGIN='" & NomeDeLogin & "'"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+sql = "SELECT NOMECOMPLETO FROM USUARIO WHERE NOMELOGIN='" & NomeDeLogin & "'"
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
     RetornaUsuarioFullName = !NomeCompleto
    .Close
 End With
@@ -3584,11 +3632,11 @@ End With
 End Function
 
 Public Function RetornaUsuarioFullName2(sNomeUser) As String
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, rdoAux As rdoResultset
 
-Sql = "SELECT NOMECOMPLETO FROM USUARIO WHERE NOMELOGIN='" & sNomeUser & "'"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+sql = "SELECT NOMECOMPLETO FROM USUARIO WHERE NOMELOGIN='" & sNomeUser & "'"
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
     RetornaUsuarioFullName2 = !NomeCompleto
    .Close
 End With
@@ -3596,11 +3644,11 @@ End With
 End Function
 
 Public Function RetornaUsuarioFullName3(nId) As String
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, rdoAux As rdoResultset
 
-Sql = "SELECT NOMECOMPLETO FROM USUARIO WHERE ID=" & nId
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+sql = "SELECT NOMECOMPLETO FROM USUARIO WHERE ID=" & nId
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
     RetornaUsuarioFullName3 = !NomeCompleto
    .Close
 End With
@@ -3610,11 +3658,11 @@ End Function
 
 
 Public Function RetornaUsuarioLoginName(sFullName) As String
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, rdoAux As rdoResultset
 
-Sql = "SELECT NOMELOGIN FROM USUARIO WHERE NOMECOMPLETO='" & Mask(CStr(sFullName)) & "'"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+sql = "SELECT NOMELOGIN FROM USUARIO WHERE NOMECOMPLETO='" & Mask(CStr(sFullName)) & "'"
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
     RetornaUsuarioLoginName = !NomeLogin
    .Close
 End With
@@ -3622,11 +3670,11 @@ End With
 End Function
 
 Public Function RetornaUsuarioLogin(nUserId As Integer) As String
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, rdoAux As rdoResultset
 
-Sql = "SELECT NOMELOGIN FROM USUARIO WHERE Id=" & nUserId
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+sql = "SELECT NOMELOGIN FROM USUARIO WHERE Id=" & nUserId
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
     RetornaUsuarioLogin = !NomeLogin
    .Close
 End With
@@ -3635,11 +3683,11 @@ End Function
 
 
 Public Function RetornaUsuarioID(sLoginName) As Integer
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, rdoAux As rdoResultset
 
-Sql = "SELECT id FROM USUARIO WHERE NOMELOGIN='" & sLoginName & "'"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+sql = "SELECT id FROM USUARIO WHERE NOMELOGIN='" & sLoginName & "'"
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
     If .RowCount > 0 Then
         RetornaUsuarioID = !id
     Else
@@ -3653,7 +3701,7 @@ End Function
 
 Public Sub BuildReportMob1()
 
-Dim sNomeArq As String, FF1 As Integer, ret As Double, Sql As String, RdoAux As rdoResultset, nContaTx As Long, nContaVs As Long
+Dim sNomeArq As String, FF1 As Integer, ret As Double, sql As String, rdoAux As rdoResultset, nContaTx As Long, nContaVs As Long
 Dim nSomaTxI As Double, nSomaVsI As Double, aSomaTotalTx(0 To 3) As Double, aSomaTotalVs(0 To 3) As Double
 Dim aRel() As RELMOB1, x As Integer, bFind As Boolean, nPos As Long, ax As String, nCodOld As Long, nCodNew As Long
 'LISTA DE EMPRESAS COM TAXA DE LICENÇA E VIG.SANITÁRIA EM ATRASO ENTRE 2008 E 2010
@@ -3667,27 +3715,27 @@ For x = 1 To 3
     aSomaTotalTx(x) = 0: aSomaTotalVs(x) = 0
 Next
 
-Sql = "SELECT COUNT(DISTINCT mobiliario.codigomob) AS soma FROM debitoparcela INNER JOIN mobiliario ON debitoparcela.codreduzido = mobiliario.codigomob "
-Sql = Sql & "WHERE (mobiliario.simples = 1) AND (debitoparcela.codlancamento = 6) AND (debitoparcela.anoexercicio BETWEEN 2008 AND 2010) AND (debitoparcela.statuslanc = 3) AND (debitoparcela.numparcela > 0)"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-nContaTx = RdoAux!soma
-RdoAux.Close
+sql = "SELECT COUNT(DISTINCT mobiliario.codigomob) AS soma FROM debitoparcela INNER JOIN mobiliario ON debitoparcela.codreduzido = mobiliario.codigomob "
+sql = sql & "WHERE (mobiliario.simples = 1) AND (debitoparcela.codlancamento = 6) AND (debitoparcela.anoexercicio BETWEEN 2008 AND 2010) AND (debitoparcela.statuslanc = 3) AND (debitoparcela.numparcela > 0)"
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+nContaTx = rdoAux!soma
+rdoAux.Close
 
-Sql = "SELECT COUNT(DISTINCT mobiliario.codigomob) AS soma FROM debitoparcela INNER JOIN mobiliario ON debitoparcela.codreduzido = mobiliario.codigomob "
-Sql = Sql & "WHERE (mobiliario.simples = 1) AND (debitoparcela.codlancamento = 13) AND (debitoparcela.anoexercicio BETWEEN 2008 AND 2010) AND (debitoparcela.statuslanc = 3) AND (debitoparcela.numparcela > 0)"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-nContaVs = RdoAux!soma
-RdoAux.Close
+sql = "SELECT COUNT(DISTINCT mobiliario.codigomob) AS soma FROM debitoparcela INNER JOIN mobiliario ON debitoparcela.codreduzido = mobiliario.codigomob "
+sql = sql & "WHERE (mobiliario.simples = 1) AND (debitoparcela.codlancamento = 13) AND (debitoparcela.anoexercicio BETWEEN 2008 AND 2010) AND (debitoparcela.statuslanc = 3) AND (debitoparcela.numparcela > 0)"
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+nContaVs = rdoAux!soma
+rdoAux.Close
 
 'carrega matriz
-Sql = "SELECT mobiliario.codigomob, mobiliario.razaosocial, debitoparcela.codlancamento, debitoparcela.numparcela, debitoparcela.anoexercicio,SUM(debitotributo.ValorTributo) As soma "
-Sql = Sql & "FROM debitoparcela INNER JOIN mobiliario ON debitoparcela.codreduzido = mobiliario.codigomob INNER JOIN debitotributo ON debitoparcela.codreduzido = debitotributo.codreduzido AND debitoparcela.anoexercicio = debitotributo.anoexercicio AND "
-Sql = Sql & "debitoparcela.codlancamento = debitotributo.codlancamento AND debitoparcela.seqlancamento = debitotributo.seqlancamento AND debitoparcela.NumParcela = debitotributo.NumParcela And debitoparcela.CODCOMPLEMENTO = debitotributo.CODCOMPLEMENTO "
-Sql = Sql & "Where (mobiliario.SIMPLES = 1) And (debitoparcela.statuslanc = 3) And (debitotributo.CodTributo <> 3) GROUP BY mobiliario.codigomob, mobiliario.razaosocial, debitoparcela.codlancamento, debitoparcela.numparcela, debitoparcela.anoexercicio "
-Sql = Sql & "HAVING (debitoparcela.codlancamento = 6 OR debitoparcela.codlancamento = 13) AND (debitoparcela.anoexercicio BETWEEN 2008 AND 2010) AND (debitoparcela.numparcela > 0) "
-Sql = Sql & "ORDER BY mobiliario.codigomob, debitoparcela.anoexercicio, debitoparcela.numparcela"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+sql = "SELECT mobiliario.codigomob, mobiliario.razaosocial, debitoparcela.codlancamento, debitoparcela.numparcela, debitoparcela.anoexercicio,SUM(debitotributo.ValorTributo) As soma "
+sql = sql & "FROM debitoparcela INNER JOIN mobiliario ON debitoparcela.codreduzido = mobiliario.codigomob INNER JOIN debitotributo ON debitoparcela.codreduzido = debitotributo.codreduzido AND debitoparcela.anoexercicio = debitotributo.anoexercicio AND "
+sql = sql & "debitoparcela.codlancamento = debitotributo.codlancamento AND debitoparcela.seqlancamento = debitotributo.seqlancamento AND debitoparcela.NumParcela = debitotributo.NumParcela And debitoparcela.CODCOMPLEMENTO = debitotributo.CODCOMPLEMENTO "
+sql = sql & "Where (mobiliario.SIMPLES = 1) And (debitoparcela.statuslanc = 3) And (debitotributo.CodTributo <> 3) GROUP BY mobiliario.codigomob, mobiliario.razaosocial, debitoparcela.codlancamento, debitoparcela.numparcela, debitoparcela.anoexercicio "
+sql = sql & "HAVING (debitoparcela.codlancamento = 6 OR debitoparcela.codlancamento = 13) AND (debitoparcela.anoexercicio BETWEEN 2008 AND 2010) AND (debitoparcela.numparcela > 0) "
+sql = sql & "ORDER BY mobiliario.codigomob, debitoparcela.anoexercicio, debitoparcela.numparcela"
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
     Do Until .EOF
         If cGetInputState() <> 0 Then DoEvents
         bFind = False
@@ -3948,17 +3996,17 @@ Public Function ListViewFindItem(sFindItem As String, lvFind As ListView, Option
 End Function
 
 Public Function ProdEventoDia(nFiscal As Integer, dData As Date) As Integer
-Dim Sql As String, RdoAux As rdoResultset, bAchou As Boolean, dDataIni As Date, dDataFim As Date
+Dim sql As String, rdoAux As rdoResultset, bAchou As Boolean, dDataIni As Date, dDataFim As Date
 
 ProdEventoDia = 0
 bAchou = False
-Sql = "select * from produtividadefiscalevento where codfiscal=" & nFiscal & " order by seq"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+sql = "select * from produtividadefiscalevento where codfiscal=" & nFiscal & " order by seq"
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
     dData = Format(dData, "dd/mm/yyyy")
     Do Until .EOF
-        dDataIni = Format(!dataini, "dd/mm/yyyy")
-        dDataFim = Format(!Datafim, "dd/mm/yyyy")
+        dDataIni = Format(!DATAINI, "dd/mm/yyyy")
+        dDataFim = Format(!datafim, "dd/mm/yyyy")
         If dData >= dDataIni And dData <= dDataFim Then
             bAchou = True
             ProdEventoDia = !codevento
@@ -3972,15 +4020,15 @@ End With
 End Function
 
 Public Function ProdIsBoss(nFiscal) As Boolean
-Dim Sql As String, RdoAux As rdoResultset, bRet As Boolean
+Dim sql As String, rdoAux As rdoResultset, bRet As Boolean
 
-Sql = "select codigo,chefe from produtividadefiscal where codigo=" & nFiscal
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
-    If IsNull(RdoAux!Chefe) Then
+sql = "select codigo,chefe from produtividadefiscal where codigo=" & nFiscal
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
+    If IsNull(rdoAux!Chefe) Then
         bRet = False
     Else
-        bRet = RdoAux!Chefe
+        bRet = rdoAux!Chefe
     End If
    .Close
 End With
@@ -3989,16 +4037,16 @@ ProdIsBoss = bRet
 End Function
 
 Public Function ProdIsBossLogin() As Boolean
-Dim Sql As String, RdoAux As rdoResultset, bRet As Boolean
+Dim sql As String, rdoAux As rdoResultset, bRet As Boolean
 
-Sql = "select codigo,chefe from produtividadefiscal where nome='" & NomeDeLogin & "'"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
-    If RdoAux.RowCount > 0 Then
-        If IsNull(RdoAux!Chefe) Then
+sql = "select codigo,chefe from produtividadefiscal where nome='" & NomeDeLogin & "'"
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
+    If rdoAux.RowCount > 0 Then
+        If IsNull(rdoAux!Chefe) Then
             bRet = False
         Else
-            bRet = RdoAux!Chefe
+            bRet = rdoAux!Chefe
         End If
     Else
         bRet = False
@@ -4010,18 +4058,18 @@ ProdIsBossLogin = bRet
 End Function
 
 Public Function RetornaNome(nCodigo As Long) As String
-Dim sNome As String, Sql As String, RdoAux As rdoResultset
+Dim sNome As String, sql As String, rdoAux As rdoResultset
 
 If nCodigo < 100000 Then
-    Sql = "SELECT NOMECIDADAO AS NOME FROM VWFULLIMOVEL WHERE CODREDUZIDO=" & nCodigo
+    sql = "SELECT NOMECIDADAO AS NOME FROM VWFULLIMOVEL WHERE CODREDUZIDO=" & nCodigo
 ElseIf nCodigo > 100000 And nCodigo < 300000 Then
-    Sql = "SELECT RAZAOSOCIAL AS NOME FROM MOBILIARIO WHERE CODIGOMOB=" & nCodigo
+    sql = "SELECT RAZAOSOCIAL AS NOME FROM MOBILIARIO WHERE CODIGOMOB=" & nCodigo
 Else
-    Sql = "SELECT NOMECIDADAO AS NOME FROM CIDADAO WHERE CODCIDADAO=" & nCodigo
+    sql = "SELECT NOMECIDADAO AS NOME FROM CIDADAO WHERE CODCIDADAO=" & nCodigo
 End If
 
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
-With RdoAux
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurReadOnly)
+With rdoAux
     If .RowCount > 0 Then
         sNome = SubNull(!Nome)
     Else
@@ -4144,30 +4192,30 @@ End Select
 End Function
 
 Public Function RetornaUsuarioFiscal() As Boolean
-Dim Sql As String, RdoAux As rdoResultset, nRet As Boolean
+Dim sql As String, rdoAux As rdoResultset, nRet As Boolean
 
-Sql = "SELECT COUNT(*) AS contador FROM  usuario  WHERE  (fiscal = 1) AND (ativo = 1) AND nomelogin = '" & NomeDeLogin & "'"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-If RdoAux!contador = 1 Then
+sql = "SELECT COUNT(*) AS contador FROM  usuario  WHERE  (fiscal = 1) AND (ativo = 1) AND nomelogin = '" & NomeDeLogin & "'"
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+If rdoAux!contador = 1 Then
     nRet = True
 Else
     nRet = False
 End If
-RdoAux.Close
+rdoAux.Close
 RetornaUsuarioFiscal = nRet
 End Function
 
 Public Function InSerasa(nCodigo As Long) As Boolean
-Dim nRet As Boolean, Sql As String, RdoAux As rdoResultset
+Dim nRet As Boolean, sql As String, rdoAux As rdoResultset
 
-Sql = "select * from serasa where codigo=" & nCodigo & " and dtsaida is null"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-If RdoAux.RowCount > 0 Then
+sql = "select * from serasa where codigo=" & nCodigo & " and dtsaida is null"
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+If rdoAux.RowCount > 0 Then
     nRet = True
 Else
     nRet = Fals5e
 End If
-RdoAux.Close
+rdoAux.Close
 InSerasa = nRet
 
 End Function
@@ -4188,7 +4236,7 @@ End Sub
 
 
 Public Sub GeraRefisDam(nAno As Integer)
-Dim RdoAux As rdoResultset, Sql As String, RdoAux2 As rdoResultset, nNumDoc As Long, ax As String, z As Long, nTotal As Double
+Dim rdoAux As rdoResultset, sql As String, RdoAux2 As rdoResultset, nNumDoc As Long, ax As String, z As Long, nTotal As Double
 nTotal = 0
 Ocupado
 Open sPathBin & "\RefisDAM.txt" For Output As #1
@@ -4199,16 +4247,16 @@ Print #1, " "
 Print #1, "Documento     Valor     Código   Dt.Pagto."
 Print #1, "-------------------------------------------------"
 Print #1, " "
-Sql = "SELECT DISTINCT parceladocumento.numdocumento, debitoparcela.codreduzido, debitopago.datapagamento, SUM(debitopago.valorpagoreal) AS valorpago,numdocumento.valorpago AS valordoc "
-Sql = Sql & "FROM numdocumento INNER JOIN parceladocumento ON numdocumento.numdocumento = parceladocumento.numdocumento INNER JOIN debitoparcela ON parceladocumento.codreduzido = debitoparcela.codreduzido AND parceladocumento.anoexercicio = debitoparcela.anoexercicio AND "
-Sql = Sql & "parceladocumento.codlancamento = debitoparcela.codlancamento AND parceladocumento.seqlancamento = debitoparcela.seqlancamento AND parceladocumento.numparcela = debitoparcela.numparcela AND parceladocumento.codcomplemento = debitoparcela.codcomplemento INNER JOIN "
-Sql = Sql & "debitopago ON debitoparcela.codreduzido = debitopago.codreduzido AND debitoparcela.anoexercicio = debitopago.anoexercicio AND debitoparcela.codlancamento = debitopago.codlancamento AND debitoparcela.seqlancamento = debitopago.seqlancamento AND "
-Sql = Sql & "debitoparcela.NumParcela = debitopago.NumParcela And debitoparcela.CODCOMPLEMENTO = debitopago.CODCOMPLEMENTO WHERE (debitoparcela.codlancamento NOT IN (36, 65)) AND (parceladocumento.plano = 11 OR "
-Sql = Sql & "parceladocumento.plano = 12) AND (debitoparcela.datavencimento < CONVERT(DATETIME, '2016-01-01 00:00:00', 102)) GROUP BY parceladocumento.numdocumento, debitoparcela.codreduzido, debitopago.datapagamento, numdocumento.valorpago "
-Sql = Sql & "HAVING (debitopago.datapagamento < CONVERT(DATETIME, '2016-12-21 00:00:00', 102)) AND (numdocumento.valorpago > 0) ORDER BY debitopago.datapagamento"
+sql = "SELECT DISTINCT parceladocumento.numdocumento, debitoparcela.codreduzido, debitopago.datapagamento, SUM(debitopago.valorpagoreal) AS valorpago,numdocumento.valorpago AS valordoc "
+sql = sql & "FROM numdocumento INNER JOIN parceladocumento ON numdocumento.numdocumento = parceladocumento.numdocumento INNER JOIN debitoparcela ON parceladocumento.codreduzido = debitoparcela.codreduzido AND parceladocumento.anoexercicio = debitoparcela.anoexercicio AND "
+sql = sql & "parceladocumento.codlancamento = debitoparcela.codlancamento AND parceladocumento.seqlancamento = debitoparcela.seqlancamento AND parceladocumento.numparcela = debitoparcela.numparcela AND parceladocumento.codcomplemento = debitoparcela.codcomplemento INNER JOIN "
+sql = sql & "debitopago ON debitoparcela.codreduzido = debitopago.codreduzido AND debitoparcela.anoexercicio = debitopago.anoexercicio AND debitoparcela.codlancamento = debitopago.codlancamento AND debitoparcela.seqlancamento = debitopago.seqlancamento AND "
+sql = sql & "debitoparcela.NumParcela = debitopago.NumParcela And debitoparcela.CODCOMPLEMENTO = debitopago.CODCOMPLEMENTO WHERE (debitoparcela.codlancamento NOT IN (36, 65)) AND (parceladocumento.plano = 11 OR "
+sql = sql & "parceladocumento.plano = 12) AND (debitoparcela.datavencimento < CONVERT(DATETIME, '2016-01-01 00:00:00', 102)) GROUP BY parceladocumento.numdocumento, debitoparcela.codreduzido, debitopago.datapagamento, numdocumento.valorpago "
+sql = sql & "HAVING (debitopago.datapagamento < CONVERT(DATETIME, '2016-12-21 00:00:00', 102)) AND (numdocumento.valorpago > 0) ORDER BY debitopago.datapagamento"
 
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
     Do Until .EOF
         If !DataPagamento < CDate("08/15/2016") Then GoTo Proximo
         nTotal = nTotal + !ValorPago
@@ -4229,7 +4277,7 @@ Liberado
 End Sub
 
 Public Sub DocEmitido(sDataIni As String, sDataFim As String, sUser As String)
-Dim RdoAux As rdoResultset, Sql As String, RdoAux2 As rdoResultset, nNumDoc As Long, ax As String, z As Long, nTotal As Double
+Dim rdoAux As rdoResultset, sql As String, RdoAux2 As rdoResultset, nNumDoc As Long, ax As String, z As Long, nTotal As Double
 nTotal = 0
 Ocupado
 Open sPathBin & "\RefisDAM.txt" For Output As #1
@@ -4241,16 +4289,16 @@ Print #1, "Documento     Valor     Código   Dt.Pagto."
 Print #1, "-------------------------------------------------"
 Print #1, " "
 
-Sql = "SELECT DISTINCT parceladocumento.numdocumento, debitoparcela.codreduzido, debitopago.datapagamento, SUM(debitopago.valorpagoreal) AS valorpago,numdocumento.valorpago AS valordoc "
-Sql = Sql & "FROM numdocumento INNER JOIN parceladocumento ON numdocumento.numdocumento = parceladocumento.numdocumento INNER JOIN debitoparcela ON parceladocumento.codreduzido = debitoparcela.codreduzido AND parceladocumento.anoexercicio = debitoparcela.anoexercicio AND "
-Sql = Sql & "parceladocumento.codlancamento = debitoparcela.codlancamento AND parceladocumento.seqlancamento = debitoparcela.seqlancamento AND parceladocumento.numparcela = debitoparcela.numparcela AND parceladocumento.codcomplemento = debitoparcela.codcomplemento INNER JOIN "
-Sql = Sql & "debitopago ON debitoparcela.codreduzido = debitopago.codreduzido AND debitoparcela.anoexercicio = debitopago.anoexercicio AND debitoparcela.codlancamento = debitopago.codlancamento AND debitoparcela.seqlancamento = debitopago.seqlancamento AND "
-Sql = Sql & "debitoparcela.NumParcela = debitopago.NumParcela And debitoparcela.CODCOMPLEMENTO = debitopago.CODCOMPLEMENTO WHERE (debitoparcela.codlancamento NOT IN (36, 65)) AND (parceladocumento.plano = 11 OR "
-Sql = Sql & "parceladocumento.plano = 12) AND (debitoparcela.datavencimento < CONVERT(DATETIME, '2016-01-01 00:00:00', 102)) GROUP BY parceladocumento.numdocumento, debitoparcela.codreduzido, debitopago.datapagamento, numdocumento.valorpago "
-Sql = Sql & "HAVING (debitopago.datapagamento < CONVERT(DATETIME, '2016-12-21 00:00:00', 102)) AND (numdocumento.valorpago > 0) ORDER BY debitopago.datapagamento"
+sql = "SELECT DISTINCT parceladocumento.numdocumento, debitoparcela.codreduzido, debitopago.datapagamento, SUM(debitopago.valorpagoreal) AS valorpago,numdocumento.valorpago AS valordoc "
+sql = sql & "FROM numdocumento INNER JOIN parceladocumento ON numdocumento.numdocumento = parceladocumento.numdocumento INNER JOIN debitoparcela ON parceladocumento.codreduzido = debitoparcela.codreduzido AND parceladocumento.anoexercicio = debitoparcela.anoexercicio AND "
+sql = sql & "parceladocumento.codlancamento = debitoparcela.codlancamento AND parceladocumento.seqlancamento = debitoparcela.seqlancamento AND parceladocumento.numparcela = debitoparcela.numparcela AND parceladocumento.codcomplemento = debitoparcela.codcomplemento INNER JOIN "
+sql = sql & "debitopago ON debitoparcela.codreduzido = debitopago.codreduzido AND debitoparcela.anoexercicio = debitopago.anoexercicio AND debitoparcela.codlancamento = debitopago.codlancamento AND debitoparcela.seqlancamento = debitopago.seqlancamento AND "
+sql = sql & "debitoparcela.NumParcela = debitopago.NumParcela And debitoparcela.CODCOMPLEMENTO = debitopago.CODCOMPLEMENTO WHERE (debitoparcela.codlancamento NOT IN (36, 65)) AND (parceladocumento.plano = 11 OR "
+sql = sql & "parceladocumento.plano = 12) AND (debitoparcela.datavencimento < CONVERT(DATETIME, '2016-01-01 00:00:00', 102)) GROUP BY parceladocumento.numdocumento, debitoparcela.codreduzido, debitopago.datapagamento, numdocumento.valorpago "
+sql = sql & "HAVING (debitopago.datapagamento < CONVERT(DATETIME, '2016-12-21 00:00:00', 102)) AND (numdocumento.valorpago > 0) ORDER BY debitopago.datapagamento"
 
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
     Do Until .EOF
         If !DataPagamento < CDate("08/15/2016") Then GoTo Proximo
         nTotal = nTotal + !ValorPago
@@ -4282,7 +4330,7 @@ bRet = False
 '    bRet = True
 'End If
 
-If NomeDeLogin = "CINTIA" Or NomeDeLogin = "PRISCILAANAMI" Then
+If NomeDeLogin = "CHEFE_PRATICO" Or NomeDeLogin = "PRISCILAANAMI" Then
     bRet = True
 End If
 
@@ -4403,7 +4451,7 @@ End If
 End Function
 
 Public Function GetGUID() As String
-    Dim MyGUID As Guid
+    Dim MyGUID As guid
     Dim GUIDByte() As Byte
     Dim GuidLen As Long
     
@@ -4414,3 +4462,169 @@ Public Function GetGUID() As String
     
     GetGUID = Left(GUIDByte, GuidLen)
 End Function
+
+Public Function AlignString(sTr As String, maxLength As Integer) As String
+    Dim spacesBefore As Integer
+    Dim spacesAfter As Integer
+    Dim totalSpaces As Integer
+    
+    ' Calculate the total number of spaces needed
+    totalSpaces = maxLength - Len(sTr)
+    
+    ' If the string is already longer than the maximum length, return the original string
+    If totalSpaces < 0 Then
+        AlignString = sTr
+        Exit Function
+    End If
+    
+    ' Calculate the number of spaces to add before and after the string
+    spacesBefore = totalSpaces \ 2
+    spacesAfter = totalSpaces - spacesBefore
+    
+    ' Add the spaces before and after the string
+    AlignString = Space(spacesBefore) & sTr & Space(spacesAfter)
+End Function
+
+Public Function CalculoTaxaSelic(valor As Double, mesVencto As Integer, anoVencto As Integer) As Double
+
+Dim sql As String, rdoAux As rdoResultset, nTaxa As Double, nMes As Integer, nAno As Integer, nFator As Double, aValores() As Double
+Dim nResultado As Double, x As Integer, aTaxaSelic() As tTaxaSelic, bFind As Boolean
+
+ReDim aTaxaSelic(0)
+ReDim aValores(0)
+nMes = mesVencto
+nAno = anoVencto
+nSomaFator = 0
+nResultado = 0
+Ocupado
+
+sql = "select ano,mes,valor from taxaselicmensal order by ano, mes"
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
+    Do Until .EOF
+        ReDim Preserve aTaxaSelic(UBound(aTaxaSelic) + 1)
+        aTaxaSelic(UBound(aTaxaSelic)).ano = !ano
+        aTaxaSelic(UBound(aTaxaSelic)).Mes = !Mes
+        aTaxaSelic(UBound(aTaxaSelic)).valor = !valor
+       .MoveNext
+    Loop
+   .Close
+End With
+
+Do While True
+    If nAno < 2021 Then
+        CalculoTaxaSelic = 0
+        Exit Function
+    Else
+        If nAno = 2021 And nMes < 12 Then
+            CalculoTaxaSelic = 0
+            Exit Function
+        End If
+    End If
+    
+    bFind = False
+    For z = 1 To UBound(aTaxaSelic)
+'        If z = 430 Then
+'            z = 430
+'        End If
+        If aTaxaSelic(z).ano = nAno And aTaxaSelic(z).Mes = nMes Then
+            bFind = True
+            Exit For
+        End If
+    Next
+    If bFind Then
+        nTaxa = aTaxaSelic(z).valor
+    Else
+        nTaxa = 0
+    End If
+    
+    
+'    sql = "select valor from taxaselicmensal where ano=" & nAno & " and mes=" & nMes
+'    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+'    With RdoAux
+'        If RdoAux.RowCount > 0 Then
+'            nTaxa = !Valor
+ '       Else
+ '           nTaxa = 0
+ '       End If
+ '      .Close
+ '   End With
+            
+    nFator = (1 + (nTaxa / 100))
+    ReDim Preserve aValores(UBound(aValores) + 1)
+    aValores(UBound(aValores)) = nFator
+    
+    nMes = nMes + 1
+    If nMes = 13 Then
+        nMes = 1
+        nAno = nAno + 1
+    End If
+  
+    If nAno = Year(Now) And nMes = Month(Now) Then
+        For x = 1 To UBound(aValores)
+            If nResultado = 0 Then
+                nResultado = aValores(x)
+            Else
+                nResultado = nResultado * aValores(x)
+            End If
+        Next
+        CalculoTaxaSelic = Round(valor * nResultado, 2)
+        Liberado
+        Exit Function
+    Else
+        If nAno = Year(Now) And nMes > Month(Now) Then
+            CalculoTaxaSelic = Round(valor * nResultado, 2)
+            Liberado
+            Exit Function
+        Else
+            If nAno > Year(Now) Then
+                CalculoTaxaSelic = Round(valor * nResultado, 2)
+                Liberado
+                Exit Function
+            End If
+        End If
+    End If
+Loop
+Liberado
+End Function
+
+Function FormatarMesAno(Mes As Integer, ano As Integer) As String
+    Dim nomeMes As String
+    
+    ' Verifica o número do mês e atribui o nome correspondente
+    Select Case Mes
+        Case 1: nomeMes = "Jan"
+        Case 2: nomeMes = "Fev"
+        Case 3: nomeMes = "Mar"
+        Case 4: nomeMes = "Abr"
+        Case 5: nomeMes = "Mai"
+        Case 6: nomeMes = "Jun"
+        Case 7: nomeMes = "Jul"
+        Case 8: nomeMes = "Ago"
+        Case 9: nomeMes = "Set"
+        Case 10: nomeMes = "Out"
+        Case 11: nomeMes = "Nov"
+        Case 12: nomeMes = "Dez"
+        Case Else: nomeMes = "Mês inválido"
+    End Select
+    
+    ' Formata a string final
+    FormatarMesAno = nomeMes & "/" & ano
+End Function
+
+Public Function GerarIDUnico(tamanho As Integer) As String
+    Dim caracteres As String
+    Dim resultado As String
+    Dim i As Integer
+
+    caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    Randomize
+    resultado = ""
+
+    For i = 1 To tamanho
+        resultado = resultado & Mid$(caracteres, Int(Rnd() * Len(caracteres)) + 1, 1)
+    Next i
+
+    GerarIDUnico = resultado
+End Function
+

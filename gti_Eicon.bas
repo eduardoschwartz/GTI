@@ -1,16 +1,16 @@
 Attribute VB_Name = "gti_Eicon"
 
 Public Sub AtualizaEmpresa()
-Dim Sql As String, RdoAux As rdoResultset, RdoEmp As rdoResultset, RdoAux2 As rdoResultset, RdoProp As rdoResultset
+Dim sql As String, RdoAux As rdoResultset, RdoEmp As rdoResultset, RdoAux2 As rdoResultset, RdoProp As rdoResultset
 Dim nCodigo As Long, sIE As String, sRazao As String, sFantasia As String, sNumProcesso As String, sTipoEmpresa As String, nArea As Double
 Dim sDoc As String, sDataAbertura As String, sDataEncerramento As String, sTipoLog As String, sTitLog As String, sNomeLog As String, sRegime As String
 Dim nNumImovel As Integer, sCompl As String, sBairro As String, sCep As String, sCidade As String, sUF As String, sFone As String, sFax As String, sEmail As String
-Dim nCodCidadao As Long, sNome As String, nCodLogr As Long, nTipoEnd As String
+Dim nCodCidadao As Long, sNome As String, nCodLogr As Long, nTipoEnd As String, sDDD As String
 
 ConectaEicon
 
-Sql = "select codigo from eicon_empresa order by codigo"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select codigo from eicon_empresa order by codigo"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
         Do Until .EOF
         If .AbsolutePosition > 150 Then Exit Do
@@ -18,13 +18,13 @@ With RdoAux
         
        '******* DADOS DA EMPRESA **************************
         
-        Sql = "select * from vwfullempresa3 where codigomob=" & nCodigo
-        Set RdoEmp = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "select * from vwfullempresa3 where codigomob=" & nCodigo
+        Set RdoEmp = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoEmp
             sIE = RetornaNumero(SubNull(!inscestadual))
             sRazao = !RazaoSocial
             sFantasia = SubNull(!NOMEFANTASIA)
-            sNumProcesso = SubNull(!NUMPROCESSO)
+            sNumProcesso = SubNull(!NumProcesso)
             If Len(SubNull(!Cnpj)) = 14 Then
                 sTipoEmpresa = "J"
                 sDoc = RetornaNumero(!Cnpj)
@@ -48,12 +48,15 @@ With RdoAux
             sCep = RetornaNumero(RetornaCEP(!CodLogradouro, !Numero))
             sCidade = SubNull(!descCidade)
             sUF = SubNull(!SiglaUF)
-            sFone = Left(RetornaNumero(SubNull(!fonecontato)), 15)
+            sDDD = SubNull(!ddd_nf)
+            sFone = Left(SubNull(!telefone_nf), 15)
+
+'            sFone = Left(RetornaNumero(SubNull(!fonecontato)), 15)
             sFax = Left(RetornaNumero(SubNull(!faxcontato)), 15)
             sEmail = SubNull(!emailcontato)
             
-            Sql = "select codtributo from mobiliarioatividadeiss where codmobiliario=" & nCodigo
-            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            sql = "select codtributo from mobiliarioatividadeiss where codmobiliario=" & nCodigo
+            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
             If RdoAux2.RowCount > 0 Then
                 If RdoAux2!CodTributo = 11 Then
                     sRegime = "F"
@@ -75,28 +78,28 @@ With RdoAux
            
         End With
         
-        Sql = "insert tb_inter_empresas(cod_cliente,num_cadastro,timestamp,inscricao,inscricao_estadual,nome_empresa,nome_fantasia,"
-        Sql = Sql & "num_processo,tipo_empresa,cpf_cnpj,data_abertura,data_encerramento,tipo_logradouro,titulo_logradouro,logradouro,"
-        Sql = Sql & "num_imovel,complemento,bairro,cep,cidade,estado,telefone,fax,email,regime_empresa,status_empresa,classificacao,area_ocupada) "
-        Sql = Sql & "values(2177," & nCodigo & ",'" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "'," & nCodigo & "," & IIf(Val(sIE) > 0, Val(sIE), "Null") & ",'" & Mask(sRazao) & "',"
-        Sql = Sql & IIf(sFantasia <> "", "'" & Mask(sFantasia) & "'", "Null") & "," & IIf(sNumProcesso <> "", "'" & sNumProcesso & "'", "Null") & ",'" & sTipoEmpresa & "'," & IIf(Val(sDoc) > 0, Val(sDoc), "Null") & ",'" & Format(sDataAbertura, "m/dd/yyyy") & "',"
-        Sql = Sql & IIf(IsDate(sDataEncerramento), "'" & Format(sDataEncerramento, "mm/dd/yyyy") & "'", "Null") & "," & IIf(sTipoLog <> "", "'" & sTipoLog & "'", "Null") & ","
-        Sql = Sql & IIf(sTitLog <> "", "'" & sTitLog & "'", "Null") & ",'" & Mask(sNomeLog) & "'," & IIf(nNumImovel > 0, "'" & CStr(nNumImovel) & "'", "Null") & "," & IIf(sCompl <> "", "'" & Left(sCompl, 40) & "'", "Null") & ",'"
-        Sql = Sql & sBairro & "'," & IIf(Val(sCep) > 0, Val(sCep), "Null") & ",'" & sCidade & "','" & sUF & "'," & IIf(Val(sFone) > 0, Val(sFone), "Null") & "," & IIf(Val(sFax) > 0, Val(sFax), "Null") & "," & IIf(sEmail <> "", "'" & sEmail & "'", "Null") & ","
-        Sql = Sql & IIf(sRegime <> "", "'" & sRegime & "'", "Null") & ",'" & IIf(IsDate(sDataEncerramento), "E", "A") & "','" & "N" & "'," & RetornaNumero(FormatNumber(nArea, 2)) & ")"
-        cnEicon.Execute Sql, rdExecDirect
+        sql = "insert tb_inter_empresas(cod_cliente,num_cadastro,timestamp,inscricao,inscricao_estadual,nome_empresa,nome_fantasia,"
+        sql = sql & "num_processo,tipo_empresa,cpf_cnpj,data_abertura,data_encerramento,tipo_logradouro,titulo_logradouro,logradouro,"
+        sql = sql & "num_imovel,complemento,bairro,cep,cidade,estado,ddd,telefone,fax,email,regime_empresa,status_empresa,classificacao,area_ocupada) "
+        sql = sql & "values(2177," & nCodigo & ",'" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "'," & nCodigo & "," & IIf(Val(sIE) > 0, Val(sIE), "Null") & ",'" & Mask(sRazao) & "',"
+        sql = sql & IIf(sFantasia <> "", "'" & Mask(sFantasia) & "'", "Null") & "," & IIf(sNumProcesso <> "", "'" & sNumProcesso & "'", "Null") & ",'" & sTipoEmpresa & "'," & IIf(Val(sDoc) > 0, Val(sDoc), "Null") & ",'" & Format(sDataAbertura, "m/dd/yyyy") & "',"
+        sql = sql & IIf(IsDate(sDataEncerramento), "'" & Format(sDataEncerramento, "mm/dd/yyyy") & "'", "Null") & "," & IIf(sTipoLog <> "", "'" & sTipoLog & "'", "Null") & ","
+        sql = sql & IIf(sTitLog <> "", "'" & sTitLog & "'", "Null") & ",'" & Mask(sNomeLog) & "'," & IIf(nNumImovel > 0, "'" & CStr(nNumImovel) & "'", "Null") & "," & IIf(sCompl <> "", "'" & Left(sCompl, 40) & "'", "Null") & ",'"
+        sql = sql & Mask(sBairro) & "'," & IIf(Val(sCep) > 0, Val(sCep), "Null") & ",'" & sCidade & "','" & sUF & "'," & IIf(Val(sDDD) > 0, Val(sDDD), "Null") & "," & IIf(Val(sFone) > 0, Val(sFone), "Null") & "," & IIf(Val(sFax) > 0, Val(sFax), "Null") & "," & IIf(sEmail <> "", "'" & sEmail & "'", "Null") & ","
+        sql = sql & IIf(sRegime <> "", "'" & sRegime & "'", "Null") & ",'" & IIf(IsDate(sDataEncerramento), "E", "A") & "','" & "N" & "'," & RetornaNumero(FormatNumber(nArea, 2)) & ")"
+        cnEicon.Execute sql, rdExecDirect
         
        '******* DADOS DOS SÓCIOS **************************
-        Sql = "SELECT * FROM mobiliarioproprietario Where mobiliarioproprietario.codmobiliario = " & nCodigo
-        Set RdoProp = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT * FROM mobiliarioproprietario Where mobiliarioproprietario.codmobiliario = " & nCodigo
+        Set RdoProp = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoProp
             Do Until .EOF
                 nCodCidadao = !CodCidadao
-                Sql = "select codigo from eicon_socio where codigo=" & nCodCidadao
-                Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                sql = "select codigo from eicon_socio where codigo=" & nCodCidadao
+                Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                 If RdoAux2.RowCount = 0 Then
-                    Sql = "insert eicon_socio(codigo) values(" & nCodCidadao & ")"
-                    cn.Execute Sql, rdExecDirect
+                    sql = "insert eicon_socio(codigo) values(" & nCodCidadao & ")"
+                    cn.Execute sql, rdExecDirect
                     AtualizaSocio
                 End If
                 RdoAux2.Close
@@ -113,7 +116,7 @@ With RdoAux
     RdoAux.Close
 End With
 
-Sql = "delete from eicon_empresa"
+sql = "delete from eicon_empresa"
 'cn.Execute Sql, rdExecDirect
 
 cnEicon.Close
@@ -122,32 +125,32 @@ End Sub
 
 Public Sub AtualizaSocio()
 
-Dim Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset
+Dim sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset
 Dim nCodigo As Long, sTipoLog As String, sTitLog As String, sNomeLog As String, nCodEmpresa As Long, sNome As String, nCodLogr As Long, nTipoEnd As String
 Dim nNumImovel As Integer, sCompl As String, sBairro As String, sCep As String, sCidade As String, sUF As String, sFone As String, sFax As String, sEmail As String
 
 ConectaEicon2
 
 '****REMOVER NO FINAL DOS TESTES *****
-Sql = "delete from tb_inter_socios"
+sql = "delete from tb_inter_socios"
 'cnEicon2.Execute sql, rdExecDirect
 '*************************************
 
-Sql = "select codigo from eicon_socio order by codigo"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select codigo from eicon_socio order by codigo"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
         Do Until .EOF
         nCodigo = !Codigo
         
        '******* DADOS DOS SÓCIOS **************************
-        Sql = "SELECT vwfullcidadao.*,codmobiliario FROM vwFULLCIDADAO inner join mobiliarioproprietario on vwfullcidadao.codcidadao=mobiliarioproprietario.codcidadao where mobiliarioproprietario.codcidadao = " & nCodigo
-        Set RdoProp = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT vwfullcidadao.*,codmobiliario FROM vwFULLCIDADAO inner join mobiliarioproprietario on vwfullcidadao.codcidadao=mobiliarioproprietario.codcidadao where mobiliarioproprietario.codcidadao = " & nCodigo
+        Set RdoProp = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoProp
             Do Until .EOF
                 nCodEmpresa = !codmobiliario
-                sNome = !Nomecidadao
-                Sql = "select num_cadastro from tb_inter_socios where num_cadastro=" & nCodEmpresa & " and nome_socio='" & sNome & "' and controle is null"
-                Set RdoAux2 = cnEicon2.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                sNome = !nomecidadao
+                sql = "select num_cadastro from tb_inter_socios where num_cadastro=" & nCodEmpresa & " and nome_socio='" & sNome & "' and controle is null"
+                Set RdoAux2 = cnEicon2.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                 If RdoAux2.RowCount > 0 Then
                     RdoAux2.Close
                     GoTo Proximo
@@ -204,16 +207,16 @@ With RdoAux
                     sEmail = SubNull(!EMAIL2)
                 End If
                 
-                Sql = "insert tb_inter_socios(cod_cliente,num_cadastro,inscricao,cod_socio,nome_socio,timestamp,cpf,tipo_logradouro,titulo_logradouro,logradouro,num_imovel,complemento,bairro,cep,"
-                Sql = Sql & "cidade,estado,telefone,email) "
-                Sql = Sql & "values(2177," & nCodEmpresa & "," & nCodEmpresa & "," & nCodigo & ",'" & Mask(sNome) & "','" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "'," & IIf(Val(sDoc) > 0, Val(sDoc), "Null") & ","
-                Sql = Sql & IIf(sTipoLog <> "", "'" & sTipoLog & "'", "Null") & "," & IIf(sTitLog <> "", "'" & sTitLog & "'", "Null") & ",'" & Mask(sNomeLog) & "'," & IIf(nNumImovel > 0, "'" & CStr(nNumImovel) & "'", "Null") & ","
-                Sql = Sql & IIf(sCompl <> "", "'" & Left(sCompl, 40) & "'", "Null") & "," & IIf(sBairro <> "", "'" & sBairro & "'", "Null") & "," & IIf(Val(sCep) > 0, Val(sCep), "Null") & ",'" & sCidade & "','" & sUF & "',"
-                Sql = Sql & IIf(Val(sFone) > 0, Val(sFone), "Null") & "," & IIf(sEmail <> "", "'" & sEmail & "'", "Null") & ")"
-                cnEicon2.Execute Sql, rdExecDirect
+                sql = "insert tb_inter_socios(cod_cliente,num_cadastro,inscricao,cod_socio,nome_socio,timestamp,cpf,tipo_logradouro,titulo_logradouro,logradouro,num_imovel,complemento,bairro,cep,"
+                sql = sql & "cidade,estado,telefone,email) "
+                sql = sql & "values(2177," & nCodEmpresa & "," & nCodEmpresa & "," & nCodigo & ",'" & Mask(sNome) & "','" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "'," & IIf(Val(sDoc) > 0, Val(sDoc), "Null") & ","
+                sql = sql & IIf(sTipoLog <> "", "'" & sTipoLog & "'", "Null") & "," & IIf(sTitLog <> "", "'" & sTitLog & "'", "Null") & ",'" & Mask(sNomeLog) & "'," & IIf(nNumImovel > 0, "'" & CStr(nNumImovel) & "'", "Null") & ","
+                sql = sql & IIf(sCompl <> "", "'" & Left(sCompl, 40) & "'", "Null") & "," & IIf(sBairro <> "", "'" & sBairro & "'", "Null") & "," & IIf(Val(sCep) > 0, Val(sCep), "Null") & ",'" & sCidade & "','" & sUF & "',"
+                sql = sql & IIf(Val(sFone) > 0, Val(sFone), "Null") & "," & IIf(sEmail <> "", "'" & sEmail & "'", "Null") & ")"
+                cnEicon2.Execute sql, rdExecDirect
                  
-                Sql = "delete from eicon_socio where codigo=" & nCodigo
-                cn.Execute Sql, rdExecDirect
+                sql = "delete from eicon_socio where codigo=" & nCodigo
+                cn.Execute sql, rdExecDirect
                  
                .MoveNext
             Loop
