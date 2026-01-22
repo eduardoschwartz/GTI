@@ -431,7 +431,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Dim RdoAux As rdoResultset
-Dim Sql As String
+Dim sql As String
 Dim Evento As String, NomeForm As String
 
 Public Property Let sForm(sNomeForm As String)
@@ -470,7 +470,7 @@ If NomeForm = "frmCadMob" Then
           nQtde = InputBox("Digite a Qtde  para esta atividade.", "Quantidade", "1")
           If Not IsNumeric(nQtde) Then nQtde = 0
           If CDbl(nQtde) = 0 Then nQtde = 1
-          frmCadMob.grdVS.AddItem Mid$(tvVig.SelectedItem.Key, 2, 3) & Chr(9) & Right$(tvVig.SelectedItem.Key, 3) & Chr(9) & tvVig.SelectedItem.Parent.text & " - " & tvVig.SelectedItem.text & Chr(9) & nQtde & Chr(9) & FormatNumber(tvVig.SelectedItem.Tag, 2)
+          frmCadMob.grdVS.AddItem Mid$(tvVig.SelectedItem.Key, 2, 3) & Chr(9) & Right$(tvVig.SelectedItem.Key, 3) & Chr(9) & tvVig.SelectedItem.Parent.Text & " - " & tvVig.SelectedItem.Text & Chr(9) & nQtde & Chr(9) & FormatNumber(tvVig.SelectedItem.Tag, 2)
           CodEmpresa = 0
        Else
           MsgBox "Esta atividade já foi atribuida à empresa.", vbExclamation, "Atenção"
@@ -489,7 +489,7 @@ If NomeForm = "frmCadMob" Then
           nQtde = InputBox("Digite a Qtde  para esta atividade.", "Quantidade", "1")
           If Not IsNumeric(nQtde) Then nQtde = 0
           If CDbl(nQtde) = 0 Then nQtde = 1
-          frmCadMob.grdVS.AddItem Mid$(tvVig.SelectedItem.Key, 2, 3) & Chr(9) & "000" & Chr(9) & tvVig.SelectedItem.text & Chr(9) & nQtde & Chr(9) & FormatNumber(tvVig.SelectedItem.Tag, 2)
+          frmCadMob.grdVS.AddItem Mid$(tvVig.SelectedItem.Key, 2, 3) & Chr(9) & "000" & Chr(9) & tvVig.SelectedItem.Text & Chr(9) & nQtde & Chr(9) & FormatNumber(tvVig.SelectedItem.Tag, 2)
           CodEmpresa = 0
        Else
           MsgBox "Esta atividade já foi atribuida à empresa.", vbExclamation, "Atenção"
@@ -511,67 +511,67 @@ Dim nLastCod As Integer, nLastSubCod As Integer
 
 Select Case Evento
     Case "NI"
-        If Trim$(txtItem.text) = "" Then
+        If Trim$(txtItem.Text) = "" Then
            MsgBox "Digite a Descrição do Novo Item.", vbExclamation, "Atenção"
            Exit Sub
         End If
-        Sql = "SELECT MAX(CODVIGSANIT) AS COD FROM VIGSANITARIA"
-        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT MAX(CODVIGSANIT) AS COD FROM VIGSANITARIA"
+        Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         nLastCod = RdoAux!COD + 1
         nLastSubCod = 1
-        Set NodX = tvVig.Nodes.Add(, , "C" & Format(nLastCod, "000"), txtItem.text, 2)
+        Set NodX = tvVig.Nodes.Add(, , "C" & Format(nLastCod, "000"), txtItem.Text, 2)
         tvVig.Nodes("C" & Format(nLastCod, "000")).Tag = FormatNumber(txtAliq, 2)
-        Sql = "INSERT VIGSANITARIA (CODVIGSANIT,SUBCODVIGSANIT,DESCVIGSANITARIA,VALORALIQ) VALUES("
-        Sql = Sql & nLastCod & "," & 0 & ",'" & Mask(txtItem.text) & "'," & Virg2Ponto(txtAliq.text) & ")"
-        cn.Execute Sql, rdExecDirect
+        sql = "INSERT VIGSANITARIA (CODVIGSANIT,SUBCODVIGSANIT,DESCVIGSANITARIA,VALORALIQ) VALUES("
+        sql = sql & nLastCod & "," & 0 & ",'" & Mask(txtItem.Text) & "'," & Virg2Ponto(txtAliq.Text) & ")"
+        cn.Execute sql, rdExecDirect
     Case "NS"
-        If Trim$(txtSub.text) = "" Then
+        If Trim$(txtSub.Text) = "" Then
            MsgBox "Digite a Descrição do Novo SubItem.", vbExclamation, "Atenção"
            Exit Sub
         End If
-        If Val(txtAliq.text) = 0 Then
+        If Val(txtAliq.Text) = 0 Then
            MsgBox "Digite o Valor da Aliquota.", vbExclamation, "Atenção"
            Exit Sub
         End If
         nLastCod = Val(Right$(tvVig.SelectedItem.Key, 3))
-        Sql = "SELECT MAX(SUBCODVIGSANIT) AS SUBCOD FROM VIGSANITARIA WHERE CODVIGSANIT=" & nLastCod
-        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT MAX(SUBCODVIGSANIT) AS SUBCOD FROM VIGSANITARIA WHERE CODVIGSANIT=" & nLastCod
+        Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         If IsNull(RdoAux!SUBCOD) Then
             nLastSubCod = 1
         Else
             nLastSubCod = RdoAux!SUBCOD + 1
         End If
-        Set NodX = tvVig.Nodes.Add("C" & Format(nLastCod, "000"), tvwChild, "C" & Format(nLastCod, "000") & "S" & Format(nLastSubCod, "000"), txtSub.text, 1)
+        Set NodX = tvVig.Nodes.Add("C" & Format(nLastCod, "000"), tvwChild, "C" & Format(nLastCod, "000") & "S" & Format(nLastSubCod, "000"), txtSub.Text, 1)
         tvVig.Nodes("C" & Format(nLastCod, "000") & "S" & Format(nLastSubCod, "000")).ForeColor = vbBlue
         tvVig.Nodes("C" & Format(nLastCod, "000") & "S" & Format(nLastSubCod, "000")).Tag = FormatNumber(txtAliq, 2)
-        Sql = "INSERT VIGSANITARIA (CODVIGSANIT,SUBCODVIGSANIT,DESCVIGSANITARIA,VALORALIQ) VALUES("
-        Sql = Sql & nLastCod & "," & nLastSubCod & ",'" & Mask(txtSub.text) & "'," & Virg2Ponto(txtAliq.text) & ")"
-        cn.Execute Sql, rdExecDirect
+        sql = "INSERT VIGSANITARIA (CODVIGSANIT,SUBCODVIGSANIT,DESCVIGSANITARIA,VALORALIQ) VALUES("
+        sql = sql & nLastCod & "," & nLastSubCod & ",'" & Mask(txtSub.Text) & "'," & Virg2Ponto(txtAliq.Text) & ")"
+        cn.Execute sql, rdExecDirect
         tvVig.Nodes("C" & Format(nLastCod, "000") & "S" & Format(nLastSubCod, "000")).EnsureVisible
     Case "EI"
-        If Trim$(txtItem.text) = "" Then
+        If Trim$(txtItem.Text) = "" Then
            MsgBox "Digite a Descrição do Item.", vbExclamation, "Atenção"
            Exit Sub
         End If
-        If Val(txtAliq.text) = 0 Then
+        If Val(txtAliq.Text) = 0 Then
            MsgBox "Digite o Valor da Aliquota.", vbExclamation, "Atenção"
            Exit Sub
         End If
-        tvVig.Nodes(tvVig.SelectedItem.Index).text = txtItem.text
+        tvVig.Nodes(tvVig.SelectedItem.Index).Text = txtItem.Text
         tvVig.Nodes(tvVig.SelectedItem.Index).Tag = FormatNumber(txtAliq, 2)
         
         nLastCod = Val(Right$(tvVig.SelectedItem.Key, 3))
         nLastSubCod = 0
         
-        Sql = "UPDATE VIGSANITARIA SET DESCVIGSANITARIA='" & txtItem.text & "', "
-        Sql = Sql & "VALORALIQ=" & Virg2Ponto(txtAliq.text) & " WHERE CODVIGSANIT=" & nLastCod & " AND SUBCODVIGSANIT=0"
-        cn.Execute Sql, rdExecDirect
+        sql = "UPDATE VIGSANITARIA SET DESCVIGSANITARIA='" & txtItem.Text & "', "
+        sql = sql & "VALORALIQ=" & Virg2Ponto(txtAliq.Text) & " WHERE CODVIGSANIT=" & nLastCod & " AND SUBCODVIGSANIT=0"
+        cn.Execute sql, rdExecDirect
     Case "ES"
-        If Trim$(txtSub.text) = "" Then
+        If Trim$(txtSub.Text) = "" Then
            MsgBox "Digite a Descrição do SubItem.", vbExclamation, "Atenção"
            Exit Sub
         End If
-        If Val(txtAliq.text) = 0 Then
+        If Val(txtAliq.Text) = 0 Then
            MsgBox "Digite o Valor da Aliquota.", vbExclamation, "Atenção"
            Exit Sub
         End If
@@ -579,12 +579,12 @@ Select Case Evento
         nLastCod = Val(Mid$(tvVig.SelectedItem.Key, 2, 3))
         nLastSubCod = Val(Right$(tvVig.SelectedItem.Key, 3))
         
-        tvVig.Nodes(tvVig.SelectedItem.Index).text = txtSub.text
+        tvVig.Nodes(tvVig.SelectedItem.Index).Text = txtSub.Text
         tvVig.Nodes(tvVig.SelectedItem.Index).Tag = FormatNumber(txtAliq, 2)
         
-        Sql = "UPDATE VIGSANITARIA SET DESCVIGSANITARIA='" & txtSub.text & "', "
-        Sql = Sql & "VALORALIQ=" & Virg2Ponto(txtAliq.text) & " WHERE CODVIGSANIT=" & nLastCod & " AND SUBCODVIGSANIT=" & nLastSubCod
-        cn.Execute Sql, rdExecDirect
+        sql = "UPDATE VIGSANITARIA SET DESCVIGSANITARIA='" & txtSub.Text & "', "
+        sql = sql & "VALORALIQ=" & Virg2Ponto(txtAliq.Text) & " WHERE CODVIGSANIT=" & nLastCod & " AND SUBCODVIGSANIT=" & nLastSubCod
+        cn.Execute sql, rdExecDirect
 End Select
 
 EndEdit
@@ -593,7 +593,7 @@ End Sub
 
 Private Sub cmdPrint_Click()
 'EXIBE RELATORIO
-frmReport.ShowReport "ALIQATIVIDADEVS", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport "ALIQATIVIDADEVS", frmMdi.HWND, Me.HWND
 
 End Sub
 
@@ -611,20 +611,20 @@ End Sub
 
 Private Sub CarregaLista()
 
-Sql = "SELECT CODVIGSANIT,SUBCODVIGSANIT,DESCVIGSANITARIA,VALORALIQ FROM VIGSANITARIA "
-Sql = Sql & "ORDER BY CODVIGSANIT,SUBCODVIGSANIT"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CODVIGSANIT,SUBCODVIGSANIT,DESCVIGSANITARIA,VALORALIQ FROM VIGSANITARIA "
+sql = sql & "ORDER BY CODVIGSANIT,SUBCODVIGSANIT"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 
 
 With RdoAux
     Do Until .EOF
        If !SUBCODVIGSANIT = 0 Then
            Set NodX = tvVig.Nodes.Add(, , "C" & Format(!CODVIGSANIT, "000"), !DESCVIGSANITARIA, 2)
-           tvVig.Nodes("C" & Format(!CODVIGSANIT, "000")).Tag = FormatNumber(!VALORALIQ, 2)
+           tvVig.Nodes("C" & Format(!CODVIGSANIT, "000")).Tag = FormatNumber(!valoraliq, 2)
        Else
            Set NodX = tvVig.Nodes.Add("C" & Format(!CODVIGSANIT, "000"), tvwChild, "C" & Format(!CODVIGSANIT, "000") & "S" & Format(!SUBCODVIGSANIT, "000"), !DESCVIGSANITARIA, 1)
            tvVig.Nodes("C" & Format(!CODVIGSANIT, "000") & "S" & Format(!SUBCODVIGSANIT, "000")).ForeColor = vbBlue
-           tvVig.Nodes("C" & Format(!CODVIGSANIT, "000") & "S" & Format(!SUBCODVIGSANIT, "000")).Tag = FormatNumber(!VALORALIQ, 2)
+           tvVig.Nodes("C" & Format(!CODVIGSANIT, "000") & "S" & Format(!SUBCODVIGSANIT, "000")).Tag = FormatNumber(!valoraliq, 2)
        End If
       .MoveNext
     Loop
@@ -653,7 +653,7 @@ If tvVig.SelectedItem.ForeColor <> vbBlue And tvVig.SelectedItem.Children > 0 Th
     Exit Sub
 End If
 
-If MsgBox("Excluir o Item: " & tvVig.SelectedItem.text & " ?", vbQuestion + vbYesNo, "Confirmação") = vbYes Then
+If MsgBox("Excluir o Item: " & tvVig.SelectedItem.Text & " ?", vbQuestion + vbYesNo, "Confirmação") = vbYes Then
     If Len(tvVig.SelectedItem.Key) = 4 Then
         nLastCod = Val(Right$(tvVig.SelectedItem.Key, 3))
         nLastSubCod = 0
@@ -661,8 +661,8 @@ If MsgBox("Excluir o Item: " & tvVig.SelectedItem.text & " ?", vbQuestion + vbYe
         nLastCod = Val(Mid$(tvVig.SelectedItem.Key, 2, 3))
         nLastSubCod = Val(Right$(tvVig.SelectedItem.Key, 3))
     End If
-    Sql = "DELETE FROM VIGSANITARIA WHERE CODVIGSANIT=" & nLastCod & " AND SUBCODVIGSANIT=" & nLastSubCod
-    cn.Execute Sql, rdExecDirect
+    sql = "DELETE FROM VIGSANITARIA WHERE CODVIGSANIT=" & nLastCod & " AND SUBCODVIGSANIT=" & nLastSubCod
+    cn.Execute sql, rdExecDirect
     tvVig.Nodes.Remove (tvVig.SelectedItem.Index)
     End If
 
@@ -674,9 +674,9 @@ IniEdit
 If tvVig.SelectedItem.ForeColor = vbBlue Then
     'subitem
     Evento = "ES"
-    txtItem.text = tvVig.SelectedItem.Parent.text
-    txtAliq.text = tvVig.SelectedItem.Tag
-    txtSub.text = tvVig.SelectedItem.text
+    txtItem.Text = tvVig.SelectedItem.Parent.Text
+    txtAliq.Text = tvVig.SelectedItem.Tag
+    txtSub.Text = tvVig.SelectedItem.Text
     txtSub.Enabled = True
     txtSub.BackColor = Branco
     txtItem.Locked = True
@@ -685,9 +685,9 @@ If tvVig.SelectedItem.ForeColor = vbBlue Then
 Else
     'item
     Evento = "EI"
-    txtItem.text = tvVig.SelectedItem.text
-    txtAliq.text = tvVig.SelectedItem.Tag
-    txtSub.text = ""
+    txtItem.Text = tvVig.SelectedItem.Text
+    txtAliq.Text = tvVig.SelectedItem.Tag
+    txtSub.Text = ""
     txtSub.Enabled = False
     txtSub.BackColor = Kde
     txtItem.Locked = False
@@ -701,11 +701,11 @@ Private Sub mnuNew_Click()
 
 Evento = "NI"
 IniEdit
-txtItem.text = ""
+txtItem.Text = ""
 txtItem.Locked = False
 txtItem.BackColor = Branco
-txtAliq.text = 0
-txtSub.text = ""
+txtAliq.Text = 0
+txtSub.Text = ""
 txtSub.Enabled = False
 txtSub.BackColor = Kde
 txtItem.SetFocus
@@ -741,11 +741,11 @@ End If
 
 Evento = "NS"
 IniEdit
-txtItem.text = tvVig.SelectedItem.text
+txtItem.Text = tvVig.SelectedItem.Text
 txtItem.Locked = True
 txtItem.BackColor = Kde
-txtAliq.text = 0
-txtSub.text = ""
+txtAliq.Text = 0
+txtSub.Text = ""
 txtSub.Enabled = True
 txtSub.BackColor = Branco
 txtSub.SetFocus
@@ -758,7 +758,7 @@ End Sub
 
 Private Sub txtAliq_GotFocus()
 txtAliq.SelStart = 0
-txtAliq.SelLength = Len(txtAliq.text)
+txtAliq.SelLength = Len(txtAliq.Text)
 End Sub
 
 Private Sub txtAliq_KeyPress(KeyAscii As Integer)

@@ -893,7 +893,7 @@ With RdoAux
         ReDim Preserve aDebito(UBound(aDebito) + 1)
         nEval = UBound(aDebito)
         Do Until .EOF
-            If !statuslanc <> 3 Then GoTo Proximo
+            'If !statuslanc <> 3 Then GoTo Proximo
             bJuros = False: bMulta = False: bIsentoMJ = False
             If Not IsNull(!NumDocumento) Then
                 Sql = "SELECT NUMDOCUMENTO,ISENTOMJ FROM NUMDOCUMENTO WHERE NUMDOCUMENTO=" & RdoAux!NumDocumento
@@ -922,11 +922,11 @@ With RdoAux
                 aDebito(nEval).nAno = !AnoExercicio
                 aDebito(nEval).nLanc = !CodLancamento
                 If !CodLancamento = 20 Or !CodLancamento = 8 Then
-                   If Not IsNull(!numprocesso) Then
-                      If Val(Right$(!numprocesso, 4)) >= 2006 Then
-                        aDebito(nEval).sLanc = !DESCLANCAMENTO & " (" & Left$(!numprocesso, InStr(1, !numprocesso, "/", vbBinaryCompare) - 1) & "-" & RetornaDVProcesso(Left$(!numprocesso, InStr(1, !numprocesso, "/", vbBinaryCompare) - 1)) & "/" & Right$(!numprocesso, 4) & ")"
+                   If Not IsNull(!NumProcesso) Then
+                      If Val(Right$(!NumProcesso, 4)) >= 2006 Then
+                        aDebito(nEval).sLanc = !DESCLANCAMENTO & " (" & Left$(!NumProcesso, InStr(1, !NumProcesso, "/", vbBinaryCompare) - 1) & "-" & RetornaDVProcesso(Left$(!NumProcesso, InStr(1, !NumProcesso, "/", vbBinaryCompare) - 1)) & "/" & Right$(!NumProcesso, 4) & ")"
                       Else
-                        aDebito(nEval).sLanc = !DESCLANCAMENTO & " (" & !numprocesso & ")"
+                        aDebito(nEval).sLanc = !DESCLANCAMENTO & " (" & !NumProcesso & ")"
                       End If
                    Else
                       aDebito(nEval).sLanc = !DESCLANCAMENTO
