@@ -5,14 +5,14 @@ Begin VB.Form frmLabelProtocolo
    BackColor       =   &H00EEEEEE&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Emissão de etiquetas do Protocolo"
-   ClientHeight    =   5790
-   ClientLeft      =   2595
-   ClientTop       =   2520
+   ClientHeight    =   6210
+   ClientLeft      =   15810
+   ClientTop       =   5715
    ClientWidth     =   6585
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
-   ScaleHeight     =   5790
+   ScaleHeight     =   6210
    ScaleWidth      =   6585
    Begin VB.CheckBox chkArquivado 
       Caption         =   "Somente não Arquivados"
@@ -400,6 +400,86 @@ Begin VB.Form frmLabelProtocolo
       CHECK           =   0   'False
       VALUE           =   0   'False
    End
+   Begin prjChameleon.chameleonButton cmdCarta 
+      Height          =   345
+      Left            =   1200
+      TabIndex        =   17
+      ToolTipText     =   "Emissão de cartas"
+      Top             =   5760
+      Width           =   1365
+      _ExtentX        =   2408
+      _ExtentY        =   609
+      BTYPE           =   3
+      TX              =   "Gera Cartas"
+      ENAB            =   -1  'True
+      BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      COLTYPE         =   2
+      FOCUSR          =   0   'False
+      BCOL            =   12632256
+      BCOLO           =   12632256
+      FCOL            =   0
+      FCOLO           =   0
+      MCOL            =   16777215
+      MPTR            =   1
+      MICON           =   "frmLabelProtocolo.frx":0375
+      PICN            =   "frmLabelProtocolo.frx":0391
+      UMCOL           =   -1  'True
+      SOFT            =   0   'False
+      PICPOS          =   0
+      NGREY           =   0   'False
+      FX              =   0
+      HAND            =   0   'False
+      CHECK           =   0   'False
+      VALUE           =   0   'False
+   End
+   Begin prjChameleon.chameleonButton cmdTramitacao 
+      Height          =   345
+      Left            =   2610
+      TabIndex        =   18
+      ToolTipText     =   "Incluir na tramitação"
+      Top             =   5760
+      Width           =   1260
+      _ExtentX        =   2223
+      _ExtentY        =   609
+      BTYPE           =   3
+      TX              =   "&Tramitação"
+      ENAB            =   -1  'True
+      BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      COLTYPE         =   2
+      FOCUSR          =   0   'False
+      BCOL            =   12632256
+      BCOLO           =   12632256
+      FCOL            =   0
+      FCOLO           =   0
+      MCOL            =   12632256
+      MPTR            =   1
+      MICON           =   "frmLabelProtocolo.frx":041E
+      PICN            =   "frmLabelProtocolo.frx":043A
+      UMCOL           =   -1  'True
+      SOFT            =   0   'False
+      PICPOS          =   0
+      NGREY           =   0   'False
+      FX              =   0
+      HAND            =   0   'False
+      CHECK           =   0   'False
+      VALUE           =   0   'False
+   End
    Begin VB.Label Label1 
       BackStyle       =   0  'Transparent
       Caption         =   "Até..:"
@@ -426,7 +506,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Dim RdoAux As rdoResultset, Sql As String, NodX As Object
+Dim RdoAux As rdoResultset, sql As String, NodX As Object
 
 Private Sub cmdAbrir_Click()
     Dim s As String
@@ -443,6 +523,43 @@ Private Sub cmdAddAll_Click()
 For n = 1 To lvEtiq.ListItems.Count
     lvEtiq.ListItems(n).Checked = True
 Next
+End Sub
+
+Private Sub cmdCarta_Click()
+Dim x As Integer, nAno As Integer, nNumero As Integer, sProcesso As String, bFind As Boolean
+
+bFind = False
+For x = 1 To lvEtiq.ListItems.Count
+    If lvEtiq.ListItems(x).Checked Then
+        bFind = True
+        Exit For
+    End If
+Next
+
+If Not bFind Then
+    MsgBox "Selecione ao menos um processo", vbCritical, "Erro"
+    Exit Sub
+End If
+
+sql = "delete from carta_protocolo where nomelogin='" & NomeDeLogin & "'"
+cn.Execute sql, rdExecDirect
+
+For x = 1 To lvEtiq.ListItems.Count
+    If lvEtiq.ListItems(x).Checked Then
+        nAno = Val(lvEtiq.ListItems(x).Text)
+        nNumero = CLng(Left$(lvEtiq.ListItems(x).SubItems(1), Len(lvEtiq.ListItems(x).SubItems(1)) - 2))
+        sProcesso = Format(nNumero, "00000") & "-" & RetornaDVProcesso(CLng(nNumero)) & "/" & nAno
+        sql = "insert carta_protocolo(nomelogin,seq,processo) values('" & NomeDeLogin & "'," & x & ",'" & sProcesso & "')"
+        cn.Execute sql, rdExecDirect
+    End If
+Next
+
+frmReport.ShowReport3 "CARTA_PROTOCOLO", frmMdi.HWND, Me.HWND
+
+sql = "delete from carta_protocolo where nomelogin='" & NomeDeLogin & "'"
+cn.Execute sql, rdExecDirect
+
+
 End Sub
 
 Private Sub cmdLoad_Click()
@@ -474,18 +591,18 @@ Dim sBairro As String, sCidade As String, sUF As String, sCep As String
 Dim sCampo1 As String, sCampo2 As String, sCampo3 As String, sCampo4 As String, sCampo5 As String
 Dim bRes As Boolean
 
-Sql = "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'"
-cn.Execute Sql, rdExecDirect
+sql = "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'"
+cn.Execute sql, rdExecDirect
 nSeqP = 0
 With lvEtiq
     For x = 1 To .ListItems.Count
         If .ListItems(x).Checked = True Then
             nAno = Val(.ListItems(x).Text)
             nNumero = CLng(Left$(.ListItems(x).SubItems(1), Len(.ListItems(x).SubItems(1)) - 2))
-            Sql = "SELECT  PROCESSOGTI.ANO, PROCESSOGTI.NUMERO, PROCESSOGTI.CODCIDADAO, cidadao.nomecidadao, PROCESSOGTI.COMPLEMENTO, "
-            Sql = Sql & "CENTROCUSTO.DESCRICAO,processogti.tipoend FROM  PROCESSOGTI LEFT OUTER JOIN  CENTROCUSTO ON PROCESSOGTI.CENTROCUSTO = CENTROCUSTO.CODIGO LEFT OUTER JOIN "
-            Sql = Sql & "cidadao ON PROCESSOGTI.CODCIDADAO = cidadao.codcidadao where PROCESSOGTI.ANO=" & nAno & " AND PROCESSOGTI.NUMERO=" & nNumero
-            Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            sql = "SELECT  PROCESSOGTI.ANO, PROCESSOGTI.NUMERO, PROCESSOGTI.CODCIDADAO, cidadao.nomecidadao, PROCESSOGTI.COMPLEMENTO, "
+            sql = sql & "CENTROCUSTO.DESCRICAO,processogti.tipoend FROM  PROCESSOGTI LEFT OUTER JOIN  CENTROCUSTO ON PROCESSOGTI.CENTROCUSTO = CENTROCUSTO.CODIGO LEFT OUTER JOIN "
+            sql = sql & "cidadao ON PROCESSOGTI.CODCIDADAO = cidadao.codcidadao where PROCESSOGTI.ANO=" & nAno & " AND PROCESSOGTI.NUMERO=" & nNumero
+            Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
             With RdoAux
                 If .RowCount > 0 Then
                     If IsNull(RdoAux!tipoend) Then
@@ -508,27 +625,27 @@ With lvEtiq
                     End If
                                         
                     If sTipoEnd = "R" Then
-                        Sql = "SELECT CODCIDADAO,NOMECIDADAO,CPF,CNPJ,CODLOGRADOURO AS fCODLOGRADOURO,NUMIMOVEL AS fNUMIMOVEL,"
-                        Sql = Sql & "COMPLEMENTO AS fCOMPLEMENTO,CODBAIRRO AS fCODBAIRRO,CODCIDADE AS fCODCIDADE,SIGLAUF AS fSIGLAUF,"
-                        Sql = Sql & "CEP AS fCEP,TELEFONE AS fTELEFONE,EMAIL AS fEMAIL,RG AS fRG,NOMELOGRADOURO AS fNOMELOGRADOURO,ORGAO AS fORGAO"
-                        Sql = Sql & " FROM CIDADAO WHERE CODCIDADAO=" & !CodCidadao
+                        sql = "SELECT CODCIDADAO,NOMECIDADAO,CPF,CNPJ,CODLOGRADOURO AS fCODLOGRADOURO,NUMIMOVEL AS fNUMIMOVEL,"
+                        sql = sql & "COMPLEMENTO AS fCOMPLEMENTO,CODBAIRRO AS fCODBAIRRO,CODCIDADE AS fCODCIDADE,SIGLAUF AS fSIGLAUF,"
+                        sql = sql & "CEP AS fCEP,TELEFONE AS fTELEFONE,EMAIL AS fEMAIL,RG AS fRG,NOMELOGRADOURO AS fNOMELOGRADOURO,ORGAO AS fORGAO"
+                        sql = sql & " FROM CIDADAO WHERE CODCIDADAO=" & !CodCidadao
                     Else
-                        Sql = "SELECT CODCIDADAO,NOMECIDADAO,CPF,CNPJ,CODLOGRADOURO2 AS fCODLOGRADOURO,NUMIMOVEL2 AS fNUMIMOVEL,"
-                        Sql = Sql & "COMPLEMENTO2 AS fCOMPLEMENTO,CODBAIRRO2 AS fCODBAIRRO,CODCIDADE2 AS fCODCIDADE,SIGLAUF2 AS fSIGLAUF,"
-                        Sql = Sql & "CEP2 AS fCEP,TELEFONE2 AS fTELEFONE,EMAIL2 AS fEMAIL,RG AS fRG,NOMELOGRADOURO2 AS fNOMELOGRADOURO,ORGAO AS fORGAO"
-                        Sql = Sql & " FROM CIDADAO WHERE CODCIDADAO=" & !CodCidadao
+                        sql = "SELECT CODCIDADAO,NOMECIDADAO,CPF,CNPJ,CODLOGRADOURO2 AS fCODLOGRADOURO,NUMIMOVEL2 AS fNUMIMOVEL,"
+                        sql = sql & "COMPLEMENTO2 AS fCOMPLEMENTO,CODBAIRRO2 AS fCODBAIRRO,CODCIDADE2 AS fCODCIDADE,SIGLAUF2 AS fSIGLAUF,"
+                        sql = sql & "CEP2 AS fCEP,TELEFONE2 AS fTELEFONE,EMAIL2 AS fEMAIL,RG AS fRG,NOMELOGRADOURO2 AS fNOMELOGRADOURO,ORGAO AS fORGAO"
+                        sql = sql & " FROM CIDADAO WHERE CODCIDADAO=" & !CodCidadao
                     End If
-                    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                    Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                     On Error Resume Next
                     With RdoAux2
                         If .RowCount > 0 Then
                              sNome = !nomecidadao
                              If Val(SubNull(!FCodLogradouro)) > 0 Then
-                                 Sql = "SELECT CODLOGRADOURO,CODTIPOLOG,NOMETIPOLOG,"
-                                 Sql = Sql & "ABREVTIPOLOG,CODTITLOG,NOMETITLOG,"
-                                 Sql = Sql & "ABREVTITLOG,NOMELOGRADOURO "
-                                 Sql = Sql & "FROM vwLOGRADOURO WHERE CODLOGRADOURO=" & !FCodLogradouro
-                                 Set RdoS = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                                 sql = "SELECT CODLOGRADOURO,CODTIPOLOG,NOMETIPOLOG,"
+                                 sql = sql & "ABREVTIPOLOG,CODTITLOG,NOMETITLOG,"
+                                 sql = sql & "ABREVTITLOG,NOMELOGRADOURO "
+                                 sql = sql & "FROM vwLOGRADOURO WHERE CODLOGRADOURO=" & !FCodLogradouro
+                                 Set RdoS = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                                  With RdoS
                                      If .RowCount > 0 Then
                                         sEnd = Trim$(SubNull(!AbrevTipoLog)) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro
@@ -542,16 +659,16 @@ With lvEtiq
                              End If
                              sEnd = sEnd & " " & SubNull(RdoAux2!fNUMIMOVEL)
                               
-                             Sql = "SELECT DESCCIDADE FROM CIDADE WHERE SIGLAUF='" & !fsiglauf & "' AND CODCIDADE=" & !fCodCidade
-                             Set RdoS = cn.OpenResultset(Sql, rdOpenKeyset)
+                             sql = "SELECT DESCCIDADE FROM CIDADE WHERE SIGLAUF='" & !fsiglauf & "' AND CODCIDADE=" & !fCodCidade
+                             Set RdoS = cn.OpenResultset(sql, rdOpenKeyset)
                              If RdoS.RowCount > 0 Then
                                  sCidade = RdoS!descCidade
                              Else
                                   sCidade = ""
                              End If
                              If Not IsNull(!CodBairro) Then
-                                 Sql = "SELECT DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='" & !fsiglauf & "' AND CODCIDADE=" & !fCodCidade & " AND CODBAIRRO=" & !fCodBairro
-                                 Set RdoS = cn.OpenResultset(Sql, rdOpenKeyset)
+                                 sql = "SELECT DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='" & !fsiglauf & "' AND CODCIDADE=" & !fCodCidade & " AND CODBAIRRO=" & !fCodBairro
+                                 Set RdoS = cn.OpenResultset(sql, rdOpenKeyset)
                                  If .RowCount > 0 Then
                                      sBairro = RdoS!DescBairro
                                  Else
@@ -630,9 +747,9 @@ With lvEtiq
 '                        End With
 '
 '                    End If
-                    Sql = "INSERT ETIQUETAGTI (USUARIO,SEQ,CAMPO1,CAMPO2,CAMPO3,CAMPO4,CAMPO5) VALUES('"
-                    Sql = Sql & NomeDeLogin & "'," & nPos & ",'" & Format(nCodCidadao, "000000") & "','" & Mask(sNome) & "','" & sEnd & "','" & sBairro & " - " & sCidade & "','" & sUF & " - " & sCep & "')"
-                    cn.Execute Sql, rdExecDirect
+                    sql = "INSERT ETIQUETAGTI (USUARIO,SEQ,CAMPO1,CAMPO2,CAMPO3,CAMPO4,CAMPO5) VALUES('"
+                    sql = sql & NomeDeLogin & "'," & nPos & ",'" & Format(nCodCidadao, "000000") & "','" & Mask(sNome) & "','" & Left(sEnd, 60) & "','" & Left(sBairro & " - " & sCidade, 60) & "','" & sUF & " - " & sCep & "')"
+                    cn.Execute sql, rdExecDirect
                 End If
                .Close
             End With
@@ -644,8 +761,8 @@ End With
 Fim:
 frmReport.ShowReport "ETIQUETAPROTOCOLO", frmMdi.HWND, Me.HWND
 
-Sql = "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'"
-cn.Execute Sql, rdExecDirect
+sql = "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'"
+cn.Execute sql, rdExecDirect
 
 End Sub
 
@@ -659,11 +776,107 @@ Private Sub cmdSair_Click()
 Unload Me
 End Sub
 
+Private Sub cmdTramitacao_Click()
+Dim x As Integer, nAno As Integer, nNumero As Integer, sProcesso As String, bFind As Boolean, nSeq As Integer, nUserId As Integer
+Dim sql As String, RdoAux As rdoResultset, nCentroCusto As Integer, RdoAux2 As rdoResultset, nCodAssunto As Integer
+
+MsgBox "Rotina desativada", vbCritical, "Erro"
+Exit Sub
+
+bFind = False
+For x = 1 To lvEtiq.ListItems.Count
+    If lvEtiq.ListItems(x).Checked Then
+        bFind = True
+        Exit For
+    End If
+Next
+
+If Not bFind Then
+    MsgBox "Selecione ao menos um processo", vbCritical, "Erro"
+    Exit Sub
+End If
+
+sql = "delete from carta_protocolo where nomelogin='" & NomeDeLogin & "'"
+cn.Execute sql, rdExecDirect
+
+For x = 1 To lvEtiq.ListItems.Count
+    If lvEtiq.ListItems(x).Checked Then
+        nAno = Val(lvEtiq.ListItems(x).Text)
+        nNumero = CLng(Left$(lvEtiq.ListItems(x).SubItems(1), Len(lvEtiq.ListItems(x).SubItems(1)) - 2))
+        sProcesso = Format(nNumero, "00000") & "-" & RetornaDVProcesso(CLng(nNumero)) & "/" & nAno
+        
+        sql = "select * from tramitacaocc where ano=" & nAno & " and numero=" & nNumero & " and seq=1"
+        Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+        If RdoAux.RowCount = 0 Then
+            sql = "SELECT CODASSUNTO FROM processogti WHERE ano=" & nAno & " and numero=" & nNumero
+            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+            nCodAssunto = RdoAux2!codassunto
+                        
+        
+            sql = "SELECT ASSUNTOCC.SEQ,CENTROCUSTO.CODIGO, CENTROCUSTO.DESCRICAO FROM ASSUNTOCC INNER JOIN "
+            sql = sql & "CENTROCUSTO ON ASSUNTOCC.CODCC = CENTROCUSTO.CODIGO "
+            sql = sql & "WHERE ASSUNTOCC.CODASSUNTO =" & nCodAssunto
+            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+            With RdoAux2
+                nSeq = 1
+                Do Until .EOF
+                    sql = "INSERT TRAMITACAOCC(ANO,NUMERO,SEQ,CCUSTO) VALUES("
+                    sql = sql & nAno & "," & nNumero & "," & nSeq & "," & !Codigo & ")"
+                    cn.Execute sql, rdExecDirect
+                    nSeq = nSeq + 1
+                   .MoveNext
+                Loop
+               .Close
+            End With
+        End If
+    End If
+Next
+
+nUserId = RetornaUsuarioID(NomeDeLogin)
+
+For x = 1 To lvEtiq.ListItems.Count
+    If lvEtiq.ListItems(x).Checked Then
+    
+        nAno = Val(lvEtiq.ListItems(x).Text)
+        nNumero = CLng(Left$(lvEtiq.ListItems(x).SubItems(1), Len(lvEtiq.ListItems(x).SubItems(1)) - 2))
+    
+        sql = "select * from tramitacaocc where ano=" & nAno & " and numero=" & nNumero & " and ccusto=14  AND seq NOT IN (select seq from tramitacao where ano=" & nAno & " and numero=" & nNumero & " and ccusto=14)"
+        Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+        If RdoAux.RowCount > 0 Then
+            nSeq = RdoAux!Seq
+            nCentroCusto = RdoAux!ccusto
+        Else
+            GoTo Proximo
+        End If
+
+        sql = "select * from tramitacao where ano=" & nAno & " and numero=" & nNumero & " and seq=" & nSeq
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+        If RdoAux2.RowCount = 0 Then
+            sql = "insert tramitacao (ano,numero,seq,ccusto,datahora,despacho,userid) values("
+            sql = sql & nAno & "," & nNumero & "," & nSeq & ",14,'" & Format(Now, "mm/dd/yyyy hh:mm") & "',19," & nUserId & ")"
+            'cn.Execute sql, rdExecDirect
+        Else
+            If RdoAux2!ccusto = 14 And IsNull(RdoAux2!dataHora) Then
+                sql = "update tramitacao set datahora='" & Format(Now, "mm/dd/yyyy hh:mm") & "',despacho=19,userid=" & nUserId
+                sql = sql & " where ano=" & nAno & " and numero=" & nNumero
+            '    cn.Execute sql, rdExecDirect
+            End If
+        End If
+        
+
+    End If
+Proximo:
+Next
+
+MsgBox "Tramitação incluida nos processos.", vbInformation, "Atenção"
+
+End Sub
+
 Private Sub Form_Load()
 Centraliza Me
 
-Sql = "SELECT CODIGO,NOME FROM ASSUNTO WHERE ATIVO=1 ORDER BY NOME"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CODIGO,NOME FROM ASSUNTO WHERE ATIVO=1 ORDER BY NOME"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         cmbAssunto.AddItem (!Nome)
@@ -672,6 +885,12 @@ With RdoAux
     Loop
    .Close
 End With
+
+If NomeDeLogin <> "FABIANO.PIRES" And NomeDeLogin <> "PEDROS" And NomeDeLogin <> "RAPHAEL.CARREGARI" And NomeDeLogin <> "ROSELI.BORGES" And NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "OTTO.SEGUNDO" Then
+    cmdTramitacao.Enabled = False
+    cmdCarta.Enabled = False
+End If
+
 
 cmbAssunto.ListIndex = 0
 CarregaLista (0)
@@ -683,18 +902,18 @@ z = SendMessage(lvEtiq.HWND, LVM_DELETEALLITEMS, 0, 0)
 
 Ocupado
 
-Sql = "SELECT  PROCESSOGTI.ANO, PROCESSOGTI.NUMERO, PROCESSOGTI.CODCIDADAO, cidadao.nomecidadao, PROCESSOGTI.COMPLEMENTO, "
-Sql = Sql & "CENTROCUSTO.DESCRICAO FROM  PROCESSOGTI LEFT OUTER JOIN  CENTROCUSTO ON PROCESSOGTI.CENTROCUSTO = CENTROCUSTO.CODIGO LEFT OUTER JOIN "
-Sql = Sql & "cidadao ON PROCESSOGTI.CODCIDADAO = cidadao.codcidadao "
+sql = "SELECT  PROCESSOGTI.ANO, PROCESSOGTI.NUMERO, PROCESSOGTI.CODCIDADAO, cidadao.nomecidadao, PROCESSOGTI.COMPLEMENTO, "
+sql = sql & "CENTROCUSTO.DESCRICAO FROM  PROCESSOGTI LEFT OUTER JOIN  CENTROCUSTO ON PROCESSOGTI.CENTROCUSTO = CENTROCUSTO.CODIGO LEFT OUTER JOIN "
+sql = sql & "cidadao ON PROCESSOGTI.CODCIDADAO = cidadao.codcidadao "
 If nQual = 0 Then
-     Sql = Sql & " Where (PROCESSOGTI.ETIQUETA = 0) And (PROCESSOGTI.FISICO = 1) "
-     Sql = Sql & " AND (PROCESSOGTI.DATACANCEL IS NULL)  AND (PROCESSOGTI.DATAARQUIVA IS NULL) AND (PROCESSOGTI.DATASUSPENSO IS NULL) AND PROCESSOGTI.ETIQUETA=0"
+     sql = sql & " Where (PROCESSOGTI.ETIQUETA = 0) And (PROCESSOGTI.FISICO = 1) "
+     sql = sql & " AND (PROCESSOGTI.DATACANCEL IS NULL)  AND (PROCESSOGTI.DATAARQUIVA IS NULL) AND (PROCESSOGTI.DATASUSPENSO IS NULL) AND PROCESSOGTI.ETIQUETA=0"
 Else
     'Sql = Sql & " Where (PROCESSOGTI.FISICO = 1)  AND (ANO>" & Year(Now) - 5 & ")"
-    Sql = Sql & " Where (PROCESSOGTI.FISICO = 1)  AND (ANO BETWEEN " & Val(txtDe.Text) & " AND " & Val(txtAte.Text) & ")"
+    sql = sql & " Where (PROCESSOGTI.FISICO = 1)  AND (ANO BETWEEN " & Val(txtDe.Text) & " AND " & Val(txtAte.Text) & ")"
 End If
-Sql = Sql & " ORDER BY PROCESSOGTI.ANO, PROCESSOGTI.NUMERO"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = sql & " ORDER BY PROCESSOGTI.ANO, PROCESSOGTI.NUMERO"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         Set itmX = lvEtiq.ListItems.Add(, "E" & Format(!ano, "0000") & Format(!Numero, "000000"), !ano)
@@ -728,15 +947,15 @@ If Val(txtAte.Text) < 1950 Or Val(txtAte.Text) > Year(Now) Then
     Exit Sub
 End If
 
-Sql = "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'"
-cn.Execute Sql, rdExecDirect
+sql = "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'"
+cn.Execute sql, rdExecDirect
 
 nSeq = 1
-Sql = "SELECT * FROM VWFULLPROCESSO WHERE CODASSUNTO=" & cmbAssunto.ItemData(cmbAssunto.ListIndex) & " AND INTERNO=0 AND ANO BETWEEN " & Val(txtDe.Text) & " AND " & Val(txtAte.Text)
+sql = "SELECT * FROM VWFULLPROCESSO WHERE CODASSUNTO=" & cmbAssunto.ItemData(cmbAssunto.ListIndex) & " AND INTERNO=0 AND ANO BETWEEN " & Val(txtDe.Text) & " AND " & Val(txtAte.Text)
 If chkArquivado.value = vbChecked Then
-    Sql = Sql & " AND DATAARQUIVA IS NULL"
+    sql = sql & " AND DATAARQUIVA IS NULL"
 End If
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         sNome = !nomecidadao
@@ -764,9 +983,9 @@ With RdoAux
             sCep = RetornaCEP(Val(SubNull(!CodLogradouro)), !NUMIMOVEL)
         End If
         
-        Sql = "INSERT ETIQUETAGTI (USUARIO,SEQ,CAMPO1,CAMPO2,CAMPO3,CAMPO4,CAMPO5) VALUES('"
-        Sql = Sql & NomeDeLogin & "'," & nSeq & ",'" & sValidade & "','" & Mask(sNome) & "','" & Left(sEnd, 60) & "','" & sBairro & " - " & sCidade & "','" & sUF & " - " & sCep & "')"
-        cn.Execute Sql, rdExecDirect
+        sql = "INSERT ETIQUETAGTI (USUARIO,SEQ,CAMPO1,CAMPO2,CAMPO3,CAMPO4,CAMPO5) VALUES('"
+        sql = sql & NomeDeLogin & "'," & nSeq & ",'" & sValidade & "','" & Mask(sNome) & "','" & Left(sEnd, 60) & "','" & sBairro & " - " & sCidade & "','" & sUF & " - " & sCep & "')"
+        cn.Execute sql, rdExecDirect
         
         
         
@@ -778,8 +997,8 @@ End With
 
 frmReport.ShowReport "ETIQUETAPROTOCOLO", frmMdi.HWND, Me.HWND
 
-Sql = "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'"
-cn.Execute Sql, rdExecDirect
+sql = "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'"
+cn.Execute sql, rdExecDirect
 
 End Sub
 
@@ -813,8 +1032,8 @@ If optEtiq(2).value = True Then
 End If
 
 'GoTo fim
-Sql = "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'"
-cn.Execute Sql, rdExecDirect
+sql = "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'"
+cn.Execute sql, rdExecDirect
 nSeqP = 0
 With lvEtiq
     For x = 1 To .ListItems.Count
@@ -823,14 +1042,14 @@ With lvEtiq
             nAno = .ListItems(x).Text
             nProc = Val(Left$(.ListItems(x).SubItems(1), Len(.ListItems(x).SubItems(1)) - 2))
             sProc = CStr(nProc) & "-" & RetornaDVProcesso(CStr(nProc)) & "/" & CStr(nAno)
-            Sql = "UPDATE  PROCESSOGTI SET ETIQUETA=1 "
-            Sql = Sql & " Where PROCESSOGTI.ANO = " & nAno & " And PROCESSOGTI.Numero = " & nProc
-            cn.Execute Sql, rdExecDirect
+            sql = "UPDATE  PROCESSOGTI SET ETIQUETA=1 "
+            sql = sql & " Where PROCESSOGTI.ANO = " & nAno & " And PROCESSOGTI.Numero = " & nProc
+            cn.Execute sql, rdExecDirect
             
-            Sql = "SELECT  PROCESSOGTI.*, ASSUNTO.NOME AS ASSUNTO "
-            Sql = Sql & "FROM  PROCESSOGTI INNER JOIN  ASSUNTO ON PROCESSOGTI.CODASSUNTO = ASSUNTO.CODIGO "
-            Sql = Sql & " Where PROCESSOGTI.ANO = " & nAno & " And PROCESSOGTI.Numero = " & nProc
-            Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            sql = "SELECT  PROCESSOGTI.*, ASSUNTO.NOME AS ASSUNTO "
+            sql = sql & "FROM  PROCESSOGTI INNER JOIN  ASSUNTO ON PROCESSOGTI.CODASSUNTO = ASSUNTO.CODIGO "
+            sql = sql & " Where PROCESSOGTI.ANO = " & nAno & " And PROCESSOGTI.Numero = " & nProc
+            Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
             With RdoAux
                     sObs1 = "": sObs2 = "": sObs3 = ""
                     bInterno = !INTERNO
@@ -853,26 +1072,26 @@ With lvEtiq
                     End If
                                         
                     If sTipoEnd = "R" Then
-                        Sql = "SELECT CODCIDADAO,NOMECIDADAO,CPF,CNPJ,CODLOGRADOURO AS fCODLOGRADOURO,NUMIMOVEL AS fNUMIMOVEL,"
-                        Sql = Sql & "COMPLEMENTO AS fCOMPLEMENTO,CODBAIRRO AS fCODBAIRRO,CODCIDADE AS fCODCIDADE,SIGLAUF AS fSIGLAUF,"
-                        Sql = Sql & "CEP AS fCEP,TELEFONE AS fTELEFONE,EMAIL AS fEMAIL,RG AS fRG,NOMELOGRADOURO AS fNOMELOGRADOURO,ORGAO AS fORGAO"
-                        Sql = Sql & " FROM CIDADAO WHERE CODCIDADAO=" & !CodCidadao
+                        sql = "SELECT CODCIDADAO,NOMECIDADAO,CPF,CNPJ,CODLOGRADOURO AS fCODLOGRADOURO,NUMIMOVEL AS fNUMIMOVEL,"
+                        sql = sql & "COMPLEMENTO AS fCOMPLEMENTO,CODBAIRRO AS fCODBAIRRO,CODCIDADE AS fCODCIDADE,SIGLAUF AS fSIGLAUF,"
+                        sql = sql & "CEP AS fCEP,TELEFONE AS fTELEFONE,EMAIL AS fEMAIL,RG AS fRG,NOMELOGRADOURO AS fNOMELOGRADOURO,ORGAO AS fORGAO"
+                        sql = sql & " FROM CIDADAO WHERE CODCIDADAO=" & !CodCidadao
                     Else
-                        Sql = "SELECT CODCIDADAO,NOMECIDADAO,CPF,CNPJ,CODLOGRADOURO2 AS fCODLOGRADOURO,NUMIMOVEL2 AS fNUMIMOVEL,"
-                        Sql = Sql & "COMPLEMENTO2 AS fCOMPLEMENTO,CODBAIRRO2 AS fCODBAIRRO,CODCIDADE2 AS fCODCIDADE,SIGLAUF2 AS fSIGLAUF,"
-                        Sql = Sql & "CEP2 AS fCEP,TELEFONE2 AS fTELEFONE,EMAIL2 AS fEMAIL,RG AS fRG,NOMELOGRADOURO2 AS fNOMELOGRADOURO,ORGAO AS fORGAO"
-                        Sql = Sql & " FROM CIDADAO WHERE CODCIDADAO=" & !CodCidadao
+                        sql = "SELECT CODCIDADAO,NOMECIDADAO,CPF,CNPJ,CODLOGRADOURO2 AS fCODLOGRADOURO,NUMIMOVEL2 AS fNUMIMOVEL,"
+                        sql = sql & "COMPLEMENTO2 AS fCOMPLEMENTO,CODBAIRRO2 AS fCODBAIRRO,CODCIDADE2 AS fCODCIDADE,SIGLAUF2 AS fSIGLAUF,"
+                        sql = sql & "CEP2 AS fCEP,TELEFONE2 AS fTELEFONE,EMAIL2 AS fEMAIL,RG AS fRG,NOMELOGRADOURO2 AS fNOMELOGRADOURO,ORGAO AS fORGAO"
+                        sql = sql & " FROM CIDADAO WHERE CODCIDADAO=" & !CodCidadao
                     End If
-                    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                    Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                     On Error Resume Next
                     With RdoAux2
                         If .RowCount > 0 Then
                              If Val(SubNull(!FCodLogradouro)) > 0 Then
-                                 Sql = "SELECT CODLOGRADOURO,CODTIPOLOG,NOMETIPOLOG,"
-                                 Sql = Sql & "ABREVTIPOLOG,CODTITLOG,NOMETITLOG,"
-                                 Sql = Sql & "ABREVTITLOG,NOMELOGRADOURO "
-                                 Sql = Sql & "FROM vwLOGRADOURO WHERE CODLOGRADOURO=" & !FCodLogradouro
-                                 Set RdoS = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                                 sql = "SELECT CODLOGRADOURO,CODTIPOLOG,NOMETIPOLOG,"
+                                 sql = sql & "ABREVTIPOLOG,CODTITLOG,NOMETITLOG,"
+                                 sql = sql & "ABREVTITLOG,NOMELOGRADOURO "
+                                 sql = sql & "FROM vwLOGRADOURO WHERE CODLOGRADOURO=" & !FCodLogradouro
+                                 Set RdoS = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                                  With RdoS
                                      If .RowCount > 0 Then
                                         sEnd = Trim$(SubNull(!AbrevTipoLog)) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro
@@ -887,16 +1106,16 @@ With lvEtiq
                              sEnd = sEnd & " " & SubNull(RdoAux2!fNUMIMOVEL)
 '                             sCEP = RetornaCEP(!fcodlogradouro, !fnumimovel)
                             
-                             Sql = "SELECT DESCCIDADE FROM CIDADE WHERE SIGLAUF='" & !fsiglauf & "' AND CODCIDADE=" & !fCodCidade
-                             Set RdoS = cn.OpenResultset(Sql, rdOpenKeyset)
+                             sql = "SELECT DESCCIDADE FROM CIDADE WHERE SIGLAUF='" & !fsiglauf & "' AND CODCIDADE=" & !fCodCidade
+                             Set RdoS = cn.OpenResultset(sql, rdOpenKeyset)
                              If RdoS.RowCount > 0 Then
                                  sCidade = RdoS!descCidade
                              Else
                                   sCidade = ""
                              End If
                              If Not IsNull(!CodBairro) Then
-                                 Sql = "SELECT DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='" & !fsiglauf & "' AND CODCIDADE=" & !fCodCidade & " AND CODBAIRRO=" & !fCodBairro
-                                 Set RdoS = cn.OpenResultset(Sql, rdOpenKeyset)
+                                 sql = "SELECT DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='" & !fsiglauf & "' AND CODCIDADE=" & !fCodCidade & " AND CODBAIRRO=" & !fCodBairro
+                                 Set RdoS = cn.OpenResultset(sql, rdOpenKeyset)
                                  If .RowCount > 0 Then
                                      sBairro = RdoS!DescBairro
                                  Else
@@ -917,11 +1136,11 @@ With lvEtiq
 
                     sData = Format(!DATAENTRADA, "dd/mm/yyyy")
                     sAssunto = SubNull(!assunto)
-                    nAssunto = !CODASSUNTO
+                    nAssunto = !codassunto
                                         
-                    Sql = "SELECT assunto.CODIGO, assunto.NOME, assunto.VALIDADE_TIPO, assunto.VALIDADE_QTDE, tipovalidade.descricao "
-                    Sql = Sql & "FROM assunto  LEFT OUTER JOIN tipovalidade ON assunto.VALIDADE_TIPO = tipovalidade.codigo Where assunto.Codigo = " & nAssunto
-                    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                    sql = "SELECT assunto.CODIGO, assunto.NOME, assunto.VALIDADE_TIPO, assunto.VALIDADE_QTDE, tipovalidade.descricao "
+                    sql = sql & "FROM assunto  LEFT OUTER JOIN tipovalidade ON assunto.VALIDADE_TIPO = tipovalidade.codigo Where assunto.Codigo = " & nAssunto
+                    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                     If Val(SubNull(RdoAux!validade_qtde)) > 0 Then
                         If RdoAux!validade_tipo = 1 Then
                             dias = RdoAux!validade_qtde
@@ -938,8 +1157,8 @@ With lvEtiq
                     
                     sCompl = Left$(SubNull(!Complemento), 200)
                     If !ORIGEM = 2 Then
-                        Sql = "SELECT CODCIDADAO,NOMECIDADAO FROM CIDADAO WHERE CODCIDADAO=" & !CodCidadao
-                        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                        sql = "SELECT CODCIDADAO,NOMECIDADAO FROM CIDADAO WHERE CODCIDADAO=" & !CodCidadao
+                        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                         With RdoAux2
                             If .RowCount > 0 Then
                                 nReq = !CodCidadao
@@ -948,8 +1167,8 @@ With lvEtiq
                            .Close
                         End With
                     ElseIf !ORIGEM = 1 Then
-                        Sql = "SELECT DESCRICAO FROM CENTROCUSTO WHERE CODIGO=" & !CENTROCUSTO
-                        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                        sql = "SELECT DESCRICAO FROM CENTROCUSTO WHERE CODIGO=" & !CENTROCUSTO
+                        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                         With RdoAux2
                             If .RowCount > 0 Then
                                 nReq = 0
@@ -961,29 +1180,29 @@ With lvEtiq
                    .Close
             End With
             nSeqP = nSeqP + 1
-            Sql = "INSERT ETIQUETAGTI (USUARIO,SEQ,CAMPO1,CAMPO2,CAMPO3,CAMPO4,CAMPO5,PROCESSO) VALUES('"
-            Sql = Sql & NomeDeLogin & "'," & nSeqP & ",'" & sProc & "','" & "Abertura:" & sData & "','" & "Validade: " & sValidade & "','" & "" & "','" & Mask(Left$(sCompl, 50)) & "','" & sProc & "')"
-            cn.Execute Sql, rdExecDirect
+            sql = "INSERT ETIQUETAGTI (USUARIO,SEQ,CAMPO1,CAMPO2,CAMPO3,CAMPO4,CAMPO5,PROCESSO) VALUES('"
+            sql = sql & NomeDeLogin & "'," & nSeqP & ",'" & sProc & "','" & "Abertura:" & sData & "','" & "Validade: " & sValidade & "','" & "" & "','" & Mask(Left$(sCompl, 50)) & "','" & sProc & "')"
+            cn.Execute sql, rdExecDirect
             nSeqP = nSeqP + 1
             On Error GoTo 0
-            Sql = "INSERT ETIQUETAGTI (USUARIO,SEQ,CAMPO1,CAMPO2,CAMPO3,CAMPO4,CAMPO5,PROCESSO) VALUES('"
+            sql = "INSERT ETIQUETAGTI (USUARIO,SEQ,CAMPO1,CAMPO2,CAMPO3,CAMPO4,CAMPO5,PROCESSO) VALUES('"
             If Not bInterno Then
-                Sql = Sql & NomeDeLogin & "'," & nSeqP & ",'" & nReq & "','" & Mask(sReq) & "','" & sEnd & "','" & sBairro & " - " & Mask(sCidade) & "','" & "Telefone: " & sFone & "','" & sProc & "')"
+                sql = sql & NomeDeLogin & "'," & nSeqP & ",'" & nReq & "','" & Mask(sReq) & "','" & sEnd & "','" & Left(sBairro & " - " & Mask(sCidade), 60) & "','" & "Telefone: " & sFone & "','" & sProc & "')"
             Else
-                Sql = Sql & NomeDeLogin & "'," & nSeqP & ",'" & IIf(nReq > 0, nReq, "") & "','" & Mask(sReq) & "','" & Mask(sObs1) & "','" & Mask(sObs2) & "','" & Mask(sObs3) & "','" & sProc & "')"
+                sql = sql & NomeDeLogin & "'," & nSeqP & ",'" & IIf(nReq > 0, nReq, "") & "','" & Mask(sReq) & "','" & Mask(sObs1) & "','" & Mask(sObs2) & "','" & Mask(sObs3) & "','" & sProc & "')"
             End If
-            cn.Execute Sql, rdExecDirect
+            cn.Execute sql, rdExecDirect
         
             'CARREGA TODOS OS TRAMITES
             ReDim aMatriz(0)
-            Sql = "SELECT * FROM tramitacaocc Where ano = " & nAno & " And Numero = " & nProc
-            Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            sql = "SELECT * FROM tramitacaocc Where ano = " & nAno & " And Numero = " & nProc
+            Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
             With RdoAux
                 If .RowCount = 0 Then
-                    Sql = "SELECT ASSUNTOCC.SEQ,CENTROCUSTO.CODIGO, CENTROCUSTO.DESCRICAO,CENTROCUSTO.SIGLA FROM ASSUNTOCC INNER JOIN "
-                    Sql = Sql & "CENTROCUSTO ON ASSUNTOCC.CODCC = CENTROCUSTO.CODIGO "
-                    Sql = Sql & "WHERE ASSUNTOCC.CODASSUNTO =" & nAssunto
-                    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                    sql = "SELECT ASSUNTOCC.SEQ,CENTROCUSTO.CODIGO, CENTROCUSTO.DESCRICAO,CENTROCUSTO.SIGLA FROM ASSUNTOCC INNER JOIN "
+                    sql = sql & "CENTROCUSTO ON ASSUNTOCC.CODCC = CENTROCUSTO.CODIGO "
+                    sql = sql & "WHERE ASSUNTOCC.CODASSUNTO =" & nAssunto
+                    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                     With RdoAux
                         Do Until .EOF
                             ReDim Preserve aMatriz(UBound(aMatriz) + 1)
@@ -993,11 +1212,11 @@ With lvEtiq
                        .Close
                     End With
                 Else
-                    Sql = "SELECT tramitacaocc.seq, tramitacaocc.ccusto, CENTROCUSTO.DESCRICAO,CENTROCUSTO.SIGLA "
-                    Sql = Sql & "FROM tramitacaocc INNER JOIN CENTROCUSTO ON tramitacaocc.ccusto = CENTROCUSTO.CODIGO "
-                    Sql = Sql & "Where tramitacaocc.ano = " & nAno & " And tramitacaocc.Numero = " & nProc
-                    Sql = Sql & " order by TRAMITACAOCC.SEQ"
-                    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                    sql = "SELECT tramitacaocc.seq, tramitacaocc.ccusto, CENTROCUSTO.DESCRICAO,CENTROCUSTO.SIGLA "
+                    sql = sql & "FROM tramitacaocc INNER JOIN CENTROCUSTO ON tramitacaocc.ccusto = CENTROCUSTO.CODIGO "
+                    sql = sql & "Where tramitacaocc.ano = " & nAno & " And tramitacaocc.Numero = " & nProc
+                    sql = sql & " order by TRAMITACAOCC.SEQ"
+                    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                     With RdoAux
                         Do Until .EOF
                             ReDim Preserve aMatriz(UBound(aMatriz) + 1)
@@ -1015,19 +1234,19 @@ With lvEtiq
                    Case 1, 6, 11, 16, 21
                         sTmp = aMatriz(y)
                         nSeqP = nSeqP + 1
-                        Sql = "INSERT ETIQUETAGTI (USUARIO,SEQ,CAMPO1,PROCESSO) VALUES('"
-                        Sql = Sql & NomeDeLogin & "'," & nSeqP & ",'" & Left(aMatriz(y), 60) & "','" & sProc & "')"
+                        sql = "INSERT ETIQUETAGTI (USUARIO,SEQ,CAMPO1,PROCESSO) VALUES('"
+                        sql = sql & NomeDeLogin & "'," & nSeqP & ",'" & Left(aMatriz(y), 60) & "','" & sProc & "')"
                     Case 2, 7, 12, 17, 22
 '                        Sql = "UPDATE ETIQUETAGTI  SET CAMPO2='" & Left(aMatriz(y), 200) & "' WHERE  USUARIO='" & NomeDoUsuario & "' AND CAMPO1='" & sTmp & "'"
-                        Sql = "UPDATE ETIQUETAGTI  SET CAMPO2='" & Left(aMatriz(y), 200) & "' WHERE  USUARIO='" & NomeDeLogin & "' AND SEQ=" & nSeqP
+                        sql = "UPDATE ETIQUETAGTI  SET CAMPO2='" & Left(aMatriz(y), 200) & "' WHERE  USUARIO='" & NomeDeLogin & "' AND SEQ=" & nSeqP
                     Case 3, 8, 13, 18, 23
-                       Sql = "UPDATE ETIQUETAGTI  SET CAMPO3='" & Left(aMatriz(y), 60) & "' WHERE   USUARIO='" & NomeDeLogin & "' AND SEQ=" & nSeqP
+                       sql = "UPDATE ETIQUETAGTI  SET CAMPO3='" & Left(aMatriz(y), 60) & "' WHERE   USUARIO='" & NomeDeLogin & "' AND SEQ=" & nSeqP
                      Case 4, 9, 14, 19, 24
-                        Sql = "UPDATE ETIQUETAGTI  SET CAMPO4='" & Left(aMatriz(y), 60) & "' WHERE  USUARIO='" & NomeDeLogin & "' AND SEQ=" & nSeqP
+                        sql = "UPDATE ETIQUETAGTI  SET CAMPO4='" & Left(aMatriz(y), 60) & "' WHERE  USUARIO='" & NomeDeLogin & "' AND SEQ=" & nSeqP
                     Case 5, 10, 15, 20, 25
-                        Sql = "UPDATE ETIQUETAGTI  SET CAMPO5='" & Left(aMatriz(y), 60) & "' WHERE   USUARIO='" & NomeDeLogin & "' AND SEQ=" & nSeqP
+                        sql = "UPDATE ETIQUETAGTI  SET CAMPO5='" & Left(aMatriz(y), 60) & "' WHERE   USUARIO='" & NomeDeLogin & "' AND SEQ=" & nSeqP
                 End Select
-                 cn.Execute Sql, rdExecDirect
+                 cn.Execute sql, rdExecDirect
             Next
         End If
 Proximo:
@@ -1038,8 +1257,8 @@ Fim:
 'rpt.RecordSelectionFormula = "{ETIQUETAGTI.USUARIO}='" & NomeDoUsuario & "'"
 frmReport.ShowReport "ETIQUETAPROTOCOLO3", frmMdi.HWND, Me.HWND
 
-Sql = "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'"
-cn.Execute Sql, rdExecDirect
+sql = "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'"
+cn.Execute sql, rdExecDirect
 
 End Sub
 
@@ -1050,3 +1269,4 @@ End Sub
 Private Sub txtDe_KeyPress(KeyAscii As Integer)
 Tweak txtDe, KeyAscii, IntegerPositive
 End Sub
+

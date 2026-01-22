@@ -417,6 +417,7 @@ Private Type Debito
 End Type
 
 Private Type DIVIDATRIBUTO
+    nAno As Integer
     nNumLivro As Integer
     nCodTributo As Integer
     sDescTributo As String
@@ -582,7 +583,7 @@ End Sub
 
 Private Sub CarregaAno()
 Dim x As Integer
-For x = 1990 To 2027
+For x = 1990 To 2030
     lstAno.AddItem x
 Next
 
@@ -691,12 +692,12 @@ End Sub
 Private Sub Calcula()
 Dim nAno As Integer, nCodTipo As Integer, nNumLivro As Integer, z As Integer, sNumProcesso As String
 Dim RdoC As rdoResultset, xId As Long, nNumRec As Long, nAnoLinha As Integer, RdoAux2 As rdoResultset
-Dim nValorCorrecao As Double, nValorTotal As Double, sDescTributo As String
-Dim sProp As String, sStatus As String, sInscricao As String, sEndereco As String
+Dim nValorCorrecao As Double, nValorTotal As Double, sDescTributo As String, bFind As Boolean
+Dim sProp As String, sStatus As String, sInscricao As String, sEndereco As String, y As Integer
 Dim sCompl As String, sCep As String, sBairro As String, sCidade As String, sUF As String, nPosTributo As Integer
 Dim nValorJuros As Double, nValorMulta As Double, dDataInsc As Date, bJuros As Boolean, bMulta As Boolean, p As Long
-Dim aSomaTributo() As DIVIDATRIBUTO, bFind As Boolean, aEndereco() As Endereco, bFindEnd As Boolean, endPos As Long, TributoExiste As Boolean
-ReDim aSomaTributo(0): ReDim aEndereco(0)
+Dim aSomaTributo() As DIVIDATRIBUTO, aSomaTributoTotal() As DIVIDATRIBUTO, aEndereco() As Endereco, bFindEnd As Boolean, endPos As Long, TributoExiste As Boolean
+ReDim aSomaTributo(0): ReDim aEndereco(0): ReDim aSomaTributoTotal(0)
 
 
 sStatus = ""
@@ -759,15 +760,15 @@ With grdTemp
         
         'If chkReparc.value = 1 Then
         If TipoReport = "R" Then
-            Sql = "SELECT * FROM VWDIVIDAATIVAR "
+            'Sql = "SELECT * FROM VWDIVIDAATIVAR "
             If TipoContribuinte = "I" Then
-                Sql = Sql & "WHERE CODREDUZIDO<100000"
+                Sql = "SELECT * FROM VWDIVIDAATIVARI WHERE CODREDUZIDO<100000"
                 nCodTipo = 1
             ElseIf TipoContribuinte = "M" Then
-                Sql = Sql & "WHERE CODREDUZIDO>=100000 AND CODREDUZIDO<200000"
+                Sql = "SELECT * FROM VWDIVIDAATIVARE WHERE CODREDUZIDO>=100000 AND CODREDUZIDO<200000"
                  nCodTipo = 2
             ElseIf TipoContribuinte = "C" Then
-                Sql = Sql & "WHERE CODREDUZIDO>500000"
+                Sql = "SELECT * FROM VWDIVIDAATIVART WHERE CODREDUZIDO>500000"
                 nCodTipo = 3
             End If
             'Sql = "SELECT * FROM VWDIVIDAATIVAR WHERE livro=" & nCodTipo
@@ -796,7 +797,7 @@ With grdTemp
         With RdoC
         
             nNumRec = .RowCount
-            If nNumRec = 0 Then GoTo proximo2
+            If nNumRec = 0 Then GoTo Proximo2
             If Not IsNull(!datainscricao) Then
                 dDataInsc = Format(!datainscricao, "dd/mm/yyyy")
             Else
@@ -871,7 +872,7 @@ With grdTemp
                sInscricao = ""
                'If DateDiff("y", !DataVencimento, CDate("31/12/2013")) > 0 Then
               ' If Year(!DataVencimento) = 2023 Then MsgBox "TESTE"
-                   nValorCorrecao = CalculaCorrecao(!ValorTributo, Format(!DataVencimento, "dd/mm/yyyy"), mskData.Text)
+                   nValorCorrecao = CalculaCorrecao(!VALORTRIBUTO, Format(!DataVencimento, "dd/mm/yyyy"), mskData.Text)
          '      Else
          '          nValorCorrecao = 0
          '      End If
@@ -900,15 +901,15 @@ With grdTemp
  '                 .Close
  '              End With
                                
-                sNumProcesso = SubNull(!numprocesso)
+                sNumProcesso = SubNull(!NumProcesso)
                                
 '               If bJuros Then
-                  nValorJuros = CalculaJuros(!ValorTributo + nValorCorrecao, Format(!DataVencimento, "dd/mm/yyyy"), mskData.Text)
+                  nValorJuros = CalculaJuros(!VALORTRIBUTO + nValorCorrecao, Format(!DataVencimento, "dd/mm/yyyy"), mskData.Text)
 '               Else
 '                  nValorJuros = 0
 '               End If
 '               If bMulta Then
-                  nValorMulta = CalculaMulta(!ValorTributo + nValorCorrecao, Format(!DataVencimento, "dd/mm/yyyy"), mskData.Text)
+                  nValorMulta = CalculaMulta(!VALORTRIBUTO + nValorCorrecao, Format(!DataVencimento, "dd/mm/yyyy"), mskData.Text)
 '               Else
 '                  nValorMulta = 0
 '               End If
@@ -920,37 +921,39 @@ With grdTemp
                Sql = Sql & nNumLivro & "," & nCodTipo & "," & nAno & "," & !CODREDUZIDO & "," & !AnoExercicio & ","
                Sql = Sql & !CodLancamento & "," & !SeqLancamento & "," & !NumParcela & "," & !CODCOMPLEMENTO & ",'"
                Sql = Sql & Format(!DataVencimento, "mm/dd/yyyy") & "'," & Val(SubNull(!paginalivro)) & ",'" & Format(!datainscricao, "mm/dd/yyyy") & "',"
-               Sql = Sql & Val(SubNull(!numcertidao)) & "," & !CodTributo & "," & Virg2Ponto(!ValorTributo) & ","
+               Sql = Sql & Val(SubNull(!numcertidao)) & "," & !CodTributo & "," & Virg2Ponto(!VALORTRIBUTO) & ","
                Sql = Sql & Virg2Ponto(CStr(nValorJuros)) & "," & Virg2Ponto(CStr(nValorMulta)) & "," & Virg2Ponto(CStr(nValorCorrecao)) & ",'" & sInscricao & "','"
                Sql = Sql & Mask(Left$(aEndereco(endPos).sNome, 40)) & "','" & Left$(Mask(aEndereco(endPos).sEndereco), 50) & "','" & Left$(Mask(aEndereco(endPos).sCompl), 35) & "','"
                Sql = Sql & aEndereco(endPos).sCep & "','" & Left(aEndereco(endPos).sBairro, 40) & "','" & Mask(aEndereco(endPos).sCidade) & "','" & aEndereco(endPos).sUF & "','" & Mask(sDescTributo) & "','" & sNumProcesso & "')"
                cn.Execute Sql, rdExecDirect
-               nValorTotal = nValorTotal + !ValorTributo + nValorJuros + nValorMulta + nValorCorrecao
+               nValorTotal = nValorTotal + !VALORTRIBUTO + nValorJuros + nValorMulta + nValorCorrecao
                
                 bFind = False
                 For x = 0 To UBound(aSomaTributo)
-                    If aSomaTributo(x).nNumLivro = nNumLivro And aSomaTributo(x).nCodTributo = !CodTributo Then
+                    If aSomaTributo(x).nAno = !AnoExercicio And aSomaTributo(x).nNumLivro = nNumLivro And aSomaTributo(x).nCodTributo = !CodTributo Then
                         bFind = True
                         Exit For
                     End If
                 Next
-                
+           '     If !AnoExercicio <> 2025 Then MsgBox "teste"
                 If bFind Then
-                    aSomaTributo(x).nSomaP = aSomaTributo(x).nSomaP + !ValorTributo
+                    aSomaTributo(x).nSomaP = aSomaTributo(x).nSomaP + !VALORTRIBUTO
                     aSomaTributo(x).nSomaM = aSomaTributo(x).nSomaM + nValorMulta
                     aSomaTributo(x).nSomaJ = aSomaTributo(x).nSomaJ + nValorJuros
                     aSomaTributo(x).nSomaC = aSomaTributo(x).nSomaC + nValorCorrecao
-                    aSomaTributo(x).nSomaT = aSomaTributo(x).nSomaT + !ValorTributo + nValorMulta + nValorJuros + nValorCorrecao
+                    aSomaTributo(x).nSomaT = aSomaTributo(x).nSomaT + !VALORTRIBUTO + nValorMulta + nValorJuros + nValorCorrecao
                 Else
+                   ' If !AnoExercicio <> 2025 Then MsgBox "teste"
                     ReDim Preserve aSomaTributo(UBound(aSomaTributo) + 1)
+                    aSomaTributo(UBound(aSomaTributo)).nAno = !AnoExercicio
                     aSomaTributo(UBound(aSomaTributo)).nNumLivro = nNumLivro
                     aSomaTributo(UBound(aSomaTributo)).nCodTributo = !CodTributo
                     aSomaTributo(UBound(aSomaTributo)).sDescTributo = sDescTributo
-                    aSomaTributo(UBound(aSomaTributo)).nSomaP = !ValorTributo
+                    aSomaTributo(UBound(aSomaTributo)).nSomaP = !VALORTRIBUTO
                     aSomaTributo(UBound(aSomaTributo)).nSomaM = nValorMulta
                     aSomaTributo(UBound(aSomaTributo)).nSomaJ = nValorJuros
                     aSomaTributo(UBound(aSomaTributo)).nSomaC = nValorCorrecao
-                    aSomaTributo(UBound(aSomaTributo)).nSomaT = !ValorTributo + nValorMulta + nValorJuros + nValorCorrecao
+                    aSomaTributo(UBound(aSomaTributo)).nSomaT = !VALORTRIBUTO + nValorMulta + nValorJuros + nValorCorrecao
                 End If
                
 Proximo:
@@ -965,14 +968,47 @@ On Error Resume Next
         grdTemp.TextMatrix(z, 4) = Format(nValorTotal, "##0.0")
         nValorTotal = 0
         CallPb CLng(z), .Rows - 1
-proximo2:
+Proximo2:
     Next
 End With
 
-For x = 0 To UBound(aSomaTributo)
+
+For x = 1 To UBound(aSomaTributo)
     With aSomaTributo(x)
+        bFind = False
+        For y = 0 To UBound(aSomaTributoTotal)
+'            If .nAno <> 2025 Then MsgBox "teste"
+            If .nAno = aSomaTributoTotal(y).nAno And .nNumLivro = aSomaTributoTotal(y).nNumLivro And .nCodTributo = aSomaTributoTotal(y).nCodTributo Then
+                bFind = True
+                Exit For
+            End If
+        Next
+        If Not bFind Then
+            ReDim Preserve aSomaTributoTotal(UBound(aSomaTributoTotal) + 1)
+            y = UBound(aSomaTributoTotal)
+            aSomaTributoTotal(y).nAno = .nAno
+            aSomaTributoTotal(y).nCodTributo = .nCodTributo
+            aSomaTributoTotal(y).nNumLivro = .nNumLivro
+            aSomaTributoTotal(y).nSomaP = .nSomaP
+            aSomaTributoTotal(y).nSomaC = .nSomaC
+            aSomaTributoTotal(y).nSomaJ = .nSomaJ
+            aSomaTributoTotal(y).nSomaM = .nSomaM
+            aSomaTributoTotal(y).nSomaT = .nSomaT
+            aSomaTributoTotal(y).sDescTributo = .sDescTributo
+        Else
+            aSomaTributoTotal(y).nSomaP = aSomaTributoTotal(y).nSomaP + .nSomaP
+            aSomaTributoTotal(y).nSomaC = aSomaTributoTotal(y).nSomaC + .nSomaC
+            aSomaTributoTotal(y).nSomaJ = aSomaTributoTotal(y).nSomaJ + .nSomaJ
+            aSomaTributoTotal(y).nSomaM = aSomaTributoTotal(y).nSomaM + .nSomaM
+            aSomaTributoTotal(y).nSomaT = aSomaTributoTotal(y).nSomaT + .nSomaT
+        End If
+    End With
+Next
+
+For x = 0 To UBound(aSomaTributoTotal)
+    With aSomaTributoTotal(x)
         If .nCodTributo > 0 Then
-            Sql = "insert dividativatotal(USUARIO,numlivro,codigo,nome,somap,somam,somaj,somac,somat)values('" & NomeDeLogin & "',"
+            Sql = "insert dividativatotal(USUARIO,ano,numlivro,codigo,nome,somap,somam,somaj,somac,somat)values('" & NomeDeLogin & "'," & .nAno & ","
             Sql = Sql & .nNumLivro & "," & .nCodTributo & ",'" & .sDescTributo & "'," & Virg2Ponto(sTr(.nSomaP)) & "," & Virg2Ponto(sTr(.nSomaM)) & ","
             Sql = Sql & Virg2Ponto(sTr(.nSomaJ)) & "," & Virg2Ponto(sTr(.nSomaC)) & "," & Virg2Ponto(sTr(.nSomaT)) & ")"
             cn.Execute Sql, rdExecDirect
@@ -1125,22 +1161,22 @@ For z = 1 To grdTemp.Rows - 1
                     aDebito(nEval).sVencto = Format(!DataVencimento, "dd/mm/yyyy")
                     aDebito(nEval).nCodTributo = !CodTributo
                     aDebito(nEval).sDescTributo = SubNull(!abrevTributo)
-                    aDebito(nEval).nValorTributo = FormatNumber(!ValorTributo, 2)
+                    aDebito(nEval).nValorTributo = FormatNumber(!VALORTRIBUTO, 2)
                     aDebito(nEval).nValorAtual = FormatNumber(!ValorTotal, 2)
                     aDebito(nEval).nValorJuros = FormatNumber(!ValorJuros, 2)
                     aDebito(nEval).nValorMulta = FormatNumber(!ValorMulta, 2)
-                    aDebito(nEval).nValorCorrecao = FormatNumber(!ValorCorrecao, 2)
+                    aDebito(nEval).nValorCorrecao = FormatNumber(!valorcorrecao, 2)
                     aDebito(nEval).nPagina = !PAGINA
                     aDebito(nEval).nCertidao = !CERTIDAO
                     aDebito(nEval).dDataInscricao = Format(!datainscricao, "dd/mm/yyyy")
-                    aDebito(nEval).sNumProcesso = SubNull(!numprocesso)
+                    aDebito(nEval).sNumProcesso = SubNull(!NumProcesso)
                 Else
                     If aDebito(x).nCodTributo = !CodTributo Then GoTo NextDebito
 
-                    aDebito(x).nValorTributo = FormatNumber(aDebito(x).nValorTributo + !ValorTributo, 2)
+                    aDebito(x).nValorTributo = FormatNumber(aDebito(x).nValorTributo + !VALORTRIBUTO, 2)
                     aDebito(x).nValorJuros = FormatNumber(aDebito(x).nValorJuros + !ValorJuros, 2)
                     aDebito(x).nValorMulta = FormatNumber(aDebito(x).nValorMulta + !ValorMulta, 2)
-                    aDebito(x).nValorCorrecao = FormatNumber(aDebito(x).nValorCorrecao + !ValorCorrecao, 2)
+                    aDebito(x).nValorCorrecao = FormatNumber(aDebito(x).nValorCorrecao + !valorcorrecao, 2)
                     aDebito(x).nValorAtual = FormatNumber(aDebito(x).nValorAtual + !ValorTotal, 2)
                 End If
 
@@ -1184,8 +1220,8 @@ Dim nValorCorrecao As Double, nValorTotal As Double, sDescTributo As String
 Dim sProp As String, sStatus As String, sInscricao As String, sEndereco As String
 Dim sCompl As String, sCep As String, sBairro As String, sCidade As String, sUF As String, sProcesso As String
 Dim nValorJuros As Double, nValorMulta As Double, dDataInsc As Date, bJuros As Boolean, bMulta As Boolean
-Dim aSomaTributo() As DIVIDATRIBUTO, bFind As Boolean
-ReDim aSomaTributo(0)
+Dim aSomaTributo() As DIVIDATRIBUTO, aSomaTributoTotal() As DIVIDATRIBUTO, bFind As Boolean
+ReDim aSomaTributo(0): ReDim aSomaTributoTotal(0)
 
 DoEvents
 Sql = "DELETE FROM DIVIDATIVA where usuario='" & NomeDeLogin & "'"
@@ -1206,7 +1242,7 @@ Else
 End If
 Set RdoC = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoC
-
+    
     nNumRec = .RowCount
     If nNumRec = 0 Then Exit Sub
     
@@ -1219,6 +1255,7 @@ With RdoC
        If xId Mod 10 = 0 Then
           CallPb2 xId, nNumRec
        End If
+       nAno = !AnoExercicio
        sProcesso = SubNull(!NUMPROCESSO2)
        If !CODREDUZIDO < 100000 Then
           nCodTipo = 1
@@ -1303,7 +1340,7 @@ With RdoC
        End If
        
        If DateDiff("d", !DataVencimento, Now) > 0 Then
-           nValorCorrecao = CalculaCorrecao(!ValorTributo, Format(!DataVencimento, "dd/mm/yyyy"))
+           nValorCorrecao = CalculaCorrecao(!VALORTRIBUTO, Format(!DataVencimento, "dd/mm/yyyy"))
        Else
            nValorCorrecao = 0
        End If
@@ -1324,12 +1361,12 @@ With RdoC
        End With
                        
        If bJuros Then
-          nValorJuros = CalculaJuros(!ValorTributo + nValorCorrecao, Format(!DataVencimento, "dd/mm/yyyy"))
+          nValorJuros = CalculaJuros(!VALORTRIBUTO + nValorCorrecao, Format(!DataVencimento, "dd/mm/yyyy"))
        Else
           nValorJuros = 0
        End If
        If bMulta Then
-          nValorMulta = CalculaMulta(!ValorTributo + nValorCorrecao, Format(!DataVencimento, "dd/mm/yyyy"))
+          nValorMulta = CalculaMulta(!VALORTRIBUTO + nValorCorrecao, Format(!DataVencimento, "dd/mm/yyyy"))
        Else
           nValorMulta = 0
        End If
@@ -1340,12 +1377,12 @@ With RdoC
        Sql = Sql & Val(SubNull(!numerolivro)) & "," & nCodTipo & "," & 2007 & "," & !CODREDUZIDO & "," & !AnoExercicio & ","
        Sql = Sql & !CodLancamento & "," & !SeqLancamento & "," & !NumParcela & "," & !CODCOMPLEMENTO & ",'"
        Sql = Sql & Format(!DataVencimento, "mm/dd/yyyy") & "'," & Val(SubNull(!paginalivro)) & ",'" & Format(!datainscricao, "mm/dd/yyyy") & "',"
-       Sql = Sql & Val(SubNull(!numcertidao)) & "," & !CodTributo & "," & Virg2Ponto(!ValorTributo) & ","
+       Sql = Sql & Val(SubNull(!numcertidao)) & "," & !CodTributo & "," & Virg2Ponto(!VALORTRIBUTO) & ","
        Sql = Sql & Virg2Ponto(CStr(nValorJuros)) & "," & Virg2Ponto(CStr(nValorMulta)) & "," & Virg2Ponto(CStr(nValorCorrecao)) & ",'" & sInscricao & "','"
        Sql = Sql & Mask(Left$(sProp, 40)) & "','" & Left$(Mask(sEndereco), 50) & "','" & Left$(sCompl, 35) & "','"
        Sql = Sql & sCep & "','" & sBairro & "','" & sCidade & "','" & sUF & "','" & sDescTributo & "','" & sProcesso & "')"
        cn.Execute Sql, rdExecDirect
-       nValorTotal = nValorTotal + !ValorTributo + nValorJuros + nValorJuros
+       nValorTotal = nValorTotal + !VALORTRIBUTO + nValorJuros + nValorJuros
 Proximo:
        
                 If Val(SubNull(!numerolivro)) > 10000 Then
@@ -1362,21 +1399,22 @@ Proximo:
                 Next
                 
                 If bFind Then
-                    aSomaTributo(x).nSomaP = aSomaTributo(x).nSomaP + !ValorTributo
+                    aSomaTributo(x).nSomaP = aSomaTributo(x).nSomaP + !VALORTRIBUTO
                     aSomaTributo(x).nSomaM = aSomaTributo(x).nSomaM + nValorMulta
                     aSomaTributo(x).nSomaJ = aSomaTributo(x).nSomaJ + nValorJuros
                     aSomaTributo(x).nSomaC = aSomaTributo(x).nSomaC + nValorCorrecao
-                    aSomaTributo(x).nSomaT = aSomaTributo(x).nSomaT + !ValorTributo + nValorMulta + nValorJuros + nValorCorrecao
+                    aSomaTributo(x).nSomaT = aSomaTributo(x).nSomaT + !VALORTRIBUTO + nValorMulta + nValorJuros + nValorCorrecao
                 Else
                     ReDim Preserve aSomaTributo(UBound(aSomaTributo) + 1)
+                    aSomaTributo(UBound(aSomaTributo)).nAno = nAno
                     aSomaTributo(UBound(aSomaTributo)).nNumLivro = nNumLivro
                     aSomaTributo(UBound(aSomaTributo)).nCodTributo = !CodTributo
                     aSomaTributo(UBound(aSomaTributo)).sDescTributo = sDescTributo
-                    aSomaTributo(UBound(aSomaTributo)).nSomaP = !ValorTributo
+                    aSomaTributo(UBound(aSomaTributo)).nSomaP = !VALORTRIBUTO
                     aSomaTributo(UBound(aSomaTributo)).nSomaM = nValorMulta
                     aSomaTributo(UBound(aSomaTributo)).nSomaJ = nValorJuros
                     aSomaTributo(UBound(aSomaTributo)).nSomaC = nValorCorrecao
-                    aSomaTributo(UBound(aSomaTributo)).nSomaT = !ValorTributo + nValorMulta + nValorJuros + nValorCorrecao
+                    aSomaTributo(UBound(aSomaTributo)).nSomaT = !VALORTRIBUTO + nValorMulta + nValorJuros + nValorCorrecao
                 End If
        
        
@@ -1387,16 +1425,59 @@ Proximo:
    .Close
 End With
 
-For x = 0 To UBound(aSomaTributo)
+For x = 1 To UBound(aSomaTributo)
     With aSomaTributo(x)
+        bFind = False
+        For y = 0 To UBound(aSomaTributoTotal)
+            If .nAno = aSomaTributoTotal(y).nAno And .nNumLivro = aSomaTributoTotal(y).nNumLivro And .nCodTributo = aSomaTributoTotal(y).nCodTributo Then
+                bFind = True
+                Exit For
+            End If
+        Next
+        If Not bFind Then
+            ReDim Preserve aSomaTributoTotal(UBound(aSomaTributoTotal) + 1)
+            y = UBound(aSomaTributoTotal)
+            aSomaTributoTotal(y).nAno = .nAno
+            aSomaTributoTotal(y).nCodTributo = .nCodTributo
+            aSomaTributoTotal(y).nNumLivro = .nNumLivro
+            aSomaTributoTotal(y).nSomaP = .nSomaP
+            aSomaTributoTotal(y).nSomaC = .nSomaC
+            aSomaTributoTotal(y).nSomaJ = .nSomaJ
+            aSomaTributoTotal(y).nSomaM = .nSomaM
+            aSomaTributoTotal(y).nSomaT = .nSomaT
+            aSomaTributoTotal(y).sDescTributo = .sDescTributo
+        Else
+            aSomaTributoTotal(y).nSomaP = aSomaTributoTotal(y).nSomaP + .nSomaP
+            aSomaTributoTotal(y).nSomaC = aSomaTributoTotal(y).nSomaC + .nSomaC
+            aSomaTributoTotal(y).nSomaJ = aSomaTributoTotal(y).nSomaJ + .nSomaJ
+            aSomaTributoTotal(y).nSomaM = aSomaTributoTotal(y).nSomaM + .nSomaM
+            aSomaTributoTotal(y).nSomaT = aSomaTributoTotal(y).nSomaT + .nSomaT
+        End If
+    End With
+Next
+
+For x = 0 To UBound(aSomaTributoTotal)
+    With aSomaTributoTotal(x)
         If .nCodTributo > 0 Then
-            Sql = "insert dividativatotal(usuario,numlivro,codigo,nome,somap,somam,somaj,somac,somat)values('" & NomeDeLogin & "',"
+            Sql = "insert dividativatotal(USUARIO,ano,numlivro,codigo,nome,somap,somam,somaj,somac,somat)values('" & NomeDeLogin & "'," & .nAno & ","
             Sql = Sql & .nNumLivro & "," & .nCodTributo & ",'" & .sDescTributo & "'," & Virg2Ponto(sTr(.nSomaP)) & "," & Virg2Ponto(sTr(.nSomaM)) & ","
             Sql = Sql & Virg2Ponto(sTr(.nSomaJ)) & "," & Virg2Ponto(sTr(.nSomaC)) & "," & Virg2Ponto(sTr(.nSomaT)) & ")"
             cn.Execute Sql, rdExecDirect
         End If
     End With
 Next
+
+
+'For x = 0 To UBound(aSomaTributo)
+'    With aSomaTributo(x)
+'        If .nCodTributo > 0 Then
+'            Sql = "insert dividativatotal(usuario,numlivro,codigo,nome,somap,somam,somaj,somac,somat)values('" & NomeDeLogin & "',"
+'            Sql = Sql & .nNumLivro & "," & .nCodTributo & ",'" & .sDescTributo & "'," & Virg2Ponto(sTr(.nSomaP)) & "," & Virg2Ponto(sTr(.nSomaM)) & ","
+'            Sql = Sql & Virg2Ponto(sTr(.nSomaJ)) & "," & Virg2Ponto(sTr(.nSomaC)) & "," & Virg2Ponto(sTr(.nSomaT)) & ")"
+'            cn.Execute Sql, rdExecDirect
+'        End If
+'    End With
+'Next
 
 
 nValorTotal = 0
@@ -1629,7 +1710,7 @@ With grdTemp
                End If
                   
                sInscricao = ""
-                   nValorCorrecao = CalculaCorrecao(!ValorTributo, Format(!DataVencimento, "dd/mm/yyyy"), mskData.Text)
+                   nValorCorrecao = CalculaCorrecao(!VALORTRIBUTO, Format(!DataVencimento, "dd/mm/yyyy"), mskData.Text)
                
                For nPosTributo = 1 To UBound(aTributo)
                     If aTributo(nPosTributo).nCodigo = !CodTributo Then
@@ -1638,10 +1719,10 @@ With grdTemp
                     End If
                Next
                                
-                sNumProcesso = SubNull(!numprocesso)
+                sNumProcesso = SubNull(!NumProcesso)
                                
-                  nValorJuros = CalculaJuros(!ValorTributo + nValorCorrecao, Format(!DataVencimento, "dd/mm/yyyy"), mskData.Text)
-                  nValorMulta = CalculaMulta(!ValorTributo + nValorCorrecao, Format(!DataVencimento, "dd/mm/yyyy"), mskData.Text)
+                  nValorJuros = CalculaJuros(!VALORTRIBUTO + nValorCorrecao, Format(!DataVencimento, "dd/mm/yyyy"), mskData.Text)
+                  nValorMulta = CalculaMulta(!VALORTRIBUTO + nValorCorrecao, Format(!DataVencimento, "dd/mm/yyyy"), mskData.Text)
               ' nNumLivro = 0
                Sql = "INSERT DIVIDATIVA (USUARIO,NUMLIVRO,TIPOLIVRO,ANOLIVRO,CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,"
                Sql = Sql & "SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,DATAVENCIMENTO,PAGINALIVRO,DATAINSCRICAO,"
@@ -1650,12 +1731,12 @@ With grdTemp
                Sql = Sql & nNumLivro & "," & nCodTipo & "," & nAno & "," & !CODREDUZIDO & "," & !AnoExercicio & ","
                Sql = Sql & !CodLancamento & "," & !SeqLancamento & "," & !NumParcela & "," & !CODCOMPLEMENTO & ",'"
                Sql = Sql & Format(!DataVencimento, "mm/dd/yyyy") & "'," & Val(SubNull(!paginalivro)) & ",'" & Format(!datainscricao, "mm/dd/yyyy") & "',"
-               Sql = Sql & Val(SubNull(!numcertidao)) & "," & !CodTributo & "," & Virg2Ponto(!ValorTributo) & ","
+               Sql = Sql & Val(SubNull(!numcertidao)) & "," & !CodTributo & "," & Virg2Ponto(!VALORTRIBUTO) & ","
                Sql = Sql & Virg2Ponto(CStr(nValorJuros)) & "," & Virg2Ponto(CStr(nValorMulta)) & "," & Virg2Ponto(CStr(nValorCorrecao)) & ",'" & sInscricao & "','"
                Sql = Sql & Mask(Left$(aEndereco(endPos).sNome, 40)) & "','" & Left$(Mask(aEndereco(endPos).sEndereco), 50) & "','" & Left$(Mask(aEndereco(endPos).sCompl), 35) & "','"
                Sql = Sql & aEndereco(endPos).sCep & "','" & Left(aEndereco(endPos).sBairro, 40) & "','" & Mask(aEndereco(endPos).sCidade) & "','" & aEndereco(endPos).sUF & "','" & Mask(sDescTributo) & "','" & sNumProcesso & "')"
                cn.Execute Sql, rdExecDirect
-               nValorTotal = nValorTotal + !ValorTributo + nValorJuros + nValorJuros
+               nValorTotal = nValorTotal + !VALORTRIBUTO + nValorJuros + nValorJuros
                
                 bFind = False
                 For x = 0 To UBound(aSomaTributo)
@@ -1666,21 +1747,21 @@ With grdTemp
                 Next
                 
                 If bFind Then
-                    aSomaTributo(x).nSomaP = aSomaTributo(x).nSomaP + !ValorTributo
+                    aSomaTributo(x).nSomaP = aSomaTributo(x).nSomaP + !VALORTRIBUTO
                     aSomaTributo(x).nSomaM = aSomaTributo(x).nSomaM + nValorMulta
                     aSomaTributo(x).nSomaJ = aSomaTributo(x).nSomaJ + nValorJuros
                     aSomaTributo(x).nSomaC = aSomaTributo(x).nSomaC + nValorCorrecao
-                    aSomaTributo(x).nSomaT = aSomaTributo(x).nSomaT + !ValorTributo + nValorMulta + nValorJuros + nValorCorrecao
+                    aSomaTributo(x).nSomaT = aSomaTributo(x).nSomaT + !VALORTRIBUTO + nValorMulta + nValorJuros + nValorCorrecao
                 Else
                     ReDim Preserve aSomaTributo(UBound(aSomaTributo) + 1)
                     aSomaTributo(UBound(aSomaTributo)).nNumLivro = nNumLivro
                     aSomaTributo(UBound(aSomaTributo)).nCodTributo = !CodTributo
                     aSomaTributo(UBound(aSomaTributo)).sDescTributo = sDescTributo
-                    aSomaTributo(UBound(aSomaTributo)).nSomaP = !ValorTributo
+                    aSomaTributo(UBound(aSomaTributo)).nSomaP = !VALORTRIBUTO
                     aSomaTributo(UBound(aSomaTributo)).nSomaM = nValorMulta
                     aSomaTributo(UBound(aSomaTributo)).nSomaJ = nValorJuros
                     aSomaTributo(UBound(aSomaTributo)).nSomaC = nValorCorrecao
-                    aSomaTributo(UBound(aSomaTributo)).nSomaT = !ValorTributo + nValorMulta + nValorJuros + nValorCorrecao
+                    aSomaTributo(UBound(aSomaTributo)).nSomaT = !VALORTRIBUTO + nValorMulta + nValorJuros + nValorCorrecao
                 End If
                
 Proximo:

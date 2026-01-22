@@ -424,7 +424,7 @@ Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If RdoAux.RowCount > 0 Then
          If sTipoCod = "I" Or sTipoCod = "C" Then
-            lblNome.Caption = !Nomecidadao
+            lblNome.Caption = !nomecidadao
          ElseIf sTipoCod = "M" Then
             lblNome.Caption = !RazaoSocial
          End If
@@ -803,7 +803,7 @@ Select Case nCodReduz
         Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             sInsc = !Inscricao
-            sNome = !Nomecidadao
+            sNome = !nomecidadao
             sDoc = Format(SubNull(!cpf), "00000000000")
             If sDoc = "" Then
                 sDoc = Format(SubNull(!Cnpj), "00000000000000")
@@ -869,7 +869,7 @@ Select Case nCodReduz
         On Error Resume Next
         With RdoAux2
             If .RowCount > 0 Then
-                 sNome = !Nomecidadao
+                 sNome = !nomecidadao
                  If Val(SubNull(!FCodLogradouro)) > 0 Then
                      Sql = "SELECT CODLOGRADOURO,CODTIPOLOG,NOMETIPOLOG,"
                      Sql = Sql & "ABREVTIPOLOG,CODTITLOG,NOMETITLOG,"
@@ -1002,6 +1002,12 @@ With RdoAux
         sNossoNumero = "2873532"
         dDataBase = "07/10/1997"
         nFatorVencto = CDate(sDataVencimento) - CDate(dDataBase)
+        
+        If CDate(sDataVencimento) >= "22/02/2025" Then
+            dDataBase = "29/05/2022"
+            nFatorVencto = CDate(sDataVencimento) - CDate(dDataBase)
+        End If
+
         sQuintoGrupo = Format(nFatorVencto, "0000")
         sQuintoGrupo = sQuintoGrupo & Format(RetornaNumero(FormatNumber(nValorGuia, 2)), "0000000000")
         sBarra = "0019" & Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(nValorGuia, 2)), "0000000000") & "000000287353200"

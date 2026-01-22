@@ -1922,6 +1922,12 @@ If bBoleto Then
     
     dDataBase = "07/10/1997"
     nFatorVencto = CDate(sDataDam) - dDataBase
+    
+    If CDate(sDataDam) >= "22/02/2025" Then
+        dDataBase = "29/05/2022"
+        nFatorVencto = CDate(sDataDam) - CDate(dDataBase)
+    End If
+
     sQuintoGrupo = Format(nFatorVencto, "0000")
     sQuintoGrupo = sQuintoGrupo & Format(RetornaNumero(FormatNumber(nValorDoc, 2)), "0000000000")
     sBarra = "0019" & Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(nValorDoc, 2)), "0000000000") & "000000287353200"
@@ -2071,7 +2077,7 @@ If Trim(lblCEP.Caption) = "" Or Trim(lblCEP.Caption) = "-" Then
 End If
 
 'ShellExecute HWND, "open", "http://sistemas.jaboticabal.sp.gov.br/gti/Pages/boletoBB.aspx?f1=" & v1 & "&f2=" & v2 & "&f3=" & v3 & "&f4=" & v4 & "&f5=" & v5 & "&f6=" & v6 & "&f7=" & v7 & "&f8=" & v8 & "&f9=" & v9 & "&f10=" & V10, vbNullString, vbNullString, conSwNormal
-ShellExecute HWND, "open", "https://gti.jaboticabal.sp.gov.br/Tributario/GateBank?p1=" & v1 & "&p2=" & v2 & "&p3=" & v3 & "&p4=" & v4 & "&p5=" & v5 & "&p6=" & v6 & "&p7=" & v7 & "&p8=" & v8 & "&p9=" & v9, vbNullString, vbNullString, conSwNormal
+ShellExecute HWND, "open", "https://gtiv4.jaboticabal.sp.gov.br/Tributario/GateBank?p1=" & v1 & "&p2=" & v2 & "&p3=" & v3 & "&p4=" & v4 & "&p5=" & v5 & "&p6=" & v6 & "&p7=" & v7 & "&p8=" & v8 & "&p9=" & v9, vbNullString, vbNullString, conSwNormal
 
 Limpa
 

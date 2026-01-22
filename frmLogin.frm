@@ -414,8 +414,8 @@ End If
 Conecta UL, UP
 
 
-Sql = "select nomelogin,nomecompleto,senha,ativo from usuario where nomelogin='" & txtUser.Text & "'"
-Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select nomelogin,nomecompleto,senha,ativo from usuario where nomelogin='" & txtUser.Text & "'"
+Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux2
     If .RowCount > 0 Then
         If Val(SubNull(!Ativo)) <> 1 Then
@@ -425,7 +425,7 @@ With RdoAux2
         End If
         
         
-       If Decrypt128(!SENHA, UP) <> txtPwd.Text Then
+       If Decrypt128(RdoAux2!SENHA, UP) <> txtPwd.Text Then
             Screen.MousePointer = vbdefualt
             MsgBox "Usuário e/ou Senha inválido(s)." & vbCrLf & "Verifique e tente se logar novamente.", vbCritical, "Falha na Autenticação."
             txtPwd.Text = "": txtPwd.SetFocus
@@ -434,8 +434,8 @@ With RdoAux2
     End If
 End With
 
-Sql = "update usuario set senha='" & Encrypt128(Mask(txtPwd1.Text), "himalaia") & "' where nomelogin='" & txtUser.Text & "'"
-cn.Execute Sql, rdExecDirect
+sql = "update usuario set senha='" & Encrypt128(Mask(txtPwd1.Text), "himalaia") & "' where nomelogin='" & txtUser.Text & "'"
+cn.Execute sql, rdExecDirect
 
 MsgBox "Sua Senha foi alterada com sucesso.", vbInformation, "SQL Server"
 txtPwd.Text = txtPwd1.Text
@@ -445,8 +445,8 @@ End Sub
 
 Private Sub cmdOK_Click()
 Dim sUs As String, RdoAux2 As rdoResultset
-Dim Sql As String, RdoAux As rdoResultset, sDataBase As String
-Dim cOS As New clsOS, sParam As String
+Dim sql As String, RdoAux As rdoResultset, sDataBase As String
+Dim cOS As New clsOS, sParam As String, sTmp As String
 
 
 If Me.Height = 4380 Then
@@ -481,26 +481,71 @@ End If
 '    Exit Sub
 'End If
 
-If NomeDoComputador = "SKYNET" Then
-    sPathAnexo = "C:\Tmp\GTI\"
+If NomeDoComputador = "VORTEX" Then
+'    FilesIP_config = "172.30.30.3"
+'    ServerIP_config = "45.186.196.235"
+'    sPathAnexo = "C:\Tmp\GTI\"
     bFichaCompensacao = True
 Else
-    sPathAnexo = "\\192.168.200.130\atualizagti\documentos\"
+'    FilesIP_config = "172.30.30.3"
+'    ServerIP_config = "172.30.30.4"
+'    sPathAnexo = "\\172.30.30.3\atualizagti\documentos\"
     bFichaCompensacao = False
 End If
 
+sTmp = GetSetting("GTI", "GERAL", "SQLSERVER")
+If sTmp = "" Then
+'    If NomeDoComputador = "VORTEX" Then
+'        ServerIP_config = "45.186.196.235"
+'    Else
+        ServerIP_config = "172.30.30.4"
+'    End If
+    SaveSetting "GTI", "GERAL", "SQLSERVER", ServerIP_config
+Else
+    ServerIP_config = sTmp
+End If
+
+sTmp = GetSetting("GTI", "GERAL", "FILESERVER")
+If sTmp = "" Then
+    If NomeDoComputador = "VORTEX" Then
+        FilesIP_config = "C:\Tmp\GTI\"
+    Else
+        FilesIP_config = "172.30.30.3"
+    End If
+    SaveSetting "GTI", "GERAL", "FILESERVER", FilesIP_config
+Else
+    FilesIP_config = sTmp
+End If
+
+
+
+sTmp = GetSetting("GTI", "GERAL", "PATHANEXO")
+If sTmp = "" Then
+    If NomeDoComputador = "VORTEX" Then
+        sPathAnexo = "C:\Tmp\GTI\"
+    Else
+        sPathAnexo = "\\172.30.30.3\atualizagti\documentos\"
+    End If
+    SaveSetting "GTI", "GERAL", "PATHANEXO", sPathAnexo
+Else
+    sPathAnexo = sTmp
+End If
 
 
 If Not Conecta(UL, UP, sParam) Then Exit Sub
 GetLanguage
 CarregaDicionario
-Sql = "select nomelogin,nomecompleto,senha,ativo from usuario where nomelogin='" & txtUser.Text & "'"
-Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+
+
+
+
+sql = "select nomelogin,nomecompleto,senha,ativo from usuario where nomelogin='" & txtUser.Text & "' ORDER BY ID DESC"
+Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux2
     If .RowCount > 0 Then
         If Val(SubNull(!Ativo)) <> 1 Then
             Liberado
-            MsgBox "A conta do usuário foi desativada no GTI." & vbCrLf & " Favor entrar em contato com o administrador do sistema." & vbCrLf & "(gti@jaboticabal.sp.gov.br).", vbCritical, "Atenção"
+            MsgBox "A conta do usuário foi desativada no GTI.", vbCritical, "Atenção"
             Exit Sub
         End If
        
@@ -511,8 +556,8 @@ With RdoAux2
         End If
         
         If IsNull(!SENHA) Then
-            Sql = "update usuario set senha='" & Encrypt128(Mask(txtPwd.Text), UP) & "' where nomelogin='" & txtUser.Text & "'"
-            cn.Execute Sql, rdExecDirect
+            sql = "update usuario set senha='" & Encrypt128(Mask(txtPwd.Text), UP) & "' where nomelogin='" & txtUser.Text & "'"
+            cn.Execute sql, rdExecDirect
         Else
             If sParam <> "-L" Then
                 If Decrypt128(!SENHA, UP) <> txtPwd.Text Then
@@ -523,7 +568,7 @@ With RdoAux2
                 End If
             End If
         End If
-      
+       
         '****
         'Só uma instância por usuário
         
@@ -548,23 +593,23 @@ With RdoAux2
             Exit Sub
         End If
       
-        Sql = "update usuario set logon=1,datalogon='" & Format(Now, sDataFormat) & "' where nomelogin='" & txtUser.Text & "'"
-        cn.Execute Sql, rdExecDirect
+        sql = "update usuario set logon=1,datalogon='" & Format(Now, "mm/dd/yyyy") & "' where nomelogin='" & txtUser.Text & "'"
+        cn.Execute sql, rdExecDirect
         
         If InStr(1, cn.Connect, "TributacaoTeste", vbBinaryCompare) > 0 Then
-            Sql = "USE TributacaoTeste"
+            sql = "USE TributacaoTeste"
         ElseIf InStr(1, cn.Connect, "tributacaoBKP", vbBinaryCompare) > 0 Then
-            Sql = "USE TributacaoBKP"
+            sql = "USE TributacaoBKP"
         Else
-            Sql = "USE Tributacao"
+            sql = "USE Tributacao"
         End If
         
-        cn.Execute Sql
+        cn.Execute sql
         bCloseChat = False
         If txtUser.Text = "SCHWARTZ" Then GoTo P1
         If InStr(1, UCase(Command$), "-NOVERSION", vbBinaryCompare) = 0 Then
-            Sql = "SELECT VALPARAM FROM PARAMETROS WHERE NOMEPARAM='VS'"
-            Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            sql = "SELECT VALPARAM FROM PARAMETROS WHERE NOMEPARAM='VS'"
+            Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
             With RdoAux
                 If App.Minor >= Left(!valparam, 1) Then
                     If App.Revision < Right(!valparam, 3) Then
@@ -579,12 +624,12 @@ With RdoAux2
             End With
         End If
 P1:
-        Sql = "SELECT VALPARAM FROM PARAMETROS WHERE NOMEPARAM='DATABASE'"
-        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT VALPARAM FROM PARAMETROS WHERE NOMEPARAM='DATABASE'"
+        Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             If .RowCount = 0 Then
-               Sql = "INSERT PARAMETROS(NOMEPARAM,VALPARAM) VALUES('DATABASE'" & ",'" & CStr(Format(Now, "dd/mm/yyyy")) & "')"
-               cn.Execute Sql, rdExecDirect
+               sql = "INSERT PARAMETROS(NOMEPARAM,VALPARAM) VALUES('DATABASE'" & ",'" & CStr(Format(Now, "dd/mm/yyyy")) & "')"
+               cn.Execute sql, rdExecDirect
                sDataBase = CStr(Format(Now, "dd/mm/yyyy"))
             Else
                sDataBase = !valparam
@@ -592,12 +637,12 @@ P1:
            .Close
         End With
         
-        Sql = "select * from machines2 where computer='" & NomeDoComputador & "'"
-        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "select * from machines2 where computer='" & NomeDoComputador & "'"
+        Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             If .RowCount = 0 Then
-                Sql = "insert machines2(computer,margin_top,margin_bottom,margin_left,margin_right) values('" & NomeDoComputador & "',0,0,0,0)"
-                cn.Execute Sql, rdExecDirect
+                sql = "insert machines2(computer,margin_top,margin_bottom,margin_left,margin_right) values('" & NomeDoComputador & "',0,0,0,0)"
+                cn.Execute sql, rdExecDirect
                 nMargem_Top = 0
                 nMargem_Left = 0
                 nMargem_Right = 0
@@ -626,14 +671,14 @@ P1:
     '        End If
         End If
         
-        Sql = "SELECT VALPARAM FROM PARAMETROS WHERE NOMEPARAM='CIDADE'"
-        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT VALPARAM FROM PARAMETROS WHERE NOMEPARAM='CIDADE'"
+        Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         If RdoAux.RowCount > 0 Then
            NomeCidade = RdoAux!valparam
            RdoAux.Close
         End If
-        Sql = "SELECT VALPARAM FROM PARAMETROS WHERE NOMEPARAM='ANISTIA'"
-        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
+        sql = "SELECT VALPARAM FROM PARAMETROS WHERE NOMEPARAM='ANISTIA'"
+        Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurReadOnly)
         With RdoAux
             If .RowCount > 0 Then
                 bAnistia = IIf(!valparam = 1, True, False)
@@ -648,6 +693,7 @@ P1:
         lblSeg.Refresh
         bSair = True
         frmMdi.Sbar.Panels(1).Text = cOS.OS_Name & " " & cOS.OS_ProductType & " " & cOS.OS_Version & " " & "Build:" & cOS.OS_Build & " " & cOS.OS_ServicePack
+        
         Set cOS = Nothing
         NomeDeLogin = Trim$(txtUser.Text)
         If UCase(NomeDeLogin) = "LEONE" Then NomeDeLogin = "ELAINE"
@@ -665,6 +711,8 @@ P1:
 '        If NomeDeLogin = "SCHWARTZ" Or IsAtendente Then
             bComercioEletronico = True
  '       End If
+        
+        'frmMdi.Timer4.Interval = CLng(1000) * 60 * 1
         
         CloseApplication
         
@@ -713,7 +761,7 @@ P1:
         
         
 '        If FileDateTime(App.Path & "\TRIBUTACAO.EXE") < CDate("19/06/2015") Then
-'            FileCopy "\\192.168.200.130\ATUALIZAGTI\TRIBUTACAO.EXE", App.Path & "\TRIBUTACAO.EXE"
+'            FileCopy "\\172.30.30.3\ATUALIZAGTI\TRIBUTACAO.EXE", App.Path & "\TRIBUTACAO.EXE"
 '        End If
         
         
@@ -749,7 +797,18 @@ HERE2:
 '            End If
 '        End If
 
-        
+        'Carrega Configuração Nova
+        frmMdi.Sbar.Panels(1).Text = sIP
+        sql = "select * from machines_ip where ip='" & sIP & "'"
+        Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+        If RdoAux.RowCount = 0 Then
+            GuicheNumero_config = 99
+            GuicheTipo_config = ""
+        Else
+            GuicheNumero_config = RdoAux!GUICHE
+            GuicheTipo_config = RdoAux!Tipo
+        End If
+        RdoAux.Close
 HERE:
         Unload Me
 Inicio:
@@ -770,7 +829,7 @@ Liberado
 End Sub
 
 Private Sub BoneHagana()
-Dim RdoAux As rdoResultset, Sql As String
+Dim RdoAux As rdoResultset, sql As String
 Dim nCodUser As Integer, o As Object, x As Integer
 
 nCodUser = nCodLastUser
@@ -800,10 +859,10 @@ For x = 1 To frmMdi.m_cMenuOutro.Count
     frmMdi.m_cMenuOutro.Enabled(x) = False
 Next
 
-Sql = "SELECT DISTINCT SEG_MENUACESSO.NOMEMENU FROM SEG_USERACESS INNER JOIN "
-Sql = Sql & "SEG_MENUACESSO ON SEG_USERACESS.CODTELA = SEG_MENUACESSO.CODTELA "
-Sql = Sql & "WHERE SEG_USERACESS.nomeUSUARIO = '" & txtUser.Text & "' AND CODEVENTO=1"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
+sql = "SELECT DISTINCT SEG_MENUACESSO.NOMEMENU FROM SEG_USERACESS INNER JOIN "
+sql = sql & "SEG_MENUACESSO ON SEG_USERACESS.CODTELA = SEG_MENUACESSO.CODTELA "
+sql = sql & "WHERE SEG_USERACESS.nomeUSUARIO = '" & txtUser.Text & "' AND CODEVENTO=1"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurRowVer)
 With RdoAux
         Do Until .EOF
          '   If !nomemenu = "mnuSenhaControle" Then MsgBox "TESTE"
@@ -928,7 +987,6 @@ frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuAlugueis")) = True
 frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuDividaAtivaT")) = True
 frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuRelatorioTrib")) = True
 frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuBuscaArq")) = True
-frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuDebitoAjPago")) = True
 frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuComplementoPagto")) = True
 frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuSimples")) = True
 frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuOptanteDARel")) = frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuOptanteDA"))
@@ -968,7 +1026,6 @@ If frmMdi.m_cMenuMob.Enabled(frmMdi.m_cMenuMob.IndexForKey("mnuCadMobiliario")) 
     'frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuSenhaISS")) = False
     frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuBuscaArq")) = False
     frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuComplementoPagto")) = False
-'    frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuDebitoAjPago")) = False
   '  frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("CnsDebitoImob")) = False
 End If
 
@@ -981,14 +1038,15 @@ frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuPagamentoMensa
 frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuBuscaArq")) = False
 
 
-If NomeDeLogin = "LEANDRO" Or NomeDeLogin = "ROSANGELA" Or NomeDeLogin = "RODRIGOC" Or NomeDeLogin = "ROSE" Or NomeDeLogin = "CARMELINO" Or NomeDeLogin = "ANA.REIS" Or NomeDeLogin = "NOELI" Then
+If NomeDeLogin = "LEANDRO" Or NomeDeLogin = "ROSANGELA" Or NomeDeLogin = "RODRIGOC" Or NomeDeLogin = "ROSE" Or NomeDeLogin = "CARMELINO" Or NomeDeLogin = "ANA.REIS" Or NomeDeLogin = "NOELI" Or NomeDeLogin = "EDUARDO.PROENCA" Then
     frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuITBIRel")) = True '239
-    frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuDebitoAjPago")) = True '236
+    'frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuDebitoAjPago")) = True '236
+    'frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuDebitoProtPago")) = True '236
     frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuSNCnpjReceita")) = True '217
 End If
 
-If NomeDeLogin = "ROSE" Or NomeDeLogin = "ANA" Or NomeDeLogin = "GLEISE" Or NomeDeLogin = "JOSIANE" Or NomeDeLogin = "JOSEANE" Or NomeDeLogin = "LEANDRO" Or NomeDeLogin = "TALITA" Or _
-    NomeDeLogin = "RITA" Or NomeDeLogin = "DANIELAR" Or NomeDeLogin = "DANIELAT" Or NomeDeLogin = "PRISCILAANAMI" Or NomeDeLogin = "SIMONE" Or NomeDeLogin = "CINTIA" Then
+If NomeDeLogin = "ROSE" Or NomeDeLogin = "ANA" Or NomeDeLogin = "GLEISE" Or NomeDeLogin = "JOSIANE" Or NomeDeLogin = "JOSEANE" Or NomeDeLogin = "FRANCIELY.SOUZA" Or NomeDeLogin = "TALITA" Or _
+    NomeDeLogin = "RITA" Or NomeDeLogin = "DANIELAR" Or NomeDeLogin = "DANIELAT" Or NomeDeLogin = "PRISCILAANAMI" Or NomeDeLogin = "SIMONE" Or NomeDeLogin = "CHEFE_PRATICO" Then
     frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuRelRefis")) = True '180
     frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuEmiteDoc")) = True '180
     frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuRelRefisParc")) = True '181
@@ -1014,7 +1072,7 @@ If frmMdi.m_cMenuImob.Enabled(frmMdi.m_cMenuImob.IndexForKey("mnuCnsImovel")) = 
     frmMdi.m_cMenuImob.Enabled(frmMdi.m_cMenuImob.IndexForKey("mnuCnsAvancadaImob")) = True
 End If
 
-If NomeDeLogin = "ROSE" Or NomeDeLogin = "JOSEANE" Or NomeDeLogin = "LUCIANO.RAMOS" Or NomeDeLogin = "RENATA" Then
+If NomeDeLogin = "ROSE" Or NomeDeLogin = "JOSEANE" Or NomeDeLogin = "LUCIANO.RAMOS" Or NomeDeLogin = "FRANCIELY.SOUZA" Then
     frmMdi.m_cMenuAtende.Enabled(frmMdi.m_cMenuAtende.IndexForKey("mnuPagamentoMensalParc")) = True
     frmMdi.m_cMenuOutro.Enabled(frmMdi.m_cMenuOutro.IndexForKey("mnuIntegrativa")) = True '289
     frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuComplementoPagto")) = False
@@ -1060,7 +1118,7 @@ If NomeDeLogin <> "ANA" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "CARLOS.S
    
 End If
 
-If NomeDeLogin = "RODRIGOC" Or NomeDeLogin = "LEANDRO" Or NomeDeLogin = "NOELI" Then
+If NomeDeLogin = "RODRIGOC" Or NomeDeLogin = "DINAMAR.OLIVEIRA" Or NomeDeLogin = "NOELI" Or NomeDeLogin = "CLEBER.SOUZA" Then
     frmMdi.m_cMenuTrib.Enabled(frmMdi.m_cMenuTrib.IndexForKey("mnuImportarSN")) = True
 End If
 
@@ -1070,7 +1128,7 @@ Else
     frmMdi.m_cMenuImob.Enabled(frmMdi.m_cMenuImob.IndexForKey("mnuCorrigeBairro")) = True '68
 End If
 
-If NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "LEANDRO" And NomeDeLogin <> "ROSANGELA" And NomeDeLogin <> "RITA" And NomeDeLogin <> "RODRIGOC" And NomeDeLogin <> "NOELI" And NomeDeLogin <> "ANA.SANTOS" And NomeDeLogin <> "MARIA.PELEGRINI" And NomeDeLogin <> "VANESSA" And NomeDeLogin <> "DIONE" And NomeDeLogin <> "RENILDA" And NomeDeLogin <> "ALESSANDRA" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "ROSE" And NomeDeLogin <> "ANA.REIS" And NomeDeLogin <> "JULIO.ROCHA" And NomeDeLogin <> "HARLEY.BERGO" Then
+If NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "LEANDRO" And NomeDeLogin <> "ELIVAINE" And NomeDeLogin <> "RITA" And NomeDeLogin <> "RODRIGOC" And NomeDeLogin <> "NOELI" And NomeDeLogin <> "ANA.SANTOS" And NomeDeLogin <> "DANIELI.SCARPA" And NomeDeLogin <> "VANESSA" And NomeDeLogin <> "DIONE" And NomeDeLogin <> "RENILDA" And NomeDeLogin <> "ALESSANDRA" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "ROSE" And NomeDeLogin <> "ANA.REIS" And NomeDeLogin <> "JULIO.ROCHA" And NomeDeLogin <> "EDUARDO.PROENCA" Then
     frmMdi.m_cMenuMob.Enabled(frmMdi.m_cMenuMob.IndexForKey("mnuEscContab")) = False '92
     frmMdi.m_cMenuMob.Enabled(frmMdi.m_cMenuMob.IndexForKey("mnuTabAtivTL")) = False '96
     frmMdi.m_cMenuMob.Enabled(frmMdi.m_cMenuMob.IndexForKey("mnuTabAtivISS")) = False '100
@@ -1121,7 +1179,7 @@ Else
     frmMdi.m_cMenuMob.Enabled(frmMdi.m_cMenuMob.IndexForKey("mnuListaCnae")) = True
 End If
 
-If NomeDeLogin = "DANIELAR" Or NomeDeLogin = "RITA" Or NomeDeLogin = "NOELI" Then
+If NomeDeLogin = "DANIELAR" Or NomeDeLogin = "RITA" Or NomeDeLogin = "NOELI" Or NomeDeLogin = "EDUARDO.PROENCA" Then
     frmMdi.m_cMenuMob.Enabled(frmMdi.m_cMenuMob.IndexForKey("mnuRelMEIExcluido")) = True
 '    frmMdi.m_cMenuProt.Enabled(frmMdi.m_cMenuProt.IndexForKey("mnuProcessoDaniela")) = True
 End If
@@ -1134,6 +1192,8 @@ End If
 End Sub
  
 Private Sub cmdPwd_Click()
+
+
 If Me.Height = 4380 Then
      Me.Height = 2745
      cmdOK.Enabled = True
@@ -1207,10 +1267,10 @@ Next
 End Sub
 
 Private Sub CarregaDicionario()
-Dim RdoAux As rdoResultset, Sql As String, sData As String
+Dim RdoAux As rdoResultset, sql As String, sData As String
 
-Sql = "SELECT ANOJUROS,PERCJUROS FROM JUROS ORDER BY ANOJUROS"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT ANOJUROS,PERCJUROS FROM JUROS ORDER BY ANOJUROS"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         dcJuros.Add !ANOJUROS, !PERCJUROS
@@ -1219,8 +1279,8 @@ With RdoAux
    .Close
 End With
 
-Sql = "SELECT ANOUFIR,VALORUFIR FROM UFIR ORDER BY ANOUFIR"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT ANOUFIR,VALORUFIR FROM UFIR ORDER BY ANOUFIR"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         dcUfir.Add !ANOUFIR, Virg2Ponto(!VALORUFIR)
@@ -1230,8 +1290,8 @@ With RdoAux
 End With
 
 dcFeriado.RemoveAll
-Sql = "SELECT * FROM FERIADODEF ORDER BY ANO,MES,DIA"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT * FROM FERIADODEF ORDER BY ANO,MES,DIA"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         sData = Format(!DIA, "00") & "/" & Format(!Mes, "00") & "/" & Format(!ano, "0000")
@@ -1244,8 +1304,8 @@ End With
 
 ReDim aMulta(0)
 
-Sql = "SELECT ANOMULTA,MINDIA,MAXDIA,PERCDIA FROM MULTA ORDER BY ANOMULTA,MINDIA,MAXDIA"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT ANOMULTA,MINDIA,MAXDIA,PERCDIA FROM MULTA ORDER BY ANOMULTA,MINDIA,MAXDIA"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
          ReDim Preserve aMulta(UBound(aMulta) + 1)
@@ -1258,8 +1318,8 @@ With RdoAux
 End With
 
 If NomeDeLogin <> "SCHWARTZ" Then
-Sql = "SELECT VALPARAM FROM PARAMETROS WHERE NOMEPARAM='CETLAN'"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT VALPARAM FROM PARAMETROS WHERE NOMEPARAM='CETLAN'"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
    nSeqFator = Int(!valparam)
    .Close
@@ -1343,22 +1403,22 @@ Trap:
 End Function
 
 Private Sub FillSec()
-Dim Sql As String, RdoAux As rdoResultset, x As Integer, aMenu() As String, o As Object, nPos As Integer
+Dim sql As String, RdoAux As rdoResultset, x As Integer, aMenu() As String, o As Object, nPos As Integer
 
-Sql = "SELECT count(*) as contador From sec_item"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT count(*) as contador From sec_item"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 ReDim aMenu(RdoAux!contador)
 RdoAux.Close
 
-Sql = "select id from sec_user_item where usuario='" & NomeDeLogin & "'"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select id from sec_user_item where usuario='" & NomeDeLogin & "'"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 SecId = RdoAux!id
 RdoAux.Close
 
 Enable_Basic_Menu
 
-Sql = "SELECT id, MenuName From sec_item Where (MenuName Is Not Null)"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT id, MenuName From sec_item Where (MenuName Is Not Null)"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         aMenu(!id) = !MenuName
@@ -1508,10 +1568,10 @@ frmMdi.m_cMenuOutro.Enabled(frmMdi.m_cMenuOutro.IndexForKey("mnuSeguranca")) = T
 End Sub
 
 Private Sub GetLanguage()
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, RdoAux As rdoResultset
 
-Sql = "select @@language as idioma"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select @@language as idioma"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 If RdoAux!idioma = "us_english" Then
     sDataFormat = "mm/dd/yyyy"
 Else
