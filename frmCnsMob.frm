@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmCnsMob 
    BackColor       =   &H00EEEEEE&
@@ -20,9 +20,18 @@ Begin VB.Form frmCnsMob
       ForeColor       =   &H00000080&
       Height          =   2745
       Left            =   0
-      TabIndex        =   9
+      TabIndex        =   10
       Top             =   30
       Width           =   8745
+      Begin VB.TextBox txtFone 
+         Appearance      =   0  'Flat
+         Height          =   315
+         Left            =   3960
+         MaxLength       =   15
+         TabIndex        =   8
+         Top             =   2340
+         Width           =   1905
+      End
       Begin VB.TextBox txtIE 
          Appearance      =   0  'Flat
          Height          =   315
@@ -39,7 +48,7 @@ Begin VB.Form frmCnsMob
          Left            =   6360
          Locked          =   -1  'True
          MaxLength       =   50
-         TabIndex        =   20
+         TabIndex        =   21
          TabStop         =   0   'False
          Top             =   1680
          Width           =   765
@@ -77,7 +86,7 @@ Begin VB.Form frmCnsMob
          Height          =   285
          Left            =   2130
          Locked          =   -1  'True
-         TabIndex        =   12
+         TabIndex        =   13
          Top             =   1350
          Width           =   4170
       End
@@ -114,7 +123,7 @@ Begin VB.Form frmCnsMob
          Left            =   6360
          Locked          =   -1  'True
          MaxLength       =   50
-         TabIndex        =   11
+         TabIndex        =   12
          TabStop         =   0   'False
          Top             =   2010
          Width           =   765
@@ -161,7 +170,7 @@ Begin VB.Form frmCnsMob
       Begin prjChameleon.chameleonButton cmdDelProp 
          Height          =   285
          Left            =   6720
-         TabIndex        =   13
+         TabIndex        =   14
          ToolTipText     =   "Limpa Campo Proprietário"
          Top             =   1350
          Width           =   315
@@ -200,7 +209,7 @@ Begin VB.Form frmCnsMob
       Begin prjChameleon.chameleonButton cmdConsultar 
          Height          =   315
          Left            =   7380
-         TabIndex        =   22
+         TabIndex        =   23
          ToolTipText     =   "Seleciona o Imóvel"
          Top             =   930
          Width           =   1215
@@ -240,7 +249,7 @@ Begin VB.Form frmCnsMob
       Begin prjChameleon.chameleonButton cmdPesq 
          Height          =   345
          Left            =   7380
-         TabIndex        =   23
+         TabIndex        =   24
          ToolTipText     =   "Pesquisar"
          Top             =   540
          Width           =   1215
@@ -281,7 +290,7 @@ Begin VB.Form frmCnsMob
          Cancel          =   -1  'True
          Height          =   315
          Left            =   7380
-         TabIndex        =   24
+         TabIndex        =   25
          ToolTipText     =   "Cancelar Edição"
          Top             =   1290
          Width           =   1215
@@ -321,7 +330,7 @@ Begin VB.Form frmCnsMob
       Begin prjChameleon.chameleonButton cmdLimpar 
          Height          =   315
          Left            =   7380
-         TabIndex        =   25
+         TabIndex        =   26
          ToolTipText     =   "Limpar campos de pesquisa"
          Top             =   1665
          Width           =   1200
@@ -365,10 +374,20 @@ Begin VB.Form frmCnsMob
          ItemData        =   "frmCnsMob.frx":0524
          Left            =   2130
          List            =   "frmCnsMob.frx":0526
-         TabIndex        =   10
+         TabIndex        =   11
          Top             =   600
          Visible         =   0   'False
          Width           =   5055
+      End
+      Begin VB.Label Label1 
+         BackStyle       =   0  'Transparent
+         Caption         =   "Telefone..:"
+         Height          =   225
+         Index           =   8
+         Left            =   3060
+         TabIndex        =   28
+         Top             =   2430
+         Width           =   915
       End
       Begin VB.Label Label1 
          BackStyle       =   0  'Transparent
@@ -376,7 +395,7 @@ Begin VB.Form frmCnsMob
          Height          =   225
          Index           =   7
          Left            =   4380
-         TabIndex        =   26
+         TabIndex        =   27
          Top             =   1050
          Width           =   885
       End
@@ -386,7 +405,7 @@ Begin VB.Form frmCnsMob
          Height          =   225
          Index           =   6
          Left            =   150
-         TabIndex        =   21
+         TabIndex        =   22
          Top             =   1710
          Width           =   1905
       End
@@ -396,7 +415,7 @@ Begin VB.Form frmCnsMob
          Height          =   225
          Index           =   3
          Left            =   150
-         TabIndex        =   19
+         TabIndex        =   20
          Top             =   675
          Width           =   1905
       End
@@ -406,7 +425,7 @@ Begin VB.Form frmCnsMob
          Height          =   225
          Index           =   5
          Left            =   150
-         TabIndex        =   18
+         TabIndex        =   19
          Top             =   1035
          Width           =   1905
       End
@@ -416,7 +435,7 @@ Begin VB.Form frmCnsMob
          Height          =   225
          Index           =   4
          Left            =   150
-         TabIndex        =   17
+         TabIndex        =   18
          Top             =   1380
          Width           =   1905
       End
@@ -426,7 +445,7 @@ Begin VB.Form frmCnsMob
          Height          =   225
          Index           =   1
          Left            =   150
-         TabIndex        =   16
+         TabIndex        =   17
          Top             =   2040
          Width           =   1905
       End
@@ -436,7 +455,7 @@ Begin VB.Form frmCnsMob
          Height          =   225
          Index           =   0
          Left            =   150
-         TabIndex        =   15
+         TabIndex        =   16
          Top             =   330
          Width           =   1905
       End
@@ -446,7 +465,7 @@ Begin VB.Form frmCnsMob
          Height          =   225
          Index           =   2
          Left            =   150
-         TabIndex        =   14
+         TabIndex        =   15
          Top             =   2370
          Width           =   1905
       End
@@ -454,7 +473,7 @@ Begin VB.Form frmCnsMob
    Begin MSComctlLib.ListView lvEmpresa 
       Height          =   3075
       Left            =   0
-      TabIndex        =   8
+      TabIndex        =   9
       Top             =   2790
       Width           =   8745
       _ExtentX        =   15425
@@ -469,7 +488,7 @@ Begin VB.Form frmCnsMob
       BackColor       =   12640511
       BorderStyle     =   1
       Appearance      =   0
-      NumItems        =   8
+      NumItems        =   9
       BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Text            =   "Código"
          Object.Width           =   1693
@@ -509,6 +528,11 @@ Begin VB.Form frmCnsMob
          Text            =   "Nº Log."
          Object.Width           =   1411
       EndProperty
+      BeginProperty ColumnHeader(9) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         SubItemIndex    =   8
+         Text            =   "Telefone"
+         Object.Width           =   2540
+      EndProperty
    End
 End
 Attribute VB_Name = "frmCnsMob"
@@ -519,7 +543,7 @@ Attribute VB_Exposed = False
 Dim RdoAux As rdoResultset, sSeiLa As String
 Dim Sql As String, bCod As Boolean, bInsc As Boolean
 Dim bRazao As Boolean, bAtiv As Boolean, bSeq As Boolean, bUnidade As Boolean, bSubUnidade As Boolean
-Dim bNome As Boolean, bLog As Boolean, bNum As Boolean, bIE As Boolean
+Dim bNome As Boolean, bLog As Boolean, bNum As Boolean, bIE As Boolean, bFone As Boolean
 
 Private Sub cmdBuscaProp_Click()
 
@@ -589,6 +613,7 @@ txtNomeLogr.Text = ""
 txtNumImovel.Text = ""
 txtCodAtiv.Text = ""
 txtCodLogr.Text = ""
+txtFone.Text = ""
 End Sub
 
 Private Sub cmdPesq_Click()
@@ -596,7 +621,7 @@ Private Sub cmdPesq_Click()
 Dim itmX As ListItem, RdoAux2 As rdoResultset
 Dim z As Long, x As Integer, sSituacao As String
 
-If Val(txtCod.Text) = 0 And Trim$(txtProp.Text) = "" And Val(txtCodLogr.Text) = 0 And Val(txtNumImovel.Text) = 0 And Trim$(txtCNPJ.Text) = "" And Trim$(txtRazao.Text) = "" And Val(txtCodAtiv.Text) = 0 And Val(txtIE.Text) = 0 Then
+If Val(txtCod.Text) = 0 And Trim$(txtProp.Text) = "" And Val(txtCodLogr.Text) = 0 And Val(txtNumImovel.Text) = 0 And Trim$(txtCNPJ.Text) = "" And Trim$(txtRazao.Text) = "" And Val(txtCodAtiv.Text) = 0 And Val(txtIE.Text) = 0 And Trim$(txtFone.Text) = "" Then
     MsgBox "Favor selecionar ao menos um critério para busca.", vbExclamation, "Atenção"
     Exit Sub
 End If
@@ -618,6 +643,7 @@ bNome = False
 bLog = False
 bNum = False
 bIE = False
+bFone = False
 
 If Val(txtCod.Text) > 0 Then bCod = True
 If Trim$(txtCNPJ.Text) <> "" Then bInsc = True
@@ -627,15 +653,16 @@ If Val(txtCodLogr.Text) > 0 Then bLog = True
 If Val(txtCodAtiv.Text) > 0 Then bAtiv = True
 If txtNumImovel.Text <> "" Then bNum = True
 If Val(txtIE.Text) > 0 Then bIE = True
+If Trim$(txtFone.Text) <> "" Then bFone = True
 
 sSituacao = "Ativa"
 
 If bNome Then
     Sql = "SELECT CODIGOMOB,DVMOB,RAZAOSOCIAL,NOMEFANTASIA,CODLOGRADOURO,ABREVTIPOLOG,ABREVTITLOG,DATAENCERRAMENTO,"
-    Sql = Sql & "NOMELOGRADOURO,NUMERO,CNPJ,INSCESTADUAL,CODATIVIDADE,DESCATIVIDADE,CODCIDADAO,NOMECIDADAO FROM VWCNSMOBILIARIOPROP WHERE "
+    Sql = Sql & "NOMELOGRADOURO,NUMERO,CNPJ,INSCESTADUAL,CODATIVIDADE,DESCATIVIDADE,CODCIDADAO,NOMECIDADAO,FONECONTATO FROM VWCNSMOBILIARIOPROP WHERE "
 Else
     Sql = "SELECT CODIGOMOB,DVMOB,RAZAOSOCIAL,NOMEFANTASIA,CODLOGRADOURO,ABREVTIPOLOG,ABREVTITLOG,DATAENCERRAMENTO,"
-    Sql = Sql & "NOMELOGRADOURO,NUMERO,CNPJ,INSCESTADUAL,CODATIVIDADE,DESCATIVIDADE,CODCIDADAO,NOMECIDADAO FROM VWCNSMOBILIARIO WHERE "
+    Sql = Sql & "NOMELOGRADOURO,NUMERO,CNPJ,INSCESTADUAL,CODATIVIDADE,DESCATIVIDADE,CODCIDADAO,NOMECIDADAO,FONECONTATO FROM VWCNSMOBILIARIO WHERE "
 End If
 If bCod Then
    Sql = Sql & "CODIGOMOB=" & Val(txtCod.Text) & " AND "
@@ -661,6 +688,9 @@ End If
 If bNome Then
    Sql = Sql & "CODCIDADAO=" & Val(Left(txtProp.Text, 6)) & " AND "
 End If
+If bFone Then
+   Sql = Sql & "FONECONTATO LIKE '%" & Trim$(txtFone.Text) & "%' AND "
+End If
 Sql = Left$(Sql, Len(Sql) - 5)
 x = 0
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
@@ -683,12 +713,13 @@ If RdoAux.RowCount > 0 Then
             x = x + 1
             Set itmX = lvEmpresa.ListItems.Add(, "C" & sTr(x) & Format(!codigomob, "0000000"), Format(!codigomob, "0000000"))
             itmX.SubItems(1) = sSituacao
-            itmX.SubItems(2) = SubNull(!razaosocial)
+            itmX.SubItems(2) = SubNull(!RazaoSocial)
             itmX.SubItems(3) = SubNull(!Cnpj)
             itmX.SubItems(4) = SubNull(!inscestadual)
             itmX.SubItems(5) = SubNull(!nomecidadao)
             itmX.SubItems(6) = Trim$(SubNull(!AbrevTipoLog)) & " " & IIf(IsNull(!AbrevTitLog), "", Trim$(SubNull(!AbrevTitLog)) & " ") & Trim$(SubNull(!NomeLogradouro))
             itmX.SubItems(7) = SubNull(!Numero)
+            itmX.SubItems(8) = SubNull(!fonecontato)
            .MoveNext
         Loop
        .Close

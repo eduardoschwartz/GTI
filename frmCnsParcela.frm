@@ -1437,12 +1437,32 @@ Begin VB.Form frmCnsParcela
          Width           =   6825
       End
    End
+   Begin VB.Menu mnuImprimir 
+      Caption         =   "Imprimir"
+      Visible         =   0   'False
+      Begin VB.Menu mnuDetalhe 
+         Caption         =   "Detalhes"
+      End
+      Begin VB.Menu mnuCalculo 
+         Caption         =   "Cálculo"
+      End
+   End
 End
 Attribute VB_Name = "frmCnsParcela"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Private Type tTaxa
+     nAno As Integer
+     nMes As Integer
+     sPeriodo As String
+     nTaxa As Double
+     nValor As Double
+     nFator As Double
+End Type
+
+
 Dim nNumParc As Integer
 Dim nAnoExer As Integer
 Dim nCodLanc As Integer
@@ -1450,6 +1470,8 @@ Dim nCodSeq As Integer
 Dim nCodComp As Integer
 Dim nCodReduzido As Long
 Dim nResp As Integer
+Dim ff As Long
+Dim aTaxa() As tTaxa, nFator As Double
 
 Public Property Let nParcela(nNumeroParcela As Integer)
     nNumParc = nNumeroParcela
@@ -1479,7 +1501,7 @@ Public Property Let nCodRed(nCodigoReduzido As Long)
 End Property
 
 Private Sub cmdDup_Click()
-Dim RdoAux As rdoResultset, Sql As String, RdoAux2 As rdoResultset
+Dim RdoAux As rdoResultset, sql As String, RdoAux2 As rdoResultset
 Dim nValorTaxa As Double
 
 If lblDup.Caption = "Não" Then
@@ -1494,11 +1516,11 @@ Next
 
 grdDup.Rows = 1
 
-Sql = "SELECT CODREDUZIDO,VALORPAGO,DATAPAGAMENTO,DATARECEBIMENTO,CODBANCO,RESTITUIDO,NUMDOCUMENTO FROM DEBITOPAGO "
-Sql = Sql & "WHERE CODREDUZIDO=" & nCodReduzido & " AND ANOEXERCICIO = " & nAnoExer
-Sql = Sql & " AND CODLANCAMENTO=" & nCodLanc & " AND NUMPARCELA=" & nNumParc & " AND SEQLANCAMENTO=" & nCodSeq
-Sql = Sql & " AND CODCOMPLEMENTO=" & nCodComp
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CODREDUZIDO,VALORPAGO,DATAPAGAMENTO,DATARECEBIMENTO,CODBANCO,RESTITUIDO,NUMDOCUMENTO FROM DEBITOPAGO "
+sql = sql & "WHERE CODREDUZIDO=" & nCodReduzido & " AND ANOEXERCICIO = " & nAnoExer
+sql = sql & " AND CODLANCAMENTO=" & nCodLanc & " AND NUMPARCELA=" & nNumParc & " AND SEQLANCAMENTO=" & nCodSeq
+sql = sql & " AND CODCOMPLEMENTO=" & nCodComp
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
       Do Until .EOF
             
@@ -1508,8 +1530,8 @@ With RdoAux
                  grdDup.AddItem Format(!DataPagamento, "dd/mm/yyyy") & Chr(9) & Format(!datarecebimento, "dd/mm/yyyy") & Chr(9) & FormatNumber(!ValorPago, 2) & Chr(9) & IIf(IsDate(!RESTITUIDO), Format(!RESTITUIDO, "dd/mm/yyyy"), "") & Chr(9) & !NumDocumento & "-" & RetornaDVNumDoc(!NumDocumento)
               End If
            Else
-              Sql = "SELECT VALORTAXADOC FROM NUMDOCUMENTO WHERE NUMDOCUMENTO=" & Val(SubNull(!NumDocumento))
-              Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+              sql = "SELECT VALORTAXADOC FROM NUMDOCUMENTO WHERE NUMDOCUMENTO=" & Val(SubNull(!NumDocumento))
+              Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
               With RdoAux2
                   If .RowCount > 0 Then
                       nValorTaxa = !ValorTaxaDoc
@@ -1518,14 +1540,14 @@ With RdoAux
               End With
               If nValorTaxa = 0 Then
                 'PODE SER QUE VEIO DA RUIM-APD ENTÃO TEMOS QUE VER SE A TAXA EXP ESTA NA PARCELA
-                Sql = "SELECT VALORTRIBUTO FROM DEBITOTRIBUTO "
-                Sql = Sql & "WHERE CODREDUZIDO=" & nCodReduzido & " AND ANOEXERCICIO = " & nAnoExer
-                Sql = Sql & " AND CODLANCAMENTO=" & nCodLanc & " AND NUMPARCELA=" & nNumParc & " AND SEQLANCAMENTO=" & nCodSeq
-                Sql = Sql & " AND CODCOMPLEMENTO=" & nCodComp & " AND CODTRIBUTO=3"
-                Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                sql = "SELECT VALORTRIBUTO FROM DEBITOTRIBUTO "
+                sql = sql & "WHERE CODREDUZIDO=" & nCodReduzido & " AND ANOEXERCICIO = " & nAnoExer
+                sql = sql & " AND CODLANCAMENTO=" & nCodLanc & " AND NUMPARCELA=" & nNumParc & " AND SEQLANCAMENTO=" & nCodSeq
+                sql = sql & " AND CODCOMPLEMENTO=" & nCodComp & " AND CODTRIBUTO=3"
+                Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                 With RdoAux2
                     If .RowCount > 0 Then
-                        nValorTaxa = !ValorTributo
+                        nValorTaxa = !VALORTRIBUTO
                     End If
                    .Close
                 End With
@@ -1545,28 +1567,7 @@ frDup.Visible = True
 End Sub
 
 Private Sub cmdPrint_Click()
-Dim Sql As String, x As Integer
-'SaveFormImageToFile Me, Picture1, sPathBin & "\frmParcela.bmp"
-'x = Shell("MSPAINT" & " " & sPathBin & "\frmParcela.bmp", vbNormalFocus)
-
-'DELETA TEMPORARIO
-Sql = "DELETE FROM DAM WHERE COMPUTER='" & NomeDoUsuario & "'"
-cn.Execute Sql, rdExecDirect
-
-With grdTrib
-    For x = 2 To grdTrib.Rows - 1
-        Sql = "INSERT DAM(COMPUTER,SEQ,FULLTRIB,PRINCIPAL,JUROS,MULTA,CORRECAO) VALUES('" & NomeDoUsuario & "'," & x & ",'" & .TextMatrix(x, 0) & "',"
-        Sql = Sql & Virg2Ponto(RemovePonto(.TextMatrix(x, 1))) & "," & Virg2Ponto(RemovePonto(.TextMatrix(x, 2))) & "," & Virg2Ponto(RemovePonto(.TextMatrix(x, 3))) & "," & Virg2Ponto(RemovePonto(.TextMatrix(x, 4))) & ")"
-        cn.Execute Sql, rdExecDirect
-    Next
-End With
-
-frmReport.ShowReport3 "PARCELA", frmMdi.HWND, Me.HWND
-
-'DELETA TEMPORARIO
-Sql = "DELETE FROM DAM WHERE COMPUTER='" & NomeDoUsuario & "'"
-cn.Execute Sql, rdExecDirect
-
+PopupMenu mnuImprimir
 End Sub
 
 Private Sub cmdSair_Click()
@@ -1619,19 +1620,33 @@ End If
 End Sub
 
 Private Sub CarregaParcela2()
-Dim Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, qd As New rdoQuery
+Dim sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, qd As New rdoQuery, bSelic As Boolean, sTmp As String
 Dim x As Integer, nSomaL As Double, nSomaJ As Double, nSomaM As Double, nSomaC As Double, bAchou As Boolean
 Dim nValorCorrecao As Double, nValorTaxa As Double, nStatus As Integer, nValorTaxaFromLanc As Double, bDA As Boolean, nValorAtual As Double
 Dim bPago As Boolean, bVeioDaSmar As Boolean, bJuros As Boolean, bMulta As Boolean, nValorMulta As Double, nValorJuros As Double
+Dim nValorTotal As Double, nJurosPrint As Double, nTotalSelic As Double, nTotalGeral As Double
 
+bSelic = frmDebitoImob.lblSelic.Visible
 txtValorDiferenca.Text = "X": lblValorTaxa.Caption = "X"
+nTotalSelic = 1
+nTotalGeral = 0
+ReDim aTaxa(0)
+
+ff = FreeFile
+Open App.Path & "\calculo_parcela.txt" For Output As #ff
+Print #ff, "DEMONSTRATIVO DE CÁLCULO DA PARCELA"
+Print #ff, "-----------------------------------"
+Print #ff, ""
+
+
+
 
 'CARREGA O EXTRATO
 Set qd.ActiveConnection = cn
 On Error Resume Next
 RdoAux.Close
 On Error GoTo 0
-qd.Sql = "{ Call spEXTRATONEW(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
+qd.sql = "{ Call spEXTRATONEW(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
 qd(0) = nCodReduzido
 qd(1) = nCodReduzido
 qd(2) = nAnoExer
@@ -1650,6 +1665,27 @@ qd(14) = Format(dDataAtualiza, "mm/dd/yyyy")
 qd(15) = NomeDoUsuario
 Set RdoAux = qd.OpenResultset(rdOpenKeyset)
 With RdoAux
+    Print #ff, "Data de Vencimento: " & Format(!DataVencimento, "dd/mm/yyyy")
+    nJurosPrint = CalculoTaxaSelicDetalhe(!VALORTRIBUTO, Month(!DataVencimento), Year(!DataVencimento))
+    Print #ff, ""
+    Print #ff, "Taxa Selic Mensal no período: "
+    For x = 1 To UBound(aTaxa)
+        Print #ff, aTaxa(x).sPeriodo & " - " & Format(aTaxa(x).nTaxa, "#0.00") & "%"
+    Next
+    Print #ff, ""
+    Print #ff, "Fator de Correção acumulado "
+    For x = 1 To UBound(aTaxa)
+        nTotalSelic = nTotalSelic * (1 + (aTaxa(x).nTaxa / 100))
+        Print #ff, aTaxa(x).sPeriodo & " - " & 1 + (aTaxa(x).nTaxa / 100)
+    Next
+    Print #ff, ""
+    sTmp = "Fator de Correção acumulado = "
+    For x = 1 To UBound(aTaxa)
+        sTmp = sTmp & 1 + (aTaxa(x).nTaxa / 100) & " * "
+    Next
+    sTmp = Left(sTmp, Len(sTmp) - 2) & " = " & Round(nTotalSelic, 4)
+    Print #ff, sTmp
+   
     lblStatus.Caption = Format(!statuslanc, "00") & " - DÉBITO " & !Situacao
     lblDataVencto.Caption = Format(!DataVencimento, "dd/mm/yyyy")
     lblDataVenctoCalc.Caption = Format(!DataVencimentoCalc, "dd/mm/yyyy")
@@ -1663,6 +1699,13 @@ With RdoAux
     lblDesconto.Caption = Val(SubNull(!PERCDESCONTO)) & " %"
     lblAjuizamento.Caption = IIf(IsNull(!dataajuiza), "00/00/0000", Format(!dataajuiza, "dd/mm/yyyy"))
     Do Until .EOF
+        Print #ff, ""
+        Print #ff, "Descrição ==> " & !abrevTributo
+        Print #ff, "Valor Principal: " & Format(!VALORTRIBUTO, "#0.00")
+        Print #ff, "Valor Juros: " & Format(!VALORTRIBUTO, "#0.00") & " * " & Round(nTotalSelic, 4) & " - " & Format(!VALORTRIBUTO, "#0.00") & " = " & Format((!VALORTRIBUTO * nTotalSelic) - !VALORTRIBUTO, "#0.00")
+        Print #ff, "Valor Multa: " & !ValorMulta
+        Print #ff, "Valor Total: Principal + Juros + Multa = " & Format(!VALORTRIBUTO + ((!VALORTRIBUTO * nTotalSelic) - !VALORTRIBUTO) + !ValorMulta, "#0.00")
+         nTotalGeral = nTotalGeral + (!VALORTRIBUTO + ((!VALORTRIBUTO * nTotalSelic) - !VALORTRIBUTO) + !ValorMulta)
          bAchou = False
          For x = 1 To grdTrib.Rows - 1
               If !CodTributo = Val(Left(grdTrib.TextMatrix(x, 0), 3)) Then
@@ -1672,17 +1715,24 @@ With RdoAux
          If Not bAchou Then
             nValorJuros = !ValorJuros
             nValorMulta = !ValorMulta
-            nValorCorrecao = !ValorCorrecao
-'            If !NumDocumento = 17268453 Then MsgBox "teste"
+            nValorCorrecao = !valorcorrecao
+            
+            If bSelic Then
+                If !DataVencimento >= CDate("08/12/2021") Then
+                    nValorCorrecao = 0
+                    nValorJuros = CalculoTaxaSelic(!VALORTRIBUTO, Month(!DataVencimento), Year(!DataVencimento)) - !VALORTRIBUTO
+                    nValorTotal = !VALORTRIBUTO + !ValorMulta + nValorJuros + nValorCorrecao
+                    nJurosPrint = CalculoTaxaSelicDetalhe(!VALORTRIBUTO, Month(!DataVencimento), Year(!DataVencimento))
+                    
+                    
+                End If
+            End If
+            
+            
             If Not IsNull(!NumDocumento) Then
-                Sql = "SELECT DISTINCT parceladocumento.numdocumento, plano.desconto FROM parceladocumento LEFT OUTER JOIN plano ON parceladocumento.plano = plano.codigo WHERE NUMDOCUMENTO=" & !NumDocumento
-                Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
+                sql = "SELECT DISTINCT parceladocumento.numdocumento, plano.desconto FROM parceladocumento LEFT OUTER JOIN plano ON parceladocumento.plano = plano.codigo WHERE NUMDOCUMENTO=" & !NumDocumento
+                Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurReadOnly)
                 If RdoAux2.RowCount > 0 Then
-'                    If Val(SubNull(RdoAux2!isentomj)) > 0 Then
- '                       lblIsentoMJ = "Sim"
-'                        nValorJuros = 0
-'                        nValorMulta = 0
-  '                  End If
                     If Not IsNull(RdoAux2!desconto) Then
                         lblDesconto.Caption = FormatNumber(RdoAux2!desconto, 2)
                         nValorJuros = nValorJuros - (nValorJuros * RdoAux2!desconto / 100)
@@ -1693,25 +1743,32 @@ With RdoAux
                 End If
                 RdoAux2.Close
             End If
-            grdTrib.AddItem Format(!CodTributo, "00") & " - " & !ABREVTRIBUTO & Chr(9) & FormatNumber(!ValorTributo, 2) & Chr(9) & _
+            grdTrib.AddItem Format(!CodTributo, "00") & " - " & !abrevTributo & Chr(9) & FormatNumber(!VALORTRIBUTO, 2) & Chr(9) & _
             FormatNumber(nValorJuros, 2) & Chr(9) & FormatNumber(nValorMulta, 2) & Chr(9) & FormatNumber(nValorCorrecao, 2)
-            nValorAtual = nValorAtual + !ValorTotal
+            nValorAtual = nValorAtual + nValorTotal
+            nSomaL = nSomaL + !VALORTRIBUTO
+            nSomaJ = nSomaJ + nValorJuros
+            nSomaM = nSomaM + nValorMulta
+            nSomaC = nSomaC + nValorCorrecao
          End If
          
         .MoveNext
     Loop
+    Print #ff, ""
+    Print #ff, "---------------------"
+    Print #ff, "Total da Parcela: " & Format(nTotalGeral, "#0.00")
    .Close
 End With
 
 nStatus = Val(Left(lblStatus.Caption, 2))
 lblLanc.Caption = frmDebitoImob.grdExtrato.CellText(frmDebitoImob.grdExtrato.SelectedRow, 2)
-nSomaL = 0
-For x = 2 To grdTrib.Rows - 1
-       nSomaL = nSomaL + grdTrib.TextMatrix(x, 1)
-       nSomaJ = nSomaJ + grdTrib.TextMatrix(x, 2)
-       nSomaM = nSomaM + grdTrib.TextMatrix(x, 3)
-       nSomaC = nSomaC + grdTrib.TextMatrix(x, 4)
-Next
+'nSomaL = 0
+'For x = 2 To grdTrib.Rows - 1
+'       nSomaL = nSomaL + grdTrib.TextMatrix(x, 1)
+'       nSomaJ = nSomaJ + grdTrib.TextMatrix(x, 2)
+'       nSomaM = nSomaM + grdTrib.TextMatrix(x, 3)
+'       nSomaC = nSomaC + grdTrib.TextMatrix(x, 4)
+'Next
 lblTotJ.Caption = FormatNumber(nSomaJ, 2)
 lblTotM.Caption = FormatNumber(nSomaM, 2)
 lblTotC.Caption = FormatNumber(nSomaC, 2)
@@ -1719,15 +1776,15 @@ lblTotL.Caption = FormatNumber(nSomaL, 2)
 lblValorLancado.Caption = FormatNumber(nSomaL, 2)
 
 
-Sql = "SELECT MIN(SEQPAG) AS MINIMO From DEBITOPAGO WHERE CODREDUZIDO=" & nCodReduzido & " AND ANOEXERCICIO=" & nAnoExer
-Sql = Sql & " AND CODLANCAMENTO=" & nCodLanc & " AND NUMPARCELA=" & nNumParc & " AND SEQLANCAMENTO=" & nCodSeq & " AND CODCOMPLEMENTO=" & nCodComp & "  AND RESTITUIDO IS  NULL"
-Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT MIN(SEQPAG) AS MINIMO From DEBITOPAGO WHERE CODREDUZIDO=" & nCodReduzido & " AND ANOEXERCICIO=" & nAnoExer
+sql = sql & " AND CODLANCAMENTO=" & nCodLanc & " AND NUMPARCELA=" & nNumParc & " AND SEQLANCAMENTO=" & nCodSeq & " AND CODCOMPLEMENTO=" & nCodComp & "  AND RESTITUIDO IS  NULL"
+Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux2
       If Not IsNull(!minimo) Then
-          Sql = "SELECT * From DEBITOPAGO WHERE CODREDUZIDO=" & nCodReduzido & " AND ANOEXERCICIO=" & nAnoExer
-          Sql = Sql & " AND CODLANCAMENTO=" & nCodLanc & " AND NUMPARCELA=" & nNumParc & " AND SEQLANCAMENTO=" & nCodSeq & " AND CODCOMPLEMENTO=" & nCodComp
-          Sql = Sql & " AND SEQPAG=" & !minimo
-          Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+          sql = "SELECT * From DEBITOPAGO WHERE CODREDUZIDO=" & nCodReduzido & " AND ANOEXERCICIO=" & nAnoExer
+          sql = sql & " AND CODLANCAMENTO=" & nCodLanc & " AND NUMPARCELA=" & nNumParc & " AND SEQLANCAMENTO=" & nCodSeq & " AND CODCOMPLEMENTO=" & nCodComp
+          sql = sql & " AND SEQPAG=" & !minimo
+          Set RdoAux3 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
           With RdoAux3
                lblBanco.Caption = Format(!CodBanco, "000")
                lblNumDoc.Caption = SubNull(!NumDocumento)
@@ -1740,14 +1797,14 @@ With RdoAux2
                If !DataPagamento <> CDate("01/01/1900") And Not IsNull(!DataPagamento) Then
                   bPago = True
                   If nCodLanc = 5 Then
-                     If Not IsNull(!valorpagoreal) And Val(SubNull(!valorpagoreal)) > 0 Then
-                          txtValorPago.Text = FormatNumber(!valorpagoreal, 2)
+                     If Not IsNull(!ValorPagoreal) And Val(SubNull(!ValorPagoreal)) > 0 Then
+                          txtValorPago.Text = FormatNumber(!ValorPagoreal, 2)
                      Else
                           txtValorPago.Text = FormatNumber(!ValorPago, 2)
                      End If
                   Else
-                      If Not IsNull(!valorpagoreal) And Val(SubNull(!valorpagoreal)) > 0 Then
-                           txtValorPago.Text = FormatNumber(!valorpagoreal, 2)
+                      If Not IsNull(!ValorPagoreal) And Val(SubNull(!ValorPagoreal)) > 0 Then
+                           txtValorPago.Text = FormatNumber(!ValorPagoreal, 2)
                       Else
                            txtValorPago.Text = FormatNumber(!ValorPago, 2)
                       End If
@@ -1771,12 +1828,12 @@ With RdoAux2
               .Close
           End With
       Else
-          Sql = "SELECT numdocumento.numdocumento, numdocumento.valorpago "
-          Sql = Sql & "FROM parceladocumento INNER JOIN  numdocumento ON parceladocumento.numdocumento = numdocumento.numdocumento "
-          Sql = Sql & "WHERE parceladocumento.codreduzido = " & nCodReduzido & " AND parceladocumento.anoexercicio = " & nAnoExer & " AND parceladocumento.codlancamento = " & nCodLanc & " AND "
-          Sql = Sql & "parceladocumento.seqlancamento = " & nCodSeq & " AND parceladocumento.numparcela = " & nNumParc & " AND parceladocumento.codcomplemento = " & nCodComp & " AND "
-          Sql = Sql & "numdocumento.valorpago > 0"
-          Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+          sql = "SELECT numdocumento.numdocumento, numdocumento.valorpago "
+          sql = sql & "FROM parceladocumento INNER JOIN  numdocumento ON parceladocumento.numdocumento = numdocumento.numdocumento "
+          sql = sql & "WHERE parceladocumento.codreduzido = " & nCodReduzido & " AND parceladocumento.anoexercicio = " & nAnoExer & " AND parceladocumento.codlancamento = " & nCodLanc & " AND "
+          sql = sql & "parceladocumento.seqlancamento = " & nCodSeq & " AND parceladocumento.numparcela = " & nNumParc & " AND parceladocumento.codcomplemento = " & nCodComp & " AND "
+          sql = sql & "numdocumento.valorpago > 0"
+          Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
           With RdoAux2
               If .RowCount > 0 Then
                   lblNumDoc.Caption = Val(SubNull(!NumDocumento))
@@ -1789,12 +1846,12 @@ With RdoAux2
 End With
 
 If nStatus = 1 Or nStatus = 2 Or nStatus = 7 Or nStatus = 9 Then
-    Sql = "SELECT PARCELADOCUMENTO.NUMDOCUMENTO,NUMDOCUMENTO.CODBANCO,NUMDOCUMENTO.CODAGENCIA,NUMDOCUMENTO.VALORPAGO, NumDocumento.VALORTAXADOC "
-    Sql = Sql & "FROM PARCELADOCUMENTO INNER JOIN NUMDOCUMENTO ON PARCELADOCUMENTO.NumDocumento = NumDocumento.NumDocumento "
-    Sql = Sql & "WHERE PARCELADOCUMENTO.CODREDUZIDO = " & nCodReduzido & " AND PARCELADOCUMENTO.ANOEXERCICIO = " & nAnoExer & " AND "
-    Sql = Sql & "PARCELADOCUMENTO.CODLANCAMENTO = " & nCodLanc & " AND PARCELADOCUMENTO.NUMPARCELA = " & nNumParc & " AND NUMDOCUMENTO.VALORPAGO > 0 AND "
-    Sql = Sql & "PARCELADOCUMENTO.SEQLANCAMENTO = " & nCodSeq & " AND PARCELADOCUMENTO.CODCOMPLEMENTO = " & nCodComp
-    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    sql = "SELECT PARCELADOCUMENTO.NUMDOCUMENTO,NUMDOCUMENTO.CODBANCO,NUMDOCUMENTO.CODAGENCIA,NUMDOCUMENTO.VALORPAGO, NumDocumento.VALORTAXADOC "
+    sql = sql & "FROM PARCELADOCUMENTO INNER JOIN NUMDOCUMENTO ON PARCELADOCUMENTO.NumDocumento = NumDocumento.NumDocumento "
+    sql = sql & "WHERE PARCELADOCUMENTO.CODREDUZIDO = " & nCodReduzido & " AND PARCELADOCUMENTO.ANOEXERCICIO = " & nAnoExer & " AND "
+    sql = sql & "PARCELADOCUMENTO.CODLANCAMENTO = " & nCodLanc & " AND PARCELADOCUMENTO.NUMPARCELA = " & nNumParc & " AND NUMDOCUMENTO.VALORPAGO > 0 AND "
+    sql = sql & "PARCELADOCUMENTO.SEQLANCAMENTO = " & nCodSeq & " AND PARCELADOCUMENTO.CODCOMPLEMENTO = " & nCodComp
+    Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     With RdoAux2
          If .RowCount > 0 Then
 '                    lblBanco.Caption = Format(!CODBANCO, "000")
@@ -1805,9 +1862,9 @@ If nStatus = 1 Or nStatus = 2 Or nStatus = 7 Or nStatus = 9 Then
 Else
     lblAgencia.Caption = Format(0, "0000")
 End If
-Sql = "SELECT NOMEREDUZ FROM BANCO WHERE "
-Sql = Sql & "CODBANCO=" & Val(lblBanco.Caption)
-Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset)
+sql = "SELECT NOMEREDUZ FROM BANCO WHERE "
+sql = sql & "CODBANCO=" & Val(lblBanco.Caption)
+Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset)
 With RdoAux2
     If .RowCount > 0 Then
        lblBanco.Caption = lblBanco.Caption & "-" & !NOMEREDUZ
@@ -1827,11 +1884,11 @@ End If
 
 
 If Val(txtValorPago.Text) > 0 And Val(lblNumDoc.Caption) = 0 Then
-   Sql = "SELECT PARCELADOCUMENTO.NUMDOCUMENTO FROM PARCELADOCUMENTO INNER JOIN NUMDOCUMENTO ON "
-   Sql = Sql & "PARCELADOCUMENTO.NUMDOCUMENTO = NUMDOCUMENTO.NUMDOCUMENTO WHERE CODREDUZIDO = " & nCodReduzido & " AND "
-   Sql = Sql & "ANOEXERCICIO=" & nAnoExer & " AND CODLANCAMENTO=" & nCodLanc & " AND NUMPARCELA=" & nNumParc & " AND "
-   Sql = Sql & "SEQLANCAMENTO=" & nCodSeq & " AND CODCOMPLEMENTO=" & nCodComp & " AND VALORPAGO>0"
-   Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+   sql = "SELECT PARCELADOCUMENTO.NUMDOCUMENTO FROM PARCELADOCUMENTO INNER JOIN NUMDOCUMENTO ON "
+   sql = sql & "PARCELADOCUMENTO.NUMDOCUMENTO = NUMDOCUMENTO.NUMDOCUMENTO WHERE CODREDUZIDO = " & nCodReduzido & " AND "
+   sql = sql & "ANOEXERCICIO=" & nAnoExer & " AND CODLANCAMENTO=" & nCodLanc & " AND NUMPARCELA=" & nNumParc & " AND "
+   sql = sql & "SEQLANCAMENTO=" & nCodSeq & " AND CODCOMPLEMENTO=" & nCodComp & " AND VALORPAGO>0"
+   Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
    With RdoAux2
        If .RowCount > 0 Then
          nNumDoc = !NumDocumento
@@ -1841,9 +1898,9 @@ If Val(txtValorPago.Text) > 0 And Val(lblNumDoc.Caption) = 0 Then
       .Close
    End With
 
-   Sql = "SELECT NUMDOCUMENTO,NUMDOCUMENTO.VALORTAXADOC FROM NUMDOCUMENTO "
-   Sql = Sql & "WHERE NUMDOCUMENTO=" & Val(nNumDoc)
-   Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+   sql = "SELECT NUMDOCUMENTO,NUMDOCUMENTO.VALORTAXADOC FROM NUMDOCUMENTO "
+   sql = sql & "WHERE NUMDOCUMENTO=" & Val(nNumDoc)
+   Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
    With RdoAux
        If .RowCount = 0 Then
           nValorTaxa = 0
@@ -1854,12 +1911,12 @@ If Val(txtValorPago.Text) > 0 And Val(lblNumDoc.Caption) = 0 Then
              nValorTaxa = FormatNumber(!ValorTaxaDoc, 2)
           Else
              bVeioDaSmar = True
-             Sql = "SELECT VALORTRIBUTO FROM DEBITOTRIBUTO WHERE CODREDUZIDO = " & nCodReduzido & " AND ANOEXERCICIO = " & nAnoExer & " AND CODLANCAMENTO = " & nCodLanc & " AND "
-             Sql = Sql & "SEQLANCAMENTO = " & nCodSeq & " AND NUMPARCELA = " & nNumParc & " AND CODCOMPLEMENTO = " & nCodComp & " AND CODTRIBUTO=3"
-             Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+             sql = "SELECT VALORTRIBUTO FROM DEBITOTRIBUTO WHERE CODREDUZIDO = " & nCodReduzido & " AND ANOEXERCICIO = " & nAnoExer & " AND CODLANCAMENTO = " & nCodLanc & " AND "
+             sql = sql & "SEQLANCAMENTO = " & nCodSeq & " AND NUMPARCELA = " & nNumParc & " AND CODCOMPLEMENTO = " & nCodComp & " AND CODTRIBUTO=3"
+             Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
              With RdoAux2
                  If .RowCount > 0 Then
-                    nValorTaxa = !ValorTributo
+                    nValorTaxa = !VALORTRIBUTO
                  Else
                     nValorTaxa = 0
                  End If
@@ -1883,12 +1940,12 @@ If Val(txtValorPago.Text) > 0 And Val(lblNumDoc.Caption) = 0 Then
       txtValorDiferenca.Text = FormatNumber(CDbl(txtValorPago.Text) - (CDbl(lblValorAtualizado.Caption) + (nValorTaxa)), 2)
    End If
 Else
-     Sql = "SELECT VALORTRIBUTO FROM DEBITOTRIBUTO WHERE CODREDUZIDO = " & nCodReduzido & " AND ANOEXERCICIO = " & nAnoExer & " AND CODLANCAMENTO = " & nCodLanc & " AND "
-     Sql = Sql & "SEQLANCAMENTO = " & nCodSeq & " AND NUMPARCELA = " & nNumParc & " AND CODCOMPLEMENTO = " & nCodComp & " AND CODTRIBUTO=3"
-     Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+     sql = "SELECT VALORTRIBUTO FROM DEBITOTRIBUTO WHERE CODREDUZIDO = " & nCodReduzido & " AND ANOEXERCICIO = " & nAnoExer & " AND CODLANCAMENTO = " & nCodLanc & " AND "
+     sql = sql & "SEQLANCAMENTO = " & nCodSeq & " AND NUMPARCELA = " & nNumParc & " AND CODCOMPLEMENTO = " & nCodComp & " AND CODTRIBUTO=3"
+     Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
      With RdoAux2
           If .RowCount > 0 Then
-              nValorTaxa = !ValorTributo
+              nValorTaxa = !VALORTRIBUTO
           Else
               nValorTaxa = 0
           End If
@@ -1911,10 +1968,10 @@ If nStatus > 2 And nStatus <> 7 Then
 End If
 
 
-Sql = "SELECT * FROM DEBITOPAGO WHERE CODREDUZIDO=" & nCodReduzido & " AND ANOEXERCICIO = " & nAnoExer
-Sql = Sql & " AND CODLANCAMENTO=" & nCodLanc & " AND NUMPARCELA=" & nNumParc & " AND SEQLANCAMENTO=" & nCodSeq
-Sql = Sql & " AND CODCOMPLEMENTO=" & nCodComp
-Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT * FROM DEBITOPAGO WHERE CODREDUZIDO=" & nCodReduzido & " AND ANOEXERCICIO = " & nAnoExer
+sql = sql & " AND CODLANCAMENTO=" & nCodLanc & " AND NUMPARCELA=" & nNumParc & " AND SEQLANCAMENTO=" & nCodSeq
+sql = sql & " AND CODCOMPLEMENTO=" & nCodComp
+Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux2
       If nStatus = 1 And Val(txtValorPago.Text) > 0 And nNumParc > 0 Then
          lblDup.Caption = "Sim"
@@ -1940,10 +1997,10 @@ With RdoAux2
      .Close
 End With
 
-Sql = "SELECT debitoparcela.codreduzido, usuario.nomecompleto FROM debitoparcela LEFT OUTER JOIN usuario ON debitoparcela.userid = usuario.Id WHERE CODREDUZIDO=" & nCodReduzido & " AND ANOEXERCICIO = " & nAnoExer
-Sql = Sql & " AND CODLANCAMENTO=" & nCodLanc & " AND NUMPARCELA=" & nNumParc & " AND SEQLANCAMENTO=" & nCodSeq
-Sql = Sql & " AND CODCOMPLEMENTO=" & nCodComp
-Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT debitoparcela.codreduzido, usuario.nomecompleto FROM debitoparcela LEFT OUTER JOIN usuario ON debitoparcela.userid = usuario.Id WHERE CODREDUZIDO=" & nCodReduzido & " AND ANOEXERCICIO = " & nAnoExer
+sql = sql & " AND CODLANCAMENTO=" & nCodLanc & " AND NUMPARCELA=" & nNumParc & " AND SEQLANCAMENTO=" & nCodSeq
+sql = sql & " AND CODCOMPLEMENTO=" & nCodComp
+Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux2
     If Not IsNull(!NomeCompleto) Then
         Me.Caption = Me.Caption & " (Gerado por: " & !NomeCompleto & ")"
@@ -1951,10 +2008,51 @@ With RdoAux2
    .Close
 End With
 
+Close #ff
+
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
 nResp = 0
+End Sub
+
+Private Sub mnuCalculo_Click()
+Dim bSelic As Boolean, sNomeArq As String
+
+bSelic = frmDebitoImob.lblSelic.Visible
+If Not bSelic Then
+    MsgBox "Exibição do cálculo apenas para débitos atualizados pela Taxa Selic"
+    Exit Sub
+End If
+
+sNomeArq = App.Path & "\calculo_parcela.txt"
+ret = Shell("NOTEPAD" & " " & sNomeArq, vbNormalFocus)
+
+End Sub
+
+Private Sub mnuDetalhe_Click()
+Dim sql As String, x As Integer
+'SaveFormImageToFile Me, Picture1, sPathBin & "\frmParcela.bmp"
+'x = Shell("MSPAINT" & " " & sPathBin & "\frmParcela.bmp", vbNormalFocus)
+
+'DELETA TEMPORARIO
+sql = "DELETE FROM DAM WHERE COMPUTER='" & NomeDoUsuario & "'"
+cn.Execute sql, rdExecDirect
+
+With grdTrib
+    For x = 2 To grdTrib.Rows - 1
+        sql = "INSERT DAM(COMPUTER,SEQ,FULLTRIB,PRINCIPAL,JUROS,MULTA,CORRECAO) VALUES('" & NomeDoUsuario & "'," & x & ",'" & .TextMatrix(x, 0) & "',"
+        sql = sql & Virg2Ponto(RemovePonto(.TextMatrix(x, 1))) & "," & Virg2Ponto(RemovePonto(.TextMatrix(x, 2))) & "," & Virg2Ponto(RemovePonto(.TextMatrix(x, 3))) & "," & Virg2Ponto(RemovePonto(.TextMatrix(x, 4))) & ")"
+        cn.Execute sql, rdExecDirect
+    Next
+End With
+
+frmReport.ShowReport3 "PARCELA", frmMdi.HWND, Me.HWND
+
+'DELETA TEMPORARIO
+sql = "DELETE FROM DAM WHERE COMPUTER='" & NomeDoUsuario & "'"
+cn.Execute sql, rdExecDirect
+
 End Sub
 
 Private Sub mskIncricao_GotFocus()
@@ -2024,21 +2122,21 @@ With frmDebitoImob.grdExtrato
     nParc = .CellText(nLinha, 4)
     nCompl = .CellText(nLinha, 5)
     
-    Sql = "UPDATE DEBITOPARCELA SET NUMEROLIVRO=" & Val(txtLivro.Text) & " ,PAGINALIVRO=" & Val(txtPagina.Text) & " ,NUMCERTIDAO=" & Val(txtCertidao.Text)
-    Sql = Sql & " WHERE CODREDUZIDO = " & Val(frmDebitoImob.txtCod.Text) & " AND ANOEXERCICIO = " & nAno & " AND CODLANCAMENTO = " & nLanc & " AND "
-    Sql = Sql & "SEQLANCAMENTO = " & nSeq & " AND NUMPARCELA = " & nParc & " AND CODCOMPLEMENTO = " & nCompl
-    cn.Execute Sql, rdExecDirect
+    sql = "UPDATE DEBITOPARCELA SET NUMEROLIVRO=" & Val(txtLivro.Text) & " ,PAGINALIVRO=" & Val(txtPagina.Text) & " ,NUMCERTIDAO=" & Val(txtCertidao.Text)
+    sql = sql & " WHERE CODREDUZIDO = " & Val(frmDebitoImob.txtCod.Text) & " AND ANOEXERCICIO = " & nAno & " AND CODLANCAMENTO = " & nLanc & " AND "
+    sql = sql & "SEQLANCAMENTO = " & nSeq & " AND NUMPARCELA = " & nParc & " AND CODCOMPLEMENTO = " & nCompl
+    cn.Execute sql, rdExecDirect
     
-    Sql = "UPDATE DEBITOPAGO SET VALORDIF=" & Virg2Ponto(RemovePonto(txtValorDiferenca.Text)) & " ,VALORPAGOREAL=" & Virg2Ponto(RemovePonto(txtValorPago.Text))
-    Sql = Sql & " WHERE CODREDUZIDO = " & Val(frmDebitoImob.txtCod.Text) & " AND ANOEXERCICIO = " & nAno & " AND CODLANCAMENTO = " & nLanc & " AND "
-    Sql = Sql & "SEQLANCAMENTO = " & nSeq & " AND NUMPARCELA = " & nParc & " AND CODCOMPLEMENTO = " & nCompl
-    cn.Execute Sql, rdExecDirect
+    sql = "UPDATE DEBITOPAGO SET VALORDIF=" & Virg2Ponto(RemovePonto(txtValorDiferenca.Text)) & " ,VALORPAGOREAL=" & Virg2Ponto(RemovePonto(txtValorPago.Text))
+    sql = sql & " WHERE CODREDUZIDO = " & Val(frmDebitoImob.txtCod.Text) & " AND ANOEXERCICIO = " & nAno & " AND CODLANCAMENTO = " & nLanc & " AND "
+    sql = sql & "SEQLANCAMENTO = " & nSeq & " AND NUMPARCELA = " & nParc & " AND CODCOMPLEMENTO = " & nCompl
+    cn.Execute sql, rdExecDirect
     
     If IsDate(mskIncricao.Text) Then
-        Sql = "UPDATE DEBITOPARCELA SET DATAINSCRICAO='" & Format(mskIncricao.Text, "mm/dd/yyyy")
-        Sql = Sql & "' WHERE CODREDUZIDO = " & Val(frmDebitoImob.txtCod.Text) & " AND ANOEXERCICIO = " & nAno & " AND CODLANCAMENTO = " & nLanc & " AND "
-        Sql = Sql & "SEQLANCAMENTO = " & nSeq & " AND NUMPARCELA = " & nParc & " AND CODCOMPLEMENTO = " & nCompl
-        cn.Execute Sql, rdExecDirect
+        sql = "UPDATE DEBITOPARCELA SET DATAINSCRICAO='" & Format(mskIncricao.Text, "mm/dd/yyyy")
+        sql = sql & "' WHERE CODREDUZIDO = " & Val(frmDebitoImob.txtCod.Text) & " AND ANOEXERCICIO = " & nAno & " AND CODLANCAMENTO = " & nLanc & " AND "
+        sql = sql & "SEQLANCAMENTO = " & nSeq & " AND NUMPARCELA = " & nParc & " AND CODCOMPLEMENTO = " & nCompl
+        cn.Execute sql, rdExecDirect
     End If
 End With
 
@@ -2076,3 +2174,90 @@ Private Sub txtValorPago_LostFocus()
 Grava
 txtValorPago.Text = FormatNumber(txtValorPago.Text, 2)
 End Sub
+
+Private Function CalculoTaxaSelicDetalhe(valor As Double, mesVencto As Integer, anoVencto As Integer) As Double
+
+Dim sql As String, RdoAux As rdoResultset, nTaxa As Double, nMes As Integer, nAno As Integer, nFator As Double, aValores() As Double
+Dim nResultado As Double, x As Integer, y As Integer, bFind As Boolean
+
+ReDim aValores(0)
+nMes = mesVencto
+nAno = anoVencto
+nSomaFator = 0
+nResultado = 0
+
+Do While True
+    If nAno < 2021 Then
+        CalculoTaxaSelicDetalhe = 0
+        Exit Function
+    Else
+        If nAno = 2021 And nMes < 12 Then
+            CalculoTaxaSelicDetalhe = 0
+            Exit Function
+        End If
+    End If
+    
+    sql = "select valor from taxaselicmensal where ano=" & nAno & " and mes=" & nMes
+    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    With RdoAux
+        If RdoAux.RowCount > 0 Then
+            nTaxa = !valor
+        Else
+            nTaxa = 0
+        End If
+       .Close
+    End With
+    
+   
+    nFator = (1 + (nTaxa / 100))
+    ReDim Preserve aValores(UBound(aValores) + 1)
+    aValores(UBound(aValores)) = nFator
+    
+    nMes = nMes + 1
+    If nMes = 13 Then
+        nMes = 1
+        nAno = nAno + 1
+    End If
+  
+    bFind = False
+    For y = 1 To UBound(aTaxa)
+        If aTaxa(y).nAno = nAno And aTaxa(y).nMes = nMes Then
+            bFind = True
+            Exit For
+        End If
+    Next
+    If Not bFind Then
+        ReDim Preserve aTaxa(UBound(aTaxa) + 1)
+        aTaxa(UBound(aTaxa)).nAno = nAno
+        aTaxa(UBound(aTaxa)).nMes = nMes
+        aTaxa(UBound(aTaxa)).nValor = valor
+        aTaxa(UBound(aTaxa)).nTaxa = nTaxa
+        aTaxa(UBound(aTaxa)).nFator = nFator
+        aTaxa(UBound(aTaxa)).sPeriodo = FormatarMesAno(nMes, nAno)
+    End If
+    
+    If nAno = Year(Now) And nMes = Month(Now) Then
+        For x = 1 To UBound(aValores)
+            If nResultado = 0 Then
+                nResultado = aValores(x)
+            Else
+                nResultado = nResultado * aValores(x)
+            End If
+        Next
+        CalculoTaxaSelicDetalhe = Round(valor * nResultado, 2)
+        Exit Function
+    Else
+        If nAno = Year(Now) And nMes > Month(Now) Then
+            CalculoTaxaSelicDetalhe = Round(valor * nResultado, 2)
+            Exit Function
+        Else
+            If nAno > Year(Now) Then
+                CalculoTaxaSelicDetalhe = Round(valor * nResultado, 2)
+                Exit Function
+            End If
+        End If
+    End If
+Loop
+
+End Function
+

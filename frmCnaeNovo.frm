@@ -372,16 +372,16 @@ sClasse = Left(sClasse, 1) & Right(sClasse, 1)
 nClasse = Val(sClasse)
 nSubClasse = Val(Right(sCnae, 2))
 If cmbCriterio.ListIndex > -1 Then
-    Sql = "SELECT cnae_aliquota.criterio,cnae_criterio_descricao.descricao,cnae_aliquota.valor,cnae_aliquota.cnae,cnae_aliquota.ano "
-    Sql = Sql & "FROM dbo.cnae_criterio_descricao INNER JOIN dbo.cnae_aliquota  ON cnae_criterio_descricao.codigo = cnae_aliquota.criterio "
+    sql = "SELECT cnae_aliquota.criterio,cnae_criterio_descricao.descricao,cnae_aliquota.valor,cnae_aliquota.cnae,cnae_aliquota.ano "
+    sql = sql & "FROM dbo.cnae_criterio_descricao INNER JOIN dbo.cnae_aliquota  ON cnae_criterio_descricao.codigo = cnae_aliquota.criterio "
     'Sql = Sql & "WHERE cnae_aliquota.ano = " & Year(Now) & " AND cnae_aliquota.cnae = '" & sCnae & "' and criterio=" & cmbCriterio.ItemData(cmbCriterio.ListIndex)
-    Sql = Sql & "WHERE cnae_aliquota.ano = 2023 AND cnae_aliquota.cnae = '" & sCnae & "' and criterio=" & cmbCriterio.ItemData(cmbCriterio.ListIndex)
+    sql = sql & "WHERE cnae_aliquota.ano = 2023 AND cnae_aliquota.cnae = '" & sCnae & "' and criterio=" & cmbCriterio.ItemData(cmbCriterio.ListIndex)
 
 
 '    Sql = "SELECT cnaecriterio.valor From "
 '    Sql = Sql & "cnaecriteriodesc INNER JOIN cnaecriterio ON (cnaecriteriodesc.criterio = cnaecriterio.criterio) WHERE CNAE='" & sCnae & "' AND cnaecriterio.CRITERIO=" & cmbCriterio.ItemData(cmbCriterio.ListIndex)
     'Sql = "select valor from cnaecriteriodesc where criterio=" & cmbCriterio.ItemData(cmbCriterio.ListIndex)
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         If .RowCount > 0 Then
              txtValor.Text = FormatNumber(!valor, 4)
@@ -436,16 +436,16 @@ With grdTmp
    .AddItem .Rows & Chr(9) & cmbCriterio.ItemData(cmbCriterio.ListIndex) & Chr(9) & cmbCriterio.Text & Chr(9) & FormatNumber(txtValor.Text, 2)
 '    Sql = "DELETE FROM CNAECRITERIO WHERE cnae='" & sCnae & "'"
 '    cn.Execute Sql, rdExecDirect
-    Sql = "DELETE FROM cnae_criterio WHERE cnae='" & sCnae & "'"
-    cn.Execute Sql, rdExecDirect
+    sql = "DELETE FROM cnae_criterio WHERE cnae='" & sCnae & "'"
+    cn.Execute sql, rdExecDirect
     
     
     With grdTmp
         For x = 1 To grdTmp.Rows - 1
 '            Sql = "INSERT CNAECRITERIO(CNAE,SEQ,CRITERIO,VALOR) VALUES('" & sCnae & "'," & .TextMatrix(x, 0) & ","
 '            Sql = Sql & .TextMatrix(x, 1) & "," & Virg2Ponto(.TextMatrix(x, 3)) & ")"
-            Sql = "INSERT cnae_criterio(CNAE,CRITERIO) VALUES('" & sCnae & "'," & .TextMatrix(x, 1) & ")"
-            cn.Execute Sql, rdExecDirect
+            sql = "INSERT cnae_criterio(CNAE,CRITERIO) VALUES('" & sCnae & "'," & .TextMatrix(x, 1) & ")"
+            cn.Execute sql, rdExecDirect
         Next
     End With
 End With
@@ -460,30 +460,30 @@ With grdTmp
     If .Rows = 2 Then
        grdTmp.Rows = 1
     Else
-        .RemoveItem (.Row)
+        .RemoveItem (.row)
     End If
 End With
  
  sCnae = RetornaNumero(mskCnae.Text)
 ' Sql = "DELETE FROM CNAECRITERIO WHERE cnae='" & sCnae & "'"
 ' cn.Execute Sql, rdExecDirect
-    Sql = "DELETE FROM cnae_criterio_valor WHERE cnae='" & sCnae & "'"
-    cn.Execute Sql, rdExecDirect
+    sql = "DELETE FROM cnae_criterio_valor WHERE cnae='" & sCnae & "'"
+    'cn.Execute sql, rdExecDirect
  
  With grdTmp
      For x = 1 To grdTmp.Rows - 1
 '         Sql = "INSERT CNAECRITERIO(CNAE,SEQ,CRITERIO,VALOR) VALUES('" & sCnae & "'," & .TextMatrix(x, 0) & ","
 '         Sql = Sql & .TextMatrix(x, 1) & "," & Virg2Ponto(.TextMatrix(x, 3)) & ")"
-          Sql = "INSERT cnae_criterio_valor(CNAE,CRITERIO,VALOR) VALUES('" & sCnae & "'," & .TextMatrix(x, 1) & "," & Virg2Ponto(.TextMatrix(x, 3)) & ")"
-          cn.Execute Sql, rdExecDirect
-          cn.Execute Sql, rdExecDirect
+          sql = "INSERT cnae_criterio_valor(CNAE,CRITERIO,VALOR) VALUES('" & sCnae & "'," & .TextMatrix(x, 1) & "," & Virg2Ponto(.TextMatrix(x, 3)) & ")"
+     '     cn.Execute sql, rdExecDirect
+      '    cn.Execute sql, rdExecDirect
      Next
  End With
 
 End Sub
 
 Private Sub cmdGravar_Click()
-Dim bAchou As Boolean, x As Integer, sCnae As String, Sql As String
+Dim bAchou As Boolean, x As Integer, sCnae As String, sql As String
 
 
 If NomeDeLogin <> "RITA" And NOMEDLEOGIN <> "LEANDRO" And NomeDeLogin <> "RODRIGOC" And NomeDeLogin <> "LUIZH" And NomeDeLogin <> "SCHWARTZ" Then
@@ -513,14 +513,14 @@ End If
 
 If bAchou Then
     If MsgBox("Deseja ALTERAR a descrição do CNAE existente de " & lvCnae.SelectedItem.SubItems(1) & " para " & txtDesc.Text & "?", vbQuestion + vbYesNo, "Confirmação") = vbYes Then
-        Sql = "update cnae set descricao='" & Mask(txtDesc.Text) & "' where cnae='" & sCnae & "'"
-        cn.Execute Sql, rdExecDirect
+        sql = "update cnae set descricao='" & Mask(txtDesc.Text) & "' where cnae='" & sCnae & "'"
+        cn.Execute sql, rdExecDirect
         CarregaLista
     End If
 Else
     If MsgBox("Deseja incluir este NOVO CNAE?", vbQuestion + vbYesNo, "Confirmação") = vbYes Then
-        Sql = "insert cnae(cnae,descricao) values('" & sCnae & "','" & Mask(txtDesc.Text) & "')"
-        cn.Execute Sql, rdExecDirect
+        sql = "insert cnae(cnae,descricao) values('" & sCnae & "','" & Mask(txtDesc.Text) & "')"
+        cn.Execute sql, rdExecDirect
         CarregaLista
     End If
 End If
@@ -582,21 +582,21 @@ End If
 End Sub
 
 Private Sub CarregaLista()
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, RdoAux As rdoResultset
 Dim itmX As ListItem, z As Long
 z = SendMessage(lvCnae.HWND, LVM_DELETEALLITEMS, 0, 0)
 
 Ocupado
-Sql = "select * from cnae where 1=1 "
+sql = "select * from cnae where 1=1 "
 If Trim(txtPesq.Text) <> "" Then
     If IsNumeric(txtPesq.Text) Then
-        Sql = Sql & " and cnae like '" & Mask(txtPesq.Text) & "%'"
+        sql = sql & " and cnae like '" & Mask(txtPesq.Text) & "%'"
     Else
-        Sql = Sql & " and descricao like '%" & Mask(txtPesq.Text) & "%'"
+        sql = sql & " and descricao like '%" & Mask(txtPesq.Text) & "%'"
     End If
 End If
-Sql = Sql & " order by cnae"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = sql & " order by cnae"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         Set itmX = lvCnae.ListItems.Add(, , !Cnae)
@@ -609,8 +609,8 @@ End With
 
 cmbCriterio.Clear
 
-Sql = "SELECT CRITERIO,DESCRICAO FROM CNAECRITERIODESC ORDER BY DESCRICAO"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
+sql = "SELECT CRITERIO,DESCRICAO FROM CNAECRITERIODESC ORDER BY DESCRICAO"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurReadOnly)
 With RdoAux
     Do Until .EOF
         cmbCriterio.AddItem !Descricao
@@ -668,15 +668,15 @@ sCnae = RetornaNumero(mskCnae.Text)
 
 grdTmp.Rows = 1
 
-Sql = "select max(ano) as maximo from cnae_aliquota"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select max(ano) as maximo from cnae_aliquota"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 nAno = RdoAux!maximo
 RdoAux.Close
 
 
-Sql = "SELECT cnae_aliquota.criterio,cnae_criterio_descricao.descricao,cnae_aliquota.valor,cnae_aliquota.cnae,cnae_aliquota.ano "
-Sql = Sql & "FROM dbo.cnae_criterio_descricao INNER JOIN dbo.cnae_aliquota  ON cnae_criterio_descricao.codigo = cnae_aliquota.criterio "
-Sql = Sql & "WHERE cnae_aliquota.ano = " & nAno & " AND cnae_aliquota.cnae = '" & sCnae & "'"
+sql = "SELECT cnae_aliquota.criterio,cnae_criterio_descricao.descricao,cnae_aliquota.valor,cnae_aliquota.cnae,cnae_aliquota.ano "
+sql = sql & "FROM dbo.cnae_criterio_descricao INNER JOIN dbo.cnae_aliquota  ON cnae_criterio_descricao.codigo = cnae_aliquota.criterio "
+sql = sql & "WHERE cnae_aliquota.ano = " & nAno & " AND cnae_aliquota.cnae = '" & sCnae & "'"
 'Sql = Sql & "ON mobiliariovs.cnae = cnae_aliquota.cnae AND mobiliariovs.criterio = cnae_aliquota.criterio Where mobiliariovs.cnae = '" & sCnae & "' AND cnae_aliquota.ano = " & nAno
 
 
@@ -685,7 +685,7 @@ Sql = Sql & "WHERE cnae_aliquota.ano = " & nAno & " AND cnae_aliquota.cnae = '" 
 'Sql = Sql & "WHERE cnae_criterio.cnae = '" & sCnae & "'"
 
 
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurReadOnly)
 With RdoAux
     Do Until .EOF
         grdTmp.AddItem 0 & Chr(9) & RdoAux!criterio & Chr(9) & RdoAux!Descricao & Chr(9) & FormatNumber(RdoAux!valor, 4)

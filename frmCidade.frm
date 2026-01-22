@@ -5,8 +5,8 @@ Begin VB.Form frmCidade
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Cadastro de Cidades"
    ClientHeight    =   4170
-   ClientLeft      =   17385
-   ClientTop       =   2655
+   ClientLeft      =   2310
+   ClientTop       =   2310
    ClientWidth     =   6105
    Icon            =   "frmCidade.frx":0000
    KeyPreview      =   -1  'True
@@ -347,7 +347,7 @@ Private Sub cmbUF_Click()
 Ocupado
 Limpa
 CarregaLista
-le
+Le
 Liberado
 End Sub
 
@@ -362,7 +362,7 @@ Private Sub cmdAlterar_Click()
 End Sub
 
 Private Sub cmdCancel_Click()
-    le
+    Le
     Eventos "INICIAR"
     Evento = ""
 End Sub
@@ -381,7 +381,7 @@ On Error GoTo Erro
        Log Form, Me.Caption, Exclusão, "Excluído registro " & Format(txtCod.Text, "000") & "-" & txtDesc.Text
        Limpa
        CarregaLista
-       le
+       Le
     End If
     Exit Sub
 Erro:
@@ -426,7 +426,7 @@ Sql = "Select SIGLAUF,DESCUF From UF"
 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux2
     Do Until .EOF
-       cmbUF.AddItem !SiglaUF & "-" & !DESCUF
+       cmbUF.AddItem !siglauf & "-" & !DESCUF
       .MoveNext
     Loop
    .Close
@@ -435,7 +435,7 @@ If cmbUF.ListCount > 0 Then cmbUF.ListIndex = 0
 
 lstCidade.Clear
 CarregaLista
-le
+Le
 
 Eventos "INICIAR"
 
@@ -486,7 +486,7 @@ FormHagana
 
 End Sub
 
-Private Sub le()
+Private Sub Le()
 
 'If lstCidade.ListCount > 0 Then lstCidade.ListIndex = 0
 If lstCidade.ListIndex = -1 Then Exit Sub
@@ -512,9 +512,9 @@ With RdoAux
     Do Until .EOF
 '        lstCidade.AddItem !DESCCidade
 '        lstCidade.ItemData(lstCidade.NewIndex) = !CODCIDADE
-       s = !descCidade: n = !CodCidade
-       lRet = SendMessage(lstCidade.HWND, LB_ADDSTRING, 0, ByVal s)
-       SendMessage lstCidade.HWND, LB_SETITEMDATA, lRet, ByVal n
+       s = !desccidade: n = !CodCidade
+       lRet = SendMessage(lstCidade.hwnd, LB_ADDSTRING, 0, ByVal s)
+       SendMessage lstCidade.hwnd, LB_SETITEMDATA, lRet, ByVal n
       .MoveNext
     Loop
    .Close
@@ -547,7 +547,7 @@ qd(1) = Left$(cmbUF.Text, 2)
 qd(3) = txtDesc.Text
 Set RdoAux = qd.OpenResultset(rdOpenForwardOnly)
 
-MaxCod = RdoAux.rdoColumns(0).value
+MaxCod = RdoAux.rdoColumns(0).Value
 
 If Evento = "Novo" Then
    txtCod.Text = MaxCod
@@ -560,7 +560,7 @@ End If
 s = txtDesc.Text
 cmbUF_Click
 lstCidade.Text = s
-le
+Le
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
@@ -591,5 +591,5 @@ If Not bDel Then cmdExcluir.Enabled = False
 End Sub
 
 Private Sub lstCidade_Click()
-If bExec Then le
+If bExec Then Le
 End Sub

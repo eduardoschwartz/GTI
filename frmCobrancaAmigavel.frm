@@ -580,7 +580,7 @@ For i = Val(txtCod1.Text) To Val(txtCod2.Text)
                 ElseIf cmbAjuizado.ListIndex = 2 Then
                     If Not IsNull(!dataajuiza) Then GoTo Proximo
                 End If
-                If !ValorTributo = 0 Then GoTo Proximo
+                If !VALORTRIBUTO = 0 Then GoTo Proximo
                 If !DataVencimento > Now Then GoTo Proximo
 '                If !DataVencimento > CDate("07/31/2014") Then GoTo Proximo
                 'iss
@@ -646,7 +646,7 @@ For i = Val(txtCod1.Text) To Val(txtCod2.Text)
                     Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                     With RdoAux2
                         If .RowCount > 0 Then
-                            sNome = !razaosocial
+                            sNome = !RazaoSocial
                             sInscricao = !codigomob
                             If Val(SubNull(!CodLogradouro)) > 0 Then
                                 sEndereco = Trim$(SubNull(!AbrevTipoLog)) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro
@@ -1070,7 +1070,7 @@ For i = Val(txtCod1.Text) To Val(txtCod2.Text)
                     Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                     With RdoAux2
                         If .RowCount > 0 Then
-                            sNome = !razaosocial
+                            sNome = !RazaoSocial
                             sInscricao = !codigomob
                             If Val(SubNull(!CodLogradouro)) > 0 Then
                                 sEndereco = Trim$(SubNull(!AbrevTipoLog)) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro
@@ -1184,14 +1184,14 @@ DETALHE:
                End If
                aDebito(nEval).nValorJuros = !ValorJuros
                aDebito(nEval).nValorMulta = !ValorMulta
-               aDebito(nEval).nValorCorrecao = !ValorCorrecao
-               aDebito(nEval).nValorTributo = !ValorTributo
+               aDebito(nEval).nValorCorrecao = !valorcorrecao
+               aDebito(nEval).nValorTributo = !VALORTRIBUTO
             Else
                aDebito(nEval).nValorAtual = aDebito(nEval).nValorAtual + !ValorTotal
                aDebito(nEval).nValorJuros = aDebito(nEval).nValorJuros + !ValorJuros
                aDebito(nEval).nValorMulta = aDebito(nEval).nValorMulta + !ValorMulta
-               aDebito(nEval).nValorCorrecao = aDebito(nEval).nValorCorrecao + !ValorCorrecao
-               aDebito(nEval).nValorTributo = aDebito(nEval).nValorTributo + !ValorTributo
+               aDebito(nEval).nValorCorrecao = aDebito(nEval).nValorCorrecao + !valorcorrecao
+               aDebito(nEval).nValorTributo = aDebito(nEval).nValorTributo + !VALORTRIBUTO
             End If
 Proximo:
             .MoveNext
@@ -1452,7 +1452,7 @@ For i = Val(txtCod1.Text) To Val(txtCod2.Text)
                     Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
                     With RdoAux2
                         If .RowCount > 0 Then
-                            sNome = !razaosocial
+                            sNome = !RazaoSocial
                             sInscricao = !codigomob
                             If Val(SubNull(!CodLogradouro)) > 0 Then
                                 sEndereco = Trim$(SubNull(!AbrevTipoLog)) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro
@@ -1560,7 +1560,7 @@ DETALHE:
                If !statuslanc = 3 Or !statuslanc = 19 Then
                   If Not IsNull(!ValorTotal) Then
                     'aDebito(nEval).nValorAtual = !ValorTotal
-                    aDebito(nEval).nValorAtual = !ValorTributo + !ValorCorrecao
+                    aDebito(nEval).nValorAtual = !VALORTRIBUTO + !valorcorrecao
                   Else
                     aDebito(nEval).nValorAtual = 0
                   End If
@@ -1571,16 +1571,16 @@ DETALHE:
                aDebito(nEval).nValorMulta = !ValorMulta - (!ValorMulta * 0.8)
 '               aDebito(nEval).nValorJuros = 0
 '               aDebito(nEval).nValorMulta = 0
-               aDebito(nEval).nValorCorrecao = !ValorCorrecao
-               aDebito(nEval).nValorTributo = !ValorTributo
+               aDebito(nEval).nValorCorrecao = !valorcorrecao
+               aDebito(nEval).nValorTributo = !VALORTRIBUTO
             Else
  '               aDebito(nEval).nValorAtual = aDebito(nEval).nValorAtual + !ValorTotal
 '               aDebito(nEval).nValorJuros = aDebito(nEval).nValorJuros + !ValorJuros
 '               aDebito(nEval).nValorMulta = aDebito(nEval).nValorMulta + !ValorMulta
                aDebito(nEval).nValorJuros = 0
                aDebito(nEval).nValorMulta = 0
-               aDebito(nEval).nValorCorrecao = aDebito(nEval).nValorCorrecao + !ValorCorrecao
-               aDebito(nEval).nValorTributo = aDebito(nEval).nValorTributo + !ValorTributo
+               aDebito(nEval).nValorCorrecao = aDebito(nEval).nValorCorrecao + !valorcorrecao
+               aDebito(nEval).nValorTributo = aDebito(nEval).nValorTributo + !VALORTRIBUTO
                aDebito(nEval).nValorAtual = aDebito(nEval).nValorTributo + aDebito(nEval).nValorCorrecao
             End If
 Proximo:
@@ -1649,7 +1649,7 @@ With RdoAux
                     Sql = "INSERT PARCELADOCUMENTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,"
                     Sql = Sql & "NUMPARCELA,CODCOMPLEMENTO,NUMDOCUMENTO,VALORJUROS,VALORMULTA,VALORCORRECAO,PLANO) VALUES(" & !CODREDUZIDO & ","
                     Sql = Sql & !AnoExercicio & "," & !CodLancamento & "," & !SeqLancamento & "," & !NumParcela & "," & !CODCOMPLEMENTO & "," & nNumDoc & ","
-                    Sql = Sql & Virg2Ponto(CStr(!ValorJuros)) & "," & Virg2Ponto(CStr(!ValorMulta)) & "," & Virg2Ponto(CStr(!ValorCorrecao)) & "," & nPlano & ")"
+                    Sql = Sql & Virg2Ponto(CStr(!ValorJuros)) & "," & Virg2Ponto(CStr(!ValorMulta)) & "," & Virg2Ponto(CStr(!valorcorrecao)) & "," & nPlano & ")"
                     cn.Execute Sql, rdExecDirect
                     
                     Sql = "insert boleto(usuario,computer,sid,seq,inscricao,codreduzido,nome,cpf,endereco,numimovel,complemento,bairro,cidade,uf,quadra,lote,numdoc,nomefunc,datadam,fulllanc,fulltrib,"
@@ -1659,7 +1659,7 @@ With RdoAux
                     Sql = Sql & Mask(sLotes) & "','" & sNumDoc & "','" & NomeDeLogin & "','" & Format(sDataVencto, "mm/dd/yyyy") & "','BOLETO EMITIDO COM 100% DESCONTO NA MULTA E JUROS - REFIS 2017 LC Nº185/2017','" & !DESCLANCAMENTO & "'," & !AnoExercicio & ","
                     'Sql = Sql & Mask(sLotes) & "','" & sNumDoc & "','" & NomeDeLogin & "','" & Format(sDataVencto, "mm/dd/yyyy") & "','AVISO DE DÉBITO - COBRANÇA AMIGÁVEL','" & !DESCLANCAMENTO & "'," & !AnoExercicio & ","
                     Sql = Sql & !CodLancamento & "," & !SeqLancamento & "," & !NumParcela & "," & !CODCOMPLEMENTO & ",'" & Format(!DataVencimento, "mm/dd/yyyy") & "','',''," & Virg2Ponto(Format(!ValorPrincipal, "#0.00")) & ","
-                    Sql = Sql & Virg2Ponto(Format(!ValorJuros, "#0.00")) & "," & Virg2Ponto(Format(!ValorMulta, "#0.00")) & "," & Virg2Ponto(Format(!ValorCorrecao, "#0.00")) & "," & Virg2Ponto(Format(!ValorTotal, "#0.00")) & ",'" & sNumDoc2
+                    Sql = Sql & Virg2Ponto(Format(!ValorJuros, "#0.00")) & "," & Virg2Ponto(Format(!ValorMulta, "#0.00")) & "," & Virg2Ponto(Format(!valorcorrecao, "#0.00")) & "," & Virg2Ponto(Format(!ValorTotal, "#0.00")) & ",'" & sNumDoc2
                     Sql = Sql & "'," & 0 & ")"
                     cn.Execute Sql, rdExecDirect
                     
@@ -1709,6 +1709,11 @@ With RdoAux
             sDataDam = sDataVencto
             dDataBase = "07/10/1997"
             nFatorVencto = CDate(sDataDam) - dDataBase
+            If CDate(sDataDam) >= "22/02/2025" Then
+                dDataBase = "29/05/2022"
+                nFatorVencto = CDate(sDataDam) - CDate(dDataBase)
+            End If
+            
             sQuintoGrupo = Format(nFatorVencto, "0000")
             sQuintoGrupo = sQuintoGrupo & Format(RetornaNumero(FormatNumber(nValorDoc, 2)), "0000000000")
             sBarra = "0019" & Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(nValorDoc, 2)), "0000000000") & "000000287353200"

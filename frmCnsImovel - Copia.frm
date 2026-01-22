@@ -774,7 +774,7 @@ If bNum Then
    Sql = Sql & "CADIMOB.LI_NUM=" & Val(txtNumImovel.Text) & " AND "
 End If
 If bCompl Then
-   Sql = Sql & "CADIMOB.LI_COMPL LIKE '%" & Mask(txtCompl.Text) & "%' AND "
+   Sql = Sql & "CADIMOB.LI_COMPL='" & Mask(txtCompl.Text) & "' AND "
 End If
 If bNome Then
     Sql = Sql & "PROPRIETARIO.CODCIDADAO=" & Val(Left$(txtProp.Text, 6)) & "  AND  "
@@ -817,8 +817,8 @@ If RdoAux.RowCount > 0 Then
           itmX.SubItems(1) = IIf(!Inativo, "N", "S")
           itmX.SubItems(2) = !Distrito & "." & Format(!Setor, "00") & "." & Format(!Quadra, "0000") & "." & Format(!Lote, "00000") & "." & Format(!Seq, "00") & "." & Format(!Unidade, "00") & "." & Format(!SubUnidade, "000")
           itmX.SubItems(3) = SubNull(!nomecidadao)
-          If Not IsNull(!cpf) Then
-             itmX.SubItems(4) = SubNull(!cpf)
+          If Not IsNull(!CPF) Then
+             itmX.SubItems(4) = SubNull(!CPF)
           ElseIf Not IsNull(!Cnpj) Then
              itmX.SubItems(4) = SubNull(!Cnpj)
           ElseIf Not IsNull(!rg) Then
@@ -929,7 +929,7 @@ lvImovel.Sorted = True
 lvImovel.SortOrder = lvwAscending
 End Sub
 
-Private Sub lvImovel_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub lvImovel_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
 If Button = vbRightButton Then
     If MsgBox("Deseja gerar arquivo texto ?", vbQuestion + vbYesNo, "Confirmação") = vbYes Then
         GeraTexto

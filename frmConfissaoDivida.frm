@@ -860,8 +860,8 @@ With RdoAux
     If nCodReduz < 100000 Then
         Sql = "select logradouro,li_num,nomecidadao,cpf,cnpj,descbairro,desccidade,li_uf from vwfullimovel2 where codreduzido=" & nCodReduz
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-        sNome = SubNull(RdoAux2!Nomecidadao)
-        sEnd = SubNull(RdoAux2!Logradouro) & ", " & SubNull(RdoAux2!Li_Num) & " " & SubNull(RdoAux2!DescBairro) & " " & SubNull(RdoAux2!descCidade) & "/" & SubNull(RdoAux2!li_uf)
+        sNome = SubNull(RdoAux2!nomecidadao)
+        sEnd = SubNull(RdoAux2!Logradouro) & ", " & SubNull(RdoAux2!Li_Num) & " " & SubNull(RdoAux2!DescBairro) & " " & SubNull(RdoAux2!DESCCIDADE) & "/" & SubNull(RdoAux2!li_uf)
         If Not IsNull(RdoAux2!Cnpj) Then
             sDoc = RdoAux2!Cnpj
         End If
@@ -877,7 +877,7 @@ With RdoAux
         Sql = "SELECT razaosocial, LOGRADOURO, numero, descbairro, desccidade, siglauf, cpf, cnpj FROM vwFULLEMPRESA3 where codigomob=" & nCodReduz
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         sNome = SubNull(RdoAux2!RazaoSocial)
-        sEnd = SubNull(RdoAux2!Logradouro) & ", " & SubNull(RdoAux2!Numero) & " " & SubNull(RdoAux2!DescBairro) & " " & SubNull(RdoAux2!descCidade) & "/" & SubNull(RdoAux2!SiglaUF)
+        sEnd = SubNull(RdoAux2!Logradouro) & ", " & SubNull(RdoAux2!Numero) & " " & SubNull(RdoAux2!DescBairro) & " " & SubNull(RdoAux2!DESCCIDADE) & "/" & SubNull(RdoAux2!SiglaUF)
         If Not IsNull(RdoAux2!Cnpj) Then
             sDoc = Format(RdoAux2!Cnpj, "00\.000\.000/0000-00")
         Else
@@ -891,8 +891,8 @@ With RdoAux
     Else
         Sql = "SELECT nomecidadao, cpf, cnpj, ENDERECO, numimovel, DESCCIDADE, siglauf, descbairro FROM vwFULLCIDADAO where codcidadao=" & nCodReduz
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-        sNome = SubNull(RdoAux2!Nomecidadao)
-        sEnd = SubNull(RdoAux2!Endereco) & ", " & SubNull(RdoAux2!NUMIMOVEL) & " " & SubNull(RdoAux2!DescBairro) & " " & SubNull(RdoAux2!descCidade) & " " & SubNull(RdoAux2!descCidade) & "/" & SubNull(RdoAux2!SiglaUF)
+        sNome = SubNull(RdoAux2!nomecidadao)
+        sEnd = SubNull(RdoAux2!Endereco) & ", " & SubNull(RdoAux2!NUMIMOVEL) & " " & SubNull(RdoAux2!DescBairro) & " " & SubNull(RdoAux2!DESCCIDADE) & " " & SubNull(RdoAux2!DESCCIDADE) & "/" & SubNull(RdoAux2!SiglaUF)
         If Not IsNull(RdoAux2!Cnpj) Then
             sDoc = Format(RdoAux2!Cnpj, "00\.000\.000/0000-00")
         Else
@@ -937,10 +937,10 @@ With RdoAux
         With RdoAux2
             Do Until .EOF
             
-                nValorTributo = !ValorTributo
+                nValorTributo = !VALORTRIBUTO
                 nValorMulta = !ValorMulta
                 nValorJuros = !ValorJuros
-                nValorCorrecao = !ValorCorrecao
+                nValorCorrecao = !valorcorrecao
                 
                 sDataVencto = Format(RdoAux!Datadocumento, "dd/mm/yyyy")
                 If CDate(sDataVencto) >= CDate("01/10/2013") And CDate(sDataVencto) <= CDate("31/10/2013") Then
@@ -1078,7 +1078,7 @@ Continua:
     Sql = "select * from vwfullcidadao WHERE CODCIDADAO=" & nCodCidadao
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
-        lblRequerente.Caption = SubNull(!Nomecidadao)
+        lblRequerente.Caption = SubNull(!nomecidadao)
         If Not IsNull(!cpf) And SubNull(!cpf) <> "" Then
             
             lblCPF.Caption = !cpf
@@ -1089,8 +1089,8 @@ Continua:
                 lblCPF.Caption = ""
             End If
         End If
-        If Val(SubNull(!CodLogradouro)) > 0 Then
-            lblEndCor.Caption = Trim$(SubNull(!Endereco)) & ", " & Val(SubNull(!NUMIMOVEL)) & " " & SubNull(!Complemento)
+        If SubNull(!Endereco) <> "" Then
+            lblEndCor.Caption = Trim$(SubNull(!Endereco)) & ", " & Val(SubNull(!NUMIMOVEL)) & " " & SubNull(!Complemento) & " ," & SubNull(!DescBairro) & " - " & SubNull(!DESCCIDADE) & "/" & SubNull(!SiglaUF)
             'lblEndCor.Caption = Trim$(SubNull(!AbrevTipoLog)) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro & " Nº " & !NUMIMOVEL & " " & SubNull(!Complemento)
         Else
             lblEndCor.Caption = Trim$(SubNull(!Enderecoc)) & ", " & Val(SubNull(!NUMIMOVEL2)) & " " & SubNull(!Complemento2)
@@ -1154,7 +1154,7 @@ With RdoAux
            If !NumParcela = 1 Then
               lblVenc.Caption = Format(!DataVencimento, "dd/mm/yyyy")
            End If
-           nSoma = nSoma + !ValorTributo
+           nSoma = nSoma + !VALORTRIBUTO
           .MoveNext
         Loop
         lblValor.Caption = FormatNumber(nSoma, 2)
@@ -1181,7 +1181,7 @@ With RdoAux
             Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux
                 If .RowCount > 0 Then
-                    lblProp.Caption = !Nomecidadao
+                    lblProp.Caption = !nomecidadao
                 End If
                 
             End With
