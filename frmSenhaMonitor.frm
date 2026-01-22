@@ -451,6 +451,10 @@ With PicOld(2)
     .Height = Me.Height / 3
     .Top = PicOld(0).Height * 2
 End With
+lblSenha.Width = picMain.Width
+lblSenha.Left = picMain.Left
+
+
 lblMain.Width = picMain.Width
 lblMain.Left = picMain.Left
 lblMain.Top = 400
@@ -465,6 +469,8 @@ For x = 0 To 2
     lblOld(x).Left = PicOld(x).Left - picMain.Width
     lblOldG(x).Width = PicOld(x).Width
     lblOldG(x).Left = PicOld(x).Left - picMain.Width
+    lblOldG2(x).Width = PicOld(x).Width
+    lblOldG2(x).Left = PicOld(x).Left - picMain.Width
 Next
 
 lblOld(0).Top = -100
@@ -476,6 +482,9 @@ lblOldG(2).Top = lblOld(2).Top + lblOld(2).Height - 400
 lblOldG2(0).Top = lblOld(0).Top + lblOld(0).Height
 lblOldG2(1).Top = lblOld(1).Top + lblOld(1).Height
 lblOldG2(2).Top = lblOld(2).Top + lblOld(2).Height - 100
+lblOldG2(0).Top = lblOldG2(0).Top + 400
+lblOldG2(1).Top = lblOldG2(0).Top + 400
+lblOldG2(2).Top = lblOldG2(0).Top + 400
 
 UpdateBltSample
 End Sub

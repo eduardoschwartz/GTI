@@ -189,6 +189,7 @@ On Error Resume Next
 RdoAux.Close
 On Error GoTo 0
 Set qd.ActiveConnection = cn
+qd.QueryTimeout = 180
 Ocupado
 grdMain.Clear
 qd.Sql = "{ Call spCDB2(?,?,?,?,?) }"
@@ -201,14 +202,15 @@ Set RdoAux = qd.OpenResultset(rdOpenKeyset)
 grdMain.Redraw = False
 With RdoAux
     Do Until .EOF
-        grdMain.AddRow
-        grdMain.CellDetails grdMain.Rows, 1, !Codigo, DT_CENTER
-        grdMain.CellDetails grdMain.Rows, 2, !Nome, DT_LEFT
-        sRet = Replace(!resultado, "Certidão ", "")
-        grdMain.CellDetails grdMain.Rows, 3, sRet, DT_LEFT
-        grdMain.CellDetails grdMain.Rows, 4, !cpf, DT_LEFT
-        grdMain.CellDetails grdMain.Rows, 5, !Cnpj, DT_LEFT
-           
+        If Not IsNull(!RESULTADO) Then
+            grdMain.AddRow
+            grdMain.CellDetails grdMain.Rows, 1, !Codigo, DT_CENTER
+            grdMain.CellDetails grdMain.Rows, 2, !Nome, DT_LEFT
+            sRet = Replace(!RESULTADO, "Certidão ", "")
+            grdMain.CellDetails grdMain.Rows, 3, sRet, DT_LEFT
+            grdMain.CellDetails grdMain.Rows, 4, !cpf, DT_LEFT
+            grdMain.CellDetails grdMain.Rows, 5, !Cnpj, DT_LEFT
+        End If
        .MoveNext
     Loop
    .Close

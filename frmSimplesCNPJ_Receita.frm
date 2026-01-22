@@ -6,19 +6,19 @@ Begin VB.Form frmSimplesCNPJ_Receita
    ClientHeight    =   1365
    ClientLeft      =   6405
    ClientTop       =   4620
-   ClientWidth     =   5415
+   ClientWidth     =   5655
    LinkTopic       =   "Form1"
    MDIChild        =   -1  'True
    MinButton       =   0   'False
    ScaleHeight     =   1365
-   ScaleWidth      =   5415
+   ScaleWidth      =   5655
    Begin VB.OptionButton optTipo 
       Caption         =   "Arquivo Exclusão"
       Height          =   240
       Index           =   1
-      Left            =   2430
+      Left            =   2070
       TabIndex        =   4
-      Top             =   855
+      Top             =   810
       Value           =   -1  'True
       Width           =   1725
    End
@@ -26,9 +26,9 @@ Begin VB.Form frmSimplesCNPJ_Receita
       Caption         =   "Arquivo Inicial"
       Height          =   240
       Index           =   0
-      Left            =   540
+      Left            =   180
       TabIndex        =   3
-      Top             =   855
+      Top             =   810
       Width           =   1725
    End
    Begin VB.CommandButton cmdImportar 
@@ -115,7 +115,6 @@ Private Type tLaser
     Area_Predial As Double
 End Type
 
-
 Private Sub cmdExec_Click()
 If optTipo(0).value = True Then
     If MsgBox("Deseja gerar o arquivo inicial?", vbQuestion + vbYesNo, "Confirmação") = vbYes Then
@@ -156,12 +155,12 @@ If cGetInputState() <> 0 Then DoEvents
 End Sub
 
 Private Sub Simples_Cnpj()
-Dim nCodReduz As Long, Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, nPos2 As Integer, bFind As Boolean
+Dim nCodReduz As Long, sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, nPos2 As Integer, bFind As Boolean
 Dim nPos As Long, nTot As Long, a2019() As tLaser, a2020() As tLaser, x As Integer, y As Integer
 On Error GoTo Erro
 
-Sql = "SELECT cnpj From simplestmp order by cnpj"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT cnpj From simplestmp order by cnpj"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     nTot = .RowCount
     nPos = 1
@@ -169,8 +168,8 @@ With RdoAux
         If nPos Mod 50 = 0 Then
            CallPb nPos, nTot
         End If
-        Sql = "insert simples_cnpj_receita(cnpj) values('" & !Cnpj & "')"
-        cn.Execute Sql, rdExecDirect
+        sql = "insert simples_cnpj_receita(cnpj) values('" & !Cnpj & "')"
+        cn.Execute sql, rdExecDirect
         
         nPos = nPos + 1
         DoEvents
@@ -193,18 +192,18 @@ End Sub
 
 Private Sub Arquivo_Inicial()
 
-Dim Sql As String, RdoAux As rdoResultset, nPos As Long, nTot As Long, sCNPJ As String, nCodReduz As Long
+Dim sql As String, RdoAux As rdoResultset, nPos As Long, nTot As Long, sCnpj As String, nCodReduz As Long
 Dim RdoAux2 As rdoResultset, dData As Date, nSit As Integer, nEncerrada As Integer, nReg As Integer, nPosReg As Integer
 
 Ocupado
 
-Sql = "update simples_cnpj_receita set situacao=null,data=null,codreduz=null,encerrada=null"
-cn.Execute Sql, rdExecDirect
+sql = "update simples_cnpj_receita set situacao=null,data=null,codreduz=null,encerrada=null"
+cn.Execute sql, rdExecDirect
 
 nPos = 1
 'Sql = "select * from simples_cnpj_receita where cnpj='7786772000140' order by cnpj"
-Sql = "select * from simples_cnpj_receita order by cnpj"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select * from simples_cnpj_receita order by cnpj"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     nTot = .RowCount
     Do Until .EOF
@@ -212,16 +211,16 @@ With RdoAux
             CallPb nPos, nTot
             DoEvents
         End If
-        sCNPJ = !Cnpj
+        sCnpj = !Cnpj
         nCodReduz = 0
-        Sql = "select codigomob from mobiliario where convert(bigint,cnpj)=" & Val(sCNPJ)
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "select codigomob from mobiliario where convert(bigint,cnpj)=" & Val(sCnpj)
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         If RdoAux2.RowCount > 0 Then
             If RdoAux2.RowCount > 1 Then
                 nCodReduz = RdoAux2!codigomob
                 RdoAux2.Close
-                Sql = "select codigomob from mobiliario where convert(bigint,cnpj)=" & Val(sCNPJ) & " and dataencerramento is null"
-                Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                sql = "select codigomob from mobiliario where convert(bigint,cnpj)=" & Val(sCnpj) & " and dataencerramento is null"
+                Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                 If RdoAux2.RowCount > 0 Then
                    nCodReduz = RdoAux2!codigomob
                 End If
@@ -232,36 +231,36 @@ With RdoAux
             RdoAux2.Close
         Else
             RdoAux2.Close
-            Sql = "select codcidadao from cidadao where cnpj='" & sCNPJ & "'"
-            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            sql = "select codcidadao from cidadao where cnpj='" & sCnpj & "'"
+            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
             If RdoAux2.RowCount > 0 Then
                 nCodReduz = RdoAux2!CodCidadao
             End If
         End If
         If nCodReduz = 0 Then
-            Sql = "update simples_cnpj_receita set situacao=1, data='" & Format(Now, "mm/dd/yyyy") & "' where cnpj='" & sCNPJ & "'"
-            cn.Execute Sql, rdExecDirect
+            sql = "update simples_cnpj_receita set situacao=1, data='" & Format(Now, "mm/dd/yyyy") & "' where cnpj='" & sCnpj & "'"
+            cn.Execute sql, rdExecDirect
         Else
-            Sql = "select * from periodosn where codigo=" & nCodReduz & " order by dataini desc"
-            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            sql = "select * from periodosn where codigo=" & nCodReduz & " order by dataini desc"
+            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
             If RdoAux2.RowCount > 0 Then
-                dData = RdoAux2!dataini
+                dData = RdoAux2!DATAINI
             Else
                 dData = Format(Now, "mm/dd/yyyy")
             End If
             RdoAux2.Close
             
             nEncerrada = 0
-            Sql = "select codigomob,dataencerramento from mobiliario where codigomob=" & nCodReduz
-            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            sql = "select codigomob,dataencerramento from mobiliario where codigomob=" & nCodReduz
+            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
             If Not IsNull(RdoAux2!dataencerramento) And nCodReduz < 500000 Then
                 nEncerrada = 1
                 nSit = 1
             Else
                 nSit = 0
                 RdoAux2.Close
-                Sql = "select * from debitoparcela where codreduzido=" & nCodReduz & " and datavencimento<'" & Format("31/12/2022", "mm/dd/yyyy") & "' and codlancamento in (3,5,6,13) and (statuslanc=3 or statuslanc=42 or statuslanc=43 or statuslanc=39 or statuslanc=40 or statuslanc=41 or statuslanc=39)"
-                Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                sql = "select * from debitoparcela where codreduzido=" & nCodReduz & " and datavencimento<'" & Format("31/12/2025", "mm/dd/yyyy") & "' and codlancamento in (3,5,6,13) and (statuslanc=3 or statuslanc=42 or statuslanc=43 or statuslanc=39 or statuslanc=40 or statuslanc=41 or statuslanc=39)"
+                Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                 If RdoAux2.RowCount > 0 Then
                     nSit = 1
                 End If
@@ -270,9 +269,9 @@ With RdoAux
             
             If nSit = 0 Then
                 'SUSPENÇÃO
-                 Sql = "SELECT CODTIPOEVENTO,DATAPROCEVENTO FROM MOBILIARIOEVENTO WHERE CODMOBILIARIO=" & nCodReduz
-                 Sql = Sql & " ORDER BY DATAEVENTO DESC"
-                 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                 sql = "SELECT CODTIPOEVENTO,DATAPROCEVENTO FROM MOBILIARIOEVENTO WHERE CODMOBILIARIO=" & nCodReduz
+                 sql = sql & " ORDER BY DATAEVENTO DESC"
+                 Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                  With RdoAux2
                      If .RowCount > 0 Then
                          If !CODTIPOEVENTO = 2 Then
@@ -283,8 +282,8 @@ With RdoAux
                  End With
             End If
             
-            Sql = "update simples_cnpj_receita set situacao=" & nSit & ", data='" & Format(dData, "mm/dd/yyyy") & "', codreduz=" & nCodReduz & ", encerrada=" & nEncerrada & " where cnpj='" & sCNPJ & "'"
-            cn.Execute Sql, rdExecDirect
+            sql = "update simples_cnpj_receita set situacao=" & nSit & ", data='" & Format(dData, "mm/dd/yyyy") & "', codreduz=" & nCodReduz & ", encerrada=" & nEncerrada & " where cnpj='" & sCnpj & "'"
+            cn.Execute sql, rdExecDirect
             
         End If
                 
@@ -299,8 +298,8 @@ nPos = 1
 
 Inicio:
 Open sPathBin & "\cnpjsimples.txt" For Output As #1
-Sql = "select * from simples_cnpj_receita where situacao=1 order by cnpj"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select * from simples_cnpj_receita where situacao=1 order by cnpj"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     .Move nPos
     nPosReg = 1
@@ -335,18 +334,18 @@ End Sub
 
 Private Sub Arquivo_Exclusao()
 
-Dim Sql As String, RdoAux As rdoResultset, nPos As Long, nTot As Long, sCNPJ As String, nCodReduz As Long
+Dim sql As String, RdoAux As rdoResultset, nPos As Long, nTot As Long, sCnpj As String, nCodReduz As Long
 Dim RdoAux2 As rdoResultset, dData As Date, nSit As Integer, nEncerrada As Integer, nReg As Integer, nPosReg As Integer
 
 Ocupado
 
-Sql = "update simples_cnpj_receita set situacao=null,data=null,codreduz=null,encerrada=null"
-cn.Execute Sql, rdExecDirect
+sql = "update simples_cnpj_receita set situacao=null,data=null,codreduz=null,encerrada=null"
+cn.Execute sql, rdExecDirect
 
 nPos = 1
-'Sql = "select * from simples_cnpj_receita where cnpj='7786772000140' order by cnpj"
-Sql = "select * from simples_cnpj_receita where regularizada is null order by cnpj"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+'Sql = "select * from simples_cnpj_receita where cnpj='44539610000133' order by cnpj"
+sql = "select * from simples_cnpj_receita where regularizada is null order by cnpj"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     nTot = .RowCount
     Do Until .EOF
@@ -354,16 +353,16 @@ With RdoAux
             CallPb nPos, nTot
             DoEvents
         End If
-        sCNPJ = !Cnpj
+        sCnpj = !Cnpj
         nCodReduz = 0
-        Sql = "select codigomob from mobiliario where convert(bigint,cnpj)=" & Val(sCNPJ)
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "select codigomob from mobiliario where convert(bigint,cnpj)=" & Val(sCnpj)
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         If RdoAux2.RowCount > 0 Then
             If RdoAux2.RowCount > 1 Then
                 nCodReduz = RdoAux2!codigomob
                 RdoAux2.Close
-                Sql = "select codigomob from mobiliario where convert(bigint,cnpj)=" & Val(sCNPJ) & " and dataencerramento is null"
-                Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                sql = "select codigomob from mobiliario where convert(bigint,cnpj)=" & Val(sCnpj) & " and dataencerramento is null"
+                Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                 If RdoAux2.RowCount > 0 Then
                    nCodReduz = RdoAux2!codigomob
                 End If
@@ -374,36 +373,36 @@ With RdoAux
             RdoAux2.Close
         Else
             RdoAux2.Close
-            Sql = "select codcidadao from cidadao where cnpj='" & sCNPJ & "'"
-            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            sql = "select codcidadao from cidadao where cnpj='" & sCnpj & "'"
+            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
             If RdoAux2.RowCount > 0 Then
                 nCodReduz = RdoAux2!CodCidadao
             End If
         End If
         If nCodReduz = 0 Then
-            Sql = "update simples_cnpj_receita set situacao=1, data='" & Format(Now, "mm/dd/yyyy") & "' where cnpj='" & sCNPJ & "'"
-            cn.Execute Sql, rdExecDirect
+            sql = "update simples_cnpj_receita set situacao=1, data='" & Format(Now, "mm/dd/yyyy") & "' where cnpj='" & sCnpj & "'"
+            cn.Execute sql, rdExecDirect
         Else
-            Sql = "select * from periodosn where codigo=" & nCodReduz & " order by dataini desc"
-            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            sql = "select * from periodosn where codigo=" & nCodReduz & " order by dataini desc"
+            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
             If RdoAux2.RowCount > 0 Then
-                dData = RdoAux2!dataini
+                dData = RdoAux2!DATAINI
             Else
                 dData = Format(Now, "mm/dd/yyyy")
             End If
             RdoAux2.Close
             
             nEncerrada = 0
-            Sql = "select codigomob,dataencerramento from mobiliario where codigomob=" & nCodReduz
-            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            sql = "select codigomob,dataencerramento from mobiliario where codigomob=" & nCodReduz
+            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
             If Not IsNull(RdoAux2!dataencerramento) And nCodReduz < 500000 Then
                 nEncerrada = 1
                 nSit = 1
             Else
                 nSit = 0
                 RdoAux2.Close
-                Sql = "select * from debitoparcela where codreduzido=" & nCodReduz & " and datavencimento<'" & Format("31/12/2022", "mm/dd/yyyy") & "' and codlancamento in (3,5,6,13) and (statuslanc=3 or statuslanc=42 or statuslanc=43 or statuslanc=39 or statuslanc=40 or statuslanc=41 or statuslanc=39)"
-                Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                sql = "select * from debitoparcela where codreduzido=" & nCodReduz & " and datavencimento<'" & Format("31/12/2025", "mm/dd/yyyy") & "' and codlancamento in (3,5,6,13) and (statuslanc=3 or statuslanc=42 or statuslanc=43 or statuslanc=39 or statuslanc=40 or statuslanc=41 or statuslanc=39)"
+                Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                 If RdoAux2.RowCount > 0 Then
                     nSit = 1
                 End If
@@ -412,9 +411,9 @@ With RdoAux
             
             If nSit = 0 Then
                 'SUSPENÇÃO
-                 Sql = "SELECT CODTIPOEVENTO,DATAPROCEVENTO FROM MOBILIARIOEVENTO WHERE CODMOBILIARIO=" & nCodReduz
-                 Sql = Sql & " ORDER BY DATAEVENTO DESC"
-                 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                 sql = "SELECT CODTIPOEVENTO,DATAPROCEVENTO FROM MOBILIARIOEVENTO WHERE CODMOBILIARIO=" & nCodReduz
+                 sql = sql & " ORDER BY DATAEVENTO DESC"
+                 Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                  With RdoAux2
                      If .RowCount > 0 Then
                          If !CODTIPOEVENTO = 2 Then
@@ -426,8 +425,8 @@ With RdoAux
             End If
             
             If nSit = 0 Then
-                Sql = "update simples_cnpj_receita set regularizada=1 where cnpj='" & sCNPJ & "'"
-                cn.Execute Sql, rdExecDirect
+                sql = "update simples_cnpj_receita set regularizada=1 where cnpj='" & sCnpj & "'"
+                cn.Execute sql, rdExecDirect
             End If
         End If
                 
@@ -442,13 +441,155 @@ nPos = 1
 
 Inicio:
 Open sPathBin & "\cnpjsimplesexc.txt" For Output As #1
-Sql = "select * from simples_cnpj_receita where regularizada=1 order by cnpj"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select * from simples_cnpj_receita where regularizada=1 order by cnpj"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     .Move nPos
     nPosReg = 1
     Print #1, "EXC00000000000"
     'Print #1, "00000000000000"
+    Do Until .EOF
+'        If nPosReg >= 200 Then
+'            GoTo Proximo
+'        End If
+        Print #1, Format(!Cnpj, "00000000000000")
+        
+        nPosReg = nPosReg + 1
+        nPos = nPos + 1
+       .MoveNext
+    Loop
+    Print #1, "99999999999999"
+    GoTo Fim
+End With
+
+Proximo:
+Close #1
+nReg = nReg + 1
+GoTo Inicio
+
+
+Fim:
+Close #1
+Liberado
+MsgBox "Gravação concluída", vbInformation, "Informação"
+
+End Sub
+
+Private Sub Arquivo_Complementar()
+
+Dim sql As String, RdoAux As rdoResultset, nPos As Long, nTot As Long, sCnpj As String, nCodReduz As Long
+Dim RdoAux2 As rdoResultset, dData As Date, nSit As Integer, nEncerrada As Integer, nReg As Integer, nPosReg As Integer
+
+Ocupado
+
+sql = "update simples_cnpj_receita set situacao=null,data=null,codreduz=null,encerrada=null"
+cn.Execute sql, rdExecDirect
+
+nPos = 1
+'Sql = "select * from simples_cnpj_receita where cnpj='7786772000140' order by cnpj"
+sql = "select * from simples_cnpj_receita order by cnpj"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    nTot = .RowCount
+    Do Until .EOF
+       If nPos Mod 10 = 0 Then
+            CallPb nPos, nTot
+            DoEvents
+        End If
+        sCnpj = !Cnpj
+        nCodReduz = 0
+        sql = "select codigomob from mobiliario where convert(bigint,cnpj)=" & Val(sCnpj)
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+        If RdoAux2.RowCount > 0 Then
+            If RdoAux2.RowCount > 1 Then
+                nCodReduz = RdoAux2!codigomob
+                RdoAux2.Close
+                sql = "select codigomob from mobiliario where convert(bigint,cnpj)=" & Val(sCnpj) & " and dataencerramento is null"
+                Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+                If RdoAux2.RowCount > 0 Then
+                   nCodReduz = RdoAux2!codigomob
+                End If
+            Else
+                nCodReduz = RdoAux2!codigomob
+'                If nCodReduz = 120087 Then MsgBox "teste"
+            End If
+            RdoAux2.Close
+        Else
+            RdoAux2.Close
+            sql = "select codcidadao from cidadao where cnpj='" & sCnpj & "'"
+            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+            If RdoAux2.RowCount > 0 Then
+                nCodReduz = RdoAux2!CodCidadao
+            End If
+        End If
+        If nCodReduz = 0 Then
+            sql = "update simples_cnpj_receita set situacao=1, data='" & Format(Now, "mm/dd/yyyy") & "' where cnpj='" & sCnpj & "'"
+            cn.Execute sql, rdExecDirect
+        Else
+            sql = "select * from periodosn where codigo=" & nCodReduz & " order by dataini desc"
+            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+            If RdoAux2.RowCount > 0 Then
+                dData = RdoAux2!DATAINI
+            Else
+                dData = Format(Now, "mm/dd/yyyy")
+            End If
+            RdoAux2.Close
+            
+            nEncerrada = 0
+            sql = "select codigomob,dataencerramento from mobiliario where codigomob=" & nCodReduz
+            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+            If Not IsNull(RdoAux2!dataencerramento) And nCodReduz < 500000 Then
+                nEncerrada = 1
+                nSit = 1
+            Else
+                nSit = 0
+                RdoAux2.Close
+                sql = "select * from debitoparcela where codreduzido=" & nCodReduz & " and datavencimento<'" & Format("31/12/2025", "mm/dd/yyyy") & "' and codlancamento in (3,5,6,13) and (statuslanc=3 or statuslanc=42 or statuslanc=43 or statuslanc=39 or statuslanc=40 or statuslanc=41 or statuslanc=39)"
+                Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+                If RdoAux2.RowCount > 0 Then
+                    nSit = 1
+                End If
+                RdoAux2.Close
+            End If
+            
+            If nSit = 0 Then
+                'SUSPENÇÃO
+                 sql = "SELECT CODTIPOEVENTO,DATAPROCEVENTO FROM MOBILIARIOEVENTO WHERE CODMOBILIARIO=" & nCodReduz
+                 sql = sql & " ORDER BY DATAEVENTO DESC"
+                 Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+                 With RdoAux2
+                     If .RowCount > 0 Then
+                         If !CODTIPOEVENTO = 2 Then
+                            nSit = 1
+                         End If
+                     End If
+                    .Close
+                 End With
+            End If
+            
+            sql = "update simples_cnpj_receita set situacao=" & nSit & ", data='" & Format(dData, "mm/dd/yyyy") & "', codreduz=" & nCodReduz & ", encerrada=" & nEncerrada & " where cnpj='" & sCnpj & "'"
+            cn.Execute sql, rdExecDirect
+            
+        End If
+                
+        nPos = nPos + 1
+       .MoveNext
+    Loop
+   .Close
+End With
+
+nReg = 1
+nPos = 1
+
+Inicio:
+Open sPathBin & "\cnpjsimples.txt" For Output As #1
+sql = "select * from simples_cnpj_receita where situacao=1 order by cnpj"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    .Move nPos
+    nPosReg = 1
+    'Print #1, "INI00000000000"
+    Print #1, "00000000000000"
     Do Until .EOF
 '        If nPosReg >= 200 Then
 '            GoTo Proximo

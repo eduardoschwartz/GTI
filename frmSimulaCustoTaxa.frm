@@ -30,7 +30,7 @@ Begin VB.Form frmSimulaCustoTaxa
       _ExtentX        =   3043
       _ExtentY        =   582
       _Version        =   393216
-      Format          =   164364289
+      Format          =   147521537
       CurrentDate     =   44221
    End
    Begin VB.ComboBox cmbIss 
@@ -250,7 +250,7 @@ With RdoAux
         ReDim Preserve aAliqTx(UBound(aAliqTx) + 1)
         nPos = UBound(aAliqTx)
         aAliqTx(nPos).Codigo = !codatividade
-        aAliqTx(nPos).Nome = UCase(!DESCATIVIDADE)
+        aAliqTx(nPos).Nome = UCase(!descatividade)
         aAliqTx(nPos).Aliquota1 = !VALORALIQ1
         aAliqTx(nPos).Aliquota2 = !VALORALIQ2
         aAliqTx(nPos).Aliquota3 = !VALORALIQ3
@@ -276,7 +276,7 @@ With RdoAux
         ReDim Preserve aAliqIss(UBound(aAliqIss) + 1)
         nPos = UBound(aAliqIss)
         aAliqIss(nPos).Codigo = !codatividade
-        aAliqIss(nPos).Nome = UCase(!DESCATIVIDADE)
+        aAliqIss(nPos).Nome = UCase(!descatividade)
         aAliqIss(nPos).Aliquota = RetornaAliquotaISS(!codatividade, Now)
        .MoveNext
     Loop
@@ -354,8 +354,8 @@ End If
 If nArea = 0 Then nArea = 1
 
 nMeses = DateDiff("m", CDate(dtData.value), CDate("31/12/" & Year(Now))) + 1
-nValorTaxa = CDbl(cmbAliqTaxa.Text) * RetornaUFIR(Year(Now)) * (nMeses / 12) * nArea
-nValorIss = CDbl(cmbAliqIss.Text) * RetornaUFIR(Year(Now)) * (nMeses / 12)
+nValorTaxa = CDbl(cmbAliqTaxa.Text) * RetornaUFIR(Year(Now)) * (nMeses / 12) * nArea * 10
+nValorIss = CDbl(cmbAliqIss.Text) * RetornaUFIR(Year(Now)) * (nMeses / 12) * 10
 
 lblValorTaxa.Caption = Format(nValorTaxa, "#0.00")
 lblValorIss.Caption = Format(nValorIss, "#0.00")

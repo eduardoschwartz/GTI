@@ -6,14 +6,14 @@ Begin VB.Form frmSenhaStatus
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Controle de Senhas"
    ClientHeight    =   6420
-   ClientLeft      =   13650
-   ClientTop       =   3300
-   ClientWidth     =   8310
+   ClientLeft      =   18555
+   ClientTop       =   3270
+   ClientWidth     =   10650
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    ScaleHeight     =   6420
-   ScaleWidth      =   8310
+   ScaleWidth      =   10650
    Begin prjChameleon.chameleonButton cmdRefresh 
       Height          =   315
       Left            =   2610
@@ -63,7 +63,7 @@ Begin VB.Form frmSenhaStatus
       _ExtentX        =   2328
       _ExtentY        =   582
       _Version        =   393216
-      Format          =   165806081
+      Format          =   174194689
       CurrentDate     =   40414
    End
    Begin prjChameleon.chameleonButton cmdAnterior 
@@ -151,8 +151,8 @@ Begin VB.Form frmSenhaStatus
       Index           =   0
       Left            =   45
       Top             =   630
-      Width           =   8205
-      _ExtentX        =   14473
+      Width           =   10455
+      _ExtentX        =   18441
       _ExtentY        =   9075
       RoundedCornerTxtBox=   -1  'True
       Caption         =   "Senhas chamadas por guiche e banda"
@@ -172,12 +172,12 @@ Begin VB.Form frmSenhaStatus
          Left            =   90
          TabIndex        =   8
          Top             =   450
-         Width           =   8520
-         _ExtentX        =   15028
+         Width           =   10275
+         _ExtentX        =   18124
          _ExtentY        =   8043
          _Version        =   393216
          Rows            =   15
-         Cols            =   8
+         Cols            =   11
          RowHeightMin    =   300
          BackColorFixed  =   4194304
          ForeColorFixed  =   12648447
@@ -188,7 +188,7 @@ Begin VB.Form frmSenhaStatus
          GridLinesFixed  =   0
          BorderStyle     =   0
          Appearance      =   0
-         FormatString    =   "                 |^Prefeit.    |^Preferen. |^Pat.        |^Boletos   |        |      |^Total      "
+         FormatString    =   $"frmSenhaStatus.frx":041A
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
             Size            =   9.75
@@ -397,17 +397,17 @@ With grdMain
         .TextMatrix(x, 0) = "Guiche " & Format(x, "00")
     Next
     .TextMatrix(.Rows - 1, 0) = "Total"
-    .Row = .Rows - 1
+    .row = .Rows - 1
     .col = 0
     .CellBackColor = vbRed
-    .Row = 0
+    .row = 0
     .col = .Cols - 1
     .CellBackColor = vbRed
 End With
 
 With grdHora
     .COLWIDTH(2) = 0
-    .Row = 0
+    .row = 0
     .col = 2
     .CellForeColor = vbBlue
     For x = 1 To 12
@@ -421,8 +421,8 @@ Atualiza
 End Sub
 
 Private Sub Atualiza()
-Dim Sql As String, RdoAux As rdoResultset, aSenha() As SENHA, nPos As Integer, nTotal3 As Integer
-Dim a As Integer, b As Integer, aTotal(13, 6) As Integer, nTotal As Long, nTotal2 As Long
+Dim sql As String, RdoAux As rdoResultset, aSenha() As SENHA, nPos As Integer, nTotal3 As Integer
+Dim a As Integer, b As Integer, aTotal(13, 9) As Integer, nTotal As Long, nTotal2 As Long
 Dim aHora(12, 4) As Long, nDif As Integer
 
 ReDim aSenha(0)
@@ -430,8 +430,8 @@ ReDim aSenha(0)
 Me.Caption = "Controle de Senhas às " & Format(Now, "hh:mm:ss")
 nTotal3 = 0
 
-Sql = "SELECT * FROM SSPAC WHERE DATAENTRADA='" & Format(dtData.value, "mm/dd/yyyy") & "' ORDER BY SENHA"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT * FROM SSPAC WHERE DATAENTRADA='" & Format(dtData.value, "mm/dd/yyyy") & "' ORDER BY SENHA"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         nPos = UBound(aSenha) + 1
@@ -455,7 +455,7 @@ End With
 lblSenhaGerada.Caption = nTotal3
 
 For a = 1 To 13
-    For b = 1 To 6
+    For b = 1 To 9
         grdMain.TextMatrix(a, b) = ""
     Next
 Next
@@ -463,33 +463,33 @@ Next
 With grdMain
     For a = 1 To 13
         nTotal = 0
-        For b = 1 To 6
+        For b = 1 To 9
            .TextMatrix(a, b) = aTotal(a, b)
             nTotal = nTotal + aTotal(a, b)
         Next
         .col = .Cols - 1
-        .Row = a
+        .row = a
         .CellForeColor = vbRed
         .Text = nTotal
     Next
     nTotal2 = 0
-    For a = 1 To 6
+    For a = 1 To 9
         nTotal = 0
         For b = 1 To 13
             nTotal = nTotal + Val(.TextMatrix(b, a))
         Next
         .col = a
-        .Row = b
+        .row = b
         .CellForeColor = vbRed
         .Text = nTotal
         nTotal2 = nTotal2 + nTotal
     Next
     .col = .Cols - 1
-    .Row = .Rows - 1
+    .row = .Rows - 1
     .CellForeColor = vbRed
     .Text = nTotal2
     .col = 1
-    .Row = 1
+    .row = 1
 End With
 
 lblSenhaEspera.Caption = nTotal3 - nTotal2
@@ -616,7 +616,7 @@ Next
 
 With grdHora
     For a = 1 To 12
-        .Row = a
+        .row = a
         .col = 2
         .CellForeColor = vbWhite
         If aHora(a, 3) > 0 Then
@@ -630,7 +630,7 @@ End With
 nTotal = 0: nTotal2 = 0
 With grdHora
     For a = 1 To 12
-        .Row = a
+        .row = a
         .col = 2
         .CellForeColor = vbWhite
         .TextMatrix(a, 1) = aHora(a, 4)
@@ -638,7 +638,7 @@ With grdHora
         nTotal2 = nTotal2 + aHora(a, 4)
     Next
     .col = 1
-    .Row = 1
+    .row = 1
 End With
 
 If nTotal2 > 0 Then

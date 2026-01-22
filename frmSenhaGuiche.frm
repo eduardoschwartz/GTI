@@ -4,27 +4,27 @@ Begin VB.Form frmSenhaGuiche
    BackColor       =   &H00404040&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Guiche Nº "
-   ClientHeight    =   5220
-   ClientLeft      =   6915
-   ClientTop       =   3930
+   ClientHeight    =   8145
+   ClientLeft      =   5100
+   ClientTop       =   3510
    ClientWidth     =   3135
    Icon            =   "frmSenhaGuiche.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
-   ScaleHeight     =   5220
+   ScaleHeight     =   8145
    ScaleWidth      =   3135
    Begin VB.Timer Timer1 
       Interval        =   1000
-      Left            =   2205
-      Top             =   5445
+      Left            =   2250
+      Top             =   8370
    End
    Begin VB.TextBox Text1 
       Height          =   285
-      Left            =   495
+      Left            =   540
       TabIndex        =   0
       Text            =   "Text1"
-      Top             =   5535
+      Top             =   8460
       Width           =   1095
    End
    Begin prjChameleon.chameleonButton cmdSenha 
@@ -158,7 +158,7 @@ Begin VB.Form frmSenhaGuiche
       _ExtentX        =   4868
       _ExtentY        =   900
       BTYPE           =   14
-      TX              =   "REFIS"
+      TX              =   "PAT - PREF"
       ENAB            =   -1  'True
       BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
@@ -194,12 +194,11 @@ Begin VB.Form frmSenhaGuiche
       TabIndex        =   12
       TabStop         =   0   'False
       Top             =   2520
-      Visible         =   0   'False
       Width           =   2760
       _ExtentX        =   4868
       _ExtentY        =   900
       BTYPE           =   14
-      TX              =   ""
+      TX              =   "PAV-RECEITA F"
       ENAB            =   -1  'True
       BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
@@ -230,10 +229,10 @@ Begin VB.Form frmSenhaGuiche
    End
    Begin prjChameleon.chameleonButton cmdHist 
       Height          =   330
-      Left            =   2565
+      Left            =   2610
       TabIndex        =   13
       TabStop         =   0   'False
-      Top             =   4725
+      Top             =   7560
       Width           =   465
       _ExtentX        =   820
       _ExtentY        =   582
@@ -274,12 +273,11 @@ Begin VB.Form frmSenhaGuiche
       TabIndex        =   14
       TabStop         =   0   'False
       Top             =   3105
-      Visible         =   0   'False
       Width           =   2760
       _ExtentX        =   4868
       _ExtentY        =   900
       BTYPE           =   14
-      TX              =   ""
+      TX              =   "PAV - PREF"
       ENAB            =   -1  'True
       BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
@@ -308,6 +306,165 @@ Begin VB.Form frmSenhaGuiche
       CHECK           =   0   'False
       VALUE           =   0   'False
    End
+   Begin prjChameleon.chameleonButton cmdChamar 
+      Height          =   510
+      Left            =   180
+      TabIndex        =   15
+      TabStop         =   0   'False
+      Top             =   6345
+      Width           =   2760
+      _ExtentX        =   4868
+      _ExtentY        =   900
+      BTYPE           =   14
+      TX              =   "CHAMAR NOVAMENTE"
+      ENAB            =   -1  'True
+      BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Arial"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      COLTYPE         =   2
+      FOCUSR          =   0   'False
+      BCOL            =   4210752
+      BCOLO           =   4210752
+      FCOL            =   8438015
+      FCOLO           =   8438015
+      MCOL            =   16777215
+      MPTR            =   99
+      MICON           =   "frmSenhaGuiche.frx":18C0
+      UMCOL           =   -1  'True
+      SOFT            =   0   'False
+      PICPOS          =   0
+      NGREY           =   0   'False
+      FX              =   0
+      HAND            =   -1  'True
+      CHECK           =   0   'False
+      VALUE           =   0   'False
+   End
+   Begin prjChameleon.chameleonButton cmdSenha 
+      Height          =   510
+      Index           =   6
+      Left            =   180
+      TabIndex        =   16
+      TabStop         =   0   'False
+      Top             =   3690
+      Width           =   2760
+      _ExtentX        =   4868
+      _ExtentY        =   900
+      BTYPE           =   14
+      TX              =   "REFIS"
+      ENAB            =   -1  'True
+      BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Arial"
+         Size            =   14.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      COLTYPE         =   2
+      FOCUSR          =   0   'False
+      BCOL            =   4210752
+      BCOLO           =   4210752
+      FCOL            =   65280
+      FCOLO           =   65280
+      MCOL            =   16777215
+      MPTR            =   99
+      MICON           =   "frmSenhaGuiche.frx":1BDA
+      UMCOL           =   -1  'True
+      SOFT            =   0   'False
+      PICPOS          =   0
+      NGREY           =   0   'False
+      FX              =   0
+      HAND            =   -1  'True
+      CHECK           =   0   'False
+      VALUE           =   0   'False
+   End
+   Begin prjChameleon.chameleonButton cmdSenha 
+      Height          =   510
+      Index           =   7
+      Left            =   180
+      TabIndex        =   17
+      TabStop         =   0   'False
+      Top             =   4260
+      Width           =   2760
+      _ExtentX        =   4868
+      _ExtentY        =   900
+      BTYPE           =   14
+      TX              =   "REFIS - PREF"
+      ENAB            =   -1  'True
+      BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Arial"
+         Size            =   14.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      COLTYPE         =   2
+      FOCUSR          =   0   'False
+      BCOL            =   4210752
+      BCOLO           =   4210752
+      FCOL            =   65280
+      FCOLO           =   65280
+      MCOL            =   16777215
+      MPTR            =   99
+      MICON           =   "frmSenhaGuiche.frx":1EF4
+      UMCOL           =   -1  'True
+      SOFT            =   0   'False
+      PICPOS          =   0
+      NGREY           =   0   'False
+      FX              =   0
+      HAND            =   -1  'True
+      CHECK           =   0   'False
+      VALUE           =   0   'False
+   End
+   Begin prjChameleon.chameleonButton cmdSenha 
+      Height          =   510
+      Index           =   8
+      Left            =   180
+      TabIndex        =   18
+      TabStop         =   0   'False
+      Top             =   4845
+      Width           =   2760
+      _ExtentX        =   4868
+      _ExtentY        =   900
+      BTYPE           =   14
+      TX              =   "BOLETOS - DAM"
+      ENAB            =   -1  'True
+      BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Arial"
+         Size            =   14.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      COLTYPE         =   2
+      FOCUSR          =   0   'False
+      BCOL            =   4210752
+      BCOLO           =   4210752
+      FCOL            =   65280
+      FCOLO           =   65280
+      MCOL            =   16777215
+      MPTR            =   99
+      MICON           =   "frmSenhaGuiche.frx":220E
+      UMCOL           =   -1  'True
+      SOFT            =   0   'False
+      PICPOS          =   0
+      NGREY           =   0   'False
+      FX              =   0
+      HAND            =   -1  'True
+      CHECK           =   0   'False
+      VALUE           =   0   'False
+   End
    Begin VB.Label lblTempo 
       BackStyle       =   0  'Transparent
       Caption         =   "17:32 MIN"
@@ -322,9 +479,9 @@ Begin VB.Form frmSenhaGuiche
       EndProperty
       ForeColor       =   &H00C0FFFF&
       Height          =   285
-      Left            =   1260
+      Left            =   1305
       TabIndex        =   11
-      Top             =   4770
+      Top             =   7605
       Width           =   1275
    End
    Begin VB.Label lblHora 
@@ -341,9 +498,9 @@ Begin VB.Form frmSenhaGuiche
       EndProperty
       ForeColor       =   &H00C0FFFF&
       Height          =   285
-      Left            =   1260
+      Left            =   1305
       TabIndex        =   10
-      Top             =   4455
+      Top             =   7290
       Width           =   1455
    End
    Begin VB.Label lblBanda 
@@ -361,9 +518,9 @@ Begin VB.Form frmSenhaGuiche
       EndProperty
       ForeColor       =   &H00C0FFFF&
       Height          =   240
-      Left            =   675
+      Left            =   720
       TabIndex        =   9
-      Top             =   4140
+      Top             =   6030
       Width           =   1995
    End
    Begin VB.Label lblSenha 
@@ -380,9 +537,9 @@ Begin VB.Form frmSenhaGuiche
       EndProperty
       ForeColor       =   &H00C0FFFF&
       Height          =   285
-      Left            =   1260
+      Left            =   1305
       TabIndex        =   8
-      Top             =   3780
+      Top             =   5670
       Width           =   1050
    End
    Begin VB.Label Label1 
@@ -400,9 +557,9 @@ Begin VB.Form frmSenhaGuiche
       ForeColor       =   &H00FFFFC0&
       Height          =   285
       Index           =   3
-      Left            =   90
+      Left            =   135
       TabIndex        =   7
-      Top             =   4770
+      Top             =   7605
       Width           =   1230
    End
    Begin VB.Label Label1 
@@ -420,9 +577,9 @@ Begin VB.Form frmSenhaGuiche
       ForeColor       =   &H00FFFFC0&
       Height          =   285
       Index           =   2
-      Left            =   90
+      Left            =   135
       TabIndex        =   6
-      Top             =   4455
+      Top             =   7290
       Width           =   1230
    End
    Begin VB.Label Label1 
@@ -440,9 +597,9 @@ Begin VB.Form frmSenhaGuiche
       ForeColor       =   &H00FFFFC0&
       Height          =   285
       Index           =   1
-      Left            =   90
+      Left            =   135
       TabIndex        =   5
-      Top             =   3825
+      Top             =   5715
       Width           =   1230
    End
 End
@@ -451,27 +608,16 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Dim nSenha As Integer, nBanda As Integer
 
-Private Sub cmdHist_Click()
-frmHistSenha.show vbModal
-End Sub
 
-Private Sub cmdSenha_Click(Index As Integer)
-Dim Sql As String, RdoAux As rdoResultset, nMinute As Long, nSeconds As Long, nSecond As Long
-Dim Hora1 As Date, Hora2 As Date
-Dim Daycount As Long, SecondsRemaining As Integer, HourCount As Integer
-Dim MinutesCount As Integer, SecondsCount As Integer
-If nGuiche = 0 Or nGuiche > 20 Then
-    MsgBox "Voce não pode acessar o sistema de senhas!", vbCritical, "Acesso Negado"
-    Exit Sub
-End If
-
+Private Sub cmdChamar_Click()
 Ocupado
-On Error GoTo Erro
-Sql = "SELECT * FROM SSPAC WHERE YEAR(DATAENTRADA)=" & Year(Now) & " AND MONTH(DATAENTRADA)=" & Month(Now) & " AND "
-Sql = Sql & "DAY(DATAENTRADA)=" & Day(Now) & " AND BANDA=" & Index + 1 & " AND DATACHAMADA IS NULL "
-Sql = Sql & "ORDER BY SENHA"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+'On Error GoTo Erro
+sql = "SELECT * FROM SSPAC WHERE YEAR(DATAENTRADA)=" & Year(Now) & " AND MONTH(DATAENTRADA)=" & Month(Now) & " AND "
+sql = sql & "DAY(DATAENTRADA)=" & Day(Now) & " AND BANDA=" & nBanda & " AND SENHA=" & nSenha
+sql = sql & "ORDER BY SENHA"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If .RowCount = 0 Then GoTo Fim
     lblSenha.Caption = Format(!SENHA, "000")
@@ -492,11 +638,68 @@ With RdoAux
     
     lblTempo.Caption = Format(HourCount, "00") & ":" & Format(MinutesCount, "00") & ":" & Format(SecondsCount, "00")
     
-    Sql = "UPDATE SSPAC SET DATACHAMADA='" & Format(Now, "mm/dd/yyyy") & "',HORACHAMADA='" & Format(Now, "hh:mm:ss") & "',GUICHE=" & nGuiche & ","
-    Sql = Sql & "ATENDENTE='" & NomeDeLogin & "',ESPERA='" & lblTempo.Caption & "',MONITOR=0 "
-    Sql = Sql & " WHERE YEAR(DATAENTRADA)=" & Year(Now) & " AND MONTH(DATAENTRADA)=" & Month(Now)
-    Sql = Sql & " AND DAY(DATAENTRADA)=" & Day(Now) & " AND SENHA=" & !SENHA
-    cn.Execute Sql, rdExecDirect
+    sql = "UPDATE SSPAC SET DATACHAMADA='" & Format(Now, "mm/dd/yyyy") & "',HORACHAMADA='" & Format(Now, "hh:mm:ss") & "',GUICHE=" & nGuiche & ","
+    sql = sql & "ATENDENTE='" & NomeDeLogin & "',ESPERA='" & lblTempo.Caption & "',MONITOR=0 "
+    sql = sql & " WHERE YEAR(DATAENTRADA)=" & Year(Now) & " AND MONTH(DATAENTRADA)=" & Month(Now)
+    sql = sql & " AND DAY(DATAENTRADA)=" & Day(Now) & " AND SENHA=" & !SENHA
+    cn.Execute sql, rdExecDirect
+    
+   .Close
+End With
+Fim:
+Liberado
+Text1.SetFocus
+
+End Sub
+
+Private Sub cmdHist_Click()
+frmHistSenha.show vbModal
+End Sub
+
+Private Sub cmdSenha_Click(Index As Integer)
+Dim sql As String, RdoAux As rdoResultset, nMinute As Long, nSeconds As Long, nSecond As Long
+Dim Hora1 As Date, Hora2 As Date
+Dim Daycount As Long, SecondsRemaining As Integer, HourCount As Integer
+Dim MinutesCount As Integer, SecondsCount As Integer
+If nGuiche = 0 Or nGuiche > 20 Then
+    MsgBox "Voce não pode acessar o sistema de senhas!", vbCritical, "Acesso Negado"
+    Exit Sub
+End If
+
+Ocupado
+On Error GoTo Erro
+sql = "SELECT * FROM SSPAC WHERE YEAR(DATAENTRADA)=" & Year(Now) & " AND MONTH(DATAENTRADA)=" & Month(Now) & " AND "
+sql = sql & "DAY(DATAENTRADA)=" & Day(Now) & " AND BANDA=" & Index + 1 & " AND DATACHAMADA IS NULL "
+sql = sql & "ORDER BY SENHA"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    If .RowCount = 0 Then GoTo Fim
+    lblSenha.Caption = Format(!SENHA, "000")
+    lblBanda.Caption = cmdSenha(Index).Caption
+    lblHora.Caption = !HORAENTRADA
+    
+    nSenha = !SENHA
+    nBanda = Index + 1
+    
+    Hora1 = !HORAENTRADA
+    Hora2 = Format(Now, "hh:mm:ss")
+    
+    nSeconds = DateDiff("s", Hora1, Hora2)
+    
+    Daycount = nSeconds \ (86400)
+    SecondsRemaining = nSeconds - (Daycount * (86400))
+    HourCount = Abs(SecondsRemaining \ (60 * 60))
+    SecondsRemaining = Abs(SecondsRemaining Mod (60 * 60))
+    MinutesCount = Abs(SecondsRemaining \ 60)
+    SecondsCount = Abs(SecondsRemaining Mod 60)
+    
+    lblTempo.Caption = Format(HourCount, "00") & ":" & Format(MinutesCount, "00") & ":" & Format(SecondsCount, "00")
+    
+    sql = "UPDATE SSPAC SET DATACHAMADA='" & Format(Now, "mm/dd/yyyy") & "',HORACHAMADA='" & Format(Now, "hh:mm:ss") & "',GUICHE=" & nGuiche & ","
+    sql = sql & "ATENDENTE='" & NomeDeLogin & "',ESPERA='" & lblTempo.Caption & "',MONITOR=0 "
+    sql = sql & " WHERE YEAR(DATAENTRADA)=" & Year(Now) & " AND MONTH(DATAENTRADA)=" & Month(Now)
+    sql = sql & " AND DAY(DATAENTRADA)=" & Day(Now) & " AND SENHA=" & !SENHA
+    cn.Execute sql, rdExecDirect
     
    .Close
 End With
@@ -518,12 +721,12 @@ End If
 End Sub
 
 Private Sub Le()
-Dim Sql As String, RdoAux As rdoResultset, dData As Date, x As Integer
-Dim aCount(5) As Integer
+Dim sql As String, RdoAux As rdoResultset, dData As Date, x As Integer
+Dim aCount(8) As Integer
 dData = Now
 'Ocupado
 On Error Resume Next
-For x = 0 To 5
+For x = 0 To 8
     cmdSenha(x).Enabled = False
     aCount(x) = 0
 Next
@@ -531,13 +734,16 @@ Next
 cmdSenha(0).Caption = "PREFEITURA (0)"
 cmdSenha(1).Caption = "PREFERÊNCIAL (0)"
 cmdSenha(2).Caption = "PAT (0)"
-cmdSenha(3).Caption = "REFIS (0)"
-'cmdSenha(4).Caption = "PAGAMENTO (0)"
-'cmdSenha(5).Caption = "PREF VACINA (0)"
+cmdSenha(3).Caption = "PAT - PREF (0)"
+cmdSenha(4).Caption = "PAV-RECEITA F(0)"
+cmdSenha(5).Caption = "PAV - PREF (0)"
+cmdSenha(6).Caption = "REFIS (0)"
+cmdSenha(7).Caption = "REFIS - PREF(0)"
+cmdSenha(8).Caption = "BOLETOS-DAM(0)"
 
-Sql = "SELECT * FROM SSPAC WHERE YEAR(DATAENTRADA)=" & Year(dData) & " AND MONTH(DATAENTRADA)=" & Month(dData) & " AND "
-Sql = Sql & "DAY(DATAENTRADA)=" & Day(dData) & " AND DATACHAMADA IS NULL"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT * FROM SSPAC WHERE YEAR(DATAENTRADA)=" & Year(dData) & " AND MONTH(DATAENTRADA)=" & Month(dData) & " AND "
+sql = sql & "DAY(DATAENTRADA)=" & Day(dData) & " AND DATACHAMADA IS NULL"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     
     Do Until .EOF
@@ -550,11 +756,17 @@ With RdoAux
             Case 2
                 cmdSenha(!BANDA - 1).Caption = "PAT (" & aCount(!BANDA - 1) & ")"
             Case 3
+                cmdSenha(!BANDA - 1).Caption = "PAT-PREF (" & aCount(!BANDA - 1) & ")"
+            Case 4
+                cmdSenha(!BANDA - 1).Caption = "PAV-RECEITA F(" & aCount(!BANDA - 1) & ")"
+            Case 5
+                cmdSenha(!BANDA - 1).Caption = "PAV - PREF (" & aCount(!BANDA - 1) & ")"
+            Case 6
                 cmdSenha(!BANDA - 1).Caption = "REFIS (" & aCount(!BANDA - 1) & ")"
-'            Case 4
-'                cmdSenha(!BANDA - 1).Caption = "PAGAMENTO (" & aCount(!BANDA - 1) & ")"
-'            Case 5
-'                cmdSenha(!BANDA - 1).Caption = "PREF VACINA (" & aCount(!BANDA - 1) & ")"
+            Case 7
+                cmdSenha(!BANDA - 1).Caption = "REFIS - PREF (" & aCount(!BANDA - 1) & ")"
+            Case 8
+                cmdSenha(!BANDA - 1).Caption = "BOLETOS-DAM (" & aCount(!BANDA - 1) & ")"
         End Select
         cmdSenha(!BANDA - 1).Enabled = True
         .MoveNext
