@@ -215,8 +215,8 @@ End Sub
 
 Private Sub cmdExec_Click()
 Dim fName As String, nTipo As Integer, sReg As String, sCNPJ_Base As String, sData_Ini As String, sData_Fim As String, RdoAux2 As rdoResultset
-Dim aSimples() As tSimples, Sql As String, RdoAux As rdoResultset, Item As Long, z As Integer, bFind As Boolean, nCodReduz As Long
-Dim nPos As Long, nTot As Long
+Dim aSimples() As tSimples, sql As String, rdoAux As rdoResultset, Item As Long, z As Integer, bFind As Boolean, nCodReduz As Long, rdoAux3 As rdoResultset
+Dim nPos As Long, nTot As Long, aMei() As tSimples, nSeq As Integer
 
 
 fName = txtArq.Text
@@ -240,9 +240,9 @@ If nTipo = 1 Then
     Close #15
 
     ReDim aSimples(0)
-    Sql = "select * from optante_simples order by cnpj_base"
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-    With RdoAux
+    sql = "select * from optante_simples order by cnpj_base"
+    Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    With rdoAux
         Do Until .EOF
             Item = UBound(aSimples) + 1
             ReDim Preserve aSimples(Item)
@@ -264,6 +264,7 @@ If nTipo = 1 Then
     
         Line Input #16, sReg
         sCNPJ_Base = Left(sReg, 8)
+
         sData_Ini = Mid(sReg, 15, 2) & "/" & Mid(sReg, 13, 2) & "/" & Mid(sReg, 9, 4)
         sData_Fim = Mid(sReg, 23, 2) & "/" & Mid(sReg, 21, 2) & "/" & Mid(sReg, 17, 4)
         If sData_Fim = "00/00/0000" Then sData_Fim = ""
@@ -281,21 +282,21 @@ If nTipo = 1 Then
         
         nCodReduz = nPos
         If Not bFind Then
-            Sql = "select codigomob from mobiliario where SUBSTRING(cnpj, 1, 8) = '" & sCNPJ_Base & "'"
-            Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-            If RdoAux.RowCount > 0 Then
-                nCodReduz = RdoAux!codigomob
+            sql = "select codigomob from mobiliario where   cnpj like '" & sCNPJ_Base & "%'"
+            Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+            If rdoAux.RowCount > 0 Then
+                nCodReduz = rdoAux!codigomob
                 On Error GoTo Erro
-                Sql = "insert optante_simples(codigo,data_inicio,data_final,cnpj_base,timestamp) values(" & nCodReduz & ",'"
-                Sql = Sql & Format(sData_Ini, "mm/dd/yyyy") & "','" & sData_Fim & "','" & sCNPJ_Base & "','" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "')"
-                cn.Execute Sql, rdExecDirect
+                sql = "insert optante_simples(codigo,data_inicio,data_final,cnpj_base,timestamp) values(" & nCodReduz & ",'"
+                sql = sql & Format(sData_Ini, "mm/dd/yyyy") & "','" & sData_Fim & "','" & sCNPJ_Base & "','" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "')"
+                cn.Execute sql, rdExecDirect
                 On Error GoTo 0
             End If
         End If
         nPos = nPos + 1
     Loop
     Close #16
-    GoTo fim
+    GoTo Fim
 ElseIf nTipo = 2 Then
     
     Open fName For Input As #15
@@ -306,18 +307,19 @@ ElseIf nTipo = 2 Then
     Close #15
 
     ReDim aSimples(0)
-    Sql = "select * from periodomei order by codigo"
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-    With RdoAux
+    sql = "select * from periodomei order by codigo"
+    Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    With rdoAux
         Do Until .EOF
             Item = UBound(aSimples) + 1
             ReDim Preserve aSimples(Item)
             aSimples(Item).Cnpj_Base = !Cnpj_Base
             aSimples(Item).Codigo = !Codigo
-            aSimples(Item).Data_Inicio = Format(!DataInicio, "dd/mm/yyyy")
-            If Not IsNull(!Datafim) Then
-                aSimples(Item).Data_Final = !Datafim
+            aSimples(Item).Data_Inicio = Format(!datainicio, "dd/mm/yyyy")
+            If Not IsNull(!datafim) Then
+                aSimples(Item).Data_Final = !datafim
             End If
+            'If !Cnpj_Base = "34660361" Then MsgBox "teste"
            .MoveNext
         Loop
        .Close
@@ -329,9 +331,10 @@ ElseIf nTipo = 2 Then
         If nPos Mod 50 = 0 Then
            CallPb nPos, nTot
         End If
-    
+            'If sCNPJ_Base = "34660361" Then MsgBox "teste"
         Line Input #16, sReg
         sCNPJ_Base = Left(sReg, 8)
+        'If sCNPJ_Base <> "54836906" Then GoTo ProximoMei
         sData_Ini = Mid(sReg, 15, 2) & "/" & Mid(sReg, 13, 2) & "/" & Mid(sReg, 9, 4)
         sData_Fim = Mid(sReg, 23, 2) & "/" & Mid(sReg, 21, 2) & "/" & Mid(sReg, 17, 4)
         If sData_Fim = "00/00/0000" Then sData_Fim = ""
@@ -348,36 +351,61 @@ ElseIf nTipo = 2 Then
         Next
         
         nCodReduz = nPos
-        If Not bFind Then
-            Sql = "select codigomob from mobiliario where SUBSTRING(cnpj, 1, 8) = '" & sCNPJ_Base & "'"
-            Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-            If RdoAux.RowCount > 0 Then
-                nCodReduz = RdoAux!codigomob
+'        If Not bFind Then
+            sql = "select codigomob from mobiliario where cnpj like '" & sCNPJ_Base & "%'"
+            Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+            If rdoAux.RowCount > 0 Then
+                nCodReduz = rdoAux!codigomob
                 
                 If sData_Fim = "" Then
-                    Sql = "select * from periodomei where codigo=" & nCodReduz & " and datainicio='" & Format(sData_Ini, "mm/dd/yyyy") & "' and datafim is null"
+                    sql = "select * from periodomei where codigo=" & nCodReduz & " and datainicio='" & Format(sData_Ini, "mm/dd/yyyy") & "' and datafim is null"
                 Else
-                    Sql = "select * from periodomei where codigo=" & nCodReduz & " and datainicio='" & Format(sData_Ini, "mm/dd/yyyy") & "' and datafim='" & Format(sData_Fim, "mm/dd/yyyy") & "'"
+                    sql = "select * from periodomei where codigo=" & nCodReduz & " and datainicio='" & Format(sData_Ini, "mm/dd/yyyy") & "' and datafim='" & Format(sData_Fim, "mm/dd/yyyy") & "'"
                 End If
-                Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset)
+                Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset)
                 If RdoAux2.RowCount = 0 Then
 '                    On Error GoTo Erro
-                    If sData_Fim <> "" Then
-                        Sql = "insert periodomei(codigo,datainicio,datafim,cnpj_base) values(" & nCodReduz & ",'"
-                        Sql = Sql & Format(sData_Ini, "mm/dd/yyyy") & "','" & Format(sData_Fim, "mm/dd/yyyy") & "','" & sCNPJ_Base & "')"
+                    
+                    sql = "SELECT MAX(SEQ) AS MAXIMO FROM MOBILIARIOHIST WHERE CODMOBILIARIO=" & nCodReduz
+                    Set rdoAux3 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+                    If IsNull(rdoAux3!maximo) Then
+                        nSeq = 0
                     Else
-                        Sql = "insert periodomei(codigo,datainicio,cnpj_base) values(" & nCodReduz & ",'"
-                        Sql = Sql & Format(sData_Ini, "mm/dd/yyyy") & "','" & sCNPJ_Base & "')"
+                        nSeq = rdoAux3!maximo + 1
                     End If
-                    cn.Execute Sql, rdExecDirect
+                    
+                    If sData_Fim <> "" Then
+                        sql = "insert periodomei(codigo,datainicio,datafim,cnpj_base) values(" & nCodReduz & ",'"
+                        sql = sql & Format(sData_Ini, "mm/dd/yyyy") & "','" & Format(sData_Fim, "mm/dd/yyyy") & "','" & sCNPJ_Base & "')"
+                        cn.Execute sql, rdExecDirect
+                                    
+                        sql = "INSERT MOBILIARIOHIST(CODMOBILIARIO,SEQ,DATAHIST,OBS,USERID) VALUES("
+                        sql = sql & nCodReduz & "," & nSeq & ",'" & Format(Now, "mm/dd/yyyy") & "','Empresa incluida no MEI.',236)"
+                        cn.Execute sql, rdExecDirect
+                        
+                        sql = "update mobiliario set isentotaxa=0 where codigomob=" & nCodReduz 'entrou no mei então remove isenção por taxa
+                        cn.Execute sql, rdExecDirect
+                        
+                    Else
+                        sql = "insert periodomei(codigo,datainicio,cnpj_base) values(" & nCodReduz & ",'"
+                        sql = sql & Format(sData_Ini, "mm/dd/yyyy") & "','" & sCNPJ_Base & "')"
+                        cn.Execute sql, rdExecDirect
+                    
+                        sql = "INSERT MOBILIARIOHIST(CODMOBILIARIO,SEQ,DATAHIST,OBS,USERID) VALUES("
+                        sql = sql & nCodReduz & "," & nSeq & ",'" & Format(Now, "mm/dd/yyyy") & "','Empresa removida do MEI.',236)"
+                        cn.Execute sql, rdExecDirect
+                    
+                    End If
+                    
  '                   On Error GoTo 0
                 End If
-            End If
+ '           End If
         End If
+ProximoMei:
         nPos = nPos + 1
     Loop
     Close #16
-    GoTo fim
+    GoTo Fim
 End If
 
 Exit Sub
@@ -390,7 +418,7 @@ Else
 End If
 
 Exit Sub
-fim:
+Fim:
 lblTipo.Caption = ""
 txtArq.Text = ""
 Pb.value = 0

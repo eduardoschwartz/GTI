@@ -308,7 +308,7 @@ Private Type Juros
     nJurosValor As Double
 End Type
 
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, RdoAux As rdoResultset
 
 Private Sub cmdCalculo_Click()
 Dim nPos As Long, sNumProc As String, nAnoproc As Integer, nNumproc As Long, nSeq As Integer, nValorTributo As Double, RdoAux2 As rdoResultset, RdoAux3 As rdoResultset, ax As String
@@ -334,8 +334,8 @@ If Opt(0).value Then
     If InStr(1, txtNumProc.Text, "/", vbBinaryCompare) > 0 Then
         nNumproc = Val(Left$(txtNumProc.Text, InStr(1, txtNumProc.Text, "/", vbBinaryCompare) - 2))
         nAnoproc = Val(Right$(txtNumProc.Text, 4))
-        Sql = "SELECT NUMPROC,ANOPROC,DATAREPARC,QTDEPARCELA,NOVO,CANCELADO FROM PROCESSOREPARC  WHERE CODIGORESP=" & Val(txtCod.Text) & " AND NUMPROC=" & nNumproc & " AND ANOPROC=" & nAnoproc
-        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT NUMPROC,ANOPROC,DATAREPARC,QTDEPARCELA,NOVO,CANCELADO FROM PROCESSOREPARC  WHERE CODIGORESP=" & Val(txtCod.Text) & " AND NUMPROC=" & nNumproc & " AND ANOPROC=" & nAnoproc
+        Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             If .RowCount = 0 Then
                 MsgBox "Processo de parcelamento não cadastrado para este código.", vbExclamation, "Atenção"
@@ -358,8 +358,8 @@ If Opt(0).value Then
                 nNumproc = Val(Left$(txtNumProc.Text, InStr(1, txtNumProc.Text, "/", vbBinaryCompare) - 2))
                 nAnoproc = Right$(txtNumProc.Text, 4)
                 sNumProc = CStr(nNumproc) & "/" & CStr(nAnoproc)
-                Sql = "SELECT CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,seqlancamento,NUMPARCELA,CODCOMPLEMENTO From debitoparcela Where CODREDUZIDO=" & Val(txtCod.Text) & " AND ANOEXERCICIO>=" & Val(txtAno.Text) & " AND CODLANCAMENTO=20 AND NUMPROCESSO='" & sNumProc & "'"
-                Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                sql = "SELECT CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,seqlancamento,NUMPARCELA,CODCOMPLEMENTO From debitoparcela Where CODREDUZIDO=" & Val(txtCod.Text) & " AND ANOEXERCICIO>=" & Val(txtAno.Text) & " AND CODLANCAMENTO=20 AND NUMPROCESSO='" & sNumProc & "'"
+                Set RdoAux3 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                 nSeq = RdoAux3!SeqLancamento
                 RdoAux3.Close
                 
@@ -371,32 +371,32 @@ If Opt(0).value Then
 '                End If
                 
                 
-                Sql = "SELECT CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,seqlancamento,NUMPARCELA,CODCOMPLEMENTO From debitoparcela Where CODREDUZIDO=" & Val(txtCod.Text) & " AND ANOEXERCICIO>=" & Val(txtAno.Text) & " AND CODLANCAMENTO=20 AND NUMPROCESSO='" & sNumProc & "'"
-                Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                sql = "SELECT CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,seqlancamento,NUMPARCELA,CODCOMPLEMENTO From debitoparcela Where CODREDUZIDO=" & Val(txtCod.Text) & " AND ANOEXERCICIO>=" & Val(txtAno.Text) & " AND CODLANCAMENTO=20 AND NUMPROCESSO='" & sNumProc & "'"
+                Set RdoAux3 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                 With RdoAux3
                     Do Until .EOF
                         If .AbsolutePosition = 1 Then
                             nSeq = !SeqLancamento
                             '**grava na tabela processobloqueio
-                            Sql = "INSERT PROCESSOBLOQUEIO(ANO,CODREDUZIDO,NUMPROC,ANOPROC) VALUES(" & Val(txtAno.Text) & "," & Val(txtCod.Text) & "," & nNumproc & "," & nAnoproc & ")"
+                            sql = "INSERT PROCESSOBLOQUEIO(ANO,CODREDUZIDO,NUMPROC,ANOPROC) VALUES(" & Val(txtAno.Text) & "," & Val(txtCod.Text) & "," & nNumproc & "," & nAnoproc & ")"
                             'cn.Execute Sql, rdExecDirect
                             '**atualiza o valor dos débitos
         '                    Sql = "UPDATE debitotributo Set valortributo = valortributo + (valortributo * " & Virg2Ponto(CDbl(txtPerc.text) / 100) & ")  Where (CODREDUZIDO = " & Val(txtCod.text) & ") And (AnoExercicio >= " & Val(txtAno.text) & ") And (CodLancamento = 20) And (SeqLancamento = " & nSeq & ") AND (CodTributo <> 3)"
         '                    cn.Execute Sql, rdExecDirect
                             
-                            Sql = "SELECT SUM(VALORTRIBUTO) AS SOMA FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=" & !AnoExercicio & " AND "
-                            Sql = Sql & "CODLANCAMENTO=" & !CodLancamento & " AND SEQLANCAMENTO=" & !SeqLancamento & " AND NUMPARCELA=" & !NumParcela & " AND "
-                            Sql = Sql & "CODCOMPLEMENTO=" & !CODCOMPLEMENTO & " AND CODTRIBUTO<>3"
-                            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                            sql = "SELECT SUM(VALORTRIBUTO) AS SOMA FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=" & !AnoExercicio & " AND "
+                            sql = sql & "CODLANCAMENTO=" & !CodLancamento & " AND SEQLANCAMENTO=" & !SeqLancamento & " AND NUMPARCELA=" & !NumParcela & " AND "
+                            sql = sql & "CODCOMPLEMENTO=" & !CODCOMPLEMENTO & " AND CODTRIBUTO<>3"
+                            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                             With RdoAux2
                                 nValorTributo = !soma
                                 RdoAux2.Close
                             End With
         
-                            Sql = "SELECT SUM(VALORTRIBUTO) AS SOMA FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=" & !AnoExercicio & " AND "
-                            Sql = Sql & "CODLANCAMENTO=" & !CodLancamento & " AND SEQLANCAMENTO=" & !SeqLancamento & " AND NUMPARCELA=" & !NumParcela & " AND "
-                            Sql = Sql & "CODCOMPLEMENTO=" & !CODCOMPLEMENTO & " AND CODTRIBUTO=587"
-                            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                            sql = "SELECT SUM(VALORTRIBUTO) AS SOMA FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=" & !AnoExercicio & " AND "
+                            sql = sql & "CODLANCAMENTO=" & !CodLancamento & " AND SEQLANCAMENTO=" & !SeqLancamento & " AND NUMPARCELA=" & !NumParcela & " AND "
+                            sql = sql & "CODCOMPLEMENTO=" & !CODCOMPLEMENTO & " AND CODTRIBUTO=587"
+                            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                             With RdoAux2
                                 If IsNull(!soma) Then
                                     nValor587 = 0
@@ -407,24 +407,24 @@ If Opt(0).value Then
                             End With
         
                             '***atualiza o status***
-                            Sql = "UPDATE debitoparcela Set statuslanc=3 Where (CODREDUZIDO = " & Val(txtCod.Text) & ") And (AnoExercicio = " & Val(txtAno.Text) & ") And (CodLancamento = 20) And (SeqLancamento = " & nSeq & ") "
-                            cn.Execute Sql, rdExecDirect
+                            sql = "UPDATE debitoparcela Set statuslanc=3 Where (CODREDUZIDO = " & Val(txtCod.Text) & ") And (AnoExercicio = " & Val(txtAno.Text) & ") And (CodLancamento = 20) And (SeqLancamento = " & nSeq & ") "
+                            cn.Execute sql, rdExecDirect
 '                           .Close
                         End If
                         'On Error Resume Next
                         If nValor587 = 0 Then
                             On Error Resume Next
-                            Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,"
-                            Sql = Sql & "NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,VALORTRIBUTO) VALUES("
-                            Sql = Sql & !CODREDUZIDO & "," & !AnoExercicio & "," & !CodLancamento & "," & !SeqLancamento & ","
-                            Sql = Sql & !NumParcela & "," & !CODCOMPLEMENTO & "," & 587 & "," & Virg2Ponto(CStr(Round((nValorTributo * txtPerc.Text / 100), 2))) & ")"
-                            cn.Execute Sql, rdExecDirect
+                            sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,"
+                            sql = sql & "NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,VALORTRIBUTO) VALUES("
+                            sql = sql & !CODREDUZIDO & "," & !AnoExercicio & "," & !CodLancamento & "," & !SeqLancamento & ","
+                            sql = sql & !NumParcela & "," & !CODCOMPLEMENTO & "," & 587 & "," & Virg2Ponto(CStr(Round((nValorTributo * txtPerc.Text / 100), 2))) & ")"
+                            cn.Execute sql, rdExecDirect
                             On Error GoTo 0
                         Else
-                            Sql = "SELECT sum(VALORTRIBUTO) as SOMA FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=" & Val(txtAno.Text) - 1 & " AND "
-                            Sql = Sql & "CODLANCAMENTO=" & !CodLancamento & " AND SEQLANCAMENTO=" & !SeqLancamento & " AND NUMPARCELA=" & 1 & " AND "
-                            Sql = Sql & "CODCOMPLEMENTO=" & !CODCOMPLEMENTO & " AND CODTRIBUTO<>3"
-                            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                            sql = "SELECT sum(VALORTRIBUTO) as SOMA FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=" & Val(txtAno.Text) - 1 & " AND "
+                            sql = sql & "CODLANCAMENTO=" & !CodLancamento & " AND SEQLANCAMENTO=" & !SeqLancamento & " AND NUMPARCELA=" & 1 & " AND "
+                            sql = sql & "CODCOMPLEMENTO=" & !CODCOMPLEMENTO & " AND CODTRIBUTO<>3"
+                            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                             With RdoAux2
                                 If Not IsNull(!soma) Then
                                     nValorTributoOld = !soma
@@ -434,10 +434,10 @@ If Opt(0).value Then
                                 RdoAux2.Close
                             End With
                             If (nValorTributo = nValorTributoOld) Or nValorTributoOld = 0 Then
-                                Sql = "UPDATE DEBITOTRIBUTO SET VALORTRIBUTO=VALORTRIBUTO + " & Virg2Ponto(CStr(Round((nValorTributo * txtPerc.Text / 100), 2))) & " WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=" & !AnoExercicio & " AND "
-                                Sql = Sql & "CODLANCAMENTO=" & !CodLancamento & " AND SEQLANCAMENTO=" & !SeqLancamento & " AND NUMPARCELA=" & !NumParcela & " AND "
-                                Sql = Sql & "CODCOMPLEMENTO=" & !CODCOMPLEMENTO & " AND CODTRIBUTO=587"
-                                cn.Execute Sql, rdExecDirect
+                                sql = "UPDATE DEBITOTRIBUTO SET VALORTRIBUTO=VALORTRIBUTO + " & Virg2Ponto(CStr(Round((nValorTributo * txtPerc.Text / 100), 2))) & " WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=" & !AnoExercicio & " AND "
+                                sql = sql & "CODLANCAMENTO=" & !CodLancamento & " AND SEQLANCAMENTO=" & !SeqLancamento & " AND NUMPARCELA=" & !NumParcela & " AND "
+                                sql = sql & "CODCOMPLEMENTO=" & !CODCOMPLEMENTO & " AND CODTRIBUTO=587"
+                                cn.Execute sql, rdExecDirect
                             End If
                         End If
                        .MoveNext
@@ -451,8 +451,8 @@ If Opt(0).value Then
         txtNumProc.SetFocus
     End If
 Else
-    Sql = "SELECT DISTINCT codreduzido,numprocesso From dbo.debitoparcela Where (CodLancamento = 20) And  (ANOEXERCICIO=" & Val(txtAno.Text) & ") AND (statuslanc = 18) ORDER BY CODREDUZIDO"
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    sql = "SELECT DISTINCT codreduzido,numprocesso From dbo.debitoparcela Where (CodLancamento = 20) And  (ANOEXERCICIO=" & Val(txtAno.Text) & ") AND (statuslanc in ( 18)) ORDER BY CODREDUZIDO"
+    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         txtNum.Text = .RowCount
        .Close
@@ -465,70 +465,80 @@ Else
     
     If MsgBox("Deseja desbloquear estes parcelamentos?", vbQuestion + vbYesNo, "Confirmação") = vbNo Then Exit Sub
     If cGetInputState() <> 0 Then DoEvents
-    PBar.value = 0: nPos = 1
-    Sql = "SELECT DISTINCT codreduzido,seqlancamento,numprocesso From dbo.debitoparcela Where (CodLancamento = 20) And  (ANOEXERCICIO=" & Val(txtAno.Text) & ") AND (statuslanc = 18) ORDER BY CODREDUZIDO"
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    PBar.value = 0: nPos = 0
+    sql = "SELECT DISTINCT codreduzido,seqlancamento,numprocesso From dbo.debitoparcela Where (CodLancamento = 20) And  (ANOEXERCICIO=" & Val(txtAno.Text) & ") AND (statuslanc IN (18)) ORDER BY CODREDUZIDO"
+    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         Do Until .EOF
-            If IsNull(!numprocesso) Then GoTo Proximo
-            If nPos Mod 10 = 0 Then
+          '  If !CODREDUZIDO <> 34692 Then
+          '      GoTo Proximo
+          '  End If
+        
+            If IsNull(!NumProcesso) Then GoTo Proximo
+         '   If nPos Mod 4 = 0 Then
                 CallPb nPos, CLng(Val(txtNum.Text))
 '                MsgBox !CODREDUZIDO
-            End If
+          '  End If
             nPos = nPos + 1
             '**grava na tabela processobloqueio
-            sNumProc = !numprocesso
+            sNumProc = !NumProcesso
             If sNumProc = "" Then GoTo Proximo
             nNumproc = Val(Left$(sNumProc, Len(sNumProc) - 5))
             nAnoproc = Val(Right$(sNumProc, 4))
             
-            Sql = "SELECT CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,seqlancamento,NUMPARCELA,CODCOMPLEMENTO From debitoparcela Where CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO>=" & Val(txtAno.Text) & " AND CODLANCAMENTO=20 AND NUMPROCESSO='" & sNumProc & "'"
-            Set RdoAux5 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+           If nAnoproc = 2026 Then
+                GoTo Proximo
+           End If
+            
+            Ocupado
+            sql = "SELECT CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,seqlancamento,NUMPARCELA,CODCOMPLEMENTO From debitoparcela Where CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO>=" & Val(txtAno.Text) & " AND CODLANCAMENTO=20 AND NUMPROCESSO='" & sNumProc & "'"
+            Set RdoAux5 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
             With RdoAux5
                 Do Until .EOF
+                    Ocupado
                     If .AbsolutePosition = 1 Then
                         nSeq = !SeqLancamento
                         '**grava na tabela processobloqueio
                         On Error Resume Next
-                        Sql = "INSERT PROCESSOBLOQUEIO(ANO,CODREDUZIDO,NUMPROC,ANOPROC) VALUES(" & Val(txtAno.Text) & "," & !CODREDUZIDO & "," & nNumproc & "," & nAnoproc & ")"
-                        cn.Execute Sql, rdExecDirect
+                        sql = "INSERT PROCESSOBLOQUEIO(ANO,CODREDUZIDO,NUMPROC,ANOPROC) VALUES(" & Val(txtAno.Text) & "," & !CODREDUZIDO & "," & nNumproc & "," & nAnoproc & ")"
+                        cn.Execute sql, rdExecDirect
                         On Error GoTo 0
                         '**atualiza o valor dos débitos
     '                    Sql = "UPDATE debitotributo Set valortributo = valortributo + (valortributo * " & Virg2Ponto(CDbl(txtPerc.text) / 100) & ")  Where (CODREDUZIDO = " & Val(txtCod.text) & ") And (AnoExercicio >= " & Val(txtAno.text) & ") And (CodLancamento = 20) And (SeqLancamento = " & nSeq & ") AND (CodTributo <> 3)"
     '                    cn.Execute Sql, rdExecDirect
                         
-                        Sql = "SELECT SUM(VALORTRIBUTO) AS SOMA FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=" & !AnoExercicio & " AND "
-                        Sql = Sql & "CODLANCAMENTO=" & !CodLancamento & " AND SEQLANCAMENTO=" & !SeqLancamento & " AND NUMPARCELA=" & !NumParcela & " AND "
-                        Sql = Sql & "CODCOMPLEMENTO=" & !CODCOMPLEMENTO & " AND CODTRIBUTO<>3"
-                        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                        sql = "SELECT SUM(VALORTRIBUTO) AS SOMA FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=" & !AnoExercicio & " AND "
+                        sql = sql & "CODLANCAMENTO=" & !CodLancamento & " AND SEQLANCAMENTO=" & !SeqLancamento & " AND NUMPARCELA=" & !NumParcela & " AND "
+                        sql = sql & "CODCOMPLEMENTO=" & !CODCOMPLEMENTO & " AND CODTRIBUTO<>3"
+                        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                         With RdoAux2
                             nValorTributo = !soma
                             RdoAux2.Close
                         End With
     
                         '***atualiza o status***
-                        Sql = "UPDATE debitoparcela Set statuslanc=3 Where (CODREDUZIDO = " & !CODREDUZIDO & ") And (AnoExercicio = " & Val(txtAno.Text) & ") And (CodLancamento = 20) And (SeqLancamento = " & nSeq & ") "
-                        cn.Execute Sql, rdExecDirect
+                        sql = "UPDATE debitoparcela Set statuslanc=3 Where (CODREDUZIDO = " & !CODREDUZIDO & ") And (AnoExercicio = " & Val(txtAno.Text) & ") And (CodLancamento = 20) And (SeqLancamento = " & nSeq & ") "
+                        cn.Execute sql, rdExecDirect
                     End If
-                    Sql = "SELECT * FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=" & !AnoExercicio & " AND CODLANCAMENTO=" & !CodLancamento & " AND SEQLANCAMENTO=" & !SeqLancamento & " AND "
-                    Sql = Sql & "NUMPARCELA=" & !NumParcela & " AND CODCOMPLEMENTO=" & !CODCOMPLEMENTO & " AND  CODTRIBUTO=587"
-                    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
+                    sql = "SELECT * FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=" & !AnoExercicio & " AND CODLANCAMENTO=" & !CodLancamento & " AND SEQLANCAMENTO=" & !SeqLancamento & " AND "
+                    sql = sql & "NUMPARCELA=" & !NumParcela & " AND CODCOMPLEMENTO=" & !CODCOMPLEMENTO & " AND  CODTRIBUTO=587"
+                    Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurReadOnly)
                     If RdoAux2.RowCount = 0 Then
-                        Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,"
-                        Sql = Sql & "NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,VALORTRIBUTO) VALUES("
-                        Sql = Sql & !CODREDUZIDO & "," & !AnoExercicio & "," & !CodLancamento & "," & !SeqLancamento & ","
-                        Sql = Sql & !NumParcela & "," & !CODCOMPLEMENTO & "," & 587 & "," & Virg2Ponto(CStr(Round((nValorTributo * CDbl(txtPerc.Text) / 100), 2))) & ")"
+                        sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,"
+                        sql = sql & "NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,VALORTRIBUTO) VALUES("
+                        sql = sql & !CODREDUZIDO & "," & !AnoExercicio & "," & !CodLancamento & "," & !SeqLancamento & ","
+                        sql = sql & !NumParcela & "," & !CODCOMPLEMENTO & "," & 587 & "," & Virg2Ponto(CStr(Round((nValorTributo * CDbl(txtPerc.Text) / 100), 2))) & ")"
                     Else
-                        Sql = "UPDATE DEBITOTRIBUTO SET VALORTRIBUTO=VALORTRIBUTO + " & Virg2Ponto(CStr((Round(nValorTributo * CDbl(txtPerc.Text) / 100, 2)))) & " WHERE CODREDUZIDO=" & RdoAux2!CODREDUZIDO & " AND "
-                        Sql = Sql & "ANOEXERCICIO=" & RdoAux2!AnoExercicio & " AND CODLANCAMENTO=" & RdoAux2!CodLancamento & " AND SEQLANCAMENTO=" & RdoAux2!SeqLancamento & " AND NUMPARCELA=" & RdoAux2!NumParcela & " AND "
-                        Sql = Sql & "CODCOMPLEMENTO=" & RdoAux2!CODCOMPLEMENTO & " AND CODTRIBUTO=587"
+                        sql = "UPDATE DEBITOTRIBUTO SET VALORTRIBUTO=VALORTRIBUTO + " & Virg2Ponto(CStr((Round(nValorTributo * CDbl(txtPerc.Text) / 100, 2)))) & " WHERE CODREDUZIDO=" & RdoAux2!CODREDUZIDO & " AND "
+                        sql = sql & "ANOEXERCICIO=" & RdoAux2!AnoExercicio & " AND CODLANCAMENTO=" & RdoAux2!CodLancamento & " AND SEQLANCAMENTO=" & RdoAux2!SeqLancamento & " AND NUMPARCELA=" & RdoAux2!NumParcela & " AND "
+                        sql = sql & "CODCOMPLEMENTO=" & RdoAux2!CODCOMPLEMENTO & " AND CODTRIBUTO=587"
                     End If
-                    cn.Execute Sql, rdExecDirect
+                    cn.Execute sql, rdExecDirect
                     DoEvents
                    .MoveNext
                 Loop
             End With
-            
+            Liberado
             
 '            Sql = "INSERT PROCESSOBLOQUEIO(ANO,CODREDUZIDO,NUMPROC,ANOPROC) VALUES(" & Val(txtAno.text) & "," & !CODREDUZIDO & "," & nNumProc & "," & nAnoProc & ")"
 '            cn.Execute Sql, rdExecDirect
@@ -570,18 +580,18 @@ Dim qd As New rdoQuery, aDebito() As Debito, Achou As Boolean
 
 nJurosPerc = 1
 
-Sql = "SELECT DISTINCT debitoparcela.codreduzido, debitoparcela.seqlancamento, destinoreparc.numprocesso FROM  debitoparcela INNER JOIN "
-Sql = Sql & "destinoreparc ON debitoparcela.codreduzido = destinoreparc.codreduzido AND debitoparcela.anoexercicio = destinoreparc.anoexercicio AND "
-Sql = Sql & "debitoparcela.codlancamento = destinoreparc.codlancamento AND debitoparcela.seqlancamento = destinoreparc.numsequencia AND "
-Sql = Sql & "debitoparcela.NumParcela = destinoreparc.NumParcela And debitoparcela.CODCOMPLEMENTO = destinoreparc.CODCOMPLEMENTO "
+sql = "SELECT DISTINCT debitoparcela.codreduzido, debitoparcela.seqlancamento, destinoreparc.numprocesso FROM  debitoparcela INNER JOIN "
+sql = sql & "destinoreparc ON debitoparcela.codreduzido = destinoreparc.codreduzido AND debitoparcela.anoexercicio = destinoreparc.anoexercicio AND "
+sql = sql & "debitoparcela.codlancamento = destinoreparc.codlancamento AND debitoparcela.seqlancamento = destinoreparc.numsequencia AND "
+sql = sql & "debitoparcela.NumParcela = destinoreparc.NumParcela And debitoparcela.CODCOMPLEMENTO = destinoreparc.CODCOMPLEMENTO "
 'Sql = Sql & "Where (debitoparcela.AnoExercicio = 2007) And (debitoparcela.CodLancamento = 20) And (debitoparcela.statuslanc = 18)"
-Sql = Sql & "Where (debitoparcela.AnoExercicio > 2007) And (debitoparcela.CodLancamento = 20) And (debitoparcela.CODREDUZIDO=110432)"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = sql & "Where (debitoparcela.AnoExercicio > 2007) And (debitoparcela.CodLancamento = 20) And (debitoparcela.CODREDUZIDO=110432)"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     bJurosMulta = False
-    Sql = "SELECT * FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=2007 AND CODLANCAMENTO=20"
-    Sql = Sql & " AND SEQLANCAMENTO=" & !SeqLancamento & " And CODCOMPLEMENTO = 0 AND CODTRIBUTO=113"
-    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    sql = "SELECT * FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=2007 AND CODLANCAMENTO=20"
+    sql = sql & " AND SEQLANCAMENTO=" & !SeqLancamento & " And CODCOMPLEMENTO = 0 AND CODTRIBUTO=113"
+    Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     If RdoAux2.RowCount > 0 Then
         bJurosMulta = True
     End If
@@ -590,22 +600,22 @@ With RdoAux
     Do Until .EOF
         nCodReduz = !CODREDUZIDO
         nSeq = !SeqLancamento
-        sNumProc = !numprocesso
+        sNumProc = !NumProcesso
         txtCod.Text = !CODREDUZIDO
         txtNumProc.Text = sNumProc
 '        Me.Refresh
         If cGetInputState() <> 0 Then DoEvents
         'VERIFICA SE JA FOI CORRIGIDO
-        Sql = "SELECT CODREDUZIDO,VALORPRINCIPAL FROM DESTINOREPARC WHERE NUMPROCESSO='" & sNumProc & "'"
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT CODREDUZIDO,VALORPRINCIPAL FROM DESTINOREPARC WHERE NUMPROCESSO='" & sNumProc & "'"
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         If RdoAux2!ValorPrincipal > 0 Then
 '            GoTo proximo
         End If
         RdoAux2.Close
         
        'CARREGA DADOS DO PARCELAMENTO
-        Sql = "SELECT  NUMPROCESSO,DATAREPARC,QTDEPARCELA FROM PROCESSOREPARC WHERE NUMPROCESSO='" & sNumProc & "'"
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT  NUMPROCESSO,DATAREPARC,QTDEPARCELA FROM PROCESSOREPARC WHERE NUMPROCESSO='" & sNumProc & "'"
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             dDataPag = Format(!datareparc, "dd/mm/yyyy")
             nQtde = !qtdeparcela
@@ -617,10 +627,10 @@ With RdoAux
 '        Sql = "SELECT DISTINCT numprocesso, dataprocesso, datareparc, qtdeparcela, valorentrada, percentrada, calculamulta, calculajuros, codigoresp, funcionario, codreduzido,"
 '        Sql = Sql & "AnoExercicio , CodLancamento, numsequencia, NumParcela, CODCOMPLEMENTO, datavencimento, datadebase, numproc, anoproc "
 '        Sql = Sql & "FROM vwCNSREPARCELAMENTOO WHERE CODREDUZIDO=" & nCodReduz & "AND NUMPROCESSO='" & sNumProc & "'"
-        Sql = "SELECT DISTINCT numprocesso, dataprocesso, datareparc, qtdeparcela, valorentrada, percentrada, calculamulta, calculajuros, codigoresp, nomelogin, codreduzido,"
-        Sql = Sql & "AnoExercicio , CodLancamento, numsequencia, NumParcela, CODCOMPLEMENTO, datavencimento, datadebase, numproc, anoproc "
-        Sql = Sql & "FROM vwCNSREPARCELAMENTOO WHERE CODREDUZIDO=" & nCodReduz & "AND NUMPROCESSO='" & sNumProc & "'"
-        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT DISTINCT numprocesso, dataprocesso, datareparc, qtdeparcela, valorentrada, percentrada, calculamulta, calculajuros, codigoresp, nomelogin, codreduzido,"
+        sql = sql & "AnoExercicio , CodLancamento, numsequencia, NumParcela, CODCOMPLEMENTO, datavencimento, datadebase, numproc, anoproc "
+        sql = sql & "FROM vwCNSREPARCELAMENTOO WHERE CODREDUZIDO=" & nCodReduz & "AND NUMPROCESSO='" & sNumProc & "'"
+        Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             Do Until .EOF
                 'CARREGA OS TRIBUTOS DE CADA UM DOS LANCAMENTOS
@@ -628,7 +638,7 @@ With RdoAux
                 On Error Resume Next
                 RdoAux3.Close
                 On Error GoTo 0
-                qd.Sql = "{ Call spEXTRATONEW(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
+                qd.sql = "{ Call spEXTRATONEW(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
                 qd(0) = !CODREDUZIDO
                 qd(1) = !CODREDUZIDO 'codigo
                 qd(2) = !AnoExercicio
@@ -672,20 +682,20 @@ With RdoAux
                            aDebito(nEval).nSituacao = !statuslanc
                            aDebito(nEval).sSituacao = !Situacao
                            aDebito(nEval).sVencto = Format(!DataVencimento, "dd/mm/yyyy")
-                           aDebito(nEval).nValorTributo = !ValorTributo
+                           aDebito(nEval).nValorTributo = !VALORTRIBUTO
                            If bJurosMulta Then
                                aDebito(nEval).nValorJuros = !ValorJuros
                                aDebito(nEval).nValorMulta = !ValorMulta
                            End If
-                           aDebito(nEval).nValorCorrecao = !ValorCorrecao
+                           aDebito(nEval).nValorCorrecao = !valorcorrecao
                         Else
                             'SE ENCONTRAR ADICIONAR O VALOR AO JA EXISTENTE
-                            aDebito(x).nValorTributo = aDebito(x).nValorTributo + !ValorTributo
+                            aDebito(x).nValorTributo = aDebito(x).nValorTributo + !VALORTRIBUTO
                             If bJurosMulta Then
                                 aDebito(x).nValorJuros = aDebito(x).nValorJuros + !ValorJuros
                                 aDebito(x).nValorMulta = aDebito(x).nValorMulta + !ValorMulta
                             End If
-                            aDebito(x).nValorCorrecao = aDebito(x).nValorCorrecao + !ValorCorrecao
+                            aDebito(x).nValorCorrecao = aDebito(x).nValorCorrecao + !valorcorrecao
                         End If
                        .MoveNext
                     Loop
@@ -699,10 +709,10 @@ With RdoAux
         nSomaPrincipal = 0: nSomaMulta = 0: nSomaJuros = 0: nSomaCorrecao = 0
         For x = 1 To UBound(aDebito)
             With aDebito(x)
-                Sql = "UPDATE ORIGEMREPARC SET PRINCIPAL=" & Virg2Ponto(CStr(Round(.nValorTributo, 2))) & ",JUROS=" & Virg2Ponto(CStr(Round(.nValorJuros, 2))) & ",MULTA=" & Virg2Ponto(CStr(Round(.nValorMulta, 2))) & ","
-                Sql = Sql & "CORRECAO=" & Virg2Ponto(CStr(Round(.nValorCorrecao, 2))) & " WHERE CODREDUZIDO=" & .nCodReduzido & " AND ANOEXERCICIO=" & .nAno & " AND CODLANCAMENTO="
-                Sql = Sql & .nLanc & " AND NUMSEQUENCIA=" & .nSeq & " AND NUMPARCELA=" & .nParc & " AND CODCOMPLEMENTO=" & .nCompl
-                cn.Execute Sql, rdExecDirect
+                sql = "UPDATE ORIGEMREPARC SET PRINCIPAL=" & Virg2Ponto(CStr(Round(.nValorTributo, 2))) & ",JUROS=" & Virg2Ponto(CStr(Round(.nValorJuros, 2))) & ",MULTA=" & Virg2Ponto(CStr(Round(.nValorMulta, 2))) & ","
+                sql = sql & "CORRECAO=" & Virg2Ponto(CStr(Round(.nValorCorrecao, 2))) & " WHERE CODREDUZIDO=" & .nCodReduzido & " AND ANOEXERCICIO=" & .nAno & " AND CODLANCAMENTO="
+                sql = sql & .nLanc & " AND NUMSEQUENCIA=" & .nSeq & " AND NUMPARCELA=" & .nParc & " AND CODCOMPLEMENTO=" & .nCompl
+                cn.Execute sql, rdExecDirect
                 nSomaPrincipal = nSomaPrincipal + .nValorTributo
                 nSomaJuros = nSomaJuros + .nValorJuros
                 nSomaMulta = nSomaMulta + .nValorMulta
@@ -726,15 +736,15 @@ With RdoAux
 DEST:
         ReDim aJuros(0)
        'CARREGA PARCELAS DE DESTINO E CALCULA O JUROS A SER APLICADO/QTDE DE PARCELAS > 2006
-        Sql = "SELECT * FROM vwCNSREPARCELAMENTOD WHERE CODREDUZIDO=" & nCodReduz & " AND NUMPROCESSO='" & sNumProc & "'"
-        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT * FROM vwCNSREPARCELAMENTOD WHERE CODREDUZIDO=" & nCodReduz & " AND NUMPROCESSO='" & sNumProc & "'"
+        Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             'APROVEITAMOS O SELECT E VERIFICAMOS SE EXISTE HONORARIOS
-            Sql = "SELECT VALORTRIBUTO FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=" & !AnoExercicio & " AND CODLANCAMENTO=" & !CodLancamento & " AND "
-            Sql = Sql & "SEQLANCAMENTO=" & !numsequencia & " AND NUMPARCELA=" & !NumParcela & " AND CODCOMPLEMENTO=" & !CODCOMPLEMENTO & " AND CODTRIBUTO=90"
-            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            sql = "SELECT VALORTRIBUTO FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=" & !AnoExercicio & " AND CODLANCAMENTO=" & !CodLancamento & " AND "
+            sql = sql & "SEQLANCAMENTO=" & !numsequencia & " AND NUMPARCELA=" & !NumParcela & " AND CODCOMPLEMENTO=" & !CODCOMPLEMENTO & " AND CODTRIBUTO=90"
+            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
             If RdoAux2.RowCount > 0 Then
-                nValorHon = RdoAux2!ValorTributo
+                nValorHon = RdoAux2!VALORTRIBUTO
             Else
                 nValorHon = 0
             End If
@@ -772,21 +782,21 @@ DEST:
             With aJuros(x)
                 
                'ATUALIZA TABELA DESTINOREPARC
-                Sql = "UPDATE DESTINOREPARC SET VALORLIQUIDO=" & Virg2Ponto(CStr(Round(nValorLanc, 2))) & ",JUROS=" & Virg2Ponto(CStr(Round(nValorJuros, 2))) & ","
-                Sql = Sql & "MULTA=" & Virg2Ponto(CStr(Round(nValorMulta, 2))) & ",CORRECAO=" & Virg2Ponto(CStr(Round(nValorCorrecao, 2))) & ",VALORPRINCIPAL=" & Virg2Ponto(CStr(Round(nValorParcela, 2))) & ","
-                Sql = Sql & "SALDO=" & Virg2Ponto(CStr(Round(.nSaldo, 2))) & ",JUROSPERC=" & Virg2Ponto(CStr(Round(.nJurosPerc, 2))) & ",JUROSVALOR=" & Virg2Ponto(CStr(Round(.nJurosValor, 2))) & ","
-                Sql = Sql & "JUROSAPL=" & IIf(.nAno > 2006, Virg2Ponto(CStr(Round(nJurosApl, 2))), 0) & ",HONORARIO=" & Virg2Ponto(CStr(Round(nValorHon, 2))) & ",TOTAL=" & Virg2Ponto(CStr(Round(nValorLanc + nValorJuros + nValorMulta + nValorCorrecao + nValorHon + IIf(.nAno > 2006, nJurosApl, 0), 2))) & " WHERE "
-                Sql = Sql & "CODREDUZIDO=" & .nCodReduzido & " AND ANOEXERCICIO=" & .nAno & " AND CODLANCAMENTO=" & .nLanc & " AND NUMSEQUENCIA="
-                Sql = Sql & .nSeq & " AND NUMPARCELA=" & .nParc & " AND CODCOMPLEMENTO=" & .nCompl
-                cn.Execute Sql, rdExecDirect
+                sql = "UPDATE DESTINOREPARC SET VALORLIQUIDO=" & Virg2Ponto(CStr(Round(nValorLanc, 2))) & ",JUROS=" & Virg2Ponto(CStr(Round(nValorJuros, 2))) & ","
+                sql = sql & "MULTA=" & Virg2Ponto(CStr(Round(nValorMulta, 2))) & ",CORRECAO=" & Virg2Ponto(CStr(Round(nValorCorrecao, 2))) & ",VALORPRINCIPAL=" & Virg2Ponto(CStr(Round(nValorParcela, 2))) & ","
+                sql = sql & "SALDO=" & Virg2Ponto(CStr(Round(.nSaldo, 2))) & ",JUROSPERC=" & Virg2Ponto(CStr(Round(.nJurosPerc, 2))) & ",JUROSVALOR=" & Virg2Ponto(CStr(Round(.nJurosValor, 2))) & ","
+                sql = sql & "JUROSAPL=" & IIf(.nAno > 2006, Virg2Ponto(CStr(Round(nJurosApl, 2))), 0) & ",HONORARIO=" & Virg2Ponto(CStr(Round(nValorHon, 2))) & ",TOTAL=" & Virg2Ponto(CStr(Round(nValorLanc + nValorJuros + nValorMulta + nValorCorrecao + nValorHon + IIf(.nAno > 2006, nJurosApl, 0), 2))) & " WHERE "
+                sql = sql & "CODREDUZIDO=" & .nCodReduzido & " AND ANOEXERCICIO=" & .nAno & " AND CODLANCAMENTO=" & .nLanc & " AND NUMSEQUENCIA="
+                sql = sql & .nSeq & " AND NUMPARCELA=" & .nParc & " AND CODCOMPLEMENTO=" & .nCompl
+                cn.Execute sql, rdExecDirect
                 
                'INSERE O TRIBUTO JUROS APLICADO EM CADA PARCELA (TRIBUTO 585)
                 If .nAno > 2006 Then
-                    Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,"
-                    Sql = Sql & "NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,VALORTRIBUTO) VALUES("
-                    Sql = Sql & .nCodReduzido & "," & .nAno & "," & .nLanc & "," & .nSeq & ","
-                    Sql = Sql & .nParc & "," & .nCompl & "," & 585 & "," & Virg2Ponto(CStr(nJurosApl)) & ")"
-                    cn.Execute Sql, rdExecDirect
+                    sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,"
+                    sql = sql & "NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,VALORTRIBUTO) VALUES("
+                    sql = sql & .nCodReduzido & "," & .nAno & "," & .nLanc & "," & .nSeq & ","
+                    sql = sql & .nParc & "," & .nCompl & "," & 585 & "," & Virg2Ponto(CStr(nJurosApl)) & ")"
+                    cn.Execute sql, rdExecDirect
                 End If
             End With
         Next
@@ -806,23 +816,23 @@ End Sub
 Private Sub Command1_Click()
 Dim sNumProc As String, RdoAux2 As rdoResultset, RdoAux3 As rdoResultset
 
-Sql = "SELECT ANO,CODREDUZIDO,NUMPROC,ANOPROC FROM PROCESSOBLOQUEIO"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT ANO,CODREDUZIDO,NUMPROC,ANOPROC FROM PROCESSOBLOQUEIO"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         sNumProc = CStr(!NumProc) & "/" & CStr(!AnoProc)
-        Sql = "SELECT codreduzido,anoexercicio,codlancamento,seqlancamento,numparcela,codcomplemento From debitoparcela Where CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO>2006  AND CODLANCAMENTO=20 AND NUMPROCESSO='" & sNumProc & "'"
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT codreduzido,anoexercicio,codlancamento,seqlancamento,numparcela,codcomplemento From debitoparcela Where CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO>2006  AND CODLANCAMENTO=20 AND NUMPROCESSO='" & sNumProc & "'"
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             Do Until .EOF
                 nSeq = !SeqLancamento
-                Sql = "SELECT CODTRIBUTO,VALORTRIBUTO FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=" & !AnoExercicio & " AND CODLANCAMENTO=20 AND SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & !NumParcela & " AND CODCOMPLEMENTO=" & !CODCOMPLEMENTO & " AND CODTRIBUTO<>3"
-                Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                sql = "SELECT CODTRIBUTO,VALORTRIBUTO FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=" & !AnoExercicio & " AND CODLANCAMENTO=20 AND SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & !NumParcela & " AND CODCOMPLEMENTO=" & !CODCOMPLEMENTO & " AND CODTRIBUTO<>3"
+                Set RdoAux3 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                 With RdoAux3
                     Do Until .EOF
                         '**atualiza o valor dos débitos
-                        Sql = "UPDATE debitotributo Set valortributo = " & Virg2Ponto(Round(!ValorTributo * 100 / 103.7, 2)) & " WHERE CODREDUZIDO=" & RdoAux2!CODREDUZIDO & " AND ANOEXERCICIO=" & RdoAux2!AnoExercicio & " AND CODLANCAMENTO=20 AND SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & RdoAux2!NumParcela & " AND CODCOMPLEMENTO=" & RdoAux2!CODCOMPLEMENTO & " AND CodTributo = " & !CodTributo
-                        cn.Execute Sql, rdExecDirect
+                        sql = "UPDATE debitotributo Set valortributo = " & Virg2Ponto(Round(!VALORTRIBUTO * 100 / 103.7, 2)) & " WHERE CODREDUZIDO=" & RdoAux2!CODREDUZIDO & " AND ANOEXERCICIO=" & RdoAux2!AnoExercicio & " AND CODLANCAMENTO=20 AND SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & RdoAux2!NumParcela & " AND CODCOMPLEMENTO=" & RdoAux2!CODCOMPLEMENTO & " AND CodTributo = " & !CodTributo
+                        cn.Execute sql, rdExecDirect
                        .MoveNext
                     Loop
                    .Close
@@ -847,29 +857,29 @@ End Sub
 Private Sub Command1old_Click()
 Dim sNumProc As String, RdoAux2 As rdoResultset, RdoAux3 As rdoResultset
 
-Sql = "SELECT ANO,CODREDUZIDO,NUMPROC,ANOPROC FROM PROCESSOBLOQUEIO"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT ANO,CODREDUZIDO,NUMPROC,ANOPROC FROM PROCESSOBLOQUEIO"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         sNumProc = CStr(!NumProc) & "/" & CStr(!AnoProc)
-        Sql = "SELECT seqlancamento From debitoparcela Where CODREDUZIDO=" & !CODREDUZIDO & " AND CODLANCAMENTO=20 AND NUMPROCESSO='" & sNumProc & "'"
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT seqlancamento From debitoparcela Where CODREDUZIDO=" & !CODREDUZIDO & " AND CODLANCAMENTO=20 AND NUMPROCESSO='" & sNumProc & "'"
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             nSeq = !SeqLancamento
-            Sql = "SELECT CODTRIBUTO,VALORTRIBUTO FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & RdoAux!CODREDUZIDO & " AND ANOEXERCICIO=2006 AND CODLANCAMENTO=20 AND SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=2 AND CODTRIBUTO<>3"
-            Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            sql = "SELECT CODTRIBUTO,VALORTRIBUTO FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & RdoAux!CODREDUZIDO & " AND ANOEXERCICIO=2006 AND CODLANCAMENTO=20 AND SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=2 AND CODTRIBUTO<>3"
+            Set RdoAux3 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
             With RdoAux3
                 Do Until .EOF
                     '**atualiza o valor dos débitos
-                    Sql = "UPDATE debitotributo Set valortributo = " & Virg2Ponto(!ValorTributo) & "  Where (CODREDUZIDO = " & RdoAux!CODREDUZIDO & ") And (AnoExercicio = " & Val(txtAno.Text) & ") And (CodLancamento = 20) And (SeqLancamento = " & nSeq & ") AND (CodTributo = " & !CodTributo & " )"
-                    cn.Execute Sql, rdExecDirect
+                    sql = "UPDATE debitotributo Set valortributo = " & Virg2Ponto(!VALORTRIBUTO) & "  Where (CODREDUZIDO = " & RdoAux!CODREDUZIDO & ") And (AnoExercicio = " & Val(txtAno.Text) & ") And (CodLancamento = 20) And (SeqLancamento = " & nSeq & ") AND (CodTributo = " & !CodTributo & " )"
+                    cn.Execute sql, rdExecDirect
                    .MoveNext
                 Loop
                .Close
             End With
             '***atualiza o status***
-            Sql = "UPDATE debitoparcela Set statuslanc=18 Where (CODREDUZIDO = " & RdoAux!CODREDUZIDO & ") And (AnoExercicio = " & Val(txtAno.Text) & ") And (CodLancamento = 20) And (SeqLancamento = " & nSeq & ") "
-            cn.Execute Sql, rdExecDirect
+            sql = "UPDATE debitoparcela Set statuslanc=18 Where (CODREDUZIDO = " & RdoAux!CODREDUZIDO & ") And (AnoExercicio = " & Val(txtAno.Text) & ") And (CodLancamento = 20) And (SeqLancamento = " & nSeq & ") "
+            cn.Execute sql, rdExecDirect
            .Close
         End With
         
@@ -883,17 +893,17 @@ End Sub
 Private Sub Command2_Click()
 Dim sNumProc As String, RdoAux2 As rdoResultset, RdoAux3 As rdoResultset
 
-Sql = "SELECT ANO,CODREDUZIDO,NUMPROC,ANOPROC FROM PROCESSOBLOQUEIO WHERE CODREDUZIDO=110432"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT ANO,CODREDUZIDO,NUMPROC,ANOPROC FROM PROCESSOBLOQUEIO WHERE CODREDUZIDO=110432"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         sNumProc = CStr(!NumProc) & "/" & CStr(!AnoProc)
-        Sql = "SELECT codreduzido,anoexercicio,codlancamento,seqlancamento,numparcela,codcomplemento From debitoparcela Where CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO>2006  AND CODLANCAMENTO=20 AND NUMPROCESSO='" & sNumProc & "'"
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT codreduzido,anoexercicio,codlancamento,seqlancamento,numparcela,codcomplemento From debitoparcela Where CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO>2006  AND CODLANCAMENTO=20 AND NUMPROCESSO='" & sNumProc & "'"
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             Do Until .EOF
-                Sql = "SELECT * FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND CODTRIBUTO=587"
-                Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                sql = "SELECT * FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND CODTRIBUTO=587"
+                Set RdoAux3 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                 With RdoAux3
                     If .RowCount > 0 Then
 '                        .Close
@@ -903,10 +913,10 @@ With RdoAux
                 End With
             
                 If .AbsolutePosition = 1 Then
-                    Sql = "SELECT SUM(VALORTRIBUTO) AS SOMA FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=" & !AnoExercicio & " AND "
-                    Sql = Sql & "CODLANCAMENTO=" & !CodLancamento & " AND SEQLANCAMENTO=" & !SeqLancamento & " AND NUMPARCELA=" & !NumParcela & " AND "
-                    Sql = Sql & "CODCOMPLEMENTO=" & !CODCOMPLEMENTO & " AND CODTRIBUTO<>3"
-                    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                    sql = "SELECT SUM(VALORTRIBUTO) AS SOMA FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=" & !AnoExercicio & " AND "
+                    sql = sql & "CODLANCAMENTO=" & !CodLancamento & " AND SEQLANCAMENTO=" & !SeqLancamento & " AND NUMPARCELA=" & !NumParcela & " AND "
+                    sql = sql & "CODCOMPLEMENTO=" & !CODCOMPLEMENTO & " AND CODTRIBUTO<>3"
+                    Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                     With RdoAux2
                         nValorTributo = (!soma * 0.037)
                         RdoAux2.Close
@@ -917,11 +927,11 @@ With RdoAux
 '                    cn.Execute Sql, rdExecDirect
                 '   .Close
                 End If
-                Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,"
-                Sql = Sql & "NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,VALORTRIBUTO) VALUES("
-                Sql = Sql & !CODREDUZIDO & "," & !AnoExercicio & "," & !CodLancamento & "," & !SeqLancamento & ","
-                Sql = Sql & !NumParcela & "," & !CODCOMPLEMENTO & "," & 587 & "," & Virg2Ponto(CStr(nValorTributo)) & ")"
-                cn.Execute Sql, rdExecDirect
+                sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,"
+                sql = sql & "NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,VALORTRIBUTO) VALUES("
+                sql = sql & !CODREDUZIDO & "," & !AnoExercicio & "," & !CodLancamento & "," & !SeqLancamento & ","
+                sql = sql & !NumParcela & "," & !CODCOMPLEMENTO & "," & 587 & "," & Virg2Ponto(CStr(nValorTributo)) & ")"
+                cn.Execute sql, rdExecDirect
                .MoveNext
            Loop
           .Close
@@ -942,9 +952,13 @@ For x = 2008 To Year(Now) + 1
     txtAno.AddItem CStr(x)
 Next
 
+txtAno.ListIndex = txtAno.ListCount - 2
+txtAno.Enabled = False
+
+
 Centraliza Me
 Me.Top = Me.Top + 500
-If NomeDeLogin <> "SCHWARTZ" Then
+If NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "GLEISE" Then
     Opt(1).Enabled = False
 End If
 
@@ -952,7 +966,7 @@ End If
 'NomeDeLogin = "SOLANGE" Or IsAtendente Then
     cmdCalculo.Enabled = True
 'End If
-txtAno.ListIndex = 0
+'txtAno.ListIndex = 0
 End Sub
 
 Private Sub Opt_Click(Index As Integer)
@@ -970,9 +984,9 @@ End If
 End Sub
 
 Private Sub txtAno_Click()
-Dim RdoAux As rdoResultset, Sql As String
-Sql = "select ipca from ufir where anoufir=" & Val(txtAno.Text)
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+Dim RdoAux As rdoResultset, sql As String
+sql = "select ipca from ufir where anoufir=" & Val(txtAno.Text)
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 If RdoAux.RowCount > 0 Then
     txtPerc.Text = RdoAux!ipca
 Else
@@ -990,7 +1004,7 @@ Tweak txtPerc, KeyAscii, DecimalPositive
 End Sub
 
 Private Sub CallPb(nVal As Long, nTot As Long)
-
+'nTot = 1900
 If ((nVal * 100) / nTot) <= 100 Then
    PBar.value = (nVal * 100) / nTot
 Else

@@ -66,7 +66,7 @@ Begin VB.Form frmPagAutomatico
       ForeColor       =   -2147483630
       BackColor       =   15658734
       Appearance      =   0
-      StartOfWeek     =   76611585
+      StartOfWeek     =   164626433
       TitleBackColor  =   192
       TitleForeColor  =   12648447
       CurrentDate     =   37439
@@ -895,7 +895,7 @@ lblAux.Caption = Index
 '        End If
 '    End If
 If NomeDeLogin = "SCHWARTZ" Then
-    sPathArqBanco = "E:\Work\GTI\Banco"
+    sPathArqBanco = "c:\Work\GTI\Banco"
 End If
     If frmBaixaBancaria.lblBanco.Caption = "000-OUTROS BANCOS" Then
         nCodBanco = 90
@@ -906,13 +906,13 @@ End If
         frmBaixaBancaria.txtPath.Text = sPathArqBanco & "\" & Mv.Year & "\" & Format(Mv.Month, "00") & "\" & Format(Mv.Day, "00") & "\"
         lblData.Caption = Format(Mv.Day, "00") & "\" & Format(Mv.Month, "00") & "\" & Mv.Year
         If nCodBanco = 33 Then
-            Sql = "SELECT * FROM ARQUIVOBANCO WHERE DATACREDITO='" & Format(Mv.Month, "00") & "/" & Format(Mv.Day, "00") & "/" & Mv.Year & "' AND (CODBANCO=33 or codbanco=8)"
+            sql = "SELECT * FROM ARQUIVOBANCO WHERE DATACREDITO='" & Format(Mv.Month, "00") & "/" & Format(Mv.Day, "00") & "/" & Mv.Year & "' AND (CODBANCO=33 or codbanco=8)"
         ElseIf nCodBanco = 90 Then
-            Sql = "SELECT * FROM ARQUIVOBANCO WHERE DATACREDITO='" & Format(Mv.Month, "00") & "/" & Format(Mv.Day, "00") & "/" & Mv.Year & "' AND CODBANCO NOT IN (1,8,33,104,151,237,341,399,409,641)"
+            sql = "SELECT * FROM ARQUIVOBANCO WHERE DATACREDITO='" & Format(Mv.Month, "00") & "/" & Format(Mv.Day, "00") & "/" & Mv.Year & "' AND CODBANCO NOT IN (1,8,33,104,151,237,341,399,409,641)"
         Else
-            Sql = "SELECT * FROM ARQUIVOBANCO WHERE DATACREDITO='" & Format(Mv.Month, "00") & "/" & Format(Mv.Day, "00") & "/" & Mv.Year & "' AND CODBANCO=" & nCodBanco
+            sql = "SELECT * FROM ARQUIVOBANCO WHERE DATACREDITO='" & Format(Mv.Month, "00") & "/" & Format(Mv.Day, "00") & "/" & Mv.Year & "' AND CODBANCO=" & nCodBanco
         End If
-        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             Do Until .EOF
                frmBaixaBancaria.lstArq.AddItem !NOMEARQ
@@ -923,8 +923,8 @@ End If
         If frmBaixaBancaria.lstArq.ListCount > 0 Then frmBaixaBancaria.lstArq.ListIndex = 0
         frmBaixaBancaria.ZOrder 0
     Else
-        Sql = "SELECT * FROM ARQUIVOBANCO WHERE DATACREDITO='" & Format(Mv.Month, "00") & "/" & Format(Mv.Day, "00") & "/" & Mv.Year & "'"
-        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT * FROM ARQUIVOBANCO WHERE DATACREDITO='" & Format(Mv.Month, "00") & "/" & Format(Mv.Day, "00") & "/" & Mv.Year & "'"
+        Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
          With RdoAux
              Do Until .EOF
                 frmBaixaBancaria.lstArq.AddItem RdoAux!NOMEARQ
@@ -940,18 +940,18 @@ End Sub
 
 Private Sub cmdSair_Click()
 
-Dim Sql As String, RdoAux As rdoResultset, nPos As Long, nTot As Long
+Dim sql As String, RdoAux As rdoResultset, nPos As Long, nTot As Long
 Ocupado
-Sql = "SELECT DISTINCT  debitopago.codreduzido, debitopago.contacorrente, debitoparcela.statuslanc, debitopago.anoexercicio, debitopago.seqlancamento, debitopago.numparcela,"
-Sql = Sql & "debitopago.CODCOMPLEMENTO , debitopago.CodLancamento FROM  debitopago INNER JOIN debitoparcela ON debitopago.codreduzido = debitoparcela.codreduzido AND debitopago.anoexercicio = debitoparcela.anoexercicio AND "
-Sql = Sql & "debitopago.codlancamento = debitoparcela.codlancamento AND debitopago.seqlancamento = debitoparcela.seqlancamento AND "
-Sql = Sql & "debitopago.NumParcela = debitoparcela.NumParcela And debitopago.CODCOMPLEMENTO = debitoparcela.CODCOMPLEMENTO Where (debitoparcela.statuslanc = 3)"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT DISTINCT  debitopago.codreduzido, debitopago.contacorrente, debitoparcela.statuslanc, debitopago.anoexercicio, debitopago.seqlancamento, debitopago.numparcela,"
+sql = sql & "debitopago.CODCOMPLEMENTO , debitopago.CodLancamento FROM  debitopago INNER JOIN debitoparcela ON debitopago.codreduzido = debitoparcela.codreduzido AND debitopago.anoexercicio = debitoparcela.anoexercicio AND "
+sql = sql & "debitopago.codlancamento = debitoparcela.codlancamento AND debitopago.seqlancamento = debitoparcela.seqlancamento AND "
+sql = sql & "debitopago.NumParcela = debitoparcela.NumParcela And debitopago.CODCOMPLEMENTO = debitoparcela.CODCOMPLEMENTO Where (debitoparcela.statuslanc = 3)"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     nTot = .RowCount
     Do Until .EOF
-        Sql = "update debitoparcela set statuslanc=2 where codreduzido=" & !CODREDUZIDO & " and anoexercicio=" & !AnoExercicio & " and codlancamento=" & !CodLancamento & " and "
-        Sql = Sql & "seqlancamento=" & !SeqLancamento & " and numparcela=" & !NumParcela & " and codcomplemento=" & !CODCOMPLEMENTO
+        sql = "update debitoparcela set statuslanc=2 where codreduzido=" & !CODREDUZIDO & " and anoexercicio=" & !AnoExercicio & " and codlancamento=" & !CodLancamento & " and "
+        sql = sql & "seqlancamento=" & !SeqLancamento & " and numparcela=" & !NumParcela & " and codcomplemento=" & !CODCOMPLEMENTO
 '        cn.Execute Sql, rdExecDirect
         DoEvents
        .MoveNext
@@ -959,14 +959,14 @@ With RdoAux
    .Close
 End With
 
-Sql = "SELECT codreduzido, anoexercicio, codlancamento, seqlancamento, numparcela, codcomplemento, statuslanc From debitoparcela "
-Sql = Sql & "Where (statuslanc = 1) And (NumParcela = 0) And (CODREDUZIDO < 100000) And (AnoExercicio = 2018) And (CodLancamento = 1)"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT codreduzido, anoexercicio, codlancamento, seqlancamento, numparcela, codcomplemento, statuslanc From debitoparcela "
+sql = sql & "Where (statuslanc = 1) And (NumParcela = 0) And (CODREDUZIDO < 100000) And (AnoExercicio = 2018) And (CodLancamento = 1)"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     nTot = .RowCount
     Do Until .EOF
-        Sql = "update debitoparcela set statuslanc=5 where codreduzido=" & !CODREDUZIDO & " and anoexercicio=" & !AnoExercicio & " and codlancamento=" & !CodLancamento & " and "
-        Sql = Sql & "seqlancamento=" & !SeqLancamento & " and numparcela=0  and statuslanc=3"
+        sql = "update debitoparcela set statuslanc=5 where codreduzido=" & !CODREDUZIDO & " and anoexercicio=" & !AnoExercicio & " and codlancamento=" & !CodLancamento & " and "
+        sql = sql & "seqlancamento=" & !SeqLancamento & " and numparcela=0  and statuslanc=3"
 '        cn.Execute Sql, rdExecDirect
         DoEvents
        .MoveNext
@@ -1021,8 +1021,8 @@ Else
    sAno = "20" & CStr(Mv.Year)
 End If
 
-Sql = "SELECT * FROM ARQUIVOBANCO WHERE DATACREDITO='" & Format(lblData.Caption, "mm/dd/yyyy") & "' "
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT * FROM ARQUIVOBANCO WHERE DATACREDITO='" & Format(lblData.Caption, "mm/dd/yyyy") & "' "
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
        Select Case !CodBanco
