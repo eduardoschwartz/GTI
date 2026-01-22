@@ -798,7 +798,7 @@ For x = 1 To mskVenc.Count
         Exit For
     End If
 Next
-nCodReduz = Val(grdMain.TextMatrix(grdMain.Row, 0))
+nCodReduz = Val(grdMain.TextMatrix(grdMain.row, 0))
 
 
 'Sql = "SELECT * FROM DEBITOPARCELA WHERE CODREDUZIDO=" & nCodReduz & " AND "
@@ -842,7 +842,7 @@ End Sub
 Private Sub Form_Load()
 Dim x As Integer
 
-For x = 2004 To Year(Now) + 1
+For x = 2004 To Year(Now)
     cmbAno.AddItem CStr(x)
 Next
 
@@ -866,7 +866,7 @@ End Sub
 
 Private Sub grdMain_Click()
 Dim nId As Integer
-nId = Val(grdMain.TextMatrix(grdMain.Row, 2))
+nId = Val(grdMain.TextMatrix(grdMain.row, 2))
 Limpa
 With grdMain
     If .Rows = 1 Then Exit Sub
@@ -966,6 +966,19 @@ ElseIf Val(cmbAno) = 2016 Then
     mskVenc(10).Text = "31/10/2016"
     mskVenc(11).Text = "30/11/2016"
     mskVenc(12).Text = "30/12/2016"
+ElseIf Val(cmbAno) = 2024 Then
+    mskVenc(1).Text = "31/01/2024"
+    mskVenc(2).Text = "28/02/2024"
+    mskVenc(3).Text = "31/03/2024"
+    mskVenc(4).Text = "30/04/2024"
+    mskVenc(5).Text = "31/05/2024"
+    mskVenc(6).Text = "30/06/2024"
+    mskVenc(7).Text = "31/07/2024"
+    mskVenc(8).Text = "31/08/2024"
+    mskVenc(9).Text = "30/09/2024"
+    mskVenc(10).Text = "31/10/2024"
+    mskVenc(11).Text = "30/11/2024"
+    mskVenc(12).Text = "30/12/2024"
 End If
 
 lblNumParc.Caption = nMesesFaltando
@@ -1166,7 +1179,7 @@ Else
 End If
 RdoAux.Close
 
-nCodReduz = Val(grdMain.TextMatrix(grdMain.Row, 0))
+nCodReduz = Val(grdMain.TextMatrix(grdMain.row, 0))
 If nCodReduz < 100000 Then
     Sql = "SELECT CODREDUZIDO,CPF,CNPJ,RG,ORGAO FROM vwCONSULTAIMOVELPROP WHERE CODREDUZIDO=" & nCodReduz
     Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -1557,8 +1570,9 @@ Dim nSeq2 As Integer, sAj As String, sDA As String, nValorPrincipal As Double, s
 Dim nSid As Long, sDigitavel As String, sNossoNumero As String, sDv As String, sQuintoGrupo As String, dDataBase As Date
 Dim sBarra As String, sDigitavel2 As String, nValorDam As Double, nValorPrincDam As Double, nNumGuia As Long, nValorParc As Double
 Dim sTipoEnd As String, nCodLanc As Integer, nCodTributo As Integer, sVencimento As String, sCPF As String
-Dim bBoleto As Boolean
+Dim bBoleto As Boolean, nValorOriginal As Double
 Dim sValor As String, dDataVencto As Date, NumBarra2 As String, NumBarra2a As String, NumBarra2b As String, NumBarra2c As String, NumBarra2d As String, StrBarra2 As String
+Dim sCampo1 As String, sCampo2 As String, sCampo3 As String, sCampo4 As String, sCampo5 As String, sParcela As String
 
 bBoleto = False
 If MsgBox("Confirma Emissão dos boletos?", vbQuestion + vbYesNo, "Confirmação") = vbNo Then
@@ -1607,7 +1621,7 @@ Select Case nCodReduz
         End With
 
     Case 100000 To 500000
-        sNomeResp = grdMain.TextMatrix(grdMain.Row, 1)
+        sNomeResp = grdMain.TextMatrix(grdMain.row, 1)
         sNumInsc = nCodReduz
         sCodReduz = nCodReduz
         sLote = ""
@@ -1642,7 +1656,7 @@ Select Case nCodReduz
         End With
         
     Case 500000 To 800000
-        sNomeResp = grdMain.TextMatrix(grdMain.Row, 1)
+        sNomeResp = grdMain.TextMatrix(grdMain.row, 1)
         sNumInsc = nCodReduz
         sCodReduz = nCodReduz
         sLote = ""
@@ -1704,8 +1718,19 @@ End Select
 
 sFullTrib = cmbTipo.Text
 nValorParc = CDbl(lblValorParc.Caption)
+nValorOriginal = nValorParc
+nValorParc = nValorParc / 2 '50% de desconto
 
+
+nValorTotal = lblValorTotal.Caption / 2
+novosid:
 nSid = Int(Rnd(100) * 1000000)
+
+Sql = "select * from FICHA_COMPENSACAO where sid=" & nSid
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+If RdoAux.RowCount > 0 Then
+    GoTo novosid
+End If
 
 Sql = "delete from boletoguia where sid=" & nSid
 cn.Execute Sql, rdExecDirect
@@ -1714,7 +1739,7 @@ Sql = "delete from boletoguiacapa where sid=" & nSid
 cn.Execute Sql, rdExecDirect
 
 Sql = "insert boletoguiacapa(usuario,computer,sid,seq,codtributo,desctributo,valor) values('" & NomeDeLogin & "','" & NomeDoComputador & "'," & nSid & "," & 1 & ","
-Sql = Sql & cmbTipo.ItemData(cmbTipo.ListIndex) & ",'" & Left(cmbTipo.Text, 50) & "'," & Virg2Ponto(RemovePonto(lblValorTotal.Caption)) & ")"
+Sql = Sql & cmbTipo.ItemData(cmbTipo.ListIndex) & ",'" & Left(cmbTipo.Text, 50) & "'," & Virg2Ponto(RemovePonto(CStr(nValorTotal))) & ")"
 cn.Execute Sql, rdExecDirect
 
 
@@ -1757,7 +1782,7 @@ For nParc = 1 To Val(lblNumParc.Caption)
 
     'GRAVA DEBITOTRIBUTO
     Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,VALORTRIBUTO) VALUES("
-    Sql = Sql & nCodReduz & "," & nAno & "," & nLanc & "," & nSeq & "," & nParc & "," & nCompl & "," & nCodTributo & "," & Virg2Ponto(CStr(nValorParc)) & ")"
+    Sql = Sql & nCodReduz & "," & nAno & "," & nLanc & "," & nSeq & "," & nParc & "," & nCompl & "," & nCodTributo & "," & Virg2Ponto(CStr(nValorOriginal)) & ")"
     cn.Execute Sql, rdExecDirect
     
     'RETORNA ULTIMO DOCUMENTO
@@ -1777,37 +1802,74 @@ For nParc = 1 To Val(lblNumParc.Caption)
 
     'EMITE BOLETO
     nValorGuia = nValorParc
+    nValorDoc = nValorGuia
     nNumGuia = nNumDoc
-
+    sDataVencto = sVencimento
     sNumDoc = CStr(nNumGuia) & "-" & RetornaDVNumDoc(nNumGuia)
     sNumDoc2 = CStr(nNumGuia) & RetornaDVNumDoc(nNumGuia)
     sNumDoc3 = CStr(nNumGuia) & Modulo11(nNumGuia)
     
 '    If bBoleto Then
         '**** GERADOR DE CÓDIGO DE BARRAS ********
-        sNossoNumero = "2873532"
-        sDigitavel = "001900000"
-        sDv = Trim(Calculo_DV10(Right(sDigitavel, 10)))
-        sDigitavel = sDigitavel & sDv & "0" & sNossoNumero & "01"
-        sDv = Trim(Calculo_DV10(Right(sDigitavel, 10)))
-        sDigitavel = sDigitavel & sDv & Right(sNumDoc3, 8) & "18"
-        sDv = Trim(Calculo_DV10(Right(sDigitavel, 10)))
-        sDigitavel = sDigitavel & sDv
-        sDataDam = sVencimento
-        dDataBase = "07/10/1997"
-        nFatorVencto = CDate(sDataDam) - dDataBase
-        sQuintoGrupo = Format(nFatorVencto, "0000")
-        sQuintoGrupo = sQuintoGrupo & Format(RetornaNumero(FormatNumber(nValorDoc, 2)), "0000000000")
-        sBarra = "0019" & Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(nValorDoc, 2)), "0000000000") & "000000287353200"
-        sBarra = sBarra & sNumDoc3 & "18"
-        sDv = Trim(Calculo_DV11(sBarra))
-        sBarra = Left(sBarra, 4) & sDv & Mid(sBarra, 5, Len(sBarra) - 4)
         
-        sDigitavel = sDigitavel & sDv & sQuintoGrupo
+                    sNossoNumero = "2873532"
+            dDataBase = "07/10/1997"
+            nFatorVencto = CDate(sDataVencto) - CDate(dDataBase)
+            
+            If CDate(sDataVencto) >= "22/02/2025" Then
+                dDataBase = "29/05/2022"
+                nFatorVencto = CDate(sDataVencto) - CDate(dDataBase)
+            End If
+            
+            sQuintoGrupo = Format(nFatorVencto, "0000")
+            sQuintoGrupo = sQuintoGrupo & Format(RetornaNumero(FormatNumber(nValorParc, 2)), "0000000000")
+            sBarra = "0019" & Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(nValorParc, 2)), "0000000000") & "000000287353200"
+            sBarra = sBarra & CStr(nNumDoc) & "17"
+            
+            sCampo1 = "0019" & Mid(sBarra, 20, 5)
+            sDigitavel = sCampo1 & Val(Calculo_DV10(sCampo1))
+            sCampo2 = Mid(sBarra, 24, 10)
+            sDigitavel = sDigitavel & sCampo2 & Val(Calculo_DV10(sCampo2))
+            sCampo3 = Mid(sBarra, 34, 10)
+            sDigitavel = sDigitavel & sCampo3 & Val(Calculo_DV10(sCampo3))
+            sCampo5 = Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(nValorParc, 2)), "0000000000")
+            sCampo4 = Val(Calculo_DV11(sBarra))
+            sDigitavel = sDigitavel & sCampo4 & sCampo5
+            sBarra = Left(sBarra, 4) & sCampo4 & Mid(sBarra, 5, Len(sBarra) - 4)
+            sDigitavel2 = Left(sDigitavel, 5) & "." & Mid(sDigitavel, 6, 5) & " " & Mid(sDigitavel, 11, 5) & "." & Mid(sDigitavel, 16, 6) & " "
+            sDigitavel2 = sDigitavel2 & Mid(sDigitavel, 22, 5) & "." & Mid(sDigitavel, 27, 6) & " " & Mid(sDigitavel, 33, 1) & " " & Right(sDigitavel, 14)
+            sBarra = Gera2of5Str(sBarra)
+
         
-        sDigitavel2 = Left(sDigitavel, 5) & "." & Mid(sDigitavel, 6, 5) & " " & Mid(sDigitavel, 11, 5) & "." & Mid(sDigitavel, 16, 6) & " "
-        sDigitavel2 = sDigitavel2 & Mid(sDigitavel, 22, 5) & "." & Mid(sDigitavel, 27, 6) & " " & Mid(sDigitavel, 33, 1) & " " & Right(sDigitavel, 14)
-        sBarra = Gera2of5Str(sBarra)
+'        sNossoNumero = "2873532"
+'        sDigitavel = "001900000"
+'        sDv = Trim(Calculo_DV10(Right(sDigitavel, 10)))
+'        sDigitavel = sDigitavel & sDv & "0" & sNossoNumero & "01"
+'        sDv = Trim(Calculo_DV10(Right(sDigitavel, 10)))
+'        sDigitavel = sDigitavel & sDv & Right(sNumDoc3, 8) & "18"
+'        sDv = Trim(Calculo_DV10(Right(sDigitavel, 10)))
+'        sDigitavel = sDigitavel & sDv
+'        sDataDam = sVencimento
+'        dDataBase = "07/10/1997"
+'        nFatorVencto = CDate(sDataDam) - dDataBase
+'
+'        If CDate(sDataDam) >= "22/02/2025" Then
+'            dDataBase = "29/05/2022"
+'            nFatorVencto = CDate(sDataDam) - CDate(dDataBase)
+'        End If
+'
+'        sQuintoGrupo = Format(nFatorVencto, "0000")
+'        sQuintoGrupo = sQuintoGrupo & Format(RetornaNumero(FormatNumber(nValorDoc, 2)), "0000000000")
+'        sBarra = "0019" & Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(nValorDoc, 2)), "0000000000") & "000000287353200"
+'        sBarra = sBarra & sNumDoc3 & "18"
+'        sDv = Trim(Calculo_DV11(sBarra))
+'        sBarra = Left(sBarra, 4) & sDv & Mid(sBarra, 5, Len(sBarra) - 4)
+'
+'        sDigitavel = sDigitavel & sDv & sQuintoGrupo
+'
+'        sDigitavel2 = Left(sDigitavel, 5) & "." & Mid(sDigitavel, 6, 5) & " " & Mid(sDigitavel, 11, 5) & "." & Mid(sDigitavel, 16, 6) & " "
+'        sDigitavel2 = sDigitavel2 & Mid(sDigitavel, 22, 5) & "." & Mid(sDigitavel, 27, 6) & " " & Mid(sDigitavel, 33, 1) & " " & Right(sDigitavel, 14)
+'        sBarra = Gera2of5Str(sBarra)
 
     
     Sql = "Insert FICHA_COMPENSACAO(SID,SEQ,CODIGO,NOME,CPF,ENDERECO,BAIRRO,CIDADE,CEP,DOCUMENTO,VALOR,VENCIMENTO,PARCELA,DIGITAVEL,CODBARRA,OBS,INSCRICAO,QUADRA,LOTE,UF) VALUES("

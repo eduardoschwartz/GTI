@@ -5,7 +5,7 @@ Begin VB.Form frmDoc
    BackColor       =   &H00EEEEEE&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Consulta/Reativação de Documento"
-   ClientHeight    =   6300
+   ClientHeight    =   6810
    ClientLeft      =   8490
    ClientTop       =   3720
    ClientWidth     =   10335
@@ -13,17 +13,27 @@ Begin VB.Form frmDoc
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
-   ScaleHeight     =   6300
+   ScaleHeight     =   6810
    ScaleWidth      =   10335
+   Begin VB.TextBox txtBarra 
+      Appearance      =   0  'Flat
+      ForeColor       =   &H00000080&
+      Height          =   330
+      Left            =   1440
+      Locked          =   -1  'True
+      TabIndex        =   38
+      Top             =   5130
+      Width           =   8700
+   End
    Begin VB.TextBox txtObs 
       Appearance      =   0  'Flat
       Height          =   1035
-      Left            =   90
+      Left            =   135
       Locked          =   -1  'True
       MultiLine       =   -1  'True
       ScrollBars      =   2  'Vertical
       TabIndex        =   34
-      Top             =   5190
+      Top             =   5625
       Width           =   10155
    End
    Begin VB.Frame frTemp 
@@ -348,6 +358,15 @@ Begin VB.Form frmDoc
       CHECK           =   0   'False
       VALUE           =   0   'False
    End
+   Begin VB.Label Label13 
+      BackStyle       =   0  'Transparent
+      Caption         =   "Código de Barras:"
+      Height          =   255
+      Left            =   90
+      TabIndex        =   37
+      Top             =   5175
+      Width           =   1320
+   End
    Begin VB.Label lblPix 
       BackStyle       =   0  'Transparent
       Caption         =   "NÃO"
@@ -605,7 +624,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Dim RdoAux As rdoResultset
 Dim RdoAux2 As rdoResultset
-Dim Sql As String
+Dim sql As String
 
 Private Sub cmdFechar_Click()
 Dim x As Integer, Achou As Boolean
@@ -725,25 +744,25 @@ If MsgBox("Deseja executar a restituição destes lançamentos ?", vbYesNo, "CONFIR
                    nNumDoc = Val(Left$(grdTemp.TextMatrix(y, 1), Len(grdTemp.TextMatrix(y, 1)) - 1))
                    nSeqPag = Val(grdTemp.TextMatrix(y, 2))
                   'ATUALIZA A TABELA DEBITOPAGO
-                   Sql = "SELECT * FROM DEBITOPAGO "
-                   Sql = Sql & "WHERE CODREDUZIDO = " & nCodReduz & " AND ANOEXERCICIO = " & nAnoExercicio & " AND CODLANCAMENTO = " & nCodLanc & " AND "
-                   Sql = Sql & "SEQLANCAMENTO = " & nSeqLanc & " AND NUMPARCELA = " & nNumParc & " AND CODCOMPLEMENTO = " & nCompl & " AND RESTITUIDO IS NULL"
-                   Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                   sql = "SELECT * FROM DEBITOPAGO "
+                   sql = sql & "WHERE CODREDUZIDO = " & nCodReduz & " AND ANOEXERCICIO = " & nAnoExercicio & " AND CODLANCAMENTO = " & nCodLanc & " AND "
+                   sql = sql & "SEQLANCAMENTO = " & nSeqLanc & " AND NUMPARCELA = " & nNumParc & " AND CODCOMPLEMENTO = " & nCompl & " AND RESTITUIDO IS NULL"
+                   Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                    If RdoAux.RowCount > 1 Then
-                        Sql = "UPDATE DEBITOPAGO SET RESTITUIDO='" & Format(Now, "mm/dd/yyyy") & "' "
-                        Sql = Sql & "WHERE CODREDUZIDO = " & nCodReduz & " AND ANOEXERCICIO = " & nAnoExercicio & " AND CODLANCAMENTO = " & nCodLanc & " AND "
-                        Sql = Sql & "SEQLANCAMENTO = " & nSeqLanc & " AND NUMPARCELA = " & nNumParc & " AND CODCOMPLEMENTO = " & nCompl & " AND SEQPAG=" & nSeqPag
+                        sql = "UPDATE DEBITOPAGO SET RESTITUIDO='" & Format(Now, "mm/dd/yyyy") & "' "
+                        sql = sql & "WHERE CODREDUZIDO = " & nCodReduz & " AND ANOEXERCICIO = " & nAnoExercicio & " AND CODLANCAMENTO = " & nCodLanc & " AND "
+                        sql = sql & "SEQLANCAMENTO = " & nSeqLanc & " AND NUMPARCELA = " & nNumParc & " AND CODCOMPLEMENTO = " & nCompl & " AND SEQPAG=" & nSeqPag
                    Else
-                        Sql = "UPDATE DEBITOPAGO SET RESTITUIDO='" & Format(Now, "mm/dd/yyyy") & "' "
-                        Sql = Sql & "WHERE CODREDUZIDO = " & nCodReduz & " AND ANOEXERCICIO = " & nAnoExercicio & " AND CODLANCAMENTO = " & nCodLanc & " AND "
-                        Sql = Sql & "SEQLANCAMENTO = " & nSeqLanc & " AND NUMPARCELA = " & nNumParc & " AND CODCOMPLEMENTO = " & nCompl & " AND RESTITUIDO IS NULL"
+                        sql = "UPDATE DEBITOPAGO SET RESTITUIDO='" & Format(Now, "mm/dd/yyyy") & "' "
+                        sql = sql & "WHERE CODREDUZIDO = " & nCodReduz & " AND ANOEXERCICIO = " & nAnoExercicio & " AND CODLANCAMENTO = " & nCodLanc & " AND "
+                        sql = sql & "SEQLANCAMENTO = " & nSeqLanc & " AND NUMPARCELA = " & nNumParc & " AND CODCOMPLEMENTO = " & nCompl & " AND RESTITUIDO IS NULL"
                    End If
-                   cn.Execute Sql, rdExecDirect
+                   cn.Execute sql, rdExecDirect
                    RdoAux.Close
-                   Sql = "UPDATE DEBITOPAGO SET RESTITUIDO='" & Format(Now, "mm/dd/yyyy") & "' "
-                   Sql = Sql & "WHERE CODREDUZIDO = " & nCodReduz & " AND ANOEXERCICIO = " & nAnoExercicio & " AND CODLANCAMENTO = " & nCodLanc & " AND "
-                   Sql = Sql & "SEQLANCAMENTO = " & nSeqLanc & " AND NUMPARCELA = " & nNumParc & " AND CODCOMPLEMENTO = " & nCompl & " AND SEQPAG=" & nSeqPag
-                   cn.Execute Sql, rdExecDirect
+                   sql = "UPDATE DEBITOPAGO SET RESTITUIDO='" & Format(Now, "mm/dd/yyyy") & "' "
+                   sql = sql & "WHERE CODREDUZIDO = " & nCodReduz & " AND ANOEXERCICIO = " & nAnoExercicio & " AND CODLANCAMENTO = " & nCodLanc & " AND "
+                   sql = sql & "SEQLANCAMENTO = " & nSeqLanc & " AND NUMPARCELA = " & nNumParc & " AND CODCOMPLEMENTO = " & nCompl & " AND SEQPAG=" & nSeqPag
+                   cn.Execute sql, rdExecDirect
                   'ATUALIZA A TABELA NUMDOCUMENTO
 '                   Sql = "UPDATE NUMDOCUMENTO SET CODBANCO=0,CODAGENCIA=0,VALORPAGO=0 "
 '                   Sql = Sql & "WHERE NUMDOCUMENTO = " & nNumDoc
@@ -852,11 +871,11 @@ If KeyAscii = vbKeyReturn Then
             nSeqLanc = .TextMatrix(.row, 3)
             nNumParc = .TextMatrix(.row, 4)
             nCompl = .TextMatrix(.row, 5)
-            Sql = "SELECT CODREDUZIDO, ANOEXERCICIO, CODLANCAMENTO, SEQLANCAMENTO, NUMPARCELA, CODCOMPLEMENTO,"
-            Sql = Sql & "SEQPAG, DATAPAGAMENTO, DATARECEBIMENTO,VALORPAGO, CODBANCO, CODAGENCIA, RESTITUIDO, NumDocumento "
-            Sql = Sql & "From DEBITOPAGO WHERE CODREDUZIDO = " & nCodReduz & " AND ANOEXERCICIO = " & nAnoExercicio & " AND CODLANCAMENTO = " & nCodLanc & " AND "
-            Sql = Sql & "SEQLANCAMENTO = " & nSeqLanc & " AND NUMPARCELA = " & nNumParc & " AND CODCOMPLEMENTO = " & nCompl & " AND RESTITUIDO IS NULL order by anoexercicio,codlancamento,numparcela"
-            Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            sql = "SELECT CODREDUZIDO, ANOEXERCICIO, CODLANCAMENTO, SEQLANCAMENTO, NUMPARCELA, CODCOMPLEMENTO,"
+            sql = sql & "SEQPAG, DATAPAGAMENTO, DATARECEBIMENTO,VALORPAGO, CODBANCO, CODAGENCIA, RESTITUIDO, NumDocumento "
+            sql = sql & "From DEBITOPAGO WHERE CODREDUZIDO = " & nCodReduz & " AND ANOEXERCICIO = " & nAnoExercicio & " AND CODLANCAMENTO = " & nCodLanc & " AND "
+            sql = sql & "SEQLANCAMENTO = " & nSeqLanc & " AND NUMPARCELA = " & nNumParc & " AND CODCOMPLEMENTO = " & nCompl & " AND RESTITUIDO IS NULL order by anoexercicio,codlancamento,numparcela"
+            Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
             With RdoAux
                 If .RowCount > 0 Then
                     grdParc.TextMatrix(grdParc.row, 12) = "S"
@@ -923,10 +942,10 @@ Inicio2:
            nNumParc = .TextMatrix(.row, 4)
            nCompl = .TextMatrix(.row, 5)
             
-           Sql = "SELECT CODREDUZIDO,VALORPAGO,DATAPAGAMENTO,DATARECEBIMENTO,NUMDOCUMENTO,CODBANCO,SEQPAG  FROM DEBITOPAGO WHERE "
-           Sql = Sql & "CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAnoExercicio & " AND CODLANCAMENTO=" & nCodLanc
-           Sql = Sql & " AND NUMPARCELA=" & nNumParc & " AND SEQLANCAMENTO=" & nSeqLanc & " AND CODCOMPLEMENTO=" & nCompl & " AND RESTITUIDO IS  NULL"
-           Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+           sql = "SELECT CODREDUZIDO,VALORPAGO,DATAPAGAMENTO,DATARECEBIMENTO,NUMDOCUMENTO,CODBANCO,SEQPAG  FROM DEBITOPAGO WHERE "
+           sql = sql & "CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAnoExercicio & " AND CODLANCAMENTO=" & nCodLanc
+           sql = sql & " AND NUMPARCELA=" & nNumParc & " AND SEQLANCAMENTO=" & nSeqLanc & " AND CODCOMPLEMENTO=" & nCompl & " AND RESTITUIDO IS  NULL"
+           Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
            With RdoAux2
                 grdDup.Rows = 1
                 Do Until .EOF
@@ -961,8 +980,8 @@ If KeyAscii = vbKeyReturn Then
  '   If grdParc.Rows > 1 Then
  '       sNumDoc = Left(txtNumDoc.Text, Len(txtNumDoc.Text) - 1)
  '       sDataDoc = lblDataDoc.Caption
-'        sFile = "\\192.168.200.130\atualizagti\segundavia\" & Mid(sDataDoc, 4, 2) & Mid(sDataDoc, 7, 4) & "\" & Format(CLng(sNumDoc), "000000000") & "*.pdf"
-'        lblPath.Caption = "\\192.168.200.130\atualizagti\segundavia\" & Mid(sDataDoc, 4, 2) & Mid(sDataDoc, 7, 4) & "\"
+'        sFile = "\\172.30.30.3\atualizagti\segundavia\" & Mid(sDataDoc, 4, 2) & Mid(sDataDoc, 7, 4) & "\" & Format(CLng(sNumDoc), "000000000") & "*.pdf"
+'        lblPath.Caption = "\\172.30.30.3\atualizagti\segundavia\" & Mid(sDataDoc, 4, 2) & Mid(sDataDoc, 7, 4) & "\"
 '        lblFile.Caption = Dir(sFile)
 '        If lblFile.Caption <> "" Then
 '            Call ShellExecute(0&, vbNullString, Dir(sFile), vbNullString, vbNullString, vbNormalFocus)
@@ -1005,9 +1024,9 @@ If Val(Right$(txtNumDoc.Text, 1)) <> RetornaDVNumDoc(nNumDoc) Then
    GoTo Fim
 End If
 'VERIFICA SE O DOCUMENTO EXISTE NA TABELA NUMDOCUMENTO
-Sql = "SELECT NUMDOCUMENTO FROM NUMDOCUMENTO "
-Sql = Sql & "WHERE NUMDOCUMENTO=" & nNumDoc
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT NUMDOCUMENTO FROM NUMDOCUMENTO "
+sql = sql & "WHERE NUMDOCUMENTO=" & nNumDoc
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
    If .RowCount = 0 Then
         lblValorTaxa.Caption = ""
@@ -1018,21 +1037,22 @@ With RdoAux
         lblAgencia.Caption = "0"
         lblDesconto.Caption = "0,00%"
         lblEmissor.Caption = ""
+        txtBarra.Text = ""
        .Close
         MsgBox "Nº de Documento não encontrado.", vbExclamation, "Atenção"
         GoTo Fim
    End If
    'CARREGA OS DEBITOS DESTE DOCUMENTO
-    Sql = "SELECT parceladocumento.codreduzido, parceladocumento.anoexercicio, parceladocumento.codlancamento, lancamento.descreduz, parceladocumento.seqlancamento, parceladocumento.numparcela, "
-    Sql = Sql & "parceladocumento.codcomplemento, parceladocumento.numdocumento, parceladocumento.plano, numdocumento.datadocumento, numdocumento.codbanco, numdocumento.valortaxadoc, numdocumento.percisencao,"
-    Sql = Sql & "numdocumento.codagencia, numdocumento.emissor, numdocumento.valorguia, numdocumento.valorpago, debitoparcela.statuslanc, situacaolancamento.descsituacao, debitoparcela.datavencimento, debitoparcela.datadebase,"
-    Sql = Sql & "NumDocumento.userid , USUARIO.NomeLogin, plano.desconto FROM parceladocumento INNER JOIN debitoparcela ON parceladocumento.codreduzido = debitoparcela.codreduzido AND parceladocumento.anoexercicio = debitoparcela.anoexercicio AND "
-    Sql = Sql & "parceladocumento.codlancamento = debitoparcela.codlancamento AND parceladocumento.seqlancamento = debitoparcela.seqlancamento AND parceladocumento.numparcela = debitoparcela.numparcela AND parceladocumento.codcomplemento = debitoparcela.codcomplemento INNER JOIN "
-    Sql = Sql & "lancamento ON debitoparcela.codlancamento = lancamento.codlancamento INNER JOIN situacaolancamento ON debitoparcela.statuslanc = situacaolancamento.codsituacao INNER JOIN "
-    Sql = Sql & "numdocumento ON parceladocumento.numdocumento = numdocumento.numdocumento left outER JOIN plano ON parceladocumento.plano = plano.codigo LEFT OUTER JOIN "
-    Sql = Sql & "usuario ON numdocumento.userid = usuario.Id Where PARCELADOCUMENTO.NumDocumento = " & nNumDoc
+    sql = "SELECT parceladocumento.codreduzido, parceladocumento.anoexercicio, parceladocumento.codlancamento, lancamento.descreduz,numdocumento.linha_digitavel, parceladocumento.seqlancamento, parceladocumento.numparcela, "
+    sql = sql & "parceladocumento.codcomplemento, parceladocumento.numdocumento, parceladocumento.plano, numdocumento.datadocumento, numdocumento.codbanco, numdocumento.valortaxadoc, numdocumento.percisencao,"
+    sql = sql & "numdocumento.codagencia, numdocumento.emissor, numdocumento.valorguia, numdocumento.valorpago, debitoparcela.statuslanc, situacaolancamento.descsituacao, debitoparcela.datavencimento, debitoparcela.datadebase,"
+    sql = sql & "NumDocumento.userid , USUARIO.NomeLogin, plano.desconto FROM parceladocumento INNER JOIN debitoparcela ON parceladocumento.codreduzido = debitoparcela.codreduzido AND parceladocumento.anoexercicio = debitoparcela.anoexercicio AND "
+    sql = sql & "parceladocumento.codlancamento = debitoparcela.codlancamento AND parceladocumento.seqlancamento = debitoparcela.seqlancamento AND parceladocumento.numparcela = debitoparcela.numparcela AND parceladocumento.codcomplemento = debitoparcela.codcomplemento INNER JOIN "
+    sql = sql & "lancamento ON debitoparcela.codlancamento = lancamento.codlancamento INNER JOIN situacaolancamento ON debitoparcela.statuslanc = situacaolancamento.codsituacao INNER JOIN "
+    sql = sql & "numdocumento ON parceladocumento.numdocumento = numdocumento.numdocumento left outER JOIN plano ON parceladocumento.plano = plano.codigo LEFT OUTER JOIN "
+    sql = sql & "usuario ON numdocumento.userid = usuario.Id Where PARCELADOCUMENTO.NumDocumento = " & nNumDoc
   
-   Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+   Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
    With RdoAux
        If .RowCount = 0 Then
           MsgBox "Lançamentos não encontrados para este documento.", vbExclamation, "Atenção"
@@ -1045,24 +1065,25 @@ With RdoAux
        nCompl = !CODCOMPLEMENTO
        nStatus = !statuslanc
        sStatus = !DescSituacao
+       txtBarra.Text = SubNull(!linha_digitavel)
        nPlano = Val(SubNull(!plano))
 '       MsgBox nPlano
        lblBanco.Caption = SubNull(!CodBanco)
        lblAgencia.Caption = SubNull(!CodAgencia)
        lblValorPago.Caption = FormatNumber(!ValorPago, 2)
-       If IsNull(!valorguia) Then
+       If IsNull(!ValorGuia) Then
           lblValorGuia.Caption = FormatNumber(0, 2)
        Else
-          lblValorGuia.Caption = FormatNumber(!valorguia, 2)
+          lblValorGuia.Caption = FormatNumber(!ValorGuia, 2)
        End If
        lblDataDoc.Caption = IIf(IsNull(!Datadocumento), "  /  /   ", Format(!Datadocumento, "dd/mm/yyyy"))
        lblDesconto.Caption = SubNull(!desconto) & "%"
-       lblEmissor.Caption = IIf(SubNull(!NomeLogin) = "", SubNull(!emissor), !NomeLogin)
+       lblEmissor.Caption = IIf(SubNull(!NomeLogin) = "", SubNull(!Emissor), !NomeLogin)
        'SE NÃO TIVER TAXADOC SINAL QUE VEIO DA SMARK ENTÃO PEGAMOS A TAXADOC DO 1º LANCAMENTO
        If IsNull(!ValorTaxaDoc) Or !ValorTaxaDoc = 0 Then
-          Sql = "SELECT VALORTRIBUTO FROM DEBITOTRIBUTO WHERE CODREDUZIDO = " & !CODREDUZIDO & " AND ANOEXERCICIO = " & !AnoExercicio & " AND CODLANCAMENTO = " & !CodLancamento & " AND "
-          Sql = Sql & "SEQLANCAMENTO = " & !SeqLancamento & " AND NUMPARCELA = " & !NumParcela & " AND CODCOMPLEMENTO = " & !CODCOMPLEMENTO & " AND CODTRIBUTO=3"
-          Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+          sql = "SELECT VALORTRIBUTO FROM DEBITOTRIBUTO WHERE CODREDUZIDO = " & !CODREDUZIDO & " AND ANOEXERCICIO = " & !AnoExercicio & " AND CODLANCAMENTO = " & !CodLancamento & " AND "
+          sql = sql & "SEQLANCAMENTO = " & !SeqLancamento & " AND NUMPARCELA = " & !NumParcela & " AND CODCOMPLEMENTO = " & !CODCOMPLEMENTO & " AND CODTRIBUTO=3"
+          Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
           With RdoAux2
               If .RowCount > 0 Then
                  lblValorTaxa.Caption = FormatNumber(!VALORTRIBUTO, 2)
@@ -1075,9 +1096,9 @@ With RdoAux
           lblValorTaxa.Caption = FormatNumber(!ValorTaxaDoc, 2)
        End If
        'DATA DE PAGAMENTO
-       Sql = "SELECT CODREDUZIDO,DATAPAGAMENTO,CODBANCO,PAGOCOMPIX FROM DEBITOPAGO "
-       Sql = Sql & "Where NumDocumento = " & nNumDoc
-       Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+       sql = "SELECT CODREDUZIDO,DATAPAGAMENTO,CODBANCO,PAGOCOMPIX FROM DEBITOPAGO "
+       sql = sql & "Where NumDocumento = " & nNumDoc
+       Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
        With RdoAux2
           If .RowCount > 0 Then
              lblDataPagto.Caption = IIf(IsNull(!DataPagamento) Or !DataPagamento = CDate("01/01/1900"), "  /  /   ", Format(!DataPagamento, "dd/mm/yyyy"))
@@ -1110,7 +1131,7 @@ With RdoAux
             On Error Resume Next
             RdoTmp.Close
             On Error GoTo 0
-            qd.Sql = "{ Call spEXTRATONEW(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
+            qd.sql = "{ Call spEXTRATONEW(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
             qd(0) = !CODREDUZIDO
             qd(1) = !CODREDUZIDO
             qd(2) = !AnoExercicio
@@ -1156,10 +1177,10 @@ Correcao:
 
 
             
-            Sql = "SELECT CODREDUZIDO FROM DEBITOPAGO "
-            Sql = Sql & "WHERE CODREDUZIDO = " & !CODREDUZIDO & " AND ANOEXERCICIO = " & !AnoExercicio & " AND CODLANCAMENTO = " & !CodLancamento & " AND "
-            Sql = Sql & "SEQLANCAMENTO = " & !SeqLancamento & " AND NUMPARCELA = " & !NumParcela & " AND CODCOMPLEMENTO = " & !CODCOMPLEMENTO & " AND RESTITUIDO IS  NULL"
-            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            sql = "SELECT CODREDUZIDO FROM DEBITOPAGO "
+            sql = sql & "WHERE CODREDUZIDO = " & !CODREDUZIDO & " AND ANOEXERCICIO = " & !AnoExercicio & " AND CODLANCAMENTO = " & !CodLancamento & " AND "
+            sql = sql & "SEQLANCAMENTO = " & !SeqLancamento & " AND NUMPARCELA = " & !NumParcela & " AND CODCOMPLEMENTO = " & !CODCOMPLEMENTO & " AND RESTITUIDO IS  NULL"
+            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
             With RdoAux2
                   If .RowCount > 1 Then
                      bDupl = True
@@ -1181,10 +1202,10 @@ Correcao:
 End With
 
 txtObs.Text = ""
-Sql = "SELECT obsparcela.*, usuario.nomelogin FROM obsparcela INNER JOIN usuario ON obsparcela.userid = usuario.Id WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno
-Sql = Sql & " AND CODLANCAMENTO=" & nLanc & " AND SEQLANCAMENTO=" & nSeqLanc & " AND NUMPARCELA=" & nParc
-Sql = Sql & " AND CODCOMPLEMENTO=" & nCompl
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT obsparcela.*, usuario.nomelogin FROM obsparcela INNER JOIN usuario ON obsparcela.userid = usuario.Id WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAno
+sql = sql & " AND CODLANCAMENTO=" & nLanc & " AND SEQLANCAMENTO=" & nSeqLanc & " AND NUMPARCELA=" & nParc
+sql = sql & " AND CODCOMPLEMENTO=" & nCompl
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         txtObs.Text = txtObs.Text & !obs & vbCrLf

@@ -1168,7 +1168,7 @@ End If
 
 End Sub
 
-Private Sub cmdteste_Click()
+Private Sub cmdTeste_Click()
 EmiteBoletoTeste
 End Sub
 
@@ -1233,7 +1233,7 @@ With xImovel
           lblProp.Caption = .NomePropPrincipal
           lblRua.Caption = Trim$(.AbrevTipoLog) & " " & Trim$(.AbrevTitLog) & " " & .NomeLogradouro
           lblNumImovel.Caption = .Li_Num
-          lblCep.Caption = RetornaCEP(.CodLogr, .Li_Num)
+          lblCEP.Caption = RetornaCEP(.CodLogr, .Li_Num)
           lblCompl.Caption = .Li_Compl
           lblBairro.Caption = .DescBairro
           Select Case .Ee_TipoEnd
@@ -1244,7 +1244,7 @@ With xImovel
                     lblComplentrega.Caption = lblCompl.Caption
                     lblBairroEntrega.Caption = lblBairro.Caption
                     lblCidadeEntrega.Caption = "JABOTICABAL"
-                    lblCepEntrega.Caption = lblCep.Caption
+                    lblCepEntrega.Caption = lblCEP.Caption
                     lblUF.Caption = lblUF.Caption
                 Case 1
                     lblTipoEnd.Caption = "(Endereço do Proprietário)"
@@ -1295,7 +1295,7 @@ lblRua.Caption = ""
 lblNumImovel.Caption = ""
 lblCompl.Caption = ""
 lblBairro.Caption = ""
-lblCep.Caption = ""
+lblCEP.Caption = ""
 lblRuaEntrega.Caption = ""
 lblNumEntrega.Caption = ""
 lblComplentrega.Caption = ""
@@ -1424,7 +1424,7 @@ With RdoAux
                   lblRua.Caption = SubNull(!NomeLogr)
                End If
                lblNumImovel.Caption = Val(SubNull(!Numero))
-               lblCep.Caption = IIf(IsNull(!Cep), "", Left$(!Cep, 5) & "-" & Right$(!Cep, 3))
+               lblCEP.Caption = IIf(IsNull(!Cep), "", Left$(!Cep, 5) & "-" & Right$(!Cep, 3))
                lblCompl.Caption = SubNull(!Complemento)
                Sql = "SELECT DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='SP' AND CODCIDADE=" & !CodCidade & " AND CODBAIRRO=" & !CodBairro
                Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -1460,7 +1460,7 @@ With RdoAux
                         lblComplentrega.Caption = lblCompl.Caption
                         lblBairroEntrega.Caption = lblBairro.Caption
                         lblCidadeEntrega.Caption = sNomeCidade
-                        lblCepEntrega.Caption = lblCep.Caption
+                        lblCepEntrega.Caption = lblCEP.Caption
                         lblUF.Caption = "SP"
                     End If
                    .Close
@@ -1552,7 +1552,7 @@ With RdoAux
                         lblCompl.Caption = SubNull(!fcomplemento)
                         lblBairro.Caption = sBairro
                         lblCidadeEntrega.Caption = sCidade
-                        lblCep.Caption = sCep
+                        lblCEP.Caption = sCep
                         lblUF.Caption = sUF
                         
                    
@@ -1560,7 +1560,7 @@ With RdoAux
                        lblNumEntrega.Caption = lblNumImovel.Caption
                        lblComplentrega.Caption = lblCompl.Caption
                        lblBairroEntrega.Caption = lblBairro.Caption
-                       lblCepEntrega.Caption = lblCep.Caption
+                       lblCepEntrega.Caption = lblCEP.Caption
                         cmbLanc.SetFocus
                    Else
                        MsgBox "Código não cadastrado.", vbCritical, "Atenção"
@@ -1620,7 +1620,7 @@ Sql = Sql & "CODREDUZIDO=" & Val(txtCod.Text)
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
       Do Until .EOF
-            cmbProc.AddItem !numprocesso
+            cmbProc.AddItem !NumProcesso
            .MoveNext
       Loop
      .Close
@@ -1823,7 +1823,7 @@ If bISS And bTaxa Then
                         End If
                        .Close
                     End With
-                    nValorTributo = !ValorTributo
+                    nValorTributo = !VALORTRIBUTO
                     nSomaTributo = nSomaTributo + nValorTributo
                     'nValorCorrecao = CalculaCorrecao(nValorTributo, dDataVencto)
                     If bJuros Then
@@ -1927,7 +1927,7 @@ Else
                         End If
                        .Close
                     End With
-                    nValorTributo = !ValorTributo
+                    nValorTributo = !VALORTRIBUTO
                     
                     'MULTA POR VIGILANCIA SANITARIA TEM 20% DE DESCONTO ATÉ O VENCIMENTO
                     If !CodTributo = 568 Then
@@ -2080,7 +2080,7 @@ If nCodLanc = 1 Or nCodLanc = 29 Then
    aCarne(7).nValor = RdoAux!Aliquota
    aCarne(8).sDesc = "IPTU Anual"
    aCarne(8).sUn = "R$"
-   aCarne(8).nValor = FormatNumber(RdoAux!valortotalparc * RdoAux!qtdeparc, 2)
+   aCarne(8).nValor = FormatNumber(RdoAux!valortotalparc * RdoAux!QtdeParc, 2)
 Else
    ReDim aCarne(0)
    With grdTemp
@@ -2123,16 +2123,16 @@ Else
                         aCarne(UBound(aCarne)).sDesc = !abrevTributo
                         aCarne(UBound(aCarne)).sUn = "R$"
                         If !CodTributo = 568 Then 'multa vig.sanitaria
-                            aCarne(UBound(aCarne)).nValor = !ValorTributo - (!ValorTributo * 0.2)
+                            aCarne(UBound(aCarne)).nValor = !VALORTRIBUTO - (!VALORTRIBUTO * 0.2)
                         Else
                             If nCodLanc = 16 Then
-                                aCarne(UBound(aCarne)).nValor = !ValorTributo / 2
+                                aCarne(UBound(aCarne)).nValor = !VALORTRIBUTO / 2
                             Else
-                                aCarne(UBound(aCarne)).nValor = !ValorTributo
+                                aCarne(UBound(aCarne)).nValor = !VALORTRIBUTO
                             End If
                         End If
                     Else
-                        aCarne(z).nValor = aCarne(z).nValor + !ValorTributo
+                        aCarne(z).nValor = aCarne(z).nValor + !VALORTRIBUTO
                     End If
                    .MoveNext
                  Loop
@@ -2911,7 +2911,7 @@ If cmbLanc.Text = "ISSFIXO + TAXA DE LICENÇ2A" Then
                         End If
                        .Close
                     End With
-                    nValorTributo = !ValorTributo
+                    nValorTributo = !VALORTRIBUTO
                     nSomaTributo = nSomaTributo + nValorTributo
                     'nValorCorrecao = CalculaCorrecao(nValorTributo, dDataVencto)
                     If bJuros Then
@@ -3015,7 +3015,7 @@ Else
                         End If
                        .Close
                     End With
-                    nValorTributo = !ValorTributo
+                    nValorTributo = !VALORTRIBUTO
                     
                     'MULTA POR VIGILANCIA SANITARIA TEM 20% DE DESCONTO ATÉ O VENCIMENTO
                     If !CodTributo = 568 Then
@@ -3115,6 +3115,12 @@ If bBoleto Then
     
     dDataBase = "07/10/1997"
     nFatorVencto = CDate(sDataDam) - dDataBase
+    
+    If CDate(sDataDam) >= "22/02/2025" Then
+        dDataBase = "29/05/2022"
+        nFatorVencto = CDate(sDataDam) - CDate(dDataBase)
+    End If
+
     sQuintoGrupo = Format(nFatorVencto, "0000")
     sQuintoGrupo = sQuintoGrupo & Format(RetornaNumero(FormatNumber(nValorDoc, 2)), "0000000000")
     sBarra = "0019" & Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(nValorDoc, 2)), "0000000000") & "000000287353200"
@@ -3233,7 +3239,7 @@ If nCodLanc = 1 Or nCodLanc = 29 Then
         aCarne(7).nValor = RdoAux!Aliquota
         aCarne(8).sDesc = "IPTU Anual"
         aCarne(8).sUn = "R$"
-        aCarne(8).nValor = FormatNumber(RdoAux!valortotalparc * RdoAux!qtdeparc, 2)
+        aCarne(8).nValor = FormatNumber(RdoAux!valortotalparc * RdoAux!QtdeParc, 2)
     Else
         Dim qd As New rdoQuery
         Set qd.ActiveConnection = cn
@@ -3383,6 +3389,12 @@ sDigitavel = sDigitavel & sDv
 
 dDataBase = "07/10/1997"
 nFatorVencto = CDate(sDataDam) - dDataBase
+
+If CDate(sDataDam) >= "22/02/2025" Then
+    dDataBase = "29/05/2022"
+    nFatorVencto = CDate(sDataDam) - CDate(dDataBase)
+End If
+
 sQuintoGrupo = Format(nFatorVencto, "0000")
 sQuintoGrupo = sQuintoGrupo & Format(RetornaNumero(FormatNumber(nValorDoc, 2)), "0000000000")
 sBarra = "0019" & Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(nValorDoc, 2)), "0000000000") & "000000287353200"

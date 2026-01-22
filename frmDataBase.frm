@@ -79,12 +79,12 @@ Begin VB.Form frmDataBase
       EndProperty
       MonthBackColor  =   16777215
       ShowToday       =   0   'False
-      StartOfWeek     =   163053569
+      StartOfWeek     =   138412033
       TitleBackColor  =   192
       TitleForeColor  =   16777215
       TrailingForeColor=   12632256
       CurrentDate     =   44197
-      MaxDate         =   45291
+      MaxDate         =   46387
       MinDate         =   43831
    End
    Begin VB.Label lblDB 
@@ -112,59 +112,66 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Dim sData As String
 Dim sOldData As String
-Dim Sql As String
+Dim sql As String
 
 Private Sub cmdSair_Click()
 
 If sOldData <> sData Then
     If MsgBox("Deseja alterar a Data Base para " & sData, vbQuestion + vbYesNo, "Confirmação") = vbYes Then
-       Sql = "UPDATE PARAMETROS SET VALPARAM='" & sData & "' WHERE NOMEPARAM='DATABASE'"
-       cn.Execute Sql, rdExecDirect
+       sql = "UPDATE PARAMETROS SET VALPARAM='" & sData & "' WHERE NOMEPARAM='DATABASE'"
+       cn.Execute sql, rdExecDirect
        frmMdi.Sbar.Panels(6).Text = "Data Base: " & sData
     End If
     Ocupado
-    Sql = "UPDATE PROCESSOGTI SET DATAARQUIVA='" & Format(Now, "mm/dd/yyyy") & "' "
-    Sql = Sql & " Where (FISICO = 0) And (DATAARQUIVA Is Null) And (DATACANCEL Is Null) And (DATASUSPENSO Is Null) AND (CODASSUNTO NOT IN (567,1109,1110))"
-    cn.Execute Sql, rdExecDirect
+    sql = "UPDATE PROCESSOGTI SET DATAARQUIVA='" & Format(Now, "mm/dd/yyyy") & "' "
+    sql = sql & " Where (FISICO = 0) And (DATAARQUIVA Is Null) And (DATACANCEL Is Null) And (DATASUSPENSO Is Null) AND (CODASSUNTO NOT IN (567,1109,1110))"
+    cn.Execute sql, rdExecDirect
     Liberado
 End If
 If frmMdi.frTeste.Visible = False Then
+    sql = "update debitoparcela SET statuslanc=5 WHERE codlancamento=41 AND statuslanc=3 AND datavencimento<'" & Format(Now, "mm/dd/yyyy") & "'"
+    cn.Execute sql, rdExecDirect
+
     AtualizaITBI
+    Cancela_ITBIs_Vencidos
     AtualizaNotificacaoISS
     AtualizaUsoPlataforma
     AtualizaIntegrativa
+    Corrige_Terreno_sem_Endereco
+    AtualizaSN
+    Atualiza_Giss_Guia
 End If
 
 Unload Me
 End Sub
 
 Public Sub AtualizaITBI()
-Dim Sql As String, RdoAux As rdoResultset, nNumDoc As Long, ibti As String, RdoAux2 As rdoResultset, bPago As Boolean, sObs As String, nCodReduz As Long
+Dim sql As String, RdoAux As rdoResultset, nNumDoc As Long, ibti As String, RdoAux2 As rdoResultset, bPago As Boolean, sObs As String, nCodReduz As Long
 
 'Sql = "SELECT * FROM itbi_main WHERE situacao_itbi=2"
-Sql = "SELECT * FROM itbi_main WHERE situacao_itbi=2 AND itbi_ano>=" & (Year(Now) - 1)
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT * FROM itbi_main WHERE situacao_itbi=2 AND itbi_ano>=" & (Year(Now) - 1)
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         bPago = False
         nNumDoc = !numero_guia
-        If nNumDoc = 21380663 Then MsgBox "teste"
+        'If nNumDoc = 21380663 Then MsgBox "teste"
         itbi = Format(!itbi_numero, "00000") & "/" & Format(!itbi_ano, "0000")
-        Sql = "select * from debitopago where numdocumento=" & nNumDoc
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "select * from debitopago where numdocumento=" & nNumDoc
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         If RdoAux2.RowCount > 0 Then
             bPago = True
         End If
         RdoAux2.Close
         If bPago Then
-            Sql = "update itbi_main set situacao_itbi=3 where guid='" & !Guid & "'"
-            cn.Execute Sql, rdExecDirect
+            sql = "update itbi_main set situacao_itbi=3 where guid='" & !guid & "'"
+            cn.Execute sql, rdExecDirect
             
             nCodReduz = !imovel_codigo
             If nCodReduz > 0 Then
                 sObs = "Pagamento do ITBI nº:" & itbi
-                Sql = "SELECT MAX(SEQ) AS MAXIMO FROM HISTORICO WHERE CODREDUZIDO=" & nCodReduz
-                Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                sql = "SELECT MAX(SEQ) AS MAXIMO FROM HISTORICO WHERE CODREDUZIDO=" & nCodReduz
+                Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                 With RdoAux
                     If IsNull(!maximo) Then
                         nSeq = 1
@@ -174,8 +181,8 @@ With RdoAux
                    .Close
                 End With
                 'Sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST,USERID,DATAHIST2) VALUES(" & nCodReduz & "," & nSeq & ",'" & Format(Now, "dd/mm/yyyy") & "','" & sObs & "'," & !liberado_por & ",'" & Format(Now, "mm/dd/yyyy") & "')"
-                Sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST,USERID,DATAHIST2) VALUES(" & nCodReduz & "," & nSeq & ",'" & Format(Now, "dd/mm/yyyy") & "','" & sObs & "'," & 236 & ",'" & Format(Now, "mm/dd/yyyy") & "')"
-                cn.Execute Sql, rdExecDirect
+                sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST,USERID,DATAHIST2) VALUES(" & nCodReduz & "," & nSeq & ",'" & Format(Now, "dd/mm/yyyy") & "','" & sObs & "'," & 236 & ",'" & Format(Now, "mm/dd/yyyy") & "')"
+                cn.Execute sql, rdExecDirect
             End If
         End If
        .MoveNext
@@ -187,23 +194,23 @@ End With
 End Sub
 
 Public Sub AtualizaNotificacaoISS()
-Dim Sql As String, RdoAux As rdoResultset, nNumDoc As Long, ibti As String, RdoAux2 As rdoResultset, bPago As Boolean, sObs As String, nCodReduz As Long
+Dim sql As String, RdoAux As rdoResultset, nNumDoc As Long, ibti As String, RdoAux2 As rdoResultset, bPago As Boolean, sObs As String, nCodReduz As Long
 
-Sql = "SELECT DISTINCT numero_guia FROM notificacao_iss_web where situacao=2"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT DISTINCT numero_guia FROM notificacao_iss_web where situacao=2"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         bPago = False
         nNumDoc = !numero_guia
-        Sql = "select * from debitopago where numdocumento=" & nNumDoc
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "select * from debitopago where numdocumento=" & nNumDoc
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         If RdoAux2.RowCount > 0 Then
             bPago = True
         End If
         RdoAux2.Close
         If bPago Then
-            Sql = "update notificacao_iss_web set situacao=6 where numero_guia=" & nNumDoc
-            cn.Execute Sql, rdExecDirect
+            sql = "update notificacao_iss_web set situacao=6 where numero_guia=" & nNumDoc
+            cn.Execute sql, rdExecDirect
         End If
        .MoveNext
     Loop
@@ -214,23 +221,23 @@ End With
 End Sub
 
 Public Sub AtualizaUsoPlataforma()
-Dim Sql As String, RdoAux As rdoResultset, nNumDoc As Long, ibti As String, RdoAux2 As rdoResultset, bPago As Boolean, sObs As String, nCodReduz As Long
+Dim sql As String, RdoAux As rdoResultset, nNumDoc As Long, ibti As String, RdoAux2 As rdoResultset, bPago As Boolean, sObs As String, nCodReduz As Long
 
-Sql = "SELECT DISTINCT numero_guia FROM rodo_uso_plataforma where situacao=2"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT DISTINCT numero_guia FROM rodo_uso_plataforma where situacao=2"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         bPago = False
         nNumDoc = !numero_guia
-        Sql = "select * from debitopago where numdocumento=" & nNumDoc
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "select * from debitopago where numdocumento=" & nNumDoc
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         If RdoAux2.RowCount > 0 Then
             bPago = True
         End If
         RdoAux2.Close
         If bPago Then
-            Sql = "update rodo_uso_plataforma set situacao=6 where numero_guia=" & nNumDoc
-            cn.Execute Sql, rdExecDirect
+            sql = "update rodo_uso_plataforma set situacao=6 where numero_guia=" & nNumDoc
+            cn.Execute sql, rdExecDirect
         End If
        .MoveNext
     Loop
@@ -239,8 +246,6 @@ End With
 
 
 End Sub
-
-
 
 Private Sub Form_Load()
 Centraliza Me
@@ -256,7 +261,6 @@ End Sub
 
 Public Sub AtualizaIntegrativa()
 
-
 Dim nValorTaxa As Double, x As Integer, nSituacao As Integer, dDataProc As Date, sDescImposto As String, RdoAux2 As rdoResultset, y As Integer, nPercTrib As Double
 Dim nAno As Integer, nLanc As Integer, nSeq As Integer, nParc As Integer, nCompl As Integer, sDataVencto As String, nCodTrib As Integer, nValorTributo As Double
 Dim sCodReduz As String, sNomeResp As String, sTipoImposto As String, sEndImovel As String, nNumImovel As Integer, sComplImovel As String, sBairroImovel As String
@@ -267,8 +271,8 @@ Dim clsImovel As New clsImovel, nCodReduz As Long, sSetor As String, sRG As Stri
 Dim nPagina As Integer, nLivro As Integer, xImovel As clsImovel, nQtdeParc As Integer, RdoAux4 As rdoResultset, bCancelado As Boolean, sStatus As String, nTotalRec As Long
 Dim Data1 As Date, Data2 As Date, nNumCertidao As Long, dDataInscricao As Date, sNome As String, sCepImovel As String, sCidadeImovel As String, sUFImovel As String
 Dim sQuadra As String, sLote As String, nId As Long, sFone As String, sEmail As String
-Dim Sql As String, RdoAux As rdoResultset, RdoAcordo As rdoResultset, RdoAux5 As rdoResultset
-Dim nPos As Integer, sNumProc As String, nNumproc As Long, nAnoproc As Integer
+Dim sql As String, RdoAux As rdoResultset, RdoAcordo As rdoResultset, RdoAux5 As rdoResultset
+Dim nPos As Integer, sNumProc As String, nNumproc As Long, nAnoproc As Integer, sOcorrencia As String
 
 Data1 = Now - 6
 Data2 = Now
@@ -277,13 +281,13 @@ If frmMdi.frTeste.Visible = True Then Exit Sub
 Set xImovel = New clsImovel
 Ocupado
 ConectaIntegrativa
-Sql = "select * from processoreparc wHERE (dataprocesso between '" & Format(Data1, "mm/dd/yyyy") & "' and '" & Format(Data2, "mm/dd/yyyy") & "') ORDER BY numprocesso"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select * from processoreparc wHERE (dataprocesso between '" & Format(Data1, "mm/dd/yyyy") & "' and '" & Format(Data2, "mm/dd/yyyy") & "') ORDER BY numprocesso"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     nTotalRec = .RowCount
     Do Until .EOF
         nCodReduz = !CODIGORESP
-        sNumProc = !numprocesso
+        sNumProc = !NumProcesso
       '  If sNumProc = "12673/2016" Then MsgBox "teste"
         bCancelado = !Cancelado
         nQtdeParc = !qtdeparcela
@@ -292,12 +296,12 @@ With RdoAux
         nAnoproc = Val(Right$(sNumProc, 4))
         
         
-        Sql = "SELECT origemreparc.numprocesso, debitoparcela.codreduzido, debitoparcela.dataajuiza "
-        Sql = Sql & "FROM debitoparcela INNER JOIN origemreparc ON debitoparcela.codreduzido = origemreparc.codreduzido AND debitoparcela.anoexercicio = origemreparc.anoexercicio AND "
-        Sql = Sql & "debitoparcela.codlancamento = origemreparc.codlancamento AND debitoparcela.seqlancamento = origemreparc.numsequencia AND "
-        Sql = Sql & "debitoparcela.NumParcela = origemreparc.NumParcela And debitoparcela.CODCOMPLEMENTO = origemreparc.CODCOMPLEMENTO "
-        Sql = Sql & "WHERE origemreparc.numprocesso = '" & sNumProc & "' AND debitoparcela.codreduzido = " & nCodReduz
-        Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT origemreparc.numprocesso, debitoparcela.codreduzido, debitoparcela.dataajuiza "
+        sql = sql & "FROM debitoparcela INNER JOIN origemreparc ON debitoparcela.codreduzido = origemreparc.codreduzido AND debitoparcela.anoexercicio = origemreparc.anoexercicio AND "
+        sql = sql & "debitoparcela.codlancamento = origemreparc.codlancamento AND debitoparcela.seqlancamento = origemreparc.numsequencia AND "
+        sql = sql & "debitoparcela.NumParcela = origemreparc.NumParcela And debitoparcela.CODCOMPLEMENTO = origemreparc.CODCOMPLEMENTO "
+        sql = sql & "WHERE origemreparc.numprocesso = '" & sNumProc & "' AND debitoparcela.codreduzido = " & nCodReduz
+        Set RdoAux3 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         If IsNull(RdoAux3!dataajuiza) Then
             RdoAux3.Close
             GoTo Proximo
@@ -305,8 +309,8 @@ With RdoAux
             RdoAux3.Close
         End If
         
-        Sql = "select * from acordos where idacordo=" & nNumproc & " and anoacordo=" & nAnoproc
-        Set RdoAux3 = cnInt.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "select * from acordos where idacordo=" & nNumproc & " and anoacordo=" & nAnoproc
+        Set RdoAux3 = cnInt.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux3
             If RdoAux3.RowCount = 0 Then
                 
@@ -339,10 +343,10 @@ With RdoAux
                         sCidadeEntrega = "JABOTICABAL"
                         sUFEntrega = "SP"
                         sCepEntrega = xImovel.Ee_Cep
-                        Sql = "SELECT cidadao.codcidadao, cidadao.nomecidadao, cidadao.cpf, cidadao.cnpj, cidadao.rg "
-                        Sql = Sql & "FROM cidadao INNER JOIN proprietario ON cidadao.codcidadao = proprietario.codcidadao "
-                        Sql = Sql & "WHERE(proprietario.codreduzido = " & nCodReduz & ") AND (proprietario.tipoprop = 'P') AND (proprietario.principal = 1)"
-                        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                        sql = "SELECT cidadao.codcidadao, cidadao.nomecidadao, cidadao.cpf, cidadao.cnpj, cidadao.rg "
+                        sql = sql & "FROM cidadao INNER JOIN proprietario ON cidadao.codcidadao = proprietario.codcidadao "
+                        sql = sql & "WHERE(proprietario.codreduzido = " & nCodReduz & ") AND (proprietario.tipoprop = 'P') AND (proprietario.principal = 1)"
+                        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                         With RdoAux2
                             If .RowCount > 0 Then
                                 sCPF = SubNull(!cpf)
@@ -381,8 +385,8 @@ With RdoAux
                         sCidadeEntrega = xImovel.Cidade
                         sUFEntrega = xImovel.UF
                         sCepEntrega = xImovel.Ee_Cep
-                        Sql = "SELECT codigomob, inscestadual,razaosocial, cnpj, cpf From mobiliario WHERE codigomob = " & nCodReduz
-                        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                        sql = "SELECT codigomob, inscestadual,razaosocial, cnpj, cpf From mobiliario WHERE codigomob = " & nCodReduz
+                        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                         With RdoAux2
                             If .RowCount > 0 Then
                                 sNomeResp = !RazaoSocial
@@ -424,8 +428,8 @@ With RdoAux
                         sUFEntrega = xImovel.UF
                         sCepEntrega = xImovel.Cep
                         
-                        Sql = "SELECT codcidadao,nomecidadao,cpf,cnpj,rg from cidadao WHERE CODCIDADAO=" & nCodReduz
-                        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                        sql = "SELECT codcidadao,nomecidadao,cpf,cnpj,rg from cidadao WHERE CODCIDADAO=" & nCodReduz
+                        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                         With RdoAux2
                             If .RowCount > 0 Then
                                 sCPF = SubNull(!cpf)
@@ -441,9 +445,9 @@ With RdoAux
                 End Select
                 
                 
-                Sql = "SELECT * FROM debitoparcela WHERE (debitoparcela.codreduzido = " & nCodReduz & ") AND "
-                Sql = Sql & "(debitoparcela.numparcela = 1) AND (debitoparcela.numprocesso = '" & sNumProc & "')"
-                Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                sql = "SELECT * FROM debitoparcela WHERE (debitoparcela.codreduzido = " & nCodReduz & ") AND "
+                sql = sql & "(debitoparcela.numparcela = 1) AND (debitoparcela.numprocesso = '" & sNumProc & "')"
+                Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                 With RdoAux2
                 If .RowCount > 0 Then
                     dDataPrimeiraParc = !DataVencimento
@@ -454,18 +458,18 @@ With RdoAux
                     
                     nCompl = !CODCOMPLEMENTO
                     
-                    Sql = "SELECT SUM(VALORTRIBUTO) AS SOMA FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=" & !AnoExercicio & " AND CODLANCAMENTO=" & !CodLancamento & " AND "
-                    Sql = Sql & "SEQLANCAMENTO=" & !SeqLancamento & " AND NUMPARCELA=" & !NumParcela & " AND CODCOMPLEMENTO=" & !CODCOMPLEMENTO & " AND CODTRIBUTO <> 3"
-                    Set RdoAux4 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                    sql = "SELECT SUM(VALORTRIBUTO) AS SOMA FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=" & !AnoExercicio & " AND CODLANCAMENTO=" & !CodLancamento & " AND "
+                    sql = sql & "SEQLANCAMENTO=" & !SeqLancamento & " AND NUMPARCELA=" & !NumParcela & " AND CODCOMPLEMENTO=" & !CODCOMPLEMENTO & " AND CODTRIBUTO <> 3"
+                    Set RdoAux4 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                     With RdoAux4
                         nValorParc = FormatNumber(!soma, 2)
                        .Close
                     End With
                     
-                    Sql = "SELECT valortributo FROM debitotributo WHERE codreduzido = " & nCodReduz & " and anoexercicio=" & !AnoExercicio & " and "
-                    Sql = Sql & "codlancamento=" & !CodLancamento & " and seqlancamento=" & !SeqLancamento & " and numparcela=" & !NumParcela & " and "
-                    Sql = Sql & "codcomplemento=" & !CODCOMPLEMENTO & " and codtributo=90"
-                    Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                    sql = "SELECT valortributo FROM debitotributo WHERE codreduzido = " & nCodReduz & " and anoexercicio=" & !AnoExercicio & " and "
+                    sql = sql & "codlancamento=" & !CodLancamento & " and seqlancamento=" & !SeqLancamento & " and numparcela=" & !NumParcela & " and "
+                    sql = sql & "codcomplemento=" & !CODCOMPLEMENTO & " and codtributo=90"
+                    Set RdoAux3 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                     With RdoAux3
                         If .RowCount > 0 Then
                             nValorTotalHon = !VALORTRIBUTO * nQtdeParc
@@ -479,20 +483,20 @@ With RdoAux
                 End With
    
                 '*** VERIFICA SE O PARCELAMENTO JÁ EXISTE NA TABELA ACORDOS **
-                Sql = "select * from acordos where idacordo=" & nNumproc & " and anoacordo=" & nAnoproc
-                Set RdoAux4 = cnInt.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                sql = "select * from acordos where idacordo=" & nNumproc & " and anoacordo=" & nAnoproc
+                Set RdoAux4 = cnInt.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                 If RdoAux4.RowCount = 0 Then
                     
                     '***** fone e email ****
                     If sSetor = "IMOBILIÁRIO" Then
-                        Sql = "SELECT proprietario.codcidadao, cidadao.telefone as fone, cidadao.email  FROM proprietario INNER JOIN "
-                        Sql = Sql & "cidadao ON proprietario.codcidadao = cidadao.codcidadao WHERE (proprietario.tipoprop = 'P') AND (proprietario.principal = 1) AND proprietario.codreduzido = " & nCodReduz
+                        sql = "SELECT proprietario.codcidadao, cidadao.telefone as fone, cidadao.email  FROM proprietario INNER JOIN "
+                        sql = sql & "cidadao ON proprietario.codcidadao = cidadao.codcidadao WHERE (proprietario.tipoprop = 'P') AND (proprietario.principal = 1) AND proprietario.codreduzido = " & nCodReduz
                     ElseIf sSetor = "MOBILIÁRIO" Then
-                        Sql = "SELECT codigomob, fonecontato as fone, emailcontato as email FROM mobiliario WHERE  codigomob = " & nCodReduz
+                        sql = "SELECT codigomob, fonecontato as fone, emailcontato as email FROM mobiliario WHERE  codigomob = " & nCodReduz
                     Else
-                        Sql = "SELECT  codcidadao, telefone as fone, email FROM cidadao WHERE codcidadao = " & nCodReduz
+                        sql = "SELECT  codcidadao, telefone as fone, email FROM cidadao WHERE codcidadao = " & nCodReduz
                     End If
-                    Set RdoAux5 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                    Set RdoAux5 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                     If RdoAux5.RowCount > 0 Then
                         sFone = SubNull(RdoAux5!fone)
                         sEmail = SubNull(RdoAux5!Email)
@@ -502,34 +506,34 @@ With RdoAux
                     
                     
                     'GRAVA O ACORDO
-                    Sql = "insert acordos(idacordo,anoacordo,dtparcelamento,setordevedor,iddevedor,nroprocessoadm,crcacordante,nomeacordante,cpfcnpj,rginscrestadual,"
-                    Sql = Sql & "cep,endereco,numero,complemento,bairro, cidade,estado,vlrtotal,qtdparcelas,primeirovencimento,vlrtotalhonorarios,qtdparcelashonorarios,"
-                    Sql = Sql & "vlrparcelahonorarios,dtvenctohonorarios,VlrTotalDespesas, QtdParcelasDespesas, VlrParcelaDespesas, DtVenctoDespesas, DtGeracao,telefone,email) values ("
-                    Sql = Sql & nNumproc & "," & nAnoproc & ",'" & Format(dDataProc, "mm/dd/yyyy") & "','" & sSetor & "',"
-                    Sql = Sql & nCodReduz & ",'" & nNumproc & RetornaDVProcesso(nNumproc) & "/" & nAnoproc & "'," & nCodReduz & ",'" & Mask(sNomeResp) & "','" & sCPF & "','" & Left(sRG, 20) & "','" & sCep & "','" & sEndImovel & "',"
-                    Sql = Sql & nNumImovel & ",'" & Left(sComplImovel, 40) & "','" & sBairroImovel & "','" & Mask(sCidadeEntrega) & "','" & sUFEntrega & "'," & Virg2Ponto(Round((nValorParc * nQtdeParc), 2)) & "," & nQtdeParc & ",'"
-                    Sql = Sql & Format(dDataPrimeiraParc, "mm/dd/yyyy") & "'," & Virg2Ponto(Round(nValorTotalHon, 2)) & "," & IIf(nValorTotalHon = 0, 0, nQtdeParc) & "," & Virg2Ponto(Round((nValorTotalHon / nQtdeParc), 2)) & ","
-                    Sql = Sql & IIf(nValorTotalHon = 0, "Null", "'" & Format(dDataPrimeiraParc, "mm/dd/yyyy") & "'") & "," & "0,0,0," & "Null" & ",'" & Format(Now, "mm/dd/yyyy") & "','" & sFone & "','" & sEmail & "')"
-                    cnInt.Execute Sql, rdExecDirect
+                    sql = "insert acordos(idacordo,anoacordo,dtparcelamento,setordevedor,iddevedor,nroprocessoadm,crcacordante,nomeacordante,cpfcnpj,rginscrestadual,"
+                    sql = sql & "cep,endereco,numero,complemento,bairro, cidade,estado,vlrtotal,qtdparcelas,primeirovencimento,vlrtotalhonorarios,qtdparcelashonorarios,"
+                    sql = sql & "vlrparcelahonorarios,dtvenctohonorarios,VlrTotalDespesas, QtdParcelasDespesas, VlrParcelaDespesas, DtVenctoDespesas, DtGeracao,telefone,email) values ("
+                    sql = sql & nNumproc & "," & nAnoproc & ",'" & Format(dDataProc, "mm/dd/yyyy") & "','" & sSetor & "',"
+                    sql = sql & nCodReduz & ",'" & nNumproc & RetornaDVProcesso(nNumproc) & "/" & nAnoproc & "'," & nCodReduz & ",'" & Mask(sNomeResp) & "','" & sCPF & "','" & Left(sRG, 20) & "','" & sCep & "','" & sEndImovel & "',"
+                    sql = sql & nNumImovel & ",'" & Left(sComplImovel, 40) & "','" & sBairroImovel & "','" & Mask(sCidadeEntrega) & "','" & sUFEntrega & "'," & Virg2Ponto(Round((nValorParc * nQtdeParc), 2)) & "," & nQtdeParc & ",'"
+                    sql = sql & Format(dDataPrimeiraParc, "mm/dd/yyyy") & "'," & Virg2Ponto(Round(nValorTotalHon, 2)) & "," & IIf(nValorTotalHon = 0, 0, nQtdeParc) & "," & Virg2Ponto(Round((nValorTotalHon / nQtdeParc), 2)) & ","
+                    sql = sql & IIf(nValorTotalHon = 0, "Null", "'" & Format(dDataPrimeiraParc, "mm/dd/yyyy") & "'") & "," & "0,0,0," & "Null" & ",'" & Format(Now, "mm/dd/yyyy") & "','" & sFone & "','" & sEmail & "')"
+                    cnInt.Execute sql, rdExecDirect
                     
                    'GRAVA NA TABELA ACORDOSTATUS
                     sStatus = IIf(bCancelado = False, "PARCELAMENTO EM DIA", "PARCEL.CANCELADO")
-                    Sql = "insert acordostatus(idacordo,anoacordo,dtocorrencia,ocorrencia,dtgeracao) values("
-                    Sql = Sql & nNumproc & "," & nAnoproc & ",'" & Format(Now, "mm/dd/yyyy") & "','" & sStatus & "','" & Format(Now, "mm/dd/yyyy") & "')"
-                    cnInt.Execute Sql, rdExecDirect
+                    sql = "insert acordostatus(idacordo,anoacordo,dtocorrencia,ocorrencia,dtgeracao) values("
+                    sql = sql & nNumproc & "," & nAnoproc & ",'" & Format(Now, "mm/dd/yyyy") & "','" & sStatus & "','" & Format(Now, "mm/dd/yyyy") & "')"
+                    cnInt.Execute sql, rdExecDirect
                     
                    'GRAVA OS DÉBITOS DO ACORDO
-                    Sql = "SELECT DISTINCT origemreparc.numprocesso, origemreparc.codreduzido, origemreparc.anoexercicio, origemreparc.codlancamento, origemreparc.numsequencia,"
-                    Sql = Sql & "origemreparc.numparcela, origemreparc.codcomplemento, SUM(debitotributo.valortributo) AS Total, debitoparcela.numerolivro, debitoparcela.paginalivro,debitoparcela.dataajuiza, debitoparcela.numcertidao, debitoparcela.datainscricao, debitoparcela.datavencimento "
-                    Sql = Sql & "FROM origemreparc INNER JOIN debitotributo ON origemreparc.codreduzido = debitotributo.codreduzido AND origemreparc.anoexercicio = debitotributo.anoexercicio AND "
-                    Sql = Sql & "origemreparc.codlancamento = debitotributo.codlancamento AND origemreparc.numsequencia = debitotributo.seqlancamento AND "
-                    Sql = Sql & "origemreparc.numparcela = debitotributo.numparcela AND origemreparc.codcomplemento = debitotributo.codcomplemento INNER JOIN debitoparcela ON origemreparc.codreduzido = debitoparcela.codreduzido AND "
-                    Sql = Sql & "origemreparc.anoexercicio = debitoparcela.anoexercicio AND origemreparc.codlancamento = debitoparcela.codlancamento AND origemreparc.numsequencia = debitoparcela.seqlancamento AND "
-                    Sql = Sql & "origemreparc.NumParcela = debitoparcela.NumParcela And origemreparc.CODCOMPLEMENTO = debitoparcela.CODCOMPLEMENTO GROUP BY origemreparc.numprocesso, origemreparc.codreduzido, origemreparc.anoexercicio, origemreparc.codlancamento, origemreparc.numsequencia,"
-                    Sql = Sql & "origemreparc.NumParcela , origemreparc.CODCOMPLEMENTO, debitoparcela.numerolivro, debitoparcela.paginalivro,debitoparcela.dataajuiza, debitoparcela.numcertidao, debitoparcela.datainscricao, debitoparcela.datavencimento "
-                    Sql = Sql & "HAVING origemreparc.numprocesso = '" & sNumProc & "' AND origemreparc.codreduzido =" & nCodReduz
-                    Sql = Sql & " ORDER BY origemreparc.anoexercicio, origemreparc.numparcela"
-                    Set RdoAcordo = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                    sql = "SELECT DISTINCT origemreparc.numprocesso, origemreparc.codreduzido, origemreparc.anoexercicio, origemreparc.codlancamento, origemreparc.numsequencia,"
+                    sql = sql & "origemreparc.numparcela, origemreparc.codcomplemento, SUM(debitotributo.valortributo) AS Total, debitoparcela.numerolivro, debitoparcela.paginalivro,debitoparcela.dataajuiza, debitoparcela.numcertidao, debitoparcela.datainscricao, debitoparcela.datavencimento "
+                    sql = sql & "FROM origemreparc INNER JOIN debitotributo ON origemreparc.codreduzido = debitotributo.codreduzido AND origemreparc.anoexercicio = debitotributo.anoexercicio AND "
+                    sql = sql & "origemreparc.codlancamento = debitotributo.codlancamento AND origemreparc.numsequencia = debitotributo.seqlancamento AND "
+                    sql = sql & "origemreparc.numparcela = debitotributo.numparcela AND origemreparc.codcomplemento = debitotributo.codcomplemento INNER JOIN debitoparcela ON origemreparc.codreduzido = debitoparcela.codreduzido AND "
+                    sql = sql & "origemreparc.anoexercicio = debitoparcela.anoexercicio AND origemreparc.codlancamento = debitoparcela.codlancamento AND origemreparc.numsequencia = debitoparcela.seqlancamento AND "
+                    sql = sql & "origemreparc.NumParcela = debitoparcela.NumParcela And origemreparc.CODCOMPLEMENTO = debitoparcela.CODCOMPLEMENTO GROUP BY origemreparc.numprocesso, origemreparc.codreduzido, origemreparc.anoexercicio, origemreparc.codlancamento, origemreparc.numsequencia,"
+                    sql = sql & "origemreparc.NumParcela , origemreparc.CODCOMPLEMENTO, debitoparcela.numerolivro, debitoparcela.paginalivro,debitoparcela.dataajuiza, debitoparcela.numcertidao, debitoparcela.datainscricao, debitoparcela.datavencimento "
+                    sql = sql & "HAVING origemreparc.numprocesso = '" & sNumProc & "' AND origemreparc.codreduzido =" & nCodReduz
+                    sql = sql & " ORDER BY origemreparc.anoexercicio, origemreparc.numparcela"
+                    Set RdoAcordo = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                     With RdoAcordo
                         Do Until .EOF
                             
@@ -545,59 +549,59 @@ With RdoAux
                             dDataInscricao = !datainscricao
                             dDataVencto = !DataVencimento
                            'GRAVA NA TABELA ACORDODEBITO
-                            Sql = "insert acordodebitos(idacordo,anoacordo,nrolivro,nrofolha,seq,lancamento,exercicio,vlroriginal,vlrcorrecao,vlrjuros,vlrmulta,vlrtotal,nroparcela,complparcela,ajuizado,dtgeracao) values("
-                            Sql = Sql & nNumproc & "," & nAnoproc & "," & nLivro & "," & nPagina & ","
-                            Sql = Sql & RdoAcordo!numsequencia & "," & RdoAcordo!CodLancamento & "," & RdoAcordo!AnoExercicio & "," & Virg2Ponto(Format(RdoAcordo!Total, "#0.##")) & ",0,0,0," & Virg2Ponto(Format(RdoAcordo!Total, "#0.##")) & ","
-                            Sql = Sql & RdoAcordo!NumParcela & "," & RdoAcordo!CODCOMPLEMENTO & "," & IIf(IsNull(!dataajuiza), 0, 1) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
-                            cnInt.Execute Sql, rdExecDirect
+                            sql = "insert acordodebitos(idacordo,anoacordo,nrolivro,nrofolha,seq,lancamento,exercicio,vlroriginal,vlrcorrecao,vlrjuros,vlrmulta,vlrtotal,nroparcela,complparcela,ajuizado,dtgeracao) values("
+                            sql = sql & nNumproc & "," & nAnoproc & "," & nLivro & "," & nPagina & ","
+                            sql = sql & RdoAcordo!numsequencia & "," & RdoAcordo!CodLancamento & "," & RdoAcordo!AnoExercicio & "," & Virg2Ponto(Format(RdoAcordo!Total, "#0.##")) & ",0,0,0," & Virg2Ponto(Format(RdoAcordo!Total, "#0.##")) & ","
+                            sql = sql & RdoAcordo!NumParcela & "," & RdoAcordo!CODCOMPLEMENTO & "," & IIf(IsNull(!dataajuiza), 0, 1) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
+                            cnInt.Execute sql, rdExecDirect
                            
                            
                             '*** GRAVA AS CDA, CDADebito, PARTES E CADASTRO ***
                                 
-                            Sql = "INSERT CDAs(IdDevedor,SetorDevedor,DtInscricao,NroCertidao,NroLivro,NroFolha,DtGeracao) values("
-                            Sql = Sql & nCodReduz & ",'" & sSetor & "','" & Format(dDataInscricao, "mm/dd/yyyy") & "'," & nNumCertidao & ","
-                            Sql = Sql & nLivro & "," & nPagina & ",'" & Format(Now, "mm/dd/yyyy") & "')"
-                            cnInt.Execute Sql, rdExecDirect
+                            sql = "INSERT CDAs(IdDevedor,SetorDevedor,DtInscricao,NroCertidao,NroLivro,NroFolha,DtGeracao) values("
+                            sql = sql & nCodReduz & ",'" & sSetor & "','" & Format(dDataInscricao, "mm/dd/yyyy") & "'," & nNumCertidao & ","
+                            sql = sql & nLivro & "," & nPagina & ",'" & Format(Now, "mm/dd/yyyy") & "')"
+                            cnInt.Execute sql, rdExecDirect
                             
-                            Sql = "select @@identity as LastKey"
-                            Set RdoAux2 = cnInt.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                            sql = "select @@identity as LastKey"
+                            Set RdoAux2 = cnInt.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                             nCDA = RdoAux2!lastkey
                             RdoAux2.Close
                                 
                                 
                             If nCodReduz < 500000 Then
-                                Sql = "INSERT Cadastro(IdCDA,SetorDevedor,Crc,Nome,Inscricao,CPFCnpj,RgInscrEstadual,LocalCep,LocalEndereco,LocalNumero,LocalComplemento,"
-                                Sql = Sql & "LocalBairro,LocalCidade,LocalEstado,Quadra,Lote,EntregaCep,EntregaEndereco,EntregaNumero,EntregaComplemento,EntregaBairro,"
-                                Sql = Sql & "EntregaCidade,EntregaEstado,DtGeracao) values("
-                                Sql = Sql & nCDA & ",'" & sSetor & "'," & nCodReduz & ",'" & SubNull(sNome) & "','" & sNumInsc & "','" & sCPF & "','" & sRG & "','"
-                                Sql = Sql & sCepImovel & "','" & sEndImovel & "'," & nNumImovel & ",'" & sComplImovel & "','" & sBairroImovel & "','" & sCidadeImovel & "','" & sUFImovel & "','"
-                                Sql = Sql & sQuadra & "','" & sLote & "','" & sCepEntrega & "','" & sEndEntrega & "'," & nNumEntrega & ",'" & sComplEntrega & "','"
-                                Sql = Sql & sBairroEntrega & "','" & sCidadeEntrega & "','" & sUFEntrega & "','" & Format(Now, "mm/dd/yyyy") & "')"
-                                cnInt.Execute Sql, rdExecDirect
+                                sql = "INSERT Cadastro(IdCDA,SetorDevedor,Crc,Nome,Inscricao,CPFCnpj,RgInscrEstadual,LocalCep,LocalEndereco,LocalNumero,LocalComplemento,"
+                                sql = sql & "LocalBairro,LocalCidade,LocalEstado,Quadra,Lote,EntregaCep,EntregaEndereco,EntregaNumero,EntregaComplemento,EntregaBairro,"
+                                sql = sql & "EntregaCidade,EntregaEstado,DtGeracao) values("
+                                sql = sql & nCDA & ",'" & sSetor & "'," & nCodReduz & ",'" & SubNull(sNome) & "','" & sNumInsc & "','" & sCPF & "','" & sRG & "','"
+                                sql = sql & sCepImovel & "','" & sEndImovel & "'," & nNumImovel & ",'" & sComplImovel & "','" & sBairroImovel & "','" & sCidadeImovel & "','" & sUFImovel & "','"
+                                sql = sql & sQuadra & "','" & sLote & "','" & sCepEntrega & "','" & sEndEntrega & "'," & nNumEntrega & ",'" & sComplEntrega & "','"
+                                sql = sql & sBairroEntrega & "','" & sCidadeEntrega & "','" & sUFEntrega & "','" & Format(Now, "mm/dd/yyyy") & "')"
+                                cnInt.Execute sql, rdExecDirect
                             Else
-                                Sql = "select * from vwFullCidadao where codcidadao=" & nCodReduz
-                                Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                                sql = "select * from vwFullCidadao where codcidadao=" & nCodReduz
+                                Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                                 With RdoAux2
                                     sCPF = SubNull(!Cnpj)
                                     If Trim(sCPF) = "" Then
                                         sCPF = SubNull(!cpf)
                                     End If
-                                    Sql = "INSERT Partes(idCDA,Tipo,Crc,Nome,CpfCnpj,RgInscrEstadual,Cep,Endereco,Numero,Complemento,Bairro,Cidade,Estado,DtGeracao) Values("
-                                    Sql = Sql & nCDA & ",'Principal'," & !CodCidadao & ",'" & Mask(!nomecidadao) & "','" & sCPF & "','" & SubNull(!rg) & "','" & SubNull(!Cep) & "','"
-                                    Sql = Sql & Mask(SubNull(!Endereco)) & "'," & Val(SubNull(!NUMIMOVEL)) & ",'" & Mask(SubNull(!Complemento)) & "','" & Mask(SubNull(!DescBairro)) & "','"
-                                    Sql = Sql & Mask(SubNull(!descCidade)) & "','" & SubNull(!SiglaUF) & "','" & Format(Now, "mm/dd/yyyy") & "')"
-                                    cnInt.Execute Sql, rdExecDirect
+                                    sql = "INSERT Partes(idCDA,Tipo,Crc,Nome,CpfCnpj,RgInscrEstadual,Cep,Endereco,Numero,Complemento,Bairro,Cidade,Estado,DtGeracao) Values("
+                                    sql = sql & nCDA & ",'Principal'," & !CodCidadao & ",'" & Mask(!nomecidadao) & "','" & sCPF & "','" & SubNull(!rg) & "','" & SubNull(!Cep) & "','"
+                                    sql = sql & Mask(SubNull(!Endereco)) & "'," & Val(SubNull(!NUMIMOVEL)) & ",'" & Mask(SubNull(!Complemento)) & "','" & Mask(SubNull(!DescBairro)) & "','"
+                                    sql = sql & Mask(SubNull(!descCidade)) & "','" & SubNull(!SiglaUF) & "','" & Format(Now, "mm/dd/yyyy") & "')"
+                                    cnInt.Execute sql, rdExecDirect
                                    .Close
                                 End With
                             End If
                             
                             If nCodReduz < 100000 Then 'cadastra os proprietarios e compromissarios
-                                Sql = "SELECT cadimob.codreduzido, proprietario.codcidadao, proprietario.tipoprop, vwFULLCIDADAO.nomecidadao, vwFULLCIDADAO.cpf,"
-                                Sql = Sql & "vwFULLCIDADAO.cnpj, vwFULLCIDADAO.numimovel, vwFULLCIDADAO.complemento, vwFULLCIDADAO.siglauf, vwFULLCIDADAO.cep,"
-                                Sql = Sql & "vwFULLCIDADAO.rg , vwFULLCIDADAO.orgao, vwFULLCIDADAO.DescBairro, vwFULLCIDADAO.desccidade, vwFULLCIDADAO.Endereco "
-                                Sql = Sql & "FROM cadimob INNER JOIN proprietario ON cadimob.codreduzido = proprietario.codreduzido INNER JOIN vwFULLCIDADAO ON "
-                                Sql = Sql & "proprietario.codcidadao = vwFULLCIDADAO.codcidadao where cadimob.codreduzido=" & nCodReduz
-                                Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                                sql = "SELECT cadimob.codreduzido, proprietario.codcidadao, proprietario.tipoprop, vwFULLCIDADAO.nomecidadao, vwFULLCIDADAO.cpf,"
+                                sql = sql & "vwFULLCIDADAO.cnpj, vwFULLCIDADAO.numimovel, vwFULLCIDADAO.complemento, vwFULLCIDADAO.siglauf, vwFULLCIDADAO.cep,"
+                                sql = sql & "vwFULLCIDADAO.rg , vwFULLCIDADAO.orgao, vwFULLCIDADAO.DescBairro, vwFULLCIDADAO.desccidade, vwFULLCIDADAO.Endereco "
+                                sql = sql & "FROM cadimob INNER JOIN proprietario ON cadimob.codreduzido = proprietario.codreduzido INNER JOIN vwFULLCIDADAO ON "
+                                sql = sql & "proprietario.codcidadao = vwFULLCIDADAO.codcidadao where cadimob.codreduzido=" & nCodReduz
+                                Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                                 With RdoAux2
                                     Do Until .EOF
                                         sCPF = SubNull(!Cnpj)
@@ -605,18 +609,18 @@ With RdoAux
                                             sCPF = SubNull(!cpf)
                                         End If
                                         sTipoProp = IIf(!tipoprop = "P", "Principal", "Compromissário")
-                                        Sql = "INSERT Partes(idCDA,Tipo,Crc,Nome,CpfCnpj,RgInscrEstadual,Cep,Endereco,Numero,Complemento,Bairro,Cidade,Estado,DtGeracao) Values("
-                                        Sql = Sql & nCDA & ",'" & sTipoProp & "'," & nCodReduz & ",'" & Mask(!nomecidadao) & "','" & sCPF & "','" & SubNull(!rg) & "','" & SubNull(!Cep) & "','"
-                                        Sql = Sql & Mask(SubNull(!Endereco)) & "'," & Val(SubNull(!NUMIMOVEL)) & ",'" & Mask(SubNull(!Complemento)) & "','" & Mask(SubNull(!DescBairro)) & "','"
-                                        Sql = Sql & Mask(SubNull(!descCidade)) & "','" & SubNull(!SiglaUF) & "','" & Format(Now, "mm/dd/yyyy") & "')"
-                                        cnInt.Execute Sql, rdExecDirect
+                                        sql = "INSERT Partes(idCDA,Tipo,Crc,Nome,CpfCnpj,RgInscrEstadual,Cep,Endereco,Numero,Complemento,Bairro,Cidade,Estado,DtGeracao) Values("
+                                        sql = sql & nCDA & ",'" & sTipoProp & "'," & nCodReduz & ",'" & Mask(!nomecidadao) & "','" & sCPF & "','" & SubNull(!rg) & "','" & SubNull(!Cep) & "','"
+                                        sql = sql & Mask(SubNull(!Endereco)) & "'," & Val(SubNull(!NUMIMOVEL)) & ",'" & Mask(SubNull(!Complemento)) & "','" & Mask(SubNull(!DescBairro)) & "','"
+                                        sql = sql & Mask(SubNull(!descCidade)) & "','" & SubNull(!SiglaUF) & "','" & Format(Now, "mm/dd/yyyy") & "')"
+                                        cnInt.Execute sql, rdExecDirect
                                        .MoveNext
                                     Loop
                                    .Close
                                 End With
                             ElseIf nCodReduz >= 100000 And nCodReduz < 300000 Then   'cadastra os socios
-                                Sql = "SELECT * from vwmobiliarioproprietario where codmobiliario=" & nCodReduz
-                                Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                                sql = "SELECT * from vwmobiliarioproprietario where codmobiliario=" & nCodReduz
+                                Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                                 With RdoAux2
                                     Do Until .EOF
                                         sCPF = SubNull(!Cnpj)
@@ -624,11 +628,11 @@ With RdoAux
                                             sCPF = SubNull(!cpf)
                                         End If
                                         sTipoProp = "Sócio"
-                                        Sql = "INSERT Partes(idCDA,Tipo,Crc,Nome,CpfCnpj,RgInscrEstadual,Cep,Endereco,Numero,Complemento,Bairro,Cidade,Estado,DtGeracao) Values("
-                                        Sql = Sql & nCDA & ",'" & sTipoProp & "'," & nCodReduz & ",'" & Mask(!nomecidadao) & "','" & sCPF & "','" & SubNull(!rg) & "','" & SubNull(!Cep) & "','"
-                                        Sql = Sql & Mask(SubNull(!Endereco)) & "'," & Val(SubNull(!NUMIMOVEL)) & ",'" & Mask(SubNull(!Complemento)) & "','" & Mask(SubNull(!DescBairro)) & "','"
-                                        Sql = Sql & Mask(SubNull(!descCidade)) & "','" & SubNull(!SiglaUF) & "','" & Format(Now, "mm/dd/yyyy") & "')"
-                                        cnInt.Execute Sql, rdExecDirect
+                                        sql = "INSERT Partes(idCDA,Tipo,Crc,Nome,CpfCnpj,RgInscrEstadual,Cep,Endereco,Numero,Complemento,Bairro,Cidade,Estado,DtGeracao) Values("
+                                        sql = sql & nCDA & ",'" & sTipoProp & "'," & nCodReduz & ",'" & Mask(!nomecidadao) & "','" & sCPF & "','" & SubNull(!rg) & "','" & SubNull(!Cep) & "','"
+                                        sql = sql & Mask(SubNull(!Endereco)) & "'," & Val(SubNull(!NUMIMOVEL)) & ",'" & Mask(SubNull(!Complemento)) & "','" & Mask(SubNull(!DescBairro)) & "','"
+                                        sql = sql & Mask(SubNull(!descCidade)) & "','" & SubNull(!SiglaUF) & "','" & Format(Now, "mm/dd/yyyy") & "')"
+                                        cnInt.Execute sql, rdExecDirect
                                        .MoveNext
                                     Loop
                                    .Close
@@ -637,17 +641,17 @@ With RdoAux
                             
                             '***************************************************
                             'Carrega Tributos
-                            Sql = "SELECT debitotributo.codtributo,valortributo,abrevtributo FROM debitotributo INNER JOIN tributo ON debitotributo.codtributo = tributo.codtributo "
-                            Sql = Sql & "where codreduzido=" & nCodReduz & " and anoexercicio=" & nAno & " and codlancamento=" & nLanc & " and seqlancamento=" & nSeq & " and "
-                            Sql = Sql & "numparcela=" & nParc & " and codcomplemento=" & nCompl
-                            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                            sql = "SELECT debitotributo.codtributo,valortributo,abrevtributo FROM debitotributo INNER JOIN tributo ON debitotributo.codtributo = tributo.codtributo "
+                            sql = sql & "where codreduzido=" & nCodReduz & " and anoexercicio=" & nAno & " and codlancamento=" & nLanc & " and seqlancamento=" & nSeq & " and "
+                            sql = sql & "numparcela=" & nParc & " and codcomplemento=" & nCompl
+                            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                             With RdoAux2
                                 Do Until .EOF
                                     
-                                    Sql = "INSERT CDADebitos(idCDA,CodTributo,Tributo,Exercicio,Lancamento,Seq,NroParcela,ComplParcela,DtVencimento,VlrOriginal,DtGeracao) values("
-                                    Sql = Sql & nCDA & "," & !CodTributo & ",'" & Mask(!abrevTributo) & "'," & nAno & "," & nLanc & "," & nSeq & "," & nParc & ","
-                                    Sql = Sql & nCompl & ",'" & Format(dDataVencto, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(!VALORTRIBUTO)) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
-                                    cnInt.Execute Sql, rdExecDirect
+                                    sql = "INSERT CDADebitos(idCDA,CodTributo,Tributo,Exercicio,Lancamento,Seq,NroParcela,ComplParcela,DtVencimento,VlrOriginal,DtGeracao) values("
+                                    sql = sql & nCDA & "," & !CodTributo & ",'" & Mask(!abrevTributo) & "'," & nAno & "," & nLanc & "," & nSeq & "," & nParc & ","
+                                    sql = sql & nCompl & ",'" & Format(dDataVencto, "mm/dd/yyyy") & "'," & Virg2Ponto(CStr(!VALORTRIBUTO)) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
+                                    cnInt.Execute sql, rdExecDirect
                                     
                                    .MoveNext
                                 Loop
@@ -678,31 +682,31 @@ End With
 
 
 '*** PAGAMENTOS *****
-Sql = "SELECT debitopago.codreduzido, debitopago.anoexercicio, debitopago.codlancamento, debitopago.seqlancamento, debitopago.numparcela, debitopago.codcomplemento, "
-Sql = Sql & "debitopago.seqpag, debitopago.datapagamento, debitopago.datarecebimento, debitopago.valorpago, debitopago.codbanco, debitopago.codagencia,"
-Sql = Sql & "debitopago.restituido, debitopago.numdocumento, debitopago.valorpagoreal, debitopago.intacto, debitopago.valortarifa, debitopago.arquivobanco,"
-Sql = Sql & "debitopago.valordif , debitopago.datapagamentocalc, debitopago.dataintegracao, debitoparcela.numprocesso FROM debitopago INNER JOIN "
-Sql = Sql & "debitoparcela ON debitopago.codreduzido = debitoparcela.codreduzido AND debitopago.anoexercicio = debitoparcela.anoexercicio AND debitopago.codlancamento = debitoparcela.codlancamento AND debitopago.seqlancamento = debitoparcela.seqlancamento AND "
-Sql = Sql & "debitopago.NumParcela = debitoparcela.NumParcela And debitopago.CODCOMPLEMENTO = debitoparcela.CODCOMPLEMENTO "
-Sql = Sql & "WHERE debitopago.datarecebimento>='" & Format(Now - 30, "mm/dd/yyyy") & "' AND (debitopago.codlancamento = 20) AND (debitopago.restituido IS NULL) AND (debitopago.dataintegracao IS NULL)"
+sql = "SELECT debitopago.codreduzido, debitopago.anoexercicio, debitopago.codlancamento, debitopago.seqlancamento, debitopago.numparcela, debitopago.codcomplemento, "
+sql = sql & "debitopago.seqpag, debitopago.datapagamento, debitopago.datarecebimento, debitopago.valorpago, debitopago.codbanco, debitopago.codagencia,"
+sql = sql & "debitopago.restituido, debitopago.numdocumento, debitopago.valorpagoreal, debitopago.intacto, debitopago.valortarifa, debitopago.arquivobanco,"
+sql = sql & "debitopago.valordif , debitopago.datapagamentocalc, debitopago.dataintegracao, debitoparcela.numprocesso FROM debitopago INNER JOIN "
+sql = sql & "debitoparcela ON debitopago.codreduzido = debitoparcela.codreduzido AND debitopago.anoexercicio = debitoparcela.anoexercicio AND debitopago.codlancamento = debitoparcela.codlancamento AND debitopago.seqlancamento = debitoparcela.seqlancamento AND "
+sql = sql & "debitopago.NumParcela = debitoparcela.NumParcela And debitopago.CODCOMPLEMENTO = debitoparcela.CODCOMPLEMENTO "
+sql = sql & "WHERE debitopago.datarecebimento>='" & Format(Now - 30, "mm/dd/yyyy") & "' AND (debitopago.codlancamento = 20) AND (debitopago.restituido IS NULL) AND (debitopago.dataintegracao IS NULL)"
 'Sql = Sql & "WHERE debitopago.datarecebimento>='08/01/2015' AND (debitopago.codlancamento = 20) AND (debitopago.restituido IS NULL) AND (debitopago.dataintegracao IS NULL)"
 
-Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+Set RdoAux3 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux3
     Do Until .EOF
-        sNumProc = !numprocesso
+        sNumProc = !NumProcesso
         nNumproc = Val(Left$(sNumProc, InStr(1, sNumProc, "/", vbBinaryCompare) - 1))
         nAnoproc = Val(Right$(sNumProc, 4))
         
         'GRAVA NA TABELA ACORDOBAIXAS
-        Sql = "insert acordobaixas(idAcordo, anoAcordo, DtBaixa, TipoBaixa, NroParcela, VlrOriginal, VlrCorrecao, VlrJuros, VlrMulta, VlrTotal, DtGeracao) values("
-        Sql = Sql & nNumproc & "," & nAnoproc & ",'" & Format(!datarecebimento, "mm/dd/yyyy") & "','PAGAMENTO'," & !NumParcela & "," & Virg2Ponto(CStr(!ValorPagoreal)) & ","
-        Sql = Sql & 0 & "," & 0 & "," & 0 & "," & Virg2Ponto(CStr(!ValorPagoreal)) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
-        cnInt.Execute Sql, rdExecDirect
+        sql = "insert acordobaixas(idAcordo, anoAcordo, DtBaixa, TipoBaixa, NroParcela, VlrOriginal, VlrCorrecao, VlrJuros, VlrMulta, VlrTotal, DtGeracao) values("
+        sql = sql & nNumproc & "," & nAnoproc & ",'" & Format(!datarecebimento, "mm/dd/yyyy") & "','PAGAMENTO'," & !NumParcela & "," & Virg2Ponto(CStr(!ValorPagoreal)) & ","
+        sql = sql & 0 & "," & 0 & "," & 0 & "," & Virg2Ponto(CStr(!ValorPagoreal)) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
+        cnInt.Execute sql, rdExecDirect
         
-        Sql = "update debitopago set dataintegracao='" & Format(Now, "mm/dd/yyyy") & "' where codreduzido=" & !CODREDUZIDO & " and anoexercicio=" & !AnoExercicio & " and "
-        Sql = Sql & "codlancamento=" & !CodLancamento & " and seqlancamento=" & !SeqLancamento & " and numparcela=" & !NumParcela & " and codcomplemento=" & !CODCOMPLEMENTO
-        cn.Execute Sql, rdExecDirect
+        sql = "update debitopago set dataintegracao='" & Format(Now, "mm/dd/yyyy") & "' where codreduzido=" & !CODREDUZIDO & " and anoexercicio=" & !AnoExercicio & " and "
+        sql = sql & "codlancamento=" & !CodLancamento & " and seqlancamento=" & !SeqLancamento & " and numparcela=" & !NumParcela & " and codcomplemento=" & !CODCOMPLEMENTO
+        cn.Execute sql, rdExecDirect
        .MoveNext
     Loop
    .Close
@@ -710,15 +714,15 @@ End With
 
 
 'Serasa
-Sql = "SELECT DISTINCT IDDevedor, CONVERT(char(10), DATEADD(dd, DATEDIFF(DD, 0, DtGeracao), 0), 126) AS dtgeracao from negativacao where dtleitura is null"
-Set RdoAux = cnInt.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT DISTINCT IDDevedor, CONVERT(char(10), DATEADD(dd, DATEDIFF(DD, 0, DtGeracao), 0), 126) AS dtgeracao from negativacao where dtleitura is null"
+Set RdoAux = cnInt.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-        Sql = "insert serasa(codigo,dtentrada) values(" & !iddevedor & ",'" & Format(!DtGeracao, "mm/dd/yyyy") & "')"
-        cn.Execute Sql, rdExecDirect
-        Sql = "update negativacao set dtleitura='" & Format(Now, "mm/dd/yyyy") & "' where iddevedor=" & !iddevedor & " and datepart(dd,dtgeracao)=" & Day(!DtGeracao) & " and "
-        Sql = Sql & "datepart(mm,dtgeracao)=" & Month(!DtGeracao) & " and datepart(yy,dtgeracao)=" & Year(!DtGeracao)
-        cnInt.Execute Sql, rdExecDirect
+        sql = "insert serasa(codigo,dtentrada) values(" & !iddevedor & ",'" & Format(!DtGeracao, "mm/dd/yyyy") & "')"
+        cn.Execute sql, rdExecDirect
+        sql = "update negativacao set dtleitura='" & Format(Now, "mm/dd/yyyy") & "' where iddevedor=" & !iddevedor & " and datepart(dd,dtgeracao)=" & Day(!DtGeracao) & " and "
+        sql = sql & "datepart(mm,dtgeracao)=" & Month(!DtGeracao) & " and datepart(yy,dtgeracao)=" & Year(!DtGeracao)
+        cnInt.Execute sql, rdExecDirect
        .MoveNext
     Loop
    .Close
@@ -726,16 +730,16 @@ End With
 
 
 'Parcelamentos Ajuizados
-Sql = "SELECT AjuizamentoCdas.IdAjuizamentoCdas, AjuizamentoCdas.CodProcesso, AjuizamentoCdas.IdDevedor, AjuizamentoCdas.SetorDevedor, AjuizamentoCdas.NroCertidao, "
-Sql = Sql & "AjuizamentoCdas.NroLivro, AjuizamentoCdas.NroFolha, AjuizamentoCdas.Seq, AjuizamentoCdas.Lancamento, AjuizamentoCdas.ComplParcela,"
-Sql = Sql & "AjuizamentoCdas.Exercicio, AjuizamentoCdas.DtGeracao, AjuizamentoProcessos.DtLeitura, AjuizamentoCdas.NroParcela, AjuizamentoCdas.CodTributo,"
-Sql = Sql & "AjuizamentoCdas.DtVencimento, AjuizamentoCdas.VlrOriginal, AjuizamentoProcessos.DtAjuizamento, AjuizamentoProcessos.Protocolo,"
-Sql = Sql & "AjuizamentoProcessos.IdAjuizamentoProcesso , AjuizamentoProcessos.AnoProtocolo, AjuizamentoProcessos.ProcessoCNJ "
-Sql = Sql & "FROM AjuizamentoCdas INNER JOIN AjuizamentoProcessos ON AjuizamentoCdas.CodProcesso = AjuizamentoProcessos.CodProcesso "
-Sql = Sql & "WHERE AjuizamentoProcessos.DtLeitura IS NULL or  AjuizamentoCdas.DtLeitura IS NULL "
-Sql = Sql & "ORDER BY AjuizamentoCdas.CodProcesso"
+sql = "SELECT AjuizamentoCdas.IdAjuizamentoCdas, AjuizamentoCdas.CodProcesso, AjuizamentoCdas.IdDevedor, AjuizamentoCdas.SetorDevedor, AjuizamentoCdas.NroCertidao, "
+sql = sql & "AjuizamentoCdas.NroLivro, AjuizamentoCdas.NroFolha, AjuizamentoCdas.Seq, AjuizamentoCdas.Lancamento, AjuizamentoCdas.ComplParcela,"
+sql = sql & "AjuizamentoCdas.Exercicio, AjuizamentoCdas.DtGeracao, AjuizamentoProcessos.DtLeitura, AjuizamentoCdas.NroParcela, AjuizamentoCdas.CodTributo,"
+sql = sql & "AjuizamentoCdas.DtVencimento, AjuizamentoCdas.VlrOriginal, AjuizamentoProcessos.DtAjuizamento, AjuizamentoProcessos.Protocolo,"
+sql = sql & "AjuizamentoProcessos.IdAjuizamentoProcesso , AjuizamentoProcessos.AnoProtocolo, AjuizamentoProcessos.ProcessoCNJ "
+sql = sql & "FROM AjuizamentoCdas INNER JOIN AjuizamentoProcessos ON AjuizamentoCdas.CodProcesso = AjuizamentoProcessos.CodProcesso "
+sql = sql & "WHERE AjuizamentoProcessos.DtLeitura IS NULL or  AjuizamentoCdas.DtLeitura IS NULL "
+sql = sql & "ORDER BY AjuizamentoCdas.CodProcesso"
 
-Set RdoAux = cnInt.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+Set RdoAux = cnInt.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
 '            Sql = "update debitoparcela set dataajuiza='" & Format(!DtAjuizamento, "mm/dd/yyyy") & "',processocnj='" & !processocnj & "' where "
@@ -743,17 +747,17 @@ With RdoAux
 '            Sql = Sql & "seqlancamento=" & !Seq & " and numparcela=" & !nroparcela
 
             'voltar o sql acima  para as próximas integrações
-            Sql = "update debitoparcela set dataajuiza='" & Format(!DtAjuizamento, "mm/dd/yyyy") & "',processocnj='" & !processocnj & "' where "
-            Sql = Sql & "codreduzido=" & Val(!iddevedor) & " and anoexercicio=" & !exercicio & " and "
-            Sql = Sql & "seqlancamento=" & !Seq & " and numparcela=" & !nroparcela & " and numcertidao=" & !NroCertidao
-            cn.Execute Sql, rdExecDirect
+            sql = "update debitoparcela set dataajuiza='" & Format(!DtAjuizamento, "mm/dd/yyyy") & "',processocnj='" & !processocnj & "' where "
+            sql = sql & "codreduzido=" & Val(!iddevedor) & " and anoexercicio=" & !exercicio & " and "
+            sql = sql & "seqlancamento=" & !Seq & " and numparcela=" & !nroparcela & " and numcertidao=" & !NroCertidao
+            cn.Execute sql, rdExecDirect
             
             
-            Sql = " update ajuizamentoprocessos set dtleitura='" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "' where idajuizamentoprocesso=" & !IdAjuizamentoProcesso & " and dtleitura is null"
-            cnInt.Execute Sql, rdExecDirect
+            sql = " update ajuizamentoprocessos set dtleitura='" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "' where idajuizamentoprocesso=" & !IdAjuizamentoProcesso & " and dtleitura is null"
+            cnInt.Execute sql, rdExecDirect
             
-            Sql = " update ajuizamentocdas set dtleitura='" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "' where idajuizamentocdas=" & !idajuizamentocdas & " and dtleitura is null"
-            cnInt.Execute Sql, rdExecDirect
+            sql = " update ajuizamentocdas set dtleitura='" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "' where idajuizamentocdas=" & !idajuizamentocdas & " and dtleitura is null"
+            cnInt.Execute sql, rdExecDirect
 
 DoEvents
        .MoveNext
@@ -762,18 +766,18 @@ DoEvents
 End With
 
 'A.R. DIGITAL
-Sql = "SELECT idajuizamentodespesa,CodProcesso, DtDespesa, ValorDespesa, cnj From AjuizamentoDespesas WHERE (TipoDespesa = 'AR DIGITAL') AND (DtLeitura IS NULL)"
-Set RdoAux = cnInt.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT idajuizamentodespesa,CodProcesso, DtDespesa, ValorDespesa, cnj From AjuizamentoDespesas WHERE (TipoDespesa = 'AR DIGITAL') AND (DtLeitura IS NULL)"
+Set RdoAux = cnInt.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         nId = !idajuizamentodespesa
-        Sql = " SELECT DISTINCT IdDevedor From AjuizamentoCdas Where CodProcesso=" & !CodProcesso
-        Set RdoAux2 = cnInt.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = " SELECT DISTINCT IdDevedor From AjuizamentoCdas Where CodProcesso=" & !CodProcesso
+        Set RdoAux2 = cnInt.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         nCodReduz = RdoAux2!iddevedor
         RdoAux2.Close
         
-        Sql = "SELECT MAX(SEQLANCAMENTO) AS SEQMAXIMA FROM DEBITOPARCELA WHERE CODREDUZIDO=" & nCodReduz & " AND CODLANCAMENTO=" & 78 & " AND ANOEXERCICIO=" & Year(!DTDESPESA)
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT MAX(SEQLANCAMENTO) AS SEQMAXIMA FROM DEBITOPARCELA WHERE CODREDUZIDO=" & nCodReduz & " AND CODLANCAMENTO=" & 78 & " AND ANOEXERCICIO=" & Year(!DTDESPESA)
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         If IsNull(RdoAux2!SEQMAXIMA) Then
            nSeq = 0
         Else
@@ -785,19 +789,19 @@ With RdoAux
 '        Sql = Sql & "NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,DATAVENCIMENTO,dataajuiza,DATADEBASE,PROCESSOCNJ,USUARIO) VALUES(" & nCodReduz & "," & Year(!DTDESPESA) & ","
 '        Sql = Sql & 78 & "," & nSeq & "," & 1 & "," & 0 & "," & 3 & ",'" & Format(!DTDESPESA, "mm/dd/yyyy") & "','" & Format(!DTDESPESA, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "','"
 '        Sql = Sql & !CNJ & "','INTEGRAÇÃO INTERLIS')"
-        Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,"
-        Sql = Sql & "NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,DATAVENCIMENTO,dataajuiza,DATADEBASE,PROCESSOCNJ,USERID) VALUES(" & nCodReduz & "," & Year(!DTDESPESA) & ","
-        Sql = Sql & 78 & "," & nSeq & "," & 1 & "," & 0 & "," & 3 & ",'" & Format(!DTDESPESA, "mm/dd/yyyy") & "','" & Format(!DTDESPESA, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "','"
-        Sql = Sql & !CNJ & "'," & RetornaUsuarioID(NomeDeLogin) & ")"
-        cn.Execute Sql, rdExecDirect
+        sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,"
+        sql = sql & "NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,DATAVENCIMENTO,dataajuiza,DATADEBASE,PROCESSOCNJ,USERID) VALUES(" & nCodReduz & "," & Year(!DTDESPESA) & ","
+        sql = sql & 78 & "," & nSeq & "," & 1 & "," & 0 & "," & 3 & ",'" & Format(!DTDESPESA, "mm/dd/yyyy") & "','" & Format(!DTDESPESA, "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "','"
+        sql = sql & !CNJ & "'," & RetornaUsuarioID(NomeDeLogin) & ")"
+        cn.Execute sql, rdExecDirect
         
         nValorTributo = Ponto2Virg(!valordespesa)
-        Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,VALORTRIBUTO) VALUES("
-        Sql = Sql & nCodReduz & "," & Year(!DTDESPESA) & "," & 78 & "," & nSeq & "," & 1 & "," & 0 & "," & 667 & "," & Virg2Ponto(Format(nValorTributo, "#0.00")) & ")"
-        cn.Execute Sql, rdExecDirect
+        sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,VALORTRIBUTO) VALUES("
+        sql = sql & nCodReduz & "," & Year(!DTDESPESA) & "," & 78 & "," & nSeq & "," & 1 & "," & 0 & "," & 667 & "," & Virg2Ponto(Format(nValorTributo, "#0.00")) & ")"
+        cn.Execute sql, rdExecDirect
         
-        Sql = "update AjuizamentoDespesas set dtleitura='" & Format(Now, "mm/dd/yyyy hh:mm") & "' where idajuizamentodespesa=" & nId
-        cnInt.Execute Sql, rdExecDirect
+        sql = "update AjuizamentoDespesas set dtleitura='" & Format(Now, "mm/dd/yyyy hh:mm") & "' where idajuizamentodespesa=" & nId
+        cnInt.Execute sql, rdExecDirect
         
         DoEvents
        .MoveNext
@@ -806,52 +810,55 @@ With RdoAux
 End With
 
 'RETORNO PROTESTO
-'Sql = "SELECT Protesto_remessa.Codigo, Protesto_remessa.idDevedor, Protesto_Debitos.Exercicio, Protesto_Debitos.Lancamento, Protesto_Debitos.Seq,Protesto_Debitos.nroParcela, Protesto_Debitos.ComplParcela,"
-'Sql = Sql & "Protesto_Debitos.dtaVencimento, Protesto_remessa.cod_protesto, Protesto_remessa.nroTitulo,Protesto_remessa.data_remessa FROM Protesto_remessa INNER JOIN Protesto_Debitos ON "
-'Sql = Sql & "Protesto_remessa.cod_protesto = Protesto_Debitos.Cod_protesto Where (Protesto_remessa.dtLeitura Is Null) ORDER BY Protesto_remessa.idDevedor, Protesto_Debitos.Exercicio, Protesto_Debitos.Lancamento, "
-'Sql = Sql & "Protesto_Debitos.Seq, Protesto_Debitos.nroParcela,Protesto_Debitos.ComplParcela"
+GoTo Fim
+sql = "SELECT Protesto_remessa.Codigo, Protesto_remessa.idDevedor, Protesto_Debitos.Exercicio, Protesto_Debitos.Lancamento, Protesto_Debitos.Seq,Protesto_Debitos.nroParcela, Protesto_Debitos.ComplParcela, "
+sql = sql & "Protesto_Debitos.dtaVencimento, Protesto_remessa.cod_protesto, Protesto_remessa.nroTitulo,Protesto_remessa.data_remessa , Protesto_Ocorrencia.Ocorrencia,Irregularidade FROM Protesto_remessa INNER JOIN "
+sql = sql & "Protesto_Debitos ON Protesto_remessa.cod_protesto = Protesto_Debitos.Cod_protesto LEFT OUTER JOIN Protesto_Ocorrencia ON Protesto_remessa.cod_protesto = Protesto_Ocorrencia.cod_protesto "
+sql = sql & "Where (Protesto_remessa.dtLeitura Is Null or Protesto_Ocorrencia.dtLeitura is null) ORDER BY Protesto_remessa.idDevedor,Protesto_remessa.data_remessa, Protesto_Debitos.Exercicio, Protesto_Debitos.Lancamento, Protesto_Debitos.Seq, Protesto_Debitos.nroParcela,Protesto_Debitos.ComplParcela "
 
-Sql = "SELECT Protesto_remessa.Codigo, Protesto_remessa.idDevedor, Protesto_Debitos.Exercicio, Protesto_Debitos.Lancamento, Protesto_Debitos.Seq,Protesto_Debitos.nroParcela, Protesto_Debitos.ComplParcela, "
-Sql = Sql & "Protesto_Debitos.dtaVencimento, Protesto_remessa.cod_protesto, Protesto_remessa.nroTitulo,Protesto_remessa.data_remessa , Protesto_Ocorrencia.Ocorrencia,Irregularidade FROM Protesto_remessa INNER JOIN "
-Sql = Sql & "Protesto_Debitos ON Protesto_remessa.cod_protesto = Protesto_Debitos.Cod_protesto LEFT OUTER JOIN Protesto_Ocorrencia ON Protesto_remessa.cod_protesto = Protesto_Ocorrencia.cod_protesto "
-Sql = Sql & "Where (Protesto_remessa.dtLeitura Is Null or Protesto_Ocorrencia.dtLeitura Is Null) ORDER BY Protesto_remessa.idDevedor,Protesto_remessa.data_remessa, Protesto_Debitos.Exercicio, Protesto_Debitos.Lancamento, Protesto_Debitos.Seq, Protesto_Debitos.nroParcela,Protesto_Debitos.ComplParcela "
-Set RdoAux = cnInt.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+'Sql = "SELECT Protesto_remessa.cod_protesto, Protesto_remessa.nroTitulo,Protesto_remessa.data_remessa,idDevedor, Protesto_remessa.nroTitulo,Protesto_remessa.data_remessa,nroCertidao,anoexercicio as exercicio,codlancamento as lancamento,seqlancamento as seq,numparcela as nroparcela,codcomplemento as complparcela,Protesto_Ocorrencia.Ocorrencia,Irregularidade FROM Protesto_remessa "
+'Sql = Sql & "INNER JOIN tributacao..debitoparcela ON codreduzido = idDevedor AND numcertidao=nroCertidao LEFT OUTER JOIN Protesto_Ocorrencia ON Protesto_remessa.cod_protesto = Protesto_Ocorrencia.cod_protesto  WHERE Protesto_remessa.dtleitura IS NULL AND nroCertidao IS NOT  null"
+Set RdoAux = cnInt.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
- '       If Val(Trim(!iddevedor)) = 1440 Then
-'            MsgBox "teste"
-  '      End If
+        If Val(Trim(!iddevedor)) = 15302 Then
+     '        MsgBox "teste"
+        End If
     
     
         If Trim(SubNull(!Ocorrencia)) = "" Then
-            Sql = "update debitoparcela set STATUSLANC=39,protesto_nro_titulo=" & Val(Trim(!nroTitulo)) & ",protesto_data_remessa='" & Format(!data_remessa, "mm/dd/yyyy") & "' where codreduzido=" & Val(Trim(!iddevedor)) & " and anoexercicio="
-            Sql = Sql & !exercicio & " and codlancamento=" & !lancamento & " and seqlancamento=" & !Seq & " and numparcela=" & !nroparcela & " and codcomplemento=" & !complparcela & " and statuslanc=3"
+            sql = "update debitoparcela set STATUSLANC=39,protesto_nro_titulo=" & Val(Trim(!nroTitulo)) & ",protesto_data_remessa='" & Format(!data_remessa, "mm/dd/yyyy") & "' where codreduzido=" & Val(Trim(!iddevedor)) & " and anoexercicio="
+            sql = sql & !exercicio & " and codlancamento=" & !lancamento & " and seqlancamento=" & !Seq & " and numparcela=" & !nroparcela & " and codcomplemento=" & !complparcela & " and statuslanc in (3,38,39,42,42)"
         ElseIf Trim(SubNull(!Ocorrencia)) = "PROTESTADO" Then
-            Sql = "update debitoparcela set STATUSLANC=38,protesto_nro_titulo=" & Val(Trim(!nroTitulo)) & ",protesto_data_remessa='" & Format(!data_remessa, "mm/dd/yyyy") & "' where codreduzido=" & Val(Trim(!iddevedor)) & " and anoexercicio="
-            Sql = Sql & !exercicio & " and codlancamento=" & !lancamento & " and seqlancamento=" & !Seq & " and numparcela=" & !nroparcela & " and codcomplemento=" & !complparcela & " and statuslanc in (3,38,39)"
+            sql = "update debitoparcela set STATUSLANC=38,protesto_nro_titulo=" & Val(Trim(!nroTitulo)) & ",protesto_data_remessa='" & Format(!data_remessa, "mm/dd/yyyy") & "' where codreduzido=" & Val(Trim(!iddevedor)) & " and anoexercicio="
+            sql = sql & !exercicio & " and codlancamento=" & !lancamento & " and seqlancamento=" & !Seq & " and numparcela=" & !nroparcela & " and codcomplemento=" & !complparcela & " and statuslanc in (3,38,39,42,43)"
         ElseIf Trim(SubNull(!Ocorrencia)) = "PAGO" Then
-            Sql = "update debitoparcela set STATUSLANC=41,protesto_nro_titulo=" & Val(Trim(!nroTitulo)) & ",protesto_data_remessa='" & Format(!data_remessa, "mm/dd/yyyy") & "' where codreduzido=" & Val(Trim(!iddevedor)) & " and anoexercicio="
-            Sql = Sql & !exercicio & " and codlancamento=" & !lancamento & " and seqlancamento=" & !Seq & " and numparcela=" & !nroparcela & " and codcomplemento=" & !complparcela & " and statuslanc in (3,38,39)"
+            sql = "update debitoparcela set STATUSLANC=41,protesto_nro_titulo=" & Val(Trim(!nroTitulo)) & ",protesto_data_remessa='" & Format(!data_remessa, "mm/dd/yyyy") & "' where codreduzido=" & Val(Trim(!iddevedor)) & " and anoexercicio="
+            sql = sql & !exercicio & " and codlancamento=" & !lancamento & " and seqlancamento=" & !Seq & " and numparcela=" & !nroparcela & " and codcomplemento=" & !complparcela & " and statuslanc in (3,38,39,42,43)"
         Else
-            Sql = "update debitoparcela set STATUSLANC=3,protesto_nro_titulo=" & Val(Trim(!nroTitulo)) & ",protesto_data_remessa='" & Format(!data_remessa, "mm/dd/yyyy") & "' where codreduzido=" & Val(Trim(!iddevedor)) & " and anoexercicio="
-            Sql = Sql & !exercicio & " and codlancamento=" & !lancamento & " and seqlancamento=" & !Seq & " and numparcela=" & !nroparcela & " and codcomplemento=" & !complparcela & " and statuslanc in (38,39)"
+            sql = "update debitoparcela set STATUSLANC=3,protesto_nro_titulo=" & Val(Trim(!nroTitulo)) & ",protesto_data_remessa='" & Format(!data_remessa, "mm/dd/yyyy") & "' where codreduzido=" & Val(Trim(!iddevedor)) & " and anoexercicio="
+            sql = sql & !exercicio & " and codlancamento=" & !lancamento & " and seqlancamento=" & !Seq & " and numparcela=" & !nroparcela & " and codcomplemento=" & !complparcela & " and statuslanc not in (4,38,39)"
+            cn.Execute sql, rdExecDirect
         End If
-        cn.Execute Sql, rdExecDirect
+        cn.Execute sql, rdExecDirect
+        sql = "update debitoparcela set protesto_nro_titulo=" & Val(Trim(!nroTitulo)) & ",protesto_data_remessa='" & Format(!data_remessa, "mm/dd/yyyy") & "' where codreduzido=" & Val(Trim(!iddevedor)) & " and anoexercicio="
+        sql = sql & !exercicio & " and codlancamento=" & !lancamento & " and seqlancamento=" & !Seq & " and numparcela=" & !nroparcela & " and codcomplemento=" & !complparcela
+        cn.Execute sql, rdExecDirect
         If Trim(SubNull(!irregularidade)) <> "" Then
-            Sql = "update debitoparcela set STATUSLANC=3,protesto_nro_titulo=null,protesto_data_remessa=null where codreduzido=" & Val(Trim(!iddevedor)) & " and anoexercicio="
-            Sql = Sql & !exercicio & " and codlancamento=" & !lancamento & " and seqlancamento=" & !Seq & " and numparcela=" & !nroparcela & " and codcomplemento=" & !complparcela & " and statuslanc in (38,39)"
-            cn.Execute Sql, rdExecDirect
+            sql = "update debitoparcela set STATUSLANC=39 where codreduzido=" & Val(Trim(!iddevedor)) & " and anoexercicio="
+            sql = sql & !exercicio & " and codlancamento=" & !lancamento & " and seqlancamento=" & !Seq & " and numparcela=" & !nroparcela & " and codcomplemento=" & !complparcela & " and statuslanc not in (2,4,41)"
+            cn.Execute sql, rdExecDirect
         End If
         
-        Sql = "update protesto_remessa set dtleitura='" & Format(Now, "mm/dd/yyyy hh:mm") & "' where codigo=" & !Codigo
-        cnInt.Execute Sql, rdExecDirect
+        sql = "update protesto_remessa set dtleitura='" & Format(Now, "mm/dd/yyyy hh:mm") & "' where iddevedor=" & !iddevedor & " and dtleitura is null"
+        cnInt.Execute sql, rdExecDirect
         
-        Sql = "update protesto_ocorrencia set dtleitura='" & Format(Now, "mm/dd/yyyy hh:mm") & "' where cod_protesto=" & !Cod_protesto
-        cnInt.Execute Sql, rdExecDirect
+        sql = "update protesto_ocorrencia set dtleitura='" & Format(Now, "mm/dd/yyyy hh:mm") & "' where cod_protesto=" & !Cod_protesto
+        cnInt.Execute sql, rdExecDirect
         
-        Sql = "update protesto_debitos set dtleitura='" & Format(Now, "mm/dd/yyyy hh:mm") & "' where cod_protesto=" & !Cod_protesto & " and Exercicio=" & !exercicio & " and lancamento=" & !lancamento & " and "
-        Sql = Sql & "seq=" & !Seq & " and nroparcela=" & !nroparcela & " and complparcela=" & !complparcela
-        cnInt.Execute Sql, rdExecDirect
+        sql = "update protesto_debitos set dtleitura='" & Format(Now, "mm/dd/yyyy hh:mm") & "' where cod_protesto=" & !Cod_protesto & " and Exercicio=" & !exercicio & " and lancamento=" & !lancamento & " and "
+        sql = sql & "seq=" & !Seq & " and nroparcela=" & !nroparcela & " and complparcela=" & !complparcela
+        cnInt.Execute sql, rdExecDirect
         
         DoEvents
        .MoveNext
@@ -859,22 +866,22 @@ With RdoAux
    .Close
 End With
 
-Sql = "update Protesto_Ocorrencia set dtleitura='" & Format(Now, "mm/dd/yyyy hh:mm") & "' where dtleitura is null"
-cnInt.Execute Sql, rdExecDirect
+sql = "update Protesto_Ocorrencia set dtleitura='" & Format(Now, "mm/dd/yyyy hh:mm") & "' where dtleitura is null"
+cnInt.Execute sql, rdExecDirect
 
 
 
-Sql = "select * from CDADebitosNaoProtestados where DtLeitura is null"
-Set RdoAux = cnInt.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select * from CDADebitosNaoProtestados where DtLeitura is null"
+Set RdoAux = cnInt.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         'Sql = "update debitoparcela set STATUSLANC=3,protesto_nro_titulo=Null,protesto_data_remessa=Null where codreduzido=" & Val(Trim(!iddevedor)) & " and anoexercicio="
-        Sql = "update debitoparcela set STATUSLANC=3 where codreduzido=" & Val(Trim(!iddevedor)) & " and anoexercicio="
-        Sql = Sql & !exercicio & " and codlancamento=" & !lancamento & " and seqlancamento=" & !Seq & " and numparcela=" & Val(SubNull(!nrparcela)) & " and codcomplemento=" & Val(SubNull(!complparcela)) & " and statuslanc=38"
-        cn.Execute Sql, rdExecDirect
+        sql = "update debitoparcela set STATUSLANC=3 where codreduzido=" & Val(Trim(!iddevedor)) & " and anoexercicio="
+        sql = sql & !exercicio & " and codlancamento=" & !lancamento & " and seqlancamento=" & !Seq & " and numparcela=" & Val(SubNull(!nrparcela)) & " and codcomplemento=" & Val(SubNull(!complparcela)) & " and statuslanc=38"
+        cn.Execute sql, rdExecDirect
         
-        Sql = "update CDADebitosNaoProtestados set dtleitura='" & Format(Now, "mm/dd/yyyy hh:mm") & "' where idCDADebitosNaoProtestados=" & !idCDADebitosNaoProtestados
-        cnInt.Execute Sql, rdExecDirect
+        sql = "update CDADebitosNaoProtestados set dtleitura='" & Format(Now, "mm/dd/yyyy hh:mm") & "' where idCDADebitosNaoProtestados=" & !idCDADebitosNaoProtestados
+        cnInt.Execute sql, rdExecDirect
         
         
         DoEvents
@@ -883,30 +890,241 @@ With RdoAux
    .Close
 End With
 
-'Sql = "SELECT DISTINCT RTRIM(Protesto_remessa.idDevedor) AS IdDevedor, Protesto_Debitos.Exercicio, Protesto_Debitos.Lancamento, Protesto_Debitos.Seq, Protesto_Debitos.nroParcela, Protesto_Debitos.ComplParcela,  Protesto_Ocorrencia.cod_protesto "
-'Sql = Sql & "FROM Protesto_Debitos INNER JOIN Protesto_Ocorrencia ON Protesto_Debitos.Cod_protesto = Protesto_Ocorrencia.cod_protesto INNER JOIN Protesto_remessa ON Protesto_Ocorrencia.cod_protesto = Protesto_remessa.cod_protesto "
-'Sql = Sql & "WHERE (Protesto_Ocorrencia.dtLeitura IS NULL) AND (RTRIM(Protesto_Ocorrencia.Ocorrencia) <> 'PAGO') AND (RTRIM(Protesto_Ocorrencia.Ocorrencia) <> 'PROTESTADO')"
-'Set RdoAux = cnInt.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-'With RdoAux
-'    Do Until .EOF
-'        Sql = "select * from debitoparcela where codreduzido=" & !iddevedor & " and anoexercicio=" & !exercicio & " and codlancamento=" & !lancamento & " and seqlancamento=" & !Seq & " and numparcela=" & !nroParcela & " and codcomplemento=" & !complparcela
-'        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-'        If RdoAux2.RowCount > 0 Then
-'            If RdoAux2!statuslanc = 38 Then
-'                Sql = "update debitoparcela set statuslanc=3,protesto_nro_titulo=null,protesto_data_remessa=null where codreduzido=" & !iddevedor & " and anoexercicio=" & !exercicio & " and codlancamento=" & !lancamento & " and seqlancamento=" & !Seq & " and numparcela=" & !nroParcela & " and codcomplemento=" & !complparcela
-'                cn.Execute Sql, rdExecDirect
-'            End If
-'        End If
-'        Sql = "update Protesto_Ocorrencia set dtleitura='" & Format(Now, "mm/dd/yyyy hh:mm") & "' where codigo=" & !Cod_protesto
-'        cnInt.Execute Sql, rdExecDirect
+'Atualiza Ocorrencias
+sql = "SELECT * FROM Protesto_Ocorrencia WHERE dtLeitura IS null AND YEAR(data_ocorrencia) = " & Year(Now)
+Set RdoAux = cnInt.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    Do Until .EOF
+        sql = "SELECT * FROM Protesto_remessa WHERE cod_protesto=" & RdoAux!Cod_protesto
+        Set RdoAux2 = cnInt.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+        nCodReduz = RdoAux2!iddevedor
+        nNumCertidao = RdoAux2!NroCertidao
+        sOcorrencia = Trim(!cod_ocorrencia)
+      
+        If Trim(SubNull(!Ocorrencia)) = "PROTESTADO" Then
+            sql = "update debitoparcela set STATUSLANC=38,protesto_nro_titulo=" & Val(Trim(!nroTitulo)) & ",protesto_data_remessa='" & Format(!data_remessa, "mm/dd/yyyy") & "' where codreduzido=" & nCodReduz & " and numcertidao=" & nNumCertidao & " and statuslanc in (3,38,39)"
+        ElseIf Trim(SubNull(!Ocorrencia)) = "PAGO" Then
+            sql = "update debitoparcela set STATUSLANC=41,protesto_nro_titulo=" & Val(Trim(!nroTitulo)) & ",protesto_data_remessa='" & Format(!data_remessa, "mm/dd/yyyy") & "' where codreduzido=" & nCodReduz & " and numcertidao=" & nNumCertidao & " and statuslanc in (3,38,39)"
 
-'       .MoveNext
-'    Loop
-'   .Close
-'End With
-'Sql = "update Protesto_Ocorrencia set dtleitura='" & Format(Now, "mm/dd/yyyy hh:mm") & "' where dtleitura is null"
-'cnInt.Execute Sql, rdExecDirect
+        End If
+       
+        sql = "update protesto_ocorrencia set dtleitura='" & Format(Now, "mm/dd/yyyy hh:mm") & "' where cod_protesto=" & !Cod_protesto
+       ' cnInt.Execute Sql, rdExecDirect
+      
+       .MoveNext
+    Loop
+   .Close
+End With
 
+Fim:
 cnInt.Close
 Liberado
 End Sub
+
+Private Sub Cancela_ITBIs_Vencidos()
+
+Dim sql As String, RdoAux As rdoResultset, nNumDoc As Long, guid As String, RdoAux2 As rdoResultset, RdoAux3 As rdoResultset
+Dim nCodigo As Long, nAno As Integer, nSeq As Integer, nSeq2 As Integer, sItbi As String
+
+sql = "SELECT * FROM debitoparcela WHERE codlancamento=36 AND statuslanc=3 AND datavencimento<'" & Format(Now, "mm/dd/yyyy") & "'"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    Do Until .EOF
+        nCodigo = !CODREDUZIDO
+        nAno = !AnoExercicio
+        nSeq = !SeqLancamento
+        
+        sql = "SELECT numdocumento FROM parceladocumento WHERE codreduzido=" & nCodigo & " AND anoexercicio=" & nAno & " AND codlancamento=36 AND seqlancamento=" & nSeq & " AND numparcela=1 ORDER BY numdocumento"
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+        If RdoAux2.RowCount > 0 Then
+            nNumDoc = RdoAux2!NumDocumento
+        End If
+        RdoAux2.Close
+
+       ' Sql = "SELECT guid FROM itbi_main WHERE numero_guia=" & nNumDoc
+       ' Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+       ' If RdoAux2.RowCount > 0 Then
+       '     Sql = "update itbi_main set situacao_itbi=4 where guid='" & guid & "'"
+        '    cn.Execute Sql, rdExecDirect
+        'End If
+        'RdoAux2.Close
+        
+        sql = "update debitoparcela set statuslanc=5 WHERE codreduzido=" & nCodigo & " AND anoexercicio=" & nAno & " AND codlancamento=36 AND seqlancamento=" & nSeq & " AND numparcela=1 "
+        cn.Execute sql, rdExecDirect
+        
+        sql = "SELECT * FROM itbi_main WHERE numero_guia=" & nNumDoc
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+        If RdoAux2.RowCount > 0 Then
+            guid = RdoAux2!guid
+            itbi = RdoAux2!itbi_numero & "/" & RdoAux2!itbi_ano
+            
+            sql = "update itbi_main set situacao_itbi=4 where guid='" & guid & "'"
+            cn.Execute sql, rdExecDirect
+        End If
+        RdoAux2.Close
+        
+        sObs = "Lançamento do ITBI nº " & itbi & " cancelado devido a falta de pagamento"
+        sql = "SELECT MAX(SEQ) AS MAXIMO FROM OBSPARCELA WHERE CODREDUZIDO=" & nCodigo & " AND ANOEXERCICIO=" & nAno
+        sql = sql & " AND CODLANCAMENTO=" & 36 & " AND SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & 1
+        sql = sql & " AND CODCOMPLEMENTO=" & 0
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+        With RdoAux2
+            If IsNull(!maximo) Then
+                nSeq2 = 1
+            Else
+                nSeq2 = !maximo + 1
+            End If
+           .Close
+        End With
+        sql = "INSERT OBSPARCELA(CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,SEQ,OBS,USERID,DATA) VALUES(" & nCodigo & "," & nAno & ","
+        sql = sql & 36 & "," & nSeq & "," & 1 & "," & 0 & "," & nSeq2 & ",'" & sObs & "'," & 236 & ",'" & Format(Now, sDataFormat) & "')"
+        cn.Execute sql, rdExecDirect
+        
+       .MoveNext
+    Loop
+   .Close
+End With
+
+
+End Sub
+
+Private Sub Corrige_Terreno_sem_Endereco()
+
+Dim sql As String, RdoAux As rdoResultset
+
+sql = "SELECT * FROM vwTerrenosComEnderecoImovel ORDER BY codreduzido"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    Do Until .EOF
+        sql = "update cadimob set ee_tipoend=1 where codreduzido=" & !CODREDUZIDO
+        cn.Execute sql, rdExecDirect
+       .MoveNext
+    Loop
+   .Close
+End With
+
+End Sub
+
+Private Sub AtualizaSN()
+Dim sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, nCodReduz As Long, sNome As String, sCnpj As String
+
+sql = "delete from empresa_sn"
+cn.Execute sql, rdExecDirect
+
+sql = "SELECT DISTINCT codigo,mobiliario.dataencerramento,razaosocial,cnpj FROM periodosn INNER JOIN mobiliario ON codigomob=codigo Where dataencerramento Is Null ORDER BY codigo"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    Do Until .EOF
+        If Not IsNull(!Cnpj) Then
+        nCodReduz = !Codigo
+        sNome = !RazaoSocial
+        sCnpj = !Cnpj
+        
+        sql = "insert empresa_sn(codigo,nome,cpfcnpj,data) values(" & nCodReduz & ",'" & Mask(sNome) & "','" & sCnpj & "','" & Format(Now, "mm/dd/yyyy") & "')"
+        cn.Execute sql, rdExecDirect
+        End If
+       .MoveNext
+    Loop
+   .Close
+End With
+
+End Sub
+
+Private Sub Atualiza_Giss_Guia()
+
+Dim sql As String, RdoAux As rdoResultset, nCodigo As Long, nAno As Integer, nLanc As Integer, nSeq As Integer, nParc As Integer, nCompl As Integer
+Dim nValorPago As Double, sDataPago As String, nNumDoc As Long, nPos As Integer, sNumProc As String, RdoAux3 As rdoResultset
+
+ConectaEicon
+nPos = 0
+
+GoTo PARCELADOS
+'PAGOS
+sql = "SELECT codigo,ano,lancamento,seq,parcela,complemento,documento,valorpagoreal,datapagamento FROM giss_guia gg INNER JOIN debitopago dp ON "
+sql = sql & "gg.codigo=dp.codreduzido and gg.ano=dp.anoexercicio AND gg.lancamento=dp.codlancamento AND gg.seq=dp.seqlancamento AND "
+sql = sql & "gg.parcela=dp.numparcela AND gg.complemento=dp.codcomplemento WHERE enviado=0 AND situacao=2 ORDER BY documento"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    Do Until .EOF
+        nCodigo = !Codigo
+        nAno = !ano
+        nLanc = !lancamento
+        nSeq = !Seq
+        nParc = !Parcela
+        nCompl = !Complemento
+        nValorPago = !ValorPagoreal
+        sDataPago = Format(!DataPagamento, "mm/dd/yyyy")
+        nNumDoc = !Documento
+'baixa ok
+        sql = "SELECT * FROM tb_inter_baixa_detalhe WHERE num_documento=" & nNumDoc
+        Set RdoAux3 = cnEicon.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+        If RdoAux3.RowCount = 0 Then
+    
+            sql = "insert tb_inter_baixa_detalhe(cod_cliente,cod_banco,num_sequencia,num_documento,linha,timestamp,valor_titulo,valor_pago,data_pagamento,valor_encargos,"
+            sql = sql & "descricao_linha_t,descricao_linha_u) values(2177,1,0" & "," & nNumDoc & "," & nPos & ",'" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "',"
+            sql = sql & Virg2Ponto(CStr(nValorPago)) & "," & Virg2Ponto(CStr(nValorPago)) & ",'" & sDataPago & "',0,'','')"
+            cnEicon.Execute sql, rdExecDirect
+        End If
+        sql = "update giss_guia set enviado=1 where documento=" & nNumDoc
+        cn.Execute sql, rdExecDirect
+       .MoveNext
+    Loop
+   .Close
+End With
+
+PARCELADOS:
+'PARCELADOS
+sql = "SELECT codigo,ano,lancamento,seq,parcela,complemento,documento,numprocesso FROM giss_guia g INNER JOIN origemreparc o ON g.codigo=o.codreduzido AND g.ano=o.anoexercicio AND "
+sql = sql & "g.lancamento=o.codlancamento AND g.seq=o.numsequencia AND g.parcela=o.numparcela AND g.complemento = o.codcomplemento "
+sql = sql & "WHERE enviado=0 AND situacao=4 ORDER BY documento"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    Do Until .EOF
+        nCodigo = !Codigo
+        nAno = !ano
+        nLanc = !lancamento
+        nSeq = !Seq
+        nParc = !Parcela
+        nCompl = !Complemento
+        nNumDoc = !Documento
+        sNumProc = !NumProcesso
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        sql = "insert tb_inter_baixa_detalhe(cod_cliente,cod_banco,num_sequencia,num_documento,linha,timestamp,valor_titulo,valor_pago,data_pagamento,valor_encargos,"
+        sql = sql & "descricao_linha_t,descricao_linha_u) values(2177,1,0" & "," & nNumDoc & "," & nPos & ",'" & Format(Now, "mm/dd/yyyy hh:mm:ss") & "',"
+        sql = sql & Virg2Ponto(CStr(nValorPago)) & "," & Virg2Ponto(CStr(nValorPago)) & ",'" & sDataPago & "',0,'','')"
+'        cnEicon.Execute Sql, rdExecDirect
+        
+        sql = "update giss_guia set enviado=1 where documento=" & nNumDoc
+'        cn.Execute Sql, rdExecDirect
+       .MoveNext
+    Loop
+   .Close
+End With
+
+
+
+cnEicon.Close
+
+
+
+
+
+End Sub
+
+
+
+
+
+
+
+

@@ -511,7 +511,7 @@ Begin VB.Form frmEscContab
          Appearance      =   0  'Flat
          Height          =   285
          Left            =   1110
-         MaxLength       =   50
+         MaxLength       =   100
          TabIndex        =   3
          Top             =   500
          Width           =   6345
@@ -934,7 +934,7 @@ Do Until .EOF
     
     Sql = "INSERT ETIQUETAGTI (USUARIO,SEQ,CAMPO1,CAMPO2,CAMPO3,CAMPO4,CAMPO5) VALUES('"
     Sql = Sql & NomeDeLogin & "'," & xId & ",'" & sCodInscricao & "','" & Mask(sContribuinte) & "','"
-    Sql = Sql & sEndEntrega & " " & sComplEntrega & "','" & sCepEntrega & "   " & sBairroEntrega & "','" & sCidEntrega & "   " & sUFEntrega & "')"
+    Sql = Sql & sEndEntrega & " " & sComplEntrega & "','" & sCepEntrega & "   " & sBairroEntrega & "','" & Mask(sCidEntrega) & "   " & sUFEntrega & "')"
     cn.Execute Sql, rdExecDirect
     xId = xId + 1
 Proximo:
