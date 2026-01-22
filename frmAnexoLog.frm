@@ -339,14 +339,14 @@ CarregaAnexo nNumero, nAno
 
 End Sub
 
-Private Sub CarregaAnexo(Numero As Long, Ano As Integer)
+Private Sub CarregaAnexo(Numero As Long, ano As Integer)
 
 Dim Sql As String, RdoAux As rdoResultset
 
 lvAnexos.ListItems.Clear
 Sql = "SELECT anexo.ano, anexo.numero, anexo.anoanexo, anexo.numeroanexo, vwFULLPROCESSO.nomecidadao,vwFULLPROCESSO.descricao, "
 Sql = Sql & "vwFULLPROCESSO.Complemento FROM anexo INNER JOIN vwFULLPROCESSO ON anexo.anoanexo = vwFULLPROCESSO.ANO AND anexo.numeroanexo = vwFULLPROCESSO.NUMERO "
-Sql = Sql & "where anexo.ano=" & Ano & " and anexo.numero=" & Numero
+Sql = Sql & "where anexo.ano=" & ano & " and anexo.numero=" & Numero
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
@@ -363,13 +363,13 @@ End With
 If lvAnexos.ListItems.Count = 0 Then
     Sql = "SELECT anexo.ano, anexo.numero, anexo.anoanexo, anexo.numeroanexo, vwFULLPROCESSO.nomecidadao,vwFULLPROCESSO.descricao, "
     Sql = Sql & "vwFULLPROCESSO.Complemento FROM anexo INNER JOIN vwFULLPROCESSO ON anexo.anoanexo = vwFULLPROCESSO.ANO AND anexo.numeroanexo = vwFULLPROCESSO.NUMERO "
-    Sql = Sql & "where anexo.anoanexo=" & Ano & " and anexo.numeroanexo=" & Numero
+    Sql = Sql & "where anexo.anoanexo=" & ano & " and anexo.numeroanexo=" & Numero
     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         Do Until .EOF
-            Set itmX = lvAnexos.ListItems.Add(, , !Ano)
+            Set itmX = lvAnexos.ListItems.Add(, , !ano)
             itmX.SubItems(1) = CStr(!Numero)
-            itmX.SubItems(2) = CStr(!Numero) & "-" & RetornaDVProcesso(!Numero) & "/" & CStr(!Ano)
+            itmX.SubItems(2) = CStr(!Numero) & "-" & RetornaDVProcesso(!Numero) & "/" & CStr(!ano)
             itmX.SubItems(3) = IIf(IsNull(!nomecidadao), SubNull(!Descricao), !nomecidadao)
             itmX.SubItems(4) = !Complemento
            .MoveNext
@@ -380,7 +380,7 @@ End If
 
 Sql = "SELECT anexo_log.sid, anexo_log.ano, anexo_log.numero, anexo_log.ano_anexo, anexo_log.numero_anexo, anexo_log.removido, anexo_log.data, anexo_log.userid, vwFULLPROCESSO.nomecidadao, "
 Sql = Sql & "vwFULLPROCESSO.Complemento , USUARIO.NomeCompleto FROM anexo_log INNER JOIN vwFULLPROCESSO ON anexo_log.ano_anexo = vwFULLPROCESSO.ANO AND anexo_log.numero_anexo = vwFULLPROCESSO.NUMERO INNER JOIN "
-Sql = Sql & "usuario ON anexo_log.userid = usuario.Id where anexo_log.ano=" & Ano & " and anexo_log.numero=" & Numero
+Sql = Sql & "usuario ON anexo_log.userid = usuario.Id where anexo_log.ano=" & ano & " and anexo_log.numero=" & Numero
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF

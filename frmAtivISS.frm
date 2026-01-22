@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Object = "{F48120B2-B059-11D7-BF14-0010B5B69B54}#1.0#0"; "esMaskEdit.ocx"
 Begin VB.Form frmAtivISS 
@@ -618,7 +618,7 @@ If NomeForm = "frmCadMob" Then
     Achou = False
     With frmCadMob.grdAtiv
        For x = 1 To .Rows - 1
-           If Val(Left$(.TextMatrix(x, 0), 4)) = Val(lvAtiv.SelectedItem.Text) Then
+           If Val(Left$(.TextMatrix(x, 1), 4)) = Val(lvAtiv.SelectedItem.Text) Then
               Achou = True
               Exit For
            End If
@@ -843,7 +843,7 @@ End Sub
 
 Private Sub cmdPrint_Click()
 'EXIBE RELATORIO
-frmReport.ShowReport "ALIQATIVIDADEISS", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport "ALIQATIVIDADEISS", frmMdi.HWND, Me.HWND
 
 End Sub
 
@@ -869,7 +869,7 @@ End Sub
 Private Sub CarregaLista()
 Dim itmX As ListItem
 Dim z As Long
-z = SendMessage(lvAtiv.hwnd, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvAtiv.HWND, LVM_DELETEALLITEMS, 0, 0)
 
 Sql = "SELECT DISTINCT ATIVIDADEISS.CODATIVIDADE,ATIVIDADEISS.DESCATIVIDADE,TABELAISS.TIPOISS "
 Sql = Sql & "FROM ATIVIDADEISS INNER JOIN TABELAISS ON ATIVIDADEISS.CODATIVIDADE = TABELAISS.CODIGOATIV "
@@ -888,7 +888,7 @@ With RdoAux
        ElseIf !TipoISS = 13 Then
           itmX.SubItems(1) = "Var."
        End If
-       itmX.SubItems(2) = !descatividade
+       itmX.SubItems(2) = !DESCATIVIDADE
        'itmX.SubItems(3) = FormatNumber(!Aliquota, 3)
        'If !codatividade = 513 Then MsgBox "teste"
        

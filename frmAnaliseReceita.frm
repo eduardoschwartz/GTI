@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "Msflxgrd.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Object = "{F48120B2-B059-11D7-BF14-0010B5B69B54}#1.0#0"; "esMaskEdit.ocx"
 Begin VB.Form frmAnaliseReceita 
@@ -514,9 +514,9 @@ For cData = cDataIni To cDataFim
                     With RdoAux2
                         If .RowCount = 0 Then
                             bDA = True: bAj = True
-                            GoTo continua
+                            GoTo Continua
                         End If
-                        sNumProc = !numprocesso
+                        sNumProc = !NUMPROCESSO
                        .Close
                     End With
                     
@@ -556,7 +556,7 @@ For cData = cDataIni To cDataFim
                     End If
                 End If
                 
-continua:
+Continua:
                 
                 Sql = "SELECT SUM(VALORTRIBUTO) AS SOMA FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=" & !AnoExercicio & " AND CODLANCAMENTO=" & !CodLancamento & " AND "
                 Sql = Sql & "SEQLANCAMENTO=" & !SeqLancamento & " AND NUMPARCELA=" & !NumParcela & " AND CODCOMPLEMENTO=" & !CODCOMPLEMENTO
@@ -596,7 +596,7 @@ continua:
                     Do Until .EOF
                         'If !CodTributo = 1 Then MsgBox "TESTE"
                     
-                        If nSomaTributo = 0 Then GoTo proximo
+                        If nSomaTributo = 0 Then GoTo Proximo
                         nPerc = !ValorTributo / nSomaTributo 'PRINCIPAL / SOMA DOS TRIBUTOS
                         nValorJMC = nDif * nPerc 'DIFERENCA * PERCENTUAL (JUROS,MULTA E CORRECAO)
                         If Not bAj Then
@@ -613,6 +613,19 @@ continua:
                             nCodFichaJM = Val(SubNull(!FichaAjJrMul))
                             nCodFichaC = Val(SubNull(!FichaAjEnca))
                         End If
+                        
+                        If !CODREDUZIDO < 40000 And !AnoExercicio = 2020 And !CodLancamento = 1 Then
+                            nCodFicha = 50513
+                            nCodFichaJM = 0
+                            nCodFichaC = 0
+                        End If
+                        
+                        If !CODREDUZIDO > 100000 And !CODREDUZIDO < 300000 And !AnoExercicio = 2020 And (!CodLancamento = 14 Or !CodLancamento = 6) Then
+                            nCodFicha = 50514
+                            nCodFichaJM = 0
+                            nCodFichaC = 0
+                        End If
+                        
                         
 '                        If nCodFicha = 0 And !CodTributo <> 26 And !CodTributo <> 587 And !CodTributo <> 609 And !CodTributo <> 552 Then
 '                            MsgBox !CodTributo
@@ -708,7 +721,7 @@ continua:
                     Loop
                    .Close
                 End With
-proximo:
+Proximo:
                 DoEvents
                 xId = xId + 1
                .MoveNext
@@ -1140,9 +1153,9 @@ For nContador = 1 To nContaBanco
                 With RdoAux2
                     If .RowCount = 0 Then
                         bDA = True: bAj = True
-                        GoTo continua
+                        GoTo Continua
                     End If
-                    sNumProc = !numprocesso
+                    sNumProc = !NUMPROCESSO
                    .Close
                 End With
                 
@@ -1182,7 +1195,7 @@ For nContador = 1 To nContaBanco
                 End If
             End If
             
-continua:
+Continua:
             
             Sql = "SELECT SUM(VALORTRIBUTO) AS SOMA FROM DEBITOTRIBUTO WHERE CODREDUZIDO=" & !CODREDUZIDO & " AND ANOEXERCICIO=" & !AnoExercicio & " AND CODLANCAMENTO=" & !CodLancamento & " AND "
             Sql = Sql & "SEQLANCAMENTO=" & !SeqLancamento & " AND NUMPARCELA=" & !NumParcela & " AND CODCOMPLEMENTO=" & !CODCOMPLEMENTO
@@ -1209,7 +1222,7 @@ continua:
             With RdoAux2
                 nCodFicha = 0: nCodFichaJM = 0: nCodFichaC = 0
                 Do Until .EOF
-                    If nSomaTributo = 0 Then GoTo proximo
+                    If nSomaTributo = 0 Then GoTo Proximo
                     nPerc = !ValorTributo / nSomaTributo 'PRINCIPAL / SOMA DOS TRIBUTOS
                     If nPerc < 0 Then MsgBox "aqui"
                     nValorJMC = nDif * nPerc 'DIFERENCA * PERCENTUAL (JUROS,MULTA E CORRECAO)
@@ -1315,7 +1328,7 @@ continua:
                 Loop
                .Close
             End With
-proximo:
+Proximo:
             xId = xId + 1
            .MoveNext
         Loop

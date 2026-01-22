@@ -149,7 +149,7 @@ Attribute VB_Exposed = False
 Private Sub cmbAno_Click()
 Dim x As Integer
 lstFiles.Clear
-File1.Path = "\\192.168.200.130\atualizagti\documentos\" & cmbAno.Text
+File1.Path = "\\172.30.30.3\atualizagti\documentos\" & cmbAno.Text
 File1.Pattern = "05*" & Format(txtCod.Text, "000000") & ".pdf"
 
 For x = 0 To File1.ListCount - 1
@@ -159,11 +159,11 @@ Next
 End Sub
 
 Private Sub cmdOpen_Click()
-ShellExecute Me.hwnd, vbNullString, "\\192.168.200.130\atualizagti\documentos\" & cmbAno.Text & "\" & lstFiles.Text, vbNullString, vbNullString, vbNormalFocus
+ShellExecute Me.HWND, vbNullString, "\\172.30.30.3\atualizagti\documentos\" & cmbAno.Text & "\" & lstFiles.Text, vbNullString, vbNullString, vbNormalFocus
 End Sub
 
 Private Sub cmdRefresh_Click()
-Dim Sql As String, RdoAux As rdoResultset, nAno As Integer, sDoc As String, x As Integer, bFind As Boolean
+Dim sql As String, RdoAux As rdoResultset, nAno As Integer, sDoc As String, x As Integer, bFind As Boolean
 
 If Val(txtCod.Text) = 0 Then
     MsgBox "Digite o código do imóvel.", vbCritical, "Atenção!"
@@ -171,8 +171,8 @@ If Val(txtCod.Text) = 0 Then
 End If
 cmbAno.Clear
 
-Sql = "select * from documentopic WHERE (SUBSTRING(documento, 1, 2) = '05') AND (RIGHT(documento, 3) = 'PDF')"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select * from documentopic WHERE (SUBSTRING(documento, 1, 2) = '05') AND (RIGHT(documento, 3) = 'PDF')"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         sDoc = !Documento

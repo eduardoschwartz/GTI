@@ -346,7 +346,7 @@ End Sub
 Private Sub Form_Load()
 Centraliza Me
 Set xImovel = New clsImovel
-nAno = 2023
+nAno = 2024
 CarregaEnderecoContabil
 End Sub
 
@@ -1101,7 +1101,7 @@ FIMFIXO:
                                 
                                 aValorTributo(x) = FillLeft(FormatNumber(!valoriss * RetornaAliquotaISS(!codatividade, Now) * nUfir, 2), 17)
                                 aCodTrib(x) = FillSpace(Left$(!codatividade, 15), 15)
-                                aDescTrib(x) = FillSpace(Left$(!DESCATIVIDADE, 50), 50)
+                                aDescTrib(x) = FillSpace(Left$(!descatividade, 50), 50)
 '                                aValorTributo(x) = FillLeft(!VALORTRIBUTO, 17)
 '                                aDescTrib(x) = FillSpace(!ABREVTRIBUTO, 15)
                                 x = x + 1
@@ -1288,7 +1288,7 @@ FIMFIXO:
                                 If x > 10 Then Exit Do
                                 aValorTributo(x) = FillLeft(!valoriss, 17)
                                 aCodTrib(x) = FillSpace(Left$(!codatividade, 15), 15)
-                                aDescTrib(x) = FillSpace(Left$(!DESCATIVIDADE, 50), 50)
+                                aDescTrib(x) = FillSpace(Left$(!descatividade, 50), 50)
 '                                aValorTributo(x) = FillLeft(!VALORTRIBUTO, 17)
 '                                aDescTrib(x) = FillSpace(!ABREVTRIBUTO, 15)
                                 x = x + 1
@@ -2048,6 +2048,12 @@ With RdoAux
                 sNossoNumero = "2873532"
                 dDataBase = "07/10/1997"
                 nFatorVencto = CDate(aVencParc(nParc)) - CDate(dDataBase)
+                
+                If !DataVencimento >= "22/02/2025" Then
+                    dDataBase = "29/05/2022"
+                    nFatorVencto = !DataVencimento - CDate(dDataBase)
+                End If
+                
                 sQuintoGrupo = Format(nFatorVencto, "0000")
                 sQuintoGrupo = sQuintoGrupo & Format(RetornaNumero(FormatNumber(aValorParc(nParc), 2)), "0000000000")
                 sBarra = "0019" & Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(aValorParc(nParc), 2)), "0000000000") & "000000287353200"
@@ -2340,10 +2346,10 @@ With RdoAux
             If .RowCount > 0 Then
                 If Val(!codatividade) > 0 Then
                     nCodAtividadeTL = !codatividade
-                    sAtividadeTL = !DESCATIVIDADE
+                    sAtividadeTL = !descatividade
                     
                     
-                    sAtividade = !DESCATIVIDADE
+                    sAtividade = !descatividade
                     Select Case !CODIGOALIQ
                         Case 1
                             nValorAliq = FormatNumber(!VALORALIQ1, 3)
@@ -2367,7 +2373,7 @@ With RdoAux
         With RdoAux
             If .RowCount > 0 Then
                 sCodAtividadeISS = Format(!codatividade, "00000")
-                sAtividadeISS = !DESCATIVIDADE
+                sAtividadeISS = !descatividade
                 sValorAliqISS = FormatNumber(!valoriss, 3)
             End If
            .Close
@@ -2567,6 +2573,12 @@ fimend:
                 sNossoNumero = "2873532"
                 dDataBase = "07/10/1997"
                 nFatorVencto = CDate(aVencParc(nParc)) - CDate(dDataBase)
+                
+                If !DataVencimento >= "22/02/2025" Then
+                    dDataBase = "29/05/2022"
+                    nFatorVencto = !DataVencimento - CDate(dDataBase)
+                End If
+                
                 sQuintoGrupo = Format(nFatorVencto, "0000")
                 sQuintoGrupo = sQuintoGrupo & Format(RetornaNumero(FormatNumber(aValorParc(nParc), 2)), "0000000000")
                 sBarra = "0019" & Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(aValorParc(nParc), 2)), "0000000000") & "000000287353200"
@@ -2883,7 +2895,7 @@ With RdoAux
             sVVImovel = IIf(Val(RdoAux!vvi) = 0, Space(13) & "0,00", FillLeft(FormatNumber(RdoAux!vvi, 2), 17))
             sValorIPU = IIf(Val(RdoAux!impostopredial) = 0, Space(13) & "0,00", FillLeft(FormatNumber(RdoAux!impostopredial, 2), 17))
             sValorITU = IIf(Val(RdoAux!IMPOSTOTERRITORIAL) = 0, Space(13) & "0,00", FillLeft(FormatNumber(RdoAux!IMPOSTOTERRITORIAL, 2), 17))
-            sQtdeParcela = Format(RdoAux!qtdeparc, "00") '581-582
+            sQtdeParcela = Format(RdoAux!QtdeParc, "00") '581-582
 
             'If Val(sQtdeParcela) < 12 Then MsgBox "teste"
             sTxExpUnica = FillLeft(FormatNumber(0, 2), 17)
@@ -3127,7 +3139,7 @@ Sql = "TRUNCATE TABLE LASERTMP"
 cn.Execute Sql, rdExecDirect
 cmdGerar.Enabled = False
 Open sPathBin & "\LASERIPTU.TXT" For Output As #1
-nAno = 2023
+nAno = 2024
 Sql = "delete from cip_semregistro where ano=" & nAno
 cn.Execute Sql, rdExecDirect
 
@@ -3444,6 +3456,10 @@ With RdoAux
             sCodBarra = ""
             For nParc = 1 To 3
                 nFatorVencto = CDate(aVencParc(nParc)) - CDate(dDataBase)
+                If aDataVencto(nParc) >= "22/02/2025" Then
+                    dDataBase = "29/05/2022"
+                    nFatorVencto = aDataVencto(nParc) - CDate(dDataBase)
+                End If
                 sQuintoGrupo = Format(nFatorVencto, "0000")
                 sQuintoGrupo = sQuintoGrupo & Format(RetornaNumero(FormatNumber(aValorParc(nParc), 2)), "0000000000")
                 sBarra = "0019" & Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(aValorParc(nParc), 2)), "0000000000") & "000000295023000"
@@ -5293,10 +5309,11 @@ Dim sNossoNumero As String, dDataBase As String, nFatorVencto As Long, sQuintoGr
 Dim sCampo1 As String, sCampo2 As String, sCampo3 As String, sCampo4 As String, sCampo5 As String, sDigitavel2 As String
 Dim NumBarra2 As String, NumBarra2a As String, NumBarra2b As String, NumBarra2c As String, NumBarra2d As String
 
-nSeq = 1
-'GoTo ORDENA
+nSeq = 0
+GoTo ORDENA
+Exit Sub
 Sql = "DELETE FROM LASERTMP WHERE CALCULO=1"
-cn.Execute Sql, rdExecDirect
+'cn.Execute Sql, rdExecDirect
 cmdGerar.Enabled = False
 Open sPathBin & "\LASERIPTU.TXT" For Output As #1
 xId = 1
@@ -5304,7 +5321,7 @@ sAgencia = "0269-0 / 74000-4"
 Sql = "SELECT CODREDUZIDO, VVT, VVC, VVI, IMPOSTOPREDIAL,IMPOSTOTERRITORIAL, NATUREZA, AREACONSTRUCAO,"
 Sql = Sql & "TESTADAPRINC,VALORTOTALPARC,VALORTOTALUNICA,QTDEPARC,TXEXPPARC,TXEXPUNICA From LASERIPTU "
 Sql = Sql & "WHERE  ANO=" & nAno & " AND SEQ=" & nSeq
-'Sql = Sql & " and CODREDUZIDO =  27258                                                                    "
+Sql = Sql & " and CODREDUZIDO = 1271"
 Sql = Sql & " ORDER BY CODREDUZIDO"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
@@ -5421,7 +5438,7 @@ With RdoAux
             sVVImovel = IIf(Val(RdoAux!vvi) = 0, Space(13) & "0,00", FillLeft(FormatNumber(RdoAux!vvi, 2), 17))
             sValorIPU = IIf(Val(RdoAux!impostopredial) = 0, Space(13) & "0,00", FillLeft(FormatNumber(RdoAux!impostopredial, 2), 17))
             sValorITU = IIf(Val(RdoAux!IMPOSTOTERRITORIAL) = 0, Space(13) & "0,00", FillLeft(FormatNumber(RdoAux!IMPOSTOTERRITORIAL, 2), 17))
-            sQtdeParcela = Format(RdoAux!qtdeparc, "00")
+            sQtdeParcela = Format(RdoAux!QtdeParc, "00")
             
             '***********  PARCELAS  ************
             Sql = "SELECT DEBITOPARCELA.CODREDUZIDO,DEBITOPARCELA.ANOEXERCICIO,DEBITOPARCELA.CODLANCAMENTO,DEBITOPARCELA.NUMPARCELA,DEBITOPARCELA.SEQLANCAMENTO,DEBITOPARCELA.CODCOMPLEMENTO,"
@@ -5597,6 +5614,59 @@ End With
 Close #1
 
 ORDENA:
+'####### CORREIO ##########
+Open sPathBin & "\IPTU_CORREIO.TXT" For Output As #1
+Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO,CEP FROM LASERTMP WHERE CALCULO=1 AND (TIPO=0 or TIPO=2)  ORDER BY CEP,NUMERO"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    xId = 1
+    Do Until .EOF
+        If Len(!dado) = 5131 Then
+            Print #1, !dado & Format(xId, "000000")
+        Else
+            Print #1, !dado & Space(5149 - Len(!dado)) & Format(xId, "000000")
+        End If
+        xId = xId + 1
+       .MoveNext
+    Loop
+End With
+Close #1
+
+'####### balcão##########
+Open sPathBin & "\IPTU_BALCAO.TXT" For Output As #1
+Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO,CEP FROM LASERTMP WHERE  CALCULO=1 AND  TIPO=1 ORDER BY CEP,NUMERO"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    xId = 1
+    Do Until .EOF
+        If Len(!dado) = 5131 Then
+            Print #1, !dado & Format(xId, "000000")
+        Else
+            Print #1, !dado & Space(5149 - Len(!dado)) & Format(xId, "000000")
+        End If
+        xId = xId + 1
+       .MoveNext
+    Loop
+End With
+Close #1
+
+'####### DAM ##########
+Open sPathBin & "\IPTU_DAM.TXT" For Output As #1
+Sql = "SELECT DADO,ENDERECO,NUMERO,TIPO,CEP FROM LASERTMP WHERE CALCULO=1 AND TIPO=3  ORDER BY CEP,NUMERO"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    xId = 1
+    Do Until .EOF
+        Print #1, Trim(!dado) & Format(xId, "000000")
+        xId = xId + 1
+       .MoveNext
+    Loop
+End With
+Close #1
+
+
+GoTo Fim
+
 
 '####### 2 FOLHAS ##########
 Open sPathBin & "\AU1.TXT" For Output As #1
@@ -5818,7 +5888,7 @@ Close #1
 'Close #2
 '
 
-
+Fim:
 
 cmdGerar.Enabled = True
 MsgBox "FIM"

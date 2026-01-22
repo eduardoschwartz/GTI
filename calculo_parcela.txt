@@ -1,0 +1,23 @@
+DEMONSTRATIVO DE CÁLCULO DA PARCELA
+-----------------------------------
+
+Data de Vencimento: 05/11/2025
+
+Taxa Selic Mensal no período: 
+Dez/2025 - 0,06%
+Jan/2026 - 0,06%
+
+Fator de Correção acumulado 
+Dez/2025 - 1,0006
+Jan/2026 - 1,0006
+
+Fator de Correção acumulado = 1,0006 * 1,0006  = 1,0012
+
+Descrição ==> OUTR.RECEITAS DIV.
+Valor Principal: 542,05
+Valor Juros: 542,05 * 1,0012 - 542,05 = 0,65
+Valor Multa: 0
+Valor Total: Principal + Juros + Multa = 542,70
+
+---------------------
+Total da Parcela: 542,70

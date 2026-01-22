@@ -162,7 +162,7 @@ With RdoC
          DescPedologia = !DescPedologia
          DescTopografia = !DescTopografia
          CodPropPrincipal = !CodCidadao
-         NomePropPrincipal = !Nomecidadao
+         NomePropPrincipal = !nomecidadao
          DescBairro = SubNull(!DescBairro)
          DescDistrito = !DescDistrito
          Ee_CodLog = Val(SubNull(!Ee_CodLog))
@@ -240,7 +240,7 @@ With RdoC
     x = 1
     Do Until .EOF
        aProp(x, 1) = !CodCidadao
-       aProp(x, 2) = !Nomecidadao
+       aProp(x, 2) = !nomecidadao
        aProp(x, 3) = !tipoprop
        aProp(x, 4) = !principal
        Sql = "SELECT  espolio.codigo, tipousuario.nome FROM  espolio INNER JOIN  tipousuario ON espolio.tipo = tipousuario.codigo where espolio.codigo=" & !CodCidadao
@@ -274,7 +274,7 @@ With RdoC
     x = 1
     Do Until .EOF
        aProp(x, 1) = !CodCidadao
-       aProp(x, 2) = !Nomecidadao
+       aProp(x, 2) = !nomecidadao
        aProp(x, 3) = "P"
        aProp(x, 4) = 1
        x = x + 1
@@ -372,7 +372,7 @@ With RdoC
        If RdoAux.RowCount = 0 Then
             Proprietario = ""
        Else
-            Proprietario = RdoAux!Nomecidadao
+            Proprietario = RdoAux!nomecidadao
        End If
        RdoAux.Close
        
@@ -1343,6 +1343,7 @@ ElseIf TySeqEndereco = cidadao Then
             sEndereco = SubNull(!Endereco)
             sNumero = SubNull(!NUMIMOVEL)
             sCodBairro = SubNull(!CodBairro)
+            sCodLogradouro = SubNull(!CodLogradouro)
             sComplemento = SubNull(!Complemento)
             sBairro = SubNull(!DescBairro)
             If Val(sCodBairro) = 999 Then
@@ -1360,6 +1361,7 @@ ElseIf TySeqEndereco = cidadao Then
             End If
             sNumero = SubNull(!NUMIMOVEL2)
             sCodBairro = SubNull(!CodBairro2)
+            sCodLogradouro = SubNull(!CodLogradouro2)
             sComplemento = SubNull(!Complemento2)
             sBairro = SubNull(!DescBairroC)
             If Val(sCodBairro) = 999 Then
@@ -1378,7 +1380,7 @@ End If
 Fim:
 If Val(sCodCidade) = 413 Then
     BairroReg = RetornaLogradouroBairro(Val(sCodLogradouro), Val(sNumero))
-    sCodBairro = BairroReg.codigo
+    sCodBairro = BairroReg.Codigo
     sBairro = BairroReg.Nome
     If Trim(sBairro) = "Não cadastrado" Then
         sCodBairro = 0

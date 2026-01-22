@@ -5,15 +5,15 @@ Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Begin VB.Form frmAnalise 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Análise da Receita"
-   ClientHeight    =   5460
-   ClientLeft      =   11655
-   ClientTop       =   5880
+   ClientHeight    =   5490
+   ClientLeft      =   7395
+   ClientTop       =   5010
    ClientWidth     =   7320
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   5460
+   ScaleHeight     =   5490
    ScaleWidth      =   7320
    Begin Tributacao.jcFrames jcFrames3 
       Height          =   5370
@@ -131,7 +131,7 @@ Begin VB.Form frmAnalise
          _ExtentX        =   2302
          _ExtentY        =   556
          _Version        =   393216
-         Format          =   170590209
+         Format          =   139788289
          CurrentDate     =   42026
       End
       Begin MSComCtl2.DTPicker dtDataAte 
@@ -143,7 +143,7 @@ Begin VB.Form frmAnalise
          _ExtentX        =   2302
          _ExtentY        =   556
          _Version        =   393216
-         Format          =   170590209
+         Format          =   139788289
          CurrentDate     =   42026
       End
       Begin prjChameleon.chameleonButton btExec 
@@ -187,7 +187,7 @@ Begin VB.Form frmAnalise
       End
       Begin prjChameleon.chameleonButton btCancel 
          Height          =   360
-         Left            =   3833
+         Left            =   3870
          TabIndex        =   25
          Top             =   2160
          Width           =   1575
@@ -255,7 +255,7 @@ Begin VB.Form frmAnalise
    Begin Tributacao.jcFrames jcFrames2 
       Height          =   915
       Left            =   90
-      Top             =   9405
+      Top             =   7425
       Width           =   10905
       _ExtentX        =   19235
       _ExtentY        =   1614
@@ -357,7 +357,7 @@ Begin VB.Form frmAnalise
    Begin Tributacao.jcFrames jcFrames1 
       Height          =   915
       Left            =   60
-      Top             =   8445
+      Top             =   6465
       Width           =   10950
       _ExtentX        =   19315
       _ExtentY        =   1614
@@ -388,7 +388,7 @@ Begin VB.Form frmAnalise
          _ExtentY        =   556
          _Version        =   393216
          Enabled         =   0   'False
-         Format          =   170590209
+         Format          =   108986369
          CurrentDate     =   42026
       End
       Begin prjChameleon.chameleonButton cmdGerar 
@@ -776,13 +776,13 @@ End Type
 Dim aFicha() As Ficha, aCodFicha() As Long, aFichaDetalhe() As FichaDetalhe, aFichas() As FichaDetalhe
 
 Private Sub CarregaTributo()
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, rdoAux As rdoResultset
 
 ReDim aFicha(0): ReDim aCodFicha(0)
 
-Sql = "SELECT codtributo, ficha, fichajrmulta, fichadivida, fichadajrmul, fichadaenca, fichaajuiza, fichaajjrmul, fichaajenca FROM tributo order by codtributo"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+sql = "SELECT codtributo, ficha, fichajrmulta, fichadivida, fichadajrmul, fichadaenca, fichaajuiza, fichaajjrmul, fichaajenca FROM tributo order by codtributo"
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
     Do Until .EOF
         ReDim Preserve aFicha(UBound(aFicha) + 1)
         ReDim Preserve aCodFicha(UBound(aCodFicha) + 1)
@@ -804,7 +804,7 @@ End With
 End Sub
 
 Private Sub btBanco_Click()
-Dim Sql As String, RdoAux As rdoResultset, nUserID As Integer, nPos As Long, nTot As Long
+Dim sql As String, rdoAux As rdoResultset, nUserId As Integer, nPos As Long, nTot As Long
 Dim qd As New rdoQuery, RdoDeb As rdoResultset
 Set qd.ActiveConnection = cn
 
@@ -812,15 +812,15 @@ qd.QueryTimeout = 0
 nPos = 0
 Pb.value = 0
 Me.Refresh
-nUserID = RetornaUsuarioID(NomeDeLogin)
-Sql = "delete from resumo_pagto_banco where userid=" & nUserID
-cn.Execute Sql, rdExecDirect
+nUserId = RetornaUsuarioID(NomeDeLogin)
+sql = "delete from resumo_pagto_banco where userid=" & nUserId
+cn.Execute sql, rdExecDirect
 Ocupado
-Sql = "SELECT CODREDUZIDO,anoexercicio,codlancamento,seqlancamento,numparcela,codcomplemento,datapagamento,datarecebimento,valorpagoreal,debitopago.CODBANCO,numdocumento,arquivobanco,BANCO.nomebanco FROM debitopago "
-Sql = Sql & "INNER JOIN banco ON debitopago.codbanco = banco.codbanco WHERE datarecebimento BETWEEN '" & Format(dtDataDe.value, "mm/dd/yyyy") & "' AND '" & Format(dtDataAte.value, "mm/dd/yyyy") & "' "
-Sql = Sql & "ORDER BY datarecebimento,codbanco,numdocumento"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+sql = "SELECT CODREDUZIDO,anoexercicio,codlancamento,seqlancamento,numparcela,codcomplemento,datapagamento,datarecebimento,valorpagoreal,debitopago.CODBANCO,numdocumento,arquivobanco,BANCO.nomebanco FROM debitopago "
+sql = sql & "INNER JOIN banco ON debitopago.codbanco = banco.codbanco WHERE datarecebimento BETWEEN '" & Format(dtDataDe.value, "mm/dd/yyyy") & "' AND '" & Format(dtDataAte.value, "mm/dd/yyyy") & "' "
+sql = sql & "ORDER BY datarecebimento,codbanco,numdocumento"
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
     nTot = .RowCount
     
     Do Until .EOF
@@ -828,7 +828,7 @@ With RdoAux
         On Error Resume Next
         RdoDeb.Close
         On Error GoTo 0
-        qd.Sql = "{ Call spEXTRATONEW(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
+        qd.sql = "{ Call spEXTRATONEW(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
         qd(0) = !CODREDUZIDO
         qd(1) = !CODREDUZIDO
         qd(2) = !AnoExercicio
@@ -849,12 +849,12 @@ With RdoAux
         With RdoDeb
             Do Until .EOF
                 On Error Resume Next
-                Sql = "insert resumo_pagto_banco(userid,datacredito,codbanco,numdocumento,codigo,ano,lanc,seq,parc,compl,codtributo,desctributo,nomebanco,arquivo,valorp,valorj,valorm,valorc,valort,valorpago) values("
-                Sql = Sql & nUserID & ",'" & Format(RdoAux!datarecebimento, "mm/dd/yyyy") & "'," & RdoAux!CodBanco & "," & RdoAux!NumDocumento & "," & RdoAux!CODREDUZIDO & "," & RdoAux!AnoExercicio & ","
-                Sql = Sql & RdoAux!CodLancamento & "," & RdoAux!SeqLancamento & "," & RdoAux!NumParcela & "," & RdoAux!CODCOMPLEMENTO & "," & !CodTributo & ",'" & !abrevTributo & "','" & RdoAux!NomeBanco & "','" & RdoAux!arquivobanco & "',"
-                Sql = Sql & Virg2Ponto(CStr(!ValorTributo)) & "," & Virg2Ponto(CStr(!ValorJuros)) & "," & Virg2Ponto(CStr(!ValorMulta)) & "," & Virg2Ponto(CStr(!ValorCorrecao)) & ","
-                Sql = Sql & Virg2Ponto(CStr(!ValorTotal)) & "," & Virg2Ponto(CStr(RdoAux!ValorPagoreal)) & ")"
-                cn.Execute Sql, rdExecDirect
+                sql = "insert resumo_pagto_banco(userid,datacredito,codbanco,numdocumento,codigo,ano,lanc,seq,parc,compl,codtributo,desctributo,nomebanco,arquivo,valorp,valorj,valorm,valorc,valort,valorpago) values("
+                sql = sql & nUserId & ",'" & Format(rdoAux!datarecebimento, "mm/dd/yyyy") & "'," & rdoAux!CodBanco & "," & rdoAux!NumDocumento & "," & rdoAux!CODREDUZIDO & "," & rdoAux!AnoExercicio & ","
+                sql = sql & rdoAux!CodLancamento & "," & rdoAux!SeqLancamento & "," & rdoAux!NumParcela & "," & rdoAux!CODCOMPLEMENTO & "," & !CodTributo & ",'" & !abrevTributo & "','" & rdoAux!NomeBanco & "','" & rdoAux!arquivobanco & "',"
+                sql = sql & Virg2Ponto(CStr(!VALORTRIBUTO)) & "," & Virg2Ponto(CStr(!ValorJuros)) & "," & Virg2Ponto(CStr(!ValorMulta)) & "," & Virg2Ponto(CStr(!valorcorrecao)) & ","
+                sql = sql & Virg2Ponto(CStr(!ValorTotal)) & "," & Virg2Ponto(CStr(rdoAux!ValorPagoreal)) & ")"
+                cn.Execute sql, rdExecDirect
                .MoveNext
             Loop
            .Close
@@ -870,8 +870,8 @@ lblPB.Caption = "0 %"
 Me.Refresh
 
 frmReport.ShowReport3 "Resumo_Pagto_Banco", frmMdi.HWND, Me.HWND
-Sql = "delete from resumo_pagto_banco where userid=" & nUserID
-cn.Execute Sql, rdExecDirect
+sql = "delete from resumo_pagto_banco where userid=" & nUserId
+cn.Execute sql, rdExecDirect
 
 End Sub
 
@@ -896,17 +896,17 @@ End If
 End Sub
 
 Private Sub btFicha_Click()
-Dim Sql As String, RdoAux As rdoResultset, nUserID As Integer, nPos As Long, nTot As Long, nCodTributo As Integer, x As Integer
+Dim sql As String, rdoAux As rdoResultset, nUserId As Integer, nPos As Long, nTot As Long, nCodTributo As Integer, x As Integer
 
 Ocupado
-nUserID = RetornaUsuarioID(NomeDeLogin)
-Sql = "delete from resumo_pagto_banco_ficha where userid=" & RetornaUsuarioID(NomeDeLogin)
-cn.Execute Sql, rdExecDirect
+nUserId = RetornaUsuarioID(NomeDeLogin)
+sql = "delete from resumo_pagto_banco_ficha where userid=" & RetornaUsuarioID(NomeDeLogin)
+cn.Execute sql, rdExecDirect
 CarregaTributo
 
-Sql = "SELECT distinct numdocumento,datarecebimento from debitopago WHERE datarecebimento BETWEEN '" & Format(dtDataDe.value, "mm/dd/yyyy") & "' AND '" & Format(dtDataAte.value, "mm/dd/yyyy") & "' order by numdocumento"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+sql = "SELECT distinct numdocumento,datarecebimento from debitopago WHERE datarecebimento BETWEEN '" & Format(dtDataDe.value, "mm/dd/yyyy") & "' AND '" & Format(dtDataAte.value, "mm/dd/yyyy") & "' order by numdocumento"
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
     nTot = .RowCount
     Do Until .EOF
         If nPos Mod 50 = 0 Then
@@ -916,10 +916,10 @@ With RdoAux
         'aRegDoc = Retorna_Fichas_Documento(!Numdocumento)
         
         For x = 1 To UBound(aRegDoc)
-            Sql = "insert resumo_pagto_banco_ficha(userid,datacredito,documento,codigo,codtributo,desctributo,ficha,valor) values(" & RetornaUsuarioID(NomeDeLogin) & ",'"
-            Sql = Sql & Format(aRegDoc(x).sDataRecebimento, "mm/dd/yyyy") & "'," & aRegDoc(x).nNumDocumento & "," & aRegDoc(x).nCodReduz & "," & aRegDoc(x).nCodTributo & ",'"
-            Sql = Sql & aRegDoc(x).sDescTributo & "'," & aRegDoc(x).nCodFicha & "," & Virg2Ponto(CStr(aRegDoc(x).nValor)) & ")"
-            cn.Execute Sql, rdExecDirect
+            sql = "insert resumo_pagto_banco_ficha(userid,datacredito,documento,codigo,codtributo,desctributo,ficha,valor) values(" & RetornaUsuarioID(NomeDeLogin) & ",'"
+            sql = sql & Format(aRegDoc(x).sDataRecebimento, "mm/dd/yyyy") & "'," & aRegDoc(x).nNumDocumento & "," & aRegDoc(x).nCodReduz & "," & aRegDoc(x).nCodTributo & ",'"
+            sql = sql & aRegDoc(x).sDescTributo & "'," & aRegDoc(x).nCodFicha & "," & Virg2Ponto(CStr(aRegDoc(x).nValor)) & ")"
+            cn.Execute sql, rdExecDirect
         Next
         
         nPos = nPos + 1
@@ -935,7 +935,7 @@ Me.Refresh
 
 
 Fim:
-Sql = "delete from resumo_pagto_banco_ficha where userid=" & RetornaUsuarioID(NomeDeLogin)
+sql = "delete from resumo_pagto_banco_ficha where userid=" & RetornaUsuarioID(NomeDeLogin)
 'cn.Execute Sql, rdExecDirect
 Liberado
 Pb.value = 0
@@ -954,16 +954,16 @@ Private Sub cmdGerar_Click()
 End Sub
 
 Private Sub Form_Load()
-Dim RdoAux As rdoResultset, Sql As String
+Dim rdoAux As rdoResultset, sql As String
 
 Centraliza Me
 dpData.value = Now
 dtDataDe.value = Now
 dtDataAte.value = Now
 cmbBanco.AddItem ("(Todos os Bancos)")
-Sql = "SELECT CODBANCO,NOMEBANCO FROM BANCO WHERE CODBANCO<>0"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+sql = "SELECT CODBANCO,NOMEBANCO FROM BANCO WHERE CODBANCO<>0"
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
     Do Until .EOF
         cmbBanco.AddItem !NomeBanco
         cmbBanco.ItemData(cmbBanco.NewIndex) = !CodBanco
@@ -976,10 +976,10 @@ lstLog.Clear
 End Sub
 
 Private Sub CarregaGrid2()
-Dim Sql As String, RdoAux As rdoResultset, sDataLote As String, qd As New rdoQuery, RdoDeb As rdoResultset, xId As Long, nNumRec As Long
+Dim sql As String, rdoAux As rdoResultset, sDataLote As String, qd As New rdoQuery, RdoDeb As rdoResultset, xId As Long, nNumRec As Long
 Dim nValorPago As Double, nValorTotalPago As Double, aReg() As Reg, x As Integer, nCodTrib As Integer, bDA As Boolean, bAj As Boolean, nValorDif As Double, bFind As Boolean
 Dim z As Long, nCodFicha As Integer, bJuros As Boolean, bMulta As Boolean, bCorrecao As Boolean, nCodFichaP As Integer, nCodFichaJM As Integer, nCodFichaC As Integer
-Dim nIndex As Integer, nIndex2 As Integer, aRegDoc() As Registros, RdoAux2 As rdoResultset, nValorTmp As Double, v As Integer, nUserID As Integer, aFichaValor() As FichaValor
+Dim nIndex As Integer, nIndex2 As Integer, aRegDoc() As Registros, RdoAux2 As rdoResultset, nValorTmp As Double, v As Integer, nUserId As Integer, aFichaValor() As FichaValor
 
 ReDim aReg(0): ReDim aRegDoc(0)
 sDataLote = Format(Now, "ddmmhhmm")
@@ -992,9 +992,9 @@ opt1(1).Enabled = False
 cmbBanco.Enabled = False
 cmdGerar.Enabled = False
 
-nUserID = RetornaUsuarioID(NomeDeLogin)
-Sql = "delete from resumo_pagto_banco_ficha where userid=" & RetornaUsuarioID(NomeDeLogin)
-cn.Execute Sql, rdExecDirect
+nUserId = RetornaUsuarioID(NomeDeLogin)
+sql = "delete from resumo_pagto_banco_ficha where userid=" & RetornaUsuarioID(NomeDeLogin)
+cn.Execute sql, rdExecDirect
 CarregaTributo
 
 Ocupado
@@ -1006,62 +1006,62 @@ Else
     nCodBanco = 0
 End If
 
-Sql = "SELECT SUM(debitopago.valorpagoreal) AS soma FROM debitoparcela INNER JOIN debitopago ON debitoparcela.codreduzido = debitopago.codreduzido AND "
-Sql = Sql & "debitoparcela.anoexercicio = debitopago.anoexercicio AND debitoparcela.codlancamento = debitopago.codlancamento AND debitoparcela.seqlancamento = debitopago.seqlancamento AND "
-Sql = Sql & "debitoparcela.numparcela = debitopago.numparcela AND debitoparcela.codcomplemento = debitopago.codcomplemento INNER JOIN numdocumento ON debitopago.numdocumento = numdocumento.numdocumento "
-Sql = Sql & "WHERE RESTITUIDO IS NULL AND DATARECEBIMENTO = '" & Format(dDatareceita, "mm/dd/yyyy") & "' "
+sql = "SELECT SUM(debitopago.valorpagoreal) AS soma FROM debitoparcela INNER JOIN debitopago ON debitoparcela.codreduzido = debitopago.codreduzido AND "
+sql = sql & "debitoparcela.anoexercicio = debitopago.anoexercicio AND debitoparcela.codlancamento = debitopago.codlancamento AND debitoparcela.seqlancamento = debitopago.seqlancamento AND "
+sql = sql & "debitoparcela.numparcela = debitopago.numparcela AND debitoparcela.codcomplemento = debitopago.codcomplemento INNER JOIN numdocumento ON debitopago.numdocumento = numdocumento.numdocumento "
+sql = sql & "WHERE RESTITUIDO IS NULL AND DATARECEBIMENTO = '" & Format(dDatareceita, "mm/dd/yyyy") & "' "
 If opt1(0).value = True Then
-    Sql = Sql & " AND (DEBITOPAGO.CODBANCO=90 or DEBITOPAGO.CODBANCO=91 OR DEBITOPAGO.CODBANCO=92 OR DEBITOPAGO.CODBANCO=93 OR DEBITOPAGO.CODBANCO=94 OR DEBITOPAGO.CODBANCO=95 OR DEBITOPAGO.CODBANCO=96 OR DEBITOPAGO.CODBANCO=97 OR DEBITOPAGO.CODBANCO=98) "
+    sql = sql & " AND (DEBITOPAGO.CODBANCO=90 or DEBITOPAGO.CODBANCO=91 OR DEBITOPAGO.CODBANCO=92 OR DEBITOPAGO.CODBANCO=93 OR DEBITOPAGO.CODBANCO=94 OR DEBITOPAGO.CODBANCO=95 OR DEBITOPAGO.CODBANCO=96 OR DEBITOPAGO.CODBANCO=97 OR DEBITOPAGO.CODBANCO=98) "
 Else
     If nCodBanco > 0 Then
-        Sql = Sql & " AND DEBITOPAGO.CODBANCO=" & nCodBanco
+        sql = sql & " AND DEBITOPAGO.CODBANCO=" & nCodBanco
     Else
-        Sql = Sql & " AND (DEBITOPAGO.CODBANCO not in(90,91,92,93,94,95,96,97,98))"
+        sql = sql & " AND (DEBITOPAGO.CODBANCO not in(90,91,92,93,94,95,96,97,98))"
     End If
 End If
 If cmbCC.ListIndex = 0 Then
-    Sql = Sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO<>79"
+    sql = sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO<>79"
 ElseIf cmbCC.ListIndex = 1 Then
-    Sql = Sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO=79 "
+    sql = sql & " AND (DEBITOPAGO.CONTACORRENTE='0346926' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO=79 "
 ElseIf cmbCC.ListIndex = 2 Then
-    Sql = Sql & " AND DEBITOPAGO.CONTACORRENTE='" & cmbCC.Text & "'"
+    sql = sql & " AND DEBITOPAGO.CONTACORRENTE='" & cmbCC.Text & "'"
 End If
 
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-If IsNull(RdoAux!soma) Then
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+If IsNull(rdoAux!soma) Then
     lblTotalDia.Caption = Format(0, "#0.00")
     GoTo Fim
 Else
-    lblTotalDia.Caption = Format(RdoAux!soma, "#0.00")
-    nValorTotalPago = RdoAux!soma
+    lblTotalDia.Caption = Format(rdoAux!soma, "#0.00")
+    nValorTotalPago = rdoAux!soma
 End If
-RdoAux.Close
+rdoAux.Close
 
-Sql = "SELECT DISTINCT debitopago.codreduzido, debitopago.anoexercicio, debitopago.codlancamento, debitopago.seqlancamento, debitopago.numparcela, debitopago.codcomplemento, debitopago.seqpag, debitopago.datapagamento,"
-Sql = Sql & "debitopago.datarecebimento, debitopago.valorpago, debitopago.codbanco, debitopago.codagencia, debitopago.restituido, debitopago.numdocumento, debitopago.valorpagoreal, debitopago.intacto, debitopago.valortarifa,"
-Sql = Sql & "debitopago.arquivobanco , debitopago.valordif, debitopago.datapagamentocalc, debitopago.dataintegracao, debitopago.contacorrente, parceladocumento.plano, plano.desconto "
-Sql = Sql & "FROM debitopago INNER JOIN parceladocumento ON debitopago.codreduzido = parceladocumento.codreduzido AND debitopago.anoexercicio = parceladocumento.anoexercicio AND debitopago.codlancamento = parceladocumento.codlancamento AND "
-Sql = Sql & "debitopago.seqlancamento = parceladocumento.seqlancamento AND debitopago.numparcela = parceladocumento.numparcela AND debitopago.codcomplemento = parceladocumento.codcomplemento AND "
-Sql = Sql & "debitopago.numdocumento = parceladocumento.numdocumento LEFT OUTER JOIN plano ON parceladocumento.plano = plano.codigo "
-Sql = Sql & "WHERE RESTITUIDO IS NULL AND DATARECEBIMENTO = '" & Format(dDatareceita, "mm/dd/yyyy") & "' "
+sql = "SELECT DISTINCT debitopago.codreduzido, debitopago.anoexercicio, debitopago.codlancamento, debitopago.seqlancamento, debitopago.numparcela, debitopago.codcomplemento, debitopago.seqpag, debitopago.datapagamento,"
+sql = sql & "debitopago.datarecebimento, debitopago.valorpago, debitopago.codbanco, debitopago.codagencia, debitopago.restituido, debitopago.numdocumento, debitopago.valorpagoreal, debitopago.intacto, debitopago.valortarifa,"
+sql = sql & "debitopago.arquivobanco , debitopago.valordif, debitopago.datapagamentocalc, debitopago.dataintegracao, debitopago.contacorrente, parceladocumento.plano, plano.desconto "
+sql = sql & "FROM debitopago INNER JOIN parceladocumento ON debitopago.codreduzido = parceladocumento.codreduzido AND debitopago.anoexercicio = parceladocumento.anoexercicio AND debitopago.codlancamento = parceladocumento.codlancamento AND "
+sql = sql & "debitopago.seqlancamento = parceladocumento.seqlancamento AND debitopago.numparcela = parceladocumento.numparcela AND debitopago.codcomplemento = parceladocumento.codcomplemento AND "
+sql = sql & "debitopago.numdocumento = parceladocumento.numdocumento LEFT OUTER JOIN plano ON parceladocumento.plano = plano.codigo "
+sql = sql & "WHERE RESTITUIDO IS NULL AND DATARECEBIMENTO = '" & Format(dDatareceita, "mm/dd/yyyy") & "' "
 If opt1(0).value = True Then
-    Sql = Sql & " AND (DEBITOPAGO.CODBANCO=90 or DEBITOPAGO.CODBANCO=91 OR DEBITOPAGO.CODBANCO=92 OR DEBITOPAGO.CODBANCO=93 OR DEBITOPAGO.CODBANCO=94 OR DEBITOPAGO.CODBANCO=95 OR DEBITOPAGO.CODBANCO=96 OR DEBITOPAGO.CODBANCO=97 OR DEBITOPAGO.CODBANCO=98) "
+    sql = sql & " AND (DEBITOPAGO.CODBANCO=90 or DEBITOPAGO.CODBANCO=91 OR DEBITOPAGO.CODBANCO=92 OR DEBITOPAGO.CODBANCO=93 OR DEBITOPAGO.CODBANCO=94 OR DEBITOPAGO.CODBANCO=95 OR DEBITOPAGO.CODBANCO=96 OR DEBITOPAGO.CODBANCO=97 OR DEBITOPAGO.CODBANCO=98) "
 Else
     If nCodBanco > 0 Then
-        Sql = Sql & " AND DEBITOPAGO.CODBANCO=" & nCodBanco
+        sql = sql & " AND DEBITOPAGO.CODBANCO=" & nCodBanco
     Else
-        Sql = Sql & " AND (DEBITOPAGO.CODBANCO not in(90,91,92,93,94,95,96,97,98))"
+        sql = sql & " AND (DEBITOPAGO.CODBANCO not in(90,91,92,93,94,95,96,97,98))"
     End If
 End If
 If cmbCC.ListIndex = 0 Then
-    Sql = Sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO<>79"
+    sql = sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO<>79"
 ElseIf cmbCC.ListIndex = 1 Then
-    Sql = Sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO=79 "
+    sql = sql & " AND (DEBITOPAGO.CONTACORRENTE='0346926' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO=79 "
 Else
-    Sql = Sql & " AND DEBITOPAGO.CONTACORRENTE='" & cmbCC.Text & "'"
+    sql = sql & " AND DEBITOPAGO.CONTACORRENTE='" & cmbCC.Text & "'"
 End If
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
     nNumRec = .RowCount
     Do Until .EOF
     
@@ -1092,7 +1092,7 @@ With RdoAux
         On Error Resume Next
         RdoDeb.Close
         On Error GoTo 0
-        qd.Sql = "{ Call spEXTRATONEW(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
+        qd.sql = "{ Call spEXTRATONEW(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
         qd(0) = !CODREDUZIDO
         qd(1) = !CODREDUZIDO
         qd(2) = !AnoExercicio
@@ -1121,7 +1121,7 @@ With RdoAux
                 nIndex = UBound(aReg) + 1
                 ReDim Preserve aReg(nIndex)
                 aReg(nIndex).nCodBanco = nCodBanco
-                aReg(nIndex).sArquivo = RdoAux!arquivobanco
+                aReg(nIndex).sArquivo = rdoAux!arquivobanco
                 aReg(nIndex).nCodReduz = !CODREDUZIDO
                 aReg(nIndex).nAno = !AnoExercicio
                 aReg(nIndex).nLanc = !CodLancamento
@@ -1130,17 +1130,17 @@ With RdoAux
                 aReg(nIndex).nCompl = !CODCOMPLEMENTO
                 aReg(nIndex).nCodTrib = !CodTributo
                 aReg(nIndex).sDescTributo = !abrevTributo
-                aReg(nIndex).nValorTrib = !ValorTributo
-                aReg(nIndex).NumDocumento = RdoAux!NumDocumento
+                aReg(nIndex).nValorTrib = !VALORTRIBUTO
+                aReg(nIndex).NumDocumento = rdoAux!NumDocumento
                 If !DataPagamento <= !DataVencimentoCalc Then
                     aReg(nIndex).nValorJuros = 0
                     aReg(nIndex).nValorMulta = 0
                     aReg(nIndex).nValorCorrecao = 0
-                    aReg(nIndex).nValorTotal = !ValorTributo
+                    aReg(nIndex).nValorTotal = !VALORTRIBUTO
                 Else
                     aReg(nIndex).nValorJuros = !ValorJuros - (!ValorJuros * nPercDesconto / 100)
                     aReg(nIndex).nValorMulta = !ValorMulta - (!ValorMulta * nPercDesconto / 100)
-                    aReg(nIndex).nValorCorrecao = !ValorCorrecao
+                    aReg(nIndex).nValorCorrecao = !valorcorrecao
                     aReg(nIndex).nValorTotal = aReg(nIndex).nValorTrib + aReg(nIndex).nValorJuros + aReg(nIndex).nValorMulta + aReg(nIndex).nValorCorrecao
                 End If
                 aReg(nIndex).sDataInscricao = IIf(IsDate(!datainscricao), "S", "N")
@@ -1200,8 +1200,8 @@ For nIndex = 1 To UBound(aReg)
         
 '    *** PRINCIPAL ****
     If nCodFichaP > 0 Then
-        Sql = "SELECT NATUREZA,VINCULO,PERC,DESCTA FROM FICHACONTABIL WHERE FICHA=" & nCodFichaP
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT NATUREZA,VINCULO,PERC,DESCTA FROM FICHACONTABIL WHERE FICHA=" & nCodFichaP
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             Do Until .EOF
                 ReDim Preserve aRegDoc(UBound(aRegDoc) + 1)
@@ -1233,8 +1233,8 @@ For nIndex = 1 To UBound(aReg)
     
 '    *** juros e multa ****
     If nCodFichaJM > 0 Then
-        Sql = "SELECT NATUREZA,VINCULO,PERC,DESCTA FROM FICHACONTABIL WHERE FICHA=" & nCodFichaJM
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT NATUREZA,VINCULO,PERC,DESCTA FROM FICHACONTABIL WHERE FICHA=" & nCodFichaJM
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             Do Until .EOF
                 ReDim Preserve aRegDoc(UBound(aRegDoc) + 1)
@@ -1267,8 +1267,8 @@ For nIndex = 1 To UBound(aReg)
 
 '    *** correção ****
     If nCodFichaC > 0 Then
-        Sql = "SELECT NATUREZA,VINCULO,PERC,DESCTA FROM FICHACONTABIL WHERE FICHA=" & nCodFichaC
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT NATUREZA,VINCULO,PERC,DESCTA FROM FICHACONTABIL WHERE FICHA=" & nCodFichaC
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             Do Until .EOF
                 ReDim Preserve aRegDoc(UBound(aRegDoc) + 1)
@@ -1302,37 +1302,37 @@ Next
     
 For x = 1 To UBound(aRegDoc)
     If aRegDoc(x).nValor > 0 Then
-        Sql = "insert resumo_pagto_banco_ficha(userid,datacredito,documento,codigo,ano,lanc,seq,parc,compl,codtributo,desctributo,descficha,ficha,arquivo,natureza,vinculo,perc,valor,codbanco,id) values("
-        Sql = Sql & nUserID & ",'" & Format(aRegDoc(x).sDataRecebimento, "mm/dd/yyyy") & "'," & aRegDoc(x).nNumDocumento & "," & aRegDoc(x).nCodReduz & "," & aRegDoc(x).nAno & ","
-        Sql = Sql & aRegDoc(x).nLanc & "," & aRegDoc(x).nSeq & "," & aRegDoc(x).nParc & "," & aRegDoc(x).nCompl & "," & aRegDoc(x).nCodTributo & ",'" & aRegDoc(x).sDescTributo & "','" & aRegDoc(x).sDescFicha & "',"
-        Sql = Sql & aRegDoc(x).nCodFicha & ",'" & aRegDoc(x).sArquivo & "','" & aRegDoc(x).sNatureza & "','" & aRegDoc(x).sVinculo & "'," & aRegDoc(x).nPerc & "," & Virg2Ponto(CStr(aRegDoc(x).nValor)) & "," & aRegDoc(x).nCodBanco & "," & x & ")"
-        cn.Execute Sql, rdExecDirect
+        sql = "insert resumo_pagto_banco_ficha(userid,datacredito,documento,codigo,ano,lanc,seq,parc,compl,codtributo,desctributo,descficha,ficha,arquivo,natureza,vinculo,perc,valor,codbanco,id) values("
+        sql = sql & nUserId & ",'" & Format(aRegDoc(x).sDataRecebimento, "mm/dd/yyyy") & "'," & aRegDoc(x).nNumDocumento & "," & aRegDoc(x).nCodReduz & "," & aRegDoc(x).nAno & ","
+        sql = sql & aRegDoc(x).nLanc & "," & aRegDoc(x).nSeq & "," & aRegDoc(x).nParc & "," & aRegDoc(x).nCompl & "," & aRegDoc(x).nCodTributo & ",'" & aRegDoc(x).sDescTributo & "','" & aRegDoc(x).sDescFicha & "',"
+        sql = sql & aRegDoc(x).nCodFicha & ",'" & aRegDoc(x).sArquivo & "','" & aRegDoc(x).sNatureza & "','" & aRegDoc(x).sVinculo & "'," & aRegDoc(x).nPerc & "," & Virg2Ponto(CStr(aRegDoc(x).nValor)) & "," & aRegDoc(x).nCodBanco & "," & x & ")"
+        cn.Execute sql, rdExecDirect
     End If
 Next
 
 
 'ARREDONDAMENTO
 Dim nValorPagoDoc As Double, nValorTotalFicha As Double
-Sql = "SELECT DISTINCT documento FROM resumo_pagto_banco_ficha WHERE userid=" & nUserID & " ORDER BY documento"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+sql = "SELECT DISTINCT documento FROM resumo_pagto_banco_ficha WHERE userid=" & nUserId & " ORDER BY documento"
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
     Do Until .EOF
         'If !Documento = 17818695 Then MsgBox "teste"
-        Sql = "select sum(valorpagoreal) as totalpago from debitopago where numdocumento=" & !Documento
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "select sum(valorpagoreal) as totalpago from debitopago where numdocumento=" & !Documento
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         nValorPagoDoc = RdoAux2!totalpago
         RdoAux2.Close
-        Sql = "select sum(valor) as totalficha from resumo_pagto_banco_ficha where documento=" & !Documento
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "select sum(valor) as totalficha from resumo_pagto_banco_ficha where documento=" & !Documento
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         nValorTotalFicha = RdoAux2!Totalficha
         RdoAux2.Close
         
         If nValorPagoDoc > nValorTotalFicha Then
             nValorDif = Abs(Round(nValorPagoDoc - nValorTotalFicha, 2))
-            Sql = "select top(1) * from resumo_pagto_banco_ficha where userid=" & nUserID & " and documento=" & !Documento & " order by valor desc"
-            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-            Sql = "update resumo_pagto_banco_ficha set valor=valor+" & Virg2Ponto(CStr(nValorDif)) & " where userid=" & nUserID & " and id=" & RdoAux2!id
-            cn.Execute Sql, rdExecDirect
+            sql = "select top(1) * from resumo_pagto_banco_ficha where userid=" & nUserId & " and documento=" & !Documento & " order by valor desc"
+            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+            sql = "update resumo_pagto_banco_ficha set valor=valor+" & Virg2Ponto(CStr(nValorDif)) & " where userid=" & nUserId & " and id=" & RdoAux2!id
+            cn.Execute sql, rdExecDirect
 '            Sql = "update resumo_pagto_banco_ficha set valor=valor+" & Virg2Ponto(CStr(nValorDif)) & " where userid=" & nUserID & " and documento=" & !Documento & " and "
 '            Sql = Sql & "ficha=" & RdoAux2!Ficha & " and perc=" & RdoAux2!Perc & " and codtributo=" & RdoAux2!CodTributo & " and ano=" & RdoAux2!Ano & " and "
 '            Sql = Sql & "lanc=" & RdoAux2!Lanc & " and seq=" & RdoAux2!Seq & " and parc=" & RdoAux2!Parc & " and compl=" & RdoAux2!Compl
@@ -1341,8 +1341,8 @@ With RdoAux
         ElseIf nValorPagoDoc < nValorTotalFicha Then
             nValorDif = Abs(Round(nValorPagoDoc - nValorTotalFicha, 2))
             ReDim aFichaValor(0)
-            Sql = "select * from resumo_pagto_banco_ficha where userid=" & nUserID & " and documento=" & !Documento & " order by valor desc"
-            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            sql = "select * from resumo_pagto_banco_ficha where userid=" & nUserId & " and documento=" & !Documento & " order by valor desc"
+            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
             With RdoAux2
                 Do Until .EOF
                     ReDim Preserve aFichaValor(UBound(aFichaValor) + 1)
@@ -1373,13 +1373,13 @@ With RdoAux
             Next
             
             For x = 1 To UBound(aFichaValor)
-                Sql = "update resumo_pagto_banco_ficha set valor=" & Virg2Ponto(CStr(aFichaValor(x).nValorFicha))
-                Sql = Sql & " where userid=" & nUserID & " and documento=" & !Documento & " and id=" & aFichaValor(x).nId
-                cn.Execute Sql, rdExecDirect
+                sql = "update resumo_pagto_banco_ficha set valor=" & Virg2Ponto(CStr(aFichaValor(x).nValorFicha))
+                sql = sql & " where userid=" & nUserId & " and documento=" & !Documento & " and id=" & aFichaValor(x).nId
+                cn.Execute sql, rdExecDirect
             Next
             
-            Sql = "delete from resumo_pagto_banco_ficha where userid=" & nUserID & " and documento=" & !Documento & " and valor=0"
-            cn.Execute Sql, rdExecDirect
+            sql = "delete from resumo_pagto_banco_ficha where userid=" & nUserId & " and documento=" & !Documento & " and valor=0"
+            cn.Execute sql, rdExecDirect
             
         End If
 NextReg:
@@ -1389,7 +1389,7 @@ NextReg:
 End With
 
 
-Sql = "delete from resumo_pagto_banco_ficha where userid=" & nUserID
+sql = "delete from resumo_pagto_banco_ficha where userid=" & nUserId
 'cn.Execute Sql, rdExecDirect
 
 MsgBox "fim"
@@ -1411,7 +1411,7 @@ End Sub
 
 
 Private Sub CarregaGrid()
-Dim Sql As String, RdoAux As rdoResultset, nNumRec As Long, itmX As ListItem, z As Long, nCodBanco As Integer, xId As Long
+Dim sql As String, rdoAux As rdoResultset, nNumRec As Long, itmX As ListItem, z As Long, nCodBanco As Integer, xId As Long
 Dim qd As New rdoQuery, RdoDeb As rdoResultset, x As Integer, nCodTrib As Integer, bDA As Boolean, bAj As Boolean
 Dim nValorTotal As Double, nValorPago As Double, nValorTotalPago As Double, nValorCompensado As Double, dDatareceita As Date
 Dim nMaiorValor As Double, nIndMaior As Integer, nTotalMatriz As Double, nDif As Double, aReg() As Reg, nIndex As Integer
@@ -1419,8 +1419,8 @@ Dim sDataLote As String, nPercDesconto As Double
 
 sDataLote = Format(Now, "ddmmhhmm")
 ReDim aReg(0)
-Sql = "delete from analise2 where usuario='" & NomeDeLogin & "'"
-cn.Execute Sql, rdExecDirect
+sql = "delete from analise2 where usuario='" & NomeDeLogin & "'"
+cn.Execute sql, rdExecDirect
 
 lblTotalDia.Caption = "0,00"
 dpData.Enabled = False
@@ -1443,63 +1443,63 @@ Else
     nCodBanco = 0
 End If
 
-Sql = "SELECT SUM(debitopago.valorpagoreal) AS soma FROM debitoparcela INNER JOIN debitopago ON debitoparcela.codreduzido = debitopago.codreduzido AND "
-Sql = Sql & "debitoparcela.anoexercicio = debitopago.anoexercicio AND debitoparcela.codlancamento = debitopago.codlancamento AND debitoparcela.seqlancamento = debitopago.seqlancamento AND "
-Sql = Sql & "debitoparcela.numparcela = debitopago.numparcela AND debitoparcela.codcomplemento = debitopago.codcomplemento INNER JOIN numdocumento ON debitopago.numdocumento = numdocumento.numdocumento "
-Sql = Sql & "WHERE RESTITUIDO IS NULL AND DATARECEBIMENTO = '" & Format(dDatareceita, "mm/dd/yyyy") & "' "
+sql = "SELECT SUM(debitopago.valorpagoreal) AS soma FROM debitoparcela INNER JOIN debitopago ON debitoparcela.codreduzido = debitopago.codreduzido AND "
+sql = sql & "debitoparcela.anoexercicio = debitopago.anoexercicio AND debitoparcela.codlancamento = debitopago.codlancamento AND debitoparcela.seqlancamento = debitopago.seqlancamento AND "
+sql = sql & "debitoparcela.numparcela = debitopago.numparcela AND debitoparcela.codcomplemento = debitopago.codcomplemento INNER JOIN numdocumento ON debitopago.numdocumento = numdocumento.numdocumento "
+sql = sql & "WHERE RESTITUIDO IS NULL AND DATARECEBIMENTO = '" & Format(dDatareceita, "mm/dd/yyyy") & "' "
 If opt1(0).value = True Then
-    Sql = Sql & " AND (DEBITOPAGO.CODBANCO=90 or DEBITOPAGO.CODBANCO=91 OR DEBITOPAGO.CODBANCO=92 OR DEBITOPAGO.CODBANCO=93 OR DEBITOPAGO.CODBANCO=94 OR DEBITOPAGO.CODBANCO=95 OR DEBITOPAGO.CODBANCO=96 OR DEBITOPAGO.CODBANCO=97 OR DEBITOPAGO.CODBANCO=98) "
+    sql = sql & " AND (DEBITOPAGO.CODBANCO=90 or DEBITOPAGO.CODBANCO=91 OR DEBITOPAGO.CODBANCO=92 OR DEBITOPAGO.CODBANCO=93 OR DEBITOPAGO.CODBANCO=94 OR DEBITOPAGO.CODBANCO=95 OR DEBITOPAGO.CODBANCO=96 OR DEBITOPAGO.CODBANCO=97 OR DEBITOPAGO.CODBANCO=98) "
 Else
     If nCodBanco > 0 Then
-        Sql = Sql & " AND DEBITOPAGO.CODBANCO=" & nCodBanco
+        sql = sql & " AND DEBITOPAGO.CODBANCO=" & nCodBanco
     Else
-        Sql = Sql & " AND (DEBITOPAGO.CODBANCO not in(90,91,92,93,94,95,96,97,98))"
+        sql = sql & " AND (DEBITOPAGO.CODBANCO not in(90,91,92,93,94,95,96,97,98))"
     End If
 End If
 If cmbCC.ListIndex = 0 Then
-    Sql = Sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO<>79"
+    sql = sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO<>79"
 ElseIf cmbCC.ListIndex = 1 Then
-    Sql = Sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO=79 "
+    sql = sql & " AND (DEBITOPAGO.CONTACORRENTE='0346926' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO=79 "
 Else
-    Sql = Sql & " AND DEBITOPAGO.CONTACORRENTE='" & cmbCC.Text & "'"
+    sql = sql & " AND DEBITOPAGO.CONTACORRENTE='" & cmbCC.Text & "'"
 End If
 
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-If IsNull(RdoAux!soma) Then
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+If IsNull(rdoAux!soma) Then
     lblTotalDia.Caption = Format(0, "#0.00")
     GoTo Fim
 Else
-    lblTotalDia.Caption = Format(RdoAux!soma, "#0.00")
-    nValorTotalPago = RdoAux!soma
+    lblTotalDia.Caption = Format(rdoAux!soma, "#0.00")
+    nValorTotalPago = rdoAux!soma
 End If
-RdoAux.Close
+rdoAux.Close
 Ocupado
 
-Sql = "SELECT DISTINCT debitopago.codreduzido, debitopago.anoexercicio, debitopago.codlancamento, debitopago.seqlancamento, debitopago.numparcela, debitopago.codcomplemento, debitopago.seqpag, debitopago.datapagamento,"
-Sql = Sql & "debitopago.datarecebimento, debitopago.valorpago, debitopago.codbanco, debitopago.codagencia, debitopago.restituido, debitopago.numdocumento, debitopago.valorpagoreal, debitopago.intacto, debitopago.valortarifa,"
-Sql = Sql & "debitopago.arquivobanco , debitopago.valordif, debitopago.datapagamentocalc, debitopago.dataintegracao, debitopago.contacorrente, parceladocumento.plano, plano.desconto "
-Sql = Sql & "FROM debitopago INNER JOIN parceladocumento ON debitopago.codreduzido = parceladocumento.codreduzido AND debitopago.anoexercicio = parceladocumento.anoexercicio AND debitopago.codlancamento = parceladocumento.codlancamento AND "
-Sql = Sql & "debitopago.seqlancamento = parceladocumento.seqlancamento AND debitopago.numparcela = parceladocumento.numparcela AND debitopago.codcomplemento = parceladocumento.codcomplemento AND "
-Sql = Sql & "debitopago.numdocumento = parceladocumento.numdocumento LEFT OUTER JOIN plano ON parceladocumento.plano = plano.codigo "
-Sql = Sql & "WHERE RESTITUIDO IS NULL AND DATARECEBIMENTO = '" & Format(dDatareceita, "mm/dd/yyyy") & "' "
+sql = "SELECT DISTINCT debitopago.codreduzido, debitopago.anoexercicio, debitopago.codlancamento, debitopago.seqlancamento, debitopago.numparcela, debitopago.codcomplemento, debitopago.seqpag, debitopago.datapagamento,"
+sql = sql & "debitopago.datarecebimento, debitopago.valorpago, debitopago.codbanco, debitopago.codagencia, debitopago.restituido, debitopago.numdocumento, debitopago.valorpagoreal, debitopago.intacto, debitopago.valortarifa,"
+sql = sql & "debitopago.arquivobanco , debitopago.valordif, debitopago.datapagamentocalc, debitopago.dataintegracao, debitopago.contacorrente, parceladocumento.plano, plano.desconto "
+sql = sql & "FROM debitopago INNER JOIN parceladocumento ON debitopago.codreduzido = parceladocumento.codreduzido AND debitopago.anoexercicio = parceladocumento.anoexercicio AND debitopago.codlancamento = parceladocumento.codlancamento AND "
+sql = sql & "debitopago.seqlancamento = parceladocumento.seqlancamento AND debitopago.numparcela = parceladocumento.numparcela AND debitopago.codcomplemento = parceladocumento.codcomplemento AND "
+sql = sql & "debitopago.numdocumento = parceladocumento.numdocumento LEFT OUTER JOIN plano ON parceladocumento.plano = plano.codigo "
+sql = sql & "WHERE RESTITUIDO IS NULL AND DATARECEBIMENTO = '" & Format(dDatareceita, "mm/dd/yyyy") & "' "
 If opt1(0).value = True Then
-    Sql = Sql & " AND (DEBITOPAGO.CODBANCO=90 or DEBITOPAGO.CODBANCO=91 OR DEBITOPAGO.CODBANCO=92 OR DEBITOPAGO.CODBANCO=93 OR DEBITOPAGO.CODBANCO=94 OR DEBITOPAGO.CODBANCO=95 OR DEBITOPAGO.CODBANCO=96 OR DEBITOPAGO.CODBANCO=97 OR DEBITOPAGO.CODBANCO=98) "
+    sql = sql & " AND (DEBITOPAGO.CODBANCO=90 or DEBITOPAGO.CODBANCO=91 OR DEBITOPAGO.CODBANCO=92 OR DEBITOPAGO.CODBANCO=93 OR DEBITOPAGO.CODBANCO=94 OR DEBITOPAGO.CODBANCO=95 OR DEBITOPAGO.CODBANCO=96 OR DEBITOPAGO.CODBANCO=97 OR DEBITOPAGO.CODBANCO=98) "
 Else
     If nCodBanco > 0 Then
-        Sql = Sql & " AND DEBITOPAGO.CODBANCO=" & nCodBanco
+        sql = sql & " AND DEBITOPAGO.CODBANCO=" & nCodBanco
     Else
-        Sql = Sql & " AND (DEBITOPAGO.CODBANCO not in(90,91,92,93,94,95,96,97,98))"
+        sql = sql & " AND (DEBITOPAGO.CODBANCO not in(90,91,92,93,94,95,96,97,98))"
     End If
 End If
 If cmbCC.ListIndex = 0 Then
-    Sql = Sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO<>79"
+    sql = sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO<>79"
 ElseIf cmbCC.ListIndex = 1 Then
-    Sql = Sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO=79 "
+    sql = sql & " AND (DEBITOPAGO.CONTACORRENTE='0346926' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO=79 "
 Else
-    Sql = Sql & " AND DEBITOPAGO.CONTACORRENTE='" & cmbCC.Text & "'"
+    sql = sql & " AND DEBITOPAGO.CONTACORRENTE='" & cmbCC.Text & "'"
 End If
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
 
     nNumRec = .RowCount
     Do Until .EOF
@@ -1530,7 +1530,7 @@ With RdoAux
         On Error Resume Next
         RdoDeb.Close
         On Error GoTo 0
-        qd.Sql = "{ Call spEXTRATONEW(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
+        qd.sql = "{ Call spEXTRATONEW(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
         qd(0) = !CODREDUZIDO
         qd(1) = !CODREDUZIDO
         qd(2) = !AnoExercicio
@@ -1565,18 +1565,18 @@ With RdoAux
                 aReg(nIndex).nParc = !NumParcela
                 aReg(nIndex).nCompl = !CODCOMPLEMENTO
                 aReg(nIndex).nCodTrib = Format(!CodTributo, "000")
-                aReg(nIndex).nValorTrib = Format(!ValorTributo, "#0.00")
+                aReg(nIndex).nValorTrib = Format(!VALORTRIBUTO, "#0.00")
                 If !DataPagamento < !DataVencimentoCalc Then
                     aReg(nIndex).nValorJuros = Format(0, "#0.00")
                     aReg(nIndex).nValorMulta = Format(0, "#0.00")
                     aReg(nIndex).nValorCorrecao = Format(0, "#0.00")
-                    aReg(nIndex).nValorTotal = Format(!ValorTributo, "#0.00")
+                    aReg(nIndex).nValorTotal = Format(!VALORTRIBUTO, "#0.00")
                 Else
 '                   aReg(nIndex).nValorJuros = Format(!ValorJuros, "#0.00")
 '                    aReg(nIndex).nValorMulta = Format(!ValorMulta, "#0.00")
                     aReg(nIndex).nValorJuros = !ValorJuros - (!ValorJuros * nPercDesconto / 100)
                     aReg(nIndex).nValorMulta = !ValorMulta - (!ValorMulta * nPercDesconto / 100)
-                    aReg(nIndex).nValorCorrecao = !ValorCorrecao
+                    aReg(nIndex).nValorCorrecao = !valorcorrecao
                     aReg(nIndex).nValorTotal = aReg(nIndex).nValorTrib + aReg(nIndex).nValorJuros + aReg(nIndex).nValorMulta + aReg(nIndex).nValorCorrecao
                 End If
                 
@@ -1657,9 +1657,9 @@ Ficha:
     If aReg(x).nValorTrib > 0 Then
         If Not bDA And Not bAj Then
             aReg(x).F1 = aFicha(z).F1 'Principal
-            If (aReg(x).nCodTrib = 1 Or aReg(x).nCodTrib = 2) And aReg(x).nAno = 2023 And Year(dDatareceita) = 2022 Then
-                aReg(x).F1 = 50521 'iptu
-                FichaDetalhe dDatareceita, nCodBanco, 50521, aReg(x).nValorTrib
+            If (aReg(x).nCodTrib = 1 Or aReg(x).nCodTrib = 2) And aReg(x).nAno = 2026 And Year(dDatareceita) = 2025 Then
+                aReg(x).F1 = 50525 'iptu
+                FichaDetalhe dDatareceita, nCodBanco, 50524, aReg(x).nValorTrib
 '            ElseIf (aReg(x).nCodTrib = 14) And aReg(x).nAno = 2021 And Year(dDatareceita) = 2020 Then
 '                aReg(x).F1 = 50517 'tx lic
 '                FichaDetalhe dDatareceita, nCodBanco, 50517, aReg(x).nValorTrib
@@ -1746,10 +1746,10 @@ End If
 
 For x = 1 To UBound(aFichaDetalhe)
     With aFichaDetalhe(x)
-        Sql = "insert analise2 (usuario,datareceita,codbanco,valortotal,numficha,natureza,vinculo,perc,descficha) values('"
-        Sql = Sql & NomeDeLogin & "','" & Format(dDatareceita, "mm/dd/yyyy") & "'," & .Banco & "," & Virg2Ponto(CStr(.Total)) & ","
-        Sql = Sql & .Ficha & ",'" & .Natureza & "','" & .Vinculo & "'," & Virg2Ponto(CStr(.Perc)) & ",'" & .Descricao & "')"
-        cn.Execute Sql, rdExecDirect
+        sql = "insert analise2 (usuario,datareceita,codbanco,valortotal,numficha,natureza,vinculo,perc,descficha) values('"
+        sql = sql & NomeDeLogin & "','" & Format(dDatareceita, "mm/dd/yyyy") & "'," & .Banco & "," & Virg2Ponto(CStr(.Total)) & ","
+        sql = sql & .Ficha & ",'" & .Natureza & "','" & .Vinculo & "'," & Virg2Ponto(CStr(.Perc)) & ",'" & .Descricao & "')"
+        cn.Execute sql, rdExecDirect
         
         ax = FillSpace(.Natureza, 20) & FillSpace(.Vinculo, 20) & Year(.Data) & Format(Month(.Data), "00") & Format(Day(.Data), "00") & Format(.Banco, "0000") & "00000000" & Format(RemovePonto(Replace(CStr(FormatNumber(.Total, 2)), ",", "")), "0000000000000") & "0000000000" & sDataLote
         Print #1, ax
@@ -1767,8 +1767,8 @@ Else
     Else
         frmReport.ShowReport "Analise2", frmMdi.HWND, Me.HWND
     End If
-    Sql = "delete from analise2 where usuario='" & NomeDeLogin & "'"
-    cn.Execute Sql, rdExecDirect
+    sql = "delete from analise2 where usuario='" & NomeDeLogin & "'"
+    cn.Execute sql, rdExecDirect
 End If
 dpData.Enabled = True
 opt1(0).Enabled = True
@@ -1785,13 +1785,13 @@ cmdGerar.Enabled = True
 End Sub
 
 Private Sub CarregaGridOld()
-Dim Sql As String, RdoAux As rdoResultset, nNumRec As Long, itmX As ListItem, z As Long, nCodBanco As Integer, xId As Long
+Dim sql As String, rdoAux As rdoResultset, nNumRec As Long, itmX As ListItem, z As Long, nCodBanco As Integer, xId As Long
 Dim qd As New rdoQuery, RdoDeb As rdoResultset, x As Integer, nCodTrib As Integer, bDA As Boolean, bAj As Boolean
 Dim nValorTotal As Double, nValorPago As Double, nValorTotalPago As Double, nValorCompensado As Double, dDatareceita As Date
 Dim nMaiorValor As Double, nIndMaior As Integer, nTotalMatriz As Double, nDif As Double
 
-Sql = "delete from analise2 where usuario='" & NomeDeLogin & "'"
-cn.Execute Sql, rdExecDirect
+sql = "delete from analise2 where usuario='" & NomeDeLogin & "'"
+cn.Execute sql, rdExecDirect
 
 lblTotalDia.Caption = "0,00"
 dpData.Enabled = False
@@ -1815,46 +1815,46 @@ Else
 End If
 
 
-Sql = "SELECT SUM(debitopago.valorpagoreal) AS soma FROM debitoparcela INNER JOIN debitopago ON debitoparcela.codreduzido = debitopago.codreduzido AND "
-Sql = Sql & "debitoparcela.anoexercicio = debitopago.anoexercicio AND debitoparcela.codlancamento = debitopago.codlancamento AND debitoparcela.seqlancamento = debitopago.seqlancamento AND "
-Sql = Sql & "debitoparcela.numparcela = debitopago.numparcela AND debitoparcela.codcomplemento = debitopago.codcomplemento INNER JOIN numdocumento ON debitopago.numdocumento = numdocumento.numdocumento "
-Sql = Sql & "WHERE RESTITUIDO IS NULL AND DATARECEBIMENTO = '" & Format(dDatareceita, "mm/dd/yyyy") & "' "
+sql = "SELECT SUM(debitopago.valorpagoreal) AS soma FROM debitoparcela INNER JOIN debitopago ON debitoparcela.codreduzido = debitopago.codreduzido AND "
+sql = sql & "debitoparcela.anoexercicio = debitopago.anoexercicio AND debitoparcela.codlancamento = debitopago.codlancamento AND debitoparcela.seqlancamento = debitopago.seqlancamento AND "
+sql = sql & "debitoparcela.numparcela = debitopago.numparcela AND debitoparcela.codcomplemento = debitopago.codcomplemento INNER JOIN numdocumento ON debitopago.numdocumento = numdocumento.numdocumento "
+sql = sql & "WHERE RESTITUIDO IS NULL AND DATARECEBIMENTO = '" & Format(dDatareceita, "mm/dd/yyyy") & "' "
 If opt1(0).value = True Then
-    Sql = Sql & " AND (DEBITOPAGO.CODBANCO=91 OR DEBITOPAGO.CODBANCO=92 OR DEBITOPAGO.CODBANCO=93 OR DEBITOPAGO.CODBANCO=94 OR DEBITOPAGO.CODBANCO=95 OR DEBITOPAGO.CODBANCO=96 OR DEBITOPAGO.CODBANCO=97 OR DEBITOPAGO.CODBANCO=98) "
+    sql = sql & " AND (DEBITOPAGO.CODBANCO=91 OR DEBITOPAGO.CODBANCO=92 OR DEBITOPAGO.CODBANCO=93 OR DEBITOPAGO.CODBANCO=94 OR DEBITOPAGO.CODBANCO=95 OR DEBITOPAGO.CODBANCO=96 OR DEBITOPAGO.CODBANCO=97 OR DEBITOPAGO.CODBANCO=98) "
 Else
     If nCodBanco > 0 Then
-        Sql = Sql & " AND DEBITOPAGO.CODBANCO=" & nCodBanco
+        sql = sql & " AND DEBITOPAGO.CODBANCO=" & nCodBanco
     Else
-        Sql = Sql & " AND (DEBITOPAGO.CODBANCO not in(91,92,93,94,95,96,97,98))"
+        sql = sql & " AND (DEBITOPAGO.CODBANCO not in(91,92,93,94,95,96,97,98))"
     End If
 End If
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-If IsNull(RdoAux!soma) Then
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+If IsNull(rdoAux!soma) Then
     lblTotalDia.Caption = Format(0, "#0.00")
     GoTo Fim
 Else
-    lblTotalDia.Caption = Format(RdoAux!soma, "#0.00")
-    nValorTotalPago = RdoAux!soma
+    lblTotalDia.Caption = Format(rdoAux!soma, "#0.00")
+    nValorTotalPago = rdoAux!soma
 End If
-RdoAux.Close
+rdoAux.Close
 Ocupado
-Sql = "SELECT DISTINCT debitoparcela.codreduzido, debitoparcela.anoexercicio, debitoparcela.codlancamento, debitoparcela.seqlancamento, debitoparcela.numparcela,"
-Sql = Sql & "debitoparcela.codcomplemento, debitoparcela.datainscricao, debitoparcela.dataajuiza,debitopago.datapagamento , debitopago.datarecebimento, debitopago.valorpagoreal,"
-Sql = Sql & "debitopago.CodBanco , NumDocumento.valortaxadoc FROM debitoparcela INNER JOIN debitopago ON debitoparcela.codreduzido = debitopago.codreduzido AND "
-Sql = Sql & "debitoparcela.anoexercicio = debitopago.anoexercicio AND debitoparcela.codlancamento = debitopago.codlancamento AND debitoparcela.seqlancamento = debitopago.seqlancamento AND "
-Sql = Sql & "debitoparcela.numparcela = debitopago.numparcela AND debitoparcela.codcomplemento = debitopago.codcomplemento INNER JOIN numdocumento ON debitopago.numdocumento = numdocumento.numdocumento "
-Sql = Sql & "WHERE RESTITUIDO IS NULL AND DATARECEBIMENTO = '" & Format(dDatareceita, "mm/dd/yyyy") & "' "
+sql = "SELECT DISTINCT debitoparcela.codreduzido, debitoparcela.anoexercicio, debitoparcela.codlancamento, debitoparcela.seqlancamento, debitoparcela.numparcela,"
+sql = sql & "debitoparcela.codcomplemento, debitoparcela.datainscricao, debitoparcela.dataajuiza,debitopago.datapagamento , debitopago.datarecebimento, debitopago.valorpagoreal,"
+sql = sql & "debitopago.CodBanco , NumDocumento.valortaxadoc FROM debitoparcela INNER JOIN debitopago ON debitoparcela.codreduzido = debitopago.codreduzido AND "
+sql = sql & "debitoparcela.anoexercicio = debitopago.anoexercicio AND debitoparcela.codlancamento = debitopago.codlancamento AND debitoparcela.seqlancamento = debitopago.seqlancamento AND "
+sql = sql & "debitoparcela.numparcela = debitopago.numparcela AND debitoparcela.codcomplemento = debitopago.codcomplemento INNER JOIN numdocumento ON debitopago.numdocumento = numdocumento.numdocumento "
+sql = sql & "WHERE RESTITUIDO IS NULL AND DATARECEBIMENTO = '" & Format(dDatareceita, "mm/dd/yyyy") & "' "
 If opt1(0).value = True Then
-    Sql = Sql & " AND (DEBITOPAGO.CODBANCO=91 OR DEBITOPAGO.CODBANCO=92 OR DEBITOPAGO.CODBANCO=93 OR DEBITOPAGO.CODBANCO=94 OR DEBITOPAGO.CODBANCO=95 OR DEBITOPAGO.CODBANCO=96 OR DEBITOPAGO.CODBANCO=97 OR DEBITOPAGO.CODBANCO=98) "
+    sql = sql & " AND (DEBITOPAGO.CODBANCO=91 OR DEBITOPAGO.CODBANCO=92 OR DEBITOPAGO.CODBANCO=93 OR DEBITOPAGO.CODBANCO=94 OR DEBITOPAGO.CODBANCO=95 OR DEBITOPAGO.CODBANCO=96 OR DEBITOPAGO.CODBANCO=97 OR DEBITOPAGO.CODBANCO=98) "
 Else
     If nCodBanco > 0 Then
-        Sql = Sql & " AND DEBITOPAGO.CODBANCO=" & nCodBanco
+        sql = sql & " AND DEBITOPAGO.CODBANCO=" & nCodBanco
     Else
-        Sql = Sql & " AND (DEBITOPAGO.CODBANCO not in(91,92,93,94,95,96,97,98))"
+        sql = sql & " AND (DEBITOPAGO.CODBANCO not in(91,92,93,94,95,96,97,98))"
     End If
 End If
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
     nNumRec = .RowCount
     Do Until .EOF
         nCodBanco = !CodBanco
@@ -1878,7 +1878,7 @@ With RdoAux
         On Error Resume Next
         RdoDeb.Close
         On Error GoTo 0
-        qd.Sql = "{ Call spEXTRATONEW(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
+        qd.sql = "{ Call spEXTRATONEW(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
         qd(0) = !CODREDUZIDO
         qd(1) = !CODREDUZIDO
         qd(2) = !AnoExercicio
@@ -1908,16 +1908,16 @@ With RdoAux
                 itmX.SubItems(5) = Format(!NumParcela, "000")
                 itmX.SubItems(6) = !CODCOMPLEMENTO
                 itmX.SubItems(7) = Format(!CodTributo, "000")
-                itmX.SubItems(8) = Format(!ValorTributo, "#0.00")
+                itmX.SubItems(8) = Format(!VALORTRIBUTO, "#0.00")
                 If !DataPagamento < !DataVencimentoCalc Then
                     itmX.SubItems(9) = Format(0, "#0.00")
                     itmX.SubItems(10) = Format(0, "#0.00")
                     itmX.SubItems(11) = Format(0, "#0.00")
-                    itmX.SubItems(12) = Format(!ValorTributo, "#0.00")
+                    itmX.SubItems(12) = Format(!VALORTRIBUTO, "#0.00")
                 Else
                     itmX.SubItems(9) = Format(!ValorJuros, "#0.00")
                     itmX.SubItems(10) = Format(!ValorMulta, "#0.00")
-                    itmX.SubItems(11) = Format(!ValorCorrecao, "#0.00")
+                    itmX.SubItems(11) = Format(!valorcorrecao, "#0.00")
                     itmX.SubItems(12) = Format(!ValorTotal, "#0.00")
                 End If
                 itmX.SubItems(13) = IIf(IsDate(!datainscricao), "S", "N")
@@ -2077,10 +2077,10 @@ End If
 
 For x = 1 To UBound(aFichaDetalhe)
     With aFichaDetalhe(x)
-        Sql = "insert analise2 (usuario,datareceita,codbanco,valortotal,numficha,natureza,vinculo,perc,descficha) values('"
-        Sql = Sql & NomeDeLogin & "','" & Format(dDatareceita, "mm/dd/yyyy") & "'," & .Banco & "," & Virg2Ponto(CStr(.Total)) & ","
-        Sql = Sql & .Ficha & ",'" & .Natureza & "','" & .Vinculo & "'," & Virg2Ponto(CStr(.Perc)) & ",'" & .Descricao & "')"
-        cn.Execute Sql, rdExecDirect
+        sql = "insert analise2 (usuario,datareceita,codbanco,valortotal,numficha,natureza,vinculo,perc,descficha) values('"
+        sql = sql & NomeDeLogin & "','" & Format(dDatareceita, "mm/dd/yyyy") & "'," & .Banco & "," & Virg2Ponto(CStr(.Total)) & ","
+        sql = sql & .Ficha & ",'" & .Natureza & "','" & .Vinculo & "'," & Virg2Ponto(CStr(.Perc)) & ",'" & .Descricao & "')"
+        cn.Execute sql, rdExecDirect
         
         ax = FillSpace(.Natureza, 20) & FillSpace(.Vinculo, 20) & Year(.Data) & Format(Month(.Data), "00") & Format(Day(.Data), "00") & Format(.Banco, "0000") & "00000000" & Format(RemovePonto(Replace(CStr(FormatNumber(.Total, 2)), ",", "")), "0000000000000")
         Print #1, ax
@@ -2098,8 +2098,8 @@ Else
     Else
         frmReport.ShowReport "Analise2", frmMdi.HWND, Me.HWND
     End If
-    Sql = "delete from analise2 where usuario='" & NomeDeLogin & "'"
-    cn.Execute Sql, rdExecDirect
+    sql = "delete from analise2 where usuario='" & NomeDeLogin & "'"
+    cn.Execute sql, rdExecDirect
 End If
 dpData.Enabled = True
 opt1(0).Enabled = True
@@ -2116,7 +2116,7 @@ cmdGerar.Enabled = True
 End Sub
 
 Private Sub FichaDetalhe(Data, Banco, NumFicha As Long, valor As Double)
-Dim Sql As String, RdoAux As rdoResultset, x As Integer, bFind As Boolean, q As Integer
+Dim sql As String, rdoAux As rdoResultset, x As Integer, bFind As Boolean, q As Integer
 
 bFind = False
 For q = 1 To UBound(aFichaDetalhe)
@@ -2133,9 +2133,9 @@ If bFind Then
         End If
     Next
 Else
-    Sql = "SELECT NATUREZA,VINCULO,PERC,DESCTA FROM FICHACONTABIL WHERE FICHA=" & NumFicha
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-    With RdoAux
+    sql = "SELECT NATUREZA,VINCULO,PERC,DESCTA FROM FICHACONTABIL WHERE FICHA=" & NumFicha
+    Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    With rdoAux
         Do Until .EOF
             ReDim Preserve aFichaDetalhe(UBound(aFichaDetalhe) + 1)
             aFichaDetalhe(UBound(aFichaDetalhe)).Data = Data
@@ -2196,12 +2196,12 @@ End Function
 
 Private Sub Executar_Analise(bAnalise As Boolean, bBanco As Boolean, bFicha As Boolean)
 
-Dim Sql As String, RdoAux As rdoResultset, sDataLote As String, qd As New rdoQuery, RdoDeb As rdoResultset, xId As Long, nNumRec As Long, nSomaTmp As Double
+Dim sql As String, rdoAux As rdoResultset, sDataLote As String, qd As New rdoQuery, RdoDeb As rdoResultset, xId As Long, nNumRec As Long, nSomaTmp As Double
 Dim nValorPago As Double, nValorTotalPago As Double, aReg() As Reg, x As Integer, nCodTrib As Integer, bDA As Boolean, bAj As Boolean, nValorDif As Double, bFind As Boolean
 Dim z As Long, nCodFicha As Integer, bJuros As Boolean, bMulta As Boolean, bCorrecao As Boolean, nCodFichaP As Long, nCodFichaJM As Long, nCodFichaC As Long
-Dim nIndex As Long, nIndex2 As Long, aRegDoc() As Registros, RdoAux2 As rdoResultset, nValorTmp As Double, v As Long, nUserID As Integer, aFichaValor() As FichaValor
+Dim nIndex As Long, nIndex2 As Long, aRegDoc() As Registros, RdoAux2 As rdoResultset, nValorTmp As Double, v As Long, nUserId As Integer, aFichaValor() As FichaValor
 Dim aDoc() As tDoc, nSomaPago As Double, nSomaFicha As Double, nSomaDif As Double, nSomaPMJC As Double, nPos As Long, nSomaDebitoOriginal As Double, dDataRecebimento As Date
-Dim nNumDoc As Long, dDatareceita As Date
+Dim nNumDoc As Long, dDatareceita As Date, bProtestado As Boolean, nFichaProtestado As Long
 
 lstLog.Clear
 sDataLote = Format(Now, "ddmmhhmm")
@@ -2217,9 +2217,9 @@ cmdGerar.Enabled = False
 
 lstLog.AddItem "Preparando tabelas"
 Me.Refresh
-nUserID = RetornaUsuarioID(NomeDeLogin)
-Sql = "delete from resumo_pagto_banco_ficha where userid=" & RetornaUsuarioID(NomeDeLogin)
-cn.Execute Sql, rdExecDirect
+nUserId = RetornaUsuarioID(NomeDeLogin)
+sql = "delete from resumo_pagto_banco_ficha where userid=" & RetornaUsuarioID(NomeDeLogin)
+cn.Execute sql, rdExecDirect
 CarregaTributo
 
 Ocupado
@@ -2235,64 +2235,68 @@ For dDatareceita = dtDataDe.value To dtDataAte.value
         nCodBanco = 0
     End If
     
-    Sql = "SELECT SUM(debitopago.valorpagoreal) AS soma FROM debitoparcela INNER JOIN debitopago ON debitoparcela.codreduzido = debitopago.codreduzido AND "
-    Sql = Sql & "debitoparcela.anoexercicio = debitopago.anoexercicio AND debitoparcela.codlancamento = debitopago.codlancamento AND debitoparcela.seqlancamento = debitopago.seqlancamento AND "
-    Sql = Sql & "debitoparcela.numparcela = debitopago.numparcela AND debitoparcela.codcomplemento = debitopago.codcomplemento INNER JOIN numdocumento ON debitopago.numdocumento = numdocumento.numdocumento "
-    Sql = Sql & "WHERE RESTITUIDO IS NULL AND DATARECEBIMENTO = '" & Format(dDatareceita, "mm/dd/yyyy") & "' "
+    sql = "SELECT SUM(debitopago.valorpagoreal) AS soma FROM debitoparcela INNER JOIN debitopago ON debitoparcela.codreduzido = debitopago.codreduzido AND "
+    sql = sql & "debitoparcela.anoexercicio = debitopago.anoexercicio AND debitoparcela.codlancamento = debitopago.codlancamento AND debitoparcela.seqlancamento = debitopago.seqlancamento AND "
+    sql = sql & "debitoparcela.numparcela = debitopago.numparcela AND debitoparcela.codcomplemento = debitopago.codcomplemento INNER JOIN numdocumento ON debitopago.numdocumento = numdocumento.numdocumento "
+    sql = sql & "WHERE RESTITUIDO IS NULL AND DATARECEBIMENTO = '" & Format(dDatareceita, "mm/dd/yyyy") & "' "
     If opt1(0).value = True Then
-        Sql = Sql & " AND (DEBITOPAGO.CODBANCO=90 or DEBITOPAGO.CODBANCO=91 OR DEBITOPAGO.CODBANCO=92 OR DEBITOPAGO.CODBANCO=93 OR DEBITOPAGO.CODBANCO=94 OR DEBITOPAGO.CODBANCO=95 OR DEBITOPAGO.CODBANCO=96 OR DEBITOPAGO.CODBANCO=97 OR DEBITOPAGO.CODBANCO=98) "
+        sql = sql & " AND (DEBITOPAGO.CODBANCO=90 or DEBITOPAGO.CODBANCO=91 OR DEBITOPAGO.CODBANCO=92 OR DEBITOPAGO.CODBANCO=93 OR DEBITOPAGO.CODBANCO=94 OR DEBITOPAGO.CODBANCO=95 OR DEBITOPAGO.CODBANCO=96 OR DEBITOPAGO.CODBANCO=97 OR DEBITOPAGO.CODBANCO=98) "
     Else
         If nCodBanco > 0 Then
-            Sql = Sql & " AND DEBITOPAGO.CODBANCO=" & nCodBanco
+            sql = sql & " AND DEBITOPAGO.CODBANCO=" & nCodBanco
         Else
-            Sql = Sql & " AND (DEBITOPAGO.CODBANCO not in(90,91,92,93,94,95,96,97,98))"
+            sql = sql & " AND (DEBITOPAGO.CODBANCO not in(90,91,92,93,94,95,96,97,98))"
+            sql = sql & " AND ARQUIVOBANCO NOT LIKE 'daf607%'"
         End If
     End If
     
     If cmbCC.ListIndex = 0 Then
         'Sql = Sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO<>79"
-        Sql = Sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) "
+        sql = sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) "
 '    ElseIf cmbCC.ListIndex = 1 Then
 '        Sql = Sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO=79 "
     ElseIf cmbCC.ListIndex = 1 Then
-        Sql = Sql & " AND DEBITOPAGO.CONTACORRENTE='" & cmbCC.Text & "'"
+        sql = sql & " AND DEBITOPAGO.CONTACORRENTE='" & cmbCC.Text & "'"
     End If
-    'Sql = Sql & " and debitopago.numdocumento=19925130"
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-    If IsNull(RdoAux!soma) Then
+    'sql = sql & " and debitopago.numdocumento=24119067"
+
+    Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    If IsNull(rdoAux!soma) Then
         lstLog.AddItem "Valor total pago no dia R$ 0,00"
         Me.Refresh
         GoTo nextday
     Else
-        lstLog.AddItem "Valor total pago no dia R$ " & Format(RdoAux!soma, "#0.00")
+        lstLog.AddItem "Valor total pago no dia R$ " & Format(rdoAux!soma, "#0.00")
         Me.Refresh
-        nValorTotalPago = RdoAux!soma
+        nValorTotalPago = rdoAux!soma
     End If
-    RdoAux.Close
+    rdoAux.Close
     
     
-    Sql = "SELECT DISTINCT  debitopago.numdocumento FROM debitopago WHERE RESTITUIDO IS NULL AND DATARECEBIMENTO = '" & Format(dDatareceita, "mm/dd/yyyy") & "' "
+    sql = "SELECT DISTINCT  debitopago.numdocumento FROM debitopago WHERE RESTITUIDO IS NULL AND DATARECEBIMENTO = '" & Format(dDatareceita, "mm/dd/yyyy") & "' "
     If opt1(0).value = True Then
-        Sql = Sql & " AND (DEBITOPAGO.CODBANCO=90 or DEBITOPAGO.CODBANCO=91 OR DEBITOPAGO.CODBANCO=92 OR DEBITOPAGO.CODBANCO=93 OR DEBITOPAGO.CODBANCO=94 OR DEBITOPAGO.CODBANCO=95 OR DEBITOPAGO.CODBANCO=96 OR DEBITOPAGO.CODBANCO=97 OR DEBITOPAGO.CODBANCO=98) "
+        sql = sql & " AND (DEBITOPAGO.CODBANCO=90 or DEBITOPAGO.CODBANCO=91 OR DEBITOPAGO.CODBANCO=92 OR DEBITOPAGO.CODBANCO=93 OR DEBITOPAGO.CODBANCO=94 OR DEBITOPAGO.CODBANCO=95 OR DEBITOPAGO.CODBANCO=96 OR DEBITOPAGO.CODBANCO=97 OR DEBITOPAGO.CODBANCO=98) "
     Else
         If nCodBanco > 0 Then
-            Sql = Sql & " AND DEBITOPAGO.CODBANCO=" & nCodBanco
+            sql = sql & " AND DEBITOPAGO.CODBANCO=" & nCodBanco
         Else
-            Sql = Sql & " AND (DEBITOPAGO.CODBANCO not in(90,91,92,93,94,95,96,97,98))"
+            sql = sql & " AND (DEBITOPAGO.CODBANCO not in(90,91,92,93,94,95,96,97,98))"
+            sql = sql & " AND ARQUIVOBANCO NOT LIKE 'daf607%'"
         End If
     End If
     If cmbCC.ListIndex = 0 Then
-        Sql = Sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0))"
+        sql = sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0))"
         'Sql = Sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO<>79"
     ElseIf cmbCC.ListIndex = 1 Then
 '        Sql = Sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO=79 "
  '   Else
-        Sql = Sql & " AND DEBITOPAGO.CONTACORRENTE='" & cmbCC.Text & "'"
+        sql = sql & " AND DEBITOPAGO.CONTACORRENTE='" & cmbCC.Text & "'"
     End If
-'    Sql = Sql & " and debitopago.numdocumento=2206550"
+    'sql = sql & " and debitopago.numdocumento=24119067"
+
     '19805205
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-    With RdoAux
+    Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    With rdoAux
         nNumRec = .RowCount
         nPos = 1
         lstLog.AddItem ""
@@ -2307,20 +2311,24 @@ For dDatareceita = dtDataDe.value To dtDataAte.value
             End If
             nNumDoc = !NumDocumento
             nSomaDebitoOriginal = 0
-            Sql = "SELECT distinct p.codreduzido,p.anoexercicio,p.codlancamento,p.seqlancamento,p.numparcela,p.codcomplemento,datapagamento,p.plano,n.desconto,arquivobanco,b.nomebanco,d.valorpago,datarecebimento,valorpagoreal FROM parceladocumento p INNER JOIN "
-            Sql = Sql & "debitopago g ON p.codreduzido = g.codreduzido AND p.anoexercicio = g.anoexercicio AND p.codlancamento = g.codlancamento AND p.seqlancamento = g.seqlancamento AND p.numparcela = g.numparcela AND "
-            Sql = Sql & "p.codcomplemento = g.codcomplemento AND p.numdocumento = g.numdocumento LEFT OUTER JOIN plano n ON n.codigo=p.plano LEFT OUTER JOIN banco b ON g.codbanco = b.codbanco INNER JOIN numdocumento d ON p.numdocumento = d.numdocumento "
-            Sql = Sql & "where p.numdocumento=" & nNumDoc & " and g.datarecebimento='" & Format(dDatareceita, "mm/dd/yyyy") & "'"
-            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            sql = "SELECT distinct p.codreduzido,p.anoexercicio,p.codlancamento,p.seqlancamento,p.numparcela,p.codcomplemento,datapagamento,p.plano,n.desconto,arquivobanco,b.nomebanco,d.valorpago,datarecebimento,valorpagoreal FROM parceladocumento p INNER JOIN "
+            sql = sql & "debitopago g ON p.codreduzido = g.codreduzido AND p.anoexercicio = g.anoexercicio AND p.codlancamento = g.codlancamento AND p.seqlancamento = g.seqlancamento AND p.numparcela = g.numparcela AND "
+            sql = sql & "p.codcomplemento = g.codcomplemento AND p.numdocumento = g.numdocumento LEFT OUTER JOIN plano n ON n.codigo=p.plano LEFT OUTER JOIN banco b ON g.codbanco = b.codbanco INNER JOIN numdocumento d ON p.numdocumento = d.numdocumento "
+            sql = sql & "where p.numdocumento=" & nNumDoc & " and g.datarecebimento='" & Format(dDatareceita, "mm/dd/yyyy") & "'"
+            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
             With RdoAux2
                 nValorTotalPago = 0
                 dDataRecebimento = !datarecebimento
                 Do Until .EOF
+                    If Left(!arquivobanco, 3) = "DAF" Then
+                        GoTo NextLanc
+                    End If
+                    DoEvents
                     nValorTotalPago = nValorTotalPago + !ValorPagoreal
                     On Error Resume Next
                     RdoDeb.Close
                     On Error GoTo 0
-                    qd.Sql = "{ Call spEXTRATONEW(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
+                    qd.sql = "{ Call spEXTRATONEW(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
                     qd(0) = !CODREDUZIDO
                     qd(1) = !CODREDUZIDO
                     qd(2) = !AnoExercicio
@@ -2339,8 +2347,18 @@ For dDatareceita = dtDataDe.value To dtDataAte.value
                     qd(15) = NomeDeLogin
                     Set RdoDeb = qd.OpenResultset(rdOpenKeyset)
                     With RdoDeb
+                        'nFichaProtestado = 277 '(FICHA 2025) - MUDAR TODOS OS ANOS <-------------
                         Do Until .EOF
+                            bProtestado = False
+                            If !NumDocumento = 22971004 Then
+                            '    MsgBox "teste"
+                            End If
+                            
+                         '   If Not IsNull(!prot_certidao) Then
+                         '       bProtestado = True
+                         '   End If
                             nCodBanco = !CodBanco
+                            If nCodBanco = 0 Then nCodBanco = 1
                             If nCodBanco >= 90 And nCodBanco < 99 Then
                                 If nCodBanco = 91 Then
                                     nCodBanco = 1
@@ -2365,7 +2383,7 @@ For dDatareceita = dtDataDe.value To dtDataAte.value
                                 ReDim Preserve aReg(nIndex)
                                 aReg(nIndex).nCodBanco = nCodBanco
                                 aReg(nIndex).sNomeBanco = RdoAux2!NomeBanco
-                                aReg(nIndex).sArquivo = RdoAux2!arquivobanco
+                                aReg(nIndex).sArquivo = SubNull(RdoAux2!arquivobanco)
                                 aReg(nIndex).nCodReduz = !CODREDUZIDO
                                 aReg(nIndex).nAno = !AnoExercicio
                                 aReg(nIndex).nLanc = !CodLancamento
@@ -2374,18 +2392,18 @@ For dDatareceita = dtDataDe.value To dtDataAte.value
                                 aReg(nIndex).nCompl = !CODCOMPLEMENTO
                                 aReg(nIndex).nCodTrib = !CodTributo
                                 aReg(nIndex).sDescTributo = !abrevTributo
-                                aReg(nIndex).nValorTrib = !ValorTributo
+                                aReg(nIndex).nValorTrib = !VALORTRIBUTO
                                 aReg(nIndex).ValorPago = nValorPago
-                                aReg(nIndex).NumDocumento = RdoAux!NumDocumento
+                                aReg(nIndex).NumDocumento = rdoAux!NumDocumento
                                 If !datarecebimento <= !DataVencimentoCalc Then
                                     aReg(nIndex).nValorJuros = 0
                                     aReg(nIndex).nValorMulta = 0
                                     aReg(nIndex).nValorCorrecao = 0
-                                    aReg(nIndex).nValorTotal = !ValorTributo
+                                    aReg(nIndex).nValorTotal = !VALORTRIBUTO
                                 Else
                                     aReg(nIndex).nValorJuros = !ValorJuros - (!ValorJuros * nPercDesconto / 100)
                                     aReg(nIndex).nValorMulta = !ValorMulta - (!ValorMulta * nPercDesconto / 100)
-                                    aReg(nIndex).nValorCorrecao = !ValorCorrecao
+                                    aReg(nIndex).nValorCorrecao = !valorcorrecao
                                     aReg(nIndex).nValorTotal = aReg(nIndex).nValorTrib + aReg(nIndex).nValorJuros + aReg(nIndex).nValorMulta + aReg(nIndex).nValorCorrecao
                                 End If
                                 aReg(nIndex).sDataInscricao = IIf(IsDate(!datainscricao), "S", "N")
@@ -2444,13 +2462,14 @@ NextDoc:
         End If
         For v = 1 To UBound(aReg)
             If aReg(v).NumDocumento = aDoc(nIndex).Documento Then
-'                If aReg(v).NumDocumento = 2206550 Then
-'                      MsgBox "teste"
-'                End If
+                If aReg(v).NumDocumento = 22971004 Then
+                      'MsgBox "teste"
+                End If
                 'carrega as fichas
                 nCodTrib = aReg(v).nCodTrib
                 z = -1
                 z = BinarySearchLong(aCodFicha(), CLng(nCodTrib))
+                If z < 1 Then MsgBox "teste"
                 bDA = IIf(aReg(v).sDataInscricao = "S", True, False)
                 bAj = IIf(aReg(v).sDataAjuiza = "S", True, False)
                 If aReg(v).nValorJuros > 0 Then
@@ -2468,9 +2487,18 @@ NextDoc:
                 Else
                     bCorrecao = False
                 End If
+                
+                'Nova Ficha de Honorário Protestado
+                'If aReg(v).nLanc = 41 Then
+                '    If bProtestado Then
+                '        nCodFichaP = nFichaProtestado
+                '    End If
+                'End If
+                
+                
                 If Not bDA And Not bAj Then
-                    If aReg(v).nLanc = 1 And aReg(v).nAno = 2023 And Year(CDate(aReg(v).sDataRecebimento)) = 2022 Then
-                        nCodFichaP = 50521
+                    If aReg(v).nLanc = 1 And aReg(v).nAno = 2026 And Year(CDate(aReg(v).sDataRecebimento)) = 2025 Then
+                        nCodFichaP = 50525
                     Else
                         nCodFichaP = aFicha(z).F1 'Principal
                     End If
@@ -2507,8 +2535,11 @@ NextDoc:
             '    *** PRINCIPAL ****
            ' If aReg(v).NumDocumento = 17969949 Then MsgBox "teste"
                 If nCodFichaP > 0 Then
-                    Sql = "SELECT NATUREZA,VINCULO,PERC,DESCTA FROM FICHACONTABIL WHERE FICHA=" & nCodFichaP
-                    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                    If nCodFichaP = 144 Then
+                        'MsgBox "teste"
+                    End If
+                    sql = "SELECT NATUREZA,VINCULO,PERC,DESCTA FROM FICHACONTABIL WHERE FICHA=" & nCodFichaP
+                    Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                     With RdoAux2
                         If RdoAux2.RowCount = 0 Then
                             MsgBox "Erro!! Ficha " & nCodFichaP & " não cadastrada. (Documento: " & aReg(v).NumDocumento & ")", vbCritical, "Erro"
@@ -2545,8 +2576,8 @@ NextDoc:
             '   *******************
             '    *** juros e multa ****
                 If nCodFichaJM > 0 And (aReg(v).nValorJuros Or aReg(v).nValorMulta > 0) Then
-                    Sql = "SELECT NATUREZA,VINCULO,PERC,DESCTA FROM FICHACONTABIL WHERE FICHA=" & nCodFichaJM
-                    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                    sql = "SELECT NATUREZA,VINCULO,PERC,DESCTA FROM FICHACONTABIL WHERE FICHA=" & nCodFichaJM
+                    Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                     With RdoAux2
                         If RdoAux2.RowCount = 0 Then
                             MsgBox "Erro!! Ficha " & nCodFichaJM & " não cadastrada. (Documento: " & aReg(v).NumDocumento & ")", vbCritical, "Erro"
@@ -2582,8 +2613,8 @@ NextDoc:
             '   *******************
             '    *** correção ****
                 If nCodFichaC > 0 And aReg(v).nValorCorrecao > 0 Then
-                    Sql = "SELECT NATUREZA,VINCULO,PERC,DESCTA FROM FICHACONTABIL WHERE FICHA=" & nCodFichaC
-                    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                    sql = "SELECT NATUREZA,VINCULO,PERC,DESCTA FROM FICHACONTABIL WHERE FICHA=" & nCodFichaC
+                    Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                     With RdoAux2
                         If RdoAux2.RowCount = 0 Then
                             MsgBox "Erro!! Ficha " & nCodFichaC & " não cadastrada. (Documento: " & aReg(v).NumDocumento & ")", vbCritical, "Erro"
@@ -2620,12 +2651,13 @@ NextDoc:
             
         Next
     Next
+    
     lstLog.List(lstLog.ListCount - 1) = "Separando em fichas: 100%"
     lstLog.AddItem ""
     Me.Refresh
     
-    Sql = "select count(*) as contador from resumo_pagto_banco_ficha where userid=" & nUserID
-    Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    sql = "select count(*) as contador from resumo_pagto_banco_ficha where userid=" & nUserId
+    Set RdoAux3 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     If IsNull(RdoAux3!contador) Then
         xId = 1
     Else
@@ -2634,22 +2666,22 @@ NextDoc:
     
     For v = 1 To UBound(aRegDoc)
         aRegDoc(v).nValor = aRegDoc(v).nValorP + aRegDoc(v).nValorM + aRegDoc(v).nValorJ + aRegDoc(v).nValorC
-        If aRegDoc(v).nNumDocumento = 19823205 Then MsgBox "teste"
+       ' If aRegDoc(v).nNumDocumento = 22961011 And aRegDoc(v).nLanc > 5 Then MsgBox "teste"
         If v Mod 20 = 0 Then
             lstLog.List(lstLog.ListCount - 1) = "Gravando análise: " & FormatNumber((v * 100) / UBound(aRegDoc), 2) & "%"
             lstLog.ListIndex = lstLog.ListCount - 1
             lstLog.Refresh
         End If
         If Format(aRegDoc(v).sDataRecebimento, "dd/mm/yyyy") = Format(dDatareceita, "dd/mm/yyyy") Then
-
+        If aRegDoc(v).nCodBanco = 0 Then aRegDoc(v).nCodBanco = 1
 '        If aRegDoc(v).nValor > 0 Then
-            Sql = "insert resumo_pagto_banco_ficha(userid,datacredito,documento,codigo,ano,lanc,seq,parc,compl,codtributo,desctributo,descficha,ficha,arquivo,natureza,vinculo,perc,valor,codbanco,id,valorp,valorj,valorm,"
-            Sql = Sql & "valorc,nomebanco) values(" & nUserID & ",'" & Format(aRegDoc(v).sDataRecebimento, "mm/dd/yyyy") & "'," & aRegDoc(v).nNumDocumento & "," & aRegDoc(v).nCodReduz & "," & aRegDoc(v).nAno & ","
-            Sql = Sql & aRegDoc(v).nLanc & "," & aRegDoc(v).nSeq & "," & aRegDoc(v).nParc & "," & aRegDoc(v).nCompl & "," & aRegDoc(v).nCodTributo & ",'" & aRegDoc(v).sDescTributo & "','" & aRegDoc(v).sDescFicha & "',"
-            Sql = Sql & aRegDoc(v).nCodFicha & ",'" & aRegDoc(v).sArquivo & "','" & aRegDoc(v).sNatureza & "','" & aRegDoc(v).sVinculo & "'," & aRegDoc(v).nPerc & "," & Virg2Ponto(CStr(aRegDoc(v).nValor)) & ","
-            Sql = Sql & aRegDoc(v).nCodBanco & "," & xId & "," & Virg2Ponto(CStr(aRegDoc(v).nValorP)) & "," & Virg2Ponto(CStr(aRegDoc(v).nValorJ)) & "," & Virg2Ponto(CStr(aRegDoc(v).nValorM)) & ","
-            Sql = Sql & Virg2Ponto(CStr(aRegDoc(v).nValorC)) & ",'" & Mask(aRegDoc(v).sNomeBanco) & "')"
-            cn.Execute Sql, rdExecDirect
+            sql = "insert resumo_pagto_banco_ficha(userid,datacredito,documento,codigo,ano,lanc,seq,parc,compl,codtributo,desctributo,descficha,ficha,arquivo,natureza,vinculo,perc,valor,codbanco,id,valorp,valorj,valorm,"
+            sql = sql & "valorc,nomebanco) values(" & nUserId & ",'" & Format(aRegDoc(v).sDataRecebimento, "mm/dd/yyyy") & "'," & aRegDoc(v).nNumDocumento & "," & aRegDoc(v).nCodReduz & "," & aRegDoc(v).nAno & ","
+            sql = sql & aRegDoc(v).nLanc & "," & aRegDoc(v).nSeq & "," & aRegDoc(v).nParc & "," & aRegDoc(v).nCompl & "," & aRegDoc(v).nCodTributo & ",'" & aRegDoc(v).sDescTributo & "','" & aRegDoc(v).sDescFicha & "',"
+            sql = sql & aRegDoc(v).nCodFicha & ",'" & aRegDoc(v).sArquivo & "','" & aRegDoc(v).sNatureza & "','" & aRegDoc(v).sVinculo & "'," & aRegDoc(v).nPerc & "," & Virg2Ponto(CStr(aRegDoc(v).nValor)) & ","
+            sql = sql & aRegDoc(v).nCodBanco & "," & xId & "," & Virg2Ponto(CStr(aRegDoc(v).nValorP)) & "," & Virg2Ponto(CStr(aRegDoc(v).nValorJ)) & "," & Virg2Ponto(CStr(aRegDoc(v).nValorM)) & ","
+            sql = sql & Virg2Ponto(CStr(aRegDoc(v).nValorC)) & ",'" & Mask(aRegDoc(v).sNomeBanco) & "')"
+            cn.Execute sql, rdExecDirect
  '       End If
         End If
         xId = xId + 1
@@ -2673,9 +2705,9 @@ If bAnalise Then
     
     
     ReDim aRegDoc(0)
-    Sql = "select * from resumo_pagto_banco_ficha where userid=" & nUserID
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-    With RdoAux
+    sql = "select * from resumo_pagto_banco_ficha where userid=" & nUserId
+    Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    With rdoAux
         Do Until .EOF
             bFind = False
             For v = 1 To UBound(aRegDoc)
@@ -2727,8 +2759,8 @@ If bFicha Then
 End If
 
 Fim:
-Sql = "delete from resumo_pagto_banco_ficha where userid=" & nUserID
-cn.Execute Sql, rdExecDirect
+sql = "delete from resumo_pagto_banco_ficha where userid=" & nUserId
+cn.Execute sql, rdExecDirect
 
 
 Liberado
@@ -2746,19 +2778,19 @@ cmdGerar.Enabled = True
 End Sub
 
 Private Sub TESTE()
-Dim Sql As String, RdoAux As rdoResultset, sNomeArq As String, RdoAux2 As rdoResultset, RdoAux3 As rdoResultset, nValor As Double
+Dim sql As String, rdoAux As rdoResultset, sNomeArq As String, RdoAux2 As rdoResultset, RdoAux3 As rdoResultset, nValor As Double
 Dim nSomaFicha As Double, nSomaPago As Double
 sNomeArq = sPathBin & "\teste.txt"
 nValor = 0: nSomaFicha = 0: nSomaPago = 0
 Open sNomeArq For Output As #1
-Sql = "SELECT DISTINCT(numdocumento) FROM debitopago WHERE datarecebimento='" & Format(dpData.value, "mm/dd/yyyy") & "' ORDER BY numdocumento"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
+sql = "SELECT DISTINCT(numdocumento) FROM debitopago WHERE datarecebimento='" & Format(dpData.value, "mm/dd/yyyy") & "' ORDER BY numdocumento"
+Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With rdoAux
     Do Until .EOF
-        Sql = "select sum(valorpagoreal) as totalpago from debitopago where numdocumento=" & !NumDocumento & " and datarecebimento='" & Format(dpData.value, "mm/dd/yyyy") & "'"
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-        Sql = "select sum(valor) as total from resumo_pagto_banco_ficha where documento=" & !NumDocumento & " and datacredito='" & Format(dpData.value, "mm/dd/yyyy") & "'"
-        Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "select sum(valorpagoreal) as totalpago from debitopago where numdocumento=" & !NumDocumento & " and datarecebimento='" & Format(dpData.value, "mm/dd/yyyy") & "'"
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+        sql = "select sum(valor) as total from resumo_pagto_banco_ficha where documento=" & !NumDocumento & " and datacredito='" & Format(dpData.value, "mm/dd/yyyy") & "'"
+        Set RdoAux3 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         If RdoAux3!Total > 0 Then
 '            nValor = nValor + RdoAux2!totalpago
 '            If FormatNumber(RdoAux2!totalpago, 2) <> FormatNumber(RdoAux3!Total, 2) Then
@@ -2783,10 +2815,10 @@ End Sub
 
 Private Sub Executar_Analise_Old(bAnalise As Boolean, bBanco As Boolean, bFicha As Boolean)
 
-Dim Sql As String, RdoAux As rdoResultset, sDataLote As String, qd As New rdoQuery, RdoDeb As rdoResultset, xId As Long, nNumRec As Long, nSomaTmp As Double
+Dim sql As String, rdoAux As rdoResultset, sDataLote As String, qd As New rdoQuery, RdoDeb As rdoResultset, xId As Long, nNumRec As Long, nSomaTmp As Double
 Dim nValorPago As Double, nValorTotalPago As Double, aReg() As Reg, x As Integer, nCodTrib As Integer, bDA As Boolean, bAj As Boolean, nValorDif As Double, bFind As Boolean
 Dim z As Long, nCodFicha As Integer, bJuros As Boolean, bMulta As Boolean, bCorrecao As Boolean, nCodFichaP As Long, nCodFichaJM As Long, nCodFichaC As Long
-Dim nIndex As Long, nIndex2 As Long, aRegDoc() As Registros, RdoAux2 As rdoResultset, nValorTmp As Double, v As Long, nUserID As Integer, aFichaValor() As FichaValor
+Dim nIndex As Long, nIndex2 As Long, aRegDoc() As Registros, RdoAux2 As rdoResultset, nValorTmp As Double, v As Long, nUserId As Integer, aFichaValor() As FichaValor
 Dim aDoc() As tDoc, nSomaPago As Double, nSomaFicha As Double, nSomaDif As Double, nSomaPMJC As Double, nPos As Long
 
 lstLog.Clear
@@ -2803,9 +2835,9 @@ cmdGerar.Enabled = False
 
 lstLog.AddItem "Preparando tabelas"
 Me.Refresh
-nUserID = RetornaUsuarioID(NomeDeLogin)
-Sql = "delete from resumo_pagto_banco_ficha where userid=" & RetornaUsuarioID(NomeDeLogin)
-cn.Execute Sql, rdExecDirect
+nUserId = RetornaUsuarioID(NomeDeLogin)
+sql = "delete from resumo_pagto_banco_ficha where userid=" & RetornaUsuarioID(NomeDeLogin)
+cn.Execute sql, rdExecDirect
 CarregaTributo
 
 Ocupado
@@ -2822,68 +2854,68 @@ For dDatareceita = dtDataDe.value To dtDataAte.value
         nCodBanco = 0
     End If
     
-    Sql = "SELECT SUM(debitopago.valorpagoreal) AS soma FROM debitoparcela INNER JOIN debitopago ON debitoparcela.codreduzido = debitopago.codreduzido AND "
-    Sql = Sql & "debitoparcela.anoexercicio = debitopago.anoexercicio AND debitoparcela.codlancamento = debitopago.codlancamento AND debitoparcela.seqlancamento = debitopago.seqlancamento AND "
-    Sql = Sql & "debitoparcela.numparcela = debitopago.numparcela AND debitoparcela.codcomplemento = debitopago.codcomplemento INNER JOIN numdocumento ON debitopago.numdocumento = numdocumento.numdocumento "
-    Sql = Sql & "WHERE RESTITUIDO IS NULL AND DATARECEBIMENTO = '" & Format(dDatareceita, "mm/dd/yyyy") & "' "
+    sql = "SELECT SUM(debitopago.valorpagoreal) AS soma FROM debitoparcela INNER JOIN debitopago ON debitoparcela.codreduzido = debitopago.codreduzido AND "
+    sql = sql & "debitoparcela.anoexercicio = debitopago.anoexercicio AND debitoparcela.codlancamento = debitopago.codlancamento AND debitoparcela.seqlancamento = debitopago.seqlancamento AND "
+    sql = sql & "debitoparcela.numparcela = debitopago.numparcela AND debitoparcela.codcomplemento = debitopago.codcomplemento INNER JOIN numdocumento ON debitopago.numdocumento = numdocumento.numdocumento "
+    sql = sql & "WHERE RESTITUIDO IS NULL AND DATARECEBIMENTO = '" & Format(dDatareceita, "mm/dd/yyyy") & "' "
     If opt1(0).value = True Then
-        Sql = Sql & " AND (DEBITOPAGO.CODBANCO=90 or DEBITOPAGO.CODBANCO=91 OR DEBITOPAGO.CODBANCO=92 OR DEBITOPAGO.CODBANCO=93 OR DEBITOPAGO.CODBANCO=94 OR DEBITOPAGO.CODBANCO=95 OR DEBITOPAGO.CODBANCO=96 OR DEBITOPAGO.CODBANCO=97 OR DEBITOPAGO.CODBANCO=98) "
+        sql = sql & " AND (DEBITOPAGO.CODBANCO=90 or DEBITOPAGO.CODBANCO=91 OR DEBITOPAGO.CODBANCO=92 OR DEBITOPAGO.CODBANCO=93 OR DEBITOPAGO.CODBANCO=94 OR DEBITOPAGO.CODBANCO=95 OR DEBITOPAGO.CODBANCO=96 OR DEBITOPAGO.CODBANCO=97 OR DEBITOPAGO.CODBANCO=98) "
     Else
         If nCodBanco > 0 Then
-            Sql = Sql & " AND DEBITOPAGO.CODBANCO=" & nCodBanco
+            sql = sql & " AND DEBITOPAGO.CODBANCO=" & nCodBanco
         Else
-            Sql = Sql & " AND (DEBITOPAGO.CODBANCO not in(90,91,92,93,94,95,96,97,98))"
+            sql = sql & " AND (DEBITOPAGO.CODBANCO not in(90,91,92,93,94,95,96,97,98))"
         End If
     End If
     
     If cmbCC.ListIndex = 0 Then
-        Sql = Sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO<>79"
+        sql = sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO<>79"
     ElseIf cmbCC.ListIndex = 1 Then
-        Sql = Sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO=79 "
+        sql = sql & " AND (DEBITOPAGO.CONTACORRENTE='0346926' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO=79 "
     ElseIf cmbCC.ListIndex = 2 Then
-        Sql = Sql & " AND DEBITOPAGO.CONTACORRENTE='" & cmbCC.Text & "'"
+        sql = sql & " AND DEBITOPAGO.CONTACORRENTE='" & cmbCC.Text & "'"
     End If
-    Sql = Sql & " and debitopago.numdocumento=17970401"
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-    If IsNull(RdoAux!soma) Then
+    sql = sql & " and debitopago.numdocumento=17970401"
+    Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    If IsNull(rdoAux!soma) Then
         lstLog.AddItem "Valor total pago no dia R$ 0,00"
         Me.Refresh
         GoTo nextday
     Else
-        lstLog.AddItem "Valor total pago no dia R$ " & Format(RdoAux!soma, "#0.00")
+        lstLog.AddItem "Valor total pago no dia R$ " & Format(rdoAux!soma, "#0.00")
         Me.Refresh
 '        lblTotalDia.Caption = Format(RdoAux!soma, "#0.00")
-        nValorTotalPago = RdoAux!soma
+        nValorTotalPago = rdoAux!soma
     End If
-    RdoAux.Close
+    rdoAux.Close
     
-    Sql = "SELECT DISTINCT debitopago.codreduzido,nomebanco, debitopago.anoexercicio, debitopago.codlancamento, debitopago.seqlancamento, debitopago.numparcela, debitopago.codcomplemento, debitopago.seqpag, debitopago.datapagamento,"
-    Sql = Sql & "debitopago.datarecebimento, debitopago.valorpago, debitopago.codbanco, debitopago.codagencia, debitopago.restituido, debitopago.numdocumento, debitopago.valorpagoreal, debitopago.intacto, debitopago.valortarifa,"
-    Sql = Sql & "debitopago.arquivobanco , debitopago.valordif, debitopago.datapagamentocalc, debitopago.dataintegracao, debitopago.contacorrente, parceladocumento.plano, plano.desconto "
-    Sql = Sql & "FROM debitopago INNER JOIN parceladocumento ON debitopago.codreduzido = parceladocumento.codreduzido AND debitopago.anoexercicio = parceladocumento.anoexercicio AND debitopago.codlancamento = parceladocumento.codlancamento AND "
-    Sql = Sql & "debitopago.seqlancamento = parceladocumento.seqlancamento AND debitopago.numparcela = parceladocumento.numparcela AND debitopago.codcomplemento = parceladocumento.codcomplemento AND "
-    Sql = Sql & "debitopago.numdocumento = parceladocumento.numdocumento LEFT OUTER JOIN plano ON parceladocumento.plano = plano.codigo "
-    Sql = Sql & "INNER JOIN banco ON debitopago.codbanco = banco.codbanco "
-    Sql = Sql & "WHERE RESTITUIDO IS NULL AND DATARECEBIMENTO = '" & Format(dDatareceita, "mm/dd/yyyy") & "' "
+    sql = "SELECT DISTINCT debitopago.codreduzido,nomebanco, debitopago.anoexercicio, debitopago.codlancamento, debitopago.seqlancamento, debitopago.numparcela, debitopago.codcomplemento, debitopago.seqpag, debitopago.datapagamento,"
+    sql = sql & "debitopago.datarecebimento, debitopago.valorpago, debitopago.codbanco, debitopago.codagencia, debitopago.restituido, debitopago.numdocumento, debitopago.valorpagoreal, debitopago.intacto, debitopago.valortarifa,"
+    sql = sql & "debitopago.arquivobanco , debitopago.valordif, debitopago.datapagamentocalc, debitopago.dataintegracao, debitopago.contacorrente, parceladocumento.plano, plano.desconto "
+    sql = sql & "FROM debitopago INNER JOIN parceladocumento ON debitopago.codreduzido = parceladocumento.codreduzido AND debitopago.anoexercicio = parceladocumento.anoexercicio AND debitopago.codlancamento = parceladocumento.codlancamento AND "
+    sql = sql & "debitopago.seqlancamento = parceladocumento.seqlancamento AND debitopago.numparcela = parceladocumento.numparcela AND debitopago.codcomplemento = parceladocumento.codcomplemento AND "
+    sql = sql & "debitopago.numdocumento = parceladocumento.numdocumento LEFT OUTER JOIN plano ON parceladocumento.plano = plano.codigo "
+    sql = sql & "INNER JOIN banco ON debitopago.codbanco = banco.codbanco "
+    sql = sql & "WHERE RESTITUIDO IS NULL AND DATARECEBIMENTO = '" & Format(dDatareceita, "mm/dd/yyyy") & "' "
     If opt1(0).value = True Then
-        Sql = Sql & " AND (DEBITOPAGO.CODBANCO=90 or DEBITOPAGO.CODBANCO=91 OR DEBITOPAGO.CODBANCO=92 OR DEBITOPAGO.CODBANCO=93 OR DEBITOPAGO.CODBANCO=94 OR DEBITOPAGO.CODBANCO=95 OR DEBITOPAGO.CODBANCO=96 OR DEBITOPAGO.CODBANCO=97 OR DEBITOPAGO.CODBANCO=98) "
+        sql = sql & " AND (DEBITOPAGO.CODBANCO=90 or DEBITOPAGO.CODBANCO=91 OR DEBITOPAGO.CODBANCO=92 OR DEBITOPAGO.CODBANCO=93 OR DEBITOPAGO.CODBANCO=94 OR DEBITOPAGO.CODBANCO=95 OR DEBITOPAGO.CODBANCO=96 OR DEBITOPAGO.CODBANCO=97 OR DEBITOPAGO.CODBANCO=98) "
     Else
         If nCodBanco > 0 Then
-            Sql = Sql & " AND DEBITOPAGO.CODBANCO=" & nCodBanco
+            sql = sql & " AND DEBITOPAGO.CODBANCO=" & nCodBanco
         Else
-            Sql = Sql & " AND (DEBITOPAGO.CODBANCO not in(90,91,92,93,94,95,96,97,98))"
+            sql = sql & " AND (DEBITOPAGO.CODBANCO not in(90,91,92,93,94,95,96,97,98))"
         End If
     End If
     If cmbCC.ListIndex = 0 Then
-        Sql = Sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO<>79"
+        sql = sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO<>79"
     ElseIf cmbCC.ListIndex = 1 Then
-        Sql = Sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO=79 "
+        sql = sql & " AND (DEBITOPAGO.CONTACORRENTE='0346926' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO=79 "
     Else
-        Sql = Sql & " AND DEBITOPAGO.CONTACORRENTE='" & cmbCC.Text & "'"
+        sql = sql & " AND DEBITOPAGO.CONTACORRENTE='" & cmbCC.Text & "'"
     End If
-    Sql = Sql & " and debitopago.numdocumento=17970401"
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-    With RdoAux
+    sql = sql & " and debitopago.numdocumento=17970401"
+    Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    With rdoAux
         nNumRec = .RowCount
         nPos = 1
         lstLog.AddItem ""
@@ -2918,7 +2950,7 @@ For dDatareceita = dtDataDe.value To dtDataAte.value
             On Error Resume Next
             RdoDeb.Close
             On Error GoTo 0
-            qd.Sql = "{ Call spEXTRATONEW(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
+            qd.sql = "{ Call spEXTRATONEW(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
             qd(0) = !CODREDUZIDO
             qd(1) = !CODREDUZIDO
             qd(2) = !AnoExercicio
@@ -2946,14 +2978,14 @@ For dDatareceita = dtDataDe.value To dtDataAte.value
                     If Format(!datarecebimento, "dd/mm/yyyy") <> Format(dDatareceita, "dd/mm/yyyy") Then
                         GoTo NextDoc
                     End If
-                    If !ValorTributo = 0 Then
+                    If !VALORTRIBUTO = 0 Then
                         GoTo NextDoc
                     End If
                     nIndex = UBound(aReg) + 1
                     ReDim Preserve aReg(nIndex)
                     aReg(nIndex).nCodBanco = nCodBanco
-                    aReg(nIndex).sNomeBanco = RdoAux!NomeBanco
-                    aReg(nIndex).sArquivo = RdoAux!arquivobanco
+                    aReg(nIndex).sNomeBanco = rdoAux!NomeBanco
+                    aReg(nIndex).sArquivo = rdoAux!arquivobanco
                     aReg(nIndex).nCodReduz = !CODREDUZIDO
                     aReg(nIndex).nAno = !AnoExercicio
                     aReg(nIndex).nLanc = !CodLancamento
@@ -2962,18 +2994,18 @@ For dDatareceita = dtDataDe.value To dtDataAte.value
                     aReg(nIndex).nCompl = !CODCOMPLEMENTO
                     aReg(nIndex).nCodTrib = !CodTributo
                     aReg(nIndex).sDescTributo = !abrevTributo
-                    aReg(nIndex).nValorTrib = !ValorTributo
+                    aReg(nIndex).nValorTrib = !VALORTRIBUTO
                     aReg(nIndex).ValorPago = nValorPago
-                    aReg(nIndex).NumDocumento = RdoAux!NumDocumento
+                    aReg(nIndex).NumDocumento = rdoAux!NumDocumento
                     If !datarecebimento <= !DataVencimentoCalc Then
                         aReg(nIndex).nValorJuros = 0
                         aReg(nIndex).nValorMulta = 0
                         aReg(nIndex).nValorCorrecao = 0
-                        aReg(nIndex).nValorTotal = !ValorTributo
+                        aReg(nIndex).nValorTotal = !VALORTRIBUTO
                     Else
                         aReg(nIndex).nValorJuros = !ValorJuros - (!ValorJuros * nPercDesconto / 100)
                         aReg(nIndex).nValorMulta = !ValorMulta - (!ValorMulta * nPercDesconto / 100)
-                        aReg(nIndex).nValorCorrecao = !ValorCorrecao
+                        aReg(nIndex).nValorCorrecao = !valorcorrecao
                         aReg(nIndex).nValorTotal = aReg(nIndex).nValorTrib + aReg(nIndex).nValorJuros + aReg(nIndex).nValorMulta + aReg(nIndex).nValorCorrecao
                     End If
                     aReg(nIndex).sDataInscricao = IIf(IsDate(!datainscricao), "S", "N")
@@ -3016,17 +3048,17 @@ NextDoc:
             ReDim Preserve aDoc(UBound(aDoc) + 1)
             aDoc(UBound(aDoc)).Documento = aReg(nIndex).NumDocumento
             aDoc(UBound(aDoc)).DataReceita = aReg(nIndex).sDataRecebimento
-            Sql = "select sum(valorpagoreal) as soma from debitopago where numdocumento=" & aReg(nIndex).NumDocumento
+            sql = "select sum(valorpagoreal) as soma from debitopago where numdocumento=" & aReg(nIndex).NumDocumento
             
             If cmbCC.ListIndex = 0 Then
-                Sql = Sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO<>79"
+                sql = sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO<>79"
             ElseIf cmbCC.ListIndex = 1 Then
-                Sql = Sql & " AND (DEBITOPAGO.CONTACORRENTE='0740004' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO=79 "
+                sql = sql & " AND (DEBITOPAGO.CONTACORRENTE='0346926' OR DEBITOPAGO.CONTACORRENTE=NULL  OR DEBITOPAGO.CONTACORRENTE='' OR (CONVERT(int, debitopago.contacorrente) = 0)) AND debitopago.CODLANCAMENTO=79 "
             Else
-                Sql = Sql & " AND DEBITOPAGO.CONTACORRENTE='" & cmbCC.Text & "'"
+                sql = sql & " AND DEBITOPAGO.CONTACORRENTE='" & cmbCC.Text & "'"
             End If
             
-            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
             aDoc(UBound(aDoc)).ValorPago = RdoAux2!soma
             RdoAux2.Close
             aDoc(UBound(aDoc)).TotalTributos = aReg(nIndex).nValorTotal
@@ -3175,8 +3207,8 @@ Proximo:
             '    *** PRINCIPAL ****
            ' If aReg(v).NumDocumento = 17969949 Then MsgBox "teste"
                 If nCodFichaP > 0 Then
-                    Sql = "SELECT NATUREZA,VINCULO,PERC,DESCTA FROM FICHACONTABIL WHERE FICHA=" & nCodFichaP
-                    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                    sql = "SELECT NATUREZA,VINCULO,PERC,DESCTA FROM FICHACONTABIL WHERE FICHA=" & nCodFichaP
+                    Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                     With RdoAux2
                         Do Until .EOF
                         
@@ -3211,8 +3243,8 @@ Proximo:
             '   *******************
             '    *** juros e multa ****
                 If nCodFichaJM > 0 And aReg(v).ValorJM > 0 Then
-                    Sql = "SELECT NATUREZA,VINCULO,PERC,DESCTA FROM FICHACONTABIL WHERE FICHA=" & nCodFichaJM
-                    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                    sql = "SELECT NATUREZA,VINCULO,PERC,DESCTA FROM FICHACONTABIL WHERE FICHA=" & nCodFichaJM
+                    Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                     With RdoAux2
                         Do Until .EOF
                             ReDim Preserve aRegDoc(UBound(aRegDoc) + 1)
@@ -3249,8 +3281,8 @@ Proximo:
             
             '    *** correção ****
                 If nCodFichaC > 0 And aReg(v).ValorCr > 0 Then
-                    Sql = "SELECT NATUREZA,VINCULO,PERC,DESCTA FROM FICHACONTABIL WHERE FICHA=" & nCodFichaC
-                    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                    sql = "SELECT NATUREZA,VINCULO,PERC,DESCTA FROM FICHACONTABIL WHERE FICHA=" & nCodFichaC
+                    Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                     With RdoAux2
                         Do Until .EOF
                             ReDim Preserve aRegDoc(UBound(aRegDoc) + 1)
@@ -3314,8 +3346,8 @@ Proximo:
         End If
     Next
 
-    Sql = "select count(*) as contador from resumo_pagto_banco_ficha where userid=" & nUserID
-    Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    sql = "select count(*) as contador from resumo_pagto_banco_ficha where userid=" & nUserId
+    Set RdoAux3 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     If IsNull(RdoAux3!contador) Then
         xId = 1
     Else
@@ -3329,14 +3361,15 @@ Proximo:
             lstLog.ListIndex = lstLog.ListCount - 1
             lstLog.Refresh
         End If
+        If aRegDoc(v).nCodBanco = 0 Then aRegDoc(v).nCodBanco = 1
         If aRegDoc(v).nValor > 0 Then
-            Sql = "insert resumo_pagto_banco_ficha(userid,datacredito,documento,codigo,ano,lanc,seq,parc,compl,codtributo,desctributo,descficha,ficha,arquivo,natureza,vinculo,perc,valor,codbanco,id,valorp,valorj,valorm,"
-            Sql = Sql & "valorc,nomebanco) values(" & nUserID & ",'" & Format(aRegDoc(v).sDataRecebimento, "mm/dd/yyyy") & "'," & aRegDoc(v).nNumDocumento & "," & aRegDoc(v).nCodReduz & "," & aRegDoc(v).nAno & ","
-            Sql = Sql & aRegDoc(v).nLanc & "," & aRegDoc(v).nSeq & "," & aRegDoc(v).nParc & "," & aRegDoc(v).nCompl & "," & aRegDoc(v).nCodTributo & ",'" & aRegDoc(v).sDescTributo & "','" & aRegDoc(v).sDescFicha & "',"
-            Sql = Sql & aRegDoc(v).nCodFicha & ",'" & aRegDoc(v).sArquivo & "','" & aRegDoc(v).sNatureza & "','" & aRegDoc(v).sVinculo & "'," & aRegDoc(v).nPerc & "," & Virg2Ponto(CStr(aRegDoc(v).nValor)) & ","
-            Sql = Sql & aRegDoc(v).nCodBanco & "," & xId & "," & Virg2Ponto(CStr(aRegDoc(v).nValorP)) & "," & Virg2Ponto(CStr(aRegDoc(v).nValorJ)) & "," & Virg2Ponto(CStr(aRegDoc(v).nValorM)) & ","
-            Sql = Sql & Virg2Ponto(CStr(aRegDoc(v).nValorC)) & ",'" & Mask(aRegDoc(v).sNomeBanco) & "')"
-            cn.Execute Sql, rdExecDirect
+            sql = "insert resumo_pagto_banco_ficha(userid,datacredito,documento,codigo,ano,lanc,seq,parc,compl,codtributo,desctributo,descficha,ficha,arquivo,natureza,vinculo,perc,valor,codbanco,id,valorp,valorj,valorm,"
+            sql = sql & "valorc,nomebanco) values(" & nUserId & ",'" & Format(aRegDoc(v).sDataRecebimento, "mm/dd/yyyy") & "'," & aRegDoc(v).nNumDocumento & "," & aRegDoc(v).nCodReduz & "," & aRegDoc(v).nAno & ","
+            sql = sql & aRegDoc(v).nLanc & "," & aRegDoc(v).nSeq & "," & aRegDoc(v).nParc & "," & aRegDoc(v).nCompl & "," & aRegDoc(v).nCodTributo & ",'" & aRegDoc(v).sDescTributo & "','" & aRegDoc(v).sDescFicha & "',"
+            sql = sql & aRegDoc(v).nCodFicha & ",'" & aRegDoc(v).sArquivo & "','" & aRegDoc(v).sNatureza & "','" & aRegDoc(v).sVinculo & "'," & aRegDoc(v).nPerc & "," & Virg2Ponto(CStr(aRegDoc(v).nValor)) & ","
+            sql = sql & aRegDoc(v).nCodBanco & "," & xId & "," & Virg2Ponto(CStr(aRegDoc(v).nValorP)) & "," & Virg2Ponto(CStr(aRegDoc(v).nValorJ)) & "," & Virg2Ponto(CStr(aRegDoc(v).nValorM)) & ","
+            sql = sql & Virg2Ponto(CStr(aRegDoc(v).nValorC)) & ",'" & Mask(aRegDoc(v).sNomeBanco) & "')"
+            cn.Execute sql, rdExecDirect
         End If
         xId = xId + 1
     Next
@@ -3346,8 +3379,8 @@ Proximo:
     lstLog.AddItem ""
     lstLog.Refresh
     
-    Sql = "select sum(valor) as total from resumo_pagto_banco_ficha where userid=" & nUserID & " and datacredito='" & Format(dDatareceita, "mm/dd/yyyy") & "'"
-    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    sql = "select sum(valor) as total from resumo_pagto_banco_ficha where userid=" & nUserId & " and datacredito='" & Format(dDatareceita, "mm/dd/yyyy") & "'"
+    Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     
     nSomaPago = nValorTotalPago
     nSomaFicha = RdoAux2!Total
@@ -3365,10 +3398,10 @@ Proximo:
 '    Loop
     
     
-    Sql = "select top(1) id from resumo_pagto_banco_ficha where userid=" & nUserID & " and datacredito='" & Format(dDatareceita, "mm/dd/yyyy") & "' order by valor desc"
-    Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-    Sql = "update resumo_pagto_banco_ficha set valor=valor+" & Virg2Ponto(CStr(nSomaDif)) & " where userid=" & nUserID & " and id=" & RdoAux3!id
-    cn.Execute Sql, rdExecDirect
+    sql = "select top(1) id from resumo_pagto_banco_ficha where userid=" & nUserId & " and datacredito='" & Format(dDatareceita, "mm/dd/yyyy") & "' order by valor desc"
+    Set RdoAux3 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    sql = "update resumo_pagto_banco_ficha set valor=valor+" & Virg2Ponto(CStr(nSomaDif)) & " where userid=" & nUserId & " and id=" & RdoAux3!id
+    cn.Execute sql, rdExecDirect
 nextday:
     lstLog.AddItem ""
 Next 'muda de data
@@ -3381,9 +3414,9 @@ If bAnalise Then
     
     
     ReDim aRegDoc(0)
-    Sql = "select * from resumo_pagto_banco_ficha where userid=" & nUserID
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-    With RdoAux
+    sql = "select * from resumo_pagto_banco_ficha where userid=" & nUserId
+    Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    With rdoAux
         Do Until .EOF
             bFind = False
             For v = 1 To UBound(aRegDoc)
@@ -3436,8 +3469,8 @@ End If
 
 
 Fim:
-Sql = "delete from resumo_pagto_banco_ficha where userid=" & nUserID
-cn.Execute Sql, rdExecDirect
+sql = "delete from resumo_pagto_banco_ficha where userid=" & nUserId
+cn.Execute sql, rdExecDirect
 
 
 

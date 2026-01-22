@@ -525,9 +525,9 @@ Private Sub grdMain_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
 
 End Sub
 
-Private Sub grdMain_PreCancelEdit(ByVal lrow As Long, ByVal lcol As Long, newvalue As Variant, bStayInEditMode As Boolean)
+Private Sub grdMain_PreCancelEdit(ByVal lRow As Long, ByVal lCol As Long, newvalue As Variant, bStayInEditMode As Boolean)
 Dim nCodCidadao As Long
-If lcol <> 2 Then
+If lCol <> 2 Then
     If txtEdit.Text = "" Then
         grdMain.CellText(grdMain.EditRow, 3) = ""
         grdMain.CellText(grdMain.EditRow, 4) = ""
@@ -570,24 +570,24 @@ Else
 End If
 End Sub
 
-Private Sub grdMain_RequestEdit(ByVal lrow As Long, ByVal lcol As Long, ByVal iKeyAscii As Integer, bCancel As Boolean)
+Private Sub grdMain_RequestEdit(ByVal lRow As Long, ByVal lCol As Long, ByVal iKeyAscii As Integer, bCancel As Boolean)
 Dim lLeft As Long, lTop As Long, lWidth As Long, lHeight As Long
 Dim sText As String
    
    
    ' Don't allow editing the icon-only columns:
-   If (grdMain.ColumnKey(lcol) <> "kProc") And (grdMain.ColumnKey(lcol) <> "kCert") Then
+   If (grdMain.ColumnKey(lCol) <> "kProc") And (grdMain.ColumnKey(lCol) <> "kCert") Then
       bCancel = True
       
       Exit Sub
    End If
    
    ' Get boundary of the cell:
-   grdMain.CellBoundary lrow, lcol, lLeft, lTop, lWidth, lHeight
+   grdMain.CellBoundary lRow, lCol, lLeft, lTop, lWidth, lHeight
    
    ' Get the text:
-   If Not IsMissing(grdMain.CellText(lrow, lcol)) Then
-      sText = grdMain.CellFormattedText(lrow, lcol)
+   If Not IsMissing(grdMain.CellText(lRow, lCol)) Then
+      sText = grdMain.CellFormattedText(lRow, lCol)
    Else
       sText = ""
    End If
@@ -608,11 +608,11 @@ Dim sText As String
    End If
    
    ' Set the text properties to match the grid cell being edited:
-   Set txtEdit.Font = grdMain.CellFont(lrow, lcol)
-   If grdMain.CellBackColor(lrow, lcol) = -1 Then
+   Set txtEdit.Font = grdMain.CellFont(lRow, lCol)
+   If grdMain.CellBackColor(lRow, lCol) = -1 Then
       txtEdit.BackColor = grdMain.BackColor
    Else
-      txtEdit.BackColor = grdMain.CellBackColor(lrow, lcol)
+      txtEdit.BackColor = grdMain.CellBackColor(lRow, lCol)
    End If
    
    ' Move the text box to the edit position, make it visible and give it the focus:
@@ -646,8 +646,8 @@ End Sub
 
 Private Sub Grava()
 Dim sInsc As String, sBairro As String, sProp As String, nVVP As Double, nVVT As Double, sResp As String
-Dim sVVPE As String, sVVTE As String
-
+Dim sVVPE As String, sVVTE As String, qd As New rdoQuery, nCodreduz As Long, RdoAux2 As rdoResultset
+Set qd.ActiveConnection = cn
 Sql = "DELETE FROM AVERBACAO WHERE COMPUTER='" & NomeDoUsuario & "'"
 cn.Execute Sql, rdExecDirect
 
@@ -655,14 +655,25 @@ sResp = UCase$(Trim$(txtResp.Text))
 
 With grdMain
     For x = 1 To .Rows
+        nCodreduz = Val(.cell(x, 1).Text)
+    
         If Trim$(.cell(x, 2).Text) <> "" And Trim$(.cell(x, 3).Text) <> "" Then
-            xImovel.CarregaImovel Val(.cell(x, 1).Text)
+            xImovel.CarregaImovel nCodreduz
             sBairro = xImovel.DescBairro & " Quadra:" & SubNull(xImovel.Li_Quadras) & " Lote:" & SubNull(xImovel.Li_Lotes)
             sProp = xImovel.NomePropPrincipal
             sInsc = xImovel.Inscricao
-            Calculo Val(.cell(x, 1).Text)
-            nVVT = nVaVT
-            nVVP = nVaVP
+            
+        On Error Resume Next
+        RdoAux2.Close
+        On Error GoTo 0
+        qd.Sql = "{ Call spCalculo(?,?) }"
+        qd(0) = nCodreduz
+        qd(1) = Year(Now)
+        Set RdoAux2 = qd.OpenResultset(rdOpenKeyset)
+            
+        '    Calculo Val(.cell(x, 1).Text)
+            nVVT = RdoAux2!vvt
+            nVVP = RdoAux2!vvp
             sVVTE = Extenso(nVVT)
             sVVPE = Extenso(nVVP)
             Sql = "INSERT AVERBACAO(COMPUTER,CODREDUZIDO,PROCESSO,INSCRICAO,REQUERENTE,BAIRRO,PROPRIETARIO,VVP,"
@@ -677,8 +688,8 @@ End With
 
 End Sub
 
-Private Sub Calculo(nCodReduz)
-Dim nSomaTestada As Double, nAreaTerrenoReal As Double
+Private Sub Calculo(nCodreduz)
+Dim nSomaTestada As Double, nAreaTerrenoReal As Double, nSomaArea As Double
 Dim nUso As Integer, nTipo As Integer, nCat As Integer, nCodBairro As Integer
 Dim bIsento As Boolean, nTestada1 As Double, x As Integer
 
@@ -693,7 +704,7 @@ Sql = "SELECT CADIMOB.CODREDUZIDO,LI_CODBAIRRO, CADIMOB.DISTRITO,CADIMOB.SETOR, 
 Sql = Sql & "CADIMOB.DT_AREATERRENO,DT_CODUSOTERRENO, CADIMOB.DT_FRACAOIDEAL,CADIMOB.DT_CODPEDOL, CADIMOB.DT_CODSITUACAO,CADIMOB.DT_CODTOPOG, FACEQUADRA.CODAGRUPA,FACEQUADRA.PAVIMENTO, "
 Sql = Sql & "SUM(Areas.AREACONSTR) As SOMAAREA FROM CADIMOB LEFT OUTER JOIN AREAS ON CADIMOB.CODREDUZIDO = AREAS.CODREDUZIDO LEFT OUTER Join "
 Sql = Sql & "FACEQUADRA ON CADIMOB.DISTRITO = FACEQUADRA.CODDISTRITO AND CADIMOB.SETOR = FACEQUADRA.CODSETOR AND CADIMOB.QUADRA = FACEQUADRA.CODQUADRA AND "
-Sql = Sql & "CADIMOB.Seq = FACEQUADRA.CODFACE Where (CADIMOB.CODREDUZIDO = " & nCodReduz & ") GROUP BY CADIMOB.CODREDUZIDO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE,"
+Sql = Sql & "CADIMOB.Seq = FACEQUADRA.CODFACE Where (CADIMOB.CODREDUZIDO = " & nCodreduz & ") GROUP BY CADIMOB.CODREDUZIDO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE,"
 Sql = Sql & "CADIMOB.SUBUNIDADE,CADIMOB.DT_AREATERRENO, CADIMOB.DT_FRACAOIDEAL,CADIMOB.DT_CODPEDOL, CADIMOB.DT_CODSITUACAO,CADIMOB.Dt_CodTopog , FACEQUADRA.CODAGRUPA,DT_CODUSOTERRENO,LI_CODBAIRRO,PAVIMENTO "
 
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -717,7 +728,7 @@ With RdoAux
         nAreaPrincipal = 0
     End If
     'TESTADAS
-    Sql = "SELECT NUMFACE,AREATESTADA FROM TESTADA WHERE CODREDUZIDO = " & nCodReduz
+    Sql = "SELECT NUMFACE,AREATESTADA FROM TESTADA WHERE CODREDUZIDO = " & nCodreduz
     Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux2
         nNumTestadas = .RowCount
@@ -747,17 +758,18 @@ With RdoAux
     
     'BUSCA ÁREA PRINCIPAL
     'Sql = "SELECT AREACONSTR,USOCONSTR,TIPOCONSTR,CATCONSTR,QTDEPAV FROM AREAS WHERE CODREDUZIDO = " & nCodReduz & "  AND TIPOAREA='P'"
-    Sql = "SELECT AREACONSTR,USOCONSTR,TIPOCONSTR,CATCONSTR,QTDEPAV FROM AREAS WHERE CODREDUZIDO = " & nCodReduz
+    Sql = "SELECT AREACONSTR,USOCONSTR,TIPOCONSTR,CATCONSTR,QTDEPAV FROM AREAS WHERE CODREDUZIDO = " & nCodreduz
     Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux2
         If .RowCount > 0 Then
-            Sql = "SELECT SUM(AREACONSTR) AS SOMA FROM AREAS WHERE CODREDUZIDO = " & nCodReduz
+            Sql = "SELECT SUM(AREACONSTR) AS SOMA FROM AREAS WHERE CODREDUZIDO = " & nCodreduz
             Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
             With RdoAux3
                 If Not IsNull(!soma) Then
+                    nSoma = !soma
                     If !soma <= 65 And RdoAux2!USOCONSTR = 1 And (RdoAux2!CATCONSTR = 4 Or RdoAux2!CATCONSTR = 7) And RdoAux2!QTDEPAV < 2 And nAreaTerreno < 600 Then
                         If nAnoCalculo > 2006 Then
-                            Sql = "SELECT CODREDUZIDO,CODPROPRIETARIO FROM vwPROPRIETARIODUPLICADO2 WHERE CODREDUZIDO=" & nCodReduz
+                            Sql = "SELECT CODREDUZIDO,CODPROPRIETARIO FROM vwPROPRIETARIODUPLICADO2 WHERE CODREDUZIDO=" & nCodreduz
                             Set RdoAux4 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
                             If RdoAux4.RowCount = 0 Then
                                 bIsento = True
@@ -794,7 +806,8 @@ With RdoAux
                            Exit For
                         End If
                     Next
-                    nValorVenalPredial = nValorVenalPredial + FormatNumber(!AREACONSTR, 2) * FormatNumber(nFatorCategoria, 2)
+                    'nValorVenalPredial = nValorVenalPredial + FormatNumber(!AREACONSTR, 2) * FormatNumber(nFatorCategoria, 2)
+                    nValorVenalPredial = nValorVenalPredial + FormatNumber(nSoma, 2) * FormatNumber(nFatorCategoria, 2)
                    .MoveNext
                 Loop
             End If
@@ -915,7 +928,7 @@ End With
 
 End Sub
 
-Private Sub CalculoOld(nCodReduz)
+Private Sub CalculoOld(nCodreduz)
 Dim nSomaTestada As Double, nAreaTerrenoReal As Double
 Dim nUso As Integer, nTipo As Integer, nCat As Integer, nCodBairro As Integer
 Dim bIsento As Boolean, nTestada1 As Double, x As Integer
@@ -931,7 +944,7 @@ Sql = "SELECT CADIMOB.CODREDUZIDO,LI_CODBAIRRO, CADIMOB.DISTRITO,CADIMOB.SETOR, 
 Sql = Sql & "CADIMOB.DT_AREATERRENO,DT_CODUSOTERRENO, CADIMOB.DT_FRACAOIDEAL,CADIMOB.DT_CODPEDOL, CADIMOB.DT_CODSITUACAO,CADIMOB.DT_CODTOPOG, FACEQUADRA.CODAGRUPA,FACEQUADRA.PAVIMENTO, "
 Sql = Sql & "SUM(Areas.AREACONSTR) As SOMAAREA FROM CADIMOB LEFT OUTER JOIN AREAS ON CADIMOB.CODREDUZIDO = AREAS.CODREDUZIDO LEFT OUTER Join "
 Sql = Sql & "FACEQUADRA ON CADIMOB.DISTRITO = FACEQUADRA.CODDISTRITO AND CADIMOB.SETOR = FACEQUADRA.CODSETOR AND CADIMOB.QUADRA = FACEQUADRA.CODQUADRA AND "
-Sql = Sql & "CADIMOB.Seq = FACEQUADRA.CODFACE Where CADIMOB.CODREDUZIDO = " & nCodReduz & " GROUP BY CADIMOB.CODREDUZIDO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE,"
+Sql = Sql & "CADIMOB.Seq = FACEQUADRA.CODFACE Where CADIMOB.CODREDUZIDO = " & nCodreduz & " GROUP BY CADIMOB.CODREDUZIDO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE,"
 Sql = Sql & "CADIMOB.SUBUNIDADE,CADIMOB.DT_AREATERRENO, CADIMOB.DT_FRACAOIDEAL,CADIMOB.DT_CODPEDOL, CADIMOB.DT_CODSITUACAO,CADIMOB.Dt_CodTopog , FACEQUADRA.CODAGRUPA,DT_CODUSOTERRENO,LI_CODBAIRRO,PAVIMENTO "
 
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -955,7 +968,7 @@ With RdoAux
     End If
     
     'TESTADAS
-    Sql = "SELECT NUMFACE,AREATESTADA FROM TESTADA WHERE CODREDUZIDO = " & nCodReduz
+    Sql = "SELECT NUMFACE,AREATESTADA FROM TESTADA WHERE CODREDUZIDO = " & nCodreduz
     Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux2
         nNumTestadas = .RowCount
@@ -985,10 +998,10 @@ With RdoAux
     '--Se houver Fracao Ideal o Comprimento da Testada e calculado por --> FRACAOIDEAL * TESTADA / AREA PRINCIPAL
     
     'BUSCA ÁREA PRINCIPAL
-    Sql = "SELECT AREACONSTR,USOCONSTR,TIPOCONSTR,CATCONSTR FROM AREAS WHERE CODREDUZIDO = " & nCodReduz & "  AND TIPOAREA='P'"
+    Sql = "SELECT AREACONSTR,USOCONSTR,TIPOCONSTR,CATCONSTR FROM AREAS WHERE CODREDUZIDO = " & nCodreduz & "  AND TIPOAREA='P'"
     Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
     With RdoAux2
-        Sql = "SELECT SUM(AREACONSTR) AS SOMA FROM AREAS WHERE CODREDUZIDO = " & nCodReduz
+        Sql = "SELECT SUM(AREACONSTR) AS SOMA FROM AREAS WHERE CODREDUZIDO = " & nCodreduz
         Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
         With RdoAux3
             If Not IsNull(!soma) Then
