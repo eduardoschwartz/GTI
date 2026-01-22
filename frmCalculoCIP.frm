@@ -376,34 +376,34 @@ btGuias.Enabled = False
 'LIMPA TEMPORARIO
 nSid = Int(Rnd(100) * 1000000)
 
-Sql = "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'"
-cn.Execute Sql, rdExecDirect
+sql = "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'"
+cn.Execute sql, rdExecDirect
 
 
-Sql = "delete from boletoguia_cip where sid=" & nSid
-cn.Execute Sql, rdExecDirect
+sql = "delete from boletoguia_cip where sid=" & nSid
+cn.Execute sql, rdExecDirect
 
-Sql = "delete from boletoguiacapa where sid=" & nSid
-cn.Execute Sql, rdExecDirect
+sql = "delete from boletoguiacapa where sid=" & nSid
+cn.Execute sql, rdExecDirect
 
 sLib = "CIP"
 
 
 'sNumProc = lblNumProc.Caption & "/" & lblAnoProc.Caption
 'dDataProc = lblDataParc.Caption
-Sql = "SELECT cadimob.codreduzido, parceladocumento.anoexercicio, parceladocumento.codlancamento, parceladocumento.seqlancamento, parceladocumento.numparcela, "
-Sql = Sql & "parceladocumento.CODCOMPLEMENTO , parceladocumento.NumDocumento, debitoparcela.DataVencimento, debitotributo.ValorTributo FROM cadimob INNER JOIN "
-Sql = Sql & "parceladocumento ON cadimob.codreduzido = parceladocumento.codreduzido INNER JOIN debitoparcela ON parceladocumento.codreduzido = debitoparcela.codreduzido AND parceladocumento.anoexercicio = debitoparcela.anoexercicio AND "
-Sql = Sql & "parceladocumento.codlancamento = debitoparcela.codlancamento AND parceladocumento.seqlancamento = debitoparcela.seqlancamento AND parceladocumento.numparcela = debitoparcela.numparcela AND parceladocumento.codcomplemento = debitoparcela.codcomplemento INNER JOIN "
-Sql = Sql & "debitotributo ON debitoparcela.codreduzido = debitotributo.codreduzido AND debitoparcela.anoexercicio = debitotributo.anoexercicio AND "
-Sql = Sql & "debitoparcela.codlancamento = debitotributo.codlancamento AND debitoparcela.seqlancamento = debitotributo.seqlancamento AND "
-Sql = Sql & "debitoparcela.NumParcela = debitotributo.NumParcela And debitoparcela.CODCOMPLEMENTO = debitotributo.CODCOMPLEMENTO "
-Sql = Sql & "Where (cadimob.codreduzido in (select codigo from cip_semregistro where ano=2023)) "
+sql = "SELECT cadimob.codreduzido, parceladocumento.anoexercicio, parceladocumento.codlancamento, parceladocumento.seqlancamento, parceladocumento.numparcela, "
+sql = sql & "parceladocumento.CODCOMPLEMENTO , parceladocumento.NumDocumento, debitoparcela.DataVencimento, debitotributo.ValorTributo FROM cadimob INNER JOIN "
+sql = sql & "parceladocumento ON cadimob.codreduzido = parceladocumento.codreduzido INNER JOIN debitoparcela ON parceladocumento.codreduzido = debitoparcela.codreduzido AND parceladocumento.anoexercicio = debitoparcela.anoexercicio AND "
+sql = sql & "parceladocumento.codlancamento = debitoparcela.codlancamento AND parceladocumento.seqlancamento = debitoparcela.seqlancamento AND parceladocumento.numparcela = debitoparcela.numparcela AND parceladocumento.codcomplemento = debitoparcela.codcomplemento INNER JOIN "
+sql = sql & "debitotributo ON debitoparcela.codreduzido = debitotributo.codreduzido AND debitoparcela.anoexercicio = debitotributo.anoexercicio AND "
+sql = sql & "debitoparcela.codlancamento = debitotributo.codlancamento AND debitoparcela.seqlancamento = debitotributo.seqlancamento AND "
+sql = sql & "debitoparcela.NumParcela = debitotributo.NumParcela And debitoparcela.CODCOMPLEMENTO = debitotributo.CODCOMPLEMENTO "
+'sql = sql & "Where (cadimob.codreduzido in (select codigo from cip_semregistro where ano=2025)) "
 'Sql = Sql & "Where (cadimob.li_codbairro =1069) "
-Sql = Sql & " And  (parceladocumento.AnoExercicio = 2023) And (parceladocumento.CodLancamento =79)  "
-Sql = Sql & "AND  statuslanc=18 ORDER BY cadimob.codreduzido, parceladocumento.numparcela"
+sql = sql & " where  parceladocumento.codreduzido=7 and (parceladocumento.AnoExercicio = 2025) And (parceladocumento.CodLancamento =79) AND DEBITOPARCELA.NUMPARCELA=3 "
+sql = sql & "AND  statuslanc=3 ORDER BY cadimob.codreduzido, parceladocumento.numparcela"
 
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     x = 1
    Set xImovel = New clsImovel
@@ -437,10 +437,10 @@ With RdoAux
         sCidadeEntrega = xImovel.Cidade
         sUFEntrega = xImovel.UF
         sCepEntrega = xImovel.Cep
-        Sql = "SELECT cidadao.codcidadao, cidadao.nomecidadao, cidadao.cpf, cidadao.cnpj, cidadao.rg "
-        Sql = Sql & "FROM cidadao INNER JOIN proprietario ON cidadao.codcidadao = proprietario.codcidadao "
-        Sql = Sql & "WHERE(proprietario.codreduzido = " & nCodReduz & ") AND (proprietario.tipoprop = 'P') AND (proprietario.principal = 1)"
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT cidadao.codcidadao, cidadao.nomecidadao, cidadao.cpf, cidadao.cnpj, cidadao.rg "
+        sql = sql & "FROM cidadao INNER JOIN proprietario ON cidadao.codcidadao = proprietario.codcidadao "
+        sql = sql & "WHERE(proprietario.codreduzido = " & nCodReduz & ") AND (proprietario.tipoprop = 'P') AND (proprietario.principal = 1)"
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             If .RowCount > 0 Then
                 sCPF = SubNull(!cpf)
@@ -472,7 +472,7 @@ With RdoAux
         sValorParc = Format(nValorParc, "#0.00")
         nValorGuia = sValorParc
         nValorDoc = nValorGuia
-
+    nValorDoc = 1
     sValor = nValorDoc
     dDataVencto = CDate(sDataDam)
     nNumDoc = nNumGuia
@@ -482,7 +482,8 @@ With RdoAux
     NumBarra2b = Mid$(NumBarra2, 14, 13)
     NumBarra2c = Mid$(NumBarra2, 27, 13)
     NumBarra2d = Right$(NumBarra2, 13)
-
+    
+    barratmp = Left$(NumBarra2a, 11) & Left$(NumBarra2b, 11) & Left$(NumBarra2c, 11) & Left$(NumBarra2d, 11)
     StrBarra2 = Gera2of5Str(Left$(NumBarra2a, 11) & Left$(NumBarra2b, 11) & Left$(NumBarra2c, 11) & Left$(NumBarra2d, 11))
     sBarra = StrBarra2
 
@@ -496,19 +497,19 @@ With RdoAux
 
     '*******************************************
 
-        Sql = "insert boletoguia_cip(usuario,computer,sid,seq,codreduzido,nome,cpf,endereco,numimovel,complemento,bairro,cidade,uf,fulllanc,numdoc,numparcela,totparcela,datavencto,numdoc2,"
-        Sql = Sql & "digitavel,codbarra,valorguia,obs,numbarra2a,numbarra2b,numbarra2c,numbarra2d,endereco2,numimovel2,complemento2,bairro2,cidade2,uf2,cep2) values('" & NomeDeLogin & "','" & NomeDoComputador & "'," & nSid & "," & x & "," & nCodReduz & ",'" & Left(Mask(sNomeResp), 80) & "','" & sCPF & "','"
-        Sql = Sql & Left(Mask(sEndImovel), 80) & "'," & nNumImovel & ",'" & Left(Mask(sComplImovel), 30) & "','" & Left(Mask(sBairroImovel), 25) & "','" & "JABOTICABAL" & "','" & "SP" & "','" & Mask(sDescImposto) & "','"
-        Sql = Sql & CStr(nNumGuia) & "'," & IIf(nParc = 0, 0, nParc) & "," & 3 & ",'" & Format(!DataVencimento, "mm/dd/yyyy") & "','" & sNumDoc & "','" & sDigitavel2 & "','" & Mask(sBarra) & "',"
-        Sql = Sql & Virg2Ponto(Format(nValorGuia, "#0.00")) & ",'" & "Quadra: " & Left(Trim(sQuadra), 15) & " Lote: " & Left(Trim(sLote), 15) & "','" & NumBarra2a & "','" & NumBarra2b & "','" & NumBarra2c & "','" & NumBarra2d & "','" & Left(Mask(sEndEntrega), 80) & "',"
-        Sql = Sql & nNumEntrega & ",'" & Left(Mask(sComplEntrega), 30) & "','" & Left(Mask(sBairroEntrega), 25) & "','" & Mask(sCidadeEntrega) & "','" & sUFEntrega & "','" & sCepEntrega & "')"
-        cn.Execute Sql, rdExecDirect
+        sql = "insert boletoguia_cip(usuario,computer,sid,seq,codreduzido,nome,cpf,endereco,numimovel,complemento,bairro,cidade,uf,fulllanc,numdoc,numparcela,totparcela,datavencto,numdoc2,"
+        sql = sql & "digitavel,codbarra,valorguia,obs,numbarra2a,numbarra2b,numbarra2c,numbarra2d,endereco2,numimovel2,complemento2,bairro2,cidade2,uf2,cep2) values('" & NomeDeLogin & "','" & NomeDoComputador & "'," & nSid & "," & x & "," & nCodReduz & ",'" & Left(Mask(sNomeResp), 80) & "','" & sCPF & "','"
+        sql = sql & Left(Mask(sEndImovel), 80) & "'," & nNumImovel & ",'" & Left(Mask(sComplImovel), 30) & "','" & Left(Mask(sBairroImovel), 25) & "','" & "JABOTICABAL" & "','" & "SP" & "','" & Mask(sDescImposto) & "','"
+        sql = sql & CStr(nNumGuia) & "'," & IIf(nParc = 0, 0, nParc) & "," & 3 & ",'" & Format(!DataVencimento, "mm/dd/yyyy") & "','" & sNumDoc & "','" & sDigitavel2 & "','" & Mask(sBarra) & "',"
+        sql = sql & Virg2Ponto(Format(nValorGuia, "#0.00")) & ",'" & "Quadra: " & Left(Trim(sQuadra), 15) & " Lote: " & Left(Trim(sLote), 15) & "','" & NumBarra2a & "','" & NumBarra2b & "','" & NumBarra2c & "','" & NumBarra2d & "','" & Left(Mask(sEndEntrega), 80) & "',"
+        sql = sql & nNumEntrega & ",'" & Left(Mask(sComplEntrega), 30) & "','" & Left(Mask(sBairroEntrega), 25) & "','" & Mask(sCidadeEntrega) & "','" & sUFEntrega & "','" & sCepEntrega & "')"
+        cn.Execute sql, rdExecDirect
         
         If nParc = 1 Then
-            Sql = "INSERT ETIQUETAGTI (USUARIO,SEQ,CAMPO1,CAMPO2,CAMPO3,CAMPO4,CAMPO5) VALUES('"
-            Sql = Sql & NomeDeLogin & "'," & x & ",'" & Format(nCodReduz, "000000") & " - CIP " & Val(cmbAno.Text) & "','" & Mask(sNomeResp) & "','"
-            Sql = Sql & Left(sEndEntrega & " " & nNumEntrega & " " & sComplEntrega, 60) & "','" & sBairroEntrega & " - " & sCidadeEntrega & "','" & sUFEntrega & " - " & sCepEntrega & "')"
-            cn.Execute Sql, rdExecDirect
+            sql = "INSERT ETIQUETAGTI (USUARIO,SEQ,CAMPO1,CAMPO2,CAMPO3,CAMPO4,CAMPO5) VALUES('"
+            sql = sql & NomeDeLogin & "'," & x & ",'" & Format(nCodReduz, "000000") & " - CIP " & Val(cmbAno.Text) & "','" & Mask(sNomeResp) & "','"
+            sql = sql & Left(sEndEntrega & " " & nNumEntrega & " " & sComplEntrega, 60) & "','" & sBairroEntrega & " - " & sCidadeEntrega & "','" & sUFEntrega & " - " & sCepEntrega & "')"
+            cn.Execute sql, rdExecDirect
         End If
         
         x = x + 1
@@ -525,31 +526,31 @@ frmReport.ShowReport "ETIQUETACIP", frmMdi.HWND, Me.HWND
 Liberado
 
 
-Sql = "delete from boletoguia_cip where sid=" & nSid
- cn.Execute Sql, rdExecDirect
+sql = "delete from boletoguia_cip where sid=" & nSid
+ cn.Execute sql, rdExecDirect
 
-Sql = "delete from boletoguiacapa where sid=" & nSid
-cn.Execute Sql, rdExecDirect
+sql = "delete from boletoguiacapa where sid=" & nSid
+cn.Execute sql, rdExecDirect
 
-Sql = "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'"
-cn.Execute Sql, rdExecDirect
+sql = "DELETE FROM ETIQUETAGTI WHERE USUARIO='" & NomeDeLogin & "'"
+cn.Execute sql, rdExecDirect
 btGuias.Enabled = True
 End Sub
 
 Private Sub cmbAno_Click()
 
-Dim Sql As String, RdoAux As rdoResultset, nValorParcela As Double, nAno As Integer, nQtdeParc As Integer, nQtdeTerreno As Integer, nValorTotal As Double, nQtdeLamina As Integer
+Dim sql As String, RdoAux As rdoResultset, nValorParcela As Double, nAno As Integer, nQtdeParc As Integer, nQtdeTerreno As Integer, nValorTotal As Double, nQtdeLamina As Integer
 
 nAno = Val(cmbAno.Text)
 nValorParcela = 0
 nQtdeParc = 0
 nQtdeTerreno = 0
 Ocupado
-Sql = "SELECT  paramparcela.codtipo, paramparcela.ano, paramparcela.qtdeparcela, paramparcela.parcelaunica, paramparcela.descontounica, paramparcela.vencunica,"
-Sql = Sql & "paramparcela.venc01, paramparcela.venc02, paramparcela.venc03, paramparcela.venc04, paramparcela.venc05, paramparcela.venc06, paramparcela.venc07,"
-Sql = Sql & "paramparcela.venc08 , paramparcela.venc09, paramparcela.venc10, paramparcela.venc11, paramparcela.venc12, cip_valor.Valor "
-Sql = Sql & "FROM paramparcela INNER JOIN cip_valor ON paramparcela.ano = cip_valor.ano WHERE CODTIPO=6 AND paramparcela.ANO=" & nAno
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT  paramparcela.codtipo, paramparcela.ano, paramparcela.qtdeparcela, paramparcela.parcelaunica, paramparcela.descontounica, paramparcela.vencunica,"
+sql = sql & "paramparcela.venc01, paramparcela.venc02, paramparcela.venc03, paramparcela.venc04, paramparcela.venc05, paramparcela.venc06, paramparcela.venc07,"
+sql = sql & "paramparcela.venc08 , paramparcela.venc09, paramparcela.venc10, paramparcela.venc11, paramparcela.venc12, cip_valor.Valor "
+sql = sql & "FROM paramparcela INNER JOIN cip_valor ON paramparcela.ano = cip_valor.ano WHERE CODTIPO=6 AND paramparcela.ANO=" & nAno
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If .RowCount = 0 Then
         cmdExec.Enabled = False
@@ -580,8 +581,8 @@ With RdoAux
    .Close
 End With
 
-Sql = "select count(*) as contador from vwfullimovel where ativo='S' and codreduzido not in (select codreduzido from areas) AND (imune = 0 OR imune IS NULL) AND (cip = 0 OR cip IS NULL) "
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select count(*) as contador from vwfullimovel where ativo='S' and codreduzido not in (select codreduzido from areas) AND (imune = 0 OR imune IS NULL) AND (cip = 0 OR cip IS NULL) "
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 nQtdeTerreno = Val(SubNull(RdoAux!contador))
 
 nQtdeLamina = nQtdeParc * nQtdeTerreno
@@ -596,7 +597,7 @@ Liberado
 End Sub
 
 Private Sub cmdExec_Click()
-Dim Sql As String, RdoAux As rdoResultset, nCodReduz As Long, nPos As Long, nTot As Long, sNome As String, nTipoEnd As Integer
+Dim sql As String, RdoAux As rdoResultset, nCodReduz As Long, nPos As Long, nTot As Long, sNome As String, nTipoEnd As Integer
 Dim sNomeLogr As String, sComplemento As String, nNumero As Integer, sBairro As String, sCidade As String, sUF As String, sCep As String
 Dim sCPF As String, RdoAux2 As rdoResultset, nNumDoc As Long, y As Integer, nAno As Integer, nValorParcela As Double, nSid As Long
 Dim sTipoImposto As String, nNumGuia As Long, sNumDoc As String, sNumDoc2 As String, sNumDoc3 As String, nNumParcela As Integer, sDataVencto As String
@@ -611,17 +612,17 @@ sTipoImposto = "CIP"
 'LIMPA TEMPORARIO
 nSid = Int(Rnd(100) * 1000000)
 
-Sql = "delete from boletoguia where sid=" & nSid
-cn.Execute Sql, rdExecDirect
+sql = "delete from boletoguia where sid=" & nSid
+cn.Execute sql, rdExecDirect
 
-GoTo Continua
+'GoTo Continua
 
-Sql = "select * from debitoparcela where anoexercicio=" & nAno & " and codlancamento=79 "
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select * from debitoparcela where anoexercicio=" & nAno & " and codlancamento=79 "
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 If RdoAux.RowCount = 0 Then
-    nNumDoc = 19121190
-    Sql = "select * from vwfullimovel where ativo='S' and codreduzido not in (select codreduzido from areas) AND (imune = 0 OR imune IS NULL) AND (cip = 0 OR cip IS NULL) order by cpf,cnpj,logradouro,li_num,nomecidadao"
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+'    nNumDoc = 19121190
+    sql = "select * from vwfullimovel where ativo='S' and codreduzido not in (select codreduzido from areas) AND (imune = 0 OR imune IS NULL) AND (cip = 0 OR cip IS NULL) order by cpf,cnpj,logradouro,li_num,nomecidadao"
+    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         nTot = .RowCount
         Do Until .EOF
@@ -632,24 +633,24 @@ If RdoAux.RowCount = 0 Then
             nCodReduz = !CODREDUZIDO
             For y = 1 To Val(lblQtdeParcela.Caption)
                 'GRAVA NA TABELA DEBITOPARCELA
-                 Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,"
-                 Sql = Sql & "DATAVENCIMENTO,DATADEBASE,CODMOEDA,USERID) VALUES(" & nCodReduz & "," & nAno & ",79," & 0 & "," & y & ",0,18,'"
-                 Sql = Sql & Format(aVencto(y), "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "',1," & RetornaUsuarioID(NomeDeLogin) & ")"
-                 cn.Execute Sql, rdExecDirect
+                 sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,"
+                 sql = sql & "DATAVENCIMENTO,DATADEBASE,CODMOEDA,USERID) VALUES(" & nCodReduz & "," & nAno & ",79," & 0 & "," & y & ",0,18,'"
+                 sql = sql & Format(aVencto(y), "mm/dd/yyyy") & "','" & Format(Now, "mm/dd/yyyy") & "',1," & RetornaUsuarioID(NomeDeLogin) & ")"
+                 cn.Execute sql, rdExecDirect
                 'GRAVA NA TABELA DEBITO TRIBUTO
-                 Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,"
-                 Sql = Sql & "VALORTRIBUTO) VALUES(" & nCodReduz & "," & nAno & ",79," & 0 & "," & y & ",0,669," & Virg2Ponto(CStr(nValorParcela)) & ")"
-                 cn.Execute Sql, rdExecDirect
+                 sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,"
+                 sql = sql & "VALORTRIBUTO) VALUES(" & nCodReduz & "," & nAno & ",79," & 0 & "," & y & ",0,669," & Virg2Ponto(CStr(nValorParcela)) & ")"
+                 cn.Execute sql, rdExecDirect
 '                 If nNumDoc > 17133128 Then MsgBox "STOP"
                  
                 'GRAVA NA TABELA NUMDOCUMENTO
-                 Sql = "INSERT NUMDOCUMENTO (NUMDOCUMENTO,DATADOCUMENTO,CODBANCO,CODAGENCIA,VALORPAGO,VALORTAXADOC,emissor,valorguia) VALUES("
-                 Sql = Sql & nNumDoc & ",'" & Format(Now, "mm/dd/yyyy") & "',0,0,0," & 0 & ",'" & "GTI/CIP" & "'," & Virg2Ponto(CStr(nValorParcela)) & ")"
-                 cn.Execute Sql, rdExecDirect
+                 sql = "INSERT NUMDOCUMENTO (NUMDOCUMENTO,DATADOCUMENTO,CODBANCO,CODAGENCIA,VALORPAGO,VALORTAXADOC,emissor,valorguia) VALUES("
+                 sql = sql & nNumDoc & ",'" & Format(Now, "mm/dd/yyyy") & "',0,0,0," & 0 & ",'" & "GTI/CIP" & "'," & Virg2Ponto(CStr(nValorParcela)) & ")"
+                 cn.Execute sql, rdExecDirect
                 'GRAVA NA TABELA PARCELADOCUMENTO
-                 Sql = "INSERT PARCELADOCUMENTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,NUMDOCUMENTO) VALUES("
-                 Sql = Sql & nCodReduz & "," & nAno & ",79," & 0 & "," & y & ",0," & nNumDoc & ")"
-                 cn.Execute Sql, rdExecDirect
+                 sql = "INSERT PARCELADOCUMENTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,NUMDOCUMENTO) VALUES("
+                 sql = sql & nCodReduz & "," & nAno & ",79," & 0 & "," & y & ",0," & nNumDoc & ")"
+                 cn.Execute sql, rdExecDirect
                  nNumDoc = nNumDoc + 1
             Next
             
@@ -666,12 +667,12 @@ Exit Sub
 
 Continua:
 nPos = 1
-Sql = "SELECT debitoparcela.codreduzido, debitoparcela.numparcela, debitoparcela.datavencimento, parceladocumento.numdocumento, vwFULLIMOVEL.nomecidadao,"
-Sql = Sql & "vwFULLIMOVEL.CPF , vwFULLIMOVEL.Cnpj, vwFULLIMOVEL.Ee_TipoEnd FROM debitoparcela INNER JOIN parceladocumento ON debitoparcela.codreduzido = parceladocumento.codreduzido AND "
-Sql = Sql & "debitoparcela.anoexercicio = parceladocumento.anoexercicio AND debitoparcela.codlancamento = parceladocumento.codlancamento AND debitoparcela.seqlancamento = parceladocumento.seqlancamento AND "
-Sql = Sql & "debitoparcela.numparcela = parceladocumento.numparcela AND debitoparcela.codcomplemento = parceladocumento.codcomplemento INNER JOIN vwFULLIMOVEL ON debitoparcela.codreduzido = vwFULLIMOVEL.codreduzido "
-Sql = Sql & "Where debitoparcela.codreduzido in (select codigo from cip_semregistro where ano=" & Val(cmbAno.Text) & ") and (debitoparcela.AnoExercicio = " & Val(cmbAno.Text) & ") And (debitoparcela.CodLancamento = 79) ORDER BY debitoparcela.codreduzido, debitoparcela.numparcela"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT debitoparcela.codreduzido, debitoparcela.numparcela, debitoparcela.datavencimento, parceladocumento.numdocumento, vwFULLIMOVEL.nomecidadao,"
+sql = sql & "vwFULLIMOVEL.CPF , vwFULLIMOVEL.Cnpj, vwFULLIMOVEL.Ee_TipoEnd FROM debitoparcela INNER JOIN parceladocumento ON debitoparcela.codreduzido = parceladocumento.codreduzido AND "
+sql = sql & "debitoparcela.anoexercicio = parceladocumento.anoexercicio AND debitoparcela.codlancamento = parceladocumento.codlancamento AND debitoparcela.seqlancamento = parceladocumento.seqlancamento AND "
+sql = sql & "debitoparcela.numparcela = parceladocumento.numparcela AND debitoparcela.codcomplemento = parceladocumento.codcomplemento INNER JOIN vwFULLIMOVEL ON debitoparcela.codreduzido = vwFULLIMOVEL.codreduzido "
+sql = sql & "Where debitoparcela.codreduzido in (select codigo from cip_semregistro where ano=" & Val(cmbAno.Text) & ") and (debitoparcela.AnoExercicio = " & Val(cmbAno.Text) & ") And (debitoparcela.CodLancamento = 79) ORDER BY debitoparcela.codreduzido, debitoparcela.numparcela"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     nTot = .RowCount
     Do Until .EOF
@@ -733,8 +734,15 @@ With RdoAux
         sDv = Trim(Calculo_DV10(Right(sDigitavel, 10)))
         sDigitavel = sDigitavel & sDv
 
-        dDataBase = "07/10/1997"
-        nFatorVencto = CDate(sDataVencto) - CDate(dDataBase)
+'        dDataBase = "07/10/1997"
+'        nFatorVencto = CDate(sDataVencto) - CDate(dDataBase)
+        
+'        If CDate(sDataVencto) >= "22/02/2025" Then
+            dDataBase = "29/05/2022"
+            nFatorVencto = CDate(sDataVencto) - CDate(dDataBase)
+'        End If
+        
+        
         sQuintoGrupo = Format(nFatorVencto, "0000")
         sQuintoGrupo = sQuintoGrupo & Format(RetornaNumero(FormatNumber(nValorParcela, 2)), "0000000000")
         sBarra = "0019" & Format(nFatorVencto, "0000") & Format(RetornaNumero(FormatNumber(nValorParcela, 2)), "0000000000") & "00000026784780"
@@ -750,12 +758,12 @@ With RdoAux
     
         '*******************************************
         
-        Sql = "insert boletoguia(usuario,computer,sid,seq,codreduzido,nome,cpf,endereco,numimovel,complemento,bairro,cidade,uf,fulllanc,numdoc,numparcela,totparcela,datavencto,numdoc2,"
-        Sql = Sql & "digitavel,codbarra,valorguia,obs,numproc,cep) values('" & NomeDeLogin & "','" & NomeDoComputador & "'," & nSid & "," & nPos & "," & nCodReduz & ",'" & Left(Mask(sNome), 80) & "','" & sCPF & "','"
-        Sql = Sql & Left(Mask(sNomeLogr), 80) & "'," & nNumero & ",'" & Left(Mask(sComplemento), 30) & "','" & Left(Mask(sBairro), 25) & "','" & Mask(sCidade) & "','" & sUF & "','" & Mask(sTipoImposto) & "','"
-        Sql = Sql & CStr(nNumGuia) & "'," & nNumParcela & "," & 2 & ",'" & Format(sDataVencto, "mm/dd/yyyy") & "','" & sNumDoc & "','" & sDigitavel2 & "','" & Mask(sBarra) & "',"
-        Sql = Sql & Virg2Ponto(Format(nValorParcela, "#0.00")) & "," & "'','','" & sCep & "')"
-        cn.Execute Sql, rdExecDirect
+        sql = "insert boletoguia(usuario,computer,sid,seq,codreduzido,nome,cpf,endereco,numimovel,complemento,bairro,cidade,uf,fulllanc,numdoc,numparcela,totparcela,datavencto,numdoc2,"
+        sql = sql & "digitavel,codbarra,valorguia,obs,numproc,cep) values('" & NomeDeLogin & "','" & NomeDoComputador & "'," & nSid & "," & nPos & "," & nCodReduz & ",'" & Left(Mask(sNome), 80) & "','" & sCPF & "','"
+        sql = sql & Left(Mask(sNomeLogr), 80) & "'," & nNumero & ",'" & Left(Mask(sComplemento), 30) & "','" & Left(Mask(sBairro), 25) & "','" & Mask(sCidade) & "','" & sUF & "','" & Mask(sTipoImposto) & "','"
+        sql = sql & CStr(nNumGuia) & "'," & nNumParcela & "," & 2 & ",'" & Format(sDataVencto, "mm/dd/yyyy") & "','" & sNumDoc & "','" & sDigitavel2 & "','" & Mask(sBarra) & "',"
+        sql = sql & Virg2Ponto(Format(nValorParcela, "#0.00")) & "," & "'','','" & sCep & "')"
+        cn.Execute sql, rdExecDirect
 Proximo:
         nPos = nPos + 1
        .MoveNext
@@ -766,8 +774,8 @@ End With
 Fim:
 frmReport.ShowReport2 "boletoCIP", frmMdi.HWND, Me.HWND, nSid
 Liberado
-Sql = "delete from boletoguia where sid=" & nSid
-cn.Execute Sql, rdExecDirect
+sql = "delete from boletoguia where sid=" & nSid
+cn.Execute sql, rdExecDirect
 
 End Sub
 

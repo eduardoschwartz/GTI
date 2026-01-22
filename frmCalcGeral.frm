@@ -1278,7 +1278,7 @@ Dim nValorFinal As Double, nNumParc As Integer
 'GERAL
 Dim nCodReduz As Long
 Dim RdoAux As rdoResultset, RdoAux2 As rdoResultset, RdoAux3 As rdoResultset
-Dim Sql As String
+Dim sql As String
 Dim nAnoCalculo As Integer
 'TIPOS
 Private Type PROFUNDIDADE
@@ -1380,7 +1380,7 @@ Dim aLaser() As LaserIPTU
 Dim sCPF As String, sBairro As String, sCep As String
 
 Private Sub cmdArray_Click()
-Dim x As Long, RdoAux As rdoResultset, Sql As String, RdoAux2 As rdoResultset, nAno1 As Integer, nAno2 As Integer
+Dim x As Long, RdoAux As rdoResultset, sql As String, RdoAux2 As rdoResultset, nAno1 As Integer, nAno2 As Integer
 Dim nCodReduz As Long, nCodReduz2 As Long, nVVT As Double, nVVC As Double, nVVI As Double, nImpostoPredial As Double, nImpostoTerritorial As Double, sNatureza As String, nAreaPredial As Double
 Dim nTestada As Double, nValorParc As Double, nValorUnica As Double, nQtdeParc As Double, nAreaTerreno As Double, nFatorCat As Double, nFatorPed As Double, nFatorSit As Double
 Dim nFatorPro As Double, nFatorTop As Double, nFatorDis As Double, nfatorGle As Double, nAgrupamento As Double, nFracao As Double, nAliquota As Double
@@ -1389,12 +1389,12 @@ Dim nTestada2 As Double, nValorParc2 As Double, nValorUnica2 As Double, nQtdepar
 Dim nFatorPro2 As Double, nFatorTop2 As Double, nFatorDis2 As Double, nfatorGle2 As Double, nAgrupamento2 As Double, nFracao2 As Double, nAliquota2 As Double
 
 nAno1 = 2010: nAno2 = 2011
-Sql = "TRUNCATE TABLE RELIPTU"
-cn.Execute Sql, rdExecDirect
+sql = "TRUNCATE TABLE RELIPTU"
+cn.Execute sql, rdExecDirect
 
 For x = 1 To 40000
-    Sql = "SELECT * FROM LASERIPTU WHERE ANO=" & nAno1 & " AND CODREDUZIDO=" & x & " ORDER BY CODREDUZIDO"
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
+    sql = "SELECT * FROM LASERIPTU WHERE ANO=" & nAno1 & " AND CODREDUZIDO=" & x & " ORDER BY CODREDUZIDO"
+    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurReadOnly)
     With RdoAux
         If .RowCount > 0 Then
             nCodReduz = !CODREDUZIDO
@@ -1446,8 +1446,8 @@ For x = 1 To 40000
        .Close
     End With
     DoEvents
-    Sql = "SELECT * FROM LASERIPTU WHERE ANO=" & nAno2 & " AND CODREDUZIDO=" & x & " ORDER BY CODREDUZIDO"
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
+    sql = "SELECT * FROM LASERIPTU WHERE ANO=" & nAno2 & " AND CODREDUZIDO=" & x & " ORDER BY CODREDUZIDO"
+    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurReadOnly)
     With RdoAux
         If .RowCount > 0 Then
             nCodReduz2 = !CODREDUZIDO
@@ -1499,15 +1499,15 @@ For x = 1 To 40000
        .Close
     End With
     If nCodReduz > 0 Or nCodReduz2 > 0 Then
-        Sql = "INSERT RELIPTU (CODREDUZIDO,VVT,VVC,VVI,IMPOSTOPREDIAL,IMPOSTOTERRITORIAL,NATUREZA,AREACONSTRUCAO,TESTADAPRINC,VALORTOTALPARC,VALORTOTALUNICA,AREATERRENO,FATORCAT,FATORPED,FATORSIT,FATORPRO,FATORTOP,FATORDIS,FATORGLE,AGRUPAMENTO,FRACAOIDEAL,ALIQUOTA,VVT2,VVC2,VVI2,IMPOSTOPREDIAL2,"
-        Sql = Sql & "IMPOSTOTERRITORIAL2,NATUREZA2,AREACONSTRUCAO2,TESTADAPRINC2,VALORTOTALPARC2,VALORTOTALUNICA2,AREATERRENO2,FATORCAT2,FATORPED2,FATORSIT2,FATORPRO2,FATORTOP2,FATORDIS2,FATORGLE2,AGRUPAMENTO2,FRACAOIDEAL2,ALIQUOTA2) VALUES(" & x & "," & Virg2Ponto(CStr(nVVT)) & "," & Virg2Ponto(CStr(nVVC)) & ","
-        Sql = Sql & Virg2Ponto(CStr(nVVI)) & "," & Virg2Ponto(CStr(nImpostoPredial)) & "," & Virg2Ponto(CStr(nImpostoTerritorial)) & ",'" & sNatureza & "'," & Virg2Ponto(CStr(nAreaPredial)) & "," & Virg2Ponto(CStr(nTestada)) & ","
-        Sql = Sql & Virg2Ponto(CStr(nValorParc)) & "," & Virg2Ponto(CStr(nValorUnica)) & "," & Virg2Ponto(CStr(nAreaTerreno)) & "," & Virg2Ponto(CStr(nFatorCat)) & "," & Virg2Ponto(CStr(nFatorPed)) & "," & Virg2Ponto(CStr(nFatorSit)) & "," & Virg2Ponto(CStr(nFatorPro)) & ","
-        Sql = Sql & Virg2Ponto(CStr(nFatorTop)) & "," & Virg2Ponto(CStr(nFatorDis)) & "," & Virg2Ponto(CStr(nfatorGle)) & "," & Virg2Ponto(CStr(nAgrupamento)) & "," & Virg2Ponto(CStr(nFracao)) & "," & Virg2Ponto(CStr(nAliquota)) & ","
-        Sql = Sql & Virg2Ponto(CStr(nVVT2)) & "," & Virg2Ponto(CStr(nVVC2)) & "," & Virg2Ponto(CStr(nVVI2)) & "," & Virg2Ponto(CStr(nImpostoPredial2)) & "," & Virg2Ponto(CStr(nImpostoTerritorial2)) & ",'" & sNatureza2 & "'," & Virg2Ponto(CStr(nAreaPredial2)) & "," & Virg2Ponto(CStr(nTestada2)) & ","
-        Sql = Sql & Virg2Ponto(CStr(nValorParc2)) & "," & Virg2Ponto(CStr(nValorUnica2)) & "," & Virg2Ponto(CStr(nAreaTerreno2)) & "," & Virg2Ponto(CStr(nFatorCat2)) & "," & Virg2Ponto(CStr(nFatorPed2)) & "," & Virg2Ponto(CStr(nFatorSit2)) & "," & Virg2Ponto(CStr(nFatorPro2)) & ","
-        Sql = Sql & Virg2Ponto(CStr(nFatorTop2)) & "," & Virg2Ponto(CStr(nFatorDis2)) & "," & Virg2Ponto(CStr(nfatorGle2)) & "," & Virg2Ponto(CStr(nAgrupamento2)) & "," & Virg2Ponto(CStr(nFracao2)) & "," & Virg2Ponto(CStr(nAliquota2)) & ")"
-        cn.Execute Sql, rdExecDirect
+        sql = "INSERT RELIPTU (CODREDUZIDO,VVT,VVC,VVI,IMPOSTOPREDIAL,IMPOSTOTERRITORIAL,NATUREZA,AREACONSTRUCAO,TESTADAPRINC,VALORTOTALPARC,VALORTOTALUNICA,AREATERRENO,FATORCAT,FATORPED,FATORSIT,FATORPRO,FATORTOP,FATORDIS,FATORGLE,AGRUPAMENTO,FRACAOIDEAL,ALIQUOTA,VVT2,VVC2,VVI2,IMPOSTOPREDIAL2,"
+        sql = sql & "IMPOSTOTERRITORIAL2,NATUREZA2,AREACONSTRUCAO2,TESTADAPRINC2,VALORTOTALPARC2,VALORTOTALUNICA2,AREATERRENO2,FATORCAT2,FATORPED2,FATORSIT2,FATORPRO2,FATORTOP2,FATORDIS2,FATORGLE2,AGRUPAMENTO2,FRACAOIDEAL2,ALIQUOTA2) VALUES(" & x & "," & Virg2Ponto(CStr(nVVT)) & "," & Virg2Ponto(CStr(nVVC)) & ","
+        sql = sql & Virg2Ponto(CStr(nVVI)) & "," & Virg2Ponto(CStr(nImpostoPredial)) & "," & Virg2Ponto(CStr(nImpostoTerritorial)) & ",'" & sNatureza & "'," & Virg2Ponto(CStr(nAreaPredial)) & "," & Virg2Ponto(CStr(nTestada)) & ","
+        sql = sql & Virg2Ponto(CStr(nValorParc)) & "," & Virg2Ponto(CStr(nValorUnica)) & "," & Virg2Ponto(CStr(nAreaTerreno)) & "," & Virg2Ponto(CStr(nFatorCat)) & "," & Virg2Ponto(CStr(nFatorPed)) & "," & Virg2Ponto(CStr(nFatorSit)) & "," & Virg2Ponto(CStr(nFatorPro)) & ","
+        sql = sql & Virg2Ponto(CStr(nFatorTop)) & "," & Virg2Ponto(CStr(nFatorDis)) & "," & Virg2Ponto(CStr(nfatorGle)) & "," & Virg2Ponto(CStr(nAgrupamento)) & "," & Virg2Ponto(CStr(nFracao)) & "," & Virg2Ponto(CStr(nAliquota)) & ","
+        sql = sql & Virg2Ponto(CStr(nVVT2)) & "," & Virg2Ponto(CStr(nVVC2)) & "," & Virg2Ponto(CStr(nVVI2)) & "," & Virg2Ponto(CStr(nImpostoPredial2)) & "," & Virg2Ponto(CStr(nImpostoTerritorial2)) & ",'" & sNatureza2 & "'," & Virg2Ponto(CStr(nAreaPredial2)) & "," & Virg2Ponto(CStr(nTestada2)) & ","
+        sql = sql & Virg2Ponto(CStr(nValorParc2)) & "," & Virg2Ponto(CStr(nValorUnica2)) & "," & Virg2Ponto(CStr(nAreaTerreno2)) & "," & Virg2Ponto(CStr(nFatorCat2)) & "," & Virg2Ponto(CStr(nFatorPed2)) & "," & Virg2Ponto(CStr(nFatorSit2)) & "," & Virg2Ponto(CStr(nFatorPro2)) & ","
+        sql = sql & Virg2Ponto(CStr(nFatorTop2)) & "," & Virg2Ponto(CStr(nFatorDis2)) & "," & Virg2Ponto(CStr(nfatorGle2)) & "," & Virg2Ponto(CStr(nAgrupamento2)) & "," & Virg2Ponto(CStr(nFracao2)) & "," & Virg2Ponto(CStr(nAliquota2)) & ")"
+        cn.Execute sql, rdExecDirect
     End If
 Next
 
@@ -1542,8 +1542,8 @@ If opt1(1).value = True Then
     If Val(txtCod.Text) = 0 Then
        MsgBox "Digite o código do imóvel.", vbExclamation, "Atenção"
     Else
-       Sql = "SELECT CODREDUZIDO FROM CADIMOB WHERE CODREDUZIDO=" & Val(txtCod.Text)
-       Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+       sql = "SELECT CODREDUZIDO FROM CADIMOB WHERE CODREDUZIDO=" & Val(txtCod.Text)
+       Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
        With RdoAux
             If .RowCount = 0 Then
                 MsgBox "Imóvel não cadastrado.", vbExclamation, "Atenção"
@@ -1591,8 +1591,8 @@ bCalcProc = False
 bIsento = False
 lblPerc.Caption = "0"
 
-Sql = "SELECT * FROM CALCPROC WHERE CODREDUZIDO=" & nCodReduz
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT * FROM CALCPROC WHERE CODREDUZIDO=" & nCodReduz
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If .RowCount > 0 Then
         bCalcProc = True
@@ -1602,9 +1602,9 @@ End With
 
 If bCalcProc Then GoTo FASE1
 
-Sql = "SELECT ISENCAO.CODREDUZIDO,ISENCAO.ANOISENCAO,ISENCAO.CODISENCAO,TIPOISENCAO.DESCTIPO,PERCISENCAO "
-Sql = Sql & "FROM ISENCAO INNER JOIN TIPOISENCAO ON ISENCAO.CODISENCAO = TIPOISENCAO.CODTIPO WHERE CODREDUZIDO=" & nCodReduz & " AND ANOISENCAO=" & Val(txtAnoCalculo.Text)
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT ISENCAO.CODREDUZIDO,ISENCAO.ANOISENCAO,ISENCAO.CODISENCAO,TIPOISENCAO.DESCTIPO,PERCISENCAO "
+sql = sql & "FROM ISENCAO INNER JOIN TIPOISENCAO ON ISENCAO.CODISENCAO = TIPOISENCAO.CODTIPO WHERE CODREDUZIDO=" & nCodReduz & " AND ANOISENCAO=" & Val(txtAnoCalculo.Text)
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If .RowCount > 0 Then
         If !percisencao > 0 And !percisencao < 100 Then
@@ -1617,9 +1617,9 @@ With RdoAux
    .Close
 End With
 
-Sql = "SELECT ISENCAO.CODREDUZIDO,ISENCAO.ANOISENCAO,ISENCAO.CODISENCAO,TIPOISENCAO.DESCTIPO "
-Sql = Sql & "FROM ISENCAO INNER JOIN TIPOISENCAO ON ISENCAO.CODISENCAO = TIPOISENCAO.CODTIPO WHERE CODREDUZIDO=" & nCodReduz & " AND CODISENCAO=1"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT ISENCAO.CODREDUZIDO,ISENCAO.ANOISENCAO,ISENCAO.CODISENCAO,TIPOISENCAO.DESCTIPO "
+sql = sql & "FROM ISENCAO INNER JOIN TIPOISENCAO ON ISENCAO.CODISENCAO = TIPOISENCAO.CODTIPO WHERE CODREDUZIDO=" & nCodReduz & " AND CODISENCAO=1"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If .RowCount > 0 Then
         MsgBox "Este imóvel esta classificado como: " & !DESCTIPO, vbExclamation, "Atenção"
@@ -1632,14 +1632,14 @@ End With
 FASE1:
 
 'CÁLCULO
-Sql = "SELECT CADIMOB.CODREDUZIDO,LI_CODBAIRRO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE, CADIMOB.SUBUNIDADE,"
-Sql = Sql & "CADIMOB.DT_AREATERRENO,DT_CODUSOTERRENO, CADIMOB.DT_FRACAOIDEAL,CADIMOB.DT_CODPEDOL, CADIMOB.DT_CODSITUACAO,CADIMOB.DT_CODTOPOG, FACEQUADRA.CODAGRUPA,FACEQUADRA.PAVIMENTO, "
-Sql = Sql & "SUM(Areas.AREACONSTR) As SOMAAREA FROM CADIMOB LEFT OUTER JOIN AREAS ON CADIMOB.CODREDUZIDO = AREAS.CODREDUZIDO LEFT OUTER Join "
-Sql = Sql & "FACEQUADRA ON CADIMOB.DISTRITO = FACEQUADRA.CODDISTRITO AND CADIMOB.SETOR = FACEQUADRA.CODSETOR AND CADIMOB.QUADRA = FACEQUADRA.CODQUADRA AND "
-Sql = Sql & "CADIMOB.Seq = FACEQUADRA.CODFACE Where (CADIMOB.CODREDUZIDO = " & nCodReduz & ") GROUP BY CADIMOB.CODREDUZIDO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE,"
-Sql = Sql & "CADIMOB.SUBUNIDADE,CADIMOB.DT_AREATERRENO, CADIMOB.DT_FRACAOIDEAL,CADIMOB.DT_CODPEDOL, CADIMOB.DT_CODSITUACAO,CADIMOB.Dt_CodTopog , FACEQUADRA.CODAGRUPA,DT_CODUSOTERRENO,LI_CODBAIRRO,PAVIMENTO "
+sql = "SELECT CADIMOB.CODREDUZIDO,LI_CODBAIRRO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE, CADIMOB.SUBUNIDADE,"
+sql = sql & "CADIMOB.DT_AREATERRENO,DT_CODUSOTERRENO, CADIMOB.DT_FRACAOIDEAL,CADIMOB.DT_CODPEDOL, CADIMOB.DT_CODSITUACAO,CADIMOB.DT_CODTOPOG, FACEQUADRA.CODAGRUPA,FACEQUADRA.PAVIMENTO, "
+sql = sql & "SUM(Areas.AREACONSTR) As SOMAAREA FROM CADIMOB LEFT OUTER JOIN AREAS ON CADIMOB.CODREDUZIDO = AREAS.CODREDUZIDO LEFT OUTER Join "
+sql = sql & "FACEQUADRA ON CADIMOB.DISTRITO = FACEQUADRA.CODDISTRITO AND CADIMOB.SETOR = FACEQUADRA.CODSETOR AND CADIMOB.QUADRA = FACEQUADRA.CODQUADRA AND "
+sql = sql & "CADIMOB.Seq = FACEQUADRA.CODFACE Where (CADIMOB.CODREDUZIDO = " & nCodReduz & ") GROUP BY CADIMOB.CODREDUZIDO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE,"
+sql = sql & "CADIMOB.SUBUNIDADE,CADIMOB.DT_AREATERRENO, CADIMOB.DT_FRACAOIDEAL,CADIMOB.DT_CODPEDOL, CADIMOB.DT_CODSITUACAO,CADIMOB.Dt_CodTopog , FACEQUADRA.CODAGRUPA,DT_CODUSOTERRENO,LI_CODBAIRRO,PAVIMENTO "
 
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     'DADOS DO IMOVEL0
     nCodBairro = !Li_CodBairro
@@ -1665,8 +1665,8 @@ With RdoAux
     lblAreaPrincipal.Caption = FormatNumber(nAreaPrincipal, 2)
     lblPredial.Caption = IIf(bTemPredial, "Sim", "Não")
     'TESTADAS
-    Sql = "SELECT NUMFACE,AREATESTADA FROM TESTADA WHERE CODREDUZIDO = " & nCodReduz
-    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    sql = "SELECT NUMFACE,AREATESTADA FROM TESTADA WHERE CODREDUZIDO = " & nCodReduz
+    Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     With RdoAux2
         nNumTestadas = .RowCount
         If nNumTestadas = 0 Then
@@ -1698,19 +1698,19 @@ With RdoAux
     
     'BUSCA ÁREA PRINCIPAL
     'Sql = "SELECT AREACONSTR,USOCONSTR,TIPOCONSTR,CATCONSTR,QTDEPAV FROM AREAS WHERE CODREDUZIDO = " & nCodReduz & "  AND TIPOAREA='P'"
-    Sql = "SELECT AREACONSTR,USOCONSTR,TIPOCONSTR,CATCONSTR,QTDEPAV FROM AREAS WHERE CODREDUZIDO = " & nCodReduz
-    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    sql = "SELECT AREACONSTR,USOCONSTR,TIPOCONSTR,CATCONSTR,QTDEPAV FROM AREAS WHERE CODREDUZIDO = " & nCodReduz
+    Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     With RdoAux2
         If .RowCount > 0 Then
-            Sql = "SELECT SUM(AREACONSTR) AS SOMA FROM AREAS WHERE CODREDUZIDO = " & nCodReduz
-            Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            sql = "SELECT SUM(AREACONSTR) AS SOMA FROM AREAS WHERE CODREDUZIDO = " & nCodReduz
+            Set RdoAux3 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
             With RdoAux3
                 If Not IsNull(!soma) Then
                     If !soma <= 65 And RdoAux2!USOCONSTR = 1 And (RdoAux2!CATCONSTR = 4 Or RdoAux2!CATCONSTR = 7) And RdoAux2!QTDEPAV < 2 And nAreaTerreno < 600 Then
                         If nAnoCalculo > 2006 Then
                             If bCalcProc = False Then
-                                Sql = "SELECT CODREDUZIDO,CODPROPRIETARIO FROM vwPROPRIETARIODUPLICADO2 WHERE CODREDUZIDO=" & nCodReduz
-                                Set RdoAux4 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
+                                sql = "SELECT CODREDUZIDO,CODPROPRIETARIO FROM vwPROPRIETARIODUPLICADO2 WHERE CODREDUZIDO=" & nCodReduz
+                                Set RdoAux4 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurReadOnly)
                                 If RdoAux4.RowCount = 0 Then
                                     bIsento = True
                                     MsgBox "Imóvel isento de IPTU por ter área construida menor que 65 m²", vbInformation, "Atenção"
@@ -1953,8 +1953,8 @@ cn.QueryTimeout = 0
 cmdCalculo.Enabled = False
 nAnoCalculo = 2013
 If NomeDeLogin = "SCHWARTZ" Then
-    Sql = "DELETE FROM LASERIPTU WHERE ANO=" & nAnoCalculo
-    cn.Execute Sql, rdExecDirect
+    sql = "DELETE FROM LASERIPTU WHERE ANO=" & nAnoCalculo
+    cn.Execute sql, rdExecDirect
 End If
 
 nNumParc = Val(txtNumParc.Text)
@@ -1973,8 +1973,8 @@ Open sPathBin & "\NUMDOCUMENTO.TXT" For Output As #4
 ' TAXA DE EXPEDIÇÃO DE DOCUMENTO
 '********************************
 Calculo:
-Sql = "SELECT CODLANCAMENTO,VALORPARCELA,VALORUNICA FROM EXPEDIENTE WHERE ANOEXPED=" & nAnoCalculo & " AND CODLANCAMENTO=1"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CODLANCAMENTO,VALORPARCELA,VALORUNICA FROM EXPEDIENTE WHERE ANOEXPED=" & nAnoCalculo & " AND CODLANCAMENTO=1"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
      If .RowCount > 0 Then
         nValorExpDocParc = FormatNumber(!valorparcela, 2)
@@ -1996,15 +1996,15 @@ End With
 nLastDoc = 12854944
 
 'CÁLCULO
-Sql = "SELECT CADIMOB.CODREDUZIDO,CADIMOB.INATIVO,LI_CODBAIRRO,PAVIMENTO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE, CADIMOB.SUBUNIDADE,"
-Sql = Sql & "CADIMOB.DT_AREATERRENO,DT_CODUSOTERRENO, CADIMOB.DT_FRACAOIDEAL,CADIMOB.DT_CODPEDOL, CADIMOB.DT_CODSITUACAO,CADIMOB.DT_CODTOPOG, FACEQUADRA.CODAGRUPA,"
-Sql = Sql & "SUM(Areas.AREACONSTR) As SOMAAREA FROM CADIMOB LEFT OUTER JOIN AREAS ON CADIMOB.CODREDUZIDO = AREAS.CODREDUZIDO LEFT OUTER Join "
-Sql = Sql & "FACEQUADRA ON CADIMOB.DISTRITO = FACEQUADRA.CODDISTRITO AND CADIMOB.SETOR = FACEQUADRA.CODSETOR AND CADIMOB.QUADRA = FACEQUADRA.CODQUADRA AND "
-Sql = Sql & "CADIMOB.Seq = FACEQUADRA.CODFACE  AND INATIVO=0  GROUP BY CADIMOB.CODREDUZIDO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE,"
-Sql = Sql & "CADIMOB.SUBUNIDADE,CADIMOB.INATIVO,CADIMOB.DT_AREATERRENO, CADIMOB.DT_FRACAOIDEAL,CADIMOB.DT_CODPEDOL, CADIMOB.DT_CODSITUACAO,CADIMOB.Dt_CodTopog , FACEQUADRA.CODAGRUPA,DT_CODUSOTERRENO,LI_CODBAIRRO,PAVIMENTO "
-Sql = Sql & "HAVING      (cadimob.codreduzido = 12237) "
-Sql = Sql & " ORDER BY CADIMOB.CODREDUZIDO"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CADIMOB.CODREDUZIDO,CADIMOB.INATIVO,LI_CODBAIRRO,PAVIMENTO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE, CADIMOB.SUBUNIDADE,"
+sql = sql & "CADIMOB.DT_AREATERRENO,DT_CODUSOTERRENO, CADIMOB.DT_FRACAOIDEAL,CADIMOB.DT_CODPEDOL, CADIMOB.DT_CODSITUACAO,CADIMOB.DT_CODTOPOG, FACEQUADRA.CODAGRUPA,"
+sql = sql & "SUM(Areas.AREACONSTR) As SOMAAREA FROM CADIMOB LEFT OUTER JOIN AREAS ON CADIMOB.CODREDUZIDO = AREAS.CODREDUZIDO LEFT OUTER Join "
+sql = sql & "FACEQUADRA ON CADIMOB.DISTRITO = FACEQUADRA.CODDISTRITO AND CADIMOB.SETOR = FACEQUADRA.CODSETOR AND CADIMOB.QUADRA = FACEQUADRA.CODQUADRA AND "
+sql = sql & "CADIMOB.Seq = FACEQUADRA.CODFACE  AND INATIVO=0  GROUP BY CADIMOB.CODREDUZIDO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE,"
+sql = sql & "CADIMOB.SUBUNIDADE,CADIMOB.INATIVO,CADIMOB.DT_AREATERRENO, CADIMOB.DT_FRACAOIDEAL,CADIMOB.DT_CODPEDOL, CADIMOB.DT_CODSITUACAO,CADIMOB.Dt_CodTopog , FACEQUADRA.CODAGRUPA,DT_CODUSOTERRENO,LI_CODBAIRRO,PAVIMENTO "
+sql = sql & "HAVING      (cadimob.codreduzido = 12237) "
+sql = sql & " ORDER BY CADIMOB.CODREDUZIDO"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     xId = 1
     
@@ -2023,9 +2023,9 @@ With RdoAux
         'DADOS DO IMOVEL
         nCodReduz = !CODREDUZIDO
         
-        Sql = "SELECT ISENCAO.CODREDUZIDO,ISENCAO.ANOISENCAO,ISENCAO.CODISENCAO,TIPOISENCAO.DESCTIPO "
-        Sql = Sql & "FROM ISENCAO INNER JOIN TIPOISENCAO ON ISENCAO.CODISENCAO = TIPOISENCAO.CODTIPO WHERE CODREDUZIDO=" & nCodReduz & " AND ANOISENCAO=" & nAnoCalculo
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT ISENCAO.CODREDUZIDO,ISENCAO.ANOISENCAO,ISENCAO.CODISENCAO,TIPOISENCAO.DESCTIPO "
+        sql = sql & "FROM ISENCAO INNER JOIN TIPOISENCAO ON ISENCAO.CODISENCAO = TIPOISENCAO.CODTIPO WHERE CODREDUZIDO=" & nCodReduz & " AND ANOISENCAO=" & nAnoCalculo
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             If .RowCount > 0 Then
                 GoTo Proximo
@@ -2033,9 +2033,9 @@ With RdoAux
            .Close
         End With
                 
-        Sql = "SELECT ISENCAO.CODREDUZIDO,ISENCAO.ANOISENCAO,ISENCAO.CODISENCAO,TIPOISENCAO.DESCTIPO "
-        Sql = Sql & "FROM ISENCAO INNER JOIN TIPOISENCAO ON ISENCAO.CODISENCAO = TIPOISENCAO.CODTIPO WHERE CODREDUZIDO=" & nCodReduz & " AND CODISENCAO=1"
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT ISENCAO.CODREDUZIDO,ISENCAO.ANOISENCAO,ISENCAO.CODISENCAO,TIPOISENCAO.DESCTIPO "
+        sql = sql & "FROM ISENCAO INNER JOIN TIPOISENCAO ON ISENCAO.CODISENCAO = TIPOISENCAO.CODTIPO WHERE CODREDUZIDO=" & nCodReduz & " AND CODISENCAO=1"
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             If .RowCount > 0 Then
                 GoTo Proximo
@@ -2056,8 +2056,8 @@ FASE1:
         bFracaoIdeal = IIf(nFracaoIdeal > 0, True, False)
         If bFracaoIdeal Then nAreaTerreno = !Dt_FracaoIdeal
         'TESTADAS
-        Sql = "SELECT NUMFACE,AREATESTADA FROM TESTADA WHERE CODREDUZIDO = " & nCodReduz
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT NUMFACE,AREATESTADA FROM TESTADA WHERE CODREDUZIDO = " & nCodReduz
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             nNumTestadas = .RowCount
             If nNumTestadas = 0 Then
@@ -2089,15 +2089,15 @@ FASE1:
         '--Se houver Fracao Ideal o Comprimento da Testada e calculado por --> FRACAOIDEAL * TESTADA / AREA PRINCIPAL
         
         'BUSCA ÁREA PRINCIPAL
-        Sql = "SELECT AREACONSTR,USOCONSTR,TIPOCONSTR,CATCONSTR,QTDEPAV FROM AREAS WHERE CODREDUZIDO = " & nCodReduz
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT AREACONSTR,USOCONSTR,TIPOCONSTR,CATCONSTR,QTDEPAV FROM AREAS WHERE CODREDUZIDO = " & nCodReduz
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
         'TEM ÁREA?
             If .RowCount > 0 Then
                 If Not IsNull(RdoAux!SOMAAREA) Then
                     If RdoAux!SOMAAREA <= 65 And !USOCONSTR = 1 And (!CATCONSTR = 4 Or !CATCONSTR = 7) And !QTDEPAV < 2 And nAreaTerreno < 600 Then
-                        Sql = "SELECT CODREDUZIDO,CODPROPRIETARIO FROM vwPROPRIETARIODUPLICADO2 WHERE CODREDUZIDO=" & nCodReduz
-                        Set RdoAux4 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
+                        sql = "SELECT CODREDUZIDO,CODPROPRIETARIO FROM vwPROPRIETARIODUPLICADO2 WHERE CODREDUZIDO=" & nCodReduz
+                        Set RdoAux4 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurReadOnly)
                         If RdoAux4.RowCount = 0 Then
                             GoTo Proximo
                         End If
@@ -2302,18 +2302,18 @@ FASE1:
         
         'GRAVA TABELA LASERIPTU
         If NomeDeLogin = "SCHWARTZ" Then
-            Sql = "INSERT LASERIPTU (ANO,CODREDUZIDO,VVT,VVC,VVI,IMPOSTOPREDIAL,IMPOSTOTERRITORIAL,NATUREZA,AREACONSTRUCAO,"
-            Sql = Sql & "TESTADAPRINC,VALORTOTALPARC,VALORTOTALUNICA,QTDEPARC,TXEXPPARC,TXEXPUNICA,AREATERRENO,FATORCAT,FATORPED,FATORSIT,"
-            Sql = Sql & "FATORPRO,FATORTOP,FATORDIS,FATORGLE,AGRUPAMENTO,FRACAOIDEAL,ALIQUOTA) VALUES("
-            Sql = Sql & nAnoCalculo & "," & nCodReduz & "," & Virg2Ponto(CStr(nValorVenalTerritorial)) & "," & Virg2Ponto(CStr(nValorVenalPredial)) & ","
-            Sql = Sql & Virg2Ponto(CStr(nValorVenalImovel)) & "," & Virg2Ponto(CStr(nValorIptu)) & "," & Virg2Ponto(CStr(nValorITU)) & ",'"
-            Sql = Sql & IIf(bTemPredial, "Predial", "Territorial") & "'," & Virg2Ponto(CStr(nAreaPrincipal)) & "," & Virg2Ponto(CStr(nTestada1)) & ","
-            Sql = Sql & Virg2Ponto(CStr(nValorParcela)) & "," & Virg2Ponto(CStr(nValorUnica)) & "," & nNumParc & ","
-            Sql = Sql & Virg2Ponto(CStr(nValorExpDocParc) * Val(txtNumParc.Text)) & "," & Virg2Ponto(CStr(nValorExpDocUnica)) & "," & Virg2Ponto(CStr(nAreaTerreno)) & ","
-            Sql = Sql & Virg2Ponto(CStr(nFatorCategoria)) & "," & Virg2Ponto(CStr(nFatorPedologia)) & "," & Virg2Ponto(CStr(nFatorSituacao)) & "," & Virg2Ponto(CStr(nFatorProfundidade)) & ","
-            Sql = Sql & Virg2Ponto(CStr(nFatorTopografia)) & "," & Virg2Ponto(CStr(nFatorDistrito)) & "," & Virg2Ponto(CStr(nFatorGleba)) & "," & Virg2Ponto(CStr(nValorAgrupamento)) & ","
-            Sql = Sql & Virg2Ponto(CStr(nFracaoIdeal)) & "," & Virg2Ponto(CStr(nAliquota)) & ")"
-            cn.Execute Sql, rdExecDirect
+            sql = "INSERT LASERIPTU (ANO,CODREDUZIDO,VVT,VVC,VVI,IMPOSTOPREDIAL,IMPOSTOTERRITORIAL,NATUREZA,AREACONSTRUCAO,"
+            sql = sql & "TESTADAPRINC,VALORTOTALPARC,VALORTOTALUNICA,QTDEPARC,TXEXPPARC,TXEXPUNICA,AREATERRENO,FATORCAT,FATORPED,FATORSIT,"
+            sql = sql & "FATORPRO,FATORTOP,FATORDIS,FATORGLE,AGRUPAMENTO,FRACAOIDEAL,ALIQUOTA) VALUES("
+            sql = sql & nAnoCalculo & "," & nCodReduz & "," & Virg2Ponto(CStr(nValorVenalTerritorial)) & "," & Virg2Ponto(CStr(nValorVenalPredial)) & ","
+            sql = sql & Virg2Ponto(CStr(nValorVenalImovel)) & "," & Virg2Ponto(CStr(nValorIptu)) & "," & Virg2Ponto(CStr(nValorITU)) & ",'"
+            sql = sql & IIf(bTemPredial, "Predial", "Territorial") & "'," & Virg2Ponto(CStr(nAreaPrincipal)) & "," & Virg2Ponto(CStr(nTestada1)) & ","
+            sql = sql & Virg2Ponto(CStr(nValorParcela)) & "," & Virg2Ponto(CStr(nValorUnica)) & "," & nNumParc & ","
+            sql = sql & Virg2Ponto(CStr(nValorExpDocParc) * Val(txtNumParc.Text)) & "," & Virg2Ponto(CStr(nValorExpDocUnica)) & "," & Virg2Ponto(CStr(nAreaTerreno)) & ","
+            sql = sql & Virg2Ponto(CStr(nFatorCategoria)) & "," & Virg2Ponto(CStr(nFatorPedologia)) & "," & Virg2Ponto(CStr(nFatorSituacao)) & "," & Virg2Ponto(CStr(nFatorProfundidade)) & ","
+            sql = sql & Virg2Ponto(CStr(nFatorTopografia)) & "," & Virg2Ponto(CStr(nFatorDistrito)) & "," & Virg2Ponto(CStr(nFatorGleba)) & "," & Virg2Ponto(CStr(nValorAgrupamento)) & ","
+            sql = sql & Virg2Ponto(CStr(nFracaoIdeal)) & "," & Virg2Ponto(CStr(nAliquota)) & ")"
+            cn.Execute sql, rdExecDirect
         
         End If
         
@@ -2388,8 +2388,8 @@ If cGetInputState() <> 0 Then DoEvents
 
 sDataBase = mskDataBase.Text
 
-Sql = "TRUNCATE TABLE ISENTOIPTUREL"
-cn.Execute Sql, rdExecDirect
+sql = "TRUNCATE TABLE ISENTOIPTUREL"
+cn.Execute sql, rdExecDirect
 '********************************
 ' TAXA DE EXPEDIÇÃO DE DOCUMENTO
 '********************************
@@ -2408,14 +2408,14 @@ Calculo:
 'End With
 
 'CÁLCULO
-Sql = "SELECT CADIMOB.CODREDUZIDO,CADIMOB.INATIVO,LI_CODBAIRRO,PAVIMENTO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE, CADIMOB.SUBUNIDADE,"
-Sql = Sql & "CADIMOB.DT_AREATERRENO,DT_CODUSOTERRENO, CADIMOB.DT_FRACAOIDEAL,CADIMOB.DT_CODPEDOL, CADIMOB.DT_CODSITUACAO,CADIMOB.DT_CODTOPOG, FACEQUADRA.CODAGRUPA,"
-Sql = Sql & "SUM(Areas.AREACONSTR) As SOMAAREA FROM CADIMOB LEFT OUTER JOIN AREAS ON CADIMOB.CODREDUZIDO = AREAS.CODREDUZIDO LEFT OUTER Join "
-Sql = Sql & "FACEQUADRA ON CADIMOB.DISTRITO = FACEQUADRA.CODDISTRITO AND CADIMOB.SETOR = FACEQUADRA.CODSETOR AND CADIMOB.QUADRA = FACEQUADRA.CODQUADRA AND "
-Sql = Sql & "CADIMOB.Seq = FACEQUADRA.CODFACE  AND INATIVO=0  GROUP BY CADIMOB.CODREDUZIDO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE,"
-Sql = Sql & "CADIMOB.SUBUNIDADE,CADIMOB.INATIVO,CADIMOB.DT_AREATERRENO, CADIMOB.DT_FRACAOIDEAL,CADIMOB.DT_CODPEDOL, CADIMOB.DT_CODSITUACAO,CADIMOB.Dt_CodTopog , FACEQUADRA.CODAGRUPA,DT_CODUSOTERRENO,LI_CODBAIRRO,PAVIMENTO "
-Sql = Sql & " ORDER BY CADIMOB.CODREDUZIDO"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CADIMOB.CODREDUZIDO,CADIMOB.INATIVO,LI_CODBAIRRO,PAVIMENTO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE, CADIMOB.SUBUNIDADE,"
+sql = sql & "CADIMOB.DT_AREATERRENO,DT_CODUSOTERRENO, CADIMOB.DT_FRACAOIDEAL,CADIMOB.DT_CODPEDOL, CADIMOB.DT_CODSITUACAO,CADIMOB.DT_CODTOPOG, FACEQUADRA.CODAGRUPA,"
+sql = sql & "SUM(Areas.AREACONSTR) As SOMAAREA FROM CADIMOB LEFT OUTER JOIN AREAS ON CADIMOB.CODREDUZIDO = AREAS.CODREDUZIDO LEFT OUTER Join "
+sql = sql & "FACEQUADRA ON CADIMOB.DISTRITO = FACEQUADRA.CODDISTRITO AND CADIMOB.SETOR = FACEQUADRA.CODSETOR AND CADIMOB.QUADRA = FACEQUADRA.CODQUADRA AND "
+sql = sql & "CADIMOB.Seq = FACEQUADRA.CODFACE  AND INATIVO=0  GROUP BY CADIMOB.CODREDUZIDO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE,"
+sql = sql & "CADIMOB.SUBUNIDADE,CADIMOB.INATIVO,CADIMOB.DT_AREATERRENO, CADIMOB.DT_FRACAOIDEAL,CADIMOB.DT_CODPEDOL, CADIMOB.DT_CODSITUACAO,CADIMOB.Dt_CodTopog , FACEQUADRA.CODAGRUPA,DT_CODUSOTERRENO,LI_CODBAIRRO,PAVIMENTO "
+sql = sql & " ORDER BY CADIMOB.CODREDUZIDO"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     xId = 1
     
@@ -2435,9 +2435,9 @@ With RdoAux
         nTipoIsento = 0
         'DADOS DO IMOVEL
         nCodReduz = !CODREDUZIDO
-        Sql = "SELECT ISENCAO.CODREDUZIDO,ISENCAO.ANOISENCAO,ISENCAO.CODISENCAO,TIPOISENCAO.DESCTIPO "
-        Sql = Sql & "FROM ISENCAO INNER JOIN TIPOISENCAO ON ISENCAO.CODISENCAO = TIPOISENCAO.CODTIPO WHERE CODREDUZIDO=" & nCodReduz & " AND ANOISENCAO=" & nAnoCalculo
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT ISENCAO.CODREDUZIDO,ISENCAO.ANOISENCAO,ISENCAO.CODISENCAO,TIPOISENCAO.DESCTIPO "
+        sql = sql & "FROM ISENCAO INNER JOIN TIPOISENCAO ON ISENCAO.CODISENCAO = TIPOISENCAO.CODTIPO WHERE CODREDUZIDO=" & nCodReduz & " AND ANOISENCAO=" & nAnoCalculo
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             If .RowCount > 0 Then
                 nTipoIsento = 1
@@ -2446,9 +2446,9 @@ With RdoAux
            .Close
         End With
                 
-        Sql = "SELECT ISENCAO.CODREDUZIDO,ISENCAO.ANOISENCAO,ISENCAO.CODISENCAO,TIPOISENCAO.DESCTIPO "
-        Sql = Sql & "FROM ISENCAO INNER JOIN TIPOISENCAO ON ISENCAO.CODISENCAO = TIPOISENCAO.CODTIPO WHERE CODREDUZIDO=" & nCodReduz & " AND CODISENCAO=1"
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT ISENCAO.CODREDUZIDO,ISENCAO.ANOISENCAO,ISENCAO.CODISENCAO,TIPOISENCAO.DESCTIPO "
+        sql = sql & "FROM ISENCAO INNER JOIN TIPOISENCAO ON ISENCAO.CODISENCAO = TIPOISENCAO.CODTIPO WHERE CODREDUZIDO=" & nCodReduz & " AND CODISENCAO=1"
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             If .RowCount > 0 Then
                 nTipoIsento = 2
@@ -2470,8 +2470,8 @@ With RdoAux
         bFracaoIdeal = IIf(nFracaoIdeal > 0, True, False)
         If bFracaoIdeal Then nAreaTerreno = !Dt_FracaoIdeal
         'TESTADAS
-        Sql = "SELECT NUMFACE,AREATESTADA FROM TESTADA WHERE CODREDUZIDO = " & nCodReduz
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT NUMFACE,AREATESTADA FROM TESTADA WHERE CODREDUZIDO = " & nCodReduz
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             nNumTestadas = .RowCount
             If nNumTestadas = 0 Then
@@ -2503,8 +2503,8 @@ With RdoAux
         '--Se houver Fracao Ideal o Comprimento da Testada e calculado por --> FRACAOIDEAL * TESTADA / AREA PRINCIPAL
         
         'BUSCA ÁREA PRINCIPAL
-        Sql = "SELECT AREACONSTR,USOCONSTR,TIPOCONSTR,CATCONSTR,QTDEPAV FROM AREAS WHERE CODREDUZIDO = " & nCodReduz
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT AREACONSTR,USOCONSTR,TIPOCONSTR,CATCONSTR,QTDEPAV FROM AREAS WHERE CODREDUZIDO = " & nCodReduz
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
         'TEM ÁREA?
             If .RowCount > 0 Then
@@ -2687,11 +2687,11 @@ With RdoAux
         nValorUnica = Round(nValorFinal - (nValorFinal * (CDbl(lblPercUnica.Caption) / 100)), 2)
         nValorParcela = Round(nValorFinal / nNumParc, 2)
         
-        Sql = "INSERT ISENTOIPTUREL(CODREDUZIDO,VVT,VVP,VVI,AREAT,AREAC,VALORIPTU,TIPOISENCAO) VALUES(" & nCodReduz & ","
-        Sql = Sql & Virg2Ponto(CStr(nValorVenalTerritorial)) & "," & Virg2Ponto(CStr(nValorVenalPredial)) & ","
-        Sql = Sql & Virg2Ponto(CStr(nValorVenalImovel)) & "," & Virg2Ponto(CStr(nAreaTerreno)) & ","
-        Sql = Sql & Virg2Ponto(CStr(nAreaPrincipal)) & "," & Virg2Ponto(CStr(nValorFinal)) & "," & nTipoIsento & ")"
-        cn.Execute Sql, rdExecDirect
+        sql = "INSERT ISENTOIPTUREL(CODREDUZIDO,VVT,VVP,VVI,AREAT,AREAC,VALORIPTU,TIPOISENCAO) VALUES(" & nCodReduz & ","
+        sql = sql & Virg2Ponto(CStr(nValorVenalTerritorial)) & "," & Virg2Ponto(CStr(nValorVenalPredial)) & ","
+        sql = sql & Virg2Ponto(CStr(nValorVenalImovel)) & "," & Virg2Ponto(CStr(nAreaTerreno)) & ","
+        sql = sql & Virg2Ponto(CStr(nAreaPrincipal)) & "," & Virg2Ponto(CStr(nValorFinal)) & "," & nTipoIsento & ")"
+        cn.Execute sql, rdExecDirect
 Proximo:
         xId = xId + 1
        .MoveNext
@@ -3327,8 +3327,8 @@ If Val(lblParcela.Caption) = 0 Then
     Exit Sub
 End If
 
-Sql = "select * from debitoparcela where codreduzido=" & nCodReduz & " and anoexercicio=" & Val(txtAnoCalculo.Text) & " and codlancamento=1 and statuslanc not in (5,8,45)"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select * from debitoparcela where codreduzido=" & nCodReduz & " and anoexercicio=" & Val(txtAnoCalculo.Text) & " and codlancamento=1 and statuslanc not in (5,8,45)"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 If RdoAux.RowCount > 0 Then
     MsgBox "Este código já possui IPTU para " & txtAnoCalculo.Text
     Exit Sub
@@ -3338,12 +3338,12 @@ RdoAux.Close
 'GoTo LASERIPTUEXT
 
 'busca o valorpago
-Sql = "SELECT SUM(debitotributo.valortributo) AS TOTAL FROM debitotributo INNER JOIN debitoparcela ON debitotributo.codreduzido = debitoparcela.codreduzido AND "
-Sql = Sql & "debitotributo.anoexercicio = debitoparcela.anoexercicio AND debitotributo.codlancamento = debitoparcela.codlancamento AND "
-Sql = Sql & "debitotributo.seqlancamento = debitoparcela.seqlancamento AND debitotributo.NumParcela = debitoparcela.NumParcela And debitotributo.CODCOMPLEMENTO = debitoparcela.CODCOMPLEMENTO "
-Sql = Sql & "WHERE debitotributo.codreduzido = " & nCodReduz & " AND debitotributo.anoexercicio = " & nAnoCalculo & " AND "
-Sql = Sql & "debitotributo.codlancamento = 1 AND (debitoparcela.statuslanc = 1 OR debitoparcela.statuslanc = 2)"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT SUM(debitotributo.valortributo) AS TOTAL FROM debitotributo INNER JOIN debitoparcela ON debitotributo.codreduzido = debitoparcela.codreduzido AND "
+sql = sql & "debitotributo.anoexercicio = debitoparcela.anoexercicio AND debitotributo.codlancamento = debitoparcela.codlancamento AND "
+sql = sql & "debitotributo.seqlancamento = debitoparcela.seqlancamento AND debitotributo.NumParcela = debitoparcela.NumParcela And debitotributo.CODCOMPLEMENTO = debitoparcela.CODCOMPLEMENTO "
+sql = sql & "WHERE debitotributo.codreduzido = " & nCodReduz & " AND debitotributo.anoexercicio = " & nAnoCalculo & " AND "
+sql = sql & "debitotributo.codlancamento = 1 AND (debitoparcela.statuslanc = 1 OR debitoparcela.statuslanc = 2)"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If IsNull(!Total) Then
         nValorPago = 0
@@ -3359,8 +3359,8 @@ nValorParcela = (CDbl(lblValorFinal.Caption) - nValorPago) / Val(txtNumParc.Text
 nValorUnica = CDbl(lblUnica.Caption)
 
 'busca ultima sequencia
-Sql = "SELECT MAX(SEQLANCAMENTO) AS MAXIMO FROM DEBITOPARCELA WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAnoCalculo & " AND CODLANCAMENTO=1"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT MAX(SEQLANCAMENTO) AS MAXIMO FROM DEBITOPARCELA WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAnoCalculo & " AND CODLANCAMENTO=1"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If IsNull(!maximo) Then
         nSeq = 0
@@ -3371,8 +3371,8 @@ With RdoAux
 End With
 
 'cancela as parcelas nao pagas
-Sql = "UPDATE DEBITOPARCELA SET STATUSLANC=5 WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAnoCalculo & " AND CODLANCAMENTO=1 AND STATUSLANC=3"
-cn.Execute Sql, rdExecDirect
+sql = "UPDATE DEBITOPARCELA SET STATUSLANC=5 WHERE CODREDUZIDO=" & nCodReduz & " AND ANOEXERCICIO=" & nAnoCalculo & " AND CODLANCAMENTO=1 AND STATUSLANC=3"
+cn.Execute sql, rdExecDirect
 
 
 nValorFinal = (CDbl(lblValorFinal.Caption) - nValorPago)
@@ -3400,120 +3400,120 @@ nValorParcela = Round(nValorFinal / nNumParc, 2)
 For x = 0 To nNumParc
     If lblTemUnica = "Não" And x = 0 Then x = 1
     'GRAVA NA TABELA DEBITOPARCELA
-    Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,"
-    Sql = Sql & "DATAVENCIMENTO,DATADEBASE,CODMOEDA,USERID) VALUES(" & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & x & ",0,3,'"
-    Sql = Sql & Format(aParc(x), "mm/dd/yyyy") & "','" & Format(sDataBase, "mm/dd/yyyy") & "',1," & RetornaUsuarioID(NomeDeLogin) & ")"
-    cn.Execute Sql, rdExecDirect
+    sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,"
+    sql = sql & "DATAVENCIMENTO,DATADEBASE,CODMOEDA,USERID) VALUES(" & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & x & ",0,3,'"
+    sql = sql & Format(aParc(x), "mm/dd/yyyy") & "','" & Format(sDataBase, "mm/dd/yyyy") & "',1," & RetornaUsuarioID(NomeDeLogin) & ")"
+    cn.Execute sql, rdExecDirect
     
     'GRAVA NA TABELA DEBITOTRIBUTO
-    Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,"
-    Sql = Sql & "VALORTRIBUTO) VALUES(" & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & x & ",0,1," & Virg2Ponto(IIf(x = 0, Round(nValorUnica, 2), Round(nValorParcela, 2))) & ")"
-    cn.Execute Sql, rdExecDirect
+    sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,"
+    sql = sql & "VALORTRIBUTO) VALUES(" & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & x & ",0,1," & Virg2Ponto(IIf(x = 0, Round(nValorUnica, 2), Round(nValorParcela, 2))) & ")"
+    cn.Execute sql, rdExecDirect
     
     'ULTIMO Nº DE DOCUMENTO
-    Sql = "SELECT MAX(NUMDOCUMENTO) AS ULTIMO FROM NUMDOCUMENTO"
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    sql = "SELECT MAX(NUMDOCUMENTO) AS ULTIMO FROM NUMDOCUMENTO"
+    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         nLastDoc = !ULTIMO + 1
        .Close
     End With
     
     'GRAVA NA TABELA PARCELADOCUMENTO
-    Sql = "INSERT PARCELADOCUMENTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,NUMDOCUMENTO) VALUES("
-    Sql = Sql & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & x & ",0," & nLastDoc & ")"
-    cn.Execute Sql, rdExecDirect
+    sql = "INSERT PARCELADOCUMENTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,NUMDOCUMENTO) VALUES("
+    sql = sql & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & x & ",0," & nLastDoc & ")"
+    cn.Execute sql, rdExecDirect
     
     'GRAVA NA TABELA NUMDOCUMENTO
-    Sql = "INSERT NUMDOCUMENTO (NUMDOCUMENTO,DATADOCUMENTO,EMISSOR,USERID,REGISTRADO) VALUES("
-    Sql = Sql & nLastDoc & ",'" & Format(Now, "mm/dd/yyyy") & "','(RECALCULO-IPTU)" & "'," & RetornaUsuarioID(NomeDeLogin) & ",1)"
-    cn.Execute Sql, rdExecDirect
+    sql = "INSERT NUMDOCUMENTO (NUMDOCUMENTO,DATADOCUMENTO,EMISSOR,USERID,REGISTRADO) VALUES("
+    sql = sql & nLastDoc & ",'" & Format(Now, "mm/dd/yyyy") & "','(RECALCULO-IPTU)" & "'," & RetornaUsuarioID(NomeDeLogin) & ",1)"
+    cn.Execute sql, rdExecDirect
 
     'GRAVA DOCUMENTO PARA REGISTRO
-    Sql = "INSERT ficha_compensacao_documento(numero_documento,data_vencimento,valor_documento,nome,cpf,endereco,bairro,cep,cidade,uf) values(" & nLastDoc & ",'"
-    Sql = Sql & Format(aParc(x), "mm/dd/yyyy") & "'," & Virg2Ponto(IIf(x = 0, Round(nValorUnica, 2), Round(nValorParcela, 2))) & ",'" & Mask(Left(lblProp.Caption, 40)) & "','" & sCPF & "','"
-    Sql = Sql & Mask(Left(lblRua.Caption, 40)) & "','" & Mask(Left(sBairro, 15)) & "','" & RetornaNumero(sCep) & "','" & Mask(Left("JABOTICABAL", 30)) & "','SP')"
-    cn.Execute Sql, rdExecDirect
+    sql = "INSERT ficha_compensacao_documento(numero_documento,data_vencimento,valor_documento,nome,cpf,endereco,bairro,cep,cidade,uf) values(" & nLastDoc & ",'"
+    sql = sql & Format(aParc(x), "mm/dd/yyyy") & "'," & Virg2Ponto(IIf(x = 0, Round(nValorUnica, 2), Round(nValorParcela, 2))) & ",'" & Mask(Left(lblProp.Caption, 40)) & "','" & sCPF & "','"
+    sql = sql & Mask(Left(lblRua.Caption, 40)) & "','" & Mask(Left(sBairro, 15)) & "','" & RetornaNumero(sCep) & "','" & Mask(Left("JABOTICABAL", 30)) & "','SP')"
+    cn.Execute sql, rdExecDirect
 
 Next
 
 'ULTIMO Nº DE DOCUMENTO
-Sql = "SELECT MAX(NUMDOCUMENTO) AS ULTIMO FROM NUMDOCUMENTO"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT MAX(NUMDOCUMENTO) AS ULTIMO FROM NUMDOCUMENTO"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     nLastDoc = !ULTIMO + 1
    .Close
 End With
-Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,"
-Sql = Sql & "DATAVENCIMENTO,DATADEBASE,CODMOEDA,USERID) VALUES(" & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & 0 & ",91,3,'"
-Sql = Sql & Format(aParc(2), "mm/dd/yyyy") & "','" & Format(sDataBase, "mm/dd/yyyy") & "',1," & RetornaUsuarioID(NomeDeLogin) & ")"
-cn.Execute Sql, rdExecDirect
+sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,"
+sql = sql & "DATAVENCIMENTO,DATADEBASE,CODMOEDA,USERID) VALUES(" & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & 0 & ",91,3,'"
+sql = sql & Format(aParc(2), "mm/dd/yyyy") & "','" & Format(sDataBase, "mm/dd/yyyy") & "',1," & RetornaUsuarioID(NomeDeLogin) & ")"
+cn.Execute sql, rdExecDirect
 'GRAVA NA TABELA DEBITOTRIBUTO
-Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,"
-Sql = Sql & "VALORTRIBUTO) VALUES(" & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & 0 & ",91,1," & Virg2Ponto(Round(CDbl(lblUnica2.Caption), 2)) & ")"
-cn.Execute Sql, rdExecDirect
+sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,"
+sql = sql & "VALORTRIBUTO) VALUES(" & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & 0 & ",91,1," & Virg2Ponto(Round(CDbl(lblUnica2.Caption), 2)) & ")"
+cn.Execute sql, rdExecDirect
 'GRAVA NA TABELA PARCELADOCUMENTO
-Sql = "INSERT PARCELADOCUMENTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,NUMDOCUMENTO) VALUES("
-Sql = Sql & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & 0 & ",91," & nLastDoc & ")"
-cn.Execute Sql, rdExecDirect
+sql = "INSERT PARCELADOCUMENTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,NUMDOCUMENTO) VALUES("
+sql = sql & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & 0 & ",91," & nLastDoc & ")"
+cn.Execute sql, rdExecDirect
 'GRAVA NA TABELA NUMDOCUMENTO
-Sql = "INSERT NUMDOCUMENTO (NUMDOCUMENTO,DATADOCUMENTO,EMISSOR,USERID,REGISTRADO) VALUES("
-Sql = Sql & nLastDoc & ",'" & Format(Now, "mm/dd/yyyy") & "','(RECALCULO-IPTU)" & "'," & RetornaUsuarioID(NomeDeLogin) & ",1)"
-cn.Execute Sql, rdExecDirect
+sql = "INSERT NUMDOCUMENTO (NUMDOCUMENTO,DATADOCUMENTO,EMISSOR,USERID,REGISTRADO) VALUES("
+sql = sql & nLastDoc & ",'" & Format(Now, "mm/dd/yyyy") & "','(RECALCULO-IPTU)" & "'," & RetornaUsuarioID(NomeDeLogin) & ",1)"
+cn.Execute sql, rdExecDirect
 'GRAVA DOCUMENTO PARA REGISTRO
-Sql = "INSERT ficha_compensacao_documento(numero_documento,data_vencimento,valor_documento,nome,cpf,endereco,bairro,cep,cidade,uf) values(" & nLastDoc & ",'"
-Sql = Sql & Format(aParc(2), "mm/dd/yyyy") & "'," & Virg2Ponto(Round(CDbl(lblUnica2.Caption), 2)) & ",'" & Mask(Left(lblProp.Caption, 40)) & "','" & sCPF & "','"
-Sql = Sql & Mask(Left(lblRua.Caption, 40)) & "','" & Mask(Left(sBairro, 15)) & "','" & RetornaNumero(sCep) & "','" & Mask(Left("JABOTICABAL", 30)) & "','SP')"
-cn.Execute Sql, rdExecDirect
+sql = "INSERT ficha_compensacao_documento(numero_documento,data_vencimento,valor_documento,nome,cpf,endereco,bairro,cep,cidade,uf) values(" & nLastDoc & ",'"
+sql = sql & Format(aParc(2), "mm/dd/yyyy") & "'," & Virg2Ponto(Round(CDbl(lblUnica2.Caption), 2)) & ",'" & Mask(Left(lblProp.Caption, 40)) & "','" & sCPF & "','"
+sql = sql & Mask(Left(lblRua.Caption, 40)) & "','" & Mask(Left(sBairro, 15)) & "','" & RetornaNumero(sCep) & "','" & Mask(Left("JABOTICABAL", 30)) & "','SP')"
+cn.Execute sql, rdExecDirect
 
 
 'ULTIMO Nº DE DOCUMENTO
-Sql = "SELECT MAX(NUMDOCUMENTO) AS ULTIMO FROM NUMDOCUMENTO"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT MAX(NUMDOCUMENTO) AS ULTIMO FROM NUMDOCUMENTO"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     nLastDoc = !ULTIMO + 1
    .Close
 End With
-Sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,"
-Sql = Sql & "DATAVENCIMENTO,DATADEBASE,CODMOEDA,USERID) VALUES(" & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & 0 & ",92,3,'"
-Sql = Sql & Format(aParc(3), "mm/dd/yyyy") & "','" & Format(sDataBase, "mm/dd/yyyy") & "',1," & RetornaUsuarioID(NomeDeLogin) & ")"
-cn.Execute Sql, rdExecDirect
+sql = "INSERT DEBITOPARCELA (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,STATUSLANC,"
+sql = sql & "DATAVENCIMENTO,DATADEBASE,CODMOEDA,USERID) VALUES(" & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & 0 & ",92,3,'"
+sql = sql & Format(aParc(3), "mm/dd/yyyy") & "','" & Format(sDataBase, "mm/dd/yyyy") & "',1," & RetornaUsuarioID(NomeDeLogin) & ")"
+cn.Execute sql, rdExecDirect
 'GRAVA NA TABELA DEBITOTRIBUTO
-Sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,"
-Sql = Sql & "VALORTRIBUTO) VALUES(" & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & 0 & ",92,1," & Virg2Ponto(Round(CDbl(lblUnica3.Caption), 2)) & ")"
-cn.Execute Sql, rdExecDirect
+sql = "INSERT DEBITOTRIBUTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,CODTRIBUTO,"
+sql = sql & "VALORTRIBUTO) VALUES(" & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & 0 & ",92,1," & Virg2Ponto(Round(CDbl(lblUnica3.Caption), 2)) & ")"
+cn.Execute sql, rdExecDirect
 'GRAVA NA TABELA PARCELADOCUMENTO
-Sql = "INSERT PARCELADOCUMENTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,NUMDOCUMENTO) VALUES("
-Sql = Sql & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & 0 & ",92," & nLastDoc & ")"
-cn.Execute Sql, rdExecDirect
+sql = "INSERT PARCELADOCUMENTO (CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,NUMPARCELA,CODCOMPLEMENTO,NUMDOCUMENTO) VALUES("
+sql = sql & nCodReduz & "," & nAnoCalculo & ",1," & nSeq & "," & 0 & ",92," & nLastDoc & ")"
+cn.Execute sql, rdExecDirect
 'GRAVA NA TABELA NUMDOCUMENTO
-Sql = "INSERT NUMDOCUMENTO (NUMDOCUMENTO,DATADOCUMENTO,EMISSOR,USERID,REGISTRADO) VALUES("
-Sql = Sql & nLastDoc & ",'" & Format(Now, "mm/dd/yyyy") & "','(RECALCULO-IPTU)" & "'," & RetornaUsuarioID(NomeDeLogin) & ",1)"
-cn.Execute Sql, rdExecDirect
+sql = "INSERT NUMDOCUMENTO (NUMDOCUMENTO,DATADOCUMENTO,EMISSOR,USERID,REGISTRADO) VALUES("
+sql = sql & nLastDoc & ",'" & Format(Now, "mm/dd/yyyy") & "','(RECALCULO-IPTU)" & "'," & RetornaUsuarioID(NomeDeLogin) & ",1)"
+cn.Execute sql, rdExecDirect
 'GRAVA DOCUMENTO PARA REGISTRO
-Sql = "INSERT ficha_compensacao_documento(numero_documento,data_vencimento,valor_documento,nome,cpf,endereco,bairro,cep,cidade,uf) values(" & nLastDoc & ",'"
-Sql = Sql & Format(aParc(3), "mm/dd/yyyy") & "'," & Virg2Ponto(Round(CDbl(lblUnica3.Caption), 2)) & ",'" & Mask(Left(lblProp.Caption, 40)) & "','" & sCPF & "','"
-Sql = Sql & Mask(Left(lblRua.Caption, 40)) & "','" & Mask(Left(sBairro, 15)) & "','" & RetornaNumero(sCep) & "','" & Mask(Left("JABOTICABAL", 30)) & "','SP')"
-cn.Execute Sql, rdExecDirect
+sql = "INSERT ficha_compensacao_documento(numero_documento,data_vencimento,valor_documento,nome,cpf,endereco,bairro,cep,cidade,uf) values(" & nLastDoc & ",'"
+sql = sql & Format(aParc(3), "mm/dd/yyyy") & "'," & Virg2Ponto(Round(CDbl(lblUnica3.Caption), 2)) & ",'" & Mask(Left(lblProp.Caption, 40)) & "','" & sCPF & "','"
+sql = sql & Mask(Left(lblRua.Caption, 40)) & "','" & Mask(Left(sBairro, 15)) & "','" & RetornaNumero(sCep) & "','" & Mask(Left("JABOTICABAL", 30)) & "','SP')"
+cn.Execute sql, rdExecDirect
 
 
 LASERIPTUEXT:
-Sql = "select * from laseriptu_ext where ano=" & nAnoCalculo & " and codreduzido=" & nCodReduz
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select * from laseriptu_ext where ano=" & nAnoCalculo & " and codreduzido=" & nCodReduz
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 If RdoAux.RowCount > 0 Then
-    Sql = "delete from laseriptu_ext where ano=" & nAnoCalculo & " and codreduzido=" & nCodReduz
-    cn.Execute Sql, rdExecDirect
+    sql = "delete from laseriptu_ext where ano=" & nAnoCalculo & " and codreduzido=" & nCodReduz
+    cn.Execute sql, rdExecDirect
 End If
 RdoAux.Close
 
 'GRAVA NA TABELA LASERIPTU_EXT
-Sql = "INSERT LASERIPTU_EXT (ANO,CODREDUZIDO,VVT,VVC,VVI,IMPOSTOPREDIAL,IMPOSTOTERRITORIAL,NATUREZA,AREACONSTRUCAO,TESTADAPRINC,VALORTOTALPARC,VALORTOTALUNICA,VALORTOTALUNICA2,VALORTOTALUNICA3,QTDEPARC,AREATERRENO,"
-Sql = Sql & "FATORCAT,FATORPED,FATORSIT,FATORPRO,FATORTOP,FATORDIS,FATORGLE,AGRUPAMENTO,FRACAOIDEAL,ALIQUOTA) VALUES("
-Sql = Sql & nAnoCalculo & "," & nCodReduz & "," & Virg2Ponto(RemovePonto(lblVVT.Caption)) & "," & Virg2Ponto(RemovePonto(lblVVP.Caption)) & "," & Virg2Ponto(RemovePonto(lblVVI.Caption)) & "," & IIf(lblPredial.Caption = "Sim", Virg2Ponto(RemovePonto(lblValorFinal.Caption)), 0) & ","
-Sql = Sql & IIf(lblPredial.Caption = "Sim", 0, Virg2Ponto(RemovePonto(lblValorFinal.Caption))) & ",'" & IIf(lblPredial.Caption = "Sim", "Predial", "Territorial") & "'," & Virg2Ponto(RemovePonto(lblAreaPrincipal.Caption)) & "," & Virg2Ponto(RemovePonto(lblTestada.Caption)) & ","
-Sql = Sql & Virg2Ponto(RemovePonto(lblParcela.Caption)) & "," & Virg2Ponto(RemovePonto(lblUnica.Caption)) & "," & Virg2Ponto(RemovePonto(lblUnica2.Caption)) & "," & Virg2Ponto(RemovePonto(lblUnica3.Caption)) & "," & Val(txtNumParc.Text) & "," & Virg2Ponto(lblAreaTerreno.Caption) & "," & Virg2Ponto(lblFatorC.Caption) & "," & Virg2Ponto(lblFatorP.Caption) & ","
-Sql = Sql & Virg2Ponto(lblFatorS.Caption) & "," & Virg2Ponto(lblFatorP.Caption) & "," & Virg2Ponto(lblFatorT.Caption) & "," & Virg2Ponto(lblFatorT.Caption) & "," & Virg2Ponto(lblFatorG.Caption) & "," & Virg2Ponto(lblAgrup.Caption) & ","
-Sql = Sql & Virg2Ponto(lblFracao.Caption) & "," & Virg2Ponto(IIf(lblPredial.Caption = "Sim", 1.5, 3)) & ")"
-cn.Execute Sql, rdExecDirect
+sql = "INSERT LASERIPTU_EXT (ANO,CODREDUZIDO,VVT,VVC,VVI,IMPOSTOPREDIAL,IMPOSTOTERRITORIAL,NATUREZA,AREACONSTRUCAO,TESTADAPRINC,VALORTOTALPARC,VALORTOTALUNICA,VALORTOTALUNICA2,VALORTOTALUNICA3,QTDEPARC,AREATERRENO,"
+sql = sql & "FATORCAT,FATORPED,FATORSIT,FATORPRO,FATORTOP,FATORDIS,FATORGLE,AGRUPAMENTO,FRACAOIDEAL,ALIQUOTA) VALUES("
+sql = sql & nAnoCalculo & "," & nCodReduz & "," & Virg2Ponto(RemovePonto(lblVVT.Caption)) & "," & Virg2Ponto(RemovePonto(lblVVP.Caption)) & "," & Virg2Ponto(RemovePonto(lblVVI.Caption)) & "," & IIf(lblPredial.Caption = "Sim", Virg2Ponto(RemovePonto(lblValorFinal.Caption)), 0) & ","
+sql = sql & IIf(lblPredial.Caption = "Sim", 0, Virg2Ponto(RemovePonto(lblValorFinal.Caption))) & ",'" & IIf(lblPredial.Caption = "Sim", "Predial", "Territorial") & "'," & Virg2Ponto(RemovePonto(lblAreaPrincipal.Caption)) & "," & Virg2Ponto(RemovePonto(lblTestada.Caption)) & ","
+sql = sql & Virg2Ponto(RemovePonto(lblParcela.Caption)) & "," & Virg2Ponto(RemovePonto(lblUnica.Caption)) & "," & Virg2Ponto(RemovePonto(lblUnica2.Caption)) & "," & Virg2Ponto(RemovePonto(lblUnica3.Caption)) & "," & Val(txtNumParc.Text) & "," & Virg2Ponto(RemovePonto(lblAreaTerreno.Caption)) & "," & Virg2Ponto(RemovePonto(lblFatorC.Caption)) & "," & Virg2Ponto(lblFatorP.Caption) & ","
+sql = sql & Virg2Ponto(lblFatorS.Caption) & "," & Virg2Ponto(lblFatorP.Caption) & "," & Virg2Ponto(lblFatorT.Caption) & "," & Virg2Ponto(lblFatorT.Caption) & "," & Virg2Ponto(lblFatorG.Caption) & "," & Virg2Ponto(lblAgrup.Caption) & ","
+sql = sql & Virg2Ponto(lblFracao.Caption) & "," & Virg2Ponto(IIf(lblPredial.Caption = "Sim", 1.5, 3)) & ")"
+cn.Execute sql, rdExecDirect
 
 
 
@@ -3526,12 +3526,12 @@ Dim aCidadao1() As lista, aCidadao2() As Long, x As Long, y As Long, z As Long, 
 
 ReDim aCidadao1(0): ReDim aCidadao2(0): ReDim aDup(0): ReDim aEspelho(0)
 'CARREGA A MATRIZ 1 COM TODOS OS CODIGOS
-Sql = "SELECT codreduzido,codcidadao From Proprietario WHERE tipoprop = 'P' AND principal = 1 ORDER BY codcidadao"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT codreduzido,codcidadao From Proprietario WHERE tipoprop = 'P' AND principal = 1 ORDER BY codcidadao"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-        Sql = "SELECT AREACONSTR,USOCONSTR,TIPOCONSTR,CATCONSTR,QTDEPAV FROM AREAS WHERE CODREDUZIDO = " & !CODREDUZIDO
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
+        sql = "SELECT AREACONSTR,USOCONSTR,TIPOCONSTR,CATCONSTR,QTDEPAV FROM AREAS WHERE CODREDUZIDO = " & !CODREDUZIDO
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurReadOnly)
         If RdoAux2.RowCount > 0 Then
             ReDim Preserve aCidadao1(UBound(aCidadao1) + 1)
             aCidadao1(UBound(aCidadao1)).nCodReduzido = !CODREDUZIDO
@@ -3581,13 +3581,13 @@ For x = 1 To UBound(aCidadao1)
 Proximo:
 Next x
 
-Sql = "TRUNCATE TABLE PROPRIETARIODUPLICADO"
-cn.Execute Sql, rdExecDirect
+sql = "TRUNCATE TABLE PROPRIETARIODUPLICADO"
+cn.Execute sql, rdExecDirect
 
 On Error Resume Next
 For x = 1 To UBound(aDup)
-    Sql = "INSERT PROPRIETARIODUPLICADO(CODREDUZIDO,CODCIDADAO) VALUES(" & aDup(x).nCodReduzido & "," & aDup(x).nCodCidadao & ")"
-    cn.Execute Sql, rdExecDirect
+    sql = "INSERT PROPRIETARIODUPLICADO(CODREDUZIDO,CODCIDADAO) VALUES(" & aDup(x).nCodReduzido & "," & aDup(x).nCodCidadao & ")"
+    cn.Execute sql, rdExecDirect
 Next
 
 MsgBox "fim"
@@ -3603,7 +3603,7 @@ Unload Me
 End Sub
 
 Private Sub Command1_Click()
-Dim x As Long, Sql As String
+Dim x As Long, sql As String
 nAnoCalculo = 2012
 LoadMatrix
 nUfirCalc = RetornaUFIR(nAnoCalculo)
@@ -3641,12 +3641,12 @@ Set xImovel = New clsImovel
 Centraliza Me
 Pb.value = 0
 lblPB.Caption = "0 %"
-If Val(txtAnoCalculo.Text) = 0 Then txtAnoCalculo.Text = Year(Now)
+If Val(txtAnoCalculo.Text) = 0 Then txtAnoCalculo.Text = 2026
 nAnoCalculo = txtAnoCalculo.Text
 CarregaTela
 lblAno.Caption = "Cálculo " & txtAnoCalculo.Text
-Sql = "SELECT COUNT(CODREDUZIDO) AS TOTAL FROM CADIMOB"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT COUNT(CODREDUZIDO) AS TOTAL FROM CADIMOB"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
      If .RowCount > 0 Then
        lblEstimado.Caption = !Total
@@ -3677,13 +3677,13 @@ ReDim aFatorG98(23)
 ReDim aFatorR(8)
 ReDim aFatorR98(8)
 
-Sql = "SELECT CODPEDOLOGIA,FATORPEDOLOGIA FROM FATORPEDOLOGIA WHERE ANOPEDOLOGIA=" & nAnoCalculo & " ORDER BY CODPEDOLOGIA; " & _
+sql = "SELECT CODPEDOLOGIA,FATORPEDOLOGIA FROM FATORPEDOLOGIA WHERE ANOPEDOLOGIA=" & nAnoCalculo & " ORDER BY CODPEDOLOGIA; " & _
       "SELECT CODTOPOG,FATORTOPOG FROM FATORTOPOGRAFIA WHERE ANOTOPOG=" & nAnoCalculo & " ORDER BY CODTOPOG; " & _
       "SELECT CODSITUACAO,FATORSITUACAO FROM FATORSITUACAO WHERE ANOSITUACAO=" & nAnoCalculo & " ORDER BY CODSITUACAO; " & _
       "SELECT CODGLEBA,FATORGLEBA FROM FATORGLEBA WHERE ANOGLEBA=" & nAnoCalculo & " ORDER BY CODGLEBA; " & _
       "SELECT CODDISTRITO,FATORDISTRITO FROM FATORDISTRITO WHERE ANODISTRITO=" & nAnoCalculo & " ORDER BY CODDISTRITO; " & _
       "SELECT CODAGRUPAMENTO, VALORTERRENO  FROM TERRENO  WHERE ANOFATOR=" & nAnoCalculo & "  AND  CODMOEDA=1; "
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
      Do Until .EOF
         aFatorP(!CODPEDOLOGIA) = !FATORPEDOLOGIA
@@ -3718,8 +3718,8 @@ With RdoAux
 End With
 
 ReDim aProf(0)
-Sql = "SELECT CODDISTRITO,CODPROFUN,MINPROFUN,MAXPROFUN FROM PROFUNDIDADE ORDER BY CODDISTRITO,CODPROFUN "
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CODDISTRITO,CODPROFUN,MINPROFUN,MAXPROFUN FROM PROFUNDIDADE ORDER BY CODDISTRITO,CODPROFUN "
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
      Do Until .EOF
         ReDim Preserve aProf(UBound(aProf) + 1)
@@ -3734,8 +3734,8 @@ End With
 
 
 ReDim aFatorF(0)
-Sql = "SELECT CODDISTRITO,CODPROFUN,FATORPROFUN FROM FATORPROFUN WHERE ANOPROFUN=" & nAnoCalculo & " ORDER BY CODDISTRITO,CODPROFUN; "
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CODDISTRITO,CODPROFUN,FATORPROFUN FROM FATORPROFUN WHERE ANOPROFUN=" & nAnoCalculo & " ORDER BY CODDISTRITO,CODPROFUN; "
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
      Do Until .EOF
         ReDim Preserve aFatorF(UBound(aFatorF) + 1)
@@ -3748,8 +3748,8 @@ With RdoAux
 End With
 
 ReDim aGleba(0)
-Sql = "SELECT CODGLEBA,MINGLEBA,MAXGLEBA FROM GLEBA ORDER BY CODGLEBA "
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CODGLEBA,MINGLEBA,MAXGLEBA FROM GLEBA ORDER BY CODGLEBA "
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
      Do Until .EOF
         ReDim Preserve aGleba(UBound(aGleba) + 1)
@@ -3762,8 +3762,8 @@ With RdoAux
 End With
 
 ReDim aFatorC(0)
-Sql = "SELECT CODUSO,CODTIPO,CODCATEG,FATORCATEG FROM FATORCATEG WHERE ANOCATEG=" & nAnoCalculo & " AND CODMOEDA=1; "
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CODUSO,CODTIPO,CODCATEG,FATORCATEG FROM FATORCATEG WHERE ANOCATEG=" & nAnoCalculo & " AND CODMOEDA=1; "
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
      Do Until .EOF
         ReDim Preserve aFatorC(UBound(aFatorC) + 1)
@@ -3814,11 +3814,12 @@ Tweak txtAnoCalculo, KeyAscii, IntegerPositive
 End Sub
 
 Private Sub txtAnoCalculo_LostFocus()
-If Val(txtAnoCalculo.Text) >= 2004 And Val(txtAnoCalculo.Text) <= 2023 Then
+If Val(txtAnoCalculo.Text) <= 2026 Then
     lblAno.Caption = "Cálculo " & txtAnoCalculo.Text
    CarregaTela
 Else
     MsgBox "Ano Inválido.", vbCritical, "atenção"
+    txtAnoCalculo.Text = ""
 End If
 End Sub
 
@@ -3846,8 +3847,8 @@ Dim sDoc As String
 '    sBairro = .Bairro
 'End With
 
-Sql = "select * from vwfullimovel where codreduzido=" & Val(txtCod.Text)
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select * from vwfullimovel where codreduzido=" & Val(txtCod.Text)
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If .RowCount > 0 Then
         lblProp.Caption = !nomecidadao
@@ -3868,9 +3869,9 @@ End Sub
 
 Private Sub CarregaTela()
 nAnoCalculo = Val(txtAnoCalculo.Text)
-Sql = "SELECT ANO,QTDEPARCELA,PARCELAUNICA,DESCONTOUNICA,DESCONTOUNICA2,DESCONTOUNICA3,VENCUNICA,VENC01,VENC02,VENC03,VENC04,VENC05,"
-Sql = Sql & "VENC06,VENC07,VENC08,VENC09,VENC10,VENC11,VENC12 FROM PARAMPARCELA WHERE CODTIPO=1 AND ANO=" & nAnoCalculo
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT ANO,QTDEPARCELA,PARCELAUNICA,DESCONTOUNICA,DESCONTOUNICA2,DESCONTOUNICA3,VENCUNICA,VENC01,VENC02,VENC03,VENC04,VENC05,"
+sql = sql & "VENC06,VENC07,VENC08,VENC09,VENC10,VENC11,VENC12 FROM PARAMPARCELA WHERE CODTIPO=1 AND ANO=" & nAnoCalculo
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
      If .RowCount = 0 Then GoTo Fim
      txtNumParc.Text = !qtdeparcela
@@ -3912,17 +3913,17 @@ If MsgBox("Executar o relatório de IPTU?", vbQuestion + vbYesNo, "Confirmação") 
 
 ReDim aLaser(1)
 Open sPathBin & "\DETALHEIPTU.TXT" For Output As #1
-Sql = "SELECT laseriptu.ano,laseriptu.codreduzido,laseriptu.vvt, laseriptu.vvc, laseriptu.vvi, laseriptu.impostopredial, laseriptu.impostoterritorial, laseriptu.natureza,"
-Sql = Sql & "laseriptu.areaconstrucao, laseriptu.testadaprinc, laseriptu.valortotalparc, laseriptu.valortotalunica, laseriptu.qtdeparc, laseriptu.txexpparc,"
-Sql = Sql & "laseriptu.txexpunica, laseriptu.areaterreno, laseriptu.fatorcat, laseriptu.fatorped, laseriptu.fatorsit, laseriptu.fatorpro, laseriptu.fatortop,"
-Sql = Sql & "laseriptu.fatordis, laseriptu.fatorgle, laseriptu.agrupamento, laseriptu.fracaoideal, laseriptu.aliquota, cadimob.distrito, cadimob.setor, cadimob.quadra,"
-Sql = Sql & "cadimob.lote, cadimob.seq, cadimob.unidade, cadimob.subunidade, cadimob.codcondominio, facequadra.codlogr, vwLOGRADOURO.ABREVTIPOLOG,vwLOGRADOURO.ABREVTITLOG,"
-Sql = Sql & "vwLOGRADOURO.NOMELOGRADOURO, cadimob.li_num, cadimob.li_compl, bairro.descbairro,Cidadao.nomecidadao FROM laseriptu INNER JOIN cadimob ON laseriptu.codreduzido = cadimob.codreduzido INNER JOIN "
-Sql = Sql & "facequadra ON cadimob.distrito = facequadra.coddistrito AND cadimob.setor = facequadra.codsetor AND cadimob.quadra = facequadra.codquadra AND "
-Sql = Sql & "cadimob.seq = facequadra.codface INNER JOIN  vwLOGRADOURO ON facequadra.codlogr = vwLOGRADOURO.CODLOGRADOURO INNER JOIN bairro ON cadimob.li_uf = bairro.siglauf AND cadimob.li_codcidade = bairro.codcidade AND "
-Sql = Sql & "cadimob.li_codbairro = bairro.codbairro INNER JOIN proprietario ON laseriptu.codreduzido = proprietario.codreduzido INNER JOIN cidadao ON proprietario.codcidadao = cidadao.codcidadao "
-Sql = Sql & "WHERE (proprietario.tipoprop = 'P') AND (proprietario.principal = 1) AND ANO=" & Val(txtAnoCalculo.Text) & "  ORDER BY LASERIPTU.CODREDUZIDO,LASERIPTU.ANO"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT laseriptu.ano,laseriptu.codreduzido,laseriptu.vvt, laseriptu.vvc, laseriptu.vvi, laseriptu.impostopredial, laseriptu.impostoterritorial, laseriptu.natureza,"
+sql = sql & "laseriptu.areaconstrucao, laseriptu.testadaprinc, laseriptu.valortotalparc, laseriptu.valortotalunica, laseriptu.qtdeparc, laseriptu.txexpparc,"
+sql = sql & "laseriptu.txexpunica, laseriptu.areaterreno, laseriptu.fatorcat, laseriptu.fatorped, laseriptu.fatorsit, laseriptu.fatorpro, laseriptu.fatortop,"
+sql = sql & "laseriptu.fatordis, laseriptu.fatorgle, laseriptu.agrupamento, laseriptu.fracaoideal, laseriptu.aliquota, cadimob.distrito, cadimob.setor, cadimob.quadra,"
+sql = sql & "cadimob.lote, cadimob.seq, cadimob.unidade, cadimob.subunidade, cadimob.codcondominio, facequadra.codlogr, vwLOGRADOURO.ABREVTIPOLOG,vwLOGRADOURO.ABREVTITLOG,"
+sql = sql & "vwLOGRADOURO.NOMELOGRADOURO, cadimob.li_num, cadimob.li_compl, bairro.descbairro,Cidadao.nomecidadao FROM laseriptu INNER JOIN cadimob ON laseriptu.codreduzido = cadimob.codreduzido INNER JOIN "
+sql = sql & "facequadra ON cadimob.distrito = facequadra.coddistrito AND cadimob.setor = facequadra.codsetor AND cadimob.quadra = facequadra.codquadra AND "
+sql = sql & "cadimob.seq = facequadra.codface INNER JOIN  vwLOGRADOURO ON facequadra.codlogr = vwLOGRADOURO.CODLOGRADOURO INNER JOIN bairro ON cadimob.li_uf = bairro.siglauf AND cadimob.li_codcidade = bairro.codcidade AND "
+sql = sql & "cadimob.li_codbairro = bairro.codbairro INNER JOIN proprietario ON laseriptu.codreduzido = proprietario.codreduzido INNER JOIN cidadao ON proprietario.codcidadao = cidadao.codcidadao "
+sql = sql & "WHERE (proprietario.tipoprop = 'P') AND (proprietario.principal = 1) AND ANO=" & Val(txtAnoCalculo.Text) & "  ORDER BY LASERIPTU.CODREDUZIDO,LASERIPTU.ANO"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Pb.value = 0: nTot = .RowCount: nPos = 1
     Do Until .EOF
@@ -3974,11 +3975,11 @@ With RdoAux
             aLaser(1).nFatorTop = !FATORTOP
             aLaser(1).nFatorDis = !FATORDIS
             aLaser(1).nfatorGle = !FATORGLE
-            aLaser(1).nQtdeParc = Val(SubNull(!qtdeparc))
+            aLaser(1).nQtdeParc = Val(SubNull(!QtdeParc))
            '**BUSCA ENDEREÇO DE ENTREGA***
-            Sql = "SELECT vwCnsImovel.*,proprietario.codcidadao, cidadao.nomecidadao FROM vwCnsImovel INNER JOIN proprietario ON vwCnsImovel.codreduzido = proprietario.codreduzido INNER JOIN "
-            Sql = Sql & "cidadao ON proprietario.codcidadao = cidadao.codcidadao WHERE (proprietario.tipoprop = 'P') AND (proprietario.principal = 1) AND VWCNSIMOVEL.CODREDUZIDO=" & nCodReduz
-            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            sql = "SELECT vwCnsImovel.*,proprietario.codcidadao, cidadao.nomecidadao FROM vwCnsImovel INNER JOIN proprietario ON vwCnsImovel.codreduzido = proprietario.codreduzido INNER JOIN "
+            sql = sql & "cidadao ON proprietario.codcidadao = cidadao.codcidadao WHERE (proprietario.tipoprop = 'P') AND (proprietario.principal = 1) AND VWCNSIMOVEL.CODREDUZIDO=" & nCodReduz
+            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
             With RdoAux2
                 If !Ee_TipoEnd = 0 Then
                     '***ENDEREÇO DO IMÓVEL***
@@ -3994,12 +3995,12 @@ With RdoAux
                     sUF = SubNull(!li_uf)
                 ElseIf !Ee_TipoEnd = 1 Then
                     '***ENDEREÇO DO PROPRIETÁRIO
-                    Sql = "SELECT cidadao.nomecidadao, cidadao.codcidadao, cidadao.numimovel, cidadao.complemento, cidadao.codbairro, cidadao.codcidade, cidadao.siglauf, "
-                    Sql = Sql & "cidadao.codlogradouro, vwLOGRADOURO.ABREVTIPOLOG, vwLOGRADOURO.ABREVTITLOG, vwLOGRADOURO.NOMELOGRADOURO,bairro.DescBairro , Cidade.desccidade "
-                    Sql = Sql & "FROM cidade INNER JOIN bairro ON cidade.siglauf = bairro.siglauf AND cidade.codcidade = bairro.codcidade RIGHT OUTER JOIN "
-                    Sql = Sql & "cidadao LEFT OUTER JOIN vwLOGRADOURO ON cidadao.codlogradouro = vwLOGRADOURO.CODLOGRADOURO ON bairro.siglauf = cidadao.siglauf AND "
-                    Sql = Sql & "bairro.codcidade = Cidadao.codcidade And bairro.codbairro = Cidadao.codbairro WHERE CIDADAO.CODCIDADAO=" & !CODREDUZIDO
-                    Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                    sql = "SELECT cidadao.nomecidadao, cidadao.codcidadao, cidadao.numimovel, cidadao.complemento, cidadao.codbairro, cidadao.codcidade, cidadao.siglauf, "
+                    sql = sql & "cidadao.codlogradouro, vwLOGRADOURO.ABREVTIPOLOG, vwLOGRADOURO.ABREVTITLOG, vwLOGRADOURO.NOMELOGRADOURO,bairro.DescBairro , Cidade.desccidade "
+                    sql = sql & "FROM cidade INNER JOIN bairro ON cidade.siglauf = bairro.siglauf AND cidade.codcidade = bairro.codcidade RIGHT OUTER JOIN "
+                    sql = sql & "cidadao LEFT OUTER JOIN vwLOGRADOURO ON cidadao.codlogradouro = vwLOGRADOURO.CODLOGRADOURO ON bairro.siglauf = cidadao.siglauf AND "
+                    sql = sql & "bairro.codcidade = Cidadao.codcidade And bairro.codbairro = Cidadao.codbairro WHERE CIDADAO.CODCIDADAO=" & !CODREDUZIDO
+                    Set RdoAux3 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                     With RdoAux3
                         If .RowCount > 0 Then
                             If Not IsNull(!NomeLogradouro) Then
@@ -4021,10 +4022,10 @@ With RdoAux
                     End With
                 ElseIf !Ee_TipoEnd = 2 Then
                     '***ENDEREÇO DE ENTREGA
-                    Sql = "SELECT endentrega.*, cidadao.nomecidadao, bairro.descbairro, cidade.desccidade FROM cidade INNER JOIN bairro ON cidade.siglauf = bairro.siglauf AND cidade.codcidade = bairro.codcidade RIGHT OUTER JOIN "
-                    Sql = Sql & "endentrega INNER JOIN proprietario ON endentrega.codreduzido = proprietario.codreduzido INNER JOIN cidadao ON proprietario.codcidadao = cidadao.codcidadao ON bairro.siglauf = endentrega.ee_uf AND "
-                    Sql = Sql & "bairro.codcidade = endentrega.ee_cidade AND bairro.codbairro = endentrega.ee_bairro WHERE (proprietario.tipoprop = 'P') AND (proprietario.principal = 1)  and ENDENTREGA.CODREDUZIDO = " & RdoAux!CODREDUZIDO
-                    Set RdoAux3 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                    sql = "SELECT endentrega.*, cidadao.nomecidadao, bairro.descbairro, cidade.desccidade FROM cidade INNER JOIN bairro ON cidade.siglauf = bairro.siglauf AND cidade.codcidade = bairro.codcidade RIGHT OUTER JOIN "
+                    sql = sql & "endentrega INNER JOIN proprietario ON endentrega.codreduzido = proprietario.codreduzido INNER JOIN cidadao ON proprietario.codcidadao = cidadao.codcidadao ON bairro.siglauf = endentrega.ee_uf AND "
+                    sql = sql & "bairro.codcidade = endentrega.ee_cidade AND bairro.codbairro = endentrega.ee_bairro WHERE (proprietario.tipoprop = 'P') AND (proprietario.principal = 1)  and ENDENTREGA.CODREDUZIDO = " & RdoAux!CODREDUZIDO
+                    Set RdoAux3 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                     With RdoAux3
                         If Not IsNull(!Ee_NomeLog) Then
                             sEnd = Trim$(SubNull(!Ee_NomeLog)) & ", " & SubNull(!Ee_NumImovel)
@@ -4109,7 +4110,7 @@ nValorTotalIptu = 0: nNumImovelBloqueio = 0: nNumImovelCalc = 0: nNumImovelOK = 
 'nAnoCalculo = Val(txtAnoCalculo.text)
 cn.QueryTimeout = 0
 cmdCalculo.Enabled = False
-Sql = "DELETE FROM LASERIPTU WHERE ANO=" & nAnoCalculo
+sql = "DELETE FROM LASERIPTU WHERE ANO=" & nAnoCalculo
 'cn.Execute Sql, rdExecDirect
 If cGetInputState() <> 0 Then DoEvents
 
@@ -4127,8 +4128,8 @@ Open sPathBin & "\NUMDOCUMENTO.TXT" For Output As #4
 ' TAXA DE EXPEDIÇÃO DE DOCUMENTO
 '********************************
 Calculo:
-Sql = "SELECT CODLANCAMENTO,VALORPARCELA,VALORUNICA FROM EXPEDIENTE WHERE ANOEXPED=" & nAnoCalculo & " AND CODLANCAMENTO=1"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CODLANCAMENTO,VALORPARCELA,VALORUNICA FROM EXPEDIENTE WHERE ANOEXPED=" & nAnoCalculo & " AND CODLANCAMENTO=1"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
      If .RowCount > 0 Then
         nValorExpDocParc = FormatNumber(!valorparcela, 2)
@@ -4140,22 +4141,22 @@ With RdoAux
     .Close
 End With
 'ULTIMO Nº DE DOCUMENTO
-Sql = "SELECT MAX(NUMDOCUMENTO) AS ULTIMO FROM NUMDOCUMENTO"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT MAX(NUMDOCUMENTO) AS ULTIMO FROM NUMDOCUMENTO"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     nLastDoc = !ULTIMO + 1000
    .Close
 End With
 
 'CÁLCULO
-Sql = "SELECT CADIMOB.CODREDUZIDO,CADIMOB.INATIVO,LI_CODBAIRRO,PAVIMENTO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE, CADIMOB.SUBUNIDADE,"
-Sql = Sql & "CADIMOB.DT_AREATERRENO,DT_CODUSOTERRENO, CADIMOB.DT_FRACAOIDEAL,CADIMOB.DT_CODPEDOL, CADIMOB.DT_CODSITUACAO,CADIMOB.DT_CODTOPOG, FACEQUADRA.CODAGRUPA,"
-Sql = Sql & "SUM(Areas.AREACONSTR) As SOMAAREA FROM CADIMOB LEFT OUTER JOIN AREAS ON CADIMOB.CODREDUZIDO = AREAS.CODREDUZIDO LEFT OUTER Join "
-Sql = Sql & "FACEQUADRA ON CADIMOB.DISTRITO = FACEQUADRA.CODDISTRITO AND CADIMOB.SETOR = FACEQUADRA.CODSETOR AND CADIMOB.QUADRA = FACEQUADRA.CODQUADRA AND "
-Sql = Sql & "CADIMOB.Seq = FACEQUADRA.CODFACE WHERE  INATIVO=0  GROUP BY CADIMOB.CODREDUZIDO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE,"
-Sql = Sql & "CADIMOB.SUBUNIDADE,CADIMOB.INATIVO,CADIMOB.DT_AREATERRENO, CADIMOB.DT_FRACAOIDEAL,CADIMOB.DT_CODPEDOL, CADIMOB.DT_CODSITUACAO,CADIMOB.Dt_CodTopog , FACEQUADRA.CODAGRUPA,DT_CODUSOTERRENO,LI_CODBAIRRO,PAVIMENTO "
-Sql = Sql & " ORDER BY CADIMOB.CODREDUZIDO"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CADIMOB.CODREDUZIDO,CADIMOB.INATIVO,LI_CODBAIRRO,PAVIMENTO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE, CADIMOB.SUBUNIDADE,"
+sql = sql & "CADIMOB.DT_AREATERRENO,DT_CODUSOTERRENO, CADIMOB.DT_FRACAOIDEAL,CADIMOB.DT_CODPEDOL, CADIMOB.DT_CODSITUACAO,CADIMOB.DT_CODTOPOG, FACEQUADRA.CODAGRUPA,"
+sql = sql & "SUM(Areas.AREACONSTR) As SOMAAREA FROM CADIMOB LEFT OUTER JOIN AREAS ON CADIMOB.CODREDUZIDO = AREAS.CODREDUZIDO LEFT OUTER Join "
+sql = sql & "FACEQUADRA ON CADIMOB.DISTRITO = FACEQUADRA.CODDISTRITO AND CADIMOB.SETOR = FACEQUADRA.CODSETOR AND CADIMOB.QUADRA = FACEQUADRA.CODQUADRA AND "
+sql = sql & "CADIMOB.Seq = FACEQUADRA.CODFACE WHERE  INATIVO=0  GROUP BY CADIMOB.CODREDUZIDO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE,"
+sql = sql & "CADIMOB.SUBUNIDADE,CADIMOB.INATIVO,CADIMOB.DT_AREATERRENO, CADIMOB.DT_FRACAOIDEAL,CADIMOB.DT_CODPEDOL, CADIMOB.DT_CODSITUACAO,CADIMOB.Dt_CodTopog , FACEQUADRA.CODAGRUPA,DT_CODUSOTERRENO,LI_CODBAIRRO,PAVIMENTO "
+sql = sql & " ORDER BY CADIMOB.CODREDUZIDO"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     xId = 1
     nNumRec = .RowCount
@@ -4171,9 +4172,9 @@ With RdoAux
         End If
         'DADOS DO IMOVEL
         nCodReduz = !CODREDUZIDO
-        Sql = "SELECT ISENCAO.CODREDUZIDO,ISENCAO.ANOISENCAO,ISENCAO.CODISENCAO,TIPOISENCAO.DESCTIPO "
-        Sql = Sql & "FROM ISENCAO INNER JOIN TIPOISENCAO ON ISENCAO.CODISENCAO = TIPOISENCAO.CODTIPO WHERE CODREDUZIDO=" & nCodReduz & " AND ANOISENCAO=" & nAnoCalculo
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT ISENCAO.CODREDUZIDO,ISENCAO.ANOISENCAO,ISENCAO.CODISENCAO,TIPOISENCAO.DESCTIPO "
+        sql = sql & "FROM ISENCAO INNER JOIN TIPOISENCAO ON ISENCAO.CODISENCAO = TIPOISENCAO.CODTIPO WHERE CODREDUZIDO=" & nCodReduz & " AND ANOISENCAO=" & nAnoCalculo
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             If .RowCount > 0 Then
                 GoTo Proximo
@@ -4181,9 +4182,9 @@ With RdoAux
            .Close
         End With
                 
-        Sql = "SELECT ISENCAO.CODREDUZIDO,ISENCAO.ANOISENCAO,ISENCAO.CODISENCAO,TIPOISENCAO.DESCTIPO "
-        Sql = Sql & "FROM ISENCAO INNER JOIN TIPOISENCAO ON ISENCAO.CODISENCAO = TIPOISENCAO.CODTIPO WHERE CODREDUZIDO=" & nCodReduz & " AND CODISENCAO=1"
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT ISENCAO.CODREDUZIDO,ISENCAO.ANOISENCAO,ISENCAO.CODISENCAO,TIPOISENCAO.DESCTIPO "
+        sql = sql & "FROM ISENCAO INNER JOIN TIPOISENCAO ON ISENCAO.CODISENCAO = TIPOISENCAO.CODTIPO WHERE CODREDUZIDO=" & nCodReduz & " AND CODISENCAO=1"
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             If .RowCount > 0 Then
                 GoTo Proximo
@@ -4204,8 +4205,8 @@ With RdoAux
         bFracaoIdeal = IIf(nFracaoIdeal > 0, True, False)
         If bFracaoIdeal Then nAreaTerreno = !Dt_FracaoIdeal
         'TESTADAS
-        Sql = "SELECT NUMFACE,AREATESTADA FROM TESTADA WHERE CODREDUZIDO = " & nCodReduz
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT NUMFACE,AREATESTADA FROM TESTADA WHERE CODREDUZIDO = " & nCodReduz
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
             nNumTestadas = .RowCount
             If nNumTestadas = 0 Then
@@ -4237,8 +4238,8 @@ With RdoAux
         '--Se houver Fracao Ideal o Comprimento da Testada e calculado por --> FRACAOIDEAL * TESTADA / AREA PRINCIPAL
         
         'BUSCA ÁREA PRINCIPAL
-        Sql = "SELECT AREACONSTR,USOCONSTR,TIPOCONSTR,CATCONSTR,QTDEPAV FROM AREAS WHERE CODREDUZIDO = " & nCodReduz & "  AND TIPOAREA='P' AND YEAR(DATAAPROVA) < " & nAnoCalculo
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT AREACONSTR,USOCONSTR,TIPOCONSTR,CATCONSTR,QTDEPAV FROM AREAS WHERE CODREDUZIDO = " & nCodReduz & "  AND TIPOAREA='P' AND YEAR(DATAAPROVA) < " & nAnoCalculo
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux2
         'TEM ÁREA?
             If .RowCount > 0 Then
@@ -4362,8 +4363,8 @@ With RdoAux
             
             nValorVenalPredial = 0
             
-            Sql = "SELECT AREACONSTR,USOCONSTR,TIPOCONSTR,CATCONSTR,QTDEPAV FROM AREAS WHERE CODREDUZIDO = " & nCodReduz
-            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            sql = "SELECT AREACONSTR,USOCONSTR,TIPOCONSTR,CATCONSTR,QTDEPAV FROM AREAS WHERE CODREDUZIDO = " & nCodReduz
+            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
             With RdoAux2
                 Do Until .EOF
                     nUso = !USOCONSTR
@@ -4428,9 +4429,9 @@ With RdoAux
         nValorParcela = Round(nValorFinal / nNumParc, 2)
         
         'GRAVA TABELA LASERIPTUESTIMADO
-        Sql = "INSERT LASERIPTUESTIMADO (ANO,CODREDUZIDO,VVT,VVC,VVI,VALORPARCELA)VALUES (" & nAnoCalculo & "," & nCodReduz & "," & Virg2Ponto(CStr(nValorVenalTerritorial)) & "," & Virg2Ponto(CStr(nValorVenalPredial)) & ","
-        Sql = Sql & Virg2Ponto(CStr(nValorVenalImovel)) & "," & Virg2Ponto(CStr(nValorParcela)) & ")"
-        cn.Execute Sql, rdExecDirect
+        sql = "INSERT LASERIPTUESTIMADO (ANO,CODREDUZIDO,VVT,VVC,VVI,VALORPARCELA)VALUES (" & nAnoCalculo & "," & nCodReduz & "," & Virg2Ponto(CStr(nValorVenalTerritorial)) & "," & Virg2Ponto(CStr(nValorVenalPredial)) & ","
+        sql = sql & Virg2Ponto(CStr(nValorVenalImovel)) & "," & Virg2Ponto(CStr(nValorParcela)) & ")"
+        cn.Execute sql, rdExecDirect
         
         'GRAVA TABELA LASERIPTU
 '        Sql = "INSERT LASERIPTU (ANO,CODREDUZIDO,VVT,VVC,VVI,IMPOSTOPREDIAL,IMPOSTOTERRITORIAL,NATUREZA,AREACONSTRUCAO,"
@@ -4487,25 +4488,25 @@ End Sub
 
 Private Sub CalculoInd()
 
-Dim qd As New rdoQuery, Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, nValorFinal As Double, nQtdeParc As Integer
+Dim qd As New rdoQuery, sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, nValorFinal As Double, nQtdeParc As Integer
 
 Set qd.ActiveConnection = cn
 
-Sql = "SELECT CADIMOB.CODREDUZIDO,LI_CODBAIRRO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE, CADIMOB.SUBUNIDADE,"
-Sql = Sql & "CADIMOB.DT_AREATERRENO,DT_CODUSOTERRENO, CADIMOB.DT_FRACAOIDEAL,CADIMOB.DT_CODPEDOL, CADIMOB.DT_CODSITUACAO,CADIMOB.DT_CODTOPOG, FACEQUADRA.CODAGRUPA,FACEQUADRA.PAVIMENTO, "
-Sql = Sql & "SUM(Areas.AREACONSTR) As SOMAAREA FROM CADIMOB LEFT OUTER JOIN AREAS ON CADIMOB.CODREDUZIDO = AREAS.CODREDUZIDO LEFT OUTER Join "
-Sql = Sql & "FACEQUADRA ON CADIMOB.DISTRITO = FACEQUADRA.CODDISTRITO AND CADIMOB.SETOR = FACEQUADRA.CODSETOR AND CADIMOB.QUADRA = FACEQUADRA.CODQUADRA AND "
-Sql = Sql & "CADIMOB.Seq = FACEQUADRA.CODFACE Where (CADIMOB.CODREDUZIDO = " & Val(txtCod.Text) & ") GROUP BY CADIMOB.CODREDUZIDO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE,"
-Sql = Sql & "CADIMOB.SUBUNIDADE,CADIMOB.DT_AREATERRENO, CADIMOB.DT_FRACAOIDEAL,CADIMOB.DT_CODPEDOL, CADIMOB.DT_CODSITUACAO,CADIMOB.Dt_CodTopog , FACEQUADRA.CODAGRUPA,DT_CODUSOTERRENO,LI_CODBAIRRO,PAVIMENTO "
+sql = "SELECT CADIMOB.CODREDUZIDO,LI_CODBAIRRO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE, CADIMOB.SUBUNIDADE,"
+sql = sql & "CADIMOB.DT_AREATERRENO,DT_CODUSOTERRENO, CADIMOB.DT_FRACAOIDEAL,CADIMOB.DT_CODPEDOL, CADIMOB.DT_CODSITUACAO,CADIMOB.DT_CODTOPOG, FACEQUADRA.CODAGRUPA,FACEQUADRA.PAVIMENTO, "
+sql = sql & "SUM(Areas.AREACONSTR) As SOMAAREA FROM CADIMOB LEFT OUTER JOIN AREAS ON CADIMOB.CODREDUZIDO = AREAS.CODREDUZIDO LEFT OUTER Join "
+sql = sql & "FACEQUADRA ON CADIMOB.DISTRITO = FACEQUADRA.CODDISTRITO AND CADIMOB.SETOR = FACEQUADRA.CODSETOR AND CADIMOB.QUADRA = FACEQUADRA.CODQUADRA AND "
+sql = sql & "CADIMOB.Seq = FACEQUADRA.CODFACE Where (CADIMOB.CODREDUZIDO = " & Val(txtCod.Text) & ") GROUP BY CADIMOB.CODREDUZIDO, CADIMOB.DISTRITO,CADIMOB.SETOR, CADIMOB.QUADRA, CADIMOB.LOTE,CADIMOB.SEQ, CADIMOB.UNIDADE,"
+sql = sql & "CADIMOB.SUBUNIDADE,CADIMOB.DT_AREATERRENO, CADIMOB.DT_FRACAOIDEAL,CADIMOB.DT_CODPEDOL, CADIMOB.DT_CODSITUACAO,CADIMOB.Dt_CodTopog , FACEQUADRA.CODAGRUPA,DT_CODUSOTERRENO,LI_CODBAIRRO,PAVIMENTO "
 
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     lblIC.Caption = !Distrito & "." & Format(!Setor, "00") & "." & Format(!Quadra, "0000") & "." & Format(!Lote, "00000") & "." & Format(!Seq, "00")
     .Close
 End With
 
 
-qd.Sql = "{ Call spCalculo(?,?) }"
+qd.sql = "{ Call spCalculo(?,?) }"
 qd(0) = Val(txtCod.Text)
 qd(1) = Val(txtAnoCalculo.Text)
 Set RdoAux = qd.OpenResultset(rdOpenKeyset)
@@ -4515,7 +4516,7 @@ With RdoAux
     lblAreaPrincipal.Caption = FormatNumber(!AreaPredial, 2)
     lblPredial.Caption = IIf(lblAreaPrincipal.Caption = "0,00", "Não", "Sim")
     lblTestadaMedia.Caption = FormatNumber(!TESTADAPRINC, 2)
-    lblFracao.Caption = FormatNumber(!FRACAO, 2)
+    lblFracao.Caption = FormatNumber(!FRACAO, 4)
     lblVVT.Caption = FormatNumber(!vvt, 2)
     lblVVP.Caption = FormatNumber(!vvp, 2)
     lblVVI.Caption = FormatNumber(!vvi, 2)
@@ -4536,7 +4537,7 @@ With RdoAux
 
     
     
-    lblValorFinal.Caption = FormatNumber(!valorparcela * !qtdeparc, 2)
+    lblValorFinal.Caption = FormatNumber(!valorparcela * !QtdeParc, 2)
     If Not IsNull(!valorfinal) Then
         nValorFinal = !valorfinal
     Else
@@ -4559,7 +4560,7 @@ With RdoAux
             ElseIf nValorFinal > 60 And nValorFinal <= 70 Then nNumParc = 6
             ElseIf nValorFinal > 70 And nValorFinal <= 80 Then nNumParc = 7
             ElseIf nValorFinal > 80 And nValorFinal <= 90 Then nNumParc = 8
-            ElseIf nValorFinal > 90 And nValorFinal <= 100 Then nNumParc = 9
+            ElseIf nValorFinal > 90 And nValorFinal <= 120 Then nNumParc = 9
             Else
                 nNumParc = 12
             End If
@@ -4586,7 +4587,7 @@ With RdoAux
     
     If CDbl(lblParcela.Caption) > 0 Then
         If CDbl(lblParcela.Caption) < 10 Then
-            MsgBox "Valor da parcela não pode ser menor R$10,00." & vbCrLf & "Diminua a qtde de parcelas para menos de " & !qtdeparc + 1, vbCritical, "Atenção"
+            MsgBox "Valor da parcela não pode ser menor R$10,00." & vbCrLf & "Diminua a qtde de parcelas para menos de " & !QtdeParc + 1, vbCritical, "Atenção"
             lblParcela.Caption = "0,00"
             Exit Sub
         End If

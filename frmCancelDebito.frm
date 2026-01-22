@@ -33,7 +33,7 @@ Begin VB.Form frmCancelDebito
       End
       Begin esMaskEdit.esMaskedEdit mskDataProc 
          Height          =   300
-         Left            =   6210
+         Left            =   7605
          TabIndex        =   3
          Top             =   690
          Width           =   945
@@ -206,12 +206,21 @@ Begin VB.Form frmCancelDebito
          CHECK           =   0   'False
          VALUE           =   0   'False
       End
+      Begin VB.Label lblProcessoFull 
+         BackStyle       =   0  'Transparent
+         Caption         =   "()"
+         Height          =   225
+         Left            =   3780
+         TabIndex        =   16
+         Top             =   675
+         Width           =   1935
+      End
       Begin VB.Label Label1 
          BackStyle       =   0  'Transparent
          Caption         =   "Data do Processo....:"
          Height          =   225
          Index           =   3
-         Left            =   4620
+         Left            =   6015
          TabIndex        =   9
          Top             =   690
          Width           =   1530
@@ -299,10 +308,12 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, RdoAux As rdoResultset
+'Dim bDel As Boolean
 Dim sRet As String
-Dim evDel As Integer, evSus As Integer, evReat As Integer
-Dim bDel As Boolean
+Dim evCancelImposto As Integer, evCancelTaxa As Integer
+Dim bImposto As Boolean, bTaxa As Boolean
+
 
 Private Sub cmbTipo_Click()
 
@@ -322,6 +333,18 @@ Select Case cmbTipo.ListIndex
     Case Else
         Exit Sub
 End Select
+
+End Sub
+
+Private Sub FormHagana()
+
+bImposto = False
+bTaxa = False
+evCancelImposto = 32
+evCancelTaxa = 33
+
+If InStr(1, sRet, Format(evCancelImposto, "000"), vbBinaryCompare) > 0 Then bImposto = True
+If InStr(1, sRet, Format(evCancelTaxa, "000"), vbBinaryCompare) > 0 Then bTaxa = True
 
 End Sub
 
@@ -345,17 +368,23 @@ If Not IsDate(mskDataProc.Text) And cmbTipo.ListIndex = 1 Then
     Exit Sub
 End If
 
-evDel = 4: evSus = 17
-If InStr(1, sRet, Format(evDel, "000"), vbBinaryCompare) > 0 Then bDel = True
-bSupervisor = bDel
-    If NomeDeLogin <> "JOSIANE" And NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "ANA" And NomeDeLogin <> "RODRIGOC" And NomeDeLogin <> "RITA" And NomeDeLogin <> "ALBERTO" And NomeDeLogin <> "JOSEANE" And NomeDeLogin <> "ROSE" And NomeDeLogin <> "RICARDO.MARTINEZ" And NomeDeLogin <> "NOELI" And NomeDeLogin <> "ROBERTA.SILVA" Then
-        If cmbTipo.ListIndex = 3 Or cmbTipo.ListIndex = 5 Then
-            If InStr(1, sRet, Format(evSus, "000"), vbBinaryCompare) = 0 Then
-                MsgBox "O Usuário " & NomeDeLogin & " não possue permissão para suspender este(s) lancamento(s).", vbCritical, "Alerta de Segurança"
-                Exit Sub
-            End If
-        End If
+If Not bTaxa And Not bImposto Then
+    MsgBox "O Usuário " & NomeDeLogin & " não possue permissão para suspender este(s) lancamento(s).", vbCritical, "Alerta de Segurança"
+    Exit Sub
 End If
+
+
+'evDel = 4: evSus = 17
+'If InStr(1, sRet, Format(evDel, "000"), vbBinaryCompare) > 0 Then bDel = True
+'bSupervisor = bDel
+'    If NomeDeLogin <> "JOSIANE" And NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "ANA" And NomeDeLogin <> "RODRIGOC" And NomeDeLogin <> "RITA" And NomeDeLogin <> "ALBERTO" And NomeDeLogin <> "JOSEANE" And NomeDeLogin <> "ROSE" And NomeDeLogin <> "RICARDO.MARTINEZ" And NomeDeLogin <> "NOELI" And NomeDeLogin <> "ROBERTA.SILVA" And NomeDeLogin <> "ANA.REIS" And NomeDeLogin <> "EDUARDO.PROENCA" Then
+'        If cmbTipo.ListIndex = 3 Or cmbTipo.ListIndex = 5 Then
+'            If InStr(1, sRet, Format(evSus, "000"), vbBinaryCompare) = 0 Then
+'                MsgBox "O Usuário " & NomeDeLogin & " não possue permissão para suspender este(s) lancamento(s).", vbCritical, "Alerta de Segurança"
+'                Exit Sub
+'            End If
+'        End If
+'End If
 
 Achou = False
 For x = 1 To grdTemp.Rows - 1
@@ -366,15 +395,16 @@ For x = 1 To grdTemp.Rows - 1
         End If
     End With
 Next
+If Not bImposto Then
 If Achou Then
 'If cmbTipo.ListIndex = 0  Then
-    If NomeDeLogin <> "JOSIANE" And NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "ANA" And NomeDeLogin <> "RODRIGOC" And NomeDeLogin <> "RITA" And NomeDeLogin <> "JOSEANE" And NomeDeLogin <> "ROSE" And NomeDeLogin <> "PRISCILAANAMI" And NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "ELTON.DIAS" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "LEANDRO" And NomeDeLogin <> "LUCIANO.RAMOS" And NomeDeLogin <> "RODRIGOG" And NomeDeLogin <> "NOELI" And NomeDeLogin <> "ROBERTA.SILVA" Then
+    'If NomeDeLogin <> "JOSIANE" And NomeDeLogin <> "DANIELAR" And NomeDeLogin <> "ANA" And NomeDeLogin <> "RODRIGOC" And NomeDeLogin <> "RITA" And NomeDeLogin <> "JOSEANE" And NomeDeLogin <> "ROSE" And NomeDeLogin <> "PRISCILAANAMI" And NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "ELTON.DIAS" And NomeDeLogin <> "GLEISE" And NomeDeLogin <> "LEANDRO" And NomeDeLogin <> "LUCIANO.RAMOS" And NomeDeLogin <> "RODRIGOG" And NomeDeLogin <> "NOELI" And NomeDeLogin <> "ROBERTA.SILVA" And NomeDeLogin <> "ANA.REIS" And NomeDeLogin <> "EDUARDO.PROENCA" And NomeDeLogin <> "DINAMAR.OLIVEIRA" And NomeDeLogin <> "ANGELICA.FERREIRA" Then
         MsgBox "O Usuário " & NomeDeLogin & " possui permissão para Cancelar débitos ou alterar o status, apenas de lançamentos de Taxas.", vbCritical, "Alerta de Segurança"
         Exit Sub
-        End If
-    End If
-'End If
-
+     '   End If
+    'End If
+End If
+End If
 If cmbTipo.ListIndex = 0 Then
     If chkKeep.value = vbChecked Then
         nStatus = 8
@@ -493,23 +523,23 @@ If MsgBox("Executar a operação selecionada nos débitos acima selecionados ?", vb
             nParc = Val(.TextMatrix(x, 3))
             nCompl = Val(.TextMatrix(x, 4))
         End With
-        Sql = "UPDATE DEBITOPARCELA SET STATUSLANC =" & nStatus & " WHERE CODREDUZIDO=" & nCodReduz
-        Sql = Sql & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND "
-        Sql = Sql & "SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nParc & " AND "
-        Sql = Sql & "CODCOMPLEMENTO=" & nCompl
-        cn.Execute Sql, rdExecDirect
-        Sql = "DELETE FROM  DEBITOCANCEL WHERE CODREDUZIDO=" & nCodReduz
-        Sql = Sql & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND "
-        Sql = Sql & "SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nParc & " AND "
-        Sql = Sql & "CODCOMPLEMENTO=" & nCompl
-        cn.Execute Sql, rdExecDirect
+        sql = "UPDATE DEBITOPARCELA SET STATUSLANC =" & nStatus & " WHERE CODREDUZIDO=" & nCodReduz
+        sql = sql & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND "
+        sql = sql & "SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nParc & " AND "
+        sql = sql & "CODCOMPLEMENTO=" & nCompl
+        cn.Execute sql, rdExecDirect
+        sql = "DELETE FROM  DEBITOCANCEL WHERE CODREDUZIDO=" & nCodReduz
+        sql = sql & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & nLanc & " AND "
+        sql = sql & "SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nParc & " AND "
+        sql = sql & "CODCOMPLEMENTO=" & nCompl
+        cn.Execute sql, rdExecDirect
         If Trim$(txtMotivo.Text) <> "" Then
-            Sql = "INSERT DEBITOCANCEL(NUMPROCESSO,CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,"
-            Sql = Sql & "NUMPARCELA,CODCOMPLEMENTO,USERID,DATACANCEL,MOTIVO) VALUES('"
-            Sql = Sql & txtProc.Text & "'," & nCodReduz & "," & nAno & "," & nLanc & ","
-            Sql = Sql & nSeq & "," & nParc & "," & nCompl & "," & RetornaUsuarioID(NomeDeLogin) & ",'"
-            Sql = Sql & Format(Now, "mm/dd/yyyy") & "','" & Mask(txtMotivo.Text) & "')"
-            cn.Execute Sql, rdExecDirect
+            sql = "INSERT DEBITOCANCEL(NUMPROCESSO,CODREDUZIDO,ANOEXERCICIO,CODLANCAMENTO,SEQLANCAMENTO,"
+            sql = sql & "NUMPARCELA,CODCOMPLEMENTO,USERID,DATACANCEL,MOTIVO) VALUES('"
+            sql = sql & txtProc.Text & "'," & nCodReduz & "," & nAno & "," & nLanc & ","
+            sql = sql & nSeq & "," & nParc & "," & nCompl & "," & RetornaUsuarioID(NomeDeLogin) & ",'"
+            sql = sql & Format(Now, "mm/dd/yyyy") & "','" & Mask(txtMotivo.Text) & "')"
+            cn.Execute sql, rdExecDirect
         End If
         sDebito = "Ano:" & nAno & " Código:" & nCodReduz & " Lançamento:" & nLanc
         sDebito = sDebito & " Seq:" & nSeq & " Parcela:" & nParc & " Compl:" & nCompl
@@ -518,11 +548,11 @@ If MsgBox("Executar a operação selecionada nos débitos acima selecionados ?", vb
         Log Form, Me.Caption, Exclusão, sDebito
         
         If cmbTipo.ListIndex = 2 Then
-            Sql = "UPDATE DEBITOTRIBUTO SET VALORTRIBUTO=0 WHERE CODREDUZIDO=" & nCodReduz
-            Sql = Sql & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & 5 & " AND "
-            Sql = Sql & "SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nParc & " AND "
-            Sql = Sql & "CODCOMPLEMENTO=" & nCompl & " AND CODTRIBUTO=13"
-            cn.Execute Sql, rdExecDirect
+            sql = "UPDATE DEBITOTRIBUTO SET VALORTRIBUTO=0 WHERE CODREDUZIDO=" & nCodReduz
+            sql = sql & " AND ANOEXERCICIO=" & nAno & " AND CODLANCAMENTO=" & 5 & " AND "
+            sql = sql & "SEQLANCAMENTO=" & nSeq & " AND NUMPARCELA=" & nParc & " AND "
+            sql = sql & "CODCOMPLEMENTO=" & nCompl & " AND CODTRIBUTO=13"
+            cn.Execute sql, rdExecDirect
         End If
         
        '****INTEGRATIVA******
@@ -533,7 +563,7 @@ If MsgBox("Executar a operação selecionada nos débitos acima selecionados ?", vb
             On Error Resume Next
             RdoAux.Close
             On Error GoTo 0
-            qd.Sql = "{ Call spEXTRATONEW(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
+            qd.sql = "{ Call spEXTRATONEW(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }"
             qd(0) = nCodReduz
             qd(1) = nCodReduz
             qd(2) = nAno
@@ -567,16 +597,16 @@ If MsgBox("Executar a operação selecionada nos débitos acima selecionados ?", vb
             End With
                     
            '*** VERIFICA SE O PARCELAMENTO JÁ EXISTE NA TABELA ACORDOS **
-           Sql = "select * from cancelamentos where iddevedor=" & nCodReduz & " and exercicio=" & nAno & " and lancamento=" & nLanc & "and seq=" & nSeq & "and "
-           Sql = Sql & "nroparcela=" & nParc & " and complparcela=" & nCompl
-           Set RdoAux = cnInt.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+           sql = "select * from cancelamentos where iddevedor=" & nCodReduz & " and exercicio=" & nAno & " and lancamento=" & nLanc & "and seq=" & nSeq & "and "
+           sql = sql & "nroparcela=" & nParc & " and complparcela=" & nCompl
+           Set RdoAux = cnInt.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
            If RdoAux.RowCount = 0 Then
                If frmMdi.frTeste.Visible = False Then
                     'GRAVA O ACORDO
-                    Sql = "insert cancelamentos(dtCancelamento, idDevedor, NroLivro, NroFolha, Seq, Lancamento, Exercicio, VlrOriginal, VlrJuros, VlrMulta, VlrTotal, nroParcela, "
-                    Sql = Sql & "ComplParcela, Ajuizado, DtGeracao) values ('" & Format(Now, "mm/dd/yyyy") & "'," & nCodReduz & "," & nLivro & "," & nPagina & "," & nSeq & "," & nLanc & "," & nAno & ","
-                    Sql = Sql & Virg2Ponto(CStr(nVP)) & "," & Virg2Ponto(CStr(nVJ)) & "," & Virg2Ponto(CStr(nVM)) & "," & Virg2Ponto(CStr(nVT)) & "," & nParc & "," & nCompl & "," & IIf(bAjuizado, 1, 0) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
-                    cnInt.Execute Sql, rdExecDirect
+                    sql = "insert cancelamentos(dtCancelamento, idDevedor, NroLivro, NroFolha, Seq, Lancamento, Exercicio, VlrOriginal, VlrJuros, VlrMulta, VlrTotal, nroParcela, "
+                    sql = sql & "ComplParcela, Ajuizado, DtGeracao) values ('" & Format(Now, "mm/dd/yyyy") & "'," & nCodReduz & "," & nLivro & "," & nPagina & "," & nSeq & "," & nLanc & "," & nAno & ","
+                    sql = sql & Virg2Ponto(CStr(nVP)) & "," & Virg2Ponto(CStr(nVJ)) & "," & Virg2Ponto(CStr(nVM)) & "," & Virg2Ponto(CStr(nVT)) & "," & nParc & "," & nCompl & "," & IIf(bAjuizado, 1, 0) & ",'" & Format(Now, "mm/dd/yyyy") & "')"
+                    cnInt.Execute sql, rdExecDirect
                End If
            End If
         
@@ -605,6 +635,7 @@ Me.Top = Me.Top + 1200
 Ocupado
 cmbTipo.ListIndex = 0
 sRet = RetEventUserForm(Me.Name)
+FormHagana
 CarregaLista
 Liberado
 
@@ -631,11 +662,11 @@ With frmDebitoImob.grdExtrato
            sAj = .CellText(x, 9)
            nValorPrincipal = .CellText(x, 10)
            
-           Sql = "SELECT CODREDUZIDO,DATADEBASE FROM DEBITOPARCELA WHERE CODREDUZIDO=" & nCodReduz
-           Sql = Sql & " AND ANOEXERCICIO=" & Val(sAno) & " AND CODLANCAMENTO=" & Val(sLanc) & " AND "
-           Sql = Sql & " SEQLANCAMENTO=" & Val(sSeq) & " AND NUMPARCELA=" & Val(sParc) & " AND "
-           Sql = Sql & " CODCOMPLEMENTO=" & Val(sComp)
-           Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+           sql = "SELECT CODREDUZIDO,DATADEBASE FROM DEBITOPARCELA WHERE CODREDUZIDO=" & nCodReduz
+           sql = sql & " AND ANOEXERCICIO=" & Val(sAno) & " AND CODLANCAMENTO=" & Val(sLanc) & " AND "
+           sql = sql & " SEQLANCAMENTO=" & Val(sSeq) & " AND NUMPARCELA=" & Val(sParc) & " AND "
+           sql = sql & " CODCOMPLEMENTO=" & Val(sComp)
+           Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
            With RdoAux
                 If .RowCount > 0 Then
                     sDataBase = Format(!DATADEBASE, "dd/mm/yyyy")
@@ -658,19 +689,22 @@ End With
 End Sub
 
 Private Sub txtProc_LostFocus()
-Dim sValidaProc As String
+Dim sValidaProc As String, Numero As String, ano As String
 
 txtProc.Text = Replace(txtProc.Text, "-", "")
 If Trim(txtProc.Text) = "" Then Exit Sub
 sValidaProc = ValidaProcesso(txtProc.Text)
 If sValidaProc <> "OK" Then
     MsgBox sValidaProc, vbCritical, "Atenção"
-    
 End If
+Numero = ExtraiNumeroProcesso(txtProc.Text)
+ano = ExtraiAnoProcesso(txtProc.Text)
+
+lblProcessoFull.Caption = Numero & "-" & RetornaDVProcesso(CLng(Numero)) & "/" & ano
 LimpaMascara mskDataProc
 On Error Resume Next
 If ExtraiNumeroProcesso(txtProc.Text) <> "" Then
-    mskDataProc.Text = Format(RetornaDataProcesso(ExtraiNumeroProcesso(txtProc.Text), ExtraiAnoProcesso(txtProc.Text)), "dd/mm/yyyy")
+    mskDataProc.Text = Format(RetornaDataProcesso(CLng(Numero), CInt(ano)), "dd/mm/yyyy")
 Else
     
     LimpaMascara mskDataProc

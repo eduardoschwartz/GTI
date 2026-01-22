@@ -1,35 +1,107 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Object = "{F48120B2-B059-11D7-BF14-0010B5B69B54}#1.0#0"; "esMaskEdit.ocx"
 Begin VB.Form frmBuscaSN 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Buscas nos Arq. do Simples Nacional"
    ClientHeight    =   6165
-   ClientLeft      =   3435
-   ClientTop       =   2565
-   ClientWidth     =   11640
+   ClientLeft      =   1335
+   ClientTop       =   4755
+   ClientWidth     =   14790
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    ScaleHeight     =   6165
-   ScaleWidth      =   11640
+   ScaleWidth      =   14790
+   Begin MSComctlLib.ListView lvMain 
+      Height          =   5325
+      Left            =   90
+      TabIndex        =   4
+      Top             =   780
+      Width           =   14640
+      _ExtentX        =   25823
+      _ExtentY        =   9393
+      View            =   3
+      LabelEdit       =   1
+      LabelWrap       =   -1  'True
+      HideSelection   =   0   'False
+      FullRowSelect   =   -1  'True
+      _Version        =   393217
+      ForeColor       =   -2147483640
+      BackColor       =   16777215
+      BorderStyle     =   1
+      Appearance      =   0
+      NumItems        =   9
+      BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         Text            =   "Código"
+         Object.Width           =   1482
+      EndProperty
+      BeginProperty ColumnHeader(2) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         SubItemIndex    =   1
+         Text            =   "Nome"
+         Object.Width           =   5186
+      EndProperty
+      BeginProperty ColumnHeader(3) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         Alignment       =   2
+         SubItemIndex    =   2
+         Text            =   "Banco"
+         Object.Width           =   4304
+      EndProperty
+      BeginProperty ColumnHeader(4) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         Alignment       =   2
+         SubItemIndex    =   3
+         Text            =   "Dt.Arr."
+         Object.Width           =   2011
+      EndProperty
+      BeginProperty ColumnHeader(5) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         Alignment       =   2
+         SubItemIndex    =   4
+         Text            =   "Dt.Venc."
+         Object.Width           =   2011
+      EndProperty
+      BeginProperty ColumnHeader(6) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         Alignment       =   2
+         SubItemIndex    =   5
+         Text            =   "Anocp"
+         Object.Width           =   1305
+      EndProperty
+      BeginProperty ColumnHeader(7) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         Alignment       =   2
+         SubItemIndex    =   6
+         Text            =   "Mescp"
+         Object.Width           =   1306
+      EndProperty
+      BeginProperty ColumnHeader(8) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         Alignment       =   1
+         SubItemIndex    =   7
+         Text            =   "Valor"
+         Object.Width           =   1764
+      EndProperty
+      BeginProperty ColumnHeader(9) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         SubItemIndex    =   8
+         Text            =   "Arquivo"
+         Object.Width           =   4833
+      EndProperty
+   End
    Begin VB.TextBox txtAno2 
       Appearance      =   0  'Flat
       Height          =   285
-      Left            =   5640
+      Left            =   11445
       MaxLength       =   4
       TabIndex        =   2
       Top             =   90
+      Visible         =   0   'False
       Width           =   795
    End
    Begin VB.TextBox txtAno1 
       Appearance      =   0  'Flat
       Height          =   285
-      Left            =   3840
+      Left            =   9645
       MaxLength       =   4
       TabIndex        =   1
       Top             =   90
+      Visible         =   0   'False
       Width           =   795
    End
    Begin VB.ListBox lstArq 
@@ -37,6 +109,7 @@ Begin VB.Form frmBuscaSN
       Left            =   12750
       TabIndex        =   11
       Top             =   435
+      Visible         =   0   'False
       Width           =   1050
    End
    Begin VB.ListBox lstPath 
@@ -44,6 +117,7 @@ Begin VB.Form frmBuscaSN
       Left            =   12810
       TabIndex        =   10
       Top             =   960
+      Visible         =   0   'False
       Width           =   1050
    End
    Begin VB.TextBox txtPath 
@@ -54,6 +128,7 @@ Begin VB.Form frmBuscaSN
       TabIndex        =   5
       Text            =   "\\192.168.200.130\atualizagti\SimplesNacional\"
       Top             =   1650
+      Visible         =   0   'False
       Width           =   2205
    End
    Begin Tributacao.XP_ProgressBar PBar 
@@ -83,6 +158,7 @@ Begin VB.Form frmBuscaSN
       TabStop         =   0   'False
       ToolTipText     =   "Reconstruir a lista de arquivos bancários"
       Top             =   60
+      Visible         =   0   'False
       Width           =   1065
       _ExtentX        =   1879
       _ExtentY        =   556
@@ -118,10 +194,10 @@ Begin VB.Form frmBuscaSN
    End
    Begin prjChameleon.chameleonButton cmdFind 
       Height          =   315
-      Left            =   6630
+      Left            =   2715
       TabIndex        =   3
       ToolTipText     =   "Busca documento dentro dos arquivos"
-      Top             =   60
+      Top             =   90
       Width           =   1065
       _ExtentX        =   1879
       _ExtentY        =   556
@@ -181,70 +257,45 @@ Begin VB.Form frmBuscaSN
       Text            =   "__.___.___/____-__"
       HideSelection   =   -1  'True
    End
-   Begin MSComctlLib.ListView lvMain 
-      Height          =   5325
-      Left            =   90
-      TabIndex        =   4
-      Top             =   780
-      Width           =   11535
-      _ExtentX        =   20346
-      _ExtentY        =   9393
-      View            =   3
-      LabelEdit       =   1
-      LabelWrap       =   -1  'True
-      HideSelection   =   0   'False
-      FullRowSelect   =   -1  'True
-      _Version        =   393217
-      ForeColor       =   -2147483640
-      BackColor       =   16777215
-      BorderStyle     =   1
-      Appearance      =   0
-      NumItems        =   8
-      BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
-         Text            =   "Código"
-         Object.Width           =   1482
+   Begin prjChameleon.chameleonButton cmdExportar 
+      Height          =   315
+      Left            =   3960
+      TabIndex        =   14
+      ToolTipText     =   "Exportar para Excel"
+      Top             =   90
+      Width           =   1140
+      _ExtentX        =   2011
+      _ExtentY        =   556
+      BTYPE           =   3
+      TX              =   "&Exportar"
+      ENAB            =   -1  'True
+      BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
       EndProperty
-      BeginProperty ColumnHeader(2) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
-         SubItemIndex    =   1
-         Text            =   "Nome"
-         Object.Width           =   5186
-      EndProperty
-      BeginProperty ColumnHeader(3) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
-         Alignment       =   2
-         SubItemIndex    =   2
-         Text            =   "CNPJ"
-         Object.Width           =   3069
-      EndProperty
-      BeginProperty ColumnHeader(4) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
-         Alignment       =   2
-         SubItemIndex    =   3
-         Text            =   "Dt.Arr."
-         Object.Width           =   2011
-      EndProperty
-      BeginProperty ColumnHeader(5) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
-         Alignment       =   2
-         SubItemIndex    =   4
-         Text            =   "Dt.Venc."
-         Object.Width           =   2011
-      EndProperty
-      BeginProperty ColumnHeader(6) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
-         Alignment       =   2
-         SubItemIndex    =   5
-         Text            =   "Anocp"
-         Object.Width           =   1305
-      EndProperty
-      BeginProperty ColumnHeader(7) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
-         Alignment       =   2
-         SubItemIndex    =   6
-         Text            =   "Mescp"
-         Object.Width           =   1306
-      EndProperty
-      BeginProperty ColumnHeader(8) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
-         Alignment       =   1
-         SubItemIndex    =   7
-         Text            =   "Valor"
-         Object.Width           =   1764
-      EndProperty
+      COLTYPE         =   2
+      FOCUSR          =   0   'False
+      BCOL            =   12632256
+      BCOLO           =   12632256
+      FCOL            =   0
+      FCOLO           =   0
+      MCOL            =   12632256
+      MPTR            =   1
+      MICON           =   "frmBuscaSN.frx":01AE
+      PICN            =   "frmBuscaSN.frx":01CA
+      UMCOL           =   -1  'True
+      SOFT            =   0   'False
+      PICPOS          =   0
+      NGREY           =   0   'False
+      FX              =   0
+      HAND            =   0   'False
+      CHECK           =   0   'False
+      VALUE           =   0   'False
    End
    Begin VB.Label Label1 
       BackStyle       =   0  'Transparent
@@ -260,9 +311,10 @@ Begin VB.Form frmBuscaSN
       EndProperty
       Height          =   225
       Index           =   2
-      Left            =   4770
+      Left            =   10575
       TabIndex        =   13
       Top             =   135
+      Visible         =   0   'False
       Width           =   825
    End
    Begin VB.Label Label1 
@@ -279,9 +331,10 @@ Begin VB.Form frmBuscaSN
       EndProperty
       Height          =   225
       Index           =   1
-      Left            =   2820
+      Left            =   8625
       TabIndex        =   12
       Top             =   135
+      Visible         =   0   'False
       Width           =   1065
    End
    Begin VB.Label lblMsg 
@@ -370,7 +423,7 @@ End If
 End Sub
 
 Private Sub cmdAno_Click()
-Dim nAno As Integer, x As Integer, y As Integer
+Dim nAno As Integer, x As Integer, Y As Integer
 
 If cmdAno.value = True Then
     frAno.Height = 1410
@@ -378,6 +431,12 @@ Else
     frAno.Height = 375
 End If
 
+End Sub
+
+Private Sub cmdExportar_Click()
+If lvMain.ListItems.Count > 0 Then
+    Exporta
+End If
 End Sub
 
 Private Sub cmdFind_Click()
@@ -389,7 +448,7 @@ Dim nCodBanco As Integer, sNumRemessa As String, sDataGeracao As String, sDataAr
 Dim nAno As Integer, nMes As Integer, nValorPrincipal As Double, nValorJuros As Double, nValorMulta As Double
 Dim nCodReduz As Long, nExercicio As Integer, nParc As Integer, nSeq As Integer, sRazao As String
 Dim bFilterCNPJ As Boolean, bFilterAno As Boolean, aAno() As Long, nCodCidadao As Long, sNomeCidadao As String
-Dim Itmx As ListItem
+Dim itmX As ListItem
 ReDim aAno(0)
 
 If mskCNPJ.ClipText <> "" Then
@@ -399,37 +458,41 @@ If mskCNPJ.ClipText <> "" Then
     End If
 End If
 
-If Val(txtAno1.Text) < 2008 Then
-    MsgBox "Ano inicial tem que ser a partir de 2008.", vbExclamation, "Atenção"
-    Exit Sub
-End If
-
-If Val(txtAno2.Text) < 2008 Or Val(txtAno2.Text) > Year(Now) Then
-    MsgBox "Ano final inválido.", vbExclamation, "Atenção"
-    Exit Sub
-End If
-
-If Val(txtAno2.Text) < Val(txtAno1.Text) Then
-    MsgBox "Ano final inválido.", vbExclamation, "Atenção"
-    Exit Sub
-End If
-
-For x = Val(txtAno1.Text) To Val(txtAno2.Text)
-    ReDim Preserve aAno(UBound(aAno) + 1)
-    aAno(UBound(aAno)) = x
-    bFilterAno = True
-Next
-If lstPath.ListCount = 0 Then
-    LoadFileBanco
-End If
-
-If lstPath.ListCount = 0 Then
-    MsgBox "Lista " & sFile & " não localizada.", vbCritical, "Verifique"
-    Exit Sub
-End If
-
-If MsgBox("Confirme a operação?", vbYesNo + vbQuestion, "Atenção") = vbNo Then Exit Sub
+'If Val(txtAno1.Text) < 2008 Then
+'    MsgBox "Ano inicial tem que ser a partir de 2008.", vbExclamation, "Atenção"
+'    Exit Sub
+'End If
+'
+'If Val(txtAno2.Text) < 2008 Or Val(txtAno2.Text) > Year(Now) Then
+'    MsgBox "Ano final inválido.", vbExclamation, "Atenção"
+'    Exit Sub
+'End If
+'
+'If Val(txtAno2.Text) < Val(txtAno1.Text) Then
+'    MsgBox "Ano final inválido.", vbExclamation, "Atenção"
+'    Exit Sub
+'End If
+'
+'For x = Val(txtAno1.Text) To Val(txtAno2.Text)
+'    ReDim Preserve aAno(UBound(aAno) + 1)
+'    aAno(UBound(aAno)) = x
+'    bFilterAno = True
+'Next
+'If lstPath.ListCount = 0 Then
+'    LoadFileBanco
+'End If
+'
+'If lstPath.ListCount = 0 Then
+'    MsgBox "Lista " & sFile & " não localizada.", vbCritical, "Verifique"
+'    Exit Sub
+'End If
+'
+'If MsgBox("Confirme a operação?", vbYesNo + vbQuestion, "Atenção") = vbNo Then Exit Sub
 lvMain.ListItems.Clear
+
+GoTo fim
+
+
 bFilterCNPJ = False: bFilterAno = False
 
 If mskCNPJ.ClipText <> "" Then bFilterCNPJ = True
@@ -458,7 +521,7 @@ DoEvents
 lstArq.Clear
 PBar.Color = vbRed
 For x = 0 To lstPath.ListCount - 1
-    If lstPath.ItemData(x) = 1 Then GoTo PROXIMO
+    If lstPath.ItemData(x) = 1 Then GoTo Proximo
     If x Mod 20 = 0 Then
         CallPb x, CLng(lstPath.ListCount - 1)
     End If
@@ -469,7 +532,7 @@ For x = 0 To lstPath.ListCount - 1
     Set cCRCSearch = New cFileSearchCRC
     cCRCSearch.SearchAlgorithm = Asm_BMHA
     strBuffer = sTr$(cCRCSearch.FileMapSearch(sPathFile, "SIMPLES"))
-    If Val(strBuffer) = 0 Then GoTo PROXIMO
+    If Val(strBuffer) = 0 Then GoTo Proximo
     
     If Not bFilterCNPJ Then GoTo POINT1
     Set cCRCSearch = New cFileSearchCRC
@@ -520,7 +583,7 @@ POINT1:
                         With RdoAux
                             If .RowCount > 0 Then
                                 nCodReduz = !codigomob
-                                sRazao = !RazaoSocial
+                                sRazao = !razaosocial
                             Else
                                 Sql = "SELECT CODCIDADAO,NOMECIDADAO FROM CIDADAO WHERE CNPJ='" & sCNPJ & "'"
                                 Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -555,14 +618,14 @@ POINT1:
                     
                     'GRAVA NA TABELA
                     On Error GoTo 0
-                    Set Itmx = lvMain.ListItems.Add(, , IIf(IsNull(nCodReduz), SubNull(nCodCidadao), nCodReduz))
-                    Itmx.SubItems(1) = IIf(Not IsNull(sNomeCidadao), sRazao, sNomeCidadao)
-                    Itmx.SubItems(2) = Format(sCNPJ, "0#\.###\.###/####-##")
-                    Itmx.SubItems(3) = Format(sDataArrecada, "dd/mm/yyyy")
-                    Itmx.SubItems(4) = Format(sDataVencto, "dd/mm/yyyy")
-                    Itmx.SubItems(5) = nAno
-                    Itmx.SubItems(6) = Format(nMes, "00")
-                    Itmx.SubItems(7) = FormatNumber(nValorPrincipal + nValorJuros + nValorMulta, 2)
+                    Set itmX = lvMain.ListItems.Add(, , IIf(IsNull(nCodReduz), SubNull(nCodCidadao), nCodReduz))
+                    itmX.SubItems(1) = IIf(Not IsNull(sNomeCidadao), sRazao, sNomeCidadao)
+                    itmX.SubItems(2) = Format(sCNPJ, "0#\.###\.###/####-##")
+                    itmX.SubItems(3) = Format(sDataArrecada, "dd/mm/yyyy")
+                    itmX.SubItems(4) = Format(sDataVencto, "dd/mm/yyyy")
+                    itmX.SubItems(5) = nAno
+                    itmX.SubItems(6) = Format(nMes, "00")
+                    itmX.SubItems(7) = FormatNumber(nValorPrincipal + nValorJuros + nValorMulta, 2)
 '                    Sql = "SELECT * FROM RESUMOARQSN WHERE NUMREMESSA='" & sNumRemessa & "' AND "
 '                    Sql = Sql & "CNPJ='" & Format(sCNPJ, "0#\.###\.###/####-##") & "' AND ANOCOMP=" & nAno & " AND MESCOMP=" & nMes
 '                    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
@@ -591,7 +654,7 @@ PROXIMOREG:
 CloseFile2:
         Close #FF1
     End If
-PROXIMO:
+Proximo:
 Next
 
 If lstArq.ListCount = 0 Then
@@ -622,6 +685,37 @@ End If
 
 'Sql = "DELETE FROM RESUMOARQSN WHERE USUARIO='" & NomeDeLogin & "'"
 'cn.Execute Sql, rdExecDirect
+
+
+fim:
+Sql = "SELECT importacao_banco.Codigo_Banco, importacao_banco.Data_Credito, importacao_banco.Nome_Arquivo, importacao_banco.Numero_Documento, importacao_banco.Data_Pagamento, importacao_banco.Valor_Pago, "
+Sql = Sql & "importacao_banco.Agencia, importacao_banco.Situacao_Retorno, importacao_banco.simples_nacional, importacao_banco.debito_automatico, importacao_banco.cnpj, importacao_banco.data_vencimento,"
+Sql = Sql & "importacao_banco.ano, importacao_banco.mes, importacao_banco.convenio, importacao_banco.conta_corrente, importacao_banco.codigo_banco_receptor, importacao_banco.conta_deposito,"
+Sql = Sql & "importacao_banco.codigo_reduzido , importacao_banco.data_controle, mobiliario.codigomob, mobiliario.razaosocial,banco.nomebanco FROM importacao_banco LEFT OUTER JOIN "
+Sql = Sql & "banco ON importacao_banco.Codigo_Banco = banco.codbanco LEFT OUTER JOIN mobiliario ON importacao_banco.cnpj = mobiliario.cnpj where importacao_banco.cnpj='" & mskCNPJ.ClipText & "' order by codigomob desc,ano,mes"
+Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    Do Until .EOF
+        If .AbsolutePosition = 1 Then
+            nCodReduz = !codigomob
+        Else
+            If !codigomob <> nCodReduz Then
+                Exit Do
+            End If
+        End If
+        Set itmX = lvMain.ListItems.Add(, , SubNull(!codigomob))
+        itmX.SubItems(1) = SubNull(!razaosocial)
+        itmX.SubItems(2) = !Codigo_Banco & "-" & SubNull(!NomeBanco)
+        itmX.SubItems(3) = Format(!data_credito, "dd/mm/yyyy")
+        itmX.SubItems(4) = Format(!Data_Vencimento, "dd/mm/yyyy")
+        itmX.SubItems(5) = !Ano
+        itmX.SubItems(6) = Format(!Mes, "00")
+        itmX.SubItems(7) = FormatNumber(!valor_pago, 2)
+        itmX.SubItems(8) = !nome_arquivo
+       .MoveNext
+    Loop
+   .Close
+End With
 
 PBar.value = 0
 PBar.Color = vbWhite
@@ -776,3 +870,48 @@ End Sub
 Private Sub txtAno2_KeyPress(KeyAscii As Integer)
 Tweak txtAno2, KeyAscii, IntegerPositive
 End Sub
+
+Private Sub Exporta()
+Dim x As Long, Y As Long, ax As String, Scr_hdc As Long, z As Long
+Dim cnExcel As ADODB.Connection, Rs As ADODB.Recordset, nCont As Integer, sFile As String
+Scr_hdc = GetDesktopWindow()
+         
+Set cnExcel = New ADODB.Connection
+sFile = "Rel" & Format(Now, "ddmmyyyyhhmmss") & ".xls"
+cnExcel.ConnectionString = "provider=Microsoft.Jet.OLEDB.4.0; data source=" & sPathBin & "\" & sFile & "; Extended Properties=""Excel 8.0;HDR=YES"""
+cnExcel.Open
+
+ax = ""
+For Y = 1 To lvMain.ColumnHeaders.Count
+    If lvMain.ColumnHeaders(Y).Width > 0 Then
+        ax = ax & RemoveSpace(lvMain.ColumnHeaders(Y)) & " char(255), "
+    End If
+Next
+ax = Left(ax, Len(ax) - 2)
+cnExcel.Execute "Create Table Table1(" & ax & ")"
+
+Set Rs = New ADODB.Recordset
+Rs.Open "[Table1$]", cnExcel, adOpenDynamic, adLockOptimistic, adCmdTable
+
+
+For x = 1 To lvMain.ListItems.Count
+    Rs.AddNew
+    nCont = 0
+    Rs.Fields(nCont).value = lvMain.ListItems(x).Text
+    nCont = 1
+    For Y = 1 To lvMain.ColumnHeaders.Count - 1
+        Rs.Fields(nCont).value = lvMain.ListItems(x).SubItems(Y)
+        nCont = nCont + 1
+    Next
+    Rs.Update
+Next
+
+
+ cnExcel.Close
+Set Rs = Nothing
+Set cnExcel = Nothing
+
+z = ShellExecute(Scr_hdc, "Open", sFile, "", sPathBin, SW_SHOWNORMAL)
+
+End Sub
+

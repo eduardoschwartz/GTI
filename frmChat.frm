@@ -206,7 +206,6 @@ Begin VB.Form frmChat
       EndProperty
    End
    Begin VB.Timer Timer1 
-      Interval        =   5000
       Left            =   315
       Top             =   4500
    End
@@ -686,13 +685,10 @@ For x = 1 To UBound(aNomeTmp)
     End If
 Next
 
-Me.Caption = "Comunicador interno do GTI - " & y + 1 & " usuários conectados."
-frmMdi.Sbar.Panels(1).Text = y + 1 & " usuários conectados."
-'If InStr(1, cn.Connect, "SERVER=192.") > 0 Then
-    frmMdi.Sbar.Panels(1).Text = y + 1 & " usuários conectados. (" + Mid(cn.Connect, InStr(1, cn.Connect, "SERVER=", vbBinaryCompare) + 7, 15) + ")"
-'Else
-'    frmMdi.Sbar.Panels(1).Text = y + 1 & " usuários conectados (Base Local)."
-'End If
+'Me.Caption = "Comunicador interno do GTI - " & y + 1 & " usuários conectados."
+'frmMdi.Sbar.Panels(1).Text = y + 1 & " usuários conectados."
+
+'    frmMdi.Sbar.Panels(1).Text = y + 1 & " usuários conectados. (" + Mid(cn.Connect, InStr(1, cn.Connect, "SERVER=", vbBinaryCompare) + 7, 15) + ")"
         
 Fim:
 Exit Sub

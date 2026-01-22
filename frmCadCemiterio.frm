@@ -5,8 +5,8 @@ Begin VB.Form frmCadCemiterio
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Cadastro do cemitério"
    ClientHeight    =   5760
-   ClientLeft      =   12150
-   ClientTop       =   8460
+   ClientLeft      =   2550
+   ClientTop       =   3420
    ClientWidth     =   9225
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False

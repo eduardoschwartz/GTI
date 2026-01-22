@@ -1773,7 +1773,7 @@ End Type
 
 Public bZOrder As Boolean
 Dim RdoAux As rdoResultset
-Dim Sql As String, bExec As Boolean
+Dim sql As String, bExec As Boolean
 Dim Evento As String, sEnd As String
 Dim frm As frmCnsCidadao
 Dim NomeForm As String, sTipoCid As String
@@ -1820,8 +1820,13 @@ frm2.ZOrder 0
 End Sub
 
 Private Sub btNewCod_Click()
-Dim Sql As String, RdoAux As rdoResultset, bCpf As Boolean, bCnpj As Boolean, bFind As Boolean, nMaxCod As Long
+Dim sql As String, RdoAux As rdoResultset, bCpf As Boolean, bCnpj As Boolean, bFind As Boolean, nMaxCod As Long
 bCpf = False: bCnpj = False: bFind = False
+
+If NomeDeLogin <> "SCHWARTZ" Then
+    MsgBox "Acesso negado", vbCritical, "Erro"
+    Exit Sub
+End If
 
 If cmdNovo.Enabled = False Or cmdNovo.Visible = False Then
     MsgBox "Acesso negado", vbCritical, "Erro"
@@ -1841,9 +1846,14 @@ End If
 If mskCPF.ClipText <> "" Then bCpf = True
 If mskCNPJ.ClipText <> "" Then bCnpj = True
 
+If bCpf = False And bCnpj = False Then
+    MsgBox "Não é possível gravar cidadão sem cpf/cnpj", vbCritical, "Erro"
+    Exit Sub
+End If
+
 If bCpf Then
-    Sql = "select * from cidadao where cpf='" & mskCPF.ClipText & "' and codcidadao>=500000"
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    sql = "select * from cidadao where cpf='" & mskCPF.ClipText & "' and codcidadao>=500000"
+    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     If RdoAux.RowCount > 0 Then
         MsgBox "Já existe um cidadão (" & RdoAux!CodCidadao & ") com este CPF cadstrado", vbCritical, "Erro"
         RdoAux.Close
@@ -1853,8 +1863,8 @@ If bCpf Then
 End If
 
 If bCnpj Then
-    Sql = "select * from cidadao where cnpj='" & mskCNPJ.ClipText & "' and codcidadao>=500000"
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    sql = "select * from cidadao where cnpj='" & mskCNPJ.ClipText & "' and codcidadao>=500000"
+    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     If RdoAux.RowCount > 0 Then
         MsgBox "Já existe um cidadão (" & RdoAux!CodCidadao & ") com este Cnpj cadstrado", vbCritical, "Erro"
         RdoAux.Close
@@ -1863,15 +1873,15 @@ If bCnpj Then
     RdoAux.Close
 End If
 
-Sql = "select max(codcidadao) as maximo from cidadao"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select max(codcidadao) as maximo from cidadao"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 nMaxCod = RdoAux!maximo + 1
 
-Sql = "update cidadao set codcidadao=" & nMaxCod & " where codcidadao=" & Val(txtCod.Text)
-cn.Execute Sql, rdExecDirect
+sql = "update cidadao set codcidadao=" & nMaxCod & " where codcidadao=" & Val(txtCod.Text)
+cn.Execute sql, rdExecDirect
 
-Sql = "update proprietario set codcidadao=" & nMaxCod & " where codcidadao=" & Val(txtCod.Text)
-cn.Execute Sql, rdExecDirect
+sql = "update proprietario set codcidadao=" & nMaxCod & " where codcidadao=" & Val(txtCod.Text)
+cn.Execute sql, rdExecDirect
 
 txtCod.Text = nMaxCod
 MsgBox "Criado cidadão: " & nMaxCod, vbInformation, "Atenção"
@@ -1972,8 +1982,8 @@ Else
     txtBairroR.Visible = False
 End If
 
-Sql = "SELECT CODBAIRRO,DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='" & Left$(cmbUF.Text, 2) & "' AND CODCIDADE=" & cmbCidade.ItemData(cmbCidade.ListIndex)
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CODBAIRRO,DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='" & Left$(cmbUF.Text, 2) & "' AND CODCIDADE=" & cmbCidade.ItemData(cmbCidade.ListIndex)
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     cmbBairro.AddItem " "
     Do While Not .EOF
@@ -2013,8 +2023,8 @@ Else
     cmdAddBairro2.Visible = True
     txtBairroC.Visible = False
 End If
-Sql = "SELECT CODBAIRRO,DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='" & Left$(cmbUF2.Text, 2) & "' AND CODCIDADE=" & cmbCidade2.ItemData(cmbCidade2.ListIndex)
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CODBAIRRO,DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='" & Left$(cmbUF2.Text, 2) & "' AND CODCIDADE=" & cmbCidade2.ItemData(cmbCidade2.ListIndex)
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     cmbBairro2.AddItem " "
     Do While Not .EOF
@@ -2040,7 +2050,7 @@ If Val(z) > 0 Then
         txtCod.Text = Val(z)
         Limpa
         Le
-        If NomeForm = "frmProcesso" Then
+        If NomeForm = "frmProcesso" Or NomeForm = "frmProcesso2" Then
             Evento = "Alterar"
             Eventos "INCLUIR"
         End If
@@ -2055,8 +2065,8 @@ Private Sub cmbUF_Click()
 'If Not bExec Then Exit Sub
 cmbCidade.Clear
 cmbBairro.Clear
-Sql = "SELECT CODCIDADE,DESCCIDADE FROM CIDADE WHERE SIGLAUF='" & Left$(cmbUF.Text, 2) & "'"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CODCIDADE,DESCCIDADE FROM CIDADE WHERE SIGLAUF='" & Left$(cmbUF.Text, 2) & "'"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do While Not .EOF
        cmbCidade.AddItem !descCidade
@@ -2073,8 +2083,8 @@ Private Sub cmbUF2_Click()
 'If Not bExec Then Exit Sub
 cmbCidade2.Clear
 cmbBairro2.Clear
-Sql = "SELECT CODCIDADE,DESCCIDADE FROM CIDADE WHERE SIGLAUF='" & Left$(cmbUF2.Text, 2) & "'"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CODCIDADE,DESCCIDADE FROM CIDADE WHERE SIGLAUF='" & Left$(cmbUF2.Text, 2) & "'"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do While Not .EOF
        cmbCidade2.AddItem !descCidade
@@ -2129,7 +2139,7 @@ Private Sub cmdAlterar_Click()
        MsgBox "Não existem Registros.", vbCritical, "Atenção"
        Exit Sub
     End If
-    If NomeDeLogin <> "ROSE" And NomeDeLogin <> "FERNANDA.SIMOLIN" And NomeDeLogin <> "JOSEANE" And NomeDeLogin <> "ANGELICA" And NomeDeLogin <> "HENRIQUE.SOARES" And NomeDeLogin <> "TICYANNE.OKIMASU" And NomeDeLogin <> "DANIELE.SILVA" And NomeDeLogin <> "MARIELA.CUSTODIO" Then
+    If NomeDeLogin <> "ROSE" And NomeDeLogin <> "FERNANDA.SIMOLIN" And NomeDeLogin <> "JOSEANE" And NomeDeLogin <> "ANGELICA" And NomeDeLogin <> "HENRIQUE.SOARES" And NomeDeLogin <> "TICYANNE.OKIMASU" And NomeDeLogin <> "DANIELE.SILVA" And NomeDeLogin <> "MARIELA.CUSTODIO" And NomeDeLogin <> "FRANCIELY.SOUZA" Then
  '       If Val(txtCod.Text) < 500000 Then
  '          MsgBox "Não é possivel alterar cidadãos antigos.", vbCritical, "Atenção"
  '          Exit Sub
@@ -2165,7 +2175,7 @@ frmCnsCidadao.ZOrder 0
 End Sub
 
 Private Sub cmdCopy_Click()
-Dim z As Variant, Sql As String, RdoAux As rdoResultset
+Dim z As Variant, sql As String, RdoAux As rdoResultset
 If Val(txtCod.Text) = 0 Then
    MsgBox "Não existem Registros.", vbCritical, "Atenção"
    Exit Sub
@@ -2177,18 +2187,18 @@ If Val(z) < 500000 Or Val(z) > 700000 Then
     Exit Sub
 End If
 
-Sql = "SELECT * FROM CIDADAO WHERE CODCIDADAO=" & Val(z)
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT * FROM CIDADAO WHERE CODCIDADAO=" & Val(z)
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If .RowCount = 0 Then
         MsgBox "Código não cadastrado.", vbCritical, "Erro"
     Else
         If MsgBox("Deseja copiar os dados do cidadão " & !CodCidadao & "-" & !nomecidadao & " ?", vbYesNo + vbQuestion, "Confirmação") = vbYes Then
             Log Form, Me.Caption, Alteração, "Copiado cidadão " & !CodCidadao & " - " & nomecidadao & " para o código " & txtCod.Text & " - " & txtNome.Text
-            Sql = "update cidadao set cpf='" & SubNull(!cpf) & "',cnpj='" & SubNull(!Cnpj) & "',codlogradouro=" & Val(SubNull(!CodLogradouro)) & ","
-            Sql = Sql & "numimovel=" & Val(SubNull(!NUMIMOVEL)) & ",complemento='" & SubNull(!Complemento) & "',codbairro=" & Val(SubNull(!CodBairro)) & ","
-            Sql = Sql & "codcidade=" & Val(!CodCidade) & ",siglauf='" & SubNull(!SiglaUF) & "' where codcidadao=" & Val(txtCod.Text)
-            cn.Execute Sql, rdExecDirect
+            sql = "update cidadao set cpf='" & SubNull(!cpf) & "',cnpj='" & SubNull(!Cnpj) & "',codlogradouro=" & Val(SubNull(!CodLogradouro)) & ","
+            sql = sql & "numimovel=" & Val(SubNull(!NUMIMOVEL)) & ",complemento='" & SubNull(!Complemento) & "',codbairro=" & Val(SubNull(!CodBairro)) & ","
+            sql = sql & "codcidade=" & Val(!CodCidade) & ",siglauf='" & SubNull(!SiglaUF) & "' where codcidadao=" & Val(txtCod.Text)
+            cn.Execute sql, rdExecDirect
             z = Val(txtCod.Text)
             Limpa
             txtCod.Text = z
@@ -2204,7 +2214,7 @@ End Sub
 Private Sub cmdExcluir_Click()
 Dim x As Integer
 On Error GoTo Erro
-If NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "RENATA" And NomeDeLogin <> "CINTIA" And NomeDeLogin <> "PRISCILAANAMI" Then
+If NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "RENATA" And NomeDeLogin <> "CHEFE_PRATICO" And NomeDeLogin <> "PRISCILAANAMI" Then
    MsgBox "Não é possível excluir.", vbCritical, "Atenção"
    Exit Sub
 End If
@@ -2217,16 +2227,16 @@ ElseIf Val(txtCod.Text) < 500000 Then
    Exit Sub
 End If
 
-Sql = "SELECT * FROM PROPRIETARIO WHERE CODCIDADAO=" & Val(txtCod.Text)
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
+sql = "SELECT * FROM PROPRIETARIO WHERE CODCIDADAO=" & Val(txtCod.Text)
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurReadOnly)
 If RdoAux.RowCount > 0 Then
    MsgBox "Não é possível excluir este Cidadão pois ele é Proprietário/Proprietário Solidário de um Imóvel.", vbExclamation, "Atenção"
    Exit Sub
 End If
 
 If MsgBox("Excluir este Cidadão ?", vbQuestion + vbYesNoCancel, "Atenção") = vbYes Then
-   Sql = "DELETE FROM CIDADAO WHERE CODCIDADAO=" & txtCod.Text
-   cn.Execute Sql, rdExecDirect
+   sql = "DELETE FROM CIDADAO WHERE CODCIDADAO=" & txtCod.Text
+   cn.Execute sql, rdExecDirect
    Limpa
    txtCod.Text = "0"
 End If
@@ -2288,7 +2298,7 @@ Dim y As Integer
  '   End If
     
     If chkEtiq.value = vbChecked Then
-        If Val(txtNum.Text) > 10000 Then
+        If Val(txtNum.Text) > 20000 Then
            MsgBox "Nº de Imóvel inválido.", vbExclamation, "Atenção"
            Exit Sub
         End If
@@ -2394,11 +2404,11 @@ Dim y As Integer
         End If
         
         If Evento = "Novo" Then
-             Sql = "SELECT CODCIDADAO,NOMECIDADAO FROM CIDADAO WHERE CODCIDADAO>500000 AND CPF='" & mskCPF.ClipText & "'"
+             sql = "SELECT CODCIDADAO,NOMECIDADAO FROM CIDADAO WHERE CODCIDADAO>500000 AND CPF='" & mskCPF.ClipText & "'"
         Else
-             Sql = "SELECT CODCIDADAO,NOMECIDADAO FROM CIDADAO WHERE CODCIDADAO>500000 AND CODCIDADAO<>" & Val(txtCod.Text) & " AND CPF='" & mskCPF.ClipText & "'"
+             sql = "SELECT CODCIDADAO,NOMECIDADAO FROM CIDADAO WHERE CODCIDADAO>500000 AND CODCIDADAO<>" & Val(txtCod.Text) & " AND CPF='" & mskCPF.ClipText & "'"
         End If
-        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             If .RowCount > 0 Then
                If MsgBox("CPF já cadastrado ---> " & Format(!CodCidadao, "00000") & " - " & !nomecidadao & vbCrLf & "Deseja gravar assim mesmo?", vbCritical + vbYesNo, "CPF Duplicado !!!") = vbNo Then
@@ -2414,8 +2424,8 @@ Dim y As Integer
           Exit Sub
        End If
        If Evento = "Novo" Then
-            Sql = "SELECT CODCIDADAO,NOMECIDADAO FROM CIDADAO WHERE CNPJ='" & mskCNPJ.ClipText & "'"
-            Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            sql = "SELECT CODCIDADAO,NOMECIDADAO FROM CIDADAO WHERE CNPJ='" & mskCNPJ.ClipText & "'"
+            Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
             With RdoAux
                 If .RowCount > 0 Then
                    MsgBox "CNPJ já cadastrado ---> " & Format(!CodCidadao, "00000") & " - " & !nomecidadao, vbCritical, "CNPJ Duplicado !!!"
@@ -2427,8 +2437,8 @@ Dim y As Integer
     
     If mskRG.ClipText <> "" Then
        If Evento = "Novo" Then
-            Sql = "SELECT CODCIDADAO,NOMECIDADAO FROM CIDADAO WHERE RG='" & mskRG.Text & "'"
-            Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            sql = "SELECT CODCIDADAO,NOMECIDADAO FROM CIDADAO WHERE RG='" & mskRG.Text & "'"
+            Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
             With RdoAux
                 If .RowCount > 0 Then
                    MsgBox "RG já cadastrado ---> " & Format(!CodCidadao, "00000") & " - " & !nomecidadao, vbCritical, "RG Duplicado !!!"
@@ -2520,6 +2530,12 @@ If CodCidadao > 0 Then
             Evento = "Alterar"
             Eventos "INCLUIR"
         End If
+    ElseIf NomeForm = "frmProcesso2" Then
+        If frmProcesso2.bReadOnly = False Then
+            Evento = "Alterar"
+            Eventos "INCLUIR"
+        End If
+    
     End If
 
 End If
@@ -2547,15 +2563,15 @@ Limpa
 sEnd = "R"
 bExec = False
 cmbUF.AddItem " "
-Sql = "SELECT SIGLAUF,DESCUF FROM UF"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset)
+sql = "SELECT SIGLAUF,DESCUF FROM UF"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset)
 Do While Not RdoAux.EOF
    cmbUF.AddItem RdoAux!SiglaUF & "-" & RdoAux!DESCUF
    RdoAux.MoveNext
 Loop
 cmbUF2.AddItem " "
-Sql = "SELECT SIGLAUF,DESCUF FROM UF"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset)
+sql = "SELECT SIGLAUF,DESCUF FROM UF"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset)
 Do While Not RdoAux.EOF
    cmbUF2.AddItem RdoAux!SiglaUF & "-" & RdoAux!DESCUF
    RdoAux.MoveNext
@@ -2575,10 +2591,10 @@ End Sub
 Private Sub Le()
 Dim RdoS As rdoResultset, tBairro As Bairro
 
-Sql = "SELECT cidadao.*, profissao.nome AS profissao_nome,pais_1.nome_pais, pais.nome_pais AS nome_pais2 "
-Sql = Sql & "FROM profissao RIGHT OUTER JOIN cidadao LEFT OUTER JOIN pais AS pais_1 ON cidadao.codpais = pais_1.id_pais LEFT OUTER JOIN "
-Sql = Sql & "pais ON cidadao.codpais2 = pais.id_pais ON profissao.codigo = cidadao.codprofissao Where CodCidadao = " & Val(txtCod.Text)
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT cidadao.*, profissao.nome AS profissao_nome,pais_1.nome_pais, pais.nome_pais AS nome_pais2 "
+sql = sql & "FROM profissao RIGHT OUTER JOIN cidadao LEFT OUTER JOIN pais AS pais_1 ON cidadao.codpais = pais_1.id_pais LEFT OUTER JOIN "
+sql = sql & "pais ON cidadao.codpais2 = pais.id_pais ON profissao.codigo = cidadao.codprofissao Where CodCidadao = " & Val(txtCod.Text)
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 
 With RdoAux
     If .RowCount = 0 Then
@@ -2643,15 +2659,15 @@ With RdoAux
     
     If Trim$(SubNull(!SiglaUF)) <> "" Then
        bExec = False
-       Sql = "SELECT DESCUF FROM UF WHERE SIGLAUF='" & !SiglaUF & "'"
-       Set RdoS = cn.OpenResultset(Sql, rdOpenKeyset)
+       sql = "SELECT DESCUF FROM UF WHERE SIGLAUF='" & !SiglaUF & "'"
+       Set RdoS = cn.OpenResultset(sql, rdOpenKeyset)
        cmbUF.Text = !SiglaUF & "-" & RdoS!DESCUF
        bExec = True
        cmbUF_Click
        If !CodCidade > 0 Then
           bExec = False
-            Sql = "SELECT DESCCIDADE FROM CIDADE WHERE SIGLAUF='" & !SiglaUF & "' AND CODCIDADE=" & !CodCidade
-            Set RdoS = cn.OpenResultset(Sql, rdOpenKeyset)
+            sql = "SELECT DESCCIDADE FROM CIDADE WHERE SIGLAUF='" & !SiglaUF & "' AND CODCIDADE=" & !CodCidade
+            Set RdoS = cn.OpenResultset(sql, rdOpenKeyset)
             If RdoS.RowCount > 0 Then
                 cmbCidade.Text = RdoS!descCidade
             End If
@@ -2659,8 +2675,8 @@ With RdoAux
            cmbCidade_Click
            If !CodCidade <> 413 Then
                  If !CodBairro > 0 Then
-                      Sql = "SELECT DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='" & !SiglaUF & "' AND CODCIDADE=" & !CodCidade & " AND CODBAIRRO=" & !CodBairro
-                      Set RdoS = cn.OpenResultset(Sql, rdOpenKeyset)
+                      sql = "SELECT DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='" & !SiglaUF & "' AND CODCIDADE=" & !CodCidade & " AND CODBAIRRO=" & !CodBairro
+                      Set RdoS = cn.OpenResultset(sql, rdOpenKeyset)
                       If RdoS.RowCount > 0 Then
                             If RdoS!DescBairro <> "" Then
                                 cmbBairro.Text = RdoS!DescBairro
@@ -2671,7 +2687,7 @@ With RdoAux
                 cmdAddBairro.Visible = True
                 txtBairroR.Visible = False
            Else
-                tBairro = RetornaLogradouroBairro(Val(SubNull(!CodLogradouro)), !NUMIMOVEL)
+                tBairro = RetornaLogradouroBairro(Val(SubNull(!CodLogradouro)), Val(SubNull(!NUMIMOVEL)))
                 txtBairroR.Text = tBairro.Nome
                 txtBairroR.Tag = tBairro.Codigo
                 cmbBairro.Visible = False
@@ -2684,22 +2700,22 @@ With RdoAux
     
     If Trim$(SubNull(!SiglaUF2)) <> "" Then
        bExec = False
-       Sql = "SELECT DESCUF FROM UF WHERE SIGLAUF='" & !SiglaUF2 & "'"
-       Set RdoS = cn.OpenResultset(Sql, rdOpenKeyset)
+       sql = "SELECT DESCUF FROM UF WHERE SIGLAUF='" & !SiglaUF2 & "'"
+       Set RdoS = cn.OpenResultset(sql, rdOpenKeyset)
        cmbUF2.Text = !SiglaUF2 & "-" & RdoS!DESCUF
        bExec = True
        cmbUF2_Click
        If !CodCidade2 > 0 Then
           bExec = False
-            Sql = "SELECT DESCCIDADE FROM CIDADE WHERE SIGLAUF='" & !SiglaUF2 & "' AND CODCIDADE=" & !CodCidade2
-            Set RdoS = cn.OpenResultset(Sql, rdOpenKeyset)
+            sql = "SELECT DESCCIDADE FROM CIDADE WHERE SIGLAUF='" & !SiglaUF2 & "' AND CODCIDADE=" & !CodCidade2
+            Set RdoS = cn.OpenResultset(sql, rdOpenKeyset)
             cmbCidade2.Text = RdoS!descCidade
             bExec = True
            cmbCidade2_Click
            If !CodCidade2 <> 413 Then
-                 If !CodBairro > 0 Then
-                      Sql = "SELECT DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='" & !SiglaUF2 & "' AND CODCIDADE=" & !CodCidade2 & " AND CODBAIRRO=" & !CodBairro2
-                      Set RdoS = cn.OpenResultset(Sql, rdOpenKeyset)
+                 If !CodBairro2 > 0 Then
+                      sql = "SELECT DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='" & !SiglaUF2 & "' AND CODCIDADE=" & !CodCidade2 & " AND CODBAIRRO=" & !CodBairro2
+                      Set RdoS = cn.OpenResultset(sql, rdOpenKeyset)
                       If RdoS.RowCount > 0 Then
                             If RdoS!DescBairro <> "" Then
                                 cmbBairro2.Text = RdoS!DescBairro
@@ -2813,8 +2829,8 @@ With RdoAux
    .Close
 End With
 
-Sql = "SELECT  espolio.codigo, tipousuario.nome FROM  espolio INNER JOIN  tipousuario ON espolio.tipo = tipousuario.codigo WHERE espolio.codigo=" & Val(txtCod.Text)
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT  espolio.codigo, tipousuario.nome FROM  espolio INNER JOIN  tipousuario ON espolio.tipo = tipousuario.codigo WHERE espolio.codigo=" & Val(txtCod.Text)
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 If RdoAux.RowCount > 0 Then
     lblEspolio.Caption = RdoAux!Nome
     lblEspolio.Visible = True
@@ -3118,6 +3134,13 @@ If NomeForm = "frmProcesso" And Val(txtCod.Text) < 500000 And txtCod.Text <> "" 
     frmProcesso.cmdEditDoc.Enabled = True
     frmProcesso.cmdEditEnd.Enabled = True
     Exit Sub
+ElseIf NomeForm = "frmProcesso2" And Val(txtCod.Text) < 500000 And txtCod.Text <> "" Then
+    MsgBox "Selecione apenas cidadão acima de 500000.", vbExclamation, "Atenção"
+    frmProcesso2.HabilitaPainelPrincipal
+    frmProcesso2.cmdEditCid.Enabled = True
+    frmProcesso2.cmdEditDoc.Enabled = True
+    frmProcesso2.cmdEditEnd.Enabled = True
+    Exit Sub
 End If
 If NomeForm = "frmProcesso" Then
     frmProcesso.lblCodCid.Caption = txtCod.Text
@@ -3139,6 +3162,27 @@ If NomeForm = "frmProcesso" Then
     frmProcesso.cmdEditDoc.Enabled = True
     frmProcesso.cmdEditEnd.Enabled = True
     frmProcesso.SetFocus
+    NomeForm = ""
+ElseIf NomeForm = "frmProcesso2" Then
+    frmProcesso2.lblCodCid.Caption = txtCod.Text
+    frmProcesso2.lblNomeCid.Caption = txtNome.Text
+    frmProcesso2.HabilitaPainelPrincipal
+    If sTipoCid = "A" Then
+        frmProcesso2.cmbOrigem.BackColor = Kde
+        frmProcesso2.cmbAssunto.BackColor = Kde
+        frmProcesso2.chkFisico.BackColor = Kde
+        frmProcesso2.chkInterno.BackColor = Kde
+        frmProcesso2.txtCompl.BackColor = Kde
+        frmProcesso2.cmbOrigem.Enabled = False
+        frmProcesso2.cmbAssunto.Enabled = False
+        frmProcesso2.chkFisico.Enabled = False
+        frmProcesso2.chkInterno.Enabled = False
+        frmProcesso2.txtCompl.Locked = True
+    End If
+    frmProcesso2.cmdEditCid.Enabled = True
+    frmProcesso2.cmdEditDoc.Enabled = True
+    frmProcesso2.cmdEditEnd.Enabled = True
+    frmProcesso2.SetFocus
     NomeForm = ""
 End If
 If NomeForm = "frmCPProcesso" And Val(txtCod.Text) < 500000 Then
@@ -3333,8 +3377,8 @@ Private Sub Grava()
 Dim MaxCod As Long, nBairro As Integer, nCidade As Integer, nPessoa As Integer, nBairro2 As Integer, nCidade2 As Integer, sEtiq As String
 Dim RdoAux2 As rdoResultset, nProf As Integer, aObs() As String, x As Integer
 ReDim aObs(0)
-Sql = "SELECT MAX(CODCIDADAO) AS MAXIMO FROM CIDADAO WHERE CODCIDADAO<700000"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT MAX(CODCIDADAO) AS MAXIMO FROM CIDADAO WHERE CODCIDADAO<700000"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 If IsNull(RdoAux!maximo) Then
     MaxCod = 1
 Else
@@ -3380,42 +3424,42 @@ End If
 
 
 If Evento = "Novo" Then
-    Sql = "INSERT CIDADAO(CODCIDADAO,NOMECIDADAO,CPF,CNPJ,CODLOGRADOURO,NUMIMOVEL,COMPLEMENTO,CODBAIRRO,CODCIDADE,"
-    Sql = Sql & "SIGLAUF,CEP,TELEFONE,EMAIL,RG,NOMELOGRADOURO,ORGAO,JURIDICA,CODPAIS,CODLOGRADOURO2,NUMIMOVEL2,COMPLEMENTO2,CODBAIRRO2,CODCIDADE2,"
-    Sql = Sql & "SIGLAUF2,CEP2,NOMELOGRADOURO2,ETIQUETA,CODPAIS2,TELEFONE2,EMAIL2,ETIQUETA2,data_nascimento,codprofissao,temfone,temfone2,whatsapp,"
-    Sql = Sql & "whatsapp2,cnh,orgaocnh) VALUES(" & MaxCod & ",'" & Mask(txtNome.Text) & "','"
-    Sql = Sql & IIf(mskCPF.ClipText = "", "", mskCPF.ClipText) & "','" & IIf(mskCNPJ.ClipText = "", "", mskCNPJ.ClipText) & "',"
-    Sql = Sql & IIf(Val(txtNumLog.Text) > 0, Val(txtNumLog.Text), "Null") & "," & Val(txtNum.Text) & ",'" & Mask(txtCompl.Text) & "'," & IIf(nBairro > 0, nBairro, "Null") & ","
-    Sql = Sql & IIf(nCidade > 0, nCidade, "Null") & ",'" & Left$(cmbUF.Text, 2) & "'," & IIf(Trim(mskCEP.ClipText) = "", "Null", "'" & mskCEP.ClipText & "'") & ",'" & Mask(txtFone.Text) & "','"
-    Sql = Sql & Mask(txtEmail.Text) & "','" & IIf(mskRG.ClipText = "", "", Mask(mskRG.ClipText)) & "'," & IIf(Val(txtNumLog.Text) > 0, "Null", "'" & txtNomeLog.Text & "'") & ",'"
-    Sql = Sql & Mask(txtOrgao.Text) & "'," & nPessoa & "," & IIf(txtPais.Tag = "", 1, Val(txtPais.Tag)) & "," & IIf(Val(txtNumLog2.Text) > 0, Val(txtNumLog2.Text), "Null") & "," & Val(txtNum2.Text) & ",'"
-    Sql = Sql & Mask(txtCompl2.Text) & "'," & IIf(nBairro2 > 0, nBairro2, "Null") & "," & IIf(nCidade2 > 0, nCidade2, "Null") & ",'"
-    Sql = Sql & Left$(cmbUF2.Text, 2) & "'," & IIf(Trim(mskCEP2.ClipText) = "", "Null", "'" & mskCEP2.ClipText & "'") & "," & IIf(Val(txtNumLog2.Text) > 0, "Null", "'" & txtNomeLog2.Text & "'") & ",'"
-    Sql = Sql & IIf(chkEtiq.value = vbChecked, "S", "N") & "'," & IIf(txtPais2.Tag = "", 1, Val(txtPais2.Tag)) & ",'" & Mask(txtFone2.Text) & "','" & Mask(txtEmail2.Text) & "','" & IIf(chkEtiq2.value = vbChecked, "S", "N") & "',"
-    Sql = Sql & IIf(IsDate(mskDtNascto.Text), "'" & Format(mskDtNascto.Text, "mm/dd/yyyy") & "'", "Null") & "," & Val(txtProfissao.Tag) & "," & IIf(chkFone1.value = vbChecked, 1, 0) & ","
-    Sql = Sql & IIf(chkFone2.value = vbChecked, 1, 0) & "," & IIf(chkWhatsApp.value = vbChecked, 1, 0) & "," & IIf(chkWhatsApp2.value = vbChecked, 1, 0) & ",'" & txtCNH.Text & "','" & Mask(txtOrgaoCNH.Text) & "')"
+    sql = "INSERT CIDADAO(CODCIDADAO,NOMECIDADAO,CPF,CNPJ,CODLOGRADOURO,NUMIMOVEL,COMPLEMENTO,CODBAIRRO,CODCIDADE,"
+    sql = sql & "SIGLAUF,CEP,TELEFONE,EMAIL,RG,NOMELOGRADOURO,ORGAO,JURIDICA,CODPAIS,CODLOGRADOURO2,NUMIMOVEL2,COMPLEMENTO2,CODBAIRRO2,CODCIDADE2,"
+    sql = sql & "SIGLAUF2,CEP2,NOMELOGRADOURO2,ETIQUETA,CODPAIS2,TELEFONE2,EMAIL2,ETIQUETA2,data_nascimento,codprofissao,temfone,temfone2,whatsapp,"
+    sql = sql & "whatsapp2,cnh,orgaocnh) VALUES(" & MaxCod & ",'" & Mask(txtNome.Text) & "','"
+    sql = sql & IIf(mskCPF.ClipText = "", "", mskCPF.ClipText) & "','" & IIf(mskCNPJ.ClipText = "", "", mskCNPJ.ClipText) & "',"
+    sql = sql & IIf(Val(txtNumLog.Text) > 0, Val(txtNumLog.Text), "Null") & "," & Val(txtNum.Text) & ",'" & Mask(txtCompl.Text) & "'," & IIf(nBairro > 0, nBairro, "Null") & ","
+    sql = sql & IIf(nCidade > 0, nCidade, "Null") & ",'" & Left$(cmbUF.Text, 2) & "'," & IIf(Trim(mskCEP.ClipText) = "", "Null", "'" & mskCEP.ClipText & "'") & ",'" & Mask(txtFone.Text) & "','"
+    sql = sql & Mask(txtEmail.Text) & "','" & IIf(mskRG.ClipText = "", "", Mask(mskRG.ClipText)) & "'," & IIf(Val(txtNumLog.Text) > 0, "Null", "'" & txtNomeLog.Text & "'") & ",'"
+    sql = sql & Mask(txtOrgao.Text) & "'," & nPessoa & "," & IIf(txtPais.Tag = "", 1, Val(txtPais.Tag)) & "," & IIf(Val(txtNumLog2.Text) > 0, Val(txtNumLog2.Text), "Null") & "," & Val(txtNum2.Text) & ",'"
+    sql = sql & Mask(txtCompl2.Text) & "'," & IIf(nBairro2 > 0, nBairro2, "Null") & "," & IIf(nCidade2 > 0, nCidade2, "Null") & ",'"
+    sql = sql & Left$(cmbUF2.Text, 2) & "'," & IIf(Trim(mskCEP2.ClipText) = "", "Null", "'" & mskCEP2.ClipText & "'") & "," & IIf(Val(txtNumLog2.Text) > 0, "Null", "'" & txtNomeLog2.Text & "'") & ",'"
+    sql = sql & IIf(chkEtiq.value = vbChecked, "S", "N") & "'," & IIf(txtPais2.Tag = "", 1, Val(txtPais2.Tag)) & ",'" & Mask(txtFone2.Text) & "','" & Mask(txtEmail2.Text) & "','" & IIf(chkEtiq2.value = vbChecked, "S", "N") & "',"
+    sql = sql & IIf(IsDate(mskDtNascto.Text), "'" & Format(mskDtNascto.Text, "mm/dd/yyyy") & "'", "Null") & "," & Val(txtProfissao.Tag) & "," & IIf(chkFone1.value = vbChecked, 1, 0) & ","
+    sql = sql & IIf(chkFone2.value = vbChecked, 1, 0) & "," & IIf(chkWhatsApp.value = vbChecked, 1, 0) & "," & IIf(chkWhatsApp2.value = vbChecked, 1, 0) & ",'" & txtCNH.Text & "','" & Mask(txtOrgaoCNH.Text) & "')"
 Else
-    Sql = "UPDATE CIDADAO SET NOMECIDADAO='" & Mask(txtNome.Text) & "',CPF='" & IIf(mskCPF.ClipText = "", "", mskCPF.ClipText) & "',"
-    Sql = Sql & "CNPJ='" & IIf(mskCNPJ.ClipText = "", "", mskCNPJ.ClipText) & "',CODLOGRADOURO=" & IIf(Val(txtNumLog.Text) > 0, Val(txtNumLog.Text), "Null") & ","
-    Sql = Sql & "NUMIMOVEL=" & Val(txtNum.Text) & ",COMPLEMENTO='" & Mask(txtCompl.Text) & "',CODBAIRRO=" & IIf(nBairro > 0, nBairro, "Null") & ","
-    Sql = Sql & "CODCIDADE=" & IIf(nCidade > 0, nCidade, "Null") & ",SIGLAUF='" & Left$(cmbUF.Text, 2) & "',"
-    Sql = Sql & "CEP=" & IIf(Trim(mskCEP.ClipText) = "", "Null", "'" & mskCEP.ClipText & "'") & ",TELEFONE='" & Mask(txtFone.Text) & "',"
-    Sql = Sql & "EMAIL='" & Mask(txtEmail.Text) & "',RG='" & IIf(mskRG.ClipText = "", "", Mask(mskRG.ClipText)) & "',NOMELOGRADOURO=" & IIf(Val(txtNumLog.Text) > 0, "Null", "'" & txtNomeLog.Text & "'") & ","
-    Sql = Sql & "ORGAO='" & Mask(txtOrgao.Text) & "',JURIDICA=" & nPessoa & ",CODPAIS=" & IIf(txtPais.Tag = "", 1, Val(txtPais.Tag)) & ",CODLOGRADOURO2=" & IIf(Val(txtNumLog2.Text) > 0, Val(txtNumLog2.Text), "Null") & ","
-    Sql = Sql & "NUMIMOVEL2=" & Val(txtNum2.Text) & ",COMPLEMENTO2='" & Mask(txtCompl2.Text) & "',CODBAIRRO2=" & IIf(nBairro2 > 0, nBairro2, "Null") & ",CODCIDADE2=" & IIf(nCidade2 > 0, nCidade2, "Null") & ","
-    Sql = Sql & "SIGLAUF2='" & Left$(cmbUF2.Text, 2) & "',CEP2=" & IIf(Trim(mskCEP2.ClipText) = "", "Null", "'" & mskCEP2.ClipText & "'") & ",NOMELOGRADOURO2=" & IIf(Val(txtNumLog2.Text) > 0, "Null", "'" & txtNomeLog2.Text & "'") & ","
-    Sql = Sql & "ETIQUETA='" & IIf(chkEtiq.value = vbChecked, "S", "N") & "',CODPAIS2=" & IIf(txtPais2.Tag = "", 1, Val(txtPais2.Tag)) & ",TELEFONE2='" & Mask(txtFone2.Text) & "',EMAIL2='" & Mask(txtEmail2.Text) & "',ETIQUETA2='" & IIf(chkEtiq2.value = vbChecked, "S", "N") & "',"
-    Sql = Sql & "data_nascimento=" & IIf(IsDate(mskDtNascto.Text), "'" & Format(mskDtNascto.Text, "mm/dd/yyyy") & "'", "Null") & ",codPROFISSAO=" & IIf(Val(SubNull(txtProfissao.Tag)) = 0, 1, Val(txtProfissao.Tag)) & ",TEMFONE=" & IIf(chkFone1.value = vbChecked, 1, 0) & ","
-    Sql = Sql & "TEMFONE2=" & IIf(chkFone2.value = vbChecked, 1, 0) & ",WHATSAPP=" & IIf(chkWhatsApp.value = vbChecked, 1, 0) & ",WHATSAPP2=" & IIf(chkWhatsApp2.value = vbChecked, 1, 0) & ",CNH='" & txtCNH.Text & "',"
-    Sql = Sql & "ORGAOCNH='" & txtOrgaoCNH.Text & "' Where CodCidadao = " & Val(txtCod.Text)
+    sql = "UPDATE CIDADAO SET NOMECIDADAO='" & Mask(txtNome.Text) & "',CPF='" & IIf(mskCPF.ClipText = "", "", mskCPF.ClipText) & "',"
+    sql = sql & "CNPJ='" & IIf(mskCNPJ.ClipText = "", "", mskCNPJ.ClipText) & "',CODLOGRADOURO=" & IIf(Val(txtNumLog.Text) > 0, Val(txtNumLog.Text), "Null") & ","
+    sql = sql & "NUMIMOVEL=" & Val(txtNum.Text) & ",COMPLEMENTO='" & Mask(txtCompl.Text) & "',CODBAIRRO=" & IIf(nBairro > 0, nBairro, "Null") & ","
+    sql = sql & "CODCIDADE=" & IIf(nCidade > 0, nCidade, "Null") & ",SIGLAUF='" & Left$(cmbUF.Text, 2) & "',"
+    sql = sql & "CEP=" & IIf(Trim(mskCEP.ClipText) = "", "Null", "'" & mskCEP.ClipText & "'") & ",TELEFONE='" & Mask(txtFone.Text) & "',"
+    sql = sql & "EMAIL='" & Mask(txtEmail.Text) & "',RG='" & IIf(mskRG.ClipText = "", "", Mask(mskRG.ClipText)) & "',NOMELOGRADOURO=" & IIf(Val(txtNumLog.Text) > 0, "Null", "'" & txtNomeLog.Text & "'") & ","
+    sql = sql & "ORGAO='" & Mask(txtOrgao.Text) & "',JURIDICA=" & nPessoa & ",CODPAIS=" & IIf(txtPais.Tag = "", 1, Val(txtPais.Tag)) & ",CODLOGRADOURO2=" & IIf(Val(txtNumLog2.Text) > 0, Val(txtNumLog2.Text), "Null") & ","
+    sql = sql & "NUMIMOVEL2=" & Val(txtNum2.Text) & ",COMPLEMENTO2='" & Mask(txtCompl2.Text) & "',CODBAIRRO2=" & IIf(nBairro2 > 0, nBairro2, "Null") & ",CODCIDADE2=" & IIf(nCidade2 > 0, nCidade2, "Null") & ","
+    sql = sql & "SIGLAUF2='" & Left$(cmbUF2.Text, 2) & "',CEP2=" & IIf(Trim(mskCEP2.ClipText) = "", "Null", "'" & mskCEP2.ClipText & "'") & ",NOMELOGRADOURO2=" & IIf(Val(txtNumLog2.Text) > 0, "Null", "'" & txtNomeLog2.Text & "'") & ","
+    sql = sql & "ETIQUETA='" & IIf(chkEtiq.value = vbChecked, "S", "N") & "',CODPAIS2=" & IIf(txtPais2.Tag = "", 1, Val(txtPais2.Tag)) & ",TELEFONE2='" & Mask(txtFone2.Text) & "',EMAIL2='" & Mask(txtEmail2.Text) & "',ETIQUETA2='" & IIf(chkEtiq2.value = vbChecked, "S", "N") & "',"
+    sql = sql & "data_nascimento=" & IIf(IsDate(mskDtNascto.Text), "'" & Format(mskDtNascto.Text, "mm/dd/yyyy") & "'", "Null") & ",codPROFISSAO=" & IIf(Val(SubNull(txtProfissao.Tag)) = 0, 1, Val(txtProfissao.Tag)) & ",TEMFONE=" & IIf(chkFone1.value = vbChecked, 1, 0) & ","
+    sql = sql & "TEMFONE2=" & IIf(chkFone2.value = vbChecked, 1, 0) & ",WHATSAPP=" & IIf(chkWhatsApp.value = vbChecked, 1, 0) & ",WHATSAPP2=" & IIf(chkWhatsApp2.value = vbChecked, 1, 0) & ",CNH='" & txtCNH.Text & "',"
+    sql = sql & "ORGAOCNH='" & txtOrgaoCNH.Text & "' Where CodCidadao = " & Val(txtCod.Text)
 End If
- cn.Execute Sql, rdExecDirect
+ cn.Execute sql, rdExecDirect
 
 If Evento = "Novo" Then
    txtCod.Text = MaxCod
-   Sql = "insert historicocidadao(codigo,data,userid,obs) values(" & MaxCod & ",'" & Format(Now, sDataFormat & " hh:mm:ss") & "'," & RetornaUsuarioID(NomeDeLogin) & ",'"
-   Sql = Sql & "Cidadão criado através da tela de cadastro de cidadão')"
-   cn.Execute Sql, rdExecDirect
+   sql = "insert historicocidadao(codigo,data,userid,obs) values(" & MaxCod & ",'" & Format(Now, sDataFormat & " hh:mm:ss") & "'," & RetornaUsuarioID(NomeDeLogin) & ",'"
+   sql = sql & "Cidadão criado através da tela de cadastro de cidadão')"
+   cn.Execute sql, rdExecDirect
    
 Else
     MaxCod = Val(txtCod.Text)
@@ -3534,8 +3578,8 @@ Else
         End If
         For x = 1 To UBound(aObs)
             'Sql = "insert historicocidadao(codigo,data,usuario,obs) values(" & MaxCod & ",'" & Format(Now, sDataFormat & " hh:mm:ss") & "','" & NomeDeLogin & "','" & aObs(x) & "')"
-            Sql = "insert historicocidadao(codigo,data,userid,obs) values(" & MaxCod & ",'" & Format(Now, sDataFormat & " hh:mm:ss") & "'," & RetornaUsuarioID(NomeDeLogin) & ",'" & Mask(aObs(x)) & "')"
-            cn.Execute Sql, rdExecDirect
+            sql = "insert historicocidadao(codigo,data,userid,obs) values(" & MaxCod & ",'" & Format(Now, sDataFormat & " hh:mm:ss") & "'," & RetornaUsuarioID(NomeDeLogin) & ",'" & Mask(aObs(x)) & "')"
+            cn.Execute sql, rdExecDirect
         Next
     End With
 End If
@@ -3543,14 +3587,14 @@ End If
 
 
 '*** INTEGRAÇÃO EICON ****
-Sql = "SELECT * FROM mobiliarioproprietario Where mobiliarioproprietario.codcidadao = " & MaxCod
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT * FROM mobiliarioproprietario Where mobiliarioproprietario.codcidadao = " & MaxCod
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 If RdoAux.RowCount > 0 Then
-    Sql = "select codigo from eicon_socio where codigo=" & MaxCod
-    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    sql = "select codigo from eicon_socio where codigo=" & MaxCod
+    Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     If RdoAux2.RowCount = 0 Then
-        Sql = "insert eicon_socio(codigo) values(" & MaxCod & ")"
-        cn.Execute Sql, rdExecDirect
+        sql = "insert eicon_socio(codigo) values(" & MaxCod & ")"
+        cn.Execute sql, rdExecDirect
         AtualizaSocio
     End If
     RdoAux2.Close
@@ -3606,8 +3650,8 @@ If KeyAscii = vbKeyReturn Then
    KeyAscii = 0
    lstNomeLog.Clear
    If txtNomeLog.Text <> "" Then
-      Sql = "select codlogradouro,endereco from logradouro where endereco like '%" & Trim$(txtNomeLog.Text) & "%'  order by endereco"
-      Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+      sql = "select codlogradouro,endereco from logradouro where endereco like '%" & Trim$(txtNomeLog.Text) & "%'  order by endereco"
+      Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
       With RdoAux
           If .RowCount > 0 Then
              Do Until .EOF
@@ -3641,8 +3685,8 @@ If KeyAscii = vbKeyReturn Then
    KeyAscii = 0
    lstNomeLog.Clear
    If txtNomeLog2.Text <> "" Then
-      Sql = "select codlogradouro,endereco from logradouro where endereco like '%" & Trim$(txtNomeLog2.Text) & "%' order by endereco"
-      Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+      sql = "select codlogradouro,endereco from logradouro where endereco like '%" & Trim$(txtNomeLog2.Text) & "%' order by endereco"
+      Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
       With RdoAux
           If .RowCount > 0 Then
              Do Until .EOF
@@ -3710,8 +3754,8 @@ Private Sub txtNumLog_LostFocus()
 Dim tBairro As Bairro
 
 If Val(txtNumLog.Text) > 0 Then
-    Sql = "select codlogradouro,endereco from logradouro where codlogradouro=" & Val(txtNumLog.Text)
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    sql = "select codlogradouro,endereco from logradouro where codlogradouro=" & Val(txtNumLog.Text)
+    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         If .RowCount > 0 Then
            txtNomeLog.Text = !Endereco
@@ -3739,8 +3783,8 @@ End Sub
 Private Sub txtNumLog2_LostFocus()
 Dim tBairro As Bairro
 If Val(txtNumLog2.Text) > 0 Then
-   Sql = "select codlogradouro,endereco from logradouro where codlogradouro=" & Val(txtNumLog2.Text)
-   Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+   sql = "select codlogradouro,endereco from logradouro where codlogradouro=" & Val(txtNumLog2.Text)
+   Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
    With RdoAux
        If .RowCount > 0 Then
           txtNomeLog2.Text = !Endereco

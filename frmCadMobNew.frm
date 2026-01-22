@@ -9,8 +9,8 @@ Begin VB.Form frmCadMob
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Cadastro mobiliário"
    ClientHeight    =   5700
-   ClientLeft      =   8550
-   ClientTop       =   4125
+   ClientLeft      =   4065
+   ClientTop       =   4140
    ClientWidth     =   11490
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
@@ -18,10 +18,49 @@ Begin VB.Form frmCadMob
    MDIChild        =   -1  'True
    ScaleHeight     =   5700
    ScaleWidth      =   11490
+   Begin prjChameleon.chameleonButton btMenu 
+      Height          =   375
+      Index           =   0
+      Left            =   0
+      TabIndex        =   0
+      Top             =   120
+      Width           =   1995
+      _ExtentX        =   3519
+      _ExtentY        =   661
+      BTYPE           =   8
+      TX              =   "Dados Gerais"
+      ENAB            =   -1  'True
+      BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Arial"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      COLTYPE         =   2
+      FOCUSR          =   0   'False
+      BCOL            =   4194304
+      BCOLO           =   16744576
+      FCOL            =   8454143
+      FCOLO           =   8454143
+      MCOL            =   13026246
+      MPTR            =   99
+      MICON           =   "frmCadMob.frx":0000
+      UMCOL           =   -1  'True
+      SOFT            =   0   'False
+      PICPOS          =   0
+      NGREY           =   0   'False
+      FX              =   0
+      HAND            =   -1  'True
+      CHECK           =   0   'False
+      VALUE           =   0   'False
+   End
    Begin prjChameleon.chameleonButton cmdReativar 
       Height          =   315
       Left            =   6660
-      TabIndex        =   365
+      TabIndex        =   362
       ToolTipText     =   "Reativar empresa"
       Top             =   5310
       Visible         =   0   'False
@@ -48,8 +87,8 @@ Begin VB.Form frmCadMob
       FCOLO           =   0
       MCOL            =   12632256
       MPTR            =   1
-      MICON           =   "frmCadMob.frx":0000
-      PICN            =   "frmCadMob.frx":001C
+      MICON           =   "frmCadMob.frx":031A
+      PICN            =   "frmCadMob.frx":0336
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -62,7 +101,7 @@ Begin VB.Form frmCadMob
    Begin prjChameleon.chameleonButton cmdEncerrar 
       Height          =   315
       Left            =   6660
-      TabIndex        =   364
+      TabIndex        =   361
       ToolTipText     =   "Encerrar empresa"
       Top             =   5310
       Width           =   1050
@@ -88,8 +127,8 @@ Begin VB.Form frmCadMob
       FCOLO           =   0
       MCOL            =   12632256
       MPTR            =   1
-      MICON           =   "frmCadMob.frx":00BB
-      PICN            =   "frmCadMob.frx":00D7
+      MICON           =   "frmCadMob.frx":03D5
+      PICN            =   "frmCadMob.frx":03F1
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -103,7 +142,7 @@ Begin VB.Form frmCadMob
       Height          =   375
       Index           =   11
       Left            =   0
-      TabIndex        =   312
+      TabIndex        =   311
       Top             =   4095
       Width           =   1995
       _ExtentX        =   3519
@@ -111,45 +150,6 @@ Begin VB.Form frmCadMob
       BTYPE           =   8
       TX              =   "Documentos"
       ENAB            =   0   'False
-      BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Arial"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      COLTYPE         =   2
-      FOCUSR          =   0   'False
-      BCOL            =   4194304
-      BCOLO           =   16744576
-      FCOL            =   8454143
-      FCOLO           =   8454143
-      MCOL            =   13026246
-      MPTR            =   99
-      MICON           =   "frmCadMob.frx":0177
-      UMCOL           =   -1  'True
-      SOFT            =   0   'False
-      PICPOS          =   0
-      NGREY           =   0   'False
-      FX              =   0
-      HAND            =   -1  'True
-      CHECK           =   0   'False
-      VALUE           =   0   'False
-   End
-   Begin prjChameleon.chameleonButton btMenu 
-      Height          =   375
-      Index           =   10
-      Left            =   0
-      TabIndex        =   308
-      Top             =   3735
-      Width           =   1995
-      _ExtentX        =   3519
-      _ExtentY        =   661
-      BTYPE           =   8
-      TX              =   "Valor Adicional"
-      ENAB            =   -1  'True
       BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Arial"
          Size            =   9.75
@@ -179,9 +179,48 @@ Begin VB.Form frmCadMob
    End
    Begin prjChameleon.chameleonButton btMenu 
       Height          =   375
+      Index           =   10
+      Left            =   0
+      TabIndex        =   307
+      Top             =   3735
+      Width           =   1995
+      _ExtentX        =   3519
+      _ExtentY        =   661
+      BTYPE           =   8
+      TX              =   "Valor Adicional"
+      ENAB            =   -1  'True
+      BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Arial"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      COLTYPE         =   2
+      FOCUSR          =   0   'False
+      BCOL            =   4194304
+      BCOLO           =   16744576
+      FCOL            =   8454143
+      FCOLO           =   8454143
+      MCOL            =   13026246
+      MPTR            =   99
+      MICON           =   "frmCadMob.frx":07AB
+      UMCOL           =   -1  'True
+      SOFT            =   0   'False
+      PICPOS          =   0
+      NGREY           =   0   'False
+      FX              =   0
+      HAND            =   -1  'True
+      CHECK           =   0   'False
+      VALUE           =   0   'False
+   End
+   Begin prjChameleon.chameleonButton btMenu 
+      Height          =   375
       Index           =   9
       Left            =   0
-      TabIndex        =   248
+      TabIndex        =   247
       Top             =   3360
       Width           =   1995
       _ExtentX        =   3519
@@ -206,7 +245,7 @@ Begin VB.Form frmCadMob
       FCOLO           =   8454143
       MCOL            =   13026246
       MPTR            =   99
-      MICON           =   "frmCadMob.frx":07AB
+      MICON           =   "frmCadMob.frx":0AC5
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -256,7 +295,7 @@ Begin VB.Form frmCadMob
          ForeColor       =   &H000000C0&
          Height          =   495
          Left            =   180
-         TabIndex        =   242
+         TabIndex        =   241
          Top             =   90
          Visible         =   0   'False
          Width           =   1635
@@ -291,8 +330,8 @@ Begin VB.Form frmCadMob
       FCOLO           =   0
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frmCadMob.frx":0AC5
-      PICN            =   "frmCadMob.frx":0AE1
+      MICON           =   "frmCadMob.frx":0DDF
+      PICN            =   "frmCadMob.frx":0DFB
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -331,8 +370,8 @@ Begin VB.Form frmCadMob
       FCOLO           =   0
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frmCadMob.frx":0C3B
-      PICN            =   "frmCadMob.frx":0C57
+      MICON           =   "frmCadMob.frx":0F55
+      PICN            =   "frmCadMob.frx":0F71
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -371,8 +410,8 @@ Begin VB.Form frmCadMob
       FCOLO           =   0
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frmCadMob.frx":0CC5
-      PICN            =   "frmCadMob.frx":0CE1
+      MICON           =   "frmCadMob.frx":0FDF
+      PICN            =   "frmCadMob.frx":0FFB
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -411,8 +450,8 @@ Begin VB.Form frmCadMob
       FCOLO           =   0
       MCOL            =   12632256
       MPTR            =   1
-      MICON           =   "frmCadMob.frx":0E3B
-      PICN            =   "frmCadMob.frx":0E57
+      MICON           =   "frmCadMob.frx":1155
+      PICN            =   "frmCadMob.frx":1171
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -451,8 +490,8 @@ Begin VB.Form frmCadMob
       FCOLO           =   0
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frmCadMob.frx":11FC
-      PICN            =   "frmCadMob.frx":1218
+      MICON           =   "frmCadMob.frx":1516
+      PICN            =   "frmCadMob.frx":1532
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -492,8 +531,8 @@ Begin VB.Form frmCadMob
       FCOLO           =   192
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frmCadMob.frx":1372
-      PICN            =   "frmCadMob.frx":138E
+      MICON           =   "frmCadMob.frx":168C
+      PICN            =   "frmCadMob.frx":16A8
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -532,8 +571,8 @@ Begin VB.Form frmCadMob
       FCOLO           =   0
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frmCadMob.frx":1430
-      PICN            =   "frmCadMob.frx":144C
+      MICON           =   "frmCadMob.frx":174A
+      PICN            =   "frmCadMob.frx":1766
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -572,8 +611,8 @@ Begin VB.Form frmCadMob
       FCOLO           =   0
       MCOL            =   13026246
       MPTR            =   1
-      MICON           =   "frmCadMob.frx":15A6
-      PICN            =   "frmCadMob.frx":15C2
+      MICON           =   "frmCadMob.frx":18C0
+      PICN            =   "frmCadMob.frx":18DC
       UMCOL           =   -1  'True
       SOFT            =   0   'False
       PICPOS          =   0
@@ -596,46 +635,7 @@ Begin VB.Form frmCadMob
       Cols            =   6
       FixedCols       =   0
       Appearance      =   0
-      FormatString    =   $"frmCadMob.frx":171C
-   End
-   Begin prjChameleon.chameleonButton btMenu 
-      Height          =   375
-      Index           =   0
-      Left            =   0
-      TabIndex        =   0
-      Top             =   120
-      Width           =   1995
-      _ExtentX        =   3519
-      _ExtentY        =   661
-      BTYPE           =   8
-      TX              =   "Dados Gerais"
-      ENAB            =   -1  'True
-      BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Arial"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      COLTYPE         =   2
-      FOCUSR          =   0   'False
-      BCOL            =   4194304
-      BCOLO           =   16744576
-      FCOL            =   8454143
-      FCOLO           =   8454143
-      MCOL            =   13026246
-      MPTR            =   99
-      MICON           =   "frmCadMob.frx":17A3
-      UMCOL           =   -1  'True
-      SOFT            =   0   'False
-      PICPOS          =   0
-      NGREY           =   0   'False
-      FX              =   0
-      HAND            =   -1  'True
-      CHECK           =   0   'False
-      VALUE           =   0   'False
+      FormatString    =   $"frmCadMob.frx":1A36
    End
    Begin prjChameleon.chameleonButton btMenu 
       Height          =   375
@@ -952,7 +952,7 @@ Begin VB.Form frmCadMob
    Begin prjChameleon.chameleonButton cmdExtrato 
       Height          =   315
       Left            =   5535
-      TabIndex        =   276
+      TabIndex        =   275
       ToolTipText     =   "Consulta Extrato"
       Top             =   5310
       Width           =   1035
@@ -992,3974 +992,6 @@ Begin VB.Form frmCadMob
    Begin VB.Frame Tela 
       BackColor       =   &H00EEEEEE&
       Height          =   5160
-      Index           =   0
-      Left            =   2025
-      TabIndex        =   61
-      Top             =   30
-      Width           =   9405
-      Begin VB.CheckBox chkImune 
-         BackColor       =   &H00EEEEEE&
-         Caption         =   "Imunidade de ISSQN"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   195
-         Left            =   120
-         TabIndex        =   33
-         Top             =   4320
-         Width           =   2370
-      End
-      Begin VB.CheckBox chkIsentoIE 
-         BackColor       =   &H00EEEEEE&
-         Caption         =   "Isento"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00000080&
-         Height          =   195
-         Left            =   1980
-         TabIndex        =   14
-         ToolTipText     =   "Assinale se for isento de inscrição estadual"
-         Top             =   1305
-         Width           =   960
-      End
-      Begin VB.ComboBox cmbImovel 
-         Height          =   315
-         Left            =   8130
-         Style           =   2  'Dropdown List
-         TabIndex        =   363
-         Top             =   180
-         Width           =   1125
-      End
-      Begin VB.CheckBox chkLiberadoVRE 
-         Alignment       =   1  'Right Justify
-         BackColor       =   &H00EEEEEE&
-         Caption         =   "Liberado VRE"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00004000&
-         Height          =   195
-         Left            =   7695
-         TabIndex        =   358
-         ToolTipText     =   "Os dados da empresa já foram liberados"
-         Top             =   3780
-         Visible         =   0   'False
-         Width           =   1515
-      End
-      Begin VB.CheckBox chkDanfe 
-         Caption         =   "Check1"
-         Height          =   195
-         Left            =   8700
-         TabIndex        =   357
-         Top             =   5430
-         Visible         =   0   'False
-         Width           =   345
-      End
-      Begin VB.CheckBox chkMEI 
-         Caption         =   "Check1"
-         Height          =   195
-         Left            =   8130
-         TabIndex        =   356
-         Top             =   5370
-         Visible         =   0   'False
-         Width           =   345
-      End
-      Begin VB.CheckBox chkRE 
-         Caption         =   "Check1"
-         Height          =   195
-         Left            =   8670
-         TabIndex        =   355
-         Top             =   5700
-         Visible         =   0   'False
-         Width           =   345
-      End
-      Begin VB.CheckBox chkEmiteNF 
-         Caption         =   "Check1"
-         Height          =   195
-         Left            =   8130
-         TabIndex        =   354
-         Top             =   5670
-         Visible         =   0   'False
-         Width           =   345
-      End
-      Begin VB.CheckBox chkEmpInd 
-         BackColor       =   &H00EEEEEE&
-         Caption         =   "Empresa Individual"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   195
-         Left            =   120
-         TabIndex        =   32
-         Top             =   4050
-         Width           =   2055
-      End
-      Begin VB.CheckBox chkSubstitutoTributario 
-         BackColor       =   &H00EEEEEE&
-         Caption         =   "Substituto tributário do ISSQN"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   195
-         Left            =   120
-         TabIndex        =   28
-         Top             =   3255
-         Width           =   3165
-      End
-      Begin Tributacao.jcFrames frMei 
-         Height          =   330
-         Left            =   90
-         Top             =   4740
-         Visible         =   0   'False
-         Width           =   1590
-         _ExtentX        =   2805
-         _ExtentY        =   582
-         FrameColor      =   192
-         Style           =   0
-         RoundedCornerTxtBox=   -1  'True
-         Caption         =   ""
-         TextColor       =   13579779
-         Alignment       =   0
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ColorFrom       =   0
-         ColorTo         =   0
-         Begin prjChameleon.chameleonButton btDataMei 
-            Height          =   255
-            Left            =   1620
-            TabIndex        =   349
-            ToolTipText     =   "Consultar períodos do Simples Nacional"
-            Top             =   45
-            Width           =   375
-            _ExtentX        =   661
-            _ExtentY        =   450
-            BTYPE           =   5
-            TX              =   "..."
-            ENAB            =   -1  'True
-            BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            COLTYPE         =   2
-            FOCUSR          =   0   'False
-            BCOL            =   -2147483633
-            BCOLO           =   -2147483633
-            FCOL            =   0
-            FCOLO           =   0
-            MCOL            =   12632256
-            MPTR            =   1
-            MICON           =   "frmCadMob.frx":3494
-            UMCOL           =   -1  'True
-            SOFT            =   0   'False
-            PICPOS          =   0
-            NGREY           =   0   'False
-            FX              =   0
-            HAND            =   0   'False
-            CHECK           =   0   'False
-            VALUE           =   0   'False
-         End
-         Begin VB.Label Label1 
-            Alignment       =   2  'Center
-            Caption         =   "Optante do MEI"
-            BeginProperty Font 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H000000C0&
-            Height          =   195
-            Index           =   8
-            Left            =   90
-            TabIndex        =   348
-            Top             =   60
-            Width           =   1455
-         End
-      End
-      Begin VB.TextBox txtSIL 
-         Appearance      =   0  'Flat
-         Height          =   285
-         Left            =   4080
-         MaxLength       =   80
-         TabIndex        =   35
-         Top             =   2925
-         Visible         =   0   'False
-         Width           =   5145
-      End
-      Begin VB.CheckBox chkBombon 
-         BackColor       =   &H00EEEEEE&
-         Caption         =   "Bombonieri"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   195
-         Left            =   5535
-         TabIndex        =   26
-         Top             =   2565
-         Visible         =   0   'False
-         Width           =   1455
-      End
-      Begin VB.CheckBox chkIsentoTaxa 
-         BackColor       =   &H00EEEEEE&
-         Caption         =   "Isento Taxa"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   195
-         Left            =   1530
-         TabIndex        =   31
-         Top             =   3795
-         Width           =   1410
-      End
-      Begin VB.CheckBox chk24horas 
-         BackColor       =   &H00EEEEEE&
-         Caption         =   "24 horas"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   195
-         Left            =   4140
-         TabIndex        =   25
-         Top             =   2565
-         Visible         =   0   'False
-         Width           =   1185
-      End
-      Begin VB.CheckBox chkInscTemp 
-         BackColor       =   &H00EEEEEE&
-         Caption         =   "Inscrição Temporária"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   195
-         Left            =   120
-         TabIndex        =   27
-         Top             =   2990
-         Width           =   2805
-      End
-      Begin VB.Frame Frame1 
-         Height          =   960
-         Left            =   3465
-         TabIndex        =   305
-         Top             =   4050
-         Width           =   3975
-         Begin VB.TextBox txtNumProcIE 
-            Appearance      =   0  'Flat
-            Height          =   285
-            Left            =   2850
-            MaxLength       =   15
-            TabIndex        =   40
-            Top             =   540
-            Width           =   1065
-         End
-         Begin VB.CheckBox chkIE 
-            BackColor       =   &H00EEEEEE&
-            Caption         =   "Dispensado do ISS Eletrônico"
-            BeginProperty Font 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00400000&
-            Height          =   195
-            Left            =   90
-            TabIndex        =   38
-            ToolTipText     =   "Obrigatoriedade da Declaração pelo ISS Eletrônico"
-            Top             =   180
-            Width           =   2955
-         End
-         Begin esMaskEdit.esMaskedEdit mskDataIE 
-            Height          =   285
-            Left            =   690
-            TabIndex        =   39
-            Top             =   540
-            Width           =   1065
-            _ExtentX        =   1879
-            _ExtentY        =   503
-            MouseIcon       =   "frmCadMob.frx":34B0
-            BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            Appearance      =   0
-            MaxLength       =   10
-            Mask            =   "99/99/9999"
-            SelText         =   ""
-            Text            =   "__/__/____"
-            HideSelection   =   -1  'True
-         End
-         Begin VB.Label Label2 
-            Appearance      =   0  'Flat
-            BackColor       =   &H80000005&
-            BackStyle       =   0  'Transparent
-            Caption         =   "Data.:"
-            BeginProperty Font 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00400000&
-            Height          =   225
-            Index           =   59
-            Left            =   90
-            TabIndex        =   307
-            Top             =   585
-            Width           =   585
-         End
-         Begin VB.Label Label2 
-            Appearance      =   0  'Flat
-            BackColor       =   &H80000005&
-            BackStyle       =   0  'Transparent
-            Caption         =   "Processo.:"
-            BeginProperty Font 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00400000&
-            Height          =   240
-            Index           =   4
-            Left            =   1860
-            TabIndex        =   306
-            Top             =   585
-            Width           =   900
-         End
-      End
-      Begin VB.TextBox txtOrgao 
-         Appearance      =   0  'Flat
-         Height          =   285
-         Left            =   8415
-         MaxLength       =   25
-         TabIndex        =   17
-         Top             =   1260
-         Width           =   810
-      End
-      Begin VB.CheckBox chkIsentoISS 
-         BackColor       =   &H00EEEEEE&
-         Caption         =   "Isento ISS"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   195
-         Left            =   120
-         TabIndex        =   30
-         Top             =   3780
-         Width           =   1275
-      End
-      Begin VB.CheckBox chkAlvara 
-         BackColor       =   &H00EEEEEE&
-         Caption         =   "Alvará Automático"
-         Enabled         =   0   'False
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   195
-         Left            =   120
-         TabIndex        =   29
-         Top             =   3525
-         Width           =   2175
-      End
-      Begin VB.ComboBox cmbHorario 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00FFFFFF&
-         Height          =   315
-         Left            =   1995
-         Style           =   2  'Dropdown List
-         TabIndex        =   24
-         Top             =   2505
-         Visible         =   0   'False
-         Width           =   1995
-      End
-      Begin VB.TextBox txtNumProcE 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00FFFFFF&
-         Height          =   285
-         Left            =   4995
-         Locked          =   -1  'True
-         MaxLength       =   15
-         TabIndex        =   22
-         TabStop         =   0   'False
-         Top             =   2100
-         Width           =   1425
-      End
-      Begin VB.TextBox txtNumProcA 
-         Appearance      =   0  'Flat
-         Height          =   285
-         Left            =   4995
-         MaxLength       =   15
-         TabIndex        =   19
-         Top             =   1740
-         Width           =   1425
-      End
-      Begin VB.TextBox txtInscEst 
-         Appearance      =   0  'Flat
-         Height          =   285
-         Left            =   3060
-         MaxLength       =   15
-         TabIndex        =   15
-         Top             =   1260
-         Width           =   1995
-      End
-      Begin VB.TextBox txtFantasia 
-         Appearance      =   0  'Flat
-         Height          =   285
-         Left            =   1980
-         MaxLength       =   60
-         TabIndex        =   13
-         Top             =   900
-         Width           =   7245
-      End
-      Begin VB.TextBox txtRazao 
-         Appearance      =   0  'Flat
-         Height          =   285
-         Left            =   1980
-         MaxLength       =   500
-         TabIndex        =   12
-         Top             =   540
-         Width           =   7245
-      End
-      Begin VB.TextBox txtCodEmpresa 
-         Appearance      =   0  'Flat
-         Height          =   285
-         Left            =   1980
-         MaxLength       =   9
-         TabIndex        =   9
-         TabStop         =   0   'False
-         Top             =   180
-         Width           =   1065
-      End
-      Begin esMaskEdit.esMaskedEdit mskDataAb 
-         Height          =   285
-         Left            =   1980
-         TabIndex        =   18
-         Top             =   1740
-         Width           =   1200
-         _ExtentX        =   2117
-         _ExtentY        =   503
-         MouseIcon       =   "frmCadMob.frx":34CC
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Appearance      =   0
-         MaxLength       =   10
-         Mask            =   "99/99/9999"
-         SelText         =   ""
-         Text            =   "__/__/____"
-         HideSelection   =   -1  'True
-      End
-      Begin esMaskEdit.esMaskedEdit mskDataEn 
-         Height          =   285
-         Left            =   1980
-         TabIndex        =   21
-         TabStop         =   0   'False
-         Top             =   2100
-         Width           =   1200
-         _ExtentX        =   2117
-         _ExtentY        =   503
-         BackColor       =   16777215
-         MouseIcon       =   "frmCadMob.frx":34E8
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Appearance      =   0
-         MaxLength       =   10
-         Mask            =   "99/99/9999"
-         SelText         =   ""
-         Text            =   "__/__/____"
-         HideSelection   =   -1  'True
-         Locked          =   -1  'True
-      End
-      Begin esMaskEdit.esMaskedEdit mskDataPAb 
-         Height          =   285
-         Left            =   8025
-         TabIndex        =   20
-         TabStop         =   0   'False
-         Top             =   1740
-         Width           =   1200
-         _ExtentX        =   2117
-         _ExtentY        =   503
-         BackColor       =   15658734
-         MouseIcon       =   "frmCadMob.frx":3504
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Appearance      =   0
-         MaxLength       =   10
-         Mask            =   "99/99/9999"
-         SelText         =   ""
-         Text            =   "__/__/____"
-         HideSelection   =   -1  'True
-         Locked          =   -1  'True
-      End
-      Begin esMaskEdit.esMaskedEdit mskDataPEn 
-         Height          =   285
-         Left            =   8025
-         TabIndex        =   23
-         TabStop         =   0   'False
-         Top             =   2100
-         Width           =   1200
-         _ExtentX        =   2117
-         _ExtentY        =   503
-         BackColor       =   15658734
-         MouseIcon       =   "frmCadMob.frx":3520
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Appearance      =   0
-         MaxLength       =   10
-         Mask            =   "99/99/9999"
-         SelText         =   ""
-         Text            =   "__/__/____"
-         HideSelection   =   -1  'True
-         Locked          =   -1  'True
-      End
-      Begin prjChameleon.chameleonButton cmdGerar 
-         Height          =   345
-         Left            =   5760
-         TabIndex        =   36
-         ToolTipText     =   "Consultar períodos do Simples Nacional"
-         Top             =   3255
-         Width           =   375
-         _ExtentX        =   661
-         _ExtentY        =   609
-         BTYPE           =   3
-         TX              =   ""
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   0
-         FCOLO           =   0
-         MCOL            =   12632256
-         MPTR            =   1
-         MICON           =   "frmCadMob.frx":353C
-         PICN            =   "frmCadMob.frx":3558
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin prjChameleon.chameleonButton cmdISSEletro 
-         Cancel          =   -1  'True
-         Height          =   345
-         Left            =   5760
-         TabIndex        =   37
-         ToolTipText     =   "Consultar períodos do Iss Eletrônico"
-         Top             =   3675
-         Width           =   375
-         _ExtentX        =   661
-         _ExtentY        =   609
-         BTYPE           =   3
-         TX              =   ""
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   0
-         FCOLO           =   0
-         MCOL            =   12632256
-         MPTR            =   1
-         MICON           =   "frmCadMob.frx":36B2
-         PICN            =   "frmCadMob.frx":36CE
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin esMaskEdit.esMaskedEdit mskCPF 
-         Height          =   285
-         Left            =   3750
-         TabIndex        =   10
-         Top             =   180
-         Width           =   1245
-         _ExtentX        =   2196
-         _ExtentY        =   503
-         MouseIcon       =   "frmCadMob.frx":3828
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Appearance      =   0
-         MaxLength       =   14
-         Mask            =   "999.999.999-99"
-         SelText         =   ""
-         Text            =   "___.___.___-__"
-         HideSelection   =   -1  'True
-      End
-      Begin esMaskEdit.esMaskedEdit mskCNPJ 
-         Height          =   285
-         Left            =   5820
-         TabIndex        =   11
-         Top             =   180
-         Width           =   1380
-         _ExtentX        =   2434
-         _ExtentY        =   503
-         MouseIcon       =   "frmCadMob.frx":3844
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Appearance      =   0
-         MaxLength       =   14
-         Mask            =   "99999999999999"
-         SelText         =   ""
-         Text            =   "______________"
-         HideSelection   =   -1  'True
-      End
-      Begin esMaskEdit.esMaskedEdit mskRG 
-         Height          =   285
-         Left            =   5895
-         TabIndex        =   16
-         Top             =   1260
-         Width           =   1590
-         _ExtentX        =   2805
-         _ExtentY        =   503
-         MouseIcon       =   "frmCadMob.frx":3860
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Appearance      =   0
-         MaxLength       =   25
-         SelText         =   ""
-         HideSelection   =   -1  'True
-      End
-      Begin esMaskEdit.esMaskedEdit mskDataAP 
-         Height          =   285
-         Left            =   7860
-         TabIndex        =   34
-         Top             =   3300
-         Visible         =   0   'False
-         Width           =   930
-         _ExtentX        =   1640
-         _ExtentY        =   503
-         MouseIcon       =   "frmCadMob.frx":387C
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Appearance      =   0
-         MaxLength       =   10
-         Mask            =   "99/99/9999"
-         SelText         =   ""
-         Text            =   "__/__/____"
-         HideSelection   =   -1  'True
-      End
-      Begin prjChameleon.chameleonButton cmdAP 
-         Height          =   360
-         Left            =   8850
-         TabIndex        =   310
-         ToolTipText     =   "Imprimir alvará provisório"
-         Top             =   3270
-         Visible         =   0   'False
-         Width           =   405
-         _ExtentX        =   714
-         _ExtentY        =   635
-         BTYPE           =   3
-         TX              =   ""
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   0
-         FCOLO           =   0
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmCadMob.frx":3898
-         PICN            =   "frmCadMob.frx":38B4
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin prjChameleon.chameleonButton cmdSil 
-         Height          =   285
-         Left            =   6990
-         TabIndex        =   353
-         ToolTipText     =   "Cadastrar SIL"
-         Top             =   2520
-         Width           =   795
-         _ExtentX        =   1402
-         _ExtentY        =   503
-         BTYPE           =   3
-         TX              =   "SIL"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   12582912
-         FCOLO           =   12582912
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmCadMob.frx":3A0E
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin VB.Label Label1 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00000040&
-         BackStyle       =   0  'Transparent
-         Caption         =   "SIL..:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   285
-         Index           =   0
-         Left            =   3510
-         TabIndex        =   338
-         Top             =   2970
-         Visible         =   0   'False
-         Width           =   555
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00000040&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Imóvel..:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   225
-         Index           =   63
-         Left            =   7335
-         TabIndex        =   337
-         Top             =   240
-         Width           =   720
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00000040&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Alvará Provisório:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   225
-         Index           =   60
-         Left            =   6225
-         TabIndex        =   309
-         Top             =   3345
-         Visible         =   0   'False
-         Width           =   1560
-      End
-      Begin VB.Label Label1 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00000040&
-         BackStyle       =   0  'Transparent
-         Caption         =   "RG..:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   285
-         Index           =   13
-         Left            =   5370
-         TabIndex        =   246
-         Top             =   1305
-         Width           =   1095
-      End
-      Begin VB.Label Label1 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00000040&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Orgão..:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   195
-         Index           =   14
-         Left            =   7650
-         TabIndex        =   245
-         Top             =   1305
-         Width           =   690
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00000040&
-         BackStyle       =   0  'Transparent
-         Caption         =   "CNPJ..:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   285
-         Index           =   3
-         Left            =   5115
-         TabIndex        =   244
-         Top             =   240
-         Width           =   645
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00000040&
-         BackStyle       =   0  'Transparent
-         Caption         =   "CPF..:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   225
-         Index           =   6
-         Left            =   3150
-         TabIndex        =   243
-         Top             =   240
-         Width           =   495
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H80000005&
-         BackStyle       =   0  'Transparent
-         Caption         =   "ISS Eletrônico......:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   225
-         Index           =   58
-         Left            =   3510
-         TabIndex        =   241
-         Top             =   3810
-         Width           =   1755
-      End
-      Begin VB.Label lblISSEletro 
-         Appearance      =   0  'Flat
-         BackColor       =   &H80000005&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Não"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H000000C0&
-         Height          =   225
-         Left            =   5280
-         TabIndex        =   240
-         Top             =   3780
-         Width           =   435
-      End
-      Begin VB.Label lblSN 
-         Appearance      =   0  'Flat
-         BackColor       =   &H80000005&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Não"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H000000C0&
-         Height          =   225
-         Left            =   5280
-         TabIndex        =   236
-         Top             =   3315
-         Width           =   435
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H80000005&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Simples Nacional..:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   225
-         Index           =   56
-         Left            =   3510
-         TabIndex        =   235
-         Top             =   3330
-         Width           =   1755
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H80000005&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Data Processo.:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   285
-         Index           =   12
-         Left            =   6540
-         TabIndex        =   72
-         Top             =   2160
-         Width           =   1455
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00000040&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Data Processo.:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   285
-         Index           =   11
-         Left            =   6540
-         TabIndex        =   71
-         Top             =   1800
-         Width           =   1455
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H80000005&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Nº do Processo.:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   285
-         Index           =   10
-         Left            =   3420
-         TabIndex        =   70
-         Top             =   2160
-         Width           =   1485
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00000040&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Nº do Processo.:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   285
-         Index           =   9
-         Left            =   3420
-         TabIndex        =   69
-         Top             =   1800
-         Width           =   1485
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H80000005&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Data Encerramento.:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   225
-         Index           =   8
-         Left            =   120
-         TabIndex        =   68
-         Top             =   2160
-         Width           =   1845
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00000040&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Data de Abertura....:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   225
-         Index           =   7
-         Left            =   120
-         TabIndex        =   67
-         Top             =   1800
-         Width           =   1845
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00000040&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Inscrição Estadual..:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   225
-         Index           =   5
-         Left            =   120
-         TabIndex        =   66
-         Top             =   1305
-         Width           =   1845
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00000040&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Nome Fantasia.......:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   225
-         Index           =   2
-         Left            =   120
-         TabIndex        =   65
-         Top             =   945
-         Width           =   1845
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00000040&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Razão Social..........:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   225
-         Index           =   1
-         Left            =   120
-         TabIndex        =   64
-         Top             =   600
-         Width           =   1845
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00000040&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Inscrição Municipal.:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   225
-         Index           =   0
-         Left            =   120
-         TabIndex        =   63
-         Top             =   240
-         Width           =   1845
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H80000005&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Horário Funcionam..:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   225
-         Index           =   19
-         Left            =   120
-         TabIndex        =   62
-         Top             =   2550
-         Visible         =   0   'False
-         Width           =   1845
-      End
-   End
-   Begin VB.Frame Tela 
-      Height          =   5160
-      Index           =   11
-      Left            =   2010
-      TabIndex        =   313
-      Top             =   90
-      Width           =   9405
-      Begin Tributacao.jcFrames jcFrames2 
-         Height          =   1950
-         Left            =   4140
-         Top             =   2340
-         Width           =   5145
-         _ExtentX        =   9075
-         _ExtentY        =   3440
-         FrameColor      =   12829635
-         Style           =   0
-         RoundedCornerTxtBox=   -1  'True
-         Caption         =   ""
-         TextColor       =   13579779
-         Alignment       =   0
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ColorFrom       =   0
-         ColorTo         =   0
-         Begin VB.TextBox txtNumProc 
-            Appearance      =   0  'Flat
-            Height          =   285
-            Left            =   3810
-            TabIndex        =   322
-            Top             =   540
-            Width           =   1185
-         End
-         Begin VB.ComboBox cmbAno 
-            Height          =   315
-            Left            =   1575
-            Style           =   2  'Dropdown List
-            TabIndex        =   321
-            Top             =   540
-            Width           =   1050
-         End
-         Begin VB.TextBox txtArq 
-            Height          =   285
-            Left            =   1575
-            Locked          =   -1  'True
-            TabIndex        =   323
-            Top             =   945
-            Width           =   2940
-         End
-         Begin VB.ComboBox cmbTipoDoc 
-            Height          =   315
-            ItemData        =   "frmCadMob.frx":3A2A
-            Left            =   1575
-            List            =   "frmCadMob.frx":3A2C
-            Style           =   2  'Dropdown List
-            TabIndex        =   320
-            Top             =   135
-            Width           =   3435
-         End
-         Begin prjChameleon.chameleonButton cmdOpenPic 
-            Height          =   285
-            Left            =   4590
-            TabIndex        =   324
-            ToolTipText     =   "Localiza documento a importar"
-            Top             =   945
-            Width           =   405
-            _ExtentX        =   714
-            _ExtentY        =   503
-            BTYPE           =   3
-            TX              =   ""
-            ENAB            =   -1  'True
-            BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "MS Sans Serif"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            COLTYPE         =   2
-            FOCUSR          =   0   'False
-            BCOL            =   12632256
-            BCOLO           =   12632256
-            FCOL            =   12582912
-            FCOLO           =   12582912
-            MCOL            =   13026246
-            MPTR            =   1
-            MICON           =   "frmCadMob.frx":3A2E
-            PICN            =   "frmCadMob.frx":3A4A
-            UMCOL           =   -1  'True
-            SOFT            =   0   'False
-            PICPOS          =   0
-            NGREY           =   0   'False
-            FX              =   0
-            HAND            =   0   'False
-            CHECK           =   0   'False
-            VALUE           =   0   'False
-         End
-         Begin prjChameleon.chameleonButton cmdGravarPic 
-            Height          =   315
-            Left            =   3960
-            TabIndex        =   327
-            ToolTipText     =   "Gravar o documento"
-            Top             =   1440
-            Width           =   1035
-            _ExtentX        =   1826
-            _ExtentY        =   556
-            BTYPE           =   3
-            TX              =   "&Gravar"
-            ENAB            =   -1  'True
-            BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            COLTYPE         =   2
-            FOCUSR          =   0   'False
-            BCOL            =   12632256
-            BCOLO           =   12632256
-            FCOL            =   0
-            FCOLO           =   0
-            MCOL            =   12632256
-            MPTR            =   1
-            MICON           =   "frmCadMob.frx":3AD1
-            PICN            =   "frmCadMob.frx":3AED
-            UMCOL           =   -1  'True
-            SOFT            =   0   'False
-            PICPOS          =   0
-            NGREY           =   0   'False
-            FX              =   0
-            HAND            =   0   'False
-            CHECK           =   0   'False
-            VALUE           =   0   'False
-         End
-         Begin VB.Label Label2 
-            BackStyle       =   0  'Transparent
-            Caption         =   "Nº Processo.:"
-            Height          =   225
-            Index           =   62
-            Left            =   2745
-            TabIndex        =   328
-            Top             =   570
-            Width           =   1080
-         End
-         Begin VB.Label Label9 
-            Caption         =   "Arquivo Importar...:"
-            Height          =   195
-            Index           =   1
-            Left            =   135
-            TabIndex        =   326
-            Top             =   990
-            Width           =   1365
-         End
-         Begin VB.Label Label9 
-            Caption         =   "Ano Documento...:"
-            Height          =   195
-            Index           =   0
-            Left            =   135
-            TabIndex        =   325
-            Top             =   585
-            Width           =   1365
-         End
-         Begin VB.Label Label8 
-            Caption         =   "Tipo Documento..:"
-            Height          =   195
-            Left            =   135
-            TabIndex        =   319
-            Top             =   180
-            Width           =   1320
-         End
-      End
-      Begin prjChameleon.chameleonButton cmdD1 
-         Height          =   285
-         Left            =   5040
-         TabIndex        =   315
-         ToolTipText     =   "Documento anterior"
-         Top             =   585
-         Width           =   405
-         _ExtentX        =   714
-         _ExtentY        =   503
-         BTYPE           =   3
-         TX              =   ""
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   12582912
-         FCOLO           =   12582912
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmCadMob.frx":3E92
-         PICN            =   "frmCadMob.frx":3EAE
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin prjChameleon.chameleonButton cmdD2 
-         Height          =   285
-         Left            =   7515
-         TabIndex        =   316
-         ToolTipText     =   "Próximo documento"
-         Top             =   585
-         Width           =   405
-         _ExtentX        =   714
-         _ExtentY        =   503
-         BTYPE           =   3
-         TX              =   ""
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   12582912
-         FCOLO           =   12582912
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmCadMob.frx":4008
-         PICN            =   "frmCadMob.frx":4024
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin prjChameleon.chameleonButton cmdAbrirPic 
-         Height          =   540
-         Left            =   5625
-         TabIndex        =   318
-         ToolTipText     =   "Abrir documento"
-         Top             =   1395
-         Width           =   1800
-         _ExtentX        =   3175
-         _ExtentY        =   953
-         BTYPE           =   3
-         TX              =   " &Abrir"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   0
-         FCOLO           =   0
-         MCOL            =   12632256
-         MPTR            =   1
-         MICON           =   "frmCadMob.frx":417E
-         PICN            =   "frmCadMob.frx":419A
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin prjChameleon.chameleonButton cmdExcluirDoc 
-         Height          =   315
-         Left            =   7605
-         TabIndex        =   336
-         ToolTipText     =   "Exclusão de documento"
-         Top             =   1620
-         Width           =   1035
-         _ExtentX        =   1826
-         _ExtentY        =   556
-         BTYPE           =   3
-         TX              =   "Excluir"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   192
-         FCOLO           =   192
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmCadMob.frx":4349
-         PICN            =   "frmCadMob.frx":4365
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin VB.Image imgTmp2 
-         Height          =   495
-         Left            =   8595
-         Picture         =   "frmCadMob.frx":4407
-         Stretch         =   -1  'True
-         Top             =   4500
-         Visible         =   0   'False
-         Width           =   525
-      End
-      Begin VB.Label lblTipoDoc 
-         Alignment       =   2  'Center
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   240
-         Left            =   5040
-         TabIndex        =   317
-         Top             =   945
-         Width           =   2940
-      End
-      Begin VB.Label lblPagDoc 
-         Alignment       =   2  'Center
-         Caption         =   "Documento 0 de 0"
-         Height          =   240
-         Left            =   5490
-         TabIndex        =   314
-         Top             =   630
-         Width           =   1995
-      End
-      Begin VB.Image imgTmp 
-         Appearance      =   0  'Flat
-         BorderStyle     =   1  'Fixed Single
-         Height          =   4650
-         Left            =   315
-         Stretch         =   -1  'True
-         Top             =   315
-         Width           =   3660
-      End
-   End
-   Begin VB.Frame Tela 
-      BackColor       =   &H00EEEEEE&
-      Height          =   5160
-      Index           =   5
-      Left            =   2040
-      TabIndex        =   170
-      Top             =   60
-      Width           =   9405
-      Begin VB.TextBox txtHist 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00EEEEEE&
-         Height          =   795
-         Left            =   90
-         MaxLength       =   5000
-         MultiLine       =   -1  'True
-         TabIndex        =   171
-         Top             =   3720
-         Width           =   9225
-      End
-      Begin MSFlexGridLib.MSFlexGrid grdHist 
-         Height          =   3345
-         Left            =   60
-         TabIndex        =   172
-         Top             =   240
-         Width           =   9255
-         _ExtentX        =   16325
-         _ExtentY        =   5900
-         _Version        =   393216
-         Rows            =   1
-         Cols            =   4
-         FixedCols       =   0
-         BackColorSel    =   8388608
-         BackColorBkg    =   15658734
-         FocusRect       =   0
-         SelectionMode   =   1
-         Appearance      =   0
-         FormatString    =   $"frmCadMob.frx":A64F
-      End
-      Begin prjChameleon.chameleonButton cmdEditHist 
-         Height          =   315
-         Left            =   120
-         TabIndex        =   173
-         ToolTipText     =   "Editar Histórico"
-         Top             =   4695
-         Width           =   1935
-         _ExtentX        =   3413
-         _ExtentY        =   556
-         BTYPE           =   3
-         TX              =   "&Editar Histórico"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   0
-         FCOLO           =   0
-         MCOL            =   12632256
-         MPTR            =   1
-         MICON           =   "frmCadMob.frx":A6F6
-         PICN            =   "frmCadMob.frx":A712
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-   End
-   Begin VB.Frame Tela 
-      BackColor       =   &H00EEEEEE&
-      Height          =   5160
-      Index           =   6
-      Left            =   2040
-      TabIndex        =   174
-      Top             =   90
-      Width           =   9405
-      Begin VB.Frame Frame6 
-         BackColor       =   &H00EEEEEE&
-         Caption         =   "Diversos"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00000080&
-         Height          =   1605
-         Left            =   90
-         TabIndex        =   188
-         Top             =   3495
-         Width           =   9195
-         Begin VB.TextBox txtHorario_Funcionamento 
-            Appearance      =   0  'Flat
-            BackColor       =   &H00EEEEEE&
-            Height          =   285
-            Left            =   1635
-            Locked          =   -1  'True
-            TabIndex        =   362
-            Top             =   600
-            Width           =   7455
-         End
-         Begin VB.OptionButton OptHorario 
-            Caption         =   "Horário especial:"
-            ForeColor       =   &H00800000&
-            Height          =   195
-            Index           =   1
-            Left            =   120
-            TabIndex        =   192
-            Top             =   930
-            Width           =   1485
-         End
-         Begin VB.OptionButton OptHorario 
-            Caption         =   "Horário normal..:"
-            ForeColor       =   &H00800000&
-            Height          =   195
-            Index           =   0
-            Left            =   120
-            TabIndex        =   191
-            Top             =   630
-            Value           =   -1  'True
-            Width           =   1485
-         End
-         Begin VB.TextBox txtSenha 
-            Appearance      =   0  'Flat
-            Height          =   315
-            Left            =   7470
-            MaxLength       =   15
-            TabIndex        =   195
-            TabStop         =   0   'False
-            Top             =   240
-            Visible         =   0   'False
-            Width           =   1635
-         End
-         Begin VB.TextBox txtHorarioExt 
-            Appearance      =   0  'Flat
-            Height          =   555
-            Left            =   1635
-            MaxLength       =   300
-            MultiLine       =   -1  'True
-            TabIndex        =   193
-            Top             =   945
-            Width           =   7455
-         End
-         Begin VB.TextBox txtNumFunc 
-            Appearance      =   0  'Flat
-            Height          =   315
-            Left            =   2040
-            MaxLength       =   6
-            TabIndex        =   189
-            Top             =   240
-            Width           =   810
-         End
-         Begin VB.TextBox txtCapital 
-            Appearance      =   0  'Flat
-            Height          =   315
-            Left            =   4515
-            MaxLength       =   15
-            TabIndex        =   190
-            Top             =   240
-            Width           =   1305
-         End
-         Begin VB.Label Label2 
-            Appearance      =   0  'Flat
-            BackColor       =   &H80000005&
-            BackStyle       =   0  'Transparent
-            Caption         =   "Senha ISS Elet.:"
-            BeginProperty Font 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00400000&
-            Height          =   225
-            Index           =   61
-            Left            =   5985
-            TabIndex        =   311
-            Top             =   300
-            Visible         =   0   'False
-            Width           =   1470
-         End
-         Begin VB.Label Label2 
-            Appearance      =   0  'Flat
-            BackColor       =   &H80000005&
-            BackStyle       =   0  'Transparent
-            Caption         =   "Nº de Funcionários.:"
-            BeginProperty Font 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00400000&
-            Height          =   225
-            Index           =   35
-            Left            =   180
-            TabIndex        =   196
-            Top             =   285
-            Width           =   1755
-         End
-         Begin VB.Label Label2 
-            Appearance      =   0  'Flat
-            BackColor       =   &H80000005&
-            BackStyle       =   0  'Transparent
-            Caption         =   "Capital Social...:"
-            BeginProperty Font 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00400000&
-            Height          =   225
-            Index           =   20
-            Left            =   2985
-            TabIndex        =   194
-            Top             =   300
-            Width           =   1515
-         End
-      End
-      Begin VB.Frame Frame7 
-         Caption         =   "Veículos"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00000080&
-         Height          =   2115
-         Left            =   7245
-         TabIndex        =   340
-         Top             =   1440
-         Width           =   2040
-         Begin VB.TextBox txtPonto 
-            Appearance      =   0  'Flat
-            Height          =   285
-            Left            =   90
-            MaxLength       =   100
-            TabIndex        =   351
-            Top             =   1740
-            Width           =   1845
-         End
-         Begin esMaskEdit.esMaskedEdit mskPlaca 
-            Height          =   285
-            Left            =   180
-            TabIndex        =   342
-            Top             =   1215
-            Width           =   915
-            _ExtentX        =   1614
-            _ExtentY        =   503
-            MouseIcon       =   "frmCadMob.frx":A86C
-            BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            Appearance      =   0
-            SelText         =   ""
-            Text            =   "___-____"
-            HideSelection   =   -1  'True
-         End
-         Begin VB.ListBox lstPlaca 
-            Appearance      =   0  'Flat
-            Height          =   810
-            Left            =   180
-            TabIndex        =   341
-            Top             =   315
-            Width           =   1680
-         End
-         Begin prjChameleon.chameleonButton btAddPlaca 
-            Height          =   285
-            Left            =   1125
-            TabIndex        =   343
-            ToolTipText     =   "Selecionar um Responsável"
-            Top             =   1215
-            Width           =   315
-            _ExtentX        =   556
-            _ExtentY        =   503
-            BTYPE           =   3
-            TX              =   "+"
-            ENAB            =   -1  'True
-            BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "MS Sans Serif"
-               Size            =   12
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            COLTYPE         =   2
-            FOCUSR          =   0   'False
-            BCOL            =   12632256
-            BCOLO           =   12632256
-            FCOL            =   12582912
-            FCOLO           =   12582912
-            MCOL            =   12632256
-            MPTR            =   1
-            MICON           =   "frmCadMob.frx":A888
-            UMCOL           =   -1  'True
-            SOFT            =   0   'False
-            PICPOS          =   0
-            NGREY           =   0   'False
-            FX              =   0
-            HAND            =   0   'False
-            CHECK           =   0   'False
-            VALUE           =   0   'False
-         End
-         Begin prjChameleon.chameleonButton btDelPlaca 
-            Height          =   285
-            Left            =   1485
-            TabIndex        =   344
-            ToolTipText     =   "Selecionar um Responsável"
-            Top             =   1215
-            Width           =   315
-            _ExtentX        =   556
-            _ExtentY        =   503
-            BTYPE           =   3
-            TX              =   "-"
-            ENAB            =   -1  'True
-            BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "MS Sans Serif"
-               Size            =   12
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            COLTYPE         =   2
-            FOCUSR          =   0   'False
-            BCOL            =   12632256
-            BCOLO           =   12632256
-            FCOL            =   12582912
-            FCOLO           =   12582912
-            MCOL            =   12632256
-            MPTR            =   1
-            MICON           =   "frmCadMob.frx":A8A4
-            UMCOL           =   -1  'True
-            SOFT            =   0   'False
-            PICPOS          =   0
-            NGREY           =   0   'False
-            FX              =   0
-            HAND            =   0   'False
-            CHECK           =   0   'False
-            VALUE           =   0   'False
-         End
-         Begin VB.Label Label2 
-            Appearance      =   0  'Flat
-            BackColor       =   &H80000005&
-            BackStyle       =   0  'Transparent
-            Caption         =   "Ponto/Agência"
-            BeginProperty Font 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00400000&
-            Height          =   225
-            Index           =   64
-            Left            =   90
-            TabIndex        =   352
-            Top             =   1530
-            Width           =   1515
-         End
-      End
-      Begin VB.Frame Frame5 
-         BackColor       =   &H00EEEEEE&
-         Caption         =   "Escritório Contabil Responsável"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00000080&
-         Height          =   2055
-         Left            =   90
-         TabIndex        =   183
-         Top             =   1440
-         Width           =   7080
-         Begin VB.TextBox txtEmailCont 
-            Appearance      =   0  'Flat
-            Height          =   315
-            Left            =   990
-            Locked          =   -1  'True
-            MaxLength       =   100
-            TabIndex        =   232
-            Top             =   1140
-            Width           =   5325
-         End
-         Begin VB.TextBox txtFoneCont 
-            Appearance      =   0  'Flat
-            Height          =   315
-            Left            =   3195
-            Locked          =   -1  'True
-            MaxLength       =   200
-            TabIndex        =   230
-            Top             =   360
-            Width           =   2235
-         End
-         Begin VB.ComboBox cmbNomeEsc 
-            Height          =   315
-            Left            =   990
-            Style           =   2  'Dropdown List
-            TabIndex        =   185
-            Top             =   750
-            Width           =   5895
-         End
-         Begin VB.TextBox txtCodEsc 
-            Appearance      =   0  'Flat
-            Height          =   315
-            Left            =   990
-            MaxLength       =   6
-            TabIndex        =   184
-            Top             =   360
-            Width           =   855
-         End
-         Begin prjChameleon.chameleonButton cmdEmail 
-            Height          =   345
-            Left            =   6390
-            TabIndex        =   234
-            ToolTipText     =   "Abrir Email"
-            Top             =   1125
-            Width           =   495
-            _ExtentX        =   873
-            _ExtentY        =   609
-            BTYPE           =   3
-            TX              =   ""
-            ENAB            =   -1  'True
-            BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            COLTYPE         =   2
-            FOCUSR          =   0   'False
-            BCOL            =   12632256
-            BCOLO           =   12632256
-            FCOL            =   0
-            FCOLO           =   0
-            MCOL            =   12632256
-            MPTR            =   1
-            MICON           =   "frmCadMob.frx":A8C0
-            PICN            =   "frmCadMob.frx":A8DC
-            UMCOL           =   -1  'True
-            SOFT            =   0   'False
-            PICPOS          =   0
-            NGREY           =   0   'False
-            FX              =   0
-            HAND            =   0   'False
-            CHECK           =   0   'False
-            VALUE           =   0   'False
-         End
-         Begin prjChameleon.chameleonButton cmdAbrir 
-            Height          =   330
-            Left            =   5715
-            TabIndex        =   339
-            ToolTipText     =   "Selecionar um Responsável"
-            Top             =   315
-            Width           =   1155
-            _ExtentX        =   2037
-            _ExtentY        =   582
-            BTYPE           =   3
-            TX              =   "Consultar"
-            ENAB            =   -1  'True
-            BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            COLTYPE         =   2
-            FOCUSR          =   0   'False
-            BCOL            =   12632256
-            BCOLO           =   12632256
-            FCOL            =   0
-            FCOLO           =   0
-            MCOL            =   12632256
-            MPTR            =   1
-            MICON           =   "frmCadMob.frx":A96F
-            PICN            =   "frmCadMob.frx":A98B
-            UMCOL           =   -1  'True
-            SOFT            =   0   'False
-            PICPOS          =   0
-            NGREY           =   0   'False
-            FX              =   0
-            HAND            =   0   'False
-            CHECK           =   0   'False
-            VALUE           =   0   'False
-         End
-         Begin VB.Label Label2 
-            Appearance      =   0  'Flat
-            BackColor       =   &H80000005&
-            BackStyle       =   0  'Transparent
-            Caption         =   "Email....:"
-            BeginProperty Font 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00400000&
-            Height          =   225
-            Index           =   55
-            Left            =   150
-            TabIndex        =   233
-            Top             =   1200
-            Width           =   795
-         End
-         Begin VB.Label Label2 
-            Appearance      =   0  'Flat
-            BackColor       =   &H80000005&
-            BackStyle       =   0  'Transparent
-            Caption         =   "Fone..:"
-            BeginProperty Font 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00400000&
-            Height          =   225
-            Index           =   54
-            Left            =   2475
-            TabIndex        =   231
-            Top             =   405
-            Width           =   660
-         End
-         Begin VB.Label Label2 
-            Appearance      =   0  'Flat
-            BackColor       =   &H80000005&
-            BackStyle       =   0  'Transparent
-            Caption         =   "Nome....:"
-            BeginProperty Font 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00400000&
-            Height          =   225
-            Index           =   18
-            Left            =   150
-            TabIndex        =   187
-            Top             =   810
-            Width           =   795
-         End
-         Begin VB.Label Label2 
-            Appearance      =   0  'Flat
-            BackColor       =   &H80000005&
-            BackStyle       =   0  'Transparent
-            Caption         =   "Código..:"
-            BeginProperty Font 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00400000&
-            Height          =   225
-            Index           =   13
-            Left            =   150
-            TabIndex        =   186
-            Top             =   420
-            Width           =   795
-         End
-      End
-      Begin VB.Frame Frame4 
-         BackColor       =   &H00EEEEEE&
-         Caption         =   "Registro Orgão"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00000080&
-         Height          =   1245
-         Left            =   90
-         TabIndex        =   175
-         Top             =   180
-         Width           =   9195
-         Begin VB.TextBox txtTipoConselho 
-            Appearance      =   0  'Flat
-            Height          =   315
-            Left            =   1770
-            MaxLength       =   50
-            TabIndex        =   178
-            Top             =   780
-            Width           =   2985
-         End
-         Begin VB.TextBox txtNumRegistro 
-            Appearance      =   0  'Flat
-            Height          =   315
-            Left            =   6300
-            MaxLength       =   15
-            TabIndex        =   177
-            Top             =   780
-            Width           =   2260
-         End
-         Begin VB.TextBox txtNomeProf 
-            Appearance      =   0  'Flat
-            Height          =   315
-            Left            =   1770
-            MaxLength       =   40
-            TabIndex        =   176
-            TabStop         =   0   'False
-            Top             =   390
-            Width           =   6795
-         End
-         Begin prjChameleon.chameleonButton cmdAddResp 
-            Height          =   285
-            Left            =   8670
-            TabIndex        =   179
-            ToolTipText     =   "Selecionar um Responsável"
-            Top             =   390
-            Width           =   315
-            _ExtentX        =   556
-            _ExtentY        =   503
-            BTYPE           =   3
-            TX              =   "+"
-            ENAB            =   -1  'True
-            BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "MS Sans Serif"
-               Size            =   12
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            COLTYPE         =   2
-            FOCUSR          =   0   'False
-            BCOL            =   12632256
-            BCOLO           =   12632256
-            FCOL            =   12582912
-            FCOLO           =   12582912
-            MCOL            =   12632256
-            MPTR            =   1
-            MICON           =   "frmCadMob.frx":AAE5
-            UMCOL           =   -1  'True
-            SOFT            =   0   'False
-            PICPOS          =   0
-            NGREY           =   0   'False
-            FX              =   0
-            HAND            =   0   'False
-            CHECK           =   0   'False
-            VALUE           =   0   'False
-         End
-         Begin prjChameleon.chameleonButton cmdDelResp 
-            Height          =   285
-            Left            =   8640
-            TabIndex        =   350
-            ToolTipText     =   "Limpar campo do Responsável"
-            Top             =   765
-            Width           =   360
-            _ExtentX        =   635
-            _ExtentY        =   503
-            BTYPE           =   3
-            TX              =   "-"
-            ENAB            =   -1  'True
-            BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "MS Sans Serif"
-               Size            =   12
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            COLTYPE         =   2
-            FOCUSR          =   0   'False
-            BCOL            =   12632256
-            BCOLO           =   12632256
-            FCOL            =   12582912
-            FCOLO           =   12582912
-            MCOL            =   12632256
-            MPTR            =   1
-            MICON           =   "frmCadMob.frx":AB01
-            UMCOL           =   -1  'True
-            SOFT            =   0   'False
-            PICPOS          =   0
-            NGREY           =   0   'False
-            FX              =   0
-            HAND            =   0   'False
-            CHECK           =   0   'False
-            VALUE           =   0   'False
-         End
-         Begin VB.Label Label2 
-            Appearance      =   0  'Flat
-            BackColor       =   &H80000005&
-            BackStyle       =   0  'Transparent
-            Caption         =   "Tipo de Conselho:"
-            BeginProperty Font 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00400000&
-            Height          =   315
-            Index           =   22
-            Left            =   120
-            TabIndex        =   182
-            Top             =   810
-            Width           =   1635
-         End
-         Begin VB.Label Label2 
-            Appearance      =   0  'Flat
-            BackColor       =   &H80000005&
-            BackStyle       =   0  'Transparent
-            Caption         =   "Nº Registro..:"
-            BeginProperty Font 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00400000&
-            Height          =   315
-            Index           =   23
-            Left            =   5010
-            TabIndex        =   181
-            Top             =   810
-            Width           =   1155
-         End
-         Begin VB.Label Label2 
-            Appearance      =   0  'Flat
-            BackColor       =   &H80000005&
-            BackStyle       =   0  'Transparent
-            Caption         =   "Código e Nome...:"
-            BeginProperty Font 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00400000&
-            Height          =   315
-            Index           =   21
-            Left            =   120
-            TabIndex        =   180
-            Top             =   450
-            Width           =   1635
-         End
-      End
-   End
-   Begin VB.Frame Tela 
-      BackColor       =   &H00EEEEEE&
-      Height          =   5160
-      Index           =   4
-      Left            =   2040
-      TabIndex        =   136
-      Top             =   45
-      Width           =   9405
-      Begin prjChameleon.chameleonButton cmdAddCnae1 
-         Height          =   300
-         Left            =   4260
-         TabIndex        =   155
-         ToolTipText     =   "Adicionar/alterar CNAE Principal"
-         Top             =   4740
-         Width           =   315
-         _ExtentX        =   556
-         _ExtentY        =   529
-         BTYPE           =   3
-         TX              =   "+"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   13.5
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   128
-         FCOLO           =   128
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmCadMob.frx":AB1D
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin VB.ComboBox cmbCnae 
-         Height          =   315
-         Left            =   6480
-         Style           =   2  'Dropdown List
-         TabIndex        =   158
-         Top             =   4740
-         Width           =   1425
-      End
-      Begin esMaskEdit.esMaskedEdit mskCnae 
-         Height          =   285
-         Left            =   2910
-         TabIndex        =   154
-         Top             =   4740
-         Width           =   1245
-         _ExtentX        =   2196
-         _ExtentY        =   503
-         MouseIcon       =   "frmCadMob.frx":AB39
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Appearance      =   0
-         MaxLength       =   9
-         Mask            =   "9999-9/99"
-         SelText         =   ""
-         Text            =   "____-_/__"
-         HideSelection   =   -1  'True
-      End
-      Begin VB.TextBox txtValorAliq 
-         Appearance      =   0  'Flat
-         Height          =   285
-         Left            =   2070
-         Locked          =   -1  'True
-         MaxLength       =   12
-         TabIndex        =   143
-         Top             =   885
-         Width           =   1065
-      End
-      Begin VB.TextBox txtAtiv 
-         Appearance      =   0  'Flat
-         Height          =   285
-         Left            =   2070
-         Locked          =   -1  'True
-         MaxLength       =   300
-         TabIndex        =   142
-         Top             =   540
-         Width           =   6645
-      End
-      Begin VB.TextBox txtArea 
-         Appearance      =   0  'Flat
-         Height          =   285
-         Left            =   5595
-         MaxLength       =   12
-         TabIndex        =   141
-         Top             =   885
-         Width           =   1245
-      End
-      Begin VB.TextBox txtAtivExt 
-         Appearance      =   0  'Flat
-         Height          =   285
-         Left            =   2070
-         MaxLength       =   3000
-         TabIndex        =   138
-         Top             =   1230
-         Width           =   6645
-      End
-      Begin VB.TextBox txtQtde 
-         Appearance      =   0  'Flat
-         Height          =   285
-         Left            =   7950
-         MaxLength       =   12
-         TabIndex        =   137
-         Top             =   885
-         Width           =   765
-      End
-      Begin VB.CheckBox chkVistoria 
-         BackColor       =   &H00EEEEEE&
-         Caption         =   "Vistoria"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   285
-         Left            =   120
-         TabIndex        =   152
-         Top             =   4770
-         Width           =   1005
-      End
-      Begin MSFlexGridLib.MSFlexGrid grdAtiv 
-         Height          =   1215
-         Left            =   90
-         TabIndex        =   144
-         Top             =   1920
-         Width           =   8625
-         _ExtentX        =   15214
-         _ExtentY        =   2143
-         _Version        =   393216
-         Rows            =   1
-         Cols            =   5
-         FixedCols       =   0
-         BackColorSel    =   8388608
-         ForeColorSel    =   16777215
-         BackColorBkg    =   15658734
-         FocusRect       =   0
-         SelectionMode   =   1
-         AllowUserResizing=   1
-         Appearance      =   0
-         FormatString    =   $"frmCadMob.frx":AB55
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-      End
-      Begin MSFlexGridLib.MSFlexGrid grdVS 
-         Height          =   1215
-         Left            =   90
-         TabIndex        =   147
-         Top             =   3420
-         Width           =   8625
-         _ExtentX        =   15214
-         _ExtentY        =   2143
-         _Version        =   393216
-         Rows            =   1
-         Cols            =   5
-         FixedCols       =   0
-         BackColorSel    =   8388608
-         ForeColorSel    =   16777215
-         BackColorBkg    =   15658734
-         FocusRect       =   0
-         SelectionMode   =   1
-         AllowUserResizing=   1
-         Appearance      =   0
-         FormatString    =   $"frmCadMob.frx":ABFB
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-      End
-      Begin MSFlexGridLib.MSFlexGrid grdVS2 
-         Height          =   1215
-         Left            =   90
-         TabIndex        =   229
-         Top             =   3420
-         Visible         =   0   'False
-         Width           =   8625
-         _ExtentX        =   15214
-         _ExtentY        =   2143
-         _Version        =   393216
-         Rows            =   1
-         Cols            =   5
-         FixedCols       =   0
-         BackColorSel    =   8388608
-         ForeColorSel    =   16777215
-         BackColorBkg    =   15658734
-         FocusRect       =   0
-         SelectionMode   =   1
-         AllowUserResizing=   1
-         Appearance      =   0
-         FormatString    =   $"frmCadMob.frx":ACA2
-      End
-      Begin prjChameleon.chameleonButton cmdAddAtiv 
-         Height          =   300
-         Left            =   8820
-         TabIndex        =   139
-         ToolTipText     =   "Adicionar Atividade Principal"
-         Top             =   510
-         Width           =   315
-         _ExtentX        =   556
-         _ExtentY        =   529
-         BTYPE           =   3
-         TX              =   "+"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   13.5
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   128
-         FCOLO           =   128
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmCadMob.frx":AD44
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin prjChameleon.chameleonButton cmdAddISS 
-         Height          =   300
-         Left            =   8880
-         TabIndex        =   145
-         Top             =   2220
-         Width           =   315
-         _ExtentX        =   556
-         _ExtentY        =   529
-         BTYPE           =   3
-         TX              =   "+"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   13.5
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   128
-         FCOLO           =   128
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmCadMob.frx":AD60
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin prjChameleon.chameleonButton cmdAddVS 
-         Height          =   300
-         Left            =   8880
-         TabIndex        =   149
-         Top             =   3900
-         Width           =   315
-         _ExtentX        =   556
-         _ExtentY        =   529
-         BTYPE           =   3
-         TX              =   "+"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   13.5
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   128
-         FCOLO           =   128
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmCadMob.frx":AD7C
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin prjChameleon.chameleonButton cmdAddCnae2 
-         Height          =   300
-         Left            =   7980
-         TabIndex        =   159
-         ToolTipText     =   "Adicionar  outros códigos CNAE"
-         Top             =   4740
-         Width           =   315
-         _ExtentX        =   556
-         _ExtentY        =   529
-         BTYPE           =   3
-         TX              =   "+"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   13.5
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   128
-         FCOLO           =   128
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmCadMob.frx":AD98
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin prjChameleon.chameleonButton cmdDelISS 
-         Height          =   300
-         Left            =   8880
-         TabIndex        =   146
-         Top             =   2580
-         Width           =   315
-         _ExtentX        =   556
-         _ExtentY        =   529
-         BTYPE           =   3
-         TX              =   "-"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   13.5
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   128
-         FCOLO           =   128
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmCadMob.frx":ADB4
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin prjChameleon.chameleonButton cmdDelVS 
-         Height          =   300
-         Left            =   8880
-         TabIndex        =   150
-         Top             =   4260
-         Width           =   315
-         _ExtentX        =   556
-         _ExtentY        =   529
-         BTYPE           =   3
-         TX              =   "-"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   13.5
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   128
-         FCOLO           =   128
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmCadMob.frx":ADD0
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin prjChameleon.chameleonButton cmdDelCnae 
-         Height          =   300
-         Left            =   8340
-         TabIndex        =   160
-         ToolTipText     =   "Remover código CNAE"
-         Top             =   4740
-         Width           =   315
-         _ExtentX        =   556
-         _ExtentY        =   529
-         BTYPE           =   3
-         TX              =   "-"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   13.5
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   128
-         FCOLO           =   128
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmCadMob.frx":ADEC
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin prjChameleon.chameleonButton cmdDelCnaeP 
-         Height          =   300
-         Left            =   4620
-         TabIndex        =   156
-         ToolTipText     =   "Remover CNAE Principal"
-         Top             =   4740
-         Width           =   315
-         _ExtentX        =   556
-         _ExtentY        =   529
-         BTYPE           =   3
-         TX              =   "-"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   13.5
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   128
-         FCOLO           =   128
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmCadMob.frx":AE08
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin prjChameleon.chameleonButton cmdVSOld 
-         Height          =   300
-         Left            =   8880
-         TabIndex        =   148
-         ToolTipText     =   "Exibir as Atividades antigas de VS"
-         Top             =   3540
-         Width           =   315
-         _ExtentX        =   556
-         _ExtentY        =   529
-         BTYPE           =   3
-         TX              =   ">"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   13.5
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   128
-         FCOLO           =   128
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmCadMob.frx":AE24
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin prjChameleon.chameleonButton cmdEdtCnae 
-         Height          =   300
-         Left            =   8700
-         TabIndex        =   161
-         ToolTipText     =   "Alterar código CNAE"
-         Top             =   4740
-         Width           =   315
-         _ExtentX        =   556
-         _ExtentY        =   529
-         BTYPE           =   3
-         TX              =   ""
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   13.5
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   128
-         FCOLO           =   128
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmCadMob.frx":AE40
-         PICN            =   "frmCadMob.frx":AE5C
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin prjChameleon.chameleonButton cmdOutrasAtiv 
-         Height          =   300
-         Left            =   8820
-         TabIndex        =   140
-         ToolTipText     =   "Outras Atividades"
-         Top             =   870
-         Width           =   315
-         _ExtentX        =   556
-         _ExtentY        =   529
-         BTYPE           =   3
-         TX              =   ">"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   13.5
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   128
-         FCOLO           =   128
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmCadMob.frx":AFB6
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin prjChameleon.chameleonButton btAtivExtenso 
-         Height          =   270
-         Left            =   8760
-         TabIndex        =   359
-         ToolTipText     =   "Preencher a atividade por Extenso a partir dos Cnaes cadastrados."
-         Top             =   1240
-         Width           =   585
-         _ExtentX        =   1032
-         _ExtentY        =   476
-         BTYPE           =   3
-         TX              =   "Cnae"
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   128
-         FCOLO           =   128
-         MCOL            =   13026246
-         MPTR            =   1
-         MICON           =   "frmCadMob.frx":AFD2
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H80000005&
-         BackStyle       =   0  'Transparent
-         Caption         =   "CNAE outros..:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H80000008&
-         Height          =   225
-         Index           =   38
-         Left            =   5100
-         TabIndex        =   217
-         Top             =   4830
-         Width           =   1365
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H80000005&
-         BackStyle       =   0  'Transparent
-         Caption         =   "CNAE principal..:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H80000008&
-         Height          =   225
-         Index           =   37
-         Left            =   1380
-         TabIndex        =   216
-         Top             =   4800
-         Width           =   1515
-      End
-      Begin VB.Label Label3 
-         Alignment       =   1  'Right Justify
-         BackStyle       =   0  'Transparent
-         Caption         =   "Nivel.:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   285
-         Left            =   3315
-         TabIndex        =   169
-         Top             =   930
-         Width           =   570
-      End
-      Begin VB.Label lblAliq 
-         BackStyle       =   0  'Transparent
-         Caption         =   "0"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   285
-         Left            =   3960
-         TabIndex        =   168
-         Top             =   930
-         Width           =   315
-      End
-      Begin VB.Label lblTipoISS 
-         BackStyle       =   0  'Transparent
-         Caption         =   "-->"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H000000C0&
-         Height          =   255
-         Left            =   3150
-         TabIndex        =   167
-         Top             =   1650
-         Visible         =   0   'False
-         Width           =   4035
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00808000&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Área m².....:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   285
-         Index           =   49
-         Left            =   4515
-         TabIndex        =   166
-         Top             =   930
-         Width           =   1065
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00808000&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Valor da Aliquota......:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   285
-         Index           =   43
-         Left            =   120
-         TabIndex        =   165
-         Top             =   930
-         Width           =   2000
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00000080&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Atividades para pagamento de ISS"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   -1  'True
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00000080&
-         Height          =   255
-         Index           =   42
-         Left            =   90
-         TabIndex        =   164
-         Top             =   1650
-         Width           =   3705
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00808000&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Atividade Principal....:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   285
-         Index           =   16
-         Left            =   120
-         TabIndex        =   163
-         Top             =   600
-         Width           =   2000
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H80000005&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Atividade p/Extenso..:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   285
-         Index           =   17
-         Left            =   120
-         TabIndex        =   162
-         Top             =   1290
-         Width           =   2000
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00000080&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Atividade Principal / Taxa de Licença de Funcionamento"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   -1  'True
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00000040&
-         Height          =   255
-         Index           =   14
-         Left            =   90
-         TabIndex        =   157
-         Top             =   180
-         Width           =   6105
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00000080&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Vigilância Sanitária"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   -1  'True
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00000080&
-         Height          =   255
-         Index           =   15
-         Left            =   90
-         TabIndex        =   153
-         Top             =   3180
-         Width           =   7755
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00808000&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Qtde..:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   285
-         Index           =   32
-         Left            =   7215
-         TabIndex        =   151
-         Top             =   930
-         Width           =   660
-      End
-   End
-   Begin VB.Frame Tela 
-      BackColor       =   &H00EEEEEE&
-      Height          =   5160
-      Index           =   3
-      Left            =   2040
-      TabIndex        =   116
-      Top             =   90
-      Width           =   9405
-      Begin VB.Frame Frame8 
-         Caption         =   "Tipo de Endereço"
-         ForeColor       =   &H00000080&
-         Height          =   1005
-         Left            =   6255
-         TabIndex        =   345
-         Top             =   450
-         Visible         =   0   'False
-         Width           =   2265
-         Begin VB.OptionButton OptEE 
-            Caption         =   "Entrega de Carnê"
-            Height          =   195
-            Index           =   1
-            Left            =   135
-            TabIndex        =   347
-            Top             =   630
-            Width           =   1995
-         End
-         Begin VB.OptionButton OptEE 
-            Caption         =   "Endereço de Entrega"
-            Height          =   195
-            Index           =   0
-            Left            =   135
-            TabIndex        =   346
-            Top             =   315
-            Value           =   -1  'True
-            Width           =   1995
-         End
-      End
-      Begin VB.CheckBox chkEnd 
-         BackColor       =   &H00EEEEEE&
-         Caption         =   "Utilizar a localização do imóvel como endereço de entrega"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   195
-         Left            =   330
-         TabIndex        =   127
-         Top             =   420
-         Width           =   5445
-      End
-      Begin VB.CommandButton cmdRefreshBairro 
-         BackColor       =   &H00EEEEEE&
-         Caption         =   "!"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   300
-         Left            =   5490
-         Style           =   1  'Graphical
-         TabIndex        =   126
-         ToolTipText     =   "Atualizar lista de Bairros"
-         Top             =   1680
-         Width           =   315
-      End
-      Begin VB.CommandButton cmdRefreshCity 
-         BackColor       =   &H00EEEEEE&
-         Caption         =   "!"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   300
-         Left            =   5490
-         Style           =   1  'Graphical
-         TabIndex        =   125
-         ToolTipText     =   "Atualizar lista de Cidades"
-         Top             =   1320
-         Width           =   315
-      End
-      Begin VB.ComboBox cmbEEBairro 
-         Appearance      =   0  'Flat
-         Height          =   315
-         Left            =   1560
-         Sorted          =   -1  'True
-         Style           =   2  'Dropdown List
-         TabIndex        =   124
-         Top             =   1680
-         Width           =   3915
-      End
-      Begin VB.ComboBox cmbEECidade 
-         Appearance      =   0  'Flat
-         Height          =   315
-         Left            =   1560
-         Style           =   2  'Dropdown List
-         TabIndex        =   123
-         Top             =   1320
-         Width           =   3915
-      End
-      Begin VB.ComboBox cmbEEUf 
-         Appearance      =   0  'Flat
-         Height          =   315
-         Left            =   1560
-         Style           =   2  'Dropdown List
-         TabIndex        =   121
-         Top             =   960
-         Width           =   3915
-      End
-      Begin VB.TextBox txtEECompl 
-         Appearance      =   0  'Flat
-         Height          =   315
-         Left            =   1680
-         MaxLength       =   50
-         TabIndex        =   120
-         Top             =   3180
-         Width           =   6375
-      End
-      Begin VB.TextBox txtEENumero 
-         Appearance      =   0  'Flat
-         Height          =   315
-         Left            =   1680
-         MaxLength       =   6
-         TabIndex        =   119
-         Top             =   2820
-         Width           =   945
-      End
-      Begin VB.TextBox txtEENomeLogr 
-         Appearance      =   0  'Flat
-         Height          =   315
-         Left            =   2685
-         MaxLength       =   50
-         TabIndex        =   118
-         Top             =   2460
-         Width           =   5385
-      End
-      Begin VB.TextBox txtEECodLogr 
-         Appearance      =   0  'Flat
-         Height          =   315
-         Left            =   1680
-         MaxLength       =   6
-         TabIndex        =   117
-         Top             =   2460
-         Width           =   945
-      End
-      Begin esMaskEdit.esMaskedEdit mskEECep 
-         Height          =   300
-         Left            =   1680
-         TabIndex        =   122
-         Top             =   3555
-         Width           =   1035
-         _ExtentX        =   1826
-         _ExtentY        =   529
-         MouseIcon       =   "frmCadMob.frx":AFEE
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Appearance      =   0
-         MaxLength       =   9
-         Mask            =   "99999-999"
-         SelText         =   ""
-         Text            =   "_____-___"
-         HideSelection   =   -1  'True
-      End
-      Begin VB.ListBox lstEENomeLog 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00C0FFFF&
-         Height          =   1785
-         ItemData        =   "frmCadMob.frx":B00A
-         Left            =   2690
-         List            =   "frmCadMob.frx":B011
-         TabIndex        =   128
-         Top             =   2460
-         Visible         =   0   'False
-         Width           =   5400
-      End
-      Begin prjChameleon.chameleonButton cmdCopyEnd 
-         Height          =   315
-         Left            =   8145
-         TabIndex        =   366
-         ToolTipText     =   "Copiar o Endereço"
-         Top             =   2430
-         Width           =   360
-         _ExtentX        =   635
-         _ExtentY        =   556
-         BTYPE           =   3
-         TX              =   ""
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   2
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   0
-         FCOLO           =   0
-         MCOL            =   16711935
-         MPTR            =   1
-         MICON           =   "frmCadMob.frx":B023
-         PICN            =   "frmCadMob.frx":B03F
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   0   'False
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H80000005&
-         BackStyle       =   0  'Transparent
-         Caption         =   "CEP..............:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   315
-         Index           =   41
-         Left            =   300
-         TabIndex        =   135
-         Top             =   3630
-         Width           =   1400
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H80000005&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Complemento..:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   315
-         Index           =   40
-         Left            =   270
-         TabIndex        =   134
-         Top             =   3270
-         Width           =   1400
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H80000005&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Número..........:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   315
-         Index           =   39
-         Left            =   270
-         TabIndex        =   133
-         Top             =   2880
-         Width           =   1400
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00808000&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Cidade.........:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   315
-         Index           =   36
-         Left            =   270
-         TabIndex        =   132
-         Top             =   1380
-         Width           =   1245
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H80000005&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Logradouro.....:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   315
-         Index           =   34
-         Left            =   270
-         TabIndex        =   131
-         Top             =   2520
-         Width           =   1400
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H80000005&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Bairro..........:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   315
-         Index           =   30
-         Left            =   270
-         TabIndex        =   130
-         Top             =   1740
-         Width           =   1245
-      End
-      Begin VB.Label Label2 
-         Appearance      =   0  'Flat
-         BackColor       =   &H00808000&
-         BackStyle       =   0  'Transparent
-         Caption         =   "Estado.........:"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00400000&
-         Height          =   315
-         Index           =   29
-         Left            =   270
-         TabIndex        =   129
-         Top             =   1020
-         Width           =   1245
-      End
-   End
-   Begin VB.Frame Tela 
-      BackColor       =   &H00EEEEEE&
-      Height          =   5160
       Index           =   2
       Left            =   2040
       TabIndex        =   96
@@ -4980,16 +1012,58 @@ Begin VB.Form frmCadMob
          ForeColor       =   &H00000080&
          Height          =   2565
          Left            =   150
-         TabIndex        =   111
+         TabIndex        =   110
          Top             =   240
          Width           =   8985
+         Begin VB.TextBox txtDDDNF 
+            Alignment       =   2  'Center
+            Appearance      =   0  'Flat
+            Height          =   285
+            Left            =   5535
+            MaxLength       =   2
+            TabIndex        =   370
+            TabStop         =   0   'False
+            Top             =   2250
+            Width           =   555
+         End
+         Begin VB.TextBox txtFoneNF 
+            Appearance      =   0  'Flat
+            Height          =   285
+            Left            =   6135
+            MaxLength       =   12
+            TabIndex        =   369
+            TabStop         =   0   'False
+            Top             =   2250
+            Width           =   2505
+         End
+         Begin VB.TextBox txtFax 
+            Appearance      =   0  'Flat
+            Height          =   285
+            Left            =   7440
+            MaxLength       =   25
+            TabIndex        =   367
+            TabStop         =   0   'False
+            Top             =   1890
+            Width           =   1200
+         End
+         Begin VB.TextBox txtEmailNF 
+            Appearance      =   0  'Flat
+            Height          =   285
+            Left            =   5955
+            MaxLength       =   100
+            TabIndex        =   365
+            TabStop         =   0   'False
+            Top             =   1935
+            Visible         =   0   'False
+            Width           =   720
+         End
          Begin VB.CommandButton cmdCadCid 
             BackColor       =   &H00EEEEEE&
             Caption         =   "Cadastrar"
             Height          =   315
             Left            =   2520
             Style           =   1  'Graphical
-            TabIndex        =   114
+            TabIndex        =   113
             ToolTipText     =   "Cadastrar novo cidadão"
             Top             =   2010
             Width           =   1155
@@ -5000,7 +1074,7 @@ Begin VB.Form frmCadMob
             Height          =   315
             Left            =   1320
             Style           =   1  'Graphical
-            TabIndex        =   113
+            TabIndex        =   112
             ToolTipText     =   "Remover proprietário da empresa"
             Top             =   2010
             Width           =   1155
@@ -5011,7 +1085,7 @@ Begin VB.Form frmCadMob
             Height          =   315
             Left            =   120
             Style           =   1  'Graphical
-            TabIndex        =   112
+            TabIndex        =   111
             ToolTipText     =   "Adicionar Proprietário a Empresa"
             Top             =   2010
             Width           =   1155
@@ -5019,7 +1093,7 @@ Begin VB.Form frmCadMob
          Begin MSFlexGridLib.MSFlexGrid grdProp 
             Height          =   1515
             Left            =   120
-            TabIndex        =   115
+            TabIndex        =   114
             Top             =   330
             Width           =   8745
             _ExtentX        =   15425
@@ -5035,7 +1109,74 @@ Begin VB.Form frmCadMob
             GridLinesFixed  =   1
             SelectionMode   =   1
             Appearance      =   0
-            FormatString    =   $"frmCadMob.frx":B0FF
+            FormatString    =   $"frmCadMob.frx":3494
+         End
+         Begin VB.Label Label2 
+            Appearance      =   0  'Flat
+            BackColor       =   &H00808000&
+            BackStyle       =   0  'Transparent
+            Caption         =   "Telefone NF:"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00400000&
+            Height          =   285
+            Index           =   65
+            Left            =   4365
+            TabIndex        =   371
+            Top             =   2250
+            Width           =   1125
+         End
+         Begin VB.Label Label2 
+            Appearance      =   0  'Flat
+            BackColor       =   &H80000005&
+            BackStyle       =   0  'Transparent
+            Caption         =   "FAX..:"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00400000&
+            Height          =   285
+            Index           =   46
+            Left            =   6795
+            TabIndex        =   368
+            Top             =   1935
+            Width           =   630
+         End
+         Begin VB.Label Label2 
+            Appearance      =   0  'Flat
+            BackColor       =   &H00808000&
+            BackStyle       =   0  'Transparent
+            Caption         =   "Email NF...........:"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00400000&
+            Height          =   285
+            Index           =   66
+            Left            =   4365
+            TabIndex        =   366
+            Top             =   1965
+            Visible         =   0   'False
+            Width           =   1485
          End
       End
       Begin VB.Frame Frame2 
@@ -5051,39 +1192,79 @@ Begin VB.Form frmCadMob
             Strikethrough   =   0   'False
          EndProperty
          ForeColor       =   &H00000080&
-         Height          =   2085
-         Left            =   150
+         Height          =   2220
+         Left            =   135
          TabIndex        =   97
-         Top             =   2970
+         Top             =   2835
          Width           =   8985
-         Begin VB.TextBox txtEmailNF 
+         Begin VB.TextBox txtFone 
             Appearance      =   0  'Flat
+            BackColor       =   &H8000000F&
             Height          =   285
             Left            =   1740
-            MaxLength       =   100
-            TabIndex        =   105
-            Top             =   1680
-            Visible         =   0   'False
+            Locked          =   -1  'True
+            MaxLength       =   40
+            TabIndex        =   375
+            TabStop         =   0   'False
+            Top             =   1755
             Width           =   6975
          End
-         Begin VB.TextBox txtFoneNF 
-            Appearance      =   0  'Flat
-            Height          =   285
-            Left            =   6210
-            MaxLength       =   12
-            TabIndex        =   103
-            Top             =   1020
-            Width           =   2505
-         End
-         Begin VB.TextBox txtDDDNF 
+         Begin VB.TextBox txtDDD3 
             Alignment       =   2  'Center
             Appearance      =   0  'Flat
             Height          =   285
-            Left            =   5610
+            Left            =   6120
+            MaxLength       =   2
+            TabIndex        =   104
+            Top             =   1025
+            Width           =   420
+         End
+         Begin VB.TextBox txtFone3 
+            Appearance      =   0  'Flat
+            Height          =   285
+            Left            =   6585
+            MaxLength       =   9
+            TabIndex        =   105
+            Top             =   1025
+            Width           =   2122
+         End
+         Begin VB.TextBox txtDDD2 
+            Alignment       =   2  'Center
+            Appearance      =   0  'Flat
+            Height          =   285
+            Left            =   1740
             MaxLength       =   2
             TabIndex        =   102
-            Top             =   1020
-            Width           =   555
+            Top             =   1025
+            Width           =   420
+         End
+         Begin VB.TextBox txtFone2 
+            Appearance      =   0  'Flat
+            Height          =   285
+            Left            =   2205
+            MaxLength       =   9
+            TabIndex        =   103
+            Top             =   1025
+            Width           =   2122
+         End
+         Begin VB.TextBox txtDDD1 
+            Alignment       =   2  'Center
+            Appearance      =   0  'Flat
+            Height          =   285
+            Left            =   6120
+            MaxLength       =   2
+            TabIndex        =   100
+            Top             =   675
+            Width           =   420
+         End
+         Begin VB.TextBox txtFone1 
+            Appearance      =   0  'Flat
+            Height          =   285
+            Left            =   6570
+            MaxLength       =   9
+            TabIndex        =   101
+            Top             =   675
+            Width           =   2122
          End
          Begin VB.TextBox txtNomeContato 
             Appearance      =   0  'Flat
@@ -5103,38 +1284,20 @@ Begin VB.Form frmCadMob
             Top             =   675
             Width           =   2595
          End
-         Begin VB.TextBox txtFax 
-            Appearance      =   0  'Flat
-            Height          =   285
-            Left            =   1740
-            MaxLength       =   25
-            TabIndex        =   101
-            Top             =   1020
-            Width           =   2595
-         End
-         Begin VB.TextBox txtFone 
-            Appearance      =   0  'Flat
-            Height          =   285
-            Left            =   5610
-            MaxLength       =   40
-            TabIndex        =   100
-            Top             =   675
-            Width           =   3105
-         End
          Begin VB.TextBox txtEmail 
             Appearance      =   0  'Flat
             Height          =   285
             Left            =   1740
             MaxLength       =   100
-            TabIndex        =   104
-            Top             =   1350
+            TabIndex        =   106
+            Top             =   1370
             Width           =   6975
          End
          Begin VB.Label Label2 
             Appearance      =   0  'Flat
             BackColor       =   &H00808000&
             BackStyle       =   0  'Transparent
-            Caption         =   "Email NF...........:"
+            Caption         =   "Telefone Antigo:"
             BeginProperty Font 
                Name            =   "MS Sans Serif"
                Size            =   8.25
@@ -5146,18 +1309,17 @@ Begin VB.Form frmCadMob
             EndProperty
             ForeColor       =   &H00400000&
             Height          =   285
-            Index           =   66
-            Left            =   150
-            TabIndex        =   361
-            Top             =   1710
-            Visible         =   0   'False
-            Width           =   1485
+            Index           =   44
+            Left            =   135
+            TabIndex        =   376
+            Top             =   1800
+            Width           =   1515
          End
          Begin VB.Label Label2 
             Appearance      =   0  'Flat
             BackColor       =   &H00808000&
             BackStyle       =   0  'Transparent
-            Caption         =   "Telefone NF:"
+            Caption         =   "Telefone 3:"
             BeginProperty Font 
                Name            =   "MS Sans Serif"
                Size            =   8.25
@@ -5169,10 +1331,54 @@ Begin VB.Form frmCadMob
             EndProperty
             ForeColor       =   &H00400000&
             Height          =   285
-            Index           =   65
-            Left            =   4440
-            TabIndex        =   360
-            Top             =   1020
+            Index           =   68
+            Left            =   5040
+            TabIndex        =   374
+            Top             =   1080
+            Width           =   1125
+         End
+         Begin VB.Label Label2 
+            Appearance      =   0  'Flat
+            BackColor       =   &H00808000&
+            BackStyle       =   0  'Transparent
+            Caption         =   "Telefone 2.........:"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00400000&
+            Height          =   285
+            Index           =   67
+            Left            =   135
+            TabIndex        =   373
+            Top             =   1035
+            Width           =   1530
+         End
+         Begin VB.Label Label2 
+            Appearance      =   0  'Flat
+            BackColor       =   &H00808000&
+            BackStyle       =   0  'Transparent
+            Caption         =   "Telefone 1:"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00400000&
+            Height          =   285
+            Index           =   57
+            Left            =   5040
+            TabIndex        =   372
+            Top             =   720
             Width           =   1125
          End
          Begin VB.Label Label2 
@@ -5193,8 +1399,8 @@ Begin VB.Form frmCadMob
             Height          =   285
             Index           =   45
             Left            =   150
-            TabIndex        =   110
-            Top             =   1380
+            TabIndex        =   109
+            Top             =   1400
             Width           =   1485
          End
          Begin VB.Label Label2 
@@ -5215,7 +1421,7 @@ Begin VB.Form frmCadMob
             Height          =   285
             Index           =   48
             Left            =   150
-            TabIndex        =   109
+            TabIndex        =   108
             Top             =   360
             Width           =   1665
          End
@@ -5237,53 +1443,9 @@ Begin VB.Form frmCadMob
             Height          =   285
             Index           =   47
             Left            =   150
-            TabIndex        =   108
+            TabIndex        =   107
             Top             =   690
             Width           =   1665
-         End
-         Begin VB.Label Label2 
-            Appearance      =   0  'Flat
-            BackColor       =   &H80000005&
-            BackStyle       =   0  'Transparent
-            Caption         =   "FAX..................:"
-            BeginProperty Font 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00400000&
-            Height          =   285
-            Index           =   46
-            Left            =   150
-            TabIndex        =   107
-            Top             =   1020
-            Width           =   1665
-         End
-         Begin VB.Label Label2 
-            Appearance      =   0  'Flat
-            BackColor       =   &H00808000&
-            BackStyle       =   0  'Transparent
-            Caption         =   "Telefone....:"
-            BeginProperty Font 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00400000&
-            Height          =   285
-            Index           =   44
-            Left            =   4440
-            TabIndex        =   106
-            Top             =   720
-            Width           =   1065
          End
       End
    End
@@ -5395,7 +1557,7 @@ Begin VB.Form frmCadMob
          Width           =   1470
          _ExtentX        =   2593
          _ExtentY        =   503
-         MouseIcon       =   "frmCadMob.frx":B1A2
+         MouseIcon       =   "frmCadMob.frx":3537
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -5415,7 +1577,7 @@ Begin VB.Form frmCadMob
       Begin prjChameleon.chameleonButton cmdCopyEnd2 
          Height          =   315
          Left            =   7875
-         TabIndex        =   367
+         TabIndex        =   364
          ToolTipText     =   "Copiar o Endereço"
          Top             =   1890
          Width           =   360
@@ -5441,8 +1603,8 @@ Begin VB.Form frmCadMob
          FCOLO           =   0
          MCOL            =   16711935
          MPTR            =   1
-         MICON           =   "frmCadMob.frx":B1BE
-         PICN            =   "frmCadMob.frx":B1DA
+         MICON           =   "frmCadMob.frx":3553
+         PICN            =   "frmCadMob.frx":356F
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -5456,9 +1618,9 @@ Begin VB.Form frmCadMob
          Appearance      =   0  'Flat
          BackColor       =   &H00C0FFFF&
          Height          =   2370
-         ItemData        =   "frmCadMob.frx":B29A
+         ItemData        =   "frmCadMob.frx":362F
          Left            =   2480
-         List            =   "frmCadMob.frx":B29C
+         List            =   "frmCadMob.frx":3631
          TabIndex        =   46
          Top             =   1920
          Visible         =   0   'False
@@ -5856,7 +2018,7 @@ Begin VB.Form frmCadMob
       Height          =   5160
       Index           =   9
       Left            =   2025
-      TabIndex        =   247
+      TabIndex        =   246
       Top             =   90
       Width           =   9420
       Begin VB.OptionButton optRec 
@@ -5874,7 +2036,7 @@ Begin VB.Form frmCadMob
          Height          =   195
          Index           =   1
          Left            =   3060
-         TabIndex        =   335
+         TabIndex        =   334
          Top             =   1755
          Width           =   1275
       End
@@ -5893,18 +2055,18 @@ Begin VB.Form frmCadMob
          Height          =   195
          Index           =   0
          Left            =   1800
-         TabIndex        =   334
+         TabIndex        =   333
          Top             =   1755
          Value           =   -1  'True
          Width           =   1140
       End
       Begin VB.ComboBox cmbPagto 
          Height          =   315
-         ItemData        =   "frmCadMob.frx":B29E
+         ItemData        =   "frmCadMob.frx":3633
          Left            =   6165
-         List            =   "frmCadMob.frx":B2AB
+         List            =   "frmCadMob.frx":3640
          Style           =   2  'Dropdown List
-         TabIndex        =   333
+         TabIndex        =   332
          Top             =   270
          Width           =   1050
       End
@@ -5912,7 +2074,7 @@ Begin VB.Form frmCadMob
          Caption         =   "Habilitar"
          Height          =   195
          Left            =   315
-         TabIndex        =   329
+         TabIndex        =   328
          Top             =   270
          Width           =   915
       End
@@ -5924,7 +2086,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Left            =   3105
          Locked          =   -1  'True
-         TabIndex        =   304
+         TabIndex        =   303
          TabStop         =   0   'False
          Top             =   675
          Width           =   6225
@@ -5934,17 +2096,17 @@ Begin VB.Form frmCadMob
          Height          =   285
          Left            =   2160
          MaxLength       =   6
-         TabIndex        =   302
+         TabIndex        =   301
          Top             =   630
          Width           =   870
       End
       Begin VB.ComboBox cmbAnoISS 
          Height          =   315
-         ItemData        =   "frmCadMob.frx":B2C2
+         ItemData        =   "frmCadMob.frx":3657
          Left            =   2160
-         List            =   "frmCadMob.frx":B2C4
+         List            =   "frmCadMob.frx":3659
          Style           =   2  'Dropdown List
-         TabIndex        =   250
+         TabIndex        =   249
          Top             =   1080
          Width           =   1365
       End
@@ -5963,7 +2125,7 @@ Begin VB.Form frmCadMob
          ForeColor       =   &H00000080&
          Height          =   1275
          Left            =   9045
-         TabIndex        =   277
+         TabIndex        =   276
          Top             =   270
          Visible         =   0   'False
          Width           =   4110
@@ -5981,7 +2143,7 @@ Begin VB.Form frmCadMob
             EndProperty
             Height          =   195
             Left            =   270
-            TabIndex        =   280
+            TabIndex        =   279
             Top             =   900
             Width           =   1950
          End
@@ -5990,14 +2152,14 @@ Begin VB.Form frmCadMob
             Appearance      =   0  'Flat
             Height          =   285
             Left            =   1080
-            TabIndex        =   279
+            TabIndex        =   278
             Top             =   405
             Width           =   1365
          End
          Begin prjChameleon.chameleonButton cmdCancelNF 
             Height          =   315
             Left            =   2925
-            TabIndex        =   282
+            TabIndex        =   281
             ToolTipText     =   "Cancelar Edição"
             Top             =   810
             Width           =   495
@@ -6023,8 +2185,8 @@ Begin VB.Form frmCadMob
             FCOLO           =   0
             MCOL            =   13026246
             MPTR            =   1
-            MICON           =   "frmCadMob.frx":B2C6
-            PICN            =   "frmCadMob.frx":B2E2
+            MICON           =   "frmCadMob.frx":365B
+            PICN            =   "frmCadMob.frx":3677
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -6037,7 +2199,7 @@ Begin VB.Form frmCadMob
          Begin prjChameleon.chameleonButton cmdGravarNF 
             Height          =   315
             Left            =   2385
-            TabIndex        =   281
+            TabIndex        =   280
             ToolTipText     =   "Gravar os Dados"
             Top             =   810
             Width           =   495
@@ -6063,8 +2225,8 @@ Begin VB.Form frmCadMob
             FCOLO           =   0
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCadMob.frx":B43C
-            PICN            =   "frmCadMob.frx":B458
+            MICON           =   "frmCadMob.frx":37D1
+            PICN            =   "frmCadMob.frx":37ED
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -6077,7 +2239,7 @@ Begin VB.Form frmCadMob
          Begin prjChameleon.chameleonButton cmdDelNF 
             Height          =   315
             Left            =   3465
-            TabIndex        =   283
+            TabIndex        =   282
             ToolTipText     =   "Excluir Registro"
             Top             =   810
             Width           =   495
@@ -6103,8 +2265,8 @@ Begin VB.Form frmCadMob
             FCOLO           =   0
             MCOL            =   13026246
             MPTR            =   1
-            MICON           =   "frmCadMob.frx":B7FD
-            PICN            =   "frmCadMob.frx":B819
+            MICON           =   "frmCadMob.frx":3B92
+            PICN            =   "frmCadMob.frx":3BAE
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -6118,7 +2280,7 @@ Begin VB.Form frmCadMob
             Caption         =   "0"
             Height          =   240
             Left            =   3060
-            TabIndex        =   284
+            TabIndex        =   283
             Top             =   405
             Visible         =   0   'False
             Width           =   285
@@ -6137,7 +2299,7 @@ Begin VB.Form frmCadMob
             EndProperty
             Height          =   195
             Left            =   315
-            TabIndex        =   278
+            TabIndex        =   277
             Top             =   450
             Width           =   735
          End
@@ -6145,7 +2307,7 @@ Begin VB.Form frmCadMob
       Begin Tributacao.XP_ProgressBar PBar 
          Height          =   195
          Left            =   1440
-         TabIndex        =   330
+         TabIndex        =   329
          Top             =   270
          Width           =   2760
          _ExtentX        =   4868
@@ -6167,7 +2329,7 @@ Begin VB.Form frmCadMob
       Begin prjChameleon.chameleonButton cmdPrintIssAno 
          Height          =   315
          Left            =   270
-         TabIndex        =   331
+         TabIndex        =   330
          ToolTipText     =   "Imprimir extrato anual"
          Top             =   1395
          Width           =   1035
@@ -6193,8 +2355,8 @@ Begin VB.Form frmCadMob
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmCadMob.frx":B8BB
-         PICN            =   "frmCadMob.frx":B8D7
+         MICON           =   "frmCadMob.frx":3C50
+         PICN            =   "frmCadMob.frx":3C6C
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -6208,7 +2370,7 @@ Begin VB.Form frmCadMob
          Caption         =   "Guias com pagamento:"
          Height          =   195
          Left            =   4410
-         TabIndex        =   332
+         TabIndex        =   331
          Top             =   315
          Width           =   1725
       End
@@ -6228,7 +2390,7 @@ Begin VB.Form frmCadMob
          Height          =   195
          Index           =   3
          Left            =   270
-         TabIndex        =   303
+         TabIndex        =   302
          Top             =   675
          Width           =   1815
       End
@@ -6250,7 +2412,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   12
          Left            =   135
-         TabIndex        =   301
+         TabIndex        =   300
          Top             =   4455
          Width           =   1410
       End
@@ -6273,7 +2435,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   13
          Left            =   3015
-         TabIndex        =   300
+         TabIndex        =   299
          Top             =   1980
          Width           =   1230
       End
@@ -6296,7 +2458,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   14
          Left            =   3015
-         TabIndex        =   299
+         TabIndex        =   298
          Top             =   2205
          Width           =   1230
       End
@@ -6319,7 +2481,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   15
          Left            =   3015
-         TabIndex        =   298
+         TabIndex        =   297
          Top             =   2430
          Width           =   1230
       End
@@ -6342,7 +2504,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   16
          Left            =   3015
-         TabIndex        =   297
+         TabIndex        =   296
          Top             =   2655
          Width           =   1230
       End
@@ -6365,7 +2527,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   17
          Left            =   3015
-         TabIndex        =   296
+         TabIndex        =   295
          Top             =   2880
          Width           =   1230
       End
@@ -6388,7 +2550,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   18
          Left            =   3015
-         TabIndex        =   295
+         TabIndex        =   294
          Top             =   3105
          Width           =   1230
       End
@@ -6411,7 +2573,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   19
          Left            =   3015
-         TabIndex        =   294
+         TabIndex        =   293
          Top             =   3330
          Width           =   1230
       End
@@ -6434,7 +2596,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   20
          Left            =   3015
-         TabIndex        =   293
+         TabIndex        =   292
          Top             =   3555
          Width           =   1230
       End
@@ -6457,7 +2619,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   21
          Left            =   3015
-         TabIndex        =   292
+         TabIndex        =   291
          Top             =   3780
          Width           =   1230
       End
@@ -6480,7 +2642,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   22
          Left            =   3015
-         TabIndex        =   291
+         TabIndex        =   290
          Top             =   4005
          Width           =   1230
       End
@@ -6503,7 +2665,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   23
          Left            =   3015
-         TabIndex        =   290
+         TabIndex        =   289
          Top             =   4230
          Width           =   1230
       End
@@ -6526,7 +2688,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   24
          Left            =   3015
-         TabIndex        =   289
+         TabIndex        =   288
          Top             =   4455
          Width           =   1230
       End
@@ -6548,7 +2710,7 @@ Begin VB.Form frmCadMob
          ForeColor       =   &H80000008&
          Height          =   240
          Left            =   3015
-         TabIndex        =   288
+         TabIndex        =   287
          Top             =   4680
          Width           =   1230
       End
@@ -6570,7 +2732,7 @@ Begin VB.Form frmCadMob
          ForeColor       =   &H80000008&
          Height          =   240
          Left            =   1530
-         TabIndex        =   275
+         TabIndex        =   274
          Top             =   4680
          Width           =   1500
       End
@@ -6593,7 +2755,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   12
          Left            =   1530
-         TabIndex        =   274
+         TabIndex        =   273
          Top             =   4455
          Width           =   1500
       End
@@ -6616,7 +2778,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   11
          Left            =   1530
-         TabIndex        =   273
+         TabIndex        =   272
          Top             =   4230
          Width           =   1500
       End
@@ -6639,7 +2801,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   10
          Left            =   1530
-         TabIndex        =   272
+         TabIndex        =   271
          Top             =   4005
          Width           =   1500
       End
@@ -6662,7 +2824,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   9
          Left            =   1530
-         TabIndex        =   271
+         TabIndex        =   270
          Top             =   3780
          Width           =   1500
       End
@@ -6685,7 +2847,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   8
          Left            =   1530
-         TabIndex        =   270
+         TabIndex        =   269
          Top             =   3555
          Width           =   1500
       End
@@ -6708,7 +2870,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   7
          Left            =   1530
-         TabIndex        =   269
+         TabIndex        =   268
          Top             =   3330
          Width           =   1500
       End
@@ -6731,7 +2893,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   6
          Left            =   1530
-         TabIndex        =   268
+         TabIndex        =   267
          Top             =   3105
          Width           =   1500
       End
@@ -6754,7 +2916,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   5
          Left            =   1530
-         TabIndex        =   267
+         TabIndex        =   266
          Top             =   2880
          Width           =   1500
       End
@@ -6777,7 +2939,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   4
          Left            =   1530
-         TabIndex        =   266
+         TabIndex        =   265
          Top             =   2655
          Width           =   1500
       End
@@ -6800,7 +2962,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   3
          Left            =   1530
-         TabIndex        =   265
+         TabIndex        =   264
          Top             =   2430
          Width           =   1500
       End
@@ -6823,7 +2985,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   2
          Left            =   1530
-         TabIndex        =   264
+         TabIndex        =   263
          Top             =   2205
          Width           =   1500
       End
@@ -6846,7 +3008,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   1
          Left            =   1530
-         TabIndex        =   263
+         TabIndex        =   262
          Top             =   1980
          Width           =   1500
       End
@@ -6869,7 +3031,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   12
          Left            =   135
-         TabIndex        =   262
+         TabIndex        =   261
          Top             =   4680
          Width           =   1410
       End
@@ -6891,7 +3053,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   11
          Left            =   135
-         TabIndex        =   261
+         TabIndex        =   260
          Top             =   4230
          Width           =   1410
       End
@@ -6913,7 +3075,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   10
          Left            =   135
-         TabIndex        =   260
+         TabIndex        =   259
          Top             =   4005
          Width           =   1410
       End
@@ -6935,7 +3097,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   9
          Left            =   135
-         TabIndex        =   259
+         TabIndex        =   258
          Top             =   3780
          Width           =   1410
       End
@@ -6957,7 +3119,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   8
          Left            =   135
-         TabIndex        =   258
+         TabIndex        =   257
          Top             =   3555
          Width           =   1410
       End
@@ -6979,7 +3141,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   7
          Left            =   135
-         TabIndex        =   257
+         TabIndex        =   256
          Top             =   3330
          Width           =   1410
       End
@@ -7001,7 +3163,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   6
          Left            =   135
-         TabIndex        =   256
+         TabIndex        =   255
          Top             =   3105
          Width           =   1410
       End
@@ -7023,7 +3185,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   5
          Left            =   135
-         TabIndex        =   255
+         TabIndex        =   254
          Top             =   2880
          Width           =   1410
       End
@@ -7045,7 +3207,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   4
          Left            =   135
-         TabIndex        =   254
+         TabIndex        =   253
          Top             =   2655
          Width           =   1410
       End
@@ -7067,7 +3229,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   3
          Left            =   135
-         TabIndex        =   253
+         TabIndex        =   252
          Top             =   2430
          Width           =   1410
       End
@@ -7089,7 +3251,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   2
          Left            =   135
-         TabIndex        =   252
+         TabIndex        =   251
          Top             =   2205
          Width           =   1410
       End
@@ -7111,7 +3273,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   1
          Left            =   135
-         TabIndex        =   251
+         TabIndex        =   250
          Top             =   1980
          Width           =   1410
       End
@@ -7131,7 +3293,7 @@ Begin VB.Form frmCadMob
          Height          =   195
          Index           =   0
          Left            =   270
-         TabIndex        =   249
+         TabIndex        =   248
          Top             =   1125
          Width           =   1860
       End
@@ -7141,13 +3303,13 @@ Begin VB.Form frmCadMob
       Height          =   5160
       Index           =   7
       Left            =   2040
-      TabIndex        =   197
+      TabIndex        =   196
       Top             =   60
       Width           =   9405
       Begin MSFlexGridLib.MSFlexGrid grdNF 
          Height          =   2235
          Left            =   90
-         TabIndex        =   198
+         TabIndex        =   197
          Top             =   465
          Width           =   8025
          _ExtentX        =   14155
@@ -7166,7 +3328,7 @@ Begin VB.Form frmCadMob
       Begin MSFlexGridLib.MSFlexGrid grdProc 
          Height          =   1920
          Left            =   90
-         TabIndex        =   237
+         TabIndex        =   236
          Top             =   3015
          Width           =   8025
          _ExtentX        =   14155
@@ -7181,7 +3343,7 @@ Begin VB.Form frmCadMob
          SelectionMode   =   1
          AllowUserResizing=   1
          Appearance      =   0
-         FormatString    =   $"frmCadMob.frx":BA31
+         FormatString    =   $"frmCadMob.frx":3DC6
       End
       Begin VB.Label Label4 
          BackStyle       =   0  'Transparent
@@ -7199,7 +3361,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   1
          Left            =   135
-         TabIndex        =   239
+         TabIndex        =   238
          Top             =   225
          Width           =   2310
       End
@@ -7219,7 +3381,7 @@ Begin VB.Form frmCadMob
          Height          =   240
          Index           =   0
          Left            =   135
-         TabIndex        =   238
+         TabIndex        =   237
          Top             =   2790
          Width           =   7755
       End
@@ -7229,7 +3391,7 @@ Begin VB.Form frmCadMob
       BorderStyle     =   0  'None
       Height          =   2715
       Left            =   2700
-      TabIndex        =   218
+      TabIndex        =   217
       Top             =   1575
       Visible         =   0   'False
       Width           =   6945
@@ -7239,7 +3401,7 @@ Begin VB.Form frmCadMob
          Left            =   3780
          Locked          =   -1  'True
          MaxLength       =   4
-         TabIndex        =   227
+         TabIndex        =   226
          Top             =   1740
          Width           =   915
       End
@@ -7247,14 +3409,14 @@ Begin VB.Form frmCadMob
          Height          =   315
          Left            =   360
          Style           =   2  'Dropdown List
-         TabIndex        =   223
+         TabIndex        =   222
          Top             =   1230
          Width           =   6315
       End
       Begin prjChameleon.chameleonButton cmdSelect 
          Height          =   345
          Left            =   4200
-         TabIndex        =   219
+         TabIndex        =   218
          ToolTipText     =   "Pesquisar"
          Top             =   2115
          Width           =   1185
@@ -7280,8 +3442,8 @@ Begin VB.Form frmCadMob
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmCadMob.frx":BABF
-         PICN            =   "frmCadMob.frx":BADB
+         MICON           =   "frmCadMob.frx":3E54
+         PICN            =   "frmCadMob.frx":3E70
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -7294,12 +3456,12 @@ Begin VB.Form frmCadMob
       Begin esMaskEdit.esMaskedEdit mskCodCNAE 
          Height          =   285
          Left            =   1590
-         TabIndex        =   220
+         TabIndex        =   219
          Top             =   210
          Width           =   1065
          _ExtentX        =   1879
          _ExtentY        =   503
-         MouseIcon       =   "frmCadMob.frx":BC35
+         MouseIcon       =   "frmCadMob.frx":3FCA
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -7319,7 +3481,7 @@ Begin VB.Form frmCadMob
       Begin prjChameleon.chameleonButton cmdSairCNAE 
          Height          =   345
          Left            =   5490
-         TabIndex        =   228
+         TabIndex        =   227
          ToolTipText     =   "Sair da Tela"
          Top             =   2115
          Width           =   1185
@@ -7345,8 +3507,8 @@ Begin VB.Form frmCadMob
          FCOLO           =   0
          MCOL            =   13026246
          MPTR            =   1
-         MICON           =   "frmCadMob.frx":BC51
-         PICN            =   "frmCadMob.frx":BC6D
+         MICON           =   "frmCadMob.frx":3FE6
+         PICN            =   "frmCadMob.frx":4002
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -7365,7 +3527,7 @@ Begin VB.Form frmCadMob
          Height          =   225
          Index           =   53
          Left            =   3060
-         TabIndex        =   226
+         TabIndex        =   225
          Top             =   1800
          Width           =   645
       End
@@ -7377,7 +3539,7 @@ Begin VB.Form frmCadMob
          ForeColor       =   &H00FFFFFF&
          Height          =   225
          Left            =   1650
-         TabIndex        =   225
+         TabIndex        =   224
          Top             =   1800
          Width           =   855
       End
@@ -7390,17 +3552,17 @@ Begin VB.Form frmCadMob
          Height          =   225
          Index           =   52
          Left            =   390
-         TabIndex        =   224
+         TabIndex        =   223
          Top             =   1800
          Width           =   1275
       End
       Begin VB.Label lblDescCNAE 
          BackStyle       =   0  'Transparent
-         Caption         =   $"frmCadMob.frx":BCDB
+         Caption         =   $"frmCadMob.frx":4070
          ForeColor       =   &H0080FFFF&
          Height          =   465
          Left            =   360
-         TabIndex        =   222
+         TabIndex        =   221
          Top             =   630
          Width           =   6405
       End
@@ -7413,7 +3575,7 @@ Begin VB.Form frmCadMob
          Height          =   225
          Index           =   51
          Left            =   360
-         TabIndex        =   221
+         TabIndex        =   220
          Top             =   240
          Width           =   1275
       End
@@ -7450,6 +3612,45 @@ Begin VB.Form frmCadMob
       Begin prjChameleon.chameleonButton cmdIEReduz 
          Height          =   240
          Left            =   540
+         TabIndex        =   284
+         Top             =   90
+         Width           =   405
+         _ExtentX        =   714
+         _ExtentY        =   423
+         BTYPE           =   14
+         TX              =   ""
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   4
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   12582912
+         FCOLO           =   12582912
+         MCOL            =   13026246
+         MPTR            =   99
+         MICON           =   "frmCadMob.frx":4140
+         PICN            =   "frmCadMob.frx":445A
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   -1  'True
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton cmdIEExpande 
+         Height          =   240
+         Left            =   90
          TabIndex        =   285
          Top             =   90
          Width           =   405
@@ -7475,47 +3676,8 @@ Begin VB.Form frmCadMob
          FCOLO           =   12582912
          MCOL            =   13026246
          MPTR            =   99
-         MICON           =   "frmCadMob.frx":BDAB
-         PICN            =   "frmCadMob.frx":C0C5
-         UMCOL           =   -1  'True
-         SOFT            =   0   'False
-         PICPOS          =   0
-         NGREY           =   0   'False
-         FX              =   0
-         HAND            =   -1  'True
-         CHECK           =   0   'False
-         VALUE           =   0   'False
-      End
-      Begin prjChameleon.chameleonButton cmdIEExpande 
-         Height          =   240
-         Left            =   90
-         TabIndex        =   286
-         Top             =   90
-         Width           =   405
-         _ExtentX        =   714
-         _ExtentY        =   423
-         BTYPE           =   14
-         TX              =   ""
-         ENAB            =   -1  'True
-         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         COLTYPE         =   4
-         FOCUSR          =   0   'False
-         BCOL            =   12632256
-         BCOLO           =   12632256
-         FCOL            =   12582912
-         FCOLO           =   12582912
-         MCOL            =   13026246
-         MPTR            =   99
-         MICON           =   "frmCadMob.frx":C21F
-         PICN            =   "frmCadMob.frx":C539
+         MICON           =   "frmCadMob.frx":45B4
+         PICN            =   "frmCadMob.frx":48CE
          UMCOL           =   -1  'True
          SOFT            =   0   'False
          PICPOS          =   0
@@ -7528,7 +3690,7 @@ Begin VB.Form frmCadMob
       Begin vbAcceleratorSGrid6.vbalGrid grdMain 
          Height          =   3390
          Left            =   45
-         TabIndex        =   287
+         TabIndex        =   286
          Top             =   450
          Width           =   4875
          _ExtentX        =   8599
@@ -7560,7 +3722,7 @@ Begin VB.Form frmCadMob
       Height          =   5160
       Index           =   8
       Left            =   2040
-      TabIndex        =   199
+      TabIndex        =   198
       Top             =   60
       Width           =   9405
       Begin VB.Frame PnLivro 
@@ -7568,28 +3730,28 @@ Begin VB.Form frmCadMob
          BorderStyle     =   0  'None
          Height          =   4155
          Left            =   4980
-         TabIndex        =   201
+         TabIndex        =   200
          Top             =   300
          Width           =   3345
          Begin VB.ComboBox cmbModelo 
             Height          =   315
-            ItemData        =   "frmCadMob.frx":C693
+            ItemData        =   "frmCadMob.frx":4A28
             Left            =   1650
-            List            =   "frmCadMob.frx":C69D
+            List            =   "frmCadMob.frx":4A32
             Style           =   2  'Dropdown List
-            TabIndex        =   202
+            TabIndex        =   201
             Top             =   1350
             Width           =   1035
          End
          Begin esMaskEdit.esMaskedEdit mskAb 
             Height          =   285
             Left            =   1650
-            TabIndex        =   203
+            TabIndex        =   202
             Top             =   1740
             Width           =   1140
             _ExtentX        =   2011
             _ExtentY        =   503
-            MouseIcon       =   "frmCadMob.frx":C6A9
+            MouseIcon       =   "frmCadMob.frx":4A3E
             BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
                Name            =   "MS Sans Serif"
                Size            =   8.25
@@ -7609,7 +3771,7 @@ Begin VB.Form frmCadMob
          Begin prjChameleon.chameleonButton cmdExcluir3 
             Height          =   315
             Left            =   2220
-            TabIndex        =   204
+            TabIndex        =   203
             ToolTipText     =   "Excluir Livro Fiscal"
             Top             =   3600
             Width           =   975
@@ -7635,8 +3797,8 @@ Begin VB.Form frmCadMob
             FCOLO           =   0
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCadMob.frx":C6C5
-            PICN            =   "frmCadMob.frx":C6E1
+            MICON           =   "frmCadMob.frx":4A5A
+            PICN            =   "frmCadMob.frx":4A76
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -7649,7 +3811,7 @@ Begin VB.Form frmCadMob
          Begin prjChameleon.chameleonButton cmdAlterar3 
             Height          =   315
             Left            =   1200
-            TabIndex        =   205
+            TabIndex        =   204
             ToolTipText     =   "Alterar Livro Fiscal"
             Top             =   3600
             Width           =   975
@@ -7657,6 +3819,2554 @@ Begin VB.Form frmCadMob
             _ExtentY        =   556
             BTYPE           =   3
             TX              =   "&Editar"
+            ENAB            =   -1  'True
+            BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            COLTYPE         =   2
+            FOCUSR          =   0   'False
+            BCOL            =   12632256
+            BCOLO           =   12632256
+            FCOL            =   0
+            FCOLO           =   0
+            MCOL            =   12632256
+            MPTR            =   1
+            MICON           =   "frmCadMob.frx":4B18
+            PICN            =   "frmCadMob.frx":4B34
+            UMCOL           =   -1  'True
+            SOFT            =   0   'False
+            PICPOS          =   0
+            NGREY           =   0   'False
+            FX              =   0
+            HAND            =   0   'False
+            CHECK           =   0   'False
+            VALUE           =   0   'False
+         End
+         Begin prjChameleon.chameleonButton cmdNovo3 
+            Height          =   315
+            Left            =   180
+            TabIndex        =   205
+            ToolTipText     =   "Novo Livro Fiscal"
+            Top             =   3600
+            Width           =   975
+            _ExtentX        =   1720
+            _ExtentY        =   556
+            BTYPE           =   3
+            TX              =   "&Novo"
+            ENAB            =   -1  'True
+            BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            COLTYPE         =   2
+            FOCUSR          =   0   'False
+            BCOL            =   12632256
+            BCOLO           =   12632256
+            FCOL            =   0
+            FCOLO           =   0
+            MCOL            =   12632256
+            MPTR            =   1
+            MICON           =   "frmCadMob.frx":4C8E
+            PICN            =   "frmCadMob.frx":4CAA
+            UMCOL           =   -1  'True
+            SOFT            =   0   'False
+            PICPOS          =   0
+            NGREY           =   0   'False
+            FX              =   0
+            HAND            =   0   'False
+            CHECK           =   0   'False
+            VALUE           =   0   'False
+         End
+         Begin esMaskEdit.esMaskedEdit mskEn 
+            Height          =   285
+            Left            =   1650
+            TabIndex        =   206
+            Top             =   2130
+            Width           =   1140
+            _ExtentX        =   2011
+            _ExtentY        =   503
+            MouseIcon       =   "frmCadMob.frx":4E04
+            BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Appearance      =   0
+            MaxLength       =   10
+            Mask            =   "99/99/9999"
+            SelText         =   ""
+            Text            =   "__/__/____"
+            HideSelection   =   -1  'True
+         End
+         Begin prjChameleon.chameleonButton cmdGravar3 
+            Height          =   315
+            Left            =   1230
+            TabIndex        =   207
+            ToolTipText     =   "Gravar Livro"
+            Top             =   3600
+            Width           =   975
+            _ExtentX        =   1720
+            _ExtentY        =   556
+            BTYPE           =   3
+            TX              =   "&Gravar"
+            ENAB            =   -1  'True
+            BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            COLTYPE         =   2
+            FOCUSR          =   0   'False
+            BCOL            =   12632256
+            BCOLO           =   12632256
+            FCOL            =   0
+            FCOLO           =   0
+            MCOL            =   12632256
+            MPTR            =   1
+            MICON           =   "frmCadMob.frx":4E20
+            PICN            =   "frmCadMob.frx":4E3C
+            UMCOL           =   -1  'True
+            SOFT            =   0   'False
+            PICPOS          =   0
+            NGREY           =   0   'False
+            FX              =   0
+            HAND            =   0   'False
+            CHECK           =   0   'False
+            VALUE           =   0   'False
+         End
+         Begin prjChameleon.chameleonButton cmdCancelar3 
+            Height          =   315
+            Left            =   2250
+            TabIndex        =   208
+            ToolTipText     =   "Cancelar Edição"
+            Top             =   3630
+            Width           =   975
+            _ExtentX        =   1720
+            _ExtentY        =   556
+            BTYPE           =   3
+            TX              =   "&Cancel"
+            ENAB            =   -1  'True
+            BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            COLTYPE         =   2
+            FOCUSR          =   0   'False
+            BCOL            =   12632256
+            BCOLO           =   12632256
+            FCOL            =   0
+            FCOLO           =   0
+            MCOL            =   12632256
+            MPTR            =   1
+            MICON           =   "frmCadMob.frx":51E1
+            PICN            =   "frmCadMob.frx":51FD
+            UMCOL           =   -1  'True
+            SOFT            =   0   'False
+            PICPOS          =   0
+            NGREY           =   0   'False
+            FX              =   0
+            HAND            =   0   'False
+            CHECK           =   0   'False
+            VALUE           =   0   'False
+         End
+         Begin VB.Label lblNovo2 
+            Caption         =   "0"
+            Height          =   225
+            Left            =   600
+            TabIndex        =   214
+            Top             =   3150
+            Visible         =   0   'False
+            Width           =   855
+         End
+         Begin VB.Label Label10 
+            BackStyle       =   0  'Transparent
+            Caption         =   "Encerramento:"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   225
+            Left            =   270
+            TabIndex        =   213
+            Top             =   2190
+            Width           =   1335
+         End
+         Begin VB.Shape Shape2 
+            BorderColor     =   &H00C00000&
+            BorderWidth     =   3
+            FillColor       =   &H00C00000&
+            Height          =   4125
+            Left            =   0
+            Top             =   0
+            Width           =   3345
+         End
+         Begin VB.Label Label17 
+            BackStyle       =   0  'Transparent
+            Caption         =   "Sequência....:"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   225
+            Left            =   270
+            TabIndex        =   212
+            Top             =   1050
+            Width           =   1365
+         End
+         Begin VB.Label Label15 
+            BackStyle       =   0  'Transparent
+            Caption         =   "Modelo.........:"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   225
+            Left            =   270
+            TabIndex        =   211
+            Top             =   1425
+            Width           =   1275
+         End
+         Begin VB.Label Label12 
+            BackStyle       =   0  'Transparent
+            Caption         =   "Abertura........:"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   225
+            Left            =   270
+            TabIndex        =   210
+            Top             =   1815
+            Width           =   1335
+         End
+         Begin VB.Label lblSeq2 
+            BackStyle       =   0  'Transparent
+            Height          =   225
+            Left            =   1350
+            TabIndex        =   209
+            Top             =   1050
+            Width           =   555
+         End
+      End
+      Begin MSFlexGridLib.MSFlexGrid grdLivro 
+         Height          =   4125
+         Left            =   120
+         TabIndex        =   199
+         Top             =   300
+         Width           =   4695
+         _ExtentX        =   8281
+         _ExtentY        =   7276
+         _Version        =   393216
+         Rows            =   1
+         Cols            =   4
+         FixedCols       =   0
+         BackColorSel    =   8388608
+         BackColorBkg    =   15658734
+         FocusRect       =   0
+         SelectionMode   =   1
+         Appearance      =   0
+         FormatString    =   "^Seq     |^Modelo    |^Data Abertura        |^Data Encerramento "
+      End
+   End
+   Begin VB.Frame Tela 
+      BackColor       =   &H00EEEEEE&
+      Height          =   5160
+      Index           =   0
+      Left            =   2025
+      TabIndex        =   61
+      Top             =   30
+      Width           =   9405
+      Begin VB.CheckBox chkImune 
+         BackColor       =   &H00EEEEEE&
+         Caption         =   "Imunidade de ISSQN"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   195
+         Left            =   120
+         TabIndex        =   33
+         Top             =   4320
+         Width           =   2370
+      End
+      Begin VB.CheckBox chkIsentoIE 
+         BackColor       =   &H00EEEEEE&
+         Caption         =   "Isento"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000080&
+         Height          =   195
+         Left            =   1980
+         TabIndex        =   14
+         ToolTipText     =   "Assinale se for isento de inscrição estadual"
+         Top             =   1305
+         Width           =   960
+      End
+      Begin VB.ComboBox cmbImovel 
+         Height          =   315
+         Left            =   8130
+         Style           =   2  'Dropdown List
+         TabIndex        =   360
+         Top             =   180
+         Width           =   1125
+      End
+      Begin VB.CheckBox chkLiberadoVRE 
+         Alignment       =   1  'Right Justify
+         BackColor       =   &H00EEEEEE&
+         Caption         =   "Liberado VRE"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00004000&
+         Height          =   195
+         Left            =   7695
+         TabIndex        =   357
+         ToolTipText     =   "Os dados da empresa já foram liberados"
+         Top             =   3780
+         Visible         =   0   'False
+         Width           =   1515
+      End
+      Begin VB.CheckBox chkDanfe 
+         Caption         =   "Check1"
+         Height          =   195
+         Left            =   8700
+         TabIndex        =   356
+         Top             =   5430
+         Visible         =   0   'False
+         Width           =   345
+      End
+      Begin VB.CheckBox chkMEI 
+         Caption         =   "Check1"
+         Height          =   195
+         Left            =   8130
+         TabIndex        =   355
+         Top             =   5370
+         Visible         =   0   'False
+         Width           =   345
+      End
+      Begin VB.CheckBox chkRE 
+         Caption         =   "Check1"
+         Height          =   195
+         Left            =   8670
+         TabIndex        =   354
+         Top             =   5700
+         Visible         =   0   'False
+         Width           =   345
+      End
+      Begin VB.CheckBox chkEmiteNF 
+         Caption         =   "Check1"
+         Height          =   195
+         Left            =   8130
+         TabIndex        =   353
+         Top             =   5670
+         Visible         =   0   'False
+         Width           =   345
+      End
+      Begin VB.CheckBox chkEmpInd 
+         BackColor       =   &H00EEEEEE&
+         Caption         =   "Empresa Individual"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   195
+         Left            =   120
+         TabIndex        =   32
+         Top             =   4050
+         Width           =   2055
+      End
+      Begin VB.CheckBox chkSubstitutoTributario 
+         BackColor       =   &H00EEEEEE&
+         Caption         =   "Substituto tributário do ISSQN"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   195
+         Left            =   120
+         TabIndex        =   28
+         Top             =   3255
+         Width           =   3165
+      End
+      Begin Tributacao.jcFrames frMei 
+         Height          =   330
+         Left            =   90
+         Top             =   4740
+         Visible         =   0   'False
+         Width           =   1590
+         _ExtentX        =   2805
+         _ExtentY        =   582
+         FrameColor      =   192
+         Style           =   0
+         RoundedCornerTxtBox=   -1  'True
+         Caption         =   ""
+         TextColor       =   13579779
+         Alignment       =   0
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ColorFrom       =   0
+         ColorTo         =   0
+         Begin prjChameleon.chameleonButton btDataMei 
+            Height          =   255
+            Left            =   1620
+            TabIndex        =   348
+            ToolTipText     =   "Consultar períodos do Simples Nacional"
+            Top             =   45
+            Width           =   375
+            _ExtentX        =   661
+            _ExtentY        =   450
+            BTYPE           =   5
+            TX              =   "..."
+            ENAB            =   -1  'True
+            BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            COLTYPE         =   2
+            FOCUSR          =   0   'False
+            BCOL            =   -2147483633
+            BCOLO           =   -2147483633
+            FCOL            =   0
+            FCOLO           =   0
+            MCOL            =   12632256
+            MPTR            =   1
+            MICON           =   "frmCadMob.frx":5357
+            UMCOL           =   -1  'True
+            SOFT            =   0   'False
+            PICPOS          =   0
+            NGREY           =   0   'False
+            FX              =   0
+            HAND            =   0   'False
+            CHECK           =   0   'False
+            VALUE           =   0   'False
+         End
+         Begin VB.Label Label1 
+            Alignment       =   2  'Center
+            Caption         =   "Optante do MEI"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H000000C0&
+            Height          =   195
+            Index           =   8
+            Left            =   90
+            TabIndex        =   347
+            Top             =   60
+            Width           =   1455
+         End
+      End
+      Begin VB.TextBox txtSIL 
+         Appearance      =   0  'Flat
+         Height          =   285
+         Left            =   4080
+         MaxLength       =   80
+         TabIndex        =   35
+         Top             =   2925
+         Visible         =   0   'False
+         Width           =   5145
+      End
+      Begin VB.CheckBox chkBombon 
+         BackColor       =   &H00EEEEEE&
+         Caption         =   "Bombonieri"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   195
+         Left            =   5535
+         TabIndex        =   26
+         Top             =   2565
+         Visible         =   0   'False
+         Width           =   1455
+      End
+      Begin VB.CheckBox chkIsentoTaxa 
+         BackColor       =   &H00EEEEEE&
+         Caption         =   "Isento Taxa"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   195
+         Left            =   1530
+         TabIndex        =   31
+         Top             =   3795
+         Width           =   1410
+      End
+      Begin VB.CheckBox chk24horas 
+         BackColor       =   &H00EEEEEE&
+         Caption         =   "24 horas"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   195
+         Left            =   4140
+         TabIndex        =   25
+         Top             =   2565
+         Visible         =   0   'False
+         Width           =   1185
+      End
+      Begin VB.CheckBox chkInscTemp 
+         BackColor       =   &H00EEEEEE&
+         Caption         =   "Inscrição Temporária"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   195
+         Left            =   120
+         TabIndex        =   27
+         Top             =   2990
+         Width           =   2805
+      End
+      Begin VB.Frame Frame1 
+         Height          =   960
+         Left            =   3465
+         TabIndex        =   304
+         Top             =   4050
+         Width           =   3975
+         Begin VB.TextBox txtNumProcIE 
+            Appearance      =   0  'Flat
+            Height          =   285
+            Left            =   2850
+            MaxLength       =   15
+            TabIndex        =   40
+            Top             =   540
+            Width           =   1065
+         End
+         Begin VB.CheckBox chkIE 
+            BackColor       =   &H00EEEEEE&
+            Caption         =   "Dispensado do ISS Eletrônico"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00400000&
+            Height          =   195
+            Left            =   90
+            TabIndex        =   38
+            ToolTipText     =   "Obrigatoriedade da Declaração pelo ISS Eletrônico"
+            Top             =   180
+            Width           =   2955
+         End
+         Begin esMaskEdit.esMaskedEdit mskDataIE 
+            Height          =   285
+            Left            =   690
+            TabIndex        =   39
+            Top             =   540
+            Width           =   1065
+            _ExtentX        =   1879
+            _ExtentY        =   503
+            MouseIcon       =   "frmCadMob.frx":5373
+            BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Appearance      =   0
+            MaxLength       =   10
+            Mask            =   "99/99/9999"
+            SelText         =   ""
+            Text            =   "__/__/____"
+            HideSelection   =   -1  'True
+         End
+         Begin VB.Label Label2 
+            Appearance      =   0  'Flat
+            BackColor       =   &H80000005&
+            BackStyle       =   0  'Transparent
+            Caption         =   "Data.:"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00400000&
+            Height          =   225
+            Index           =   59
+            Left            =   90
+            TabIndex        =   306
+            Top             =   585
+            Width           =   585
+         End
+         Begin VB.Label Label2 
+            Appearance      =   0  'Flat
+            BackColor       =   &H80000005&
+            BackStyle       =   0  'Transparent
+            Caption         =   "Processo.:"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00400000&
+            Height          =   240
+            Index           =   4
+            Left            =   1860
+            TabIndex        =   305
+            Top             =   585
+            Width           =   900
+         End
+      End
+      Begin VB.TextBox txtOrgao 
+         Appearance      =   0  'Flat
+         Height          =   285
+         Left            =   8415
+         MaxLength       =   25
+         TabIndex        =   17
+         Top             =   1260
+         Width           =   810
+      End
+      Begin VB.CheckBox chkIsentoISS 
+         BackColor       =   &H00EEEEEE&
+         Caption         =   "Isento ISS"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   195
+         Left            =   120
+         TabIndex        =   30
+         Top             =   3780
+         Width           =   1275
+      End
+      Begin VB.CheckBox chkAlvara 
+         BackColor       =   &H00EEEEEE&
+         Caption         =   "Alvará Automático"
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   195
+         Left            =   120
+         TabIndex        =   29
+         Top             =   3525
+         Width           =   2175
+      End
+      Begin VB.ComboBox cmbHorario 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00FFFFFF&
+         Height          =   315
+         Left            =   1995
+         Style           =   2  'Dropdown List
+         TabIndex        =   24
+         Top             =   2505
+         Visible         =   0   'False
+         Width           =   1995
+      End
+      Begin VB.TextBox txtNumProcE 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00FFFFFF&
+         Height          =   285
+         Left            =   4995
+         Locked          =   -1  'True
+         MaxLength       =   15
+         TabIndex        =   22
+         TabStop         =   0   'False
+         Top             =   2100
+         Width           =   1425
+      End
+      Begin VB.TextBox txtNumProcA 
+         Appearance      =   0  'Flat
+         Height          =   285
+         Left            =   4995
+         MaxLength       =   15
+         TabIndex        =   19
+         Top             =   1740
+         Width           =   1425
+      End
+      Begin VB.TextBox txtInscEst 
+         Appearance      =   0  'Flat
+         Height          =   285
+         Left            =   3060
+         MaxLength       =   15
+         TabIndex        =   15
+         Top             =   1260
+         Width           =   1995
+      End
+      Begin VB.TextBox txtFantasia 
+         Appearance      =   0  'Flat
+         Height          =   285
+         Left            =   1980
+         MaxLength       =   60
+         TabIndex        =   13
+         Top             =   900
+         Width           =   7245
+      End
+      Begin VB.TextBox txtRazao 
+         Appearance      =   0  'Flat
+         Height          =   285
+         Left            =   1980
+         MaxLength       =   500
+         TabIndex        =   12
+         Top             =   540
+         Width           =   7245
+      End
+      Begin VB.TextBox txtCodEmpresa 
+         Appearance      =   0  'Flat
+         Height          =   285
+         Left            =   1980
+         MaxLength       =   9
+         TabIndex        =   9
+         TabStop         =   0   'False
+         Top             =   180
+         Width           =   1065
+      End
+      Begin esMaskEdit.esMaskedEdit mskDataAb 
+         Height          =   285
+         Left            =   1980
+         TabIndex        =   18
+         Top             =   1740
+         Width           =   1200
+         _ExtentX        =   2117
+         _ExtentY        =   503
+         MouseIcon       =   "frmCadMob.frx":538F
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Appearance      =   0
+         MaxLength       =   10
+         Mask            =   "99/99/9999"
+         SelText         =   ""
+         Text            =   "__/__/____"
+         HideSelection   =   -1  'True
+      End
+      Begin esMaskEdit.esMaskedEdit mskDataEn 
+         Height          =   285
+         Left            =   1980
+         TabIndex        =   21
+         TabStop         =   0   'False
+         Top             =   2100
+         Width           =   1200
+         _ExtentX        =   2117
+         _ExtentY        =   503
+         BackColor       =   16777215
+         MouseIcon       =   "frmCadMob.frx":53AB
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Appearance      =   0
+         MaxLength       =   10
+         Mask            =   "99/99/9999"
+         SelText         =   ""
+         Text            =   "__/__/____"
+         HideSelection   =   -1  'True
+         Locked          =   -1  'True
+      End
+      Begin esMaskEdit.esMaskedEdit mskDataPAb 
+         Height          =   285
+         Left            =   8025
+         TabIndex        =   20
+         TabStop         =   0   'False
+         Top             =   1740
+         Width           =   1200
+         _ExtentX        =   2117
+         _ExtentY        =   503
+         BackColor       =   15658734
+         MouseIcon       =   "frmCadMob.frx":53C7
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Appearance      =   0
+         MaxLength       =   10
+         Mask            =   "99/99/9999"
+         SelText         =   ""
+         Text            =   "__/__/____"
+         HideSelection   =   -1  'True
+         Locked          =   -1  'True
+      End
+      Begin esMaskEdit.esMaskedEdit mskDataPEn 
+         Height          =   285
+         Left            =   8025
+         TabIndex        =   23
+         TabStop         =   0   'False
+         Top             =   2100
+         Width           =   1200
+         _ExtentX        =   2117
+         _ExtentY        =   503
+         BackColor       =   15658734
+         MouseIcon       =   "frmCadMob.frx":53E3
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Appearance      =   0
+         MaxLength       =   10
+         Mask            =   "99/99/9999"
+         SelText         =   ""
+         Text            =   "__/__/____"
+         HideSelection   =   -1  'True
+         Locked          =   -1  'True
+      End
+      Begin prjChameleon.chameleonButton cmdGerar 
+         Height          =   345
+         Left            =   5760
+         TabIndex        =   36
+         ToolTipText     =   "Consultar períodos do Simples Nacional"
+         Top             =   3255
+         Width           =   375
+         _ExtentX        =   661
+         _ExtentY        =   609
+         BTYPE           =   3
+         TX              =   ""
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   0
+         FCOLO           =   0
+         MCOL            =   12632256
+         MPTR            =   1
+         MICON           =   "frmCadMob.frx":53FF
+         PICN            =   "frmCadMob.frx":541B
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton cmdISSEletro 
+         Cancel          =   -1  'True
+         Height          =   345
+         Left            =   5760
+         TabIndex        =   37
+         ToolTipText     =   "Consultar períodos do Iss Eletrônico"
+         Top             =   3675
+         Width           =   375
+         _ExtentX        =   661
+         _ExtentY        =   609
+         BTYPE           =   3
+         TX              =   ""
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   0
+         FCOLO           =   0
+         MCOL            =   12632256
+         MPTR            =   1
+         MICON           =   "frmCadMob.frx":5575
+         PICN            =   "frmCadMob.frx":5591
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin esMaskEdit.esMaskedEdit mskCPF 
+         Height          =   285
+         Left            =   3750
+         TabIndex        =   10
+         Top             =   180
+         Width           =   1245
+         _ExtentX        =   2196
+         _ExtentY        =   503
+         MouseIcon       =   "frmCadMob.frx":56EB
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Appearance      =   0
+         MaxLength       =   14
+         Mask            =   "999.999.999-99"
+         SelText         =   ""
+         Text            =   "___.___.___-__"
+         HideSelection   =   -1  'True
+      End
+      Begin esMaskEdit.esMaskedEdit mskCNPJ 
+         Height          =   285
+         Left            =   5820
+         TabIndex        =   11
+         Top             =   180
+         Width           =   1380
+         _ExtentX        =   2434
+         _ExtentY        =   503
+         MouseIcon       =   "frmCadMob.frx":5707
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Appearance      =   0
+         MaxLength       =   14
+         Mask            =   "99999999999999"
+         SelText         =   ""
+         Text            =   "______________"
+         HideSelection   =   -1  'True
+      End
+      Begin esMaskEdit.esMaskedEdit mskRG 
+         Height          =   285
+         Left            =   5895
+         TabIndex        =   16
+         Top             =   1260
+         Width           =   1590
+         _ExtentX        =   2805
+         _ExtentY        =   503
+         MouseIcon       =   "frmCadMob.frx":5723
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Appearance      =   0
+         MaxLength       =   25
+         SelText         =   ""
+         HideSelection   =   -1  'True
+      End
+      Begin esMaskEdit.esMaskedEdit mskDataAP 
+         Height          =   285
+         Left            =   7860
+         TabIndex        =   34
+         Top             =   3300
+         Visible         =   0   'False
+         Width           =   930
+         _ExtentX        =   1640
+         _ExtentY        =   503
+         MouseIcon       =   "frmCadMob.frx":573F
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Appearance      =   0
+         MaxLength       =   10
+         Mask            =   "99/99/9999"
+         SelText         =   ""
+         Text            =   "__/__/____"
+         HideSelection   =   -1  'True
+      End
+      Begin prjChameleon.chameleonButton cmdAP 
+         Height          =   360
+         Left            =   8850
+         TabIndex        =   309
+         ToolTipText     =   "Imprimir alvará provisório"
+         Top             =   3270
+         Visible         =   0   'False
+         Width           =   405
+         _ExtentX        =   714
+         _ExtentY        =   635
+         BTYPE           =   3
+         TX              =   ""
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   0
+         FCOLO           =   0
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmCadMob.frx":575B
+         PICN            =   "frmCadMob.frx":5777
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton cmdSil 
+         Height          =   285
+         Left            =   6990
+         TabIndex        =   352
+         ToolTipText     =   "Cadastrar SIL"
+         Top             =   2520
+         Width           =   795
+         _ExtentX        =   1402
+         _ExtentY        =   503
+         BTYPE           =   3
+         TX              =   "SIL"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   12582912
+         FCOLO           =   12582912
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmCadMob.frx":58D1
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin VB.Label Label1 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00000040&
+         BackStyle       =   0  'Transparent
+         Caption         =   "SIL..:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   285
+         Index           =   0
+         Left            =   3510
+         TabIndex        =   337
+         Top             =   2970
+         Visible         =   0   'False
+         Width           =   555
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00000040&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Imóvel..:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   225
+         Index           =   63
+         Left            =   7335
+         TabIndex        =   336
+         Top             =   240
+         Width           =   720
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00000040&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Alvará Provisório:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   225
+         Index           =   60
+         Left            =   6225
+         TabIndex        =   308
+         Top             =   3345
+         Visible         =   0   'False
+         Width           =   1560
+      End
+      Begin VB.Label Label1 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00000040&
+         BackStyle       =   0  'Transparent
+         Caption         =   "RG..:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   285
+         Index           =   13
+         Left            =   5370
+         TabIndex        =   245
+         Top             =   1305
+         Width           =   1095
+      End
+      Begin VB.Label Label1 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00000040&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Orgão..:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   195
+         Index           =   14
+         Left            =   7650
+         TabIndex        =   244
+         Top             =   1305
+         Width           =   690
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00000040&
+         BackStyle       =   0  'Transparent
+         Caption         =   "CNPJ..:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   285
+         Index           =   3
+         Left            =   5115
+         TabIndex        =   243
+         Top             =   240
+         Width           =   645
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00000040&
+         BackStyle       =   0  'Transparent
+         Caption         =   "CPF..:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   225
+         Index           =   6
+         Left            =   3150
+         TabIndex        =   242
+         Top             =   240
+         Width           =   495
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H80000005&
+         BackStyle       =   0  'Transparent
+         Caption         =   "ISS Eletrônico......:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   225
+         Index           =   58
+         Left            =   3510
+         TabIndex        =   240
+         Top             =   3810
+         Width           =   1755
+      End
+      Begin VB.Label lblISSEletro 
+         Appearance      =   0  'Flat
+         BackColor       =   &H80000005&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Não"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H000000C0&
+         Height          =   225
+         Left            =   5280
+         TabIndex        =   239
+         Top             =   3780
+         Width           =   435
+      End
+      Begin VB.Label lblSN 
+         Appearance      =   0  'Flat
+         BackColor       =   &H80000005&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Não"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H000000C0&
+         Height          =   225
+         Left            =   5280
+         TabIndex        =   235
+         Top             =   3315
+         Width           =   435
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H80000005&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Simples Nacional..:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   225
+         Index           =   56
+         Left            =   3510
+         TabIndex        =   234
+         Top             =   3330
+         Width           =   1755
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H80000005&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Data Processo.:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   285
+         Index           =   12
+         Left            =   6540
+         TabIndex        =   72
+         Top             =   2160
+         Width           =   1455
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00000040&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Data Processo.:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   285
+         Index           =   11
+         Left            =   6540
+         TabIndex        =   71
+         Top             =   1800
+         Width           =   1455
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H80000005&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Nº do Processo.:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   285
+         Index           =   10
+         Left            =   3420
+         TabIndex        =   70
+         Top             =   2160
+         Width           =   1485
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00000040&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Nº do Processo.:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   285
+         Index           =   9
+         Left            =   3420
+         TabIndex        =   69
+         Top             =   1800
+         Width           =   1485
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H80000005&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Data Encerramento.:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   225
+         Index           =   8
+         Left            =   120
+         TabIndex        =   68
+         Top             =   2160
+         Width           =   1845
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00000040&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Data de Abertura....:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   225
+         Index           =   7
+         Left            =   120
+         TabIndex        =   67
+         Top             =   1800
+         Width           =   1845
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00000040&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Inscrição Estadual..:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   225
+         Index           =   5
+         Left            =   120
+         TabIndex        =   66
+         Top             =   1305
+         Width           =   1845
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00000040&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Nome Fantasia.......:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   225
+         Index           =   2
+         Left            =   120
+         TabIndex        =   65
+         Top             =   945
+         Width           =   1845
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00000040&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Razão Social..........:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   225
+         Index           =   1
+         Left            =   120
+         TabIndex        =   64
+         Top             =   600
+         Width           =   1845
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00000040&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Inscrição Municipal.:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   225
+         Index           =   0
+         Left            =   120
+         TabIndex        =   63
+         Top             =   240
+         Width           =   1845
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H80000005&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Horário Funcionam..:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   225
+         Index           =   19
+         Left            =   120
+         TabIndex        =   62
+         Top             =   2550
+         Visible         =   0   'False
+         Width           =   1845
+      End
+   End
+   Begin VB.Frame Tela 
+      Height          =   5160
+      Index           =   11
+      Left            =   2010
+      TabIndex        =   312
+      Top             =   90
+      Width           =   9405
+      Begin Tributacao.jcFrames jcFrames2 
+         Height          =   1950
+         Left            =   4140
+         Top             =   2340
+         Width           =   5145
+         _ExtentX        =   9075
+         _ExtentY        =   3440
+         FrameColor      =   12829635
+         Style           =   0
+         RoundedCornerTxtBox=   -1  'True
+         Caption         =   ""
+         TextColor       =   13579779
+         Alignment       =   0
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ColorFrom       =   0
+         ColorTo         =   0
+         Begin VB.TextBox txtNumProc 
+            Appearance      =   0  'Flat
+            Height          =   285
+            Left            =   3810
+            TabIndex        =   321
+            Top             =   540
+            Width           =   1185
+         End
+         Begin VB.ComboBox cmbAno 
+            Height          =   315
+            Left            =   1575
+            Style           =   2  'Dropdown List
+            TabIndex        =   320
+            Top             =   540
+            Width           =   1050
+         End
+         Begin VB.TextBox txtArq 
+            Height          =   285
+            Left            =   1575
+            Locked          =   -1  'True
+            TabIndex        =   322
+            Top             =   945
+            Width           =   2940
+         End
+         Begin VB.ComboBox cmbTipoDoc 
+            Height          =   315
+            ItemData        =   "frmCadMob.frx":58ED
+            Left            =   1575
+            List            =   "frmCadMob.frx":58EF
+            Style           =   2  'Dropdown List
+            TabIndex        =   319
+            Top             =   135
+            Width           =   3435
+         End
+         Begin prjChameleon.chameleonButton cmdOpenPic 
+            Height          =   285
+            Left            =   4590
+            TabIndex        =   323
+            ToolTipText     =   "Localiza documento a importar"
+            Top             =   945
+            Width           =   405
+            _ExtentX        =   714
+            _ExtentY        =   503
+            BTYPE           =   3
+            TX              =   ""
+            ENAB            =   -1  'True
+            BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+               Name            =   "MS Sans Serif"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            COLTYPE         =   2
+            FOCUSR          =   0   'False
+            BCOL            =   12632256
+            BCOLO           =   12632256
+            FCOL            =   12582912
+            FCOLO           =   12582912
+            MCOL            =   13026246
+            MPTR            =   1
+            MICON           =   "frmCadMob.frx":58F1
+            PICN            =   "frmCadMob.frx":590D
+            UMCOL           =   -1  'True
+            SOFT            =   0   'False
+            PICPOS          =   0
+            NGREY           =   0   'False
+            FX              =   0
+            HAND            =   0   'False
+            CHECK           =   0   'False
+            VALUE           =   0   'False
+         End
+         Begin prjChameleon.chameleonButton cmdGravarPic 
+            Height          =   315
+            Left            =   3960
+            TabIndex        =   326
+            ToolTipText     =   "Gravar o documento"
+            Top             =   1440
+            Width           =   1035
+            _ExtentX        =   1826
+            _ExtentY        =   556
+            BTYPE           =   3
+            TX              =   "&Gravar"
+            ENAB            =   -1  'True
+            BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            COLTYPE         =   2
+            FOCUSR          =   0   'False
+            BCOL            =   12632256
+            BCOLO           =   12632256
+            FCOL            =   0
+            FCOLO           =   0
+            MCOL            =   12632256
+            MPTR            =   1
+            MICON           =   "frmCadMob.frx":5994
+            PICN            =   "frmCadMob.frx":59B0
+            UMCOL           =   -1  'True
+            SOFT            =   0   'False
+            PICPOS          =   0
+            NGREY           =   0   'False
+            FX              =   0
+            HAND            =   0   'False
+            CHECK           =   0   'False
+            VALUE           =   0   'False
+         End
+         Begin VB.Label Label2 
+            BackStyle       =   0  'Transparent
+            Caption         =   "Nº Processo.:"
+            Height          =   225
+            Index           =   62
+            Left            =   2745
+            TabIndex        =   327
+            Top             =   570
+            Width           =   1080
+         End
+         Begin VB.Label Label9 
+            Caption         =   "Arquivo Importar...:"
+            Height          =   195
+            Index           =   1
+            Left            =   135
+            TabIndex        =   325
+            Top             =   990
+            Width           =   1365
+         End
+         Begin VB.Label Label9 
+            Caption         =   "Ano Documento...:"
+            Height          =   195
+            Index           =   0
+            Left            =   135
+            TabIndex        =   324
+            Top             =   585
+            Width           =   1365
+         End
+         Begin VB.Label Label8 
+            Caption         =   "Tipo Documento..:"
+            Height          =   195
+            Left            =   135
+            TabIndex        =   318
+            Top             =   180
+            Width           =   1320
+         End
+      End
+      Begin prjChameleon.chameleonButton cmdD1 
+         Height          =   285
+         Left            =   5040
+         TabIndex        =   314
+         ToolTipText     =   "Documento anterior"
+         Top             =   585
+         Width           =   405
+         _ExtentX        =   714
+         _ExtentY        =   503
+         BTYPE           =   3
+         TX              =   ""
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   12582912
+         FCOLO           =   12582912
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmCadMob.frx":5D55
+         PICN            =   "frmCadMob.frx":5D71
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton cmdD2 
+         Height          =   285
+         Left            =   7515
+         TabIndex        =   315
+         ToolTipText     =   "Próximo documento"
+         Top             =   585
+         Width           =   405
+         _ExtentX        =   714
+         _ExtentY        =   503
+         BTYPE           =   3
+         TX              =   ""
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   12582912
+         FCOLO           =   12582912
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmCadMob.frx":5ECB
+         PICN            =   "frmCadMob.frx":5EE7
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton cmdAbrirPic 
+         Height          =   540
+         Left            =   5625
+         TabIndex        =   317
+         ToolTipText     =   "Abrir documento"
+         Top             =   1395
+         Width           =   1800
+         _ExtentX        =   3175
+         _ExtentY        =   953
+         BTYPE           =   3
+         TX              =   " &Abrir"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   0
+         FCOLO           =   0
+         MCOL            =   12632256
+         MPTR            =   1
+         MICON           =   "frmCadMob.frx":6041
+         PICN            =   "frmCadMob.frx":605D
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton cmdExcluirDoc 
+         Height          =   315
+         Left            =   7605
+         TabIndex        =   335
+         ToolTipText     =   "Exclusão de documento"
+         Top             =   1620
+         Width           =   1035
+         _ExtentX        =   1826
+         _ExtentY        =   556
+         BTYPE           =   3
+         TX              =   "Excluir"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   192
+         FCOLO           =   192
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmCadMob.frx":620C
+         PICN            =   "frmCadMob.frx":6228
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin VB.Image imgTmp2 
+         Height          =   495
+         Left            =   8595
+         Picture         =   "frmCadMob.frx":62CA
+         Stretch         =   -1  'True
+         Top             =   4500
+         Visible         =   0   'False
+         Width           =   525
+      End
+      Begin VB.Label lblTipoDoc 
+         Alignment       =   2  'Center
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   240
+         Left            =   5040
+         TabIndex        =   316
+         Top             =   945
+         Width           =   2940
+      End
+      Begin VB.Label lblPagDoc 
+         Alignment       =   2  'Center
+         Caption         =   "Documento 0 de 0"
+         Height          =   240
+         Left            =   5490
+         TabIndex        =   313
+         Top             =   630
+         Width           =   1995
+      End
+      Begin VB.Image imgTmp 
+         Appearance      =   0  'Flat
+         BorderStyle     =   1  'Fixed Single
+         Height          =   4650
+         Left            =   315
+         Stretch         =   -1  'True
+         Top             =   315
+         Width           =   3660
+      End
+   End
+   Begin VB.Frame Tela 
+      BackColor       =   &H00EEEEEE&
+      Height          =   5160
+      Index           =   5
+      Left            =   2040
+      TabIndex        =   169
+      Top             =   60
+      Width           =   9405
+      Begin VB.TextBox txtHist 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00EEEEEE&
+         Height          =   795
+         Left            =   90
+         MaxLength       =   5000
+         MultiLine       =   -1  'True
+         TabIndex        =   170
+         Top             =   3720
+         Width           =   9225
+      End
+      Begin MSFlexGridLib.MSFlexGrid grdHist 
+         Height          =   3345
+         Left            =   60
+         TabIndex        =   171
+         Top             =   240
+         Width           =   9255
+         _ExtentX        =   16325
+         _ExtentY        =   5900
+         _Version        =   393216
+         Rows            =   1
+         Cols            =   4
+         FixedCols       =   0
+         BackColorSel    =   8388608
+         BackColorBkg    =   15658734
+         FocusRect       =   0
+         SelectionMode   =   1
+         Appearance      =   0
+         FormatString    =   $"frmCadMob.frx":C512
+      End
+      Begin prjChameleon.chameleonButton cmdEditHist 
+         Height          =   315
+         Left            =   120
+         TabIndex        =   172
+         ToolTipText     =   "Editar Histórico"
+         Top             =   4695
+         Width           =   1935
+         _ExtentX        =   3413
+         _ExtentY        =   556
+         BTYPE           =   3
+         TX              =   "&Editar Histórico"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   0
+         FCOLO           =   0
+         MCOL            =   12632256
+         MPTR            =   1
+         MICON           =   "frmCadMob.frx":C5B9
+         PICN            =   "frmCadMob.frx":C5D5
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+   End
+   Begin VB.Frame Tela 
+      BackColor       =   &H00EEEEEE&
+      Height          =   5160
+      Index           =   6
+      Left            =   2040
+      TabIndex        =   173
+      Top             =   90
+      Width           =   9405
+      Begin VB.Frame Frame6 
+         BackColor       =   &H00EEEEEE&
+         Caption         =   "Diversos"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000080&
+         Height          =   1605
+         Left            =   90
+         TabIndex        =   187
+         Top             =   3495
+         Width           =   9195
+         Begin VB.TextBox txtHorario_Funcionamento 
+            Appearance      =   0  'Flat
+            BackColor       =   &H00EEEEEE&
+            Height          =   285
+            Left            =   1635
+            Locked          =   -1  'True
+            TabIndex        =   359
+            Top             =   600
+            Width           =   7455
+         End
+         Begin VB.OptionButton OptHorario 
+            Caption         =   "Horário especial:"
+            ForeColor       =   &H00800000&
+            Height          =   195
+            Index           =   1
+            Left            =   120
+            TabIndex        =   191
+            Top             =   930
+            Width           =   1485
+         End
+         Begin VB.OptionButton OptHorario 
+            Caption         =   "Horário normal..:"
+            ForeColor       =   &H00800000&
+            Height          =   195
+            Index           =   0
+            Left            =   120
+            TabIndex        =   190
+            Top             =   630
+            Value           =   -1  'True
+            Width           =   1485
+         End
+         Begin VB.TextBox txtSenha 
+            Appearance      =   0  'Flat
+            Height          =   315
+            Left            =   7470
+            MaxLength       =   15
+            TabIndex        =   194
+            TabStop         =   0   'False
+            Top             =   240
+            Visible         =   0   'False
+            Width           =   1635
+         End
+         Begin VB.TextBox txtHorarioExt 
+            Appearance      =   0  'Flat
+            Height          =   555
+            Left            =   1635
+            MaxLength       =   300
+            MultiLine       =   -1  'True
+            TabIndex        =   192
+            Top             =   945
+            Width           =   7455
+         End
+         Begin VB.TextBox txtNumFunc 
+            Appearance      =   0  'Flat
+            Height          =   315
+            Left            =   2040
+            MaxLength       =   6
+            TabIndex        =   188
+            Top             =   240
+            Width           =   810
+         End
+         Begin VB.TextBox txtCapital 
+            Appearance      =   0  'Flat
+            Height          =   315
+            Left            =   4515
+            MaxLength       =   15
+            TabIndex        =   189
+            Top             =   240
+            Width           =   1305
+         End
+         Begin VB.Label Label2 
+            Appearance      =   0  'Flat
+            BackColor       =   &H80000005&
+            BackStyle       =   0  'Transparent
+            Caption         =   "Senha ISS Elet.:"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00400000&
+            Height          =   225
+            Index           =   61
+            Left            =   5985
+            TabIndex        =   310
+            Top             =   300
+            Visible         =   0   'False
+            Width           =   1470
+         End
+         Begin VB.Label Label2 
+            Appearance      =   0  'Flat
+            BackColor       =   &H80000005&
+            BackStyle       =   0  'Transparent
+            Caption         =   "Nº de Funcionários.:"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00400000&
+            Height          =   225
+            Index           =   35
+            Left            =   180
+            TabIndex        =   195
+            Top             =   285
+            Width           =   1755
+         End
+         Begin VB.Label Label2 
+            Appearance      =   0  'Flat
+            BackColor       =   &H80000005&
+            BackStyle       =   0  'Transparent
+            Caption         =   "Capital Social...:"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00400000&
+            Height          =   225
+            Index           =   20
+            Left            =   2985
+            TabIndex        =   193
+            Top             =   300
+            Width           =   1515
+         End
+      End
+      Begin VB.Frame Frame7 
+         Caption         =   "Veículos"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000080&
+         Height          =   2115
+         Left            =   7245
+         TabIndex        =   339
+         Top             =   1440
+         Width           =   2040
+         Begin VB.TextBox txtPonto 
+            Appearance      =   0  'Flat
+            Height          =   285
+            Left            =   90
+            MaxLength       =   100
+            TabIndex        =   350
+            Top             =   1740
+            Width           =   1845
+         End
+         Begin esMaskEdit.esMaskedEdit mskPlaca 
+            Height          =   285
+            Left            =   180
+            TabIndex        =   341
+            Top             =   1215
+            Width           =   915
+            _ExtentX        =   1614
+            _ExtentY        =   503
+            MouseIcon       =   "frmCadMob.frx":C72F
+            BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Appearance      =   0
+            SelText         =   ""
+            Text            =   "___-____"
+            HideSelection   =   -1  'True
+         End
+         Begin VB.ListBox lstPlaca 
+            Appearance      =   0  'Flat
+            Height          =   810
+            Left            =   180
+            TabIndex        =   340
+            Top             =   315
+            Width           =   1680
+         End
+         Begin prjChameleon.chameleonButton btAddPlaca 
+            Height          =   285
+            Left            =   1125
+            TabIndex        =   342
+            ToolTipText     =   "Selecionar um Responsável"
+            Top             =   1215
+            Width           =   315
+            _ExtentX        =   556
+            _ExtentY        =   503
+            BTYPE           =   3
+            TX              =   "+"
+            ENAB            =   -1  'True
+            BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+               Name            =   "MS Sans Serif"
+               Size            =   12
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            COLTYPE         =   2
+            FOCUSR          =   0   'False
+            BCOL            =   12632256
+            BCOLO           =   12632256
+            FCOL            =   12582912
+            FCOLO           =   12582912
+            MCOL            =   12632256
+            MPTR            =   1
+            MICON           =   "frmCadMob.frx":C74B
+            UMCOL           =   -1  'True
+            SOFT            =   0   'False
+            PICPOS          =   0
+            NGREY           =   0   'False
+            FX              =   0
+            HAND            =   0   'False
+            CHECK           =   0   'False
+            VALUE           =   0   'False
+         End
+         Begin prjChameleon.chameleonButton btDelPlaca 
+            Height          =   285
+            Left            =   1485
+            TabIndex        =   343
+            ToolTipText     =   "Selecionar um Responsável"
+            Top             =   1215
+            Width           =   315
+            _ExtentX        =   556
+            _ExtentY        =   503
+            BTYPE           =   3
+            TX              =   "-"
+            ENAB            =   -1  'True
+            BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+               Name            =   "MS Sans Serif"
+               Size            =   12
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            COLTYPE         =   2
+            FOCUSR          =   0   'False
+            BCOL            =   12632256
+            BCOLO           =   12632256
+            FCOL            =   12582912
+            FCOLO           =   12582912
+            MCOL            =   12632256
+            MPTR            =   1
+            MICON           =   "frmCadMob.frx":C767
+            UMCOL           =   -1  'True
+            SOFT            =   0   'False
+            PICPOS          =   0
+            NGREY           =   0   'False
+            FX              =   0
+            HAND            =   0   'False
+            CHECK           =   0   'False
+            VALUE           =   0   'False
+         End
+         Begin VB.Label Label2 
+            Appearance      =   0  'Flat
+            BackColor       =   &H80000005&
+            BackStyle       =   0  'Transparent
+            Caption         =   "Ponto/Agência"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00400000&
+            Height          =   225
+            Index           =   64
+            Left            =   90
+            TabIndex        =   351
+            Top             =   1530
+            Width           =   1515
+         End
+      End
+      Begin VB.Frame Frame5 
+         BackColor       =   &H00EEEEEE&
+         Caption         =   "Escritório Contabil Responsável"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000080&
+         Height          =   2055
+         Left            =   90
+         TabIndex        =   182
+         Top             =   1440
+         Width           =   7080
+         Begin VB.TextBox txtEmailCont 
+            Appearance      =   0  'Flat
+            Height          =   315
+            Left            =   990
+            Locked          =   -1  'True
+            MaxLength       =   100
+            TabIndex        =   231
+            Top             =   1140
+            Width           =   5325
+         End
+         Begin VB.TextBox txtFoneCont 
+            Appearance      =   0  'Flat
+            Height          =   315
+            Left            =   3195
+            Locked          =   -1  'True
+            MaxLength       =   200
+            TabIndex        =   229
+            Top             =   360
+            Width           =   2235
+         End
+         Begin VB.ComboBox cmbNomeEsc 
+            Height          =   315
+            Left            =   990
+            Style           =   2  'Dropdown List
+            TabIndex        =   184
+            Top             =   750
+            Width           =   5895
+         End
+         Begin VB.TextBox txtCodEsc 
+            Appearance      =   0  'Flat
+            Height          =   315
+            Left            =   990
+            MaxLength       =   6
+            TabIndex        =   183
+            Top             =   360
+            Width           =   855
+         End
+         Begin prjChameleon.chameleonButton cmdEmail 
+            Height          =   345
+            Left            =   6390
+            TabIndex        =   233
+            ToolTipText     =   "Abrir Email"
+            Top             =   1125
+            Width           =   495
+            _ExtentX        =   873
+            _ExtentY        =   609
+            BTYPE           =   3
+            TX              =   ""
             ENAB            =   -1  'True
             BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
                Name            =   "MS Sans Serif"
@@ -7686,17 +6396,17 @@ Begin VB.Form frmCadMob
             CHECK           =   0   'False
             VALUE           =   0   'False
          End
-         Begin prjChameleon.chameleonButton cmdNovo3 
-            Height          =   315
-            Left            =   180
-            TabIndex        =   206
-            ToolTipText     =   "Novo Livro Fiscal"
-            Top             =   3600
-            Width           =   975
-            _ExtentX        =   1720
-            _ExtentY        =   556
+         Begin prjChameleon.chameleonButton cmdAbrir 
+            Height          =   330
+            Left            =   5715
+            TabIndex        =   338
+            ToolTipText     =   "Selecionar um Responsável"
+            Top             =   315
+            Width           =   1155
+            _ExtentX        =   2037
+            _ExtentY        =   582
             BTYPE           =   3
-            TX              =   "&Novo"
+            TX              =   "Consultar"
             ENAB            =   -1  'True
             BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
                Name            =   "MS Sans Serif"
@@ -7715,8 +6425,8 @@ Begin VB.Form frmCadMob
             FCOLO           =   0
             MCOL            =   12632256
             MPTR            =   1
-            MICON           =   "frmCadMob.frx":C8F9
-            PICN            =   "frmCadMob.frx":C915
+            MICON           =   "frmCadMob.frx":C832
+            PICN            =   "frmCadMob.frx":C84E
             UMCOL           =   -1  'True
             SOFT            =   0   'False
             PICPOS          =   0
@@ -7726,123 +6436,11 @@ Begin VB.Form frmCadMob
             CHECK           =   0   'False
             VALUE           =   0   'False
          End
-         Begin esMaskEdit.esMaskedEdit mskEn 
-            Height          =   285
-            Left            =   1650
-            TabIndex        =   207
-            Top             =   2130
-            Width           =   1140
-            _ExtentX        =   2011
-            _ExtentY        =   503
-            MouseIcon       =   "frmCadMob.frx":CA6F
-            BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            Appearance      =   0
-            MaxLength       =   10
-            Mask            =   "99/99/9999"
-            SelText         =   ""
-            Text            =   "__/__/____"
-            HideSelection   =   -1  'True
-         End
-         Begin prjChameleon.chameleonButton cmdGravar3 
-            Height          =   315
-            Left            =   1230
-            TabIndex        =   208
-            ToolTipText     =   "Gravar Livro"
-            Top             =   3600
-            Width           =   975
-            _ExtentX        =   1720
-            _ExtentY        =   556
-            BTYPE           =   3
-            TX              =   "&Gravar"
-            ENAB            =   -1  'True
-            BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            COLTYPE         =   2
-            FOCUSR          =   0   'False
-            BCOL            =   12632256
-            BCOLO           =   12632256
-            FCOL            =   0
-            FCOLO           =   0
-            MCOL            =   12632256
-            MPTR            =   1
-            MICON           =   "frmCadMob.frx":CA8B
-            PICN            =   "frmCadMob.frx":CAA7
-            UMCOL           =   -1  'True
-            SOFT            =   0   'False
-            PICPOS          =   0
-            NGREY           =   0   'False
-            FX              =   0
-            HAND            =   0   'False
-            CHECK           =   0   'False
-            VALUE           =   0   'False
-         End
-         Begin prjChameleon.chameleonButton cmdCancelar3 
-            Height          =   315
-            Left            =   2250
-            TabIndex        =   209
-            ToolTipText     =   "Cancelar Edição"
-            Top             =   3630
-            Width           =   975
-            _ExtentX        =   1720
-            _ExtentY        =   556
-            BTYPE           =   3
-            TX              =   "&Cancel"
-            ENAB            =   -1  'True
-            BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            COLTYPE         =   2
-            FOCUSR          =   0   'False
-            BCOL            =   12632256
-            BCOLO           =   12632256
-            FCOL            =   0
-            FCOLO           =   0
-            MCOL            =   12632256
-            MPTR            =   1
-            MICON           =   "frmCadMob.frx":CE4C
-            PICN            =   "frmCadMob.frx":CE68
-            UMCOL           =   -1  'True
-            SOFT            =   0   'False
-            PICPOS          =   0
-            NGREY           =   0   'False
-            FX              =   0
-            HAND            =   0   'False
-            CHECK           =   0   'False
-            VALUE           =   0   'False
-         End
-         Begin VB.Label lblNovo2 
-            Caption         =   "0"
-            Height          =   225
-            Left            =   600
-            TabIndex        =   215
-            Top             =   3150
-            Visible         =   0   'False
-            Width           =   855
-         End
-         Begin VB.Label Label10 
+         Begin VB.Label Label2 
+            Appearance      =   0  'Flat
+            BackColor       =   &H80000005&
             BackStyle       =   0  'Transparent
-            Caption         =   "Encerramento:"
+            Caption         =   "Email....:"
             BeginProperty Font 
                Name            =   "MS Sans Serif"
                Size            =   8.25
@@ -7852,24 +6450,19 @@ Begin VB.Form frmCadMob
                Italic          =   0   'False
                Strikethrough   =   0   'False
             EndProperty
+            ForeColor       =   &H00400000&
             Height          =   225
-            Left            =   270
-            TabIndex        =   214
-            Top             =   2190
-            Width           =   1335
+            Index           =   55
+            Left            =   150
+            TabIndex        =   232
+            Top             =   1200
+            Width           =   795
          End
-         Begin VB.Shape Shape2 
-            BorderColor     =   &H00C00000&
-            BorderWidth     =   3
-            FillColor       =   &H00C00000&
-            Height          =   4125
-            Left            =   0
-            Top             =   0
-            Width           =   3345
-         End
-         Begin VB.Label Label17 
+         Begin VB.Label Label2 
+            Appearance      =   0  'Flat
+            BackColor       =   &H80000005&
             BackStyle       =   0  'Transparent
-            Caption         =   "Sequência....:"
+            Caption         =   "Fone..:"
             BeginProperty Font 
                Name            =   "MS Sans Serif"
                Size            =   8.25
@@ -7879,15 +6472,19 @@ Begin VB.Form frmCadMob
                Italic          =   0   'False
                Strikethrough   =   0   'False
             EndProperty
+            ForeColor       =   &H00400000&
             Height          =   225
-            Left            =   270
-            TabIndex        =   213
-            Top             =   1050
-            Width           =   1365
+            Index           =   54
+            Left            =   2475
+            TabIndex        =   230
+            Top             =   405
+            Width           =   660
          End
-         Begin VB.Label Label15 
+         Begin VB.Label Label2 
+            Appearance      =   0  'Flat
+            BackColor       =   &H80000005&
             BackStyle       =   0  'Transparent
-            Caption         =   "Modelo.........:"
+            Caption         =   "Nome....:"
             BeginProperty Font 
                Name            =   "MS Sans Serif"
                Size            =   8.25
@@ -7897,15 +6494,19 @@ Begin VB.Form frmCadMob
                Italic          =   0   'False
                Strikethrough   =   0   'False
             EndProperty
+            ForeColor       =   &H00400000&
             Height          =   225
-            Left            =   270
-            TabIndex        =   212
-            Top             =   1425
-            Width           =   1275
+            Index           =   18
+            Left            =   150
+            TabIndex        =   186
+            Top             =   810
+            Width           =   795
          End
-         Begin VB.Label Label12 
+         Begin VB.Label Label2 
+            Appearance      =   0  'Flat
+            BackColor       =   &H80000005&
             BackStyle       =   0  'Transparent
-            Caption         =   "Abertura........:"
+            Caption         =   "Código..:"
             BeginProperty Font 
                Name            =   "MS Sans Serif"
                Size            =   8.25
@@ -7915,39 +6516,1568 @@ Begin VB.Form frmCadMob
                Italic          =   0   'False
                Strikethrough   =   0   'False
             EndProperty
+            ForeColor       =   &H00400000&
             Height          =   225
-            Left            =   270
-            TabIndex        =   211
-            Top             =   1815
-            Width           =   1335
-         End
-         Begin VB.Label lblSeq2 
-            BackStyle       =   0  'Transparent
-            Height          =   225
-            Left            =   1350
-            TabIndex        =   210
-            Top             =   1050
-            Width           =   555
+            Index           =   13
+            Left            =   150
+            TabIndex        =   185
+            Top             =   420
+            Width           =   795
          End
       End
-      Begin MSFlexGridLib.MSFlexGrid grdLivro 
-         Height          =   4125
+      Begin VB.Frame Frame4 
+         BackColor       =   &H00EEEEEE&
+         Caption         =   "Registro Orgão"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000080&
+         Height          =   1245
+         Left            =   90
+         TabIndex        =   174
+         Top             =   180
+         Width           =   9195
+         Begin VB.TextBox txtTipoConselho 
+            Appearance      =   0  'Flat
+            Height          =   315
+            Left            =   1770
+            MaxLength       =   50
+            TabIndex        =   177
+            Top             =   780
+            Width           =   2985
+         End
+         Begin VB.TextBox txtNumRegistro 
+            Appearance      =   0  'Flat
+            Height          =   315
+            Left            =   6300
+            MaxLength       =   15
+            TabIndex        =   176
+            Top             =   780
+            Width           =   2260
+         End
+         Begin VB.TextBox txtNomeProf 
+            Appearance      =   0  'Flat
+            Height          =   315
+            Left            =   1770
+            MaxLength       =   40
+            TabIndex        =   175
+            TabStop         =   0   'False
+            Top             =   390
+            Width           =   6795
+         End
+         Begin prjChameleon.chameleonButton cmdAddResp 
+            Height          =   285
+            Left            =   8670
+            TabIndex        =   178
+            ToolTipText     =   "Selecionar um Responsável"
+            Top             =   390
+            Width           =   315
+            _ExtentX        =   556
+            _ExtentY        =   503
+            BTYPE           =   3
+            TX              =   "+"
+            ENAB            =   -1  'True
+            BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+               Name            =   "MS Sans Serif"
+               Size            =   12
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            COLTYPE         =   2
+            FOCUSR          =   0   'False
+            BCOL            =   12632256
+            BCOLO           =   12632256
+            FCOL            =   12582912
+            FCOLO           =   12582912
+            MCOL            =   12632256
+            MPTR            =   1
+            MICON           =   "frmCadMob.frx":C9A8
+            UMCOL           =   -1  'True
+            SOFT            =   0   'False
+            PICPOS          =   0
+            NGREY           =   0   'False
+            FX              =   0
+            HAND            =   0   'False
+            CHECK           =   0   'False
+            VALUE           =   0   'False
+         End
+         Begin prjChameleon.chameleonButton cmdDelResp 
+            Height          =   285
+            Left            =   8640
+            TabIndex        =   349
+            ToolTipText     =   "Limpar campo do Responsável"
+            Top             =   765
+            Width           =   360
+            _ExtentX        =   635
+            _ExtentY        =   503
+            BTYPE           =   3
+            TX              =   "-"
+            ENAB            =   -1  'True
+            BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+               Name            =   "MS Sans Serif"
+               Size            =   12
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            COLTYPE         =   2
+            FOCUSR          =   0   'False
+            BCOL            =   12632256
+            BCOLO           =   12632256
+            FCOL            =   12582912
+            FCOLO           =   12582912
+            MCOL            =   12632256
+            MPTR            =   1
+            MICON           =   "frmCadMob.frx":C9C4
+            UMCOL           =   -1  'True
+            SOFT            =   0   'False
+            PICPOS          =   0
+            NGREY           =   0   'False
+            FX              =   0
+            HAND            =   0   'False
+            CHECK           =   0   'False
+            VALUE           =   0   'False
+         End
+         Begin VB.Label Label2 
+            Appearance      =   0  'Flat
+            BackColor       =   &H80000005&
+            BackStyle       =   0  'Transparent
+            Caption         =   "Tipo de Conselho:"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00400000&
+            Height          =   315
+            Index           =   22
+            Left            =   120
+            TabIndex        =   181
+            Top             =   810
+            Width           =   1635
+         End
+         Begin VB.Label Label2 
+            Appearance      =   0  'Flat
+            BackColor       =   &H80000005&
+            BackStyle       =   0  'Transparent
+            Caption         =   "Nº Registro..:"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00400000&
+            Height          =   315
+            Index           =   23
+            Left            =   5010
+            TabIndex        =   180
+            Top             =   810
+            Width           =   1155
+         End
+         Begin VB.Label Label2 
+            Appearance      =   0  'Flat
+            BackColor       =   &H80000005&
+            BackStyle       =   0  'Transparent
+            Caption         =   "Código e Nome...:"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00400000&
+            Height          =   315
+            Index           =   21
+            Left            =   120
+            TabIndex        =   179
+            Top             =   450
+            Width           =   1635
+         End
+      End
+   End
+   Begin VB.Frame Tela 
+      BackColor       =   &H00EEEEEE&
+      Height          =   5160
+      Index           =   4
+      Left            =   2040
+      TabIndex        =   135
+      Top             =   45
+      Width           =   9405
+      Begin prjChameleon.chameleonButton cmdAddCnae1 
+         Height          =   300
+         Left            =   4260
+         TabIndex        =   154
+         ToolTipText     =   "Adicionar/alterar CNAE Principal"
+         Top             =   4740
+         Width           =   315
+         _ExtentX        =   556
+         _ExtentY        =   529
+         BTYPE           =   3
+         TX              =   "+"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   13.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   128
+         FCOLO           =   128
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmCadMob.frx":C9E0
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin VB.ComboBox cmbCnae 
+         Height          =   315
+         Left            =   6480
+         Style           =   2  'Dropdown List
+         TabIndex        =   157
+         Top             =   4740
+         Width           =   1425
+      End
+      Begin esMaskEdit.esMaskedEdit mskCnae 
+         Height          =   285
+         Left            =   2910
+         TabIndex        =   153
+         Top             =   4740
+         Width           =   1245
+         _ExtentX        =   2196
+         _ExtentY        =   503
+         MouseIcon       =   "frmCadMob.frx":C9FC
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Appearance      =   0
+         MaxLength       =   9
+         Mask            =   "9999-9/99"
+         SelText         =   ""
+         Text            =   "____-_/__"
+         HideSelection   =   -1  'True
+      End
+      Begin VB.TextBox txtValorAliq 
+         Appearance      =   0  'Flat
+         Height          =   285
+         Left            =   2070
+         Locked          =   -1  'True
+         MaxLength       =   12
+         TabIndex        =   142
+         Top             =   885
+         Width           =   1065
+      End
+      Begin VB.TextBox txtAtiv 
+         Appearance      =   0  'Flat
+         Height          =   285
+         Left            =   2070
+         Locked          =   -1  'True
+         MaxLength       =   300
+         TabIndex        =   141
+         Top             =   540
+         Width           =   6645
+      End
+      Begin VB.TextBox txtArea 
+         Appearance      =   0  'Flat
+         Height          =   285
+         Left            =   5595
+         MaxLength       =   12
+         TabIndex        =   140
+         Top             =   885
+         Width           =   1245
+      End
+      Begin VB.TextBox txtAtivExt 
+         Appearance      =   0  'Flat
+         Height          =   285
+         Left            =   2070
+         MaxLength       =   3000
+         TabIndex        =   137
+         Top             =   1230
+         Width           =   6645
+      End
+      Begin VB.TextBox txtQtde 
+         Appearance      =   0  'Flat
+         Height          =   285
+         Left            =   7950
+         MaxLength       =   12
+         TabIndex        =   136
+         Top             =   885
+         Width           =   765
+      End
+      Begin VB.CheckBox chkVistoria 
+         BackColor       =   &H00EEEEEE&
+         Caption         =   "Vistoria"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   285
          Left            =   120
-         TabIndex        =   200
-         Top             =   300
-         Width           =   4695
-         _ExtentX        =   8281
-         _ExtentY        =   7276
+         TabIndex        =   151
+         Top             =   4770
+         Width           =   1005
+      End
+      Begin MSFlexGridLib.MSFlexGrid grdAtiv 
+         Height          =   1215
+         Left            =   90
+         TabIndex        =   143
+         Top             =   1920
+         Width           =   8625
+         _ExtentX        =   15214
+         _ExtentY        =   2143
          _Version        =   393216
          Rows            =   1
-         Cols            =   4
+         Cols            =   5
          FixedCols       =   0
          BackColorSel    =   8388608
+         ForeColorSel    =   16777215
          BackColorBkg    =   15658734
          FocusRect       =   0
          SelectionMode   =   1
+         AllowUserResizing=   1
          Appearance      =   0
-         FormatString    =   "^Seq     |^Modelo    |^Data Abertura        |^Data Encerramento "
+         FormatString    =   $"frmCadMob.frx":CA18
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+      End
+      Begin MSFlexGridLib.MSFlexGrid grdVS 
+         Height          =   1215
+         Left            =   90
+         TabIndex        =   146
+         Top             =   3420
+         Width           =   8625
+         _ExtentX        =   15214
+         _ExtentY        =   2143
+         _Version        =   393216
+         Rows            =   1
+         Cols            =   5
+         FixedCols       =   0
+         BackColorSel    =   8388608
+         ForeColorSel    =   16777215
+         BackColorBkg    =   15658734
+         FocusRect       =   0
+         SelectionMode   =   1
+         AllowUserResizing=   1
+         Appearance      =   0
+         FormatString    =   $"frmCadMob.frx":CABE
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+      End
+      Begin MSFlexGridLib.MSFlexGrid grdVS2 
+         Height          =   1215
+         Left            =   90
+         TabIndex        =   228
+         Top             =   3420
+         Visible         =   0   'False
+         Width           =   8625
+         _ExtentX        =   15214
+         _ExtentY        =   2143
+         _Version        =   393216
+         Rows            =   1
+         Cols            =   5
+         FixedCols       =   0
+         BackColorSel    =   8388608
+         ForeColorSel    =   16777215
+         BackColorBkg    =   15658734
+         FocusRect       =   0
+         SelectionMode   =   1
+         AllowUserResizing=   1
+         Appearance      =   0
+         FormatString    =   $"frmCadMob.frx":CB65
+      End
+      Begin prjChameleon.chameleonButton cmdAddAtiv 
+         Height          =   300
+         Left            =   8820
+         TabIndex        =   138
+         ToolTipText     =   "Adicionar Atividade Principal"
+         Top             =   510
+         Width           =   315
+         _ExtentX        =   556
+         _ExtentY        =   529
+         BTYPE           =   3
+         TX              =   "+"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   13.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   128
+         FCOLO           =   128
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmCadMob.frx":CC07
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton cmdAddISS 
+         Height          =   300
+         Left            =   8880
+         TabIndex        =   144
+         Top             =   2220
+         Width           =   315
+         _ExtentX        =   556
+         _ExtentY        =   529
+         BTYPE           =   3
+         TX              =   "+"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   13.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   128
+         FCOLO           =   128
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmCadMob.frx":CC23
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton cmdAddVS 
+         Height          =   300
+         Left            =   8880
+         TabIndex        =   148
+         Top             =   3900
+         Width           =   315
+         _ExtentX        =   556
+         _ExtentY        =   529
+         BTYPE           =   3
+         TX              =   "+"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   13.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   128
+         FCOLO           =   128
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmCadMob.frx":CC3F
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton cmdAddCnae2 
+         Height          =   300
+         Left            =   7980
+         TabIndex        =   158
+         ToolTipText     =   "Adicionar  outros códigos CNAE"
+         Top             =   4740
+         Width           =   315
+         _ExtentX        =   556
+         _ExtentY        =   529
+         BTYPE           =   3
+         TX              =   "+"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   13.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   128
+         FCOLO           =   128
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmCadMob.frx":CC5B
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton cmdDelISS 
+         Height          =   300
+         Left            =   8880
+         TabIndex        =   145
+         Top             =   2580
+         Width           =   315
+         _ExtentX        =   556
+         _ExtentY        =   529
+         BTYPE           =   3
+         TX              =   "-"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   13.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   128
+         FCOLO           =   128
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmCadMob.frx":CC77
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton cmdDelVS 
+         Height          =   300
+         Left            =   8880
+         TabIndex        =   149
+         Top             =   4260
+         Width           =   315
+         _ExtentX        =   556
+         _ExtentY        =   529
+         BTYPE           =   3
+         TX              =   "-"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   13.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   128
+         FCOLO           =   128
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmCadMob.frx":CC93
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton cmdDelCnae 
+         Height          =   300
+         Left            =   8340
+         TabIndex        =   159
+         ToolTipText     =   "Remover código CNAE"
+         Top             =   4740
+         Width           =   315
+         _ExtentX        =   556
+         _ExtentY        =   529
+         BTYPE           =   3
+         TX              =   "-"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   13.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   128
+         FCOLO           =   128
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmCadMob.frx":CCAF
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton cmdDelCnaeP 
+         Height          =   300
+         Left            =   4620
+         TabIndex        =   155
+         ToolTipText     =   "Remover CNAE Principal"
+         Top             =   4740
+         Width           =   315
+         _ExtentX        =   556
+         _ExtentY        =   529
+         BTYPE           =   3
+         TX              =   "-"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   13.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   128
+         FCOLO           =   128
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmCadMob.frx":CCCB
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton cmdVSOld 
+         Height          =   300
+         Left            =   8880
+         TabIndex        =   147
+         ToolTipText     =   "Exibir as Atividades antigas de VS"
+         Top             =   3540
+         Width           =   315
+         _ExtentX        =   556
+         _ExtentY        =   529
+         BTYPE           =   3
+         TX              =   ">"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   13.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   128
+         FCOLO           =   128
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmCadMob.frx":CCE7
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton cmdEdtCnae 
+         Height          =   300
+         Left            =   8700
+         TabIndex        =   160
+         ToolTipText     =   "Alterar código CNAE"
+         Top             =   4740
+         Width           =   315
+         _ExtentX        =   556
+         _ExtentY        =   529
+         BTYPE           =   3
+         TX              =   ""
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   13.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   128
+         FCOLO           =   128
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmCadMob.frx":CD03
+         PICN            =   "frmCadMob.frx":CD1F
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton cmdOutrasAtiv 
+         Height          =   300
+         Left            =   8820
+         TabIndex        =   139
+         ToolTipText     =   "Outras Atividades"
+         Top             =   870
+         Width           =   315
+         _ExtentX        =   556
+         _ExtentY        =   529
+         BTYPE           =   3
+         TX              =   ">"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   13.5
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   128
+         FCOLO           =   128
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmCadMob.frx":CE79
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin prjChameleon.chameleonButton btAtivExtenso 
+         Height          =   270
+         Left            =   8760
+         TabIndex        =   358
+         ToolTipText     =   "Preencher a atividade por Extenso a partir dos Cnaes cadastrados."
+         Top             =   1240
+         Width           =   585
+         _ExtentX        =   1032
+         _ExtentY        =   476
+         BTYPE           =   3
+         TX              =   "Cnae"
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   128
+         FCOLO           =   128
+         MCOL            =   13026246
+         MPTR            =   1
+         MICON           =   "frmCadMob.frx":CE95
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H80000005&
+         BackStyle       =   0  'Transparent
+         Caption         =   "CNAE outros..:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H80000008&
+         Height          =   225
+         Index           =   38
+         Left            =   5100
+         TabIndex        =   216
+         Top             =   4830
+         Width           =   1365
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H80000005&
+         BackStyle       =   0  'Transparent
+         Caption         =   "CNAE principal..:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H80000008&
+         Height          =   225
+         Index           =   37
+         Left            =   1380
+         TabIndex        =   215
+         Top             =   4800
+         Width           =   1515
+      End
+      Begin VB.Label Label3 
+         Alignment       =   1  'Right Justify
+         BackStyle       =   0  'Transparent
+         Caption         =   "Nivel.:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   285
+         Left            =   3315
+         TabIndex        =   168
+         Top             =   930
+         Width           =   570
+      End
+      Begin VB.Label lblAliq 
+         BackStyle       =   0  'Transparent
+         Caption         =   "0"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   285
+         Left            =   3960
+         TabIndex        =   167
+         Top             =   930
+         Width           =   315
+      End
+      Begin VB.Label lblTipoISS 
+         BackStyle       =   0  'Transparent
+         Caption         =   "-->"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H000000C0&
+         Height          =   255
+         Left            =   3150
+         TabIndex        =   166
+         Top             =   1650
+         Visible         =   0   'False
+         Width           =   4035
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00808000&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Área m².....:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   285
+         Index           =   49
+         Left            =   4515
+         TabIndex        =   165
+         Top             =   930
+         Width           =   1065
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00808000&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Valor da Aliquota......:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   285
+         Index           =   43
+         Left            =   120
+         TabIndex        =   164
+         Top             =   930
+         Width           =   2000
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00000080&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Atividades para pagamento de ISS"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   -1  'True
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000080&
+         Height          =   255
+         Index           =   42
+         Left            =   90
+         TabIndex        =   163
+         Top             =   1650
+         Width           =   3705
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00808000&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Atividade Principal....:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   285
+         Index           =   16
+         Left            =   120
+         TabIndex        =   162
+         Top             =   600
+         Width           =   2000
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H80000005&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Atividade p/Extenso..:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   285
+         Index           =   17
+         Left            =   120
+         TabIndex        =   161
+         Top             =   1290
+         Width           =   2000
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00000080&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Atividade Principal / Taxa de Licença de Funcionamento"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   -1  'True
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000040&
+         Height          =   255
+         Index           =   14
+         Left            =   90
+         TabIndex        =   156
+         Top             =   180
+         Width           =   6105
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00000080&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Vigilância Sanitária"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   -1  'True
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000080&
+         Height          =   255
+         Index           =   15
+         Left            =   90
+         TabIndex        =   152
+         Top             =   3180
+         Width           =   7755
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00808000&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Qtde..:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   285
+         Index           =   32
+         Left            =   7215
+         TabIndex        =   150
+         Top             =   930
+         Width           =   660
+      End
+   End
+   Begin VB.Frame Tela 
+      BackColor       =   &H00EEEEEE&
+      Height          =   5160
+      Index           =   3
+      Left            =   2040
+      TabIndex        =   115
+      Top             =   90
+      Width           =   9405
+      Begin VB.Frame Frame8 
+         Caption         =   "Tipo de Endereço"
+         ForeColor       =   &H00000080&
+         Height          =   1005
+         Left            =   6255
+         TabIndex        =   344
+         Top             =   450
+         Visible         =   0   'False
+         Width           =   2265
+         Begin VB.OptionButton OptEE 
+            Caption         =   "Entrega de Carnê"
+            Height          =   195
+            Index           =   1
+            Left            =   135
+            TabIndex        =   346
+            Top             =   630
+            Width           =   1995
+         End
+         Begin VB.OptionButton OptEE 
+            Caption         =   "Endereço de Entrega"
+            Height          =   195
+            Index           =   0
+            Left            =   135
+            TabIndex        =   345
+            Top             =   315
+            Value           =   -1  'True
+            Width           =   1995
+         End
+      End
+      Begin VB.CheckBox chkEnd 
+         BackColor       =   &H00EEEEEE&
+         Caption         =   "Utilizar a localização do imóvel como endereço de entrega"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   195
+         Left            =   330
+         TabIndex        =   126
+         Top             =   420
+         Width           =   5445
+      End
+      Begin VB.CommandButton cmdRefreshBairro 
+         BackColor       =   &H00EEEEEE&
+         Caption         =   "!"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   300
+         Left            =   5490
+         Style           =   1  'Graphical
+         TabIndex        =   125
+         ToolTipText     =   "Atualizar lista de Bairros"
+         Top             =   1680
+         Width           =   315
+      End
+      Begin VB.CommandButton cmdRefreshCity 
+         BackColor       =   &H00EEEEEE&
+         Caption         =   "!"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   300
+         Left            =   5490
+         Style           =   1  'Graphical
+         TabIndex        =   124
+         ToolTipText     =   "Atualizar lista de Cidades"
+         Top             =   1320
+         Width           =   315
+      End
+      Begin VB.ComboBox cmbEEBairro 
+         Appearance      =   0  'Flat
+         Height          =   315
+         Left            =   1560
+         Sorted          =   -1  'True
+         Style           =   2  'Dropdown List
+         TabIndex        =   123
+         Top             =   1680
+         Width           =   3915
+      End
+      Begin VB.ComboBox cmbEECidade 
+         Appearance      =   0  'Flat
+         Height          =   315
+         Left            =   1560
+         Style           =   2  'Dropdown List
+         TabIndex        =   122
+         Top             =   1320
+         Width           =   3915
+      End
+      Begin VB.ComboBox cmbEEUf 
+         Appearance      =   0  'Flat
+         Height          =   315
+         Left            =   1560
+         Style           =   2  'Dropdown List
+         TabIndex        =   120
+         Top             =   960
+         Width           =   3915
+      End
+      Begin VB.TextBox txtEECompl 
+         Appearance      =   0  'Flat
+         Height          =   315
+         Left            =   1680
+         MaxLength       =   50
+         TabIndex        =   119
+         Top             =   3180
+         Width           =   6375
+      End
+      Begin VB.TextBox txtEENumero 
+         Appearance      =   0  'Flat
+         Height          =   315
+         Left            =   1680
+         MaxLength       =   6
+         TabIndex        =   118
+         Top             =   2820
+         Width           =   945
+      End
+      Begin VB.TextBox txtEENomeLogr 
+         Appearance      =   0  'Flat
+         Height          =   315
+         Left            =   2685
+         MaxLength       =   50
+         TabIndex        =   117
+         Top             =   2460
+         Width           =   5385
+      End
+      Begin VB.TextBox txtEECodLogr 
+         Appearance      =   0  'Flat
+         Height          =   315
+         Left            =   1680
+         MaxLength       =   6
+         TabIndex        =   116
+         Top             =   2460
+         Width           =   945
+      End
+      Begin esMaskEdit.esMaskedEdit mskEECep 
+         Height          =   300
+         Left            =   1680
+         TabIndex        =   121
+         Top             =   3555
+         Width           =   1035
+         _ExtentX        =   1826
+         _ExtentY        =   529
+         MouseIcon       =   "frmCadMob.frx":CEB1
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Appearance      =   0
+         MaxLength       =   9
+         Mask            =   "99999-999"
+         SelText         =   ""
+         Text            =   "_____-___"
+         HideSelection   =   -1  'True
+      End
+      Begin VB.ListBox lstEENomeLog 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00C0FFFF&
+         Height          =   1785
+         ItemData        =   "frmCadMob.frx":CECD
+         Left            =   2690
+         List            =   "frmCadMob.frx":CED4
+         TabIndex        =   127
+         Top             =   2460
+         Visible         =   0   'False
+         Width           =   5400
+      End
+      Begin prjChameleon.chameleonButton cmdCopyEnd 
+         Height          =   315
+         Left            =   8145
+         TabIndex        =   363
+         ToolTipText     =   "Copiar o Endereço"
+         Top             =   2430
+         Width           =   360
+         _ExtentX        =   635
+         _ExtentY        =   556
+         BTYPE           =   3
+         TX              =   ""
+         ENAB            =   -1  'True
+         BeginProperty FONT {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         COLTYPE         =   2
+         FOCUSR          =   0   'False
+         BCOL            =   12632256
+         BCOLO           =   12632256
+         FCOL            =   0
+         FCOLO           =   0
+         MCOL            =   16711935
+         MPTR            =   1
+         MICON           =   "frmCadMob.frx":CEE6
+         PICN            =   "frmCadMob.frx":CF02
+         UMCOL           =   -1  'True
+         SOFT            =   0   'False
+         PICPOS          =   0
+         NGREY           =   0   'False
+         FX              =   0
+         HAND            =   0   'False
+         CHECK           =   0   'False
+         VALUE           =   0   'False
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H80000005&
+         BackStyle       =   0  'Transparent
+         Caption         =   "CEP..............:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   315
+         Index           =   41
+         Left            =   300
+         TabIndex        =   134
+         Top             =   3630
+         Width           =   1400
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H80000005&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Complemento..:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   315
+         Index           =   40
+         Left            =   270
+         TabIndex        =   133
+         Top             =   3270
+         Width           =   1400
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H80000005&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Número..........:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   315
+         Index           =   39
+         Left            =   270
+         TabIndex        =   132
+         Top             =   2880
+         Width           =   1400
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00808000&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Cidade.........:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   315
+         Index           =   36
+         Left            =   270
+         TabIndex        =   131
+         Top             =   1380
+         Width           =   1245
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H80000005&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Logradouro.....:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   315
+         Index           =   34
+         Left            =   270
+         TabIndex        =   130
+         Top             =   2520
+         Width           =   1400
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H80000005&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Bairro..........:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   315
+         Index           =   30
+         Left            =   270
+         TabIndex        =   129
+         Top             =   1740
+         Width           =   1245
+      End
+      Begin VB.Label Label2 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00808000&
+         BackStyle       =   0  'Transparent
+         Caption         =   "Estado.........:"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00400000&
+         Height          =   315
+         Index           =   29
+         Left            =   270
+         TabIndex        =   128
+         Top             =   1020
+         Width           =   1245
       End
    End
    Begin VB.Menu mnuPrint 
@@ -8048,7 +8178,7 @@ Private Type VALORADICIONAL
     nOutrasS As Double
 End Type
 
-Dim rdoAux As rdoResultset
+Dim RdoAux As rdoResultset
 Dim sql As String
 Dim Evento As String
 Dim sRet As String, frAtivo As Integer, bExec As Boolean
@@ -8081,7 +8211,7 @@ End If
 End Sub
 
 Private Sub btAtivExtenso_Click()
-Dim sql As String, rdoAux As rdoResultset, sDescricao As String, aCnae() As String, x As Integer
+Dim sql As String, RdoAux As rdoResultset, sDescricao As String, aCnae() As String, x As Integer
 
 ReDim aCnae(0)
 If Trim(txtAtivExt.Text) <> "" Then
@@ -8098,13 +8228,13 @@ End If
 sCnae = mskCnae.ClipText
 
 sql = "select * from cnae where cnae='" & sCnae & "'"
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-If rdoAux.RowCount = 0 Then
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+If RdoAux.RowCount = 0 Then
     MsgBox "Cnae não cadastrado. (" & sCnae & ")", vbCritical, "Erro"
-    rdoAux.Close
+    RdoAux.Close
     Exit Sub
 End If
-rdoAux.Close
+RdoAux.Close
 
 aCnae(0) = sCnae
 For x = 0 To cmbCnae.ListCount - 1
@@ -8115,9 +8245,9 @@ Next
 sDescricao = ""
 For x = 0 To UBound(aCnae)
     sql = "select descricao from cnae where cnae='" & aCnae(x) & "'"
-    Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-    If rdoAux.RowCount > 0 Then
-        sDescricao = sDescricao & rdoAux!Descricao & ";"
+    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    If RdoAux.RowCount > 0 Then
+        sDescricao = sDescricao & RdoAux!Descricao & ";"
     Else
         MsgBox "Cnae: " & aCnae(x) & " não cadastrado.", vbCritical, "Erro"
     End If
@@ -8232,8 +8362,8 @@ End If
 
 cmbBairro.Clear
 sql = "SELECT CODBAIRRO,DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='" & Left$(Right$(cmbUF.Text, 3), 2) & "' AND CODCIDADE=" & cmbCidade.ItemData(cmbCidade.ListIndex)
-Set rdoAux = cn.OpenResultset(sql, rdOpenForwardOnly, rdConcurReadOnly)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenForwardOnly, rdConcurReadOnly)
+With RdoAux
     Do Until .EOF
        cmbBairro.AddItem !DescBairro
        cmbBairro.ItemData(cmbBairro.NewIndex) = !CodBairro
@@ -8273,8 +8403,8 @@ If cmbCriterio.ListIndex > -1 Then
 '    Sql = "SELECT cnaecriterio.valor From "
 '    Sql = Sql & "cnaecriteriodesc INNER JOIN cnaecriterio ON (cnaecriteriodesc.criterio = cnaecriterio.criterio) WHERE CNAE='" & sCnae & "' AND cnaecriterio.CRITERIO=" & cmbCriterio.ItemData(cmbCriterio.ListIndex)
     'Sql = "select valor from cnaecriteriodesc where criterio=" & cmbCriterio.ItemData(cmbCriterio.ListIndex)
-    Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-    With rdoAux
+    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    With RdoAux
         If .RowCount > 0 Then
             lblValorCnae.Caption = Format(!valor, "#0.0000")
         End If
@@ -8300,8 +8430,8 @@ End If
 
 cmbEEBairro.Clear
 sql = "SELECT CODBAIRRO,DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='" & Left$(Right$(cmbEEUf.Text, 3), 2) & "' AND CODCIDADE=" & cmbEECidade.ItemData(cmbEECidade.ListIndex) & " ORDER BY DESCBAIRRO"
-Set rdoAux = cn.OpenResultset(sql, rdOpenForwardOnly, rdConcurReadOnly)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenForwardOnly, rdConcurReadOnly)
+With RdoAux
     Do Until .EOF
        cmbEEBairro.AddItem !DescBairro
        cmbEEBairro.ItemData(cmbEEBairro.NewIndex) = !CodBairro
@@ -8329,8 +8459,8 @@ End If
 
 cmbEECidade.Clear
 sql = "SELECT CODCIDADE,DESCCIDADE FROM CIDADE WHERE SIGLAUF='" & Left$(Right$(cmbEEUf.Text, 3), 2) & "' ORDER BY DESCCIDADE"
-Set rdoAux = cn.OpenResultset(sql, rdOpenForwardOnly, rdConcurReadOnly)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenForwardOnly, rdConcurReadOnly)
+With RdoAux
     Do Until .EOF
        cmbEECidade.AddItem !descCidade
        cmbEECidade.ItemData(cmbEECidade.NewIndex) = !CodCidade
@@ -8365,8 +8495,8 @@ txtEmailCont.Text = ""
 If cmbNomeEsc.ListIndex > -1 Then
     txtCodEsc.Text = cmbNomeEsc.ItemData(cmbNomeEsc.ListIndex)
     sql = "SELECT * FROM ESCRITORIOCONTABIL WHERE CODIGOESC=" & Val(txtCodEsc.Text)
-    Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-    With rdoAux
+    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    With RdoAux
         If .RowCount >= 0 Then
             txtFoneCont.Text = SubNull(!telefone)
             txtEmailCont.Text = SubNull(!Email)
@@ -8397,8 +8527,8 @@ End If
 
 cmbCidade.Clear
 sql = "SELECT CODCIDADE,DESCCIDADE FROM CIDADE WHERE SIGLAUF='" & Left$(Right$(cmbUF.Text, 3), 2) & "' ORDER BY DESCCIDADE"
-Set rdoAux = cn.OpenResultset(sql, rdOpenForwardOnly, rdConcurReadOnly)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenForwardOnly, rdConcurReadOnly)
+With RdoAux
     Do Until .EOF
        cmbCidade.AddItem !descCidade
        cmbCidade.ItemData(cmbCidade.NewIndex) = !CodCidade
@@ -8426,7 +8556,7 @@ Private Sub cmdAbrirPic_Click()
 Dim ret As Long, sPathOrigem As String, sAno As String, sFile As String, sFullArq As String
 If Val(txtCodEmpresa.Text) = 0 Then Exit Sub
 If nPointer > 0 Then
-    sPathOrigem = "\\172.30.30.3\atualizagti\Documentos\"
+    sPathOrigem = "\\192.168.200.130\atualizagti\Documentos\"
     sAno = aPic(nPointer).sAno
     sFile = aPic(nPointer).sArq
     sFullArq = sPathOrigem & sAno & "\" & sFile
@@ -8888,8 +9018,8 @@ cn.Execute sql, rdExecDirect
 ReDim aPic(0)
 'DOCUMENTOPIC
 sql = "select documento from documentopic where codigo=" & Val(txtCodEmpresa.Text)
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     Do Until .EOF
         sTmp = !Documento
         ReDim Preserve aPic(UBound(aPic) + 1)
@@ -8959,7 +9089,7 @@ End Sub
 Private Sub Grava()
 On Error GoTo Erro
 Dim qd As New rdoQuery, sCnae As String, sSecao As String, nDivisao As Integer, nGrupo As Integer, sClasse As String, nClasse As Integer, nSubClasse As Integer
-Dim MinCod As Long, MaxCod As Long, bLogChange As Boolean, sLog As String, nTipoEE As Integer, nIsentoTaxa As Integer
+Dim MinCod As Long, MaxCod As Long, bLogChange As Boolean, sLog As String, nTipoEE As Integer
 Dim nSeq As Long, nTipoIss As Integer, nHorario As Integer, nBairro As Integer, nCodImovel As Long
 
 If chkIE.value = vbChecked And Not bDispensadoIE Then
@@ -9001,9 +9131,9 @@ End If
 
 If Evento = "Novo" Then
     sql = "SELECT MAX(CODIGOMOB) AS MAXIMO FROM mobiliario WHERE CODIGOMOB<180000"
-    Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-    MaxCod = rdoAux!maximo + 1
-    rdoAux.Close
+    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    MaxCod = RdoAux!maximo + 1
+    RdoAux.Close
 Else
        MaxCod = Val(txtCodEmpresa.Text)
     'verifica log
@@ -9043,12 +9173,6 @@ If cmbHorario.ListIndex = -1 Then nHorario = 2 Else nHorario = cmbHorario.ItemDa
 If cmbBairro.ListIndex = -1 Then nBairro = 999 Else nBairro = cmbBairro.ItemData(cmbBairro.ListIndex)
 If cmbImovel.ListIndex = -1 Then nCodImovel = 0 Else nCodImovel = cmbImovel.Text
 
-If frMei.Visible = True Then
-    nIsentoTaxa = False
-Else
-    nIsentoTaxa = chkIsentoTaxa.value
-End If
-
 If Evento = "Novo" Then
     sql = "INSERT MOBILIARIO(CODIGOMOB,DVMOB,RAZAOSOCIAL,NOMEFANTASIA,CPF,CNPJ,INSCESTADUAL,DATAABERTURA,NUMPROCESSO,"
     sql = sql & "DATAPROCESSO,DATAENCERRAMENTO,NUMPROCENCERRAMENTO,DATAPROCENCERRAMENTO,HORARIO,CODLOGRADOURO,COMPLEMENTO,"
@@ -9065,7 +9189,7 @@ If Evento = "Novo" Then
     sql = sql & Mask(txtFone.Text) & "','" & Mask(txtFax.Text) & "','" & Mask(txtCargo.Text) & "','" & LCase(Mask(Left(txtEmail.Text, 100))) & "'," & IIf(Val(txtCodEsc.Text) > 0, Val(txtCodEsc.Text), "Null") & "," & Virg2Ponto(RemovePonto(txtCapital.Text)) & ","
     sql = sql & Val(txtNumFunc.Text) & "," & IIf(Trim$(txtNomeProf.Text) <> "", Val(Left$(txtNomeProf.Text, 5)), 0) & ",'" & Mask(txtTipoConselho.Text) & "','" & Mask(txtNumRegistro.Text) & "',"
     sql = sql & Val(Left$(txtAtiv.Text, 5)) & ",'" & Mask(txtAtivExt.Text) & "'," & Val(lblAliq.Caption) & "," & Virg2Ponto(RemovePonto(txtArea.Text)) & "," & Val(txtQtde.Text) & ",'" & mskRG.Text & "','" & txtOrgao.Text & "','"
-    sql = sql & IIf(Val(txtCodLogr.Text) > 0, Null, txtNomeLogr.Text) & "'," & IIf((chkVistoria.value = 0), 0, 1) & "," & chkRE.value & "," & chkAlvara.value & "," & nIsentoTaxa & "," & 0 & ",'"
+    sql = sql & IIf(Val(txtCodLogr.Text) > 0, Null, txtNomeLogr.Text) & "'," & IIf((chkVistoria.value = 0), 0, 1) & "," & chkRE.value & "," & chkAlvara.value & "," & chkIsentoTaxa.value & "," & 0 & ",'"
     sql = sql & Mask(txtHorarioExt.Text) & "'," & IIf((chkIE.value = 0), 0, 1) & "," & IIf(IsDate(mskDataIE.Text), "'" & Format(mskDataIE.Text, "mm/dd/yyyy") & "'", "Null") & "," & IIf(IsDate(mskDataIE.Text), "'" & txtNumProcIE.Text & "'", "Null") & "," & IIf(IsDate(mskDataAP.Text), "'" & Format(mskDataAP.Text, "mm/dd/yyyy") & "'", "Null") & ",'" & Mask(txtSenha.Text) & "',"
     sql = sql & IIf((chkInscTemp.value = 0), 0, 1) & "," & IIf((chk24horas.value = 0), 0, 1) & "," & chkIsentoISS.value & "," & IIf((chkBombon.value = 0), 0, 1) & "," & IIf((chkEmiteNF.value = 0), 0, 1) & "," & IIf((chkDanfe.value = 0), 0, 1) & "," & nCodImovel & ",'" & Mask(txtSIL.Text) & "'," & IIf((chkSubstitutoTributario.value = 0), 0, 1) & ","
     sql = sql & IIf((chkEmpInd.value = 0), 0, 1) & ",'" & Mask(txtPonto.Text) & "','" & txtDDDNF.Text & "','" & txtFoneNF.Text & "','" & LCase(Mask(Trim(txtEmailNF.Text))) & "'," & IIf((chkIsentoIE.value = 0), 0, 1) & "," & IIf((chkImune.value = 0), 0, 1) & ")"
@@ -9079,7 +9203,7 @@ Else
     sql = sql & "RESPCONTABIL=" & IIf(Val(txtCodEsc.Text) > 0, Val(txtCodEsc.Text), "Null") & ",CAPITALSOCIAL=" & Virg2Ponto(RemovePonto(txtCapital.Text)) & ",QTDEEMPREGADO=" & Val(txtNumFunc.Text) & ","
     sql = sql & "CODPROFRESP=" & IIf(Trim$(txtNomeProf.Text) <> "", Val(Left$(txtNomeProf.Text, 6)), 0) & ",NOMEORGAO='" & txtTipoConselho.Text & "',NUMREGISTRORESP='" & txtNumRegistro.Text & "',CODATIVIDADE=" & Val(Left$(txtAtiv.Text, 5)) & ","
     sql = sql & "ATIVEXTENSO='" & Mask(txtAtivExt.Text) & "',CODIGOALIQ=" & Val(lblAliq.Caption) & ",AREATL=" & Virg2Ponto(RemovePonto(txtArea.Text)) & ",QTDEPROF=" & Val(txtQtde.Text) & ",RG='" & mskRG.Text & "',ORGAO='" & txtOrgao.Text & "',NOMELOGRADOURO=" & IIf(Val(txtCodLogr.Text) > 0, "Null", "'" & txtNomeLogr.Text & "'") & ","
-    sql = sql & "VISTORIA=" & IIf((chkVistoria.value = 0), 0, 1) & ",MEI=" & 0 & ",ISSELETRO=" & IIf((chkIE.value = 0), 0, 1) & ",ISENTOTAXA=" & nIsentoTaxa & ",REGESPECIAL=" & chkRE.value & ",ALVARA=" & chkAlvara.value & ",HORARIOEXT='" & Mask(txtHorarioExt.Text) & "',"
+    sql = sql & "VISTORIA=" & IIf((chkVistoria.value = 0), 0, 1) & ",MEI=" & 0 & ",ISSELETRO=" & IIf((chkIE.value = 0), 0, 1) & ",ISENTOTAXA=" & chkIsentoTaxa.value & ",REGESPECIAL=" & chkRE.value & ",ALVARA=" & chkAlvara.value & ",HORARIOEXT='" & Mask(txtHorarioExt.Text) & "',"
     sql = sql & "DISPENSAIEDATA=" & IIf(IsDate(mskDataIE.Text), "'" & Format(mskDataIE.Text, "mm/dd/yyyy") & "'", "Null") & ",DISPENSAIEPROC=" & IIf(IsDate(mskDataIE.Text), "'" & txtNumProcIE.Text & "'", "Null") & ",DTALVARAPROVISORIO=" & IIf(IsDate(mskDataAP.Text), "'" & Format(mskDataAP.Text, "mm/dd/yyyy") & "'", "Null") & ","
     sql = sql & "substituto_tributario_issqn=" & IIf((chkSubstitutoTributario.value = 0), 0, 1) & ",INDIVIDUAL=" & IIf((chkEmpInd.value = 0), 0, 1) & ",LIBERADO_VRE=" & IIf((chkLiberadoVRE.value = 0), 0, 1) & ",DDD_NF='" & txtDDDNF.Text & "',TELEFONE_NF='" & txtFoneNF.Text & "',EMAIL_NF='" & Mask(Trim(LCase(txtEmailNF.Text))) & "'"
     If txtSenha.Text <> "** Restrito **" Then
@@ -9217,8 +9341,8 @@ End If
 'Grava Mobiliario NF
 
 sql = "SELECT VALPARAM FROM PARAMETROS WHERE NOMEPARAM='SEQNOT'"
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     nSeq = Format(!valparam + 1, "000000")
    .Close
 End With
@@ -9306,12 +9430,12 @@ End If
 
 'Integração_Eicon
 sql = "select codigo from eicon_empresa where codigo=" & MaxCod
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-If rdoAux.RowCount = 0 Then
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+If RdoAux.RowCount = 0 Then
     sql = "insert eicon_empresa(codigo) values(" & MaxCod & ")"
     cn.Execute sql, rdExecDirect
 End If
-rdoAux.Close
+RdoAux.Close
 
 Exit Sub
 Erro:
@@ -9321,7 +9445,7 @@ Resume Next
 End Sub
 
 Private Function Valida() As Boolean
-Dim sql As String, rdoAux As rdoResultset, x As Integer, y As Integer, sCnae As String
+Dim sql As String, RdoAux As rdoResultset, x As Integer, y As Integer, sCnae As String
 Dim nCodLogr As Integer, nNumero As Integer, sComplemento As String
 
 Valida = False
@@ -9392,10 +9516,10 @@ If mskCNPJ.ClipText <> "" Then
         nNumero = Val(txtNumero.Text)
         sComplemento = Trim(txtCompl.Text)
         sql = "select * from mobiliario where CODIGOMOB<>" & Val(txtCodEmpresa.Text) & " AND CODLOGRADOURO=" & nCodLogr & " and NUMERO=" & nNumero & " AND COMPLEMENTO='" & Mask(sComplemento) & "' AND DATAENCERRAMENTO IS NULL"
-        Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-        With rdoAux
+        Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+        With RdoAux
             If .RowCount > 0 Then
-                If MsgBox("Endereço já cadastrado para a empresa:" & rdoAux!codigomob & "-" & rdoAux!RazaoSocial & vbCrLf & "Deseja cadastrar assim mesmo?", vbQuestion + vbYesNo, "Confirmação") = vbNo Then
+                If MsgBox("Endereço já cadastrado para a empresa:" & RdoAux!codigomob & "-" & RdoAux!RazaoSocial & vbCrLf & "Deseja cadastrar assim mesmo?", vbQuestion + vbYesNo, "Confirmação") = vbNo Then
                     Exit Function
                 End If
             End If
@@ -9469,8 +9593,8 @@ End If
 If Evento = "Novo" Then
     If mskCNPJ.ClipText <> "" Then
         sql = "select codigomob,razaosocial from mobiliario where cnpj='" & mskCNPJ.ClipText & "'"
-        Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-        If rdoAux.RowCount > 0 Then
+        Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+        If RdoAux.RowCount > 0 Then
              MsgBox "CNPJ já cadastrado.", vbCritical, "ERRO"
              Exit Function
 '            If MsgBox("CNPJ já cadastrado para a empresa: " & vbCrLf & RdoAux!codigomob & "-" & RdoAux!razaosocial & vbCrLf & "Deseja gravar assim mesmo?", vbQuestion + vbYesNo, "Confirmação") = vbNo Then
@@ -9555,7 +9679,7 @@ End Sub
 
 
 Private Sub cmdGravarNF_Click()
-Dim sql As String, rdoAux As rdoResultset
+Dim sql As String, RdoAux As rdoResultset
 
 If Val(txtValorNF.Text) > 0 And chkSemMov.value = vbChecked Then
     MsgBox "Declaração sem movimento não pode ter valor.", vbCritical, "Atenção"
@@ -9567,8 +9691,8 @@ If Trim(txtValorNF.Text) = "SEM MOVIMENTO" Then txtValorNF.Text = "0"
 If Trim(txtValorNF.Text) = "SEM DECLARAÇÃO" Then txtValorNF.Text = "0"
 sql = "SELECT * from declaracaoiss where codigo=" & Val(txtCodEmpresa.Text)
 sql = sql & " AND ANO=" & Val(cmbAnoISS.Text) & " AND MES=" & Val(lblMesNF.Caption)
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     If .RowCount = 0 Then
         sql = "INSERT DECLARACAOISS(CODIGO,ANO,MES,VALOR,SMOV) VALUES(" & Val(txtCodEmpresa.Text) & ","
         sql = sql & Val(cmbAnoISS.Text) & "," & Val(lblMesNF.Caption) & "," & Virg2Ponto(RemovePonto(txtValorNF.Text)) & ","
@@ -9611,7 +9735,7 @@ If txtCodEmpresa.Text = "" Then
 End If
 
 If MsgBox("Deseja importar o arquivo " & txtArq.Text & "?", vbQuestion + vbYesNo, "Confirmação") = vbNo Then Exit Sub
-sPathDestino = "\\172.30.30.3\atualizagti\Documentos\"
+sPathDestino = "\\192.168.200.130\atualizagti\Documentos\"
 sAno = cmbAno.Text
 
 If Not (FS.FolderExists(sPathDestino & sAno)) Then
@@ -9629,8 +9753,8 @@ sFullArq = sPathDestino & sAno & "\" & sFile
 FS.CopyFile txtArq.Text, sFullArq, True
 
 sql = "select max(seq) as maximo from documentopic"
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-sSeq = Val(rdoAux!maximo) + 1
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+sSeq = Val(RdoAux!maximo) + 1
 
 sql = "insert documentopic(seq,codigo,documento) values(" & Val(sSeq) & "," & Val(sCod) & ",'" & sFile & "')"
 cn.Execute sql, rdExecDirect
@@ -9680,8 +9804,8 @@ lblNovo2.Caption = "1"
 
 
 sql = "SELECT VALPARAM FROM PARAMETROS WHERE NOMEPARAM='SEQLIV'"
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     nSeq = Format(!valparam + 1, "000000")
    .Close
 End With
@@ -9731,7 +9855,7 @@ PopupMenu mnuPrint
 End Sub
 
 Private Sub cmdPrintIssAno_Click()
-Dim sql As String, rdoAux As rdoResultset, nPosRow As Long, nTotalRows As Long, sIdPrestador As String, nNumDoc As Long, nValorPago As Double
+Dim sql As String, RdoAux As rdoResultset, nPosRow As Long, nTotalRows As Long, sIdPrestador As String, nNumDoc As Long, nValorPago As Double
 Dim sTipoNota As String, sStatusNota As String, sNatureza As String, sRecolhe As String, aNotaNum() As Long, nFindNota As Long
 Dim sAtiv As String, sAliq As String, sTipoTomador As String, sIdTomador, bHasRows As Boolean, sCNPJPrestador As String
 Dim sPago As String, sGuia As String, x As Integer, RdoAux2 As rdoResultset, sCNPJTomador As String
@@ -9760,8 +9884,8 @@ sql = sql & "nfisseletro2.UFTomador , nfisseletro2.LocalTomador, nfisseletro2.Nu
 sql = sql & "WHERE ((IDENTIFICAPRESTADOR='" & txtCodIss.Text & "' OR IDENTIFICAPRESTADOR='" & Format(txtCodIss.Text, "00000000000000") & "') or (IDENTIFICATOMADOR='" & txtCodIss.Text & "' OR IDENTIFICATOMADOR='" & Format(txtCodIss.Text, "00000000000000") & "'))"
 sql = sql & "and AnoRef = " & Val(cmbAnoISS.Text)
 
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     nTotalRows = .RowCount
     nPosRow = 1
     Do Until .EOF
@@ -9960,11 +10084,11 @@ sql = sql & "dataprocencerramento=Null where codigomob=" & nCodigo
 cn.Execute sql, rdExecDirect
 
 sql = "select max(seq) as maximo from mobiliariohist where codmobiliario=" & nCodigo
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-If IsNull(rdoAux!maximo) Then
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+If IsNull(RdoAux!maximo) Then
     nSeq = 0
 Else
-    nSeq = rdoAux!maximo + 1
+    nSeq = RdoAux!maximo + 1
 End If
 
 sHist = "Empresa reativada"
@@ -9975,12 +10099,12 @@ cn.Execute sql, rdExecDirect
 
 'Integração_Eicon
 sql = "select codigo from eicon_empresa where codigo=" & nCodigo
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-If rdoAux.RowCount = 0 Then
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+If RdoAux.RowCount = 0 Then
     sql = "insert eicon_empresa(codigo) values(" & nCodigo & ")"
     cn.Execute sql, rdExecDirect
 End If
-rdoAux.Close
+RdoAux.Close
 
 
 End Sub
@@ -10273,6 +10397,20 @@ ElseIf Tipo = "INCLUIR" Then
    txtFoneCont.BackColor = Kde
    txtEmailCont.Locked = True
    txtEmailCont.BackColor = Kde
+   txtFone.Locked = True
+   txtFone.BackColor = Kde
+   'txtDDD2.Locked = True
+   'txtDDD2.BackColor = Kde
+   'txtDDD3.Locked = True
+   'txtDDD3.BackColor = Kde
+   'txtFone1.Locked = True
+   'txtFone1.BackColor = Kde
+   'txtFone2.Locked = True
+   'txtFone2.BackColor = Kde
+   'txtFone3.Locked = True
+   'txtFone3.BackColor = Kde
+
+   
    chkEnd.Enabled = True
    txtAtiv.BackColor = Kde
    txtAtiv.Locked = True
@@ -10287,7 +10425,7 @@ ElseIf Tipo = "INCLUIR" Then
    cmdExcluir3.Enabled = True
    chkVistoria.Enabled = True
    chkIsentoISS.Enabled = True
-   chkIsentoTaxa.Enabled = Not frMei.Visible
+   chkIsentoTaxa.Enabled = True
    chkLiberadoVRE.Enabled = True
    btAtivExtenso.Enabled = True
 '   chkRE.Enabled = True
@@ -10386,8 +10524,8 @@ sql = "SELECT SIGLAUF,DESCUF FROM UF ORDER BY DESCUF; " & _
       "SELECT CODIGOESC,NOMEESC FROM ESCRITORIOCONTABIL WHERE CODIGOESC>0 AND NOMEESC<>'' ORDER BY NOMEESC; " & _
       "SELECT CODIGO,NOME FROM TIPODOCUMENTO ORDER BY CODIGO;"
 
-Set rdoAux = cn.OpenResultset(sql, rdOpenForwardOnly, rdConcurReadOnly)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenForwardOnly, rdConcurReadOnly)
+With RdoAux
     Do Until .EOF
        cmbUF.AddItem !DESCUF & " (" & !SiglaUF & ")"
        cmbEEUf.AddItem !DESCUF & " (" & !SiglaUF & ")"
@@ -10680,8 +10818,8 @@ If Len(mskCodCNAE.ClipText) = 7 Then
 '    End With
     
     sql = "select * from cnae where cnae='" & sCnae & "'"
-    Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-    With rdoAux
+    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    With RdoAux
         If .RowCount > 0 Then
             lblDescCNAE.Caption = !Descricao
         End If
@@ -10694,15 +10832,15 @@ If Len(mskCodCNAE.ClipText) = 7 Then
     
     If lblDescCNAE.Caption <> "" Then
         sql = "select max(ano) as maximo from cnae_aliquota"
-        Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-        nAno = rdoAux!maximo
-        rdoAux.Close
+        Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+        nAno = RdoAux!maximo
+        RdoAux.Close
         
         sql = "SELECT cnae_aliquota.criterio,cnae_criterio_descricao.descricao,cnae_aliquota.valor,cnae_aliquota.cnae,cnae_aliquota.ano "
         sql = sql & "FROM dbo.cnae_criterio_descricao INNER JOIN dbo.cnae_aliquota  ON cnae_criterio_descricao.codigo = cnae_aliquota.criterio "
         sql = sql & "WHERE cnae_aliquota.ano = " & nAno & " AND cnae_aliquota.cnae = '" & sCnae & "'"
-        Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-        With rdoAux
+        Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+        With RdoAux
             Do Until .EOF
                 cmbCriterio.AddItem !Descricao
                 cmbCriterio.ItemData(cmbCriterio.NewIndex) = !criterio
@@ -10813,8 +10951,8 @@ grdVS2.Visible = False
 Limpa
 ReDim aLog(0)
 sql = "SELECT * FROM vwCNSMOBILIARIO WHERE CODIGOMOB=" & nCodigo
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     If .RowCount > 0 Then
         txtArea.Text = SubNull(!areatl)
         'dados da empresa
@@ -10904,13 +11042,7 @@ With rdoAux
 '        chkEmiteNF.value = Val(SubNull(!EMITENF))
         chkIE.value = Val(SubNull(!ISSELETRO))
         'chkAlvara.value = Val(SubNull(!ALVARA))
-        'chkIsentoTaxa.value = Val(SubNull(!ISENTOTAXA))
-        If frMei.Visible = True Then
-            chkIsentoTaxa.value = 1
-        Else
-            chkIsentoTaxa.value = Val(SubNull(!ISENTOTAXA))
-        End If
-        
+        chkIsentoTaxa.value = Val(SubNull(!ISENTOTAXA))
         chkIsentoISS.value = Val(SubNull(!ISENTOISS))
         chkInscTemp.value = Val(SubNull(!INSCTEMP))
         If IsNull(!isentoie) Then
@@ -11032,8 +11164,8 @@ With rdoAux
         sql = "SELECT codreduzido,DISTRITO,SETOR,QUADRA,LOTE,SEQ,UNIDADE,SUBUNIDADE,"
         sql = sql & "CODLOGR,LI_NUM FROM vwCnsImovel WHERE CODLOGR=" & Val(txtCodLogr.Text)
         sql = sql & " AND LI_NUM=" & Val(txtNumero.Text)
-        Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-        With rdoAux
+        Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+        With RdoAux
             Do Until .EOF
                 cmbImovel.AddItem !CODREDUZIDO
                .MoveNext
@@ -11076,6 +11208,12 @@ With rdoAux
         txtCargo.Text = SubNull(!CARGOCONTATO)
         txtDDDNF.Text = SubNull(!ddd_nf)
         txtFoneNF.Text = SubNull(!telefone_nf)
+        txtDDD1.Text = SubNull(!ddd1)
+        txtFone1.Text = SubNull(!fone1)
+        txtDDD2.Text = SubNull(!ddd2)
+        txtFone2.Text = SubNull(!fone2)
+        txtDDD3.Text = SubNull(!ddd3)
+        txtFone3.Text = SubNull(!fone3)
 '        txtEmailNF.Text = SubNull(!email_nf)
         
         If Not IsNull(!CapitalSocial) Then
@@ -11108,8 +11246,8 @@ With rdoAux
         
         If Val(SubNull(!codatividade)) > 0 Then
         sql = "SELECT * FROM ATIVIDADE WHERE CODATIVIDADE=" & !codatividade
-        Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurReadOnly)
-        With rdoAux
+        Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurReadOnly)
+        With RdoAux
             If Val(SubNull(!ALVARA)) = 0 Then
                 chkAlvara.value = vbUnchecked
             Else
@@ -11134,8 +11272,8 @@ End With
 
 sql = "SELECT MOBILIARIO.CODATIVIDADE, DESCATIVIDADE,VALORALIQ1,VALORALIQ2,VALORALIQ3,AREATL,CODIGOALIQ FROM MOBILIARIO INNER JOIN "
 sql = sql & "ATIVIDADE ON MOBILIARIO.CODATIVIDADE = ATIVIDADE.CODATIVIDADE Where CODIGOMOB =" & nCodigo
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     If .RowCount > 0 Then
         If Val(!codatividade) > 0 Then
             txtAtiv.Text = Format(!codatividade, "00000") & " - " & !descatividade
@@ -11174,8 +11312,8 @@ sql = sql & "ATIVIDADEISS ON MOBILIARIOATIVIDADEISS.CODATIVIDADE = ATIVIDADEISS.
 sql = sql & "Inner Join TRIBUTO ON MOBILIARIOATIVIDADEISS.CODTRIBUTO = TRIBUTO.CODTRIBUTO "
 sql = sql & "Where MOBILIARIOATIVIDADEISS.CODMOBILIARIO = " & nCodigo
 sql = sql & " ORDER BY SEQ"
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     Do Until .EOF
         If !CodTributo = 11 Then
             sTipoIss = "F"
@@ -11200,7 +11338,7 @@ With rdoAux
             nValorAliq = !valoriss
         End If
         'nUfir = RetornaUFIR(Year(Now)) * 10
-        nUfir = RetornaUFIR(2026) * 10
+        nUfir = RetornaUFIR(2025) * 10
 '        nValorAliq = nValorAliq * nUfir
         nValorAliq = nValorAliq
         grdAtiv.AddItem sTipoIss & Chr(9) & Format(!codatividade, "0000") & " - " & !descatividade & Chr(9) & !QTDEISS & Chr(9) & FormatNumber(nValorAliq, 3) & Chr(9) & FormatNumber(nValorAliq * nUfir, 2)
@@ -11259,9 +11397,9 @@ End With
 ' End With
 
 sql = "select max(ano) as maximo from cnae_aliquota"
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-nAno = rdoAux!maximo
-rdoAux.Close
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+nAno = RdoAux!maximo
+RdoAux.Close
 
 grdVS.Rows = 1
 'Sql = "SELECT mobiliariovs.codigo, mobiliariovs.cnae, mobiliariovs.criterio, mobiliariovs.qtde, cnae.descricao, cnaecriteriodesc.descricao AS desc2, cnaecriteriodesc.valor "
@@ -11271,8 +11409,8 @@ sql = "SELECT mobiliariovs.codigo,mobiliariovs.cnae,mobiliariovs.criterio,mobili
 sql = sql & "cnae_aliquota.valor,cnae_aliquota.ano From dbo.Cnae INNER JOIN dbo.mobiliariovs ON cnae.cnae = mobiliariovs.cnae "
 sql = sql & "INNER JOIN dbo.cnae_criterio_descricao ON cnae_criterio_descricao.codigo = mobiliariovs.criterio INNER JOIN dbo.cnae_aliquota "
 sql = sql & "ON mobiliariovs.cnae = cnae_aliquota.cnae AND mobiliariovs.criterio = cnae_aliquota.criterio Where mobiliariovs.codigo = " & nCodigo & " AND cnae_aliquota.ano = " & nAno
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     Do Until .EOF
         grdVS.AddItem Left(!Cnae, 4) & "-" & Mid(!Cnae, 5, 1) & "/" & Right(!Cnae, 2) & Chr(9) & !criterio & Chr(9) & UCase(!CNAE_NOME) & Chr(9) & !Qtde & Chr(9) & Format(!valor, "#0.0000")
        .MoveNext
@@ -11286,8 +11424,8 @@ sql = sql & "MOBILIARIOATIVIDADETL.CODIGOALIQ,MOBILIARIOATIVIDADETL.AREA,MOBILIA
 sql = sql & "VALORALIQ2,VALORALIQ3 FROM MOBILIARIOATIVIDADETL INNER JOIN ATIVIDADE ON "
 sql = sql & "MOBILIARIOATIVIDADETL.CODATIVIDADE = ATIVIDADE.CODATIVIDADE "
 sql = sql & "Where MOBILIARIOATIVIDADETL.CODIGOMOB = " & nCodigo
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     Do Until .EOF
         Select Case !CODIGOALIQ
             Case 1
@@ -11307,8 +11445,8 @@ End With
 sql = "SELECT mobiliariohist.codmobiliario, mobiliariohist.seq, mobiliariohist.datahist, mobiliariohist.obs, mobiliariohist.userid, usuario.nomelogin "
 sql = sql & "FROM mobiliariohist LEFT OUTER JOIN usuario ON mobiliariohist.userid = usuario.Id "
 sql = sql & "Where CODMOBILIARIO = " & nCodigo & " ORDER BY SEQ "
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     Do Until .EOF
         grdHist.AddItem Format(!DATAHIST, "dd/mm/yyyy") & Chr(9) & Format(!Seq, "00") & Chr(9) & !obs & Chr(9) & SubNull(!NomeLogin)
        .MoveNext
@@ -11319,8 +11457,8 @@ End With
 'LISTA PLACA
 sql = "SELECT PLACA FROM MOBILIARIOPLACA "
 sql = sql & "Where CODIGO = " & nCodigo & " ORDER BY PLACA"
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     Do Until .EOF
         lstPlaca.AddItem !PLACA
        .MoveNext
@@ -11331,8 +11469,8 @@ End With
 'grid NF
 sql = "SELECT SEQ,SERIE,NUMINI,NUMFIM,NUMAUT,DATAAUT,CANCEL,USUARIO FROM MOBILIARIONF  "
 sql = sql & "Where CODIGOMOB = " & nCodigo & " ORDER BY SEQ "
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     Do Until .EOF
         grdNF.AddItem Format(!Seq, "0000") & Chr(9) & SubNull(!Serie) & Chr(9) & Format(!numini, "00000000") & _
         Chr(9) & Format(!numfim, "00000000") & Chr(9) & IIf(IsNull(!NUMAUT), "XXXXX", IIf(!Cancel = False, !NUMAUT, !NUMAUT & " (Cancelado)")) & Chr(9) & IIf(IsNull(!DATAAUT), "", Format(!DATAAUT, "dd/mm/yyyy")) & Chr(9) & SubNull(!USUARIO)
@@ -11344,8 +11482,8 @@ End With
 'grid LIVRO
 sql = "SELECT SEQ,MODELO,DATAAB,DATAEN FROM MOBILIARIOLIVRO  "
 sql = sql & "Where CODIGOMOB = " & nCodigo & " ORDER BY SEQ "
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     Do Until .EOF
         grdLivro.AddItem Format(!Seq, "0000") & Chr(9) & !MODELO & Chr(9) & Format(!DATAAB, "dd/mm/yyyy") & Chr(9) & IIf(IsNull(!DATAEN), "", Format(!DATAEN, "dd/mm/yyyy"))
        .MoveNext
@@ -11359,8 +11497,8 @@ End If
 'PROFISSIONAL RESPONSAVEL
 sql = "SELECT CODPROFRESP,NOMEORGAO,NUMREGISTRORESP,NOMECIDADAO FROM vwCONSULTACONSELHORESP "
 sql = sql & "WHERE CODIGOMOB=" & nCodigo
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     If .RowCount > 0 Then
         If Not IsNull(!CODPROFRESP) Then
            txtNomeProf.Text = !CODPROFRESP & " - " & SubNull(!nomecidadao)
@@ -11374,8 +11512,8 @@ End With
 'endereço entrega
 sql = "SELECT TIPO,CODLOGRADOURO,NOMELOGRADOURO,NUMIMOVEL,COMPLEMENTO,UF,CODCIDADE,CODBAIRRO,"
 sql = sql & "CEP,DESCBAIRRO,DESCCIDADE FROM MOBILIARIOENDENTREGA WHERE CODMOBILIARIO=" & nCodigo
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     If .RowCount > 0 Then
         If (!Tipo) = 1 Then
             OptEE(0).value = True
@@ -11441,8 +11579,8 @@ End With
 'dados para as fotos
 sql = "SELECT CODREDUZIDO,DISTRITO,SETOR,QUADRA,LOTE,SEQ,UNIDADE,SUBUNIDADE,"
 sql = sql & "CODLOGR,LI_NUM FROM vwCnsImovel WHERE codreduzido=" & Val(cmbImovel.Text)
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     If .RowCount > 0 Then
 '       cmbImovel.Text = !CODREDUZIDO
        lblDist.Caption = !Distrito
@@ -11459,8 +11597,8 @@ End With
 'suspenção
 sql = "SELECT CODTIPOEVENTO,DATAEVENTO FROM MOBILIARIOEVENTO WHERE CODMOBILIARIO=" & nCodigo
 sql = sql & " ORDER BY DATAEVENTO DESC"
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     If .RowCount = 0 Then
         lblSusp.Visible = False
     Else
@@ -11476,8 +11614,8 @@ End With
 
 'cnae
 sql = "SELECT * FROM MOBILIARIOCNAE WHERE CODMOBILIARIO=" & nCodigo & " AND PRINCIPAL=1"
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     If .RowCount > 0 Then
         sClasse = Format(!classe, "00")
         mskCnae.Text = Format(!divisao, "00") & !grupo & Left$(sClasse, 1) & "-" & Right$(sClasse, 1) & "/" & Format(!subclasse, "00")
@@ -11486,8 +11624,8 @@ With rdoAux
 End With
 
 sql = "SELECT * FROM MOBILIARIOCNAE WHERE CODMOBILIARIO=" & nCodigo & " AND PRINCIPAL=0"
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     Do Until .EOF
         sClasse = Format(!classe, "00")
         cmbCnae.AddItem Format(!divisao, "00") & !grupo & Left$(sClasse, 1) & "-" & Right$(sClasse, 1) & "/" & Format(!subclasse, "00")
@@ -11499,8 +11637,8 @@ With rdoAux
 End With
 
 sql = "SELECT ANO, NUMERO, COMPLEMENTO, DATAENTRADA, DATAARQUIVA From processogti Where INSC = " & nCodigo & " ORDER BY ANO, NUMERO"
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     Do Until .EOF
         grdProc.AddItem CStr(!Numero) & "-" & RetornaDVProcesso(!Numero) & "/" & !ano & Chr(9) & Format(!DATAENTRADA, "dd/mm/yyyy") & Chr(9) & !Complemento & _
         Chr(9) & IIf(IsNull(!DATAARQUIVA), "", Format(!DATAARQUIVA, "dd/mm/yyyy"))
@@ -11625,6 +11763,12 @@ Private Sub Limpa()
     txtFax.Text = ""
     txtDDDNF.Text = ""
     txtFoneNF.Text = ""
+    txtDDD1.Text = ""
+    txtDDD2.Text = ""
+    txtDDD3.Text = ""
+    txtFone1.Text = ""
+    txtFone2.Text = ""
+    txtFone3.Text = ""
     
     'endereço entrega
     cmbEEUf.ListIndex = -1
@@ -11703,7 +11847,7 @@ End If
 End Sub
 
 Private Sub txtCodIss_LostFocus()
-Dim sql As String, rdoAux As rdoResultset
+Dim sql As String, RdoAux As rdoResultset
 
 txtNomeISS.Text = ""
 If Val(txtCodIss.Text) = 0 Then Exit Sub
@@ -11717,8 +11861,8 @@ Else
     LimpaISS
     Exit Sub
 End If
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     If .RowCount > 0 Then
         txtNomeISS.Text = !Nome
         If chkHabilitar.value = vbChecked Then
@@ -11767,8 +11911,8 @@ If Val(txtCodLogr.Text) > 0 Then
    sql = sql & "ABREVTIPOLOG,CODTITLOG,NOMETITLOG,"
    sql = sql & "ABREVTITLOG,NOMELOGRADOURO "
    sql = sql & "FROM vwLOGRADOURO WHERE CODLOGRADOURO=" & Val(txtCodLogr.Text)
-   Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-   With rdoAux
+   Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+   With RdoAux
        If .RowCount > 0 Then
           txtNomeLogr.Text = Trim$(SubNull(!AbrevTipoLog)) & " " & Trim$(SubNull(SubNull(!AbrevTitLog))) & " " & !NomeLogradouro
        Else
@@ -11793,6 +11937,18 @@ If cmbBairro.Text <> "ZONA RURAL" Then
     End If
 End If
 
+End Sub
+
+Private Sub txtDDD1_KeyPress(KeyAscii As Integer)
+Tweak txtDDD1, KeyAscii, IntegerPositive
+End Sub
+
+Private Sub txtDDD2_KeyPress(KeyAscii As Integer)
+Tweak txtDDD2, KeyAscii, IntegerPositive
+End Sub
+
+Private Sub txtDDD3_KeyPress(KeyAscii As Integer)
+Tweak txtDDD3, KeyAscii, IntegerPositive
 End Sub
 
 Private Sub txtDDDNF_KeyPress(KeyAscii As Integer)
@@ -11822,8 +11978,8 @@ If Val(txtEECodLogr.Text) > 0 Then
    sql = sql & "ABREVTIPOLOG,CODTITLOG,NOMETITLOG,"
    sql = sql & "ABREVTITLOG,NOMELOGRADOURO "
    sql = sql & "FROM vwLOGRADOURO WHERE CODLOGRADOURO=" & Val(txtEECodLogr.Text)
-   Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-   With rdoAux
+   Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+   With RdoAux
        If .RowCount > 0 Then
           txtEENomeLogr.Text = Trim$(SubNull(!AbrevTipoLog)) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro
        Else
@@ -11862,8 +12018,8 @@ If KeyAscii = vbKeyReturn Then
       sql = sql & "NUMOFIC FROM vwLOGRADOURO "
       sql = sql & "WHERE NOMELOGRADOURO LIKE '%" & Trim$(txtEENomeLogr) & "%' "
       sql = sql & "ORDER BY NOMELOGRADOURO"
-      Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-      With rdoAux
+      Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+      With RdoAux
           If .RowCount > 0 Then
              Do Until .EOF
                 lstEENomeLog.AddItem Trim$(SubNull(!AbrevTipoLog)) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro
@@ -11894,6 +12050,18 @@ Private Sub txtEENumero_KeyPress(KeyAscii As Integer)
 Tweak txtEENumero, KeyAscii, IntegerPositive
 End Sub
 
+Private Sub txtFone1_KeyPress(KeyAscii As Integer)
+Tweak txtFone1, KeyAscii, IntegerPositive
+End Sub
+
+Private Sub txtFone2_KeyPress(KeyAscii As Integer)
+Tweak txtFone2, KeyAscii, IntegerPositive
+End Sub
+
+Private Sub txtFone3_KeyPress(KeyAscii As Integer)
+Tweak txtFone3, KeyAscii, IntegerPositive
+End Sub
+
 Private Sub txtFoneNF_KeyPress(KeyAscii As Integer)
 Tweak txtFoneNF, KeyAscii, IntegerPositive
 End Sub
@@ -11918,8 +12086,8 @@ If KeyAscii = vbKeyReturn Then
       sql = sql & "NUMOFIC FROM vwLOGRADOURO "
       sql = sql & "WHERE NOMELOGRADOURO LIKE '%" & Trim$(txtNomeLogr) & "%' "
       sql = sql & "ORDER BY NOMELOGRADOURO"
-      Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-      With rdoAux
+      Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+      With RdoAux
           If .RowCount > 0 Then
              Do Until .EOF
                 lstNomeLog.AddItem Trim$(SubNull(!AbrevTipoLog)) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro
@@ -11964,8 +12132,8 @@ If Val(txtCodLogr.Text) > 0 Then
     sql = "SELECT codreduzido,DISTRITO,SETOR,QUADRA,LOTE,SEQ,UNIDADE,SUBUNIDADE,"
     sql = sql & "CODLOGR,LI_NUM FROM vwCnsImovel WHERE CODLOGR=" & Val(txtCodLogr.Text)
     sql = sql & " AND LI_NUM=" & Val(txtNumero.Text)
-    Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-    With rdoAux
+    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    With RdoAux
         Do Until .EOF
             cmbImovel.AddItem !CODREDUZIDO
            .MoveNext
@@ -12050,10 +12218,10 @@ Tweak txtValorAliq, KeyAscii, DecimalPositive
 End Sub
 
 Private Sub SNCheck()
-Dim rdoAux As rdoResultset, sql As String
+Dim RdoAux As rdoResultset, sql As String
 sql = "SELECT * FROM optante_simples WHERE codigo=" & Val(txtCodEmpresa.Text) & " ORDER BY TIMESTAMP DESC"
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurReadOnly)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurReadOnly)
+With RdoAux
     If .RowCount > 0 Then
         If IsDate(!Data_Final) Then
             lblSN.Caption = "NÃO"
@@ -12071,11 +12239,11 @@ End With
 End Sub
 
 Private Sub IECheck()
-Dim rdoAux As rdoResultset, sql As String
+Dim RdoAux As rdoResultset, sql As String
 sql = "SELECT " & NomeBaseDados & ".dbo.RETORNAIE(" & Format(Val(txtCodEmpresa.Text), "000000") & ",'" & Format(Now, sDataFormat) & "') AS RETORNO"
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurReadOnly)
-With rdoAux
-     If rdoAux!RETORNO = 1 Then
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurReadOnly)
+With RdoAux
+     If RdoAux!RETORNO = 1 Then
         lblISSEletro.Caption = "SIM"
         lblISSEletro.ForeColor = "&H00008000"
      Else
@@ -12148,7 +12316,7 @@ grdMain.Clear
 End Sub
 
 Private Sub CarregaISS()
-Dim sql As String, rdoAux As rdoResultset, nPos As Integer, aISS() As ISSELETRO, RdoAux2 As rdoResultset, nNumDoc As Long, nValorPago As Double
+Dim sql As String, RdoAux As rdoResultset, nPos As Integer, aISS() As ISSELETRO, RdoAux2 As rdoResultset, nNumDoc As Long, nValorPago As Double
 Dim x As Integer, bAchou As Boolean, nTotalE As Double, nTotalR As Double, sCNPJTomador As String
 Dim nTotalRows As Long, nPosRows As Long, sCNPJPrestador As String, aNotaNum() As Long
 
@@ -12168,9 +12336,9 @@ sql = sql & "nfisseletro2.UFTomador , nfisseletro2.LocalTomador, nfisseletro2.Nu
 sql = sql & "WHERE ((IDENTIFICAPRESTADOR='" & txtCodIss.Text & "' OR IDENTIFICAPRESTADOR='" & Format(txtCodIss.Text, "00000000000000") & "') or (IDENTIFICATOMADOR='" & txtCodIss.Text & "' OR IDENTIFICATOMADOR='" & Format(txtCodIss.Text, "00000000000000") & "'))"
 sql = sql & "and AnoRef = " & Val(cmbAnoISS.Text)
 
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
-    nTotalRows = rdoAux.RowCount
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    nTotalRows = RdoAux.RowCount
     nPos = 1
     Do Until .EOF
         If nPosRows Mod 20 = 0 Then
@@ -12327,8 +12495,8 @@ Next
 'Sql = "SELECT * FROM NFISSELETROSMOV WHERE CODIGO=" & Val(Left(txtCodEmpresa.Text, 7)) & " AND "
 sql = "SELECT * FROM NFISSELETROSMOV WHERE CODIGO=" & Val(txtCodIss.Text) & " AND "
 sql = sql & "ANO=" & Val(cmbAnoISS.Text)
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     Do Until .EOF
         bAchou = False
         For nPos = 1 To UBound(aISS)
@@ -12443,7 +12611,7 @@ End With
 End Sub
 
 Private Sub CarregaLista()
-Dim x As Long, sql As String, rdoAux As rdoResultset
+Dim x As Long, sql As String, RdoAux As rdoResultset
 
 Ocupado
 grdMain.Redraw = False
@@ -12547,8 +12715,8 @@ End If
 ReDim aValor(12)
 sql = "SELECT DISTINCT codreduzido, ref, cfop, basecalculo, isentasntrib, outras"
 sql = sql & " FROM GIADETALHE WHERE CODREDUZIDO=" & Val(txtCodEmpresa.Text) & " AND YEAR(REF)=" & Val(z)
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     Do Until .EOF
         nCFOP = RetornaNumero(!CFOP)
         If nCFOP < 5000 Then 'ENTRADA
@@ -12622,8 +12790,8 @@ Print #FF1, ax
 Print #FF1, "********************************************************"
 sql = "SELECT CFOP,SUM(BASECALCULO) as soma1,SUM(ISENTASNTRIB) as soma2,SUM(OUTRAS) as soma3 FROM GIAdetalhe WHERE "
 sql = sql & "CODREDUZIDO=" & Val(txtCodEmpresa.Text) & " AND YEAR(REF)=" & Val(z) & " GROUP BY CFOP ORDER BY CFOP"
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
     Do Until .EOF
         ax = FillSpace(!CFOP, 7) & FillLeft(FormatNumber(!SOMA1 + !SOMA2 + !SOMA3, 2), 15)
         Print #FF1, ax
@@ -12677,7 +12845,7 @@ End If
 If NomeDoComputador = "SKYNET" Then
     sPathOrigem = "\\200.232.123.115\atualizagti\Documentos\"
 Else
-    sPathOrigem = "\\172.30.30.3\atualizagti\Documentos\"
+    sPathOrigem = "\\192.168.200.130\atualizagti\Documentos\"
 End If
 sAno = aPic(nPointer).sAno
 sArq = aPic(nPointer).sArq
@@ -12710,16 +12878,16 @@ If cGetInputState() <> 0 Then DoEvents
 End Sub
 
 Private Function IsMEI(nCodigo As Long) As Boolean
-Dim nRet As Boolean, sql As String, rdoAux As rdoResultset
+Dim nRet As Boolean, sql As String, RdoAux As rdoResultset
 nRet = False
 
 'ConectaEicon
 'Sql = "select * from GTI_EICON..tb_inter_empr_mei_giss where NUM_CADASTRO=" & nCodigo & " order by TIMESTAMP desc"
 'Set RdoAux = cnEicon.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-sql = "select * from PERIODOMEI where CODIGO=" & nCodigo & " order by  id desc"
-Set rdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
-With rdoAux
-    If IsNull(!datafim) Then
+sql = "select * from PERIODOMEI where CODIGO=" & nCodigo & " order by  datainicio desc,id desc"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+With RdoAux
+    If IsNull(!Datafim) Then
         nRet = True
     End If
    .Close

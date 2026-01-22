@@ -1,0 +1,33 @@
+Line 39: Class esMaskEdit.esMaskedEdit of control mskCep was not a loaded control class.
+Line 63: Class prjChameleon.chameleonButton of control cmdGravar was not a loaded control class.
+Line 45: The property name _ExtentX in mskCep is invalid.
+Line 46: The property name _ExtentY in mskCep is invalid.
+Line 57: The property name MaxLength in mskCep is invalid.
+Line 58: The property name Mask in mskCep is invalid.
+Line 59: The property name SelText in mskCep is invalid.
+Line 60: The property name Text in mskCep is invalid.
+Line 61: The property name HideSelection in mskCep is invalid.
+Line 39: Property MouseIcon in mskCep could not be set.
+Line 70: The property name _ExtentX in cmdGravar is invalid.
+Line 71: The property name _ExtentY in cmdGravar is invalid.
+Line 72: The property name BTYPE in cmdGravar is invalid.
+Line 73: The property name TX in cmdGravar is invalid.
+Line 74: The property name ENAB in cmdGravar is invalid.
+Line 84: The property name COLTYPE in cmdGravar is invalid.
+Line 85: The property name FOCUSR in cmdGravar is invalid.
+Line 86: The property name BCOL in cmdGravar is invalid.
+Line 87: The property name BCOLO in cmdGravar is invalid.
+Line 88: The property name FCOL in cmdGravar is invalid.
+Line 89: The property name FCOLO in cmdGravar is invalid.
+Line 90: The property name MCOL in cmdGravar is invalid.
+Line 91: The property name MPTR in cmdGravar is invalid.
+Line 92: The property name MICON in cmdGravar is invalid.
+Line 93: The property name PICN in cmdGravar is invalid.
+Line 94: The property name UMCOL in cmdGravar is invalid.
+Line 95: The property name SOFT in cmdGravar is invalid.
+Line 96: The property name PICPOS in cmdGravar is invalid.
+Line 97: The property name NGREY in cmdGravar is invalid.
+Line 98: The property name FX in cmdGravar is invalid.
+Line 99: The property name HAND in cmdGravar is invalid.
+Line 100: The property name CHECK in cmdGravar is invalid.
+Line 101: The property name VALUE in cmdGravar is invalid.

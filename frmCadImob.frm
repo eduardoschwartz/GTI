@@ -10,8 +10,8 @@ Begin VB.Form frmCadImob
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Cadastro Imobiliário"
    ClientHeight    =   5910
-   ClientLeft      =   2220
-   ClientTop       =   7755
+   ClientLeft      =   10470
+   ClientTop       =   6450
    ClientWidth     =   10170
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form2"
@@ -1526,6 +1526,35 @@ Begin VB.Form frmCadImob
          End
       End
    End
+   Begin vbalDTab6.vbalDTabControl TabMob 
+      Height          =   4665
+      Left            =   1470
+      TabIndex        =   20
+      Top             =   1230
+      Width           =   8685
+      _ExtentX        =   15319
+      _ExtentY        =   8229
+      TabAlign        =   0
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      BeginProperty SelectedFont {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      BackColor       =   15658734
+   End
    Begin VB.Frame frTab 
       BackColor       =   &H00EEEEEE&
       BorderStyle     =   0  'None
@@ -1714,9 +1743,9 @@ Begin VB.Form frmCadImob
             Height          =   285
             Left            =   1620
             TabIndex        =   96
-            Text            =   "0,00"
+            Text            =   "0,000000"
             Top             =   3285
-            Width           =   900
+            Width           =   1170
          End
          Begin VB.ComboBox cmbPedol 
             Appearance      =   0  'Flat
@@ -2096,35 +2125,6 @@ Begin VB.Form frmCadImob
          End
       End
    End
-   Begin vbalDTab6.vbalDTabControl TabMob 
-      Height          =   4665
-      Left            =   1470
-      TabIndex        =   20
-      Top             =   1230
-      Width           =   8685
-      _ExtentX        =   15319
-      _ExtentY        =   8229
-      TabAlign        =   0
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      BeginProperty SelectedFont {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      BackColor       =   15658734
-   End
    Begin VB.Frame frTab 
       BackColor       =   &H00EEEEEE&
       BorderStyle     =   0  'None
@@ -2482,7 +2482,7 @@ Private Type tALTERACAOIMOVEL
 End Type
 
 Dim RdoAux As rdoResultset, RdoAux2 As rdoResultset
-Dim Sql As String, bExec As Boolean, bResize As Boolean
+Dim sql As String, bExec As Boolean, bResize As Boolean
 Dim Evento As String, NodX As Object
 Private m_bEditFromCode As Boolean
 Dim i As Integer, xImovel As clsImovel
@@ -2500,21 +2500,55 @@ ValorIPTU
 End Sub
 
 Private Sub ValorIPTU()
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, RdoAux As rdoResultset, qd As New rdoQuery, RdoAux2 As rdoResultset, nCodReduz As Long
 lblValorIPTU.Caption = "R$ 0,00"
 If tvProp.Nodes.Count = 2 Then Exit Sub
 
-Sql = "select * from laseriptu where ano=" & cmbAnoIPTU.Text & " and codreduzido=" & Val(lblCodReduz.Caption)
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-With RdoAux
-    If .RowCount > 0 Then
-        lblValorIPTU.Caption = "R$ " & FormatNumber(!valortotalparc * !qtdeparc, 2)
-        lblVVP.Caption = "R$ " & FormatNumber(!vvc, 2)
-        lblVVT.Caption = "R$ " & FormatNumber(!vvt, 2)
-        lblVVI.Caption = "R$ " & FormatNumber(!vvi, 2)
-    End If
-   .Close
-End With
+nCodReduz = Val(lblCodReduz.Caption)
+
+sql = "select * from areas where codreduzido=" & nCodReduz & " and areageo=1"
+Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+If RdoAux2.RowCount > 0 Then
+    sql = "select * from laseriptu where ano=" & cmbAnoIPTU.Text & " and codreduzido=" & nCodReduz
+    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
+    With RdoAux
+        If .RowCount > 0 Then
+            lblValorIPTU.Caption = "R$ " & FormatNumber(!valortotalparc * !QtdeParc, 2)
+            lblVVP.Caption = "R$ " & FormatNumber(!vvc, 2)
+            lblVVT.Caption = "R$ " & FormatNumber(!vvt, 2)
+            lblVVI.Caption = "R$ " & FormatNumber(!vvi, 2)
+        Else
+            Set qd.ActiveConnection = cn
+            qd.sql = "{ Call spCalculo(?,?) }"
+            qd(0) = Val(lblCodReduz.Caption)
+            qd(1) = Val(cmbAnoIPTU.Text)
+            Set RdoAux = qd.OpenResultset(rdOpenKeyset)
+            With RdoAux
+                If .RowCount > 0 Then
+                    lblVVP.Caption = "R$ " & FormatNumber(!vvp, 2)
+                    lblVVT.Caption = "R$ " & FormatNumber(!vvt, 2)
+                    lblVVI.Caption = "R$ " & FormatNumber(!vvi, 2)
+                End If
+               .Close
+            End With
+        End If
+       .Close
+    End With
+Else
+    Set qd.ActiveConnection = cn
+    qd.sql = "{ Call spCalculo(?,?) }"
+    qd(0) = Val(lblCodReduz.Caption)
+    qd(1) = Val(cmbAnoIPTU.Text)
+    Set RdoAux = qd.OpenResultset(rdOpenKeyset)
+    With RdoAux
+        If .RowCount > 0 Then
+            lblVVP.Caption = "R$ " & FormatNumber(!vvp, 2)
+            lblVVT.Caption = "R$ " & FormatNumber(!vvt, 2)
+            lblVVI.Caption = "R$ " & FormatNumber(!vvi, 2)
+        End If
+       .Close
+    End With
+End If
 
 End Sub
 
@@ -2527,12 +2561,13 @@ Dim i  As Long
           PostMessage cmbCidade.HWND, CB_SETCURSEL, i, 0
        End If
     End If
+    j = cmbBairro.ListIndex
     cmbBairro.Clear
     cmbBairro.AddItem ""
     lblCid.Caption = cmbCidade.ListIndex
     nCid = cmbCidade.ItemData(cmbCidade.ListIndex)
-    Sql = "SELECT CODBAIRRO,DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='" & Left$(cmbUF.Text, 2) & "' AND CODCIDADE=" & cmbCidade.ItemData(cmbCidade.ListIndex)
-    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    sql = "SELECT CODBAIRRO,DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='" & Left$(cmbUF.Text, 2) & "' AND CODCIDADE=" & cmbCidade.ItemData(cmbCidade.ListIndex)
+    Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     With RdoAux2
         Do While Not .EOF
            If !DescBairro <> "" Then
@@ -2543,6 +2578,7 @@ Dim i  As Long
         Loop
        .Close
     End With
+    cmbBairro.ListIndex = j
 End Sub
 
 Private Sub cmbBairro_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -2565,8 +2601,8 @@ With cmbBairro
            MsgBox "Bairro Inválido.", vbExclamation, "Atenção"
            Cancel = True
         Else
-           Sql = "SELECT DESCBAIRRO FROM BAIRRO WHERE DESCBAIRRO='" & strPartial & "'"
-           Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+           sql = "SELECT DESCBAIRRO FROM BAIRRO WHERE DESCBAIRRO='" & strPartial & "'"
+           Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
            If RdoAux.RowCount = 0 Then
               MsgBox "Bairro Inválido.", vbExclamation, "Atenção"
               Cancel = True
@@ -2629,8 +2665,8 @@ With cmbBairroImovel
            MsgBox "Bairro Inválido.", vbExclamation, "Atenção"
            Cancel = True
         Else
-           Sql = "SELECT DESCBAIRRO FROM BAIRRO WHERE DESCBAIRRO='" & strPartial & "'"
-           Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+           sql = "SELECT DESCBAIRRO FROM BAIRRO WHERE DESCBAIRRO='" & strPartial & "'"
+           Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
            If RdoAux.RowCount = 0 Then
               MsgBox "Bairro Inválido.", vbExclamation, "Atenção"
               Cancel = True
@@ -2678,8 +2714,8 @@ If Not bExec Then Exit Sub
 cmbBairro.Clear
 If cmbCidade.ListIndex = -1 Then Exit Sub
 If cmbCidade.ItemData(cmbCidade.ListIndex) <> 413 Then
-    Sql = "SELECT CODBAIRRO,DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='" & Left$(cmbUF.Text, 2) & "' AND CODCIDADE=" & cmbCidade.ItemData(cmbCidade.ListIndex)
-    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    sql = "SELECT CODBAIRRO,DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='" & Left$(cmbUF.Text, 2) & "' AND CODCIDADE=" & cmbCidade.ItemData(cmbCidade.ListIndex)
+    Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     With RdoAux2
         Do While Not .EOF
             If !DescBairro <> "" Then
@@ -2721,8 +2757,8 @@ With cmbCidade
            MsgBox "Cidade Inválida.", vbExclamation, "Atenção"
            Cancel = True
         Else
-           Sql = "SELECT DESCCIDADE FROM CIDADE WHERE DESCCIDADE='" & Mask(strPartial) & "'"
-           Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+           sql = "SELECT DESCCIDADE FROM CIDADE WHERE DESCCIDADE='" & Mask(strPartial) & "'"
+           Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
            If RdoAux.RowCount = 0 Then
               MsgBox "Cidade Inválida.", vbExclamation, "Atenção"
               Cancel = True
@@ -2772,8 +2808,8 @@ On Error Resume Next
 If Not bExec Then Exit Sub
 cmbCidade.Clear
 cmbBairro.Clear
-Sql = "SELECT CODCIDADE,DESCCIDADE FROM CIDADE WHERE SIGLAUF='" & Left$(cmbUF.Text, 2) & "'"
-Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CODCIDADE,DESCCIDADE FROM CIDADE WHERE SIGLAUF='" & Left$(cmbUF.Text, 2) & "'"
+Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux2
     Do While Not .EOF
        cmbCidade.AddItem !descCidade
@@ -2805,8 +2841,8 @@ With cmbUF
            MsgBox "UF Inválida.", vbExclamation, "Atenção"
            Cancel = True
         Else
-           Sql = "SELECT SIGLAUF,DESCUF FROM UF WHERE  SIGLAUF='" & Left$(strPartial, 2) & "' AND DESCUF='" & Right$(strPartial, Len(strPartial) - 3) & "'"
-           Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+           sql = "SELECT SIGLAUF,DESCUF FROM UF WHERE  SIGLAUF='" & Left$(strPartial, 2) & "' AND DESCUF='" & Right$(strPartial, Len(strPartial) - 3) & "'"
+           Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
            If RdoAux.RowCount = 0 Then
               MsgBox "UF Inválida.", vbExclamation, "Atenção"
               Cancel = True
@@ -2951,8 +2987,8 @@ End Sub
 Private Sub cmdAtivar_Click()
 If txtInativo.Visible = True Then
     If MsgBox("Deseja tornar este imóvel ATIVO ????", vbQuestion + vbYesNo, "CONFIRMAÇÃO") = vbYes Then
-        Sql = "UPDATE CADIMOB SET INATIVO=0 WHERE CODREDUZIDO=" & Val(lblCodReduz.Caption)
-        cn.Execute Sql, rdExecDirect
+        sql = "UPDATE CADIMOB SET INATIVO=0 WHERE CODREDUZIDO=" & Val(lblCodReduz.Caption)
+        cn.Execute sql, rdExecDirect
         txtInativo.Visible = False
     End If
 End If
@@ -3027,9 +3063,9 @@ On Error GoTo Erro:
    nc = tvProp.SelectedItem.Index
 '   Sql = "insert historicocidadao(codigo,data,usuario,obs) values(" & Val(Right(tvProp.Nodes(nc).Key, 6)) & ",'" & Format(Now, sDataFormat & " hh:mm:ss") & "','" & NomeDeLogin & "','"
 '   Sql = Sql & "O Cidadão foi removido de proprietário/proprietário solidário do imóvel de inscrição:" & lblIC.Caption & "." & lblUnid.Caption & "." & lblSubUnid.Caption & "')"
-   Sql = "insert historicocidadao(codigo,data,userid,obs) values(" & Val(Right(tvProp.Nodes(nc).Key, 6)) & ",'" & Format(Now, sDataFormat & " hh:mm:ss") & "'," & RetornaUsuarioID(NomeDeLogin) & ",'"
-   Sql = Sql & "O Cidadão foi removido de proprietário/proprietário solidário do imóvel de inscrição:" & lblIC.Caption & "." & lblUnid.Caption & "." & lblSubUnid.Caption & "')"
-   cn.Execute Sql, rdExecDirect
+   sql = "insert historicocidadao(codigo,data,userid,obs) values(" & Val(Right(tvProp.Nodes(nc).Key, 6)) & ",'" & Format(Now, sDataFormat & " hh:mm:ss") & "'," & RetornaUsuarioID(NomeDeLogin) & ",'"
+   sql = sql & "O Cidadão foi removido de proprietário/proprietário solidário do imóvel de inscrição:" & lblIC.Caption & "." & lblUnid.Caption & "." & lblSubUnid.Caption & "')"
+   cn.Execute sql, rdExecDirect
    tvProp.Nodes.Remove (nc)
    If frmCadImob.tvProp.Nodes("PROP").Children > 0 And Right$(frmCadImob.tvProp.Nodes("PROP").Child.Text, 9) <> "Principal" Then
         frmCadImob.tvProp.Nodes("PROP").Child.Text = frmCadImob.tvProp.Nodes("PROP").Child.Text & " - Principal"
@@ -3047,7 +3083,7 @@ If grdTestada.Rows = 1 Then
    MsgBox "Selecione a Face a ser excluída.", vbExclamation, "Atenção"
 Else
    If grdTestada.Rows > 2 Then
-      grdTestada.RemoveItem (grdTestada.Row)
+      grdTestada.RemoveItem (grdTestada.row)
    Else
       grdTestada.Rows = 1
    End If
@@ -3086,8 +3122,8 @@ Private Sub cmdExcluir_Click()
 
 If txtInativo.Visible = False Then
     If MsgBox("Deseja tornar este imóvel INATIVO ????", vbQuestion + vbYesNo, "CONFIRMAÇÃO") = vbYes Then
-        Sql = "UPDATE CADIMOB SET INATIVO=1 WHERE CODREDUZIDO=" & Val(lblCodReduz.Caption)
-        cn.Execute Sql, rdExecDirect
+        sql = "UPDATE CADIMOB SET INATIVO=1 WHERE CODREDUZIDO=" & Val(lblCodReduz.Caption)
+        cn.Execute sql, rdExecDirect
         txtInativo.Visible = True
     End If
 End If
@@ -3135,7 +3171,11 @@ Dim nSomaArea As Double, nCodigo As Long
 Valida = True
 
 If optTEnd(0).value = True Then
-   optTEnd_Click (0)
+    optTEnd_Click (0)
+    If lvArea.ListItems.Count = 0 Then
+        MsgBox "Terreno não pode ter o endereço de entrega igual ao do imóvel.", vbCritical, "Atenção"
+        GoTo Falso
+    End If
 End If
 
 For x = 1 To tvProp.Nodes.Count
@@ -3152,15 +3192,15 @@ Next
 
 
 If Evento = "Novo" Then
-    Sql = "SELECT * FROM CADIMOB WHERE "
-    Sql = Sql & "DISTRITO=" & Val(Left$(lblDist.Caption, 2)) & " AND "
-    Sql = Sql & "SETOR=" & Val(lblSetor.Caption) & " AND "
-    Sql = Sql & "QUADRA=" & Val(txtQuadra.Text) & " AND "
-    Sql = Sql & "LOTE=" & Val(txtLote.Text) & " AND "
-    Sql = Sql & "UNIDADE=" & Val(lblUnid.Caption) & " AND "
-    Sql = Sql & "SUBUNIDADE=" & Val(lblSubUnid.Caption) & " AND "
-    Sql = Sql & "CODREDUZIDO<>" & Val(Left$(lblCodReduz.Caption, 7)) & " AND INATIVO=0"
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    sql = "SELECT * FROM CADIMOB WHERE "
+    sql = sql & "DISTRITO=" & Val(Left$(lblDist.Caption, 2)) & " AND "
+    sql = sql & "SETOR=" & Val(lblSetor.Caption) & " AND "
+    sql = sql & "QUADRA=" & Val(txtQuadra.Text) & " AND "
+    sql = sql & "LOTE=" & Val(txtLote.Text) & " AND "
+    sql = sql & "UNIDADE=" & Val(lblUnid.Caption) & " AND "
+    sql = sql & "SUBUNIDADE=" & Val(lblSubUnid.Caption) & " AND "
+    sql = sql & "CODREDUZIDO<>" & Val(Left$(lblCodReduz.Caption, 7)) & " AND INATIVO=0"
+    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         If .RowCount > 0 Then
             MsgBox "Esta Inscrição já pertence ao imóvel " & Format(!CODREDUZIDO, "000000") & ", por favor verifique.", vbExclamation, "Inscrição Duplicada"
@@ -3185,12 +3225,12 @@ If Val(txtSeq.Text) = 0 Then
     GoTo Falso
 End If
 
-Sql = "SELECT CODAGRUPA FROM FACEQUADRA WHERE "
-Sql = Sql & "CODDISTRITO=" & Val(Left$(lblDist.Caption, 2)) & " AND "
-Sql = Sql & "CODSETOR=" & Val(lblSetor.Caption) & " AND "
-Sql = Sql & "CODQUADRA=" & Val(txtQuadra.Text) & " AND "
-Sql = Sql & "CODFACE=" & Val(txtSeq.Text)
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
+sql = "SELECT CODAGRUPA FROM FACEQUADRA WHERE "
+sql = sql & "CODDISTRITO=" & Val(Left$(lblDist.Caption, 2)) & " AND "
+sql = sql & "CODSETOR=" & Val(lblSetor.Caption) & " AND "
+sql = sql & "CODQUADRA=" & Val(txtQuadra.Text) & " AND "
+sql = sql & "CODFACE=" & Val(txtSeq.Text)
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurReadOnly)
 If RdoAux.RowCount = 0 Then
    MsgBox "No de Face nao existente para esta quadra.", vbExclamation, "Atenção"
    txtSeq.SetFocus
@@ -3312,8 +3352,8 @@ For n = 1 To 9
     End Select
 Next
 
-Sql = "SELECT MAX(SEQ) AS MAXIMO FROM HISTORICO WHERE CODREDUZIDO=" & Val(lblCodReduz.Caption)
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT MAX(SEQ) AS MAXIMO FROM HISTORICO WHERE CODREDUZIDO=" & Val(lblCodReduz.Caption)
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If IsNull(!maximo) Then
         nSeq = 1
@@ -3338,8 +3378,8 @@ If MsgBox("Enviar os dados do proprietário selecionado para o histórico ?", vbQu
 
 s = "Antigo proprietário: " & Val(Mid(tvProp.SelectedItem.Key, 5, Len(tvProp.SelectedItem.Key) - 4)) & " - " & tvProp.SelectedItem.Text
 
-Sql = "SELECT MAX(SEQ) AS MAXIMO FROM HISTORICO WHERE CODREDUZIDO=" & Val(lblCodReduz.Caption)
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT MAX(SEQ) AS MAXIMO FROM HISTORICO WHERE CODREDUZIDO=" & Val(lblCodReduz.Caption)
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If IsNull(!maximo) Then
         nSeq = 1
@@ -3349,9 +3389,9 @@ With RdoAux
    .Close
 End With
 
-Sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST) VALUES("
-Sql = Sql & Val(lblCodReduz.Caption) & "," & nSeq & ",'" & Format(Now, "dd/mm/yyyy") & "','" & Mask(s) & "')"
-cn.Execute Sql, rdExecDirect
+sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST) VALUES("
+sql = sql & Val(lblCodReduz.Caption) & "," & nSeq & ",'" & Format(Now, "dd/mm/yyyy") & "','" & Mask(s) & "')"
+cn.Execute sql, rdExecDirect
 
 grdHist.AddItem Format(Now, "dd/mm/yyyy") & Chr(9) & Format(nSeq, "00") & Chr(9) & s
 
@@ -3426,9 +3466,9 @@ bExec = True
 Evento = "Novo"
 Eventos "INCLUIR"
 CarregaCondominio
-Sql = "SELECT CODLOGR From FACEQUADRA WHERE "
-Sql = Sql & "CODDISTRITO = " & Val(Left$(lblDist.Caption, 2)) & " AND CODSETOR = " & Val(lblSetor.Caption) & "  AND  CODQUADRA = " & Val(txtQuadra.Text) & " And CODFACE = " & Val(txtSeq.Text)
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset)
+sql = "SELECT CODLOGR From FACEQUADRA WHERE "
+sql = sql & "CODDISTRITO = " & Val(Left$(lblDist.Caption, 2)) & " AND CODSETOR = " & Val(lblSetor.Caption) & "  AND  CODQUADRA = " & Val(txtQuadra.Text) & " And CODFACE = " & Val(txtSeq.Text)
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset)
 If RdoAux.RowCount > 0 Then
      txtCodLogrLI.Text = Format(RdoAux!CodLogr, "0000")
 End If
@@ -3521,11 +3561,11 @@ With xImovel
         Next
      End If
      optTEnd_Click (0)
-     txtFracaoIdeal.Text = FormatNumber(.FracaoIdeal, 2)
+     txtFracaoIdeal.Text = FormatNumber(.FracaoIdeal, 6)
         
-     Sql = "SELECT CD_SUBUNIDADES FROM CONDOMINIOUNIDADE WHERE CD_CODIGO=" & CodCond
-     Sql = Sql & " AND CD_UNIDADE=" & Val(lblUnid.Caption)
-     Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+     sql = "SELECT CD_SUBUNIDADES FROM CONDOMINIOUNIDADE WHERE CD_CODIGO=" & CodCond
+     sql = sql & " AND CD_UNIDADE=" & Val(lblUnid.Caption)
+     Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
      With RdoAux
         If .RowCount > 0 Then
             nAptos = !CD_SUBUNIDADES
@@ -3575,14 +3615,14 @@ End With
 'Areas
 Dim z As Long
 z = SendMessage(lvArea.HWND, LVM_DELETEALLITEMS, 0, 0)
-Sql = "SELECT CONDOMINIOAREA.SEQAREA,CONDOMINIOAREA.QTDEPAV,CONDOMINIOAREA.TIPOAREA,CONDOMINIOAREA.DATAAPROVA,CONDOMINIOAREA.AREACONSTR,CONDOMINIOAREA.NUMPROCESSO,CONDOMINIOAREA.DATAPROCESSO,"
-Sql = Sql & "CONDOMINIOAREA.USOCONSTR,USOCONSTR.DESCUSOCONSTR,CONDOMINIOAREA.TIPOCONSTR,TIPOCONSTR.DESCTIPOCONSTR,"
-Sql = Sql & "CONDOMINIOAREA.CATCONSTR,CATEGCONSTR.DESCCATEGCONSTR FROM CONDOMINIOAREA INNER JOIN USOCONSTR ON "
-Sql = Sql & "CONDOMINIOAREA.USOCONSTR = USOCONSTR.CODUSOCONSTR INNER JOIN TIPOCONSTR ON "
-Sql = Sql & "CONDOMINIOAREA.TIPOCONSTR = TIPOCONSTR.CODTIPOCONSTR INNER JOIN CATEGCONSTR ON "
-Sql = Sql & "CONDOMINIOAREA.CATCONSTR = CATEGCONSTR.CODCATEGCONSTR "
-Sql = Sql & "WHERE CODCONDOMINIO=" & CodCond
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CONDOMINIOAREA.SEQAREA,CONDOMINIOAREA.QTDEPAV,CONDOMINIOAREA.TIPOAREA,CONDOMINIOAREA.DATAAPROVA,CONDOMINIOAREA.AREACONSTR,CONDOMINIOAREA.NUMPROCESSO,CONDOMINIOAREA.DATAPROCESSO,"
+sql = sql & "CONDOMINIOAREA.USOCONSTR,USOCONSTR.DESCUSOCONSTR,CONDOMINIOAREA.TIPOCONSTR,TIPOCONSTR.DESCTIPOCONSTR,"
+sql = sql & "CONDOMINIOAREA.CATCONSTR,CATEGCONSTR.DESCCATEGCONSTR FROM CONDOMINIOAREA INNER JOIN USOCONSTR ON "
+sql = sql & "CONDOMINIOAREA.USOCONSTR = USOCONSTR.CODUSOCONSTR INNER JOIN TIPOCONSTR ON "
+sql = sql & "CONDOMINIOAREA.TIPOCONSTR = TIPOCONSTR.CODTIPOCONSTR INNER JOIN CATEGCONSTR ON "
+sql = sql & "CONDOMINIOAREA.CATCONSTR = CATEGCONSTR.CODCATEGCONSTR "
+sql = sql & "WHERE CODCONDOMINIO=" & CodCond
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     lblQtdeEdif.Caption = .RowCount
     Do Until .EOF
@@ -3608,8 +3648,8 @@ Private Function NovoCodReduzido() As String
 Dim s As String
 Dim nCod As Long            'Ultimo codigo da Tabela
 
-Sql = "SELECT MAX(CODREDUZIDO) AS LASTCOD FROM CADIMOB WHERE CODREDUZIDO<180000"
-Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT MAX(CODREDUZIDO) AS LASTCOD FROM CADIMOB WHERE CODREDUZIDO<180000"
+Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 If RdoAux2.RowCount > 0 Then
    If IsNull(h) Then
       nCod = 1
@@ -3678,7 +3718,7 @@ End Sub
 Private Sub CarregaCombo()
 
 bExec = False
-Sql = "SELECT SIGLAUF,DESCUF FROM UF ORDER BY DESCUF; " & _
+sql = "SELECT SIGLAUF,DESCUF FROM UF ORDER BY DESCUF; " & _
       "SELECT CODSITUACAO,DESCSITUACAO FROM SITUACAO WHERE CODSITUACAO<>999 ORDER BY DESCSITUACAO; " & _
       "SELECT CODBENFEITORIA,DESCBENFEITORIA FROM BENFEITORIA WHERE CODBENFEITORIA<>999 ORDER BY DESCBENFEITORIA; " & _
       "SELECT CODPEDOLOGIA,DESCPEDOLOGIA FROM PEDOLOGIA WHERE CODPEDOLOGIA<>999 ORDER BY DESCPEDOLOGIA; " & _
@@ -3687,7 +3727,7 @@ Sql = "SELECT SIGLAUF,DESCUF FROM UF ORDER BY DESCUF; " & _
       "SELECT CODBAIRRO,DESCBAIRRO FROM BAIRRO INNER JOIN CIDADE ON BAIRRO.SIGLAUF = CIDADE.SIGLAUF AND BAIRRO.CODCIDADE = CIDADE.CODCIDADE INNER JOIN UF ON CIDADE.SIGLAUF = UF.SIGLAUF WHERE (UF.SIGLAUF = 'SP') AND (DESCCIDADE = 'JABOTICABAL') AND (CODBAIRRO <> 999) ORDER BY DESCBAIRRO; " & _
       "SELECT CODCATEGPROP,DESCCATEGPROP FROM CATEGPROP WHERE CODCATEGPROP<>999 ORDER BY DESCCATEGPROP"
 
-Set RdoAux = cn.OpenResultset(Sql, rdOpenForwardOnly, rdConcurReadOnly)
+Set RdoAux = cn.OpenResultset(sql, rdOpenForwardOnly, rdConcurReadOnly)
 With RdoAux
     Do Until .EOF
        cmbUF.AddItem !SiglaUF & "-" & !DESCUF
@@ -3770,8 +3810,8 @@ End Sub
 
 Private Sub grdHist_RowColChange()
 If grdHist.Rows = 1 Then Exit Sub
-If grdHist.Row > 0 Then
-    txtHist.Text = grdHist.TextMatrix(grdHist.Row, 2)
+If grdHist.row > 0 Then
+    txtHist.Text = grdHist.TextMatrix(grdHist.row, 2)
 End If
 
 End Sub
@@ -3848,8 +3888,8 @@ Private Sub LiberaEndereco()
    txtNumImovel.BackColor = Kde
    cmbUF.Enabled = False
    cmbUF.BackColor = Kde
-'   cmbBairro.Enabled = False
-'   cmbBairro.BackColor = Kde
+   cmbBairro.Enabled = False
+   cmbBairro.BackColor = Kde
    cmbCidade.Enabled = False
    cmbCidade.BackColor = Kde
    mskCEP.BackColor = Kde
@@ -3868,8 +3908,8 @@ Private Sub TravaEndereco()
    txtNumImovel.BackColor = Branco
    cmbUF.Enabled = True
    cmbUF.BackColor = Branco
-  ' cmbBairro.Enabled = True
-  ' cmbBairro.BackColor = Branco
+   cmbBairro.Enabled = True
+   cmbBairro.BackColor = Branco
    cmbCidade.Enabled = True
    cmbCidade.BackColor = Branco
    mskCEP.BackColor = Branco
@@ -3946,8 +3986,8 @@ Dim tBairro As Bairro
 txtCodLogr.Text = Val(txtCodLogr.Text)
 On Error Resume Next
 If Val(txtCodLogr.Text) > 0 Then
-   Sql = "SELECT ABREVTIPOLOG,ABREVTITLOG,NOMELOGRADOURO FROM vwLOGRADOURO WHERE CODLOGRADOURO=" & Val(txtCodLogr.Text)
-   Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+   sql = "SELECT ABREVTIPOLOG,ABREVTITLOG,NOMELOGRADOURO FROM vwLOGRADOURO WHERE CODLOGRADOURO=" & Val(txtCodLogr.Text)
+   Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
    If RdoAux.RowCount = 0 Then
       MsgBox "Logradouro não Cadastrado.", vbCritical, "Atenção"
       txtNomeLogr.Text = ""
@@ -3984,11 +4024,11 @@ End Sub
 Private Sub txtCodLogrLI_LostFocus()
 
 If Val(txtCodLogrLI.Text) > 0 Then
-   Sql = "SELECT CODLOGRADOURO,CODTIPOLOG,NOMETIPOLOG,"
-   Sql = Sql & "ABREVTIPOLOG,CODTITLOG,NOMETITLOG,"
-   Sql = Sql & "ABREVTITLOG,NOMELOGRADOURO "
-   Sql = Sql & "FROM vwLOGRADOURO WHERE CODLOGRADOURO=" & Val(txtCodLogrLI.Text)
-   Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+   sql = "SELECT CODLOGRADOURO,CODTIPOLOG,NOMETIPOLOG,"
+   sql = sql & "ABREVTIPOLOG,CODTITLOG,NOMETITLOG,"
+   sql = sql & "ABREVTITLOG,NOMELOGRADOURO "
+   sql = sql & "FROM vwLOGRADOURO WHERE CODLOGRADOURO=" & Val(txtCodLogrLI.Text)
+   Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
    With RdoAux
        If .RowCount > 0 Then
           txtNomeLogLI.Text = Trim$(SubNull(!AbrevTipoLog)) & " " & Trim$(SubNull(!AbrevTitLog)) & " " & !NomeLogradouro
@@ -4035,13 +4075,13 @@ If KeyAscii = vbKeyReturn Then
    KeyAscii = 0
    lstNomeLog.Clear
    If txtNomeLogr.Text <> "" Then
-      Sql = "SELECT CODLOGRADOURO,CODTIPOLOG,NOMETIPOLOG,"
-      Sql = Sql & "ABREVTIPOLOG,CODTITLOG,NOMETITLOG,"
-      Sql = Sql & "ABREVTITLOG,NOMELOGRADOURO,DATAOFIC,"
-      Sql = Sql & "NUMOFIC FROM vwLOGRADOURO "
-      Sql = Sql & "WHERE NOMELOGRADOURO LIKE '%" & Trim$(txtNomeLogr) & "%' "
-      Sql = Sql & "ORDER BY NOMELOGRADOURO"
-      Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+      sql = "SELECT CODLOGRADOURO,CODTIPOLOG,NOMETIPOLOG,"
+      sql = sql & "ABREVTIPOLOG,CODTITLOG,NOMETITLOG,"
+      sql = sql & "ABREVTITLOG,NOMELOGRADOURO,DATAOFIC,"
+      sql = sql & "NUMOFIC FROM vwLOGRADOURO "
+      sql = sql & "WHERE NOMELOGRADOURO LIKE '%" & Trim$(txtNomeLogr) & "%' "
+      sql = sql & "ORDER BY NOMELOGRADOURO"
+      Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
       With RdoAux
           If .RowCount > 0 Then
              Do Until .EOF
@@ -4251,8 +4291,8 @@ Private Sub TravaCampos()
    cmbUF.Enabled = False
    cmbUF.BackColor = Kde
    cmdAddBairro.Enabled = False
-'   cmbBairro.Enabled = False
-'   cmbBairro.BackColor = Kde
+   cmbBairro.Enabled = False
+   cmbBairro.BackColor = Kde
    cmbCidade.Enabled = False
    cmbCidade.BackColor = Kde
    txtNum.Enabled = False
@@ -4396,21 +4436,21 @@ ElseIf optTEnd(2).value = True Then
     nEnd = 2
 End If
 
-Sql = "INSERT CADIMOB(CODREDUZIDO,DV,CODCONDOMINIO,DISTRITO,SETOR,QUADRA,LOTE,SEQ,UNIDADE,SUBUNIDADE,LI_NUM,LI_COMPL,"
-Sql = Sql & "LI_UF,LI_CODCIDADE,LI_CODBAIRRO,LI_QUADRAS,LI_LOTES,DT_AREATERRENO,DT_CODUSOTERRENO,DT_CODBENF,DT_CODTOPOG,"
-Sql = Sql & "DT_CODCATEGPROP,DT_CODSITUACAO,DT_CODPEDOL,DT_NUMAGUA,DT_FRACAOIDEAL,DC_QTDEEDIF,DC_QTDEPAV,EE_TIPOEND,TIPOMAT,"
-Sql = Sql & "NUMMAT,DATAINCLUSAO,IMUNE,CONJUGADO,RESIDEIMOVEL,CIP) values("
-Sql = Sql & nCodReduz & "," & Val(Right$(lblCodReduz.Caption, 1)) & "," & IIf(Left$(lblCond.Caption, 1) = "N", 999, Val(Left$(lblCond.Caption, 4))) & ","
-Sql = Sql & Val(lblDist.Caption) & "," & Val(lblSetor.Caption) & "," & Val(txtQuadra.Text) & "," & Val(txtLote.Text) & ","
-Sql = Sql & Val(txtSeq.Text) & "," & Val(lblUnid.Caption) & "," & Val(lblSubUnid.Caption) & "," & Val(txtNum.Text) & ",'"
+sql = "INSERT CADIMOB(CODREDUZIDO,DV,CODCONDOMINIO,DISTRITO,SETOR,QUADRA,LOTE,SEQ,UNIDADE,SUBUNIDADE,LI_NUM,LI_COMPL,"
+sql = sql & "LI_UF,LI_CODCIDADE,LI_CODBAIRRO,LI_QUADRAS,LI_LOTES,DT_AREATERRENO,DT_CODUSOTERRENO,DT_CODBENF,DT_CODTOPOG,"
+sql = sql & "DT_CODCATEGPROP,DT_CODSITUACAO,DT_CODPEDOL,DT_NUMAGUA,DT_FRACAOIDEAL,DC_QTDEEDIF,DC_QTDEPAV,EE_TIPOEND,TIPOMAT,"
+sql = sql & "NUMMAT,DATAINCLUSAO,IMUNE,CONJUGADO,RESIDEIMOVEL,CIP) values("
+sql = sql & nCodReduz & "," & Val(Right$(lblCodReduz.Caption, 1)) & "," & IIf(Left$(lblCond.Caption, 1) = "N", 999, Val(Left$(lblCond.Caption, 4))) & ","
+sql = sql & Val(lblDist.Caption) & "," & Val(lblSetor.Caption) & "," & Val(txtQuadra.Text) & "," & Val(txtLote.Text) & ","
+sql = sql & Val(txtSeq.Text) & "," & Val(lblUnid.Caption) & "," & Val(lblSubUnid.Caption) & "," & Val(txtNum.Text) & ",'"
 'Sql = Sql & Mask(txtCompl.Text) & "','" & "SP" & "'," & 413 & "," & IIf(cmbBairroImovel.ListIndex > -1, cmbBairroImovel.ItemData(cmbBairroImovel.ListIndex), "Null") & ",'"
-Sql = Sql & Mask(txtCompl.Text) & "','" & "SP" & "'," & 413 & "," & IIf(Val(txtBairro.Tag) > 0, Val(txtBairro.Tag), "Null") & ",'"
-Sql = Sql & Mask(txtQuadras.Text) & "','" & Mask(txtLotes.Text) & "'," & Virg2Ponto(RemovePonto(txtAreaTerreno.Text)) & "," & IIf(cmbUso.ListIndex > -1, cmbUso.ItemData(cmbUso.ListIndex), "Null") & ","
-Sql = Sql & IIf(cmbBenf.ListIndex > -1, cmbBenf.ItemData(cmbBenf.ListIndex), "Null") & "," & IIf(cmbTopog.ListIndex > -1, cmbTopog.ItemData(cmbTopog.ListIndex), "Null") & ","
-Sql = Sql & IIf(cmbCatProp.ListIndex > -1, cmbCatProp.ItemData(cmbCatProp.ListIndex), "Null") & "," & IIf(cmbSit.ListIndex > -1, cmbSit.ItemData(cmbSit.ListIndex), "Null") & ","
-Sql = Sql & IIf(cmbPedol.ListIndex > -1, cmbPedol.ItemData(cmbPedol.ListIndex), "Null") & "," & "Null" & "," & Virg2Ponto(txtFracaoIdeal.Text) & "," & Val(lblQtdeEdif.Caption) & ",0," & nEnd & ",'"
-Sql = Sql & IIf(optM(0).value = True, "M", "T") & "'," & Val(txtMat.Text) & ",'" & Format(Now, "mm/dd/yyyy") & "'," & IIf(chkImune.value = vbChecked, 1, 0) & "," & IIf(chkConjugado.value = vbChecked, 1, 0) & "," & IIf(chkReside.value = vbChecked, 1, 0) & "," & IIf(chkCIP.value = vbChecked, 1, 0) & ")"
-cn.Execute Sql, rdExecDirect
+sql = sql & Mask(txtCompl.Text) & "','" & "SP" & "'," & 413 & "," & IIf(Val(txtBairro.Tag) > 0, Val(txtBairro.Tag), "Null") & ",'"
+sql = sql & Mask(txtQuadras.Text) & "','" & Mask(txtLotes.Text) & "'," & Virg2Ponto(RemovePonto(txtAreaTerreno.Text)) & "," & IIf(cmbUso.ListIndex > -1, cmbUso.ItemData(cmbUso.ListIndex), "Null") & ","
+sql = sql & IIf(cmbBenf.ListIndex > -1, cmbBenf.ItemData(cmbBenf.ListIndex), "Null") & "," & IIf(cmbTopog.ListIndex > -1, cmbTopog.ItemData(cmbTopog.ListIndex), "Null") & ","
+sql = sql & IIf(cmbCatProp.ListIndex > -1, cmbCatProp.ItemData(cmbCatProp.ListIndex), "Null") & "," & IIf(cmbSit.ListIndex > -1, cmbSit.ItemData(cmbSit.ListIndex), "Null") & ","
+sql = sql & IIf(cmbPedol.ListIndex > -1, cmbPedol.ItemData(cmbPedol.ListIndex), "Null") & "," & "Null" & "," & Virg2Ponto(txtFracaoIdeal.Text) & "," & Val(lblQtdeEdif.Caption) & ",0," & nEnd & ",'"
+sql = sql & IIf(optM(0).value = True, "M", "T") & "'," & Val(txtMat.Text) & ",'" & Format(Now, "mm/dd/yyyy") & "'," & IIf(chkImune.value = vbChecked, 1, 0) & "," & IIf(chkConjugado.value = vbChecked, 1, 0) & "," & IIf(chkReside.value = vbChecked, 1, 0) & "," & IIf(chkCIP.value = vbChecked, 1, 0) & ")"
+cn.Execute sql, rdExecDirect
 
 Return
 '*********************************************************************
@@ -4428,18 +4468,18 @@ Else
 End If
 If optTEnd(2).value = True Then
     If Val(txtCodLogr.Text) > 0 Then
-        Sql = "SELECT NOMELOGRADOURO FROM LOGRADOURO WHERE CODLOGRADOURO=" & Val(txtCodLogr.Text)
-        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurRowVer)
+        sql = "SELECT NOMELOGRADOURO FROM LOGRADOURO WHERE CODLOGRADOURO=" & Val(txtCodLogr.Text)
+        Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurRowVer)
         sNomeLogr = RdoAux!NomeLogradouro
         RdoAux.Close
     Else
         sNomeLogr = Mask(txtNomeLogr.Text)
     End If
-    Sql = "INSERT ENDENTREGA(CODREDUZIDO,EE_CODLOG,EE_NOMELOG,EE_NUMIMOVEL,EE_COMPLEMENTO,EE_UF,EE_CIDADE,"
-    Sql = Sql & "EE_BAIRRO,Ee_Cep) VALUES(" & nCodReduz & "," & Val(txtCodLogr.Text) & ",'" & Mask(sNomeLogr) & "',"
-    Sql = Sql & Val(txtNumImovel.Text) & ",'" & Mask(txtComplImovel.Text) & "','" & Left$(cmbUF.Text, 2) & "',"
-    Sql = Sql & IIf(nCidade > 0, nCidade, "Null") & "," & IIf(nBairro > 0, nBairro, "Null") & ",'" & mskCEP.Text & "')"
-    cn.Execute Sql, rdExecDirect
+    sql = "INSERT ENDENTREGA(CODREDUZIDO,EE_CODLOG,EE_NOMELOG,EE_NUMIMOVEL,EE_COMPLEMENTO,EE_UF,EE_CIDADE,"
+    sql = sql & "EE_BAIRRO,Ee_Cep) VALUES(" & nCodReduz & "," & Val(txtCodLogr.Text) & ",'" & Mask(sNomeLogr) & "',"
+    sql = sql & Val(txtNumImovel.Text) & ",'" & Mask(txtComplImovel.Text) & "','" & Left$(cmbUF.Text, 2) & "',"
+    sql = sql & IIf(nCidade > 0, nCidade, "Null") & "," & IIf(nBairro > 0, nBairro, "Null") & ",'" & mskCEP.Text & "')"
+    cn.Execute sql, rdExecDirect
 End If
 Return
 '*********************************************************************
@@ -4447,10 +4487,10 @@ Return
 GravaProprietario:
 For x = 1 To tvProp.Nodes.Count
     If Len(tvProp.Nodes(x).Key) > 4 Then
-        Sql = "INSERT PROPRIETARIO (CODREDUZIDO,CODCIDADAO,TIPOPROP,PRINCIPAL) VALUES("
-        Sql = Sql & nCodReduz & "," & Val(Right$(tvProp.Nodes(x).Key, 6)) & ",'"
-        Sql = Sql & Left$(tvProp.Nodes(x).Key, 1) & "'," & IIf(tvProp.Nodes("PROP").Child.Text = tvProp.Nodes(x).Text, 1, 0) & ")"
-        cn.Execute Sql, rdExecDirect
+        sql = "INSERT PROPRIETARIO (CODREDUZIDO,CODCIDADAO,TIPOPROP,PRINCIPAL) VALUES("
+        sql = sql & nCodReduz & "," & Val(Right$(tvProp.Nodes(x).Key, 6)) & ",'"
+        sql = sql & Left$(tvProp.Nodes(x).Key, 1) & "'," & IIf(tvProp.Nodes("PROP").Child.Text = tvProp.Nodes(x).Text, 1, 0) & ")"
+        cn.Execute sql, rdExecDirect
         If Left$(tvProp.Nodes(x).Key, 1) = "P" And (tvProp.Nodes("PROP").Child.Text = tvProp.Nodes(x).Text) Then
             AtualizaPropDuplicado nCodReduz, Val(Right$(tvProp.Nodes(x).Key, 6))
         End If
@@ -4462,9 +4502,9 @@ Return
 '*******GRAVA TESTADA *******************************************
 GravaTestada:
 For x = 1 To grdTestada.Rows - 1
-    Sql = "INSERT TESTADA(CODREDUZIDO,NUMFACE,AREATESTADA) VALUES("
-    Sql = Sql & nCodReduz & "," & Val(grdTestada.TextMatrix(x, 0)) & "," & Virg2Ponto(grdTestada.TextMatrix(x, 1)) & ")"
-    cn.Execute Sql, rdExecDirect
+    sql = "INSERT TESTADA(CODREDUZIDO,NUMFACE,AREATESTADA) VALUES("
+    sql = sql & nCodReduz & "," & Val(grdTestada.TextMatrix(x, 0)) & "," & Virg2Ponto(grdTestada.TextMatrix(x, 1)) & ")"
+    cn.Execute sql, rdExecDirect
 Next
 Return
 '*********************************************************************
@@ -4472,26 +4512,26 @@ Return
 GravaArea:
 
 For x = 1 To lvArea.ListItems.Count
-    Sql = "INSERT AREAS (CODREDUZIDO,SEQAREA,TIPOAREA,DATAAPROVA,AREACONSTR,USOCONSTR,TIPOCONSTR,CATCONSTR,"
-    Sql = Sql & "QTDEPAV) VALUES(" & nCodReduz & "," & x & ",'" & "'," & IIf(IsDate(lvArea.ListItems(x).SubItems(2)), "'" & Format(lvArea.ListItems(x).SubItems(2), "mm/dd/yyyy") & "'", "Null") & ","
-    Sql = Sql & Virg2Ponto(Left(RemovePonto(lvArea.ListItems(x).SubItems(1)), Len(lvArea.ListItems(x).SubItems(1)) - 3)) & "," & lvArea.ListItems(x).SubItems(3) & "," & lvArea.ListItems(x).SubItems(5) & ","
-    Sql = Sql & lvArea.ListItems(x).SubItems(7) & "," & lvArea.ListItems(x).SubItems(9) & ")"
-    cn.Execute Sql, rdExecDirect
+    sql = "INSERT AREAS (CODREDUZIDO,SEQAREA,TIPOAREA,DATAAPROVA,AREACONSTR,USOCONSTR,TIPOCONSTR,CATCONSTR,"
+    sql = sql & "QTDEPAV) VALUES(" & nCodReduz & "," & x & ",'" & "'," & IIf(IsDate(lvArea.ListItems(x).SubItems(2)), "'" & Format(lvArea.ListItems(x).SubItems(2), "mm/dd/yyyy") & "'", "Null") & ","
+    sql = sql & Virg2Ponto(Left(RemovePonto(lvArea.ListItems(x).SubItems(1)), Len(lvArea.ListItems(x).SubItems(1)) - 3)) & "," & lvArea.ListItems(x).SubItems(3) & "," & lvArea.ListItems(x).SubItems(5) & ","
+    sql = sql & lvArea.ListItems(x).SubItems(7) & "," & lvArea.ListItems(x).SubItems(9) & ")"
+    cn.Execute sql, rdExecDirect
 Next
 
 Return
 
 '*******HISTORICO DO IMÓVEL *******************************************
 GravaHistorico:
-Sql = "DELETE FROM HISTORICO WHERE CODREDUZIDO=" & nCodReduz
-cn.Execute Sql, rdExecDirect
+sql = "DELETE FROM HISTORICO WHERE CODREDUZIDO=" & nCodReduz
+cn.Execute sql, rdExecDirect
 With grdHist
     For x = 1 To .Rows - 1
 '        Sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST,USUARIO,DATAHIST2) VALUES("
 '        Sql = Sql & nCodReduz & "," & x & ",'" & Format(.TextMatrix(x, 0), "mm/dd/yyyy") & "','" & Mask(.TextMatrix(x, 2)) & "','" & Mask(.TextMatrix(x, 3)) & "','" & Format(.TextMatrix(x, 0), "mm/dd/yyyy") & "')"
-        Sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST,USERID,DATAHIST2) VALUES("
-        Sql = Sql & nCodReduz & "," & x & ",'" & Format(.TextMatrix(x, 0), "mm/dd/yyyy") & "','" & Mask(.TextMatrix(x, 2)) & "'," & RetornaUsuarioID(.TextMatrix(x, 3)) & ",'" & Format(.TextMatrix(x, 0), "mm/dd/yyyy") & "')"
-        cn.Execute Sql, rdExecDirect
+        sql = "INSERT HISTORICO(CODREDUZIDO,SEQ,DATAHIST,DESCHIST,USERID,DATAHIST2) VALUES("
+        sql = sql & nCodReduz & "," & x & ",'" & Format(.TextMatrix(x, 0), "mm/dd/yyyy") & "','" & Mask(.TextMatrix(x, 2)) & "'," & RetornaUsuarioID(.TextMatrix(x, 3)) & ",'" & Format(.TextMatrix(x, 0), "mm/dd/yyyy") & "')"
+        cn.Execute sql, rdExecDirect
     Next
 End With
 
@@ -4502,8 +4542,8 @@ Return
 Alteração:
 
 'caso o imovel for criado no mesmo dia da alteração não gravar historico de alteração
-Sql = "SELECT CODREDUZIDO,DATAINCLUSAO FROM CADIMOB WHERE CODREDUZIDO=" & nCodReduz
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CODREDUZIDO,DATAINCLUSAO FROM CADIMOB WHERE CODREDUZIDO=" & nCodReduz
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 If Not IsNull(RdoAux!DATAINCLUSAO) Then
     If Format(RdoAux!DATAINCLUSAO, "dd/mm/yyyy") = Format(Now, "dd/mm/yyyy") Then
         RdoAux.Close
@@ -4624,89 +4664,89 @@ End If
 AfterHist:
 'Select Case sItemEdit
 '    Case "PC"
-         Sql = "DELETE FROM PROPRIETARIO WHERE CODREDUZIDO=" & nCodReduz
-         cn.Execute Sql, rdExecDirect
+         sql = "DELETE FROM PROPRIETARIO WHERE CODREDUZIDO=" & nCodReduz
+         cn.Execute sql, rdExecDirect
          GoSub GravaProprietario
 '    Case "LI"
-         Sql = "UPDATE CADIMOB SET "
-         Sql = Sql & "QUADRA=" & Val(txtQuadra.Text) & ","
-         Sql = Sql & "LOTE=" & Val(txtLote.Text) & ","
-         Sql = Sql & "SEQ=" & Val(txtSeq.Text) & ","
-         Sql = Sql & "TIPOMAT='" & IIf(optM(0).value = True, "M", "T") & "',"
-         Sql = Sql & "NUMMAT=" & Val(txtMat.Text) & ","
-         Sql = Sql & "LI_NUM=" & Val(txtNum.Text) & ","
-         Sql = Sql & "LI_COMPL='" & Mask(txtCompl.Text) & "',"
-         Sql = Sql & "LI_UF='" & "SP" & "',"
-         Sql = Sql & "LI_CODCIDADE=" & 413 & ","
+         sql = "UPDATE CADIMOB SET "
+         sql = sql & "QUADRA=" & Val(txtQuadra.Text) & ","
+         sql = sql & "LOTE=" & Val(txtLote.Text) & ","
+         sql = sql & "SEQ=" & Val(txtSeq.Text) & ","
+         sql = sql & "TIPOMAT='" & IIf(optM(0).value = True, "M", "T") & "',"
+         sql = sql & "NUMMAT=" & Val(txtMat.Text) & ","
+         sql = sql & "LI_NUM=" & Val(txtNum.Text) & ","
+         sql = sql & "LI_COMPL='" & Mask(txtCompl.Text) & "',"
+         sql = sql & "LI_UF='" & "SP" & "',"
+         sql = sql & "LI_CODCIDADE=" & 413 & ","
 '         If cmbBairroImovel.ListIndex > -1 Then
 '            Sql = Sql & "LI_CODBAIRRO=" & cmbBairroImovel.ItemData(cmbBairroImovel.ListIndex) & ","
 '         Else
 '            Sql = Sql & "LI_CODBAIRRO=" & 999 & ","
 '         End If
-         Sql = Sql & "LI_CODBAIRRO=" & Val(txtBairro.Tag) & ","
-         Sql = Sql & "LI_QUADRAS='" & Mask(txtQuadras.Text) & "',"
-         Sql = Sql & "LI_LOTES='" & Mask(txtLotes.Text) & "',"
-         Sql = Sql & "IMUNE=" & IIf(chkImune.value = vbChecked, 1, 0) & ","
-         Sql = Sql & "CONJUGADO=" & IIf(chkConjugado.value = vbChecked, 1, 0) & ", "
-         Sql = Sql & "CIP=" & IIf(chkCIP.value = vbChecked, 1, 0) & ", "
-         Sql = Sql & "RESIDEIMOVEL=" & IIf(chkReside.value = vbChecked, 1, 0) & " "
-         Sql = Sql & "WHERE CODREDUZIDO=" & nCodReduz
-         cn.Execute Sql, rdExecDirect
+         sql = sql & "LI_CODBAIRRO=" & Val(txtBairro.Tag) & ","
+         sql = sql & "LI_QUADRAS='" & Mask(txtQuadras.Text) & "',"
+         sql = sql & "LI_LOTES='" & Mask(txtLotes.Text) & "',"
+         sql = sql & "IMUNE=" & IIf(chkImune.value = vbChecked, 1, 0) & ","
+         sql = sql & "CONJUGADO=" & IIf(chkConjugado.value = vbChecked, 1, 0) & ", "
+         sql = sql & "CIP=" & IIf(chkCIP.value = vbChecked, 1, 0) & ", "
+         sql = sql & "RESIDEIMOVEL=" & IIf(chkReside.value = vbChecked, 1, 0) & " "
+         sql = sql & "WHERE CODREDUZIDO=" & nCodReduz
+         cn.Execute sql, rdExecDirect
  '   Case "EE"
-         Sql = "DELETE FROM ENDENTREGA WHERE CODREDUZIDO=" & nCodReduz
-         cn.Execute Sql, rdExecDirect
+         sql = "DELETE FROM ENDENTREGA WHERE CODREDUZIDO=" & nCodReduz
+         cn.Execute sql, rdExecDirect
          If optTEnd(2).value = True Then
             GoSub GravaEndEntrega
-            Sql = "UPDATE CADIMOB SET EE_TIPOEND=2 "
-            Sql = Sql & "WHERE CODREDUZIDO=" & nCodReduz
-            cn.Execute Sql, rdExecDirect
+            sql = "UPDATE CADIMOB SET EE_TIPOEND=2 "
+            sql = sql & "WHERE CODREDUZIDO=" & nCodReduz
+            cn.Execute sql, rdExecDirect
          Else
-            Sql = "UPDATE CADIMOB SET "
+            sql = "UPDATE CADIMOB SET "
             If optTEnd(0).value = True Then
-               Sql = Sql & "EE_TIPOEND=0"
+               sql = sql & "EE_TIPOEND=0"
             ElseIf optTEnd(1).value = True Then
-               Sql = Sql & "EE_TIPOEND=1"
+               sql = sql & "EE_TIPOEND=1"
             End If
-            Sql = Sql & "WHERE CODREDUZIDO=" & nCodReduz
-            cn.Execute Sql, rdExecDirect
+            sql = sql & "WHERE CODREDUZIDO=" & nCodReduz
+            cn.Execute sql, rdExecDirect
          End If
   '  Case "TT"
-         Sql = "DELETE FROM TESTADA WHERE CODREDUZIDO=" & nCodReduz
-         cn.Execute Sql, rdExecDirect
+         sql = "DELETE FROM TESTADA WHERE CODREDUZIDO=" & nCodReduz
+         cn.Execute sql, rdExecDirect
          GoSub GravaTestada
   '  Case "AT"
-         Sql = "UPDATE CADIMOB SET "
-         Sql = Sql & "DT_AREATERRENO=" & Virg2Ponto(RemovePonto(txtAreaTerreno.Text))
-         Sql = Sql & " WHERE CODREDUZIDO=" & nCodReduz
-         cn.Execute Sql, rdExecDirect
+         sql = "UPDATE CADIMOB SET "
+         sql = sql & "DT_AREATERRENO=" & Virg2Ponto(RemovePonto(txtAreaTerreno.Text))
+         sql = sql & " WHERE CODREDUZIDO=" & nCodReduz
+         cn.Execute sql, rdExecDirect
   '  Case "DT"
-         Sql = "UPDATE CADIMOB SET "
+         sql = "UPDATE CADIMOB SET "
          If cmbUso.ListIndex > -1 Then
-            Sql = Sql & "DT_CODUSOTERRENO=" & cmbUso.ItemData(cmbUso.ListIndex) & ","
+            sql = sql & "DT_CODUSOTERRENO=" & cmbUso.ItemData(cmbUso.ListIndex) & ","
          End If
          If cmbBenf.ListIndex > -1 Then
-            Sql = Sql & "DT_CODBENF=" & cmbBenf.ItemData(cmbBenf.ListIndex) & ","
+            sql = sql & "DT_CODBENF=" & cmbBenf.ItemData(cmbBenf.ListIndex) & ","
          End If
          If cmbTopog.ListIndex > -1 Then
-            Sql = Sql & "DT_CODTOPOG=" & cmbTopog.ItemData(cmbTopog.ListIndex) & ","
+            sql = sql & "DT_CODTOPOG=" & cmbTopog.ItemData(cmbTopog.ListIndex) & ","
          End If
          If cmbCatProp.ListIndex > -1 Then
-            Sql = Sql & "DT_CODCATEGPROP=" & cmbCatProp.ItemData(cmbCatProp.ListIndex) & ","
+            sql = sql & "DT_CODCATEGPROP=" & cmbCatProp.ItemData(cmbCatProp.ListIndex) & ","
          End If
          If cmbSit.ListIndex > -1 Then
-            Sql = Sql & "DT_CODSITUACAO=" & cmbSit.ItemData(cmbSit.ListIndex) & ","
+            sql = sql & "DT_CODSITUACAO=" & cmbSit.ItemData(cmbSit.ListIndex) & ","
          End If
          If cmbPedol.ListIndex > -1 Then
-            Sql = Sql & "DT_CODPEDOL=" & cmbPedol.ItemData(cmbPedol.ListIndex) & ","
+            sql = sql & "DT_CODPEDOL=" & cmbPedol.ItemData(cmbPedol.ListIndex) & ","
          End If
-         Sql = Sql & "DT_NUMAGUA='" & "" & "',"
+         sql = sql & "DT_NUMAGUA='" & "" & "',"
          If txtFracaoIdeal.Text = "" Then txtFracaoIdeal.Text = "0"
-         Sql = Sql & "DT_FRACAOIDEAL=" & Virg2Ponto(RemovePonto(txtFracaoIdeal.Text))
-         Sql = Sql & " WHERE CODREDUZIDO=" & nCodReduz
-         cn.Execute Sql, rdExecDirect
+         sql = sql & "DT_FRACAOIDEAL=" & Virg2Ponto(RemovePonto(txtFracaoIdeal.Text))
+         sql = sql & " WHERE CODREDUZIDO=" & nCodReduz
+         cn.Execute sql, rdExecDirect
  '   Case "DC"
-         Sql = "DELETE FROM AREAS WHERE CODREDUZIDO=" & nCodReduz
-         cn.Execute Sql, rdExecDirect
+         sql = "DELETE FROM AREAS WHERE CODREDUZIDO=" & nCodReduz
+         cn.Execute sql, rdExecDirect
          GoSub GravaArea
  '   Case "HI"
          GoSub GravaHistorico
@@ -4848,7 +4888,7 @@ With xImovel
     Next
     tvProp.Refresh
     ValorIPTU
-     txtFracaoIdeal.Text = FormatNumber(.Dt_FracaoIdeal, 2)
+     txtFracaoIdeal.Text = FormatNumber(.Dt_FracaoIdeal, 6)
      bExec = False
      optTEnd(.Ee_TipoEnd).value = True
      bExec = True
@@ -4889,9 +4929,9 @@ With xImovel
     
     'Histórico
     'Sql = "SELECT SEQ,DATAHIST,DESCHIST,USUARIO,DATAHIST2 FROM HISTORICO WHERE "
-    Sql = "SELECT historico.*,Usuario.NomeLogin FROM historico INNER JOIN usuario ON historico.userid = usuario.Id WHERE "
-    Sql = Sql & "CODREDUZIDO=" & nCodReduz & " ORDER BY SEQ"
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    sql = "SELECT historico.*,Usuario.NomeLogin FROM historico INNER JOIN usuario ON historico.userid = usuario.Id WHERE "
+    sql = sql & "CODREDUZIDO=" & nCodReduz & " ORDER BY SEQ"
+    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         Do Until .EOF
             grdHist.AddItem Format(!DATAHIST2, "dd/mm/yyyy") & Chr(9) & Format(!Seq, "00") & Chr(9) & !DESCHIST & Chr(9) & SubNull(!NomeLogin)
@@ -4900,26 +4940,26 @@ With xImovel
       .Close
     End With
     If grdHist.Rows > 1 Then
-        grdHist.Row = 1
+        grdHist.row = 1
         grdHist.ColSel = 3
         grdHist_RowColChange
     End If
     grdHist.Refresh
     
     'Areas
-    Sql = "SELECT AREAS.SEQAREA,AREAS.QTDEPAV,AREAS.TIPOAREA,AREAS.DATAAPROVA,AREAS.AREACONSTR,AREAS.NUMPROCESSO,AREAS.DATAPROCESSO,"
-    Sql = Sql & "AREAS.USOCONSTR,USOCONSTR.DESCUSOCONSTR,AREAS.TIPOCONSTR,TIPOCONSTR.DESCTIPOCONSTR,"
-    Sql = Sql & "AREAS.CATCONSTR,CATEGCONSTR.DESCCATEGCONSTR FROM AREAS INNER JOIN USOCONSTR ON "
-    Sql = Sql & "AREAS.USOCONSTR = USOCONSTR.CODUSOCONSTR INNER JOIN TIPOCONSTR ON "
-    Sql = Sql & "AREAS.TIPOCONSTR = TIPOCONSTR.CODTIPOCONSTR INNER JOIN CATEGCONSTR ON "
-    Sql = Sql & "AREAS.CATCONSTR = CATEGCONSTR.CODCATEGCONSTR "
-    Sql = Sql & "WHERE CODREDUZIDO=" & nCodReduz
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    sql = "SELECT AREAS.SEQAREA,AREAS.QTDEPAV,AREAS.TIPOAREA,AREAS.DATAAPROVA,AREAS.AREACONSTR,AREAS.NUMPROCESSO,AREAS.DATAPROCESSO,"
+    sql = sql & "AREAS.USOCONSTR,USOCONSTR.DESCUSOCONSTR,AREAS.TIPOCONSTR,TIPOCONSTR.DESCTIPOCONSTR,"
+    sql = sql & "AREAS.CATCONSTR,CATEGCONSTR.DESCCATEGCONSTR,AREAGEO FROM AREAS INNER JOIN USOCONSTR ON "
+    sql = sql & "AREAS.USOCONSTR = USOCONSTR.CODUSOCONSTR INNER JOIN TIPOCONSTR ON "
+    sql = sql & "AREAS.TIPOCONSTR = TIPOCONSTR.CODTIPOCONSTR INNER JOIN CATEGCONSTR ON "
+    sql = sql & "AREAS.CATCONSTR = CATEGCONSTR.CODCATEGCONSTR "
+    sql = sql & "WHERE CODREDUZIDO=" & nCodReduz
+    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         lblQtdeEdif.Caption = .RowCount
         nSeq = 1
         Do Until .EOF
-        
+           
            '****ListView
             Set itmX = lvArea.ListItems.Add(, "A" & Format(nSeq, "00"), Format(nSeq, "00"))
             itmX.SubItems(1) = FormatNumber(!AREACONSTR, 2) & " m²"
@@ -4931,7 +4971,15 @@ With xImovel
             itmX.SubItems(7) = !CATCONSTR
             itmX.SubItems(8) = !desccategconstr
             itmX.SubItems(9) = Val(SubNull(!QTDEPAV))
-        
+        '  Highlight in red if AREAGEO is True
+            If !AREAGEO = True Then
+                itmX.ForeColor = vbRed
+                For Each MySubItem In itmX.ListSubItems
+                MySubItem.ForeColor = vbRed
+                Next MySubItem
+            End If
+            
+            lvArea.Refresh
            nSeq = nSeq + 1
           .MoveNext
         Loop
@@ -5032,8 +5080,8 @@ If nCodigo = 0 Then
     Exit Sub
 End If
 
-Sql = "SELECT CODCIDADAO,CODBAIRRO,CODBAIRRO2 FROM CIDADAO WHERE CODCIDADAO=" & nCodigo
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CODCIDADAO,CODBAIRRO,CODBAIRRO2 FROM CIDADAO WHERE CODCIDADAO=" & nCodigo
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 If Val(SubNull(RdoAux!CodBairro)) > 0 Then
    sTipoEnd = "R"
 Else
@@ -5046,17 +5094,17 @@ End If
 RdoAux.Close
 
 If sTipoEnd = "R" Then
-    Sql = "SELECT CODCIDADAO,NOMECIDADAO,CPF,CNPJ,CODLOGRADOURO AS fCODLOGRADOURO,NUMIMOVEL AS fNUMIMOVEL,"
-    Sql = Sql & "COMPLEMENTO AS fCOMPLEMENTO,CODBAIRRO AS fCODBAIRRO,CODCIDADE AS fCODCIDADE,SIGLAUF AS fSIGLAUF,"
-    Sql = Sql & "CEP AS fCEP,TELEFONE AS fTELEFONE,EMAIL AS fEMAIL,RG AS fRG,NOMELOGRADOURO AS fNOMELOGRADOURO,ORGAO AS fORGAO"
-    Sql = Sql & " FROM CIDADAO WHERE CODCIDADAO=" & nCodigo
+    sql = "SELECT CODCIDADAO,NOMECIDADAO,CPF,CNPJ,CODLOGRADOURO AS fCODLOGRADOURO,NUMIMOVEL AS fNUMIMOVEL,"
+    sql = sql & "COMPLEMENTO AS fCOMPLEMENTO,CODBAIRRO AS fCODBAIRRO,CODCIDADE AS fCODCIDADE,SIGLAUF AS fSIGLAUF,"
+    sql = sql & "CEP AS fCEP,TELEFONE AS fTELEFONE,EMAIL AS fEMAIL,RG AS fRG,NOMELOGRADOURO AS fNOMELOGRADOURO,ORGAO AS fORGAO"
+    sql = sql & " FROM CIDADAO WHERE CODCIDADAO=" & nCodigo
 Else
-    Sql = "SELECT CODCIDADAO,NOMECIDADAO,CPF,CNPJ,CODLOGRADOURO2 AS fCODLOGRADOURO,NUMIMOVEL2 AS fNUMIMOVEL,"
-    Sql = Sql & "COMPLEMENTO2 AS fCOMPLEMENTO,CODBAIRRO2 AS fCODBAIRRO,CODCIDADE2 AS fCODCIDADE,SIGLAUF2 AS fSIGLAUF,"
-    Sql = Sql & "CEP2 AS fCEP,TELEFONE2 AS fTELEFONE,EMAIL2 AS fEMAIL,RG AS fRG,NOMELOGRADOURO2 AS fNOMELOGRADOURO,ORGAO AS fORGAO"
-    Sql = Sql & " FROM CIDADAO WHERE CODCIDADAO=" & nCodigo
+    sql = "SELECT CODCIDADAO,NOMECIDADAO,CPF,CNPJ,CODLOGRADOURO2 AS fCODLOGRADOURO,NUMIMOVEL2 AS fNUMIMOVEL,"
+    sql = sql & "COMPLEMENTO2 AS fCOMPLEMENTO,CODBAIRRO2 AS fCODBAIRRO,CODCIDADE2 AS fCODCIDADE,SIGLAUF2 AS fSIGLAUF,"
+    sql = sql & "CEP2 AS fCEP,TELEFONE2 AS fTELEFONE,EMAIL2 AS fEMAIL,RG AS fRG,NOMELOGRADOURO2 AS fNOMELOGRADOURO,ORGAO AS fORGAO"
+    sql = sql & " FROM CIDADAO WHERE CODCIDADAO=" & nCodigo
 End If
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If .RowCount > 0 Then
         If Val(SubNull(!FCodLogradouro)) > 0 Then
@@ -5305,7 +5353,7 @@ txtNumImovel.Text = ""
 txtComplImovel.Text = ""
 cmbUF.ListIndex = -1
 cmbCidade.Clear
-cmbBairro.Clear
+'cmbBairro.Clear
 LimpaMascara mskCEP
 'Dados do Terreno
 txtAreaTerreno.Text = "0,00"
@@ -5455,7 +5503,7 @@ If bHist Then cmdEditHist.Enabled = True
 End Sub
 
 Private Sub LoadHistImovel()
-7
+
 '*** ATUALIZA ORIGEM ALTERAÇÃO ***
 HistImovel.Logradouro = txtNomeLogLI.Text
 HistImovel.Numero = txtNum.Text
@@ -5474,3 +5522,6 @@ HistImovel.Topografia = cmbTopog.Text
 HistImovel.Situacao = cmbSit.Text
 
 End Sub
+
+
+
