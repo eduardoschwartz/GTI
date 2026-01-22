@@ -92,15 +92,15 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub cmdPrint_Click()
-Dim Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, nAno As Integer, nNumero As Long, nSeq As Integer, nConta As Integer
+Dim sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset, nAno As Integer, nNumero As Long, nSeq As Integer, nConta As Integer
 Dim ax As String, sNome As String
 If cmbReq.ListIndex = -1 Then Exit Sub
 
 nConta = 0
-Sql = "SELECT vwFULLPROCESSO.ANO, vwFULLPROCESSO.NUMERO, tramitacao.seq,tramitacao.ccusto, tramitacao.datahora, tramitacao.dataenvio, vwFULLPROCESSO.COMPLEMENTO, "
-Sql = Sql & "vwFULLPROCESSO.nomecidadao , vwFULLPROCESSO.DESCRICAO FROM vwFULLPROCESSO INNER JOIN tramitacao ON vwFULLPROCESSO.ANO = tramitacao.ano AND "
-Sql = Sql & "vwFULLPROCESSO.NUMERO = tramitacao.numero  Where ccusto = " & cmbReq.ItemData(cmbReq.ListIndex) & " And dataenvio Is Null order by ano ,numero"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT vwFULLPROCESSO.ANO, vwFULLPROCESSO.NUMERO, tramitacao.seq,tramitacao.ccusto, tramitacao.datahora, tramitacao.dataenvio, vwFULLPROCESSO.COMPLEMENTO, "
+sql = sql & "vwFULLPROCESSO.nomecidadao , vwFULLPROCESSO.DESCRICAO FROM vwFULLPROCESSO INNER JOIN tramitacao ON vwFULLPROCESSO.ANO = tramitacao.ano AND "
+sql = sql & "vwFULLPROCESSO.NUMERO = tramitacao.numero  Where DATAARQUIVA IS NULL and ccusto = " & cmbReq.ItemData(cmbReq.ListIndex) & " And dataenvio Is Null order by ano ,numero"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 If RdoAux.RowCount = 0 Then
     RdoAux.Close
     MsgBox "Este centro de custos não esta com nenhum processo.", vbInformation, "Informação"
@@ -115,33 +115,36 @@ Else
     Print #1, ax
     ax = "====================================================================================================="
     Print #1, ax
-    pBar.Color = vbRed
-    pBar.value = 0
+    PBar.Color = vbRed
+    PBar.value = 0
     
     With RdoAux
         Ocupado
         Do Until .EOF
             CallPb CLng(.AbsolutePosition), CLng(.RowCount)
             DoEvents
-            nAno = !Ano
+            nAno = !ano
             nNumero = !Numero
+            If nAno = 2017 And nNumero = 21247 Then
+'                MsgBox "teste"
+            End If
             nSeq = !Seq
-            Sql = "SELECT * from tramitacao Where tramitacao.Ano = " & nAno & " And tramitacao.Numero = " & nNumero & " And Seq = " & nSeq + 1
-            Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+            sql = "SELECT * from tramitacao Where tramitacao.Ano = " & nAno & " And tramitacao.Numero = " & nNumero & " And Seq = " & nSeq - 1
+            Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
             If RdoAux2.RowCount > 0 Then
-                If Not IsNull(RdoAux2!DATAHORA) Then
+                If IsNull(RdoAux2!dataHora) Then
                     RdoAux2.Close
                     GoTo Proximo
                 End If
             End If
             RdoAux2.Close
             nConta = nConta + 1
-            If Not IsNull(!Nomecidadao) Then
-                sNome = !Nomecidadao
+            If Not IsNull(!nomecidadao) Then
+                sNome = !nomecidadao
             Else
                 sNome = SubNull(!Descricao)
             End If
-            ax = Format(!Numero, "000000") & "-" & RetornaDVProcesso(!Numero) & "/" & !Ano & " " & Format(!DATAHORA, "dd/mm/yyyy") & " " & Format(DateDiff("d", !DATAHORA, Now), "0000") & " " & FillSpace(Left(!Complemento, 35), 35) & " " & FillSpace(Left(sNome, 35), 35)
+            ax = Format(!Numero, "000000") & "-" & RetornaDVProcesso(!Numero) & "/" & !ano & " " & Format(!dataHora, "dd/mm/yyyy") & " " & Format(DateDiff("d", !dataHora, Now), "0000") & " " & FillSpace(Left(!Complemento, 35), 35) & " " & FillSpace(Left(sNome, 35), 35)
             Print #1, ax
 Proximo:
             DoEvents
@@ -156,13 +159,13 @@ Proximo:
     Close #1
     Liberado
     If nConta > 0 Then
-        z = Shell(App.Path & "\NOTEPAD2" & " " & sPathBin & "\PROTCC.TXT", vbNormalFocus)
+        z = Shell("NOTEPAD" & " " & sPathBin & "\PROTCC.TXT", vbNormalFocus)
     Else
         MsgBox "Nenhum processo encontrado.", vbExclamation, "Atenção"
     End If
 End If
-pBar.Color = vbWhite
-pBar.value = 0
+PBar.Color = vbWhite
+PBar.value = 0
 
 End Sub
 
@@ -172,10 +175,10 @@ CarregaCC
 End Sub
 
 Private Sub CarregaCC()
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, RdoAux As rdoResultset
 cmbReq.Clear
-Sql = "SELECT CODIGO,DESCRICAO FROM CENTROCUSTO where ativo=1"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CODIGO,DESCRICAO FROM CENTROCUSTO where ativo=1"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
        cmbReq.AddItem !Descricao
@@ -198,14 +201,14 @@ End Function
 
 Private Sub CallPb(nVal As Long, nTot As Long)
 If nVal > 0 Then
-    pBar.Color = &HC0C000
+    PBar.Color = &HC0C000
 Else
-    pBar.Color = vbWhite
+    PBar.Color = vbWhite
 End If
 If ((nVal * 100) / nTot) <= 100 Then
-   pBar.value = (nVal * 100) / nTot
+   PBar.value = (nVal * 100) / nTot
 Else
-   pBar.value = 100
+   PBar.value = 100
 End If
 
 Me.Refresh

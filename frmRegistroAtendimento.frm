@@ -1516,7 +1516,7 @@ Begin VB.Form frmRegistroAtendimento
       Width           =   1320
    End
    Begin VB.Label Label1 
-      Caption         =   "Munícipe/Setor.:"
+      Caption         =   "Requerente........:"
       Height          =   195
       Index           =   8
       Left            =   135
@@ -1687,11 +1687,11 @@ End If
 End Sub
 
 Private Sub CarregaMaterial()
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, RdoAux As rdoResultset
 
 lstMaterial.Clear
-Sql = "SELECT CODIGO,descricao FROM material_obras order by descricao"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CODIGO,descricao FROM material_obras order by descricao"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         lstMaterial.AddItem !Descricao
@@ -1761,7 +1761,7 @@ txtNum.Text = "S/N"
 End Sub
 
 Private Sub cmdExcluir_Click()
-Dim Sql As String
+Dim sql As String
 
 If lblNumReg.Caption = "" Then
     MsgBox "Selecione um registro", vbExclamation, "Atenção"
@@ -1769,16 +1769,16 @@ If lblNumReg.Caption = "" Then
 End If
 
 If MsgBox("Excluir este registro?", vbQuestion + vbYesNo, "Confirmação") = vbYes Then
-    Sql = "DELETE FROM REGISTROATENDIMENTO WHERE NUMREG=" & Val(Left(lblNumReg.Caption, 5)) & " AND ANOREG=" & Val(Right(lblNumReg.Caption, 4))
-    cn.Execute Sql, rdExecDirect
-    Sql = "DELETE FROM REGISTROATENDIMENTO_ENDERECO WHERE NUMREG=" & Val(Left(lblNumReg.Caption, 5)) & " AND ANOREG=" & Val(Right(lblNumReg.Caption, 4))
-    cn.Execute Sql, rdExecDirect
+    sql = "DELETE FROM REGISTROATENDIMENTO WHERE NUMREG=" & Val(Left(lblNumReg.Caption, 5)) & " AND ANOREG=" & Val(Right(lblNumReg.Caption, 4))
+    cn.Execute sql, rdExecDirect
+    sql = "DELETE FROM REGISTROATENDIMENTO_ENDERECO WHERE NUMREG=" & Val(Left(lblNumReg.Caption, 5)) & " AND ANOREG=" & Val(Right(lblNumReg.Caption, 4))
+    cn.Execute sql, rdExecDirect
     Limpa
 End If
 End Sub
 
 Private Sub cmdGravar_Click()
-Dim Sql As String, RdoAux As rdoResultset, nMaxCod As Integer, nNumproc As Long, nAnoproc As Integer, x As Integer
+Dim sql As String, RdoAux As rdoResultset, nMaxCod As Integer, nNumproc As Long, nAnoproc As Integer, x As Integer
 Dim nCodAssunto As Integer, nChefe As Integer, nequipe As Integer, nCCusto As Integer
 
 'If cmbAtendente.ListIndex = -1 Then
@@ -1863,8 +1863,8 @@ Else
     nAnoproc = 0
 End If
 If Evento = "Novo" Then
-    Sql = "SELECT MAX(NUMREG) AS MAXIMO FROM REGISTROATENDIMENTO WHERE ANOREG=" & Year(Now)
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    sql = "SELECT MAX(NUMREG) AS MAXIMO FROM REGISTROATENDIMENTO WHERE ANOREG=" & Year(Now)
+    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         If IsNull(!maximo) Then
             nMaxCod = 1
@@ -1874,50 +1874,50 @@ If Evento = "Novo" Then
        .Close
     End With
     
-    Sql = "INSERT REGISTROATENDIMENTO(NUMREG,ANOREG,ATENDENTE,TIPOATENDIMENTO,OBSTIPO,DATA,NUMPROC,ANOPROC,URGENTE,ASSUNTO,AGUARDO,DEFERIDO,INDEFERIDO,DATAEXEC,DATAEND,SOLUCAO,CIDADAO,CCUSTO,CODLOGR,CODBAIRRO,CHEFE,EQUIPE,CODASSUNTO,DATACANCEL,LOGRADOURO_SERVICO,BAIRRO,COMPLEMENTO_SERVICO,NUMERO_SERVICO) VALUES(" & nMaxCod & "," & Year(Now) & ","
-    Sql = Sql & nCodigoAt & "," & cmbTipoAtend.ItemData(cmbTipoAtend.ListIndex) & "," & IIf(Trim(txtObsTipo.Text) <> "", "'" & Mask(txtObsTipo.Text) & "'", "Null") & ",'"
-    Sql = Sql & Format(Now, "mm/dd/yyyy") & "'," & nNumproc & "," & nAnoproc & "," & chkUrg.value & "," & IIf(Trim(txtDesc.Text) <> "", "'" & Mask(txtDesc.Text) & "'", "Null") & "," & IIf(optD(2).value, 1, 0) & "," & IIf(optD(0).value, 1, 0) & ","
-    Sql = Sql & IIf(optD(1).value, 1, 0) & "," & IIf(IsDate(mskDataExec.Text), "'" & Format(mskDataExec.Text, "mm/dd/yyyy") & "'", "Null") & "," & IIf(IsDate(mskDataEnd.Text), "'" & Format(mskDataEnd.Text, "mm/dd/yyyy") & "'", "Null") & "," & IIf(Trim(txtSolucao.Text) <> "", "'" & Mask(txtSolucao.Text) & "'", "Null") & ","
+    sql = "INSERT REGISTROATENDIMENTO(NUMREG,ANOREG,ATENDENTE,TIPOATENDIMENTO,OBSTIPO,DATA,NUMPROC,ANOPROC,URGENTE,ASSUNTO,AGUARDO,DEFERIDO,INDEFERIDO,DATAEXEC,DATAEND,SOLUCAO,CIDADAO,CCUSTO,CODLOGR,CODBAIRRO,CHEFE,EQUIPE,CODASSUNTO,DATACANCEL,LOGRADOURO_SERVICO,BAIRRO,COMPLEMENTO_SERVICO,NUMERO_SERVICO) VALUES(" & nMaxCod & "," & Year(Now) & ","
+    sql = sql & nCodigoAt & "," & cmbTipoAtend.ItemData(cmbTipoAtend.ListIndex) & "," & IIf(Trim(txtObsTipo.Text) <> "", "'" & Mask(txtObsTipo.Text) & "'", "Null") & ",'"
+    sql = sql & Format(Now, "mm/dd/yyyy") & "'," & nNumproc & "," & nAnoproc & "," & chkUrg.value & "," & IIf(Trim(txtDesc.Text) <> "", "'" & Mask(txtDesc.Text) & "'", "Null") & "," & IIf(optD(2).value, 1, 0) & "," & IIf(optD(0).value, 1, 0) & ","
+    sql = sql & IIf(optD(1).value, 1, 0) & "," & IIf(IsDate(mskDataExec.Text), "'" & Format(mskDataExec.Text, "mm/dd/yyyy") & "'", "Null") & "," & IIf(IsDate(mskDataEnd.Text), "'" & Format(mskDataEnd.Text, "mm/dd/yyyy") & "'", "Null") & "," & IIf(Trim(txtSolucao.Text) <> "", "'" & Mask(txtSolucao.Text) & "'", "Null") & ","
     If IsNumeric(Left(txtCidadao.Text, 1)) Then
-        Sql = Sql & Val(Left(txtCidadao.Text, 6)) & "," & "Null,"
+        sql = sql & Val(Left(txtCidadao.Text, 6)) & "," & "Null,"
     Else
-        Sql = Sql & "Null" & "," & nCCusto & ","
+        sql = sql & "Null" & "," & nCCusto & ","
     End If
     If cmbBairro.ListIndex > 0 Then
-        Sql = Sql & Val(lblCodLogr.Caption) & "," & Val(lblCodBairro.Caption) & "," & nChefe & "," & nequipe & "," & nCodAssunto & "," & IIf(IsDate(mskDataCancel.Text), "'" & Format(mskDataCancel.Text, "mm/dd/yyyy") & "'", "Null") & "," & Val(txtNomeLog.Tag) & "," & cmbBairro.ItemData(cmbBairro.ListIndex) & ",'" & Mask(txtComplemento.Text) & "','" & txtNum.Text & "')"
+        sql = sql & Val(lblCodLogr.Caption) & "," & Val(lblCodBairro.Caption) & "," & nChefe & "," & nequipe & "," & nCodAssunto & "," & IIf(IsDate(mskDataCancel.Text), "'" & Format(mskDataCancel.Text, "mm/dd/yyyy") & "'", "Null") & "," & Val(txtNomeLog.Tag) & "," & cmbBairro.ItemData(cmbBairro.ListIndex) & ",'" & Mask(txtComplemento.Text) & "','" & txtNum.Text & "')"
     Else
-        Sql = Sql & Val(lblCodLogr.Caption) & "," & Val(lblCodBairro.Caption) & "," & nChefe & "," & nequipe & "," & nCodAssunto & "," & IIf(IsDate(mskDataCancel.Text), "'" & Format(mskDataCancel.Text, "mm/dd/yyyy") & "'", "Null") & "," & Val(txtNomeLog.Tag) & "," & 999 & ",'" & Mask(txtComplemento.Text) & "','" & txtNum.Text & "')"
+        sql = sql & Val(lblCodLogr.Caption) & "," & Val(lblCodBairro.Caption) & "," & nChefe & "," & nequipe & "," & nCodAssunto & "," & IIf(IsDate(mskDataCancel.Text), "'" & Format(mskDataCancel.Text, "mm/dd/yyyy") & "'", "Null") & "," & Val(txtNomeLog.Tag) & "," & 999 & ",'" & Mask(txtComplemento.Text) & "','" & txtNum.Text & "')"
     End If
     lblNumReg.Caption = Format(nMaxCod, "00000") & "/" & Year(Now)
 Else
-    Sql = "UPDATE REGISTROATENDIMENTO SET ATENDENTE=" & nCodigoAt & ",TIPOATENDIMENTO=" & cmbTipoAtend.ItemData(cmbTipoAtend.ListIndex) & ",OBSTIPO=" & IIf(Trim(txtObsTipo.Text) <> "", "'" & Mask(txtObsTipo.Text) & "'", "Null") & ","
-    Sql = Sql & "NUMPROC=" & nNumproc & ",ANOPROC=" & nAnoproc & ",URGENTE=" & chkUrg.value & ",ASSUNTO=" & IIf(Trim(txtDesc.Text) <> "", "'" & Mask(txtDesc.Text) & "'", "Null") & ",AGUARDO=" & IIf(optD(2).value, 1, 0) & ",DEFERIDO=" & IIf(optD(0).value, 1, 0) & ","
-    Sql = Sql & "INDEFERIDO=" & IIf(optD(1).value, 1, 0) & ",DATAEXEC=" & IIf(IsDate(mskDataExec.Text), "'" & Format(mskDataExec.Text, "mm/dd/yyyy") & "'", "Null") & ",DATAEND=" & IIf(IsDate(mskDataEnd.Text), "'" & Format(mskDataEnd.Text, "mm/dd/yyyy") & "'", "Null") & ",SOLUCAO=" & IIf(Trim(txtSolucao.Text) <> "", "'" & Mask(txtSolucao.Text) & "'", "Null") & ","
-    Sql = Sql & "CIDADAO=" & IIf(IsNumeric(Left(txtCidadao.Text, 1)), Val(Left(txtCidadao.Text, 6)), "Null") & ",CCUSTO=" & IIf(IsNumeric(Left(txtCidadao.Text, 1)), "Null", nCCusto) & ",CODLOGR=" & Val(lblCodLogr.Caption) & ",CODBAIRRO=" & Val(lblCodBairro.Caption) & ",CHEFE=" & nChefe & ","
+    sql = "UPDATE REGISTROATENDIMENTO SET ATENDENTE=" & nCodigoAt & ",TIPOATENDIMENTO=" & cmbTipoAtend.ItemData(cmbTipoAtend.ListIndex) & ",OBSTIPO=" & IIf(Trim(txtObsTipo.Text) <> "", "'" & Mask(txtObsTipo.Text) & "'", "Null") & ","
+    sql = sql & "NUMPROC=" & nNumproc & ",ANOPROC=" & nAnoproc & ",URGENTE=" & chkUrg.value & ",ASSUNTO=" & IIf(Trim(txtDesc.Text) <> "", "'" & Mask(txtDesc.Text) & "'", "Null") & ",AGUARDO=" & IIf(optD(2).value, 1, 0) & ",DEFERIDO=" & IIf(optD(0).value, 1, 0) & ","
+    sql = sql & "INDEFERIDO=" & IIf(optD(1).value, 1, 0) & ",DATAEXEC=" & IIf(IsDate(mskDataExec.Text), "'" & Format(mskDataExec.Text, "mm/dd/yyyy") & "'", "Null") & ",DATAEND=" & IIf(IsDate(mskDataEnd.Text), "'" & Format(mskDataEnd.Text, "mm/dd/yyyy") & "'", "Null") & ",SOLUCAO=" & IIf(Trim(txtSolucao.Text) <> "", "'" & Mask(txtSolucao.Text) & "'", "Null") & ","
+    sql = sql & "CIDADAO=" & IIf(IsNumeric(Left(txtCidadao.Text, 1)), Val(Left(txtCidadao.Text, 6)), "Null") & ",CCUSTO=" & IIf(IsNumeric(Left(txtCidadao.Text, 1)), "Null", nCCusto) & ",CODLOGR=" & Val(lblCodLogr.Caption) & ",CODBAIRRO=" & Val(lblCodBairro.Caption) & ",CHEFE=" & nChefe & ","
     If cmbBairro.ListIndex = -1 Then
-        Sql = Sql & "EQUIPE=" & nequipe & ",CODASSUNTO=" & nCodAssunto & ",DATACANCEL=" & IIf(IsDate(mskDataCancel.Text), "'" & Format(mskDataCancel.Text, "mm/dd/yyyy") & "'", "Null") & ",LOGRADOURO_SERVICO=" & Val(txtNomeLog.Tag) & ",BAIRRO=" & 999 & ",COMPLEMENTO_SERVICO='" & Mask(txtComplemento.Text) & "',NUMERO_SERVICO='" & txtNum.Text & "'"
+        sql = sql & "EQUIPE=" & nequipe & ",CODASSUNTO=" & nCodAssunto & ",DATACANCEL=" & IIf(IsDate(mskDataCancel.Text), "'" & Format(mskDataCancel.Text, "mm/dd/yyyy") & "'", "Null") & ",LOGRADOURO_SERVICO=" & Val(txtNomeLog.Tag) & ",BAIRRO=" & 999 & ",COMPLEMENTO_SERVICO='" & Mask(txtComplemento.Text) & "',NUMERO_SERVICO='" & txtNum.Text & "'"
     Else
-        Sql = Sql & "EQUIPE=" & nequipe & ",CODASSUNTO=" & nCodAssunto & ",DATACANCEL=" & IIf(IsDate(mskDataCancel.Text), "'" & Format(mskDataCancel.Text, "mm/dd/yyyy") & "'", "Null") & ",LOGRADOURO_SERVICO=" & Val(txtNomeLog.Tag) & ",BAIRRO=" & cmbBairro.ItemData(cmbBairro.ListIndex) & ",COMPLEMENTO_SERVICO='" & Mask(txtComplemento.Text) & "',NUMERO_SERVICO='" & txtNum.Text & "'"
+        sql = sql & "EQUIPE=" & nequipe & ",CODASSUNTO=" & nCodAssunto & ",DATACANCEL=" & IIf(IsDate(mskDataCancel.Text), "'" & Format(mskDataCancel.Text, "mm/dd/yyyy") & "'", "Null") & ",LOGRADOURO_SERVICO=" & Val(txtNomeLog.Tag) & ",BAIRRO=" & cmbBairro.ItemData(cmbBairro.ListIndex) & ",COMPLEMENTO_SERVICO='" & Mask(txtComplemento.Text) & "',NUMERO_SERVICO='" & txtNum.Text & "'"
     End If
-    Sql = Sql & " WHERE NUMREG=" & Val(Left(lblNumReg.Caption, 5)) & " AND ANOREG=" & Val(Right(lblNumReg.Caption, 4))
+    sql = sql & " WHERE NUMREG=" & Val(Left(lblNumReg.Caption, 5)) & " AND ANOREG=" & Val(Right(lblNumReg.Caption, 4))
 End If
-cn.Execute Sql, rdExecDirect
+cn.Execute sql, rdExecDirect
 
-Sql = "delete from registroatendimento_endereco where anoreg=" & Val(Right(lblNumReg.Caption, 4)) & " and numreg=" & Val(Left(lblNumReg.Caption, 5))
-cn.Execute Sql, rdExecDirect
+sql = "delete from registroatendimento_endereco where anoreg=" & Val(Right(lblNumReg.Caption, 4)) & " and numreg=" & Val(Left(lblNumReg.Caption, 5))
+cn.Execute sql, rdExecDirect
 
 For x = 0 To lstNum.ListCount - 1
-    Sql = "insert registroatendimento_endereco (anoreg,numreg,numero_servico) values(" & Val(Right(lblNumReg.Caption, 4)) & "," & Val(Left(lblNumReg.Caption, 5)) & "," & lstNum.List(x) & ")"
-    cn.Execute Sql, rdExecDirect
+    sql = "insert registroatendimento_endereco (anoreg,numreg,numero_servico) values(" & Val(Right(lblNumReg.Caption, 4)) & "," & Val(Left(lblNumReg.Caption, 5)) & "," & lstNum.List(x) & ")"
+    cn.Execute sql, rdExecDirect
 Next
 
-Sql = "delete from registroatendimento_material where anoreg=" & Val(Right(lblNumReg.Caption, 4)) & " and numreg=" & Val(Left(lblNumReg.Caption, 5))
-cn.Execute Sql, rdExecDirect
+sql = "delete from registroatendimento_material where anoreg=" & Val(Right(lblNumReg.Caption, 4)) & " and numreg=" & Val(Left(lblNumReg.Caption, 5))
+cn.Execute sql, rdExecDirect
 
 For x = 0 To lstMaterial.ListCount - 1
     If lstMaterial.Selected(x) Then
-        Sql = "insert registroatendimento_material (anoreg,numreg,codigo_material) values(" & Val(Right(lblNumReg.Caption, 4)) & "," & Val(Left(lblNumReg.Caption, 5)) & "," & lstMaterial.ItemData(x) & ")"
-        cn.Execute Sql, rdExecDirect
+        sql = "insert registroatendimento_material (anoreg,numreg,codigo_material) values(" & Val(Right(lblNumReg.Caption, 4)) & "," & Val(Left(lblNumReg.Caption, 5)) & "," & lstMaterial.ItemData(x) & ")"
+        cn.Execute sql, rdExecDirect
     End If
 Next
 
@@ -1938,7 +1938,7 @@ Evento = ""
 End Sub
 
 Private Sub cmdNovo_Click()
-Dim Sql As String
+Dim sql As String
 Limpa
 
 
@@ -1950,7 +1950,7 @@ Evento = "Novo"
 End Sub
 
 Private Sub cmdPrint_Click()
-Dim Sql As String
+Dim sql As String
 If lblNumReg.Caption = "" Then
     MsgBox "Selecione um registro", vbExclamation, "Atenção"
     Exit Sub
@@ -1962,22 +1962,22 @@ If Len(txtCidadao.Text) > 0 Then txtCidadao.Text = Left(txtCidadao.Text, 50)
 cn.Close
 Conecta UL, UP
 
-Sql = "DELETE FROM REGISTROATENDIMENTOTMP WHERE USUARIO='" & NomeDeLogin & "'"
-cn.Execute Sql, rdExecDirect
+sql = "DELETE FROM REGISTROATENDIMENTOTMP WHERE USUARIO='" & NomeDeLogin & "'"
+cn.Execute sql, rdExecDirect
 
-Sql = "INSERT REGISTROATENDIMENTOTMP(USUARIO,ATENDENTE,TIPO,DATA,PROCESSO,REGISTRO,NOME,ENDERECO,BAIRRO,TELEFONE,COMPL,URGENTE,ASSUNTO,"
-Sql = Sql & "DEFERIDO,INDEFERIDO,SOLUCAO,DATAEXEC,DATACONC,CHEFE,EQUIPE,ASSUNTO2,SITUACAO) VALUES('"
-Sql = Sql & NomeDeLogin & "','" & txtAtendente.Text & "','" & Left(cmbTipoAtend.Text & " - " & Mask(txtObsTipo.Text), 50) & "','" & mskData.Text & "','" & txtNumProc.Text & "','"
-Sql = Sql & lblNumReg.Caption & "','" & IIf(txtCidadao.Visible, Mask(txtCidadao.Text), cmbReq.Text) & "','" & Mask(txtEnd.Text) & "','" & Mask(txtBairro.Text) & "','"
-Sql = Sql & Mask(txtFone.Text) & "','" & Mask(txtCompl.Text) & "','" & IIf(chkUrg.value = 1, "S", "N") & "','" & Mask(txtDesc.Text) & "','"
-Sql = Sql & IIf(optD(0).value = True, "X", " ") & "','" & IIf(optD(1).value = True, "X", " ") & "','" & Mask(txtSolucao.Text) & "','"
-Sql = Sql & mskDataExec.Text & "','" & mskDataEnd.Text & "','" & Mask(cmbChefe.Text) & "','" & cmbEquipe.Text & "','" & cmbAssunto.Text & "','" & lblSit.Caption & "')"
-cn.Execute Sql, rdExecDirect
+sql = "INSERT REGISTROATENDIMENTOTMP(USUARIO,ATENDENTE,TIPO,DATA,PROCESSO,REGISTRO,NOME,ENDERECO,BAIRRO,TELEFONE,COMPL,URGENTE,ASSUNTO,"
+sql = sql & "DEFERIDO,INDEFERIDO,SOLUCAO,DATAEXEC,DATACONC,CHEFE,EQUIPE,ASSUNTO2,SITUACAO) VALUES('"
+sql = sql & NomeDeLogin & "','" & txtAtendente.Text & "','" & Left(cmbTipoAtend.Text & " - " & Mask(txtObsTipo.Text), 50) & "','" & mskData.Text & "','" & txtNumProc.Text & "','"
+sql = sql & lblNumReg.Caption & "','" & IIf(txtCidadao.Visible, Mask(txtCidadao.Text), cmbReq.Text) & "','" & Mask(txtEnd.Text) & "','" & Mask(txtBairro.Text) & "','"
+sql = sql & Mask(txtFone.Text) & "','" & Mask(txtCompl.Text) & "','" & IIf(chkUrg.value = 1, "S", "N") & "','" & Mask(txtDesc.Text) & "','"
+sql = sql & IIf(optD(0).value = True, "X", " ") & "','" & IIf(optD(1).value = True, "X", " ") & "','" & Mask(txtSolucao.Text) & "','"
+sql = sql & mskDataExec.Text & "','" & mskDataEnd.Text & "','" & Mask(cmbChefe.Text) & "','" & cmbEquipe.Text & "','" & cmbAssunto.Text & "','" & lblSit.Caption & "')"
+cn.Execute sql, rdExecDirect
 
-frmReport.ShowReport2 "REGATENDIMENTO", frmMdi.HWND, Me.HWND
+frmReport.ShowReport2 "REGATENDIMENTO6", frmMdi.HWND, Me.HWND
 
-Sql = "DELETE FROM REGISTROATENDIMENTOTMP WHERE USUARIO='" & NomeDeLogin & "'"
-cn.Execute Sql, rdExecDirect
+sql = "DELETE FROM REGISTROATENDIMENTOTMP WHERE USUARIO='" & NomeDeLogin & "'"
+cn.Execute sql, rdExecDirect
 
 End Sub
 
@@ -2005,7 +2005,7 @@ End If
 End Sub
 
 Private Sub Form_Load()
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, RdoAux As rdoResultset
 
 Centraliza Me
 CarregaBairro
@@ -2022,8 +2022,8 @@ Evento = ""
 
 nCodigoAt = 0
 txtAtendente.Text = NomeDeLogin
-Sql = "select id from usuario where nomelogin='" & NomeDeLogin & "'"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select id from usuario where nomelogin='" & NomeDeLogin & "'"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 nCodigoAt = RdoAux!id
 RdoAux.Close
 
@@ -2089,11 +2089,11 @@ Private Sub CarregaAT()
 End Sub
 
 Private Sub CarregaBairro()
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, RdoAux As rdoResultset
 
 cmbBairro.Clear
-Sql = "SELECT CODBAIRRO,DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='SP' AND CODCIDADE=413 AND CODBAIRRO<>999 ORDER BY DESCBAIRRO"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CODBAIRRO,DESCBAIRRO FROM BAIRRO WHERE SIGLAUF='SP' AND CODCIDADE=413 AND CODBAIRRO<>999 ORDER BY DESCBAIRRO"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         cmbBairro.AddItem !DescBairro
@@ -2107,11 +2107,11 @@ End With
 End Sub
 
 Private Sub CarregaAS()
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, RdoAux As rdoResultset
 
 cmbAssunto.Clear
-Sql = "SELECT CODIGO,NOME FROM PARAMOBRA WHERE SIGLA='AS'"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CODIGO,NOME FROM PARAMOBRA WHERE SIGLA='AS'"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         cmbAssunto.AddItem !Nome
@@ -2124,10 +2124,10 @@ End With
 End Sub
 
 Private Sub CarregaCC()
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, RdoAux As rdoResultset
 cmbReq.Clear
-Sql = "SELECT CODIGO,DESCRICAO FROM CENTROCUSTO"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CODIGO,DESCRICAO FROM CENTROCUSTO"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
        cmbReq.AddItem !Descricao
@@ -2141,11 +2141,11 @@ End Sub
 
 Private Sub CarregaCF()
 
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, RdoAux As rdoResultset
 
 cmbChefe.Clear
-Sql = "SELECT CODIGO,NOME FROM PARAMOBRA WHERE SIGLA='FC'"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CODIGO,NOME FROM PARAMOBRA WHERE SIGLA='FC'"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         cmbChefe.AddItem !Nome
@@ -2159,11 +2159,11 @@ End Sub
 
 Private Sub CarregaEQ()
 
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, RdoAux As rdoResultset
 
 cmbEquipe.Clear
-Sql = "SELECT CODIGO,NOME FROM PARAMOBRA WHERE SIGLA='EQ'"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CODIGO,NOME FROM PARAMOBRA WHERE SIGLA='EQ'"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         cmbEquipe.AddItem !Nome
@@ -2176,11 +2176,11 @@ End With
 End Sub
 
 Private Sub CarregaTA()
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, RdoAux As rdoResultset
 
 cmbTipoAtend.Clear
-Sql = "SELECT CODIGO,NOME FROM PARAMOBRA WHERE SIGLA='TA'"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT CODIGO,NOME FROM PARAMOBRA WHERE SIGLA='TA'"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         cmbTipoAtend.AddItem !Nome
@@ -2226,7 +2226,7 @@ End Sub
 
 Private Sub txtNumProc_LostFocus()
 Dim sNumProc As String, nNumproc As Long, nAnoproc As Integer
-Dim sValidaProc As String, Sql As String, RdoAux As rdoResultset
+Dim sValidaProc As String, sql As String, RdoAux As rdoResultset
 
 If Trim$(txtNumProc.Text) <> "" And Trim$(txtNumProc.Text) <> "/" Then
     cmbReq.Visible = False
@@ -2235,8 +2235,8 @@ If Trim$(txtNumProc.Text) <> "" And Trim$(txtNumProc.Text) <> "/" Then
         nNumproc = Left$(txtNumProc.Text, InStr(1, txtNumProc.Text, "/", vbBinaryCompare) - 2)
         nAnoproc = Right$(txtNumProc.Text, 4)
         sNumProc = CStr(nNumproc) & "/" & CStr(nAnoproc)
-        Sql = "SELECT * FROM vwFULLPROCESSO WHERE ANO=" & nAnoproc & " AND NUMERO=" & nNumproc
-        Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "SELECT * FROM vwFULLPROCESSO WHERE ANO=" & nAnoproc & " AND NUMERO=" & nNumproc
+        Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         With RdoAux
             If .RowCount > 0 Then
                 lblDataProc.Caption = Format(!DATAENTRADA, "dd/mm/yyyy")
@@ -2249,7 +2249,7 @@ If Trim$(txtNumProc.Text) <> "" And Trim$(txtNumProc.Text) <> "/" Then
                     txtFone.Text = ""
                 Else
                     txtCidadao.Text = Format(!CodCidadao, "000000") & " - " & !nomecidadao
-                    txtEnd.Text = SubNull(!Endereco) & ", " & SubNull(!numimovel)
+                    txtEnd.Text = SubNull(!Endereco) & ", " & SubNull(!NUMIMOVEL)
                     txtCompl.Text = SubNull(!Compl)
                     txtBairro.Text = SubNull(!DescBairro)
                     txtFone.Text = SubNull(!telefone)
@@ -2390,15 +2390,15 @@ End If
 End Sub
 
 Private Sub Le(nNumero As Long, nAno As Integer)
-Dim Sql As String, RdoAux As rdoResultset, x As Integer, RdoAux2 As rdoResultset, bFind As Boolean
+Dim sql As String, RdoAux As rdoResultset, x As Integer, RdoAux2 As rdoResultset, bFind As Boolean
 
 Limpa
-Sql = "SELECT registroatendimento.*,Logradouro.Endereco as nomelogradouro  FROM REGISTROATENDIMENTO LEFT OUTER JOIN logradouro ON registroatendimento.logradouro_servico = logradouro.codlogradouro WHERE NUMREG=" & nNumero & " AND ANOREG=" & nAno
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT registroatendimento.*,Logradouro.Endereco as nomelogradouro  FROM REGISTROATENDIMENTO LEFT OUTER JOIN logradouro ON registroatendimento.logradouro_servico = logradouro.codlogradouro WHERE NUMREG=" & nNumero & " AND ANOREG=" & nAno
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If .RowCount > 0 Then
-        Sql = "select nomelogin from usuario where id=" & !atendente
-        Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+        sql = "select nomelogin from usuario where id=" & !atendente
+        Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
         txtAtendente.Text = SubNull(RdoAux2!NomeLogin)
     
     
@@ -2439,7 +2439,7 @@ With RdoAux
             End If
         Next
         For x = 0 To cmbAssunto.ListCount - 1
-            If cmbAssunto.ItemData(x) = !CODASSUNTO Then
+            If cmbAssunto.ItemData(x) = !codassunto Then
                 cmbAssunto.ListIndex = x
                 Exit For
             End If
@@ -2451,12 +2451,12 @@ With RdoAux
             txtNumProc_LostFocus
         Else
             If Not IsNull(!cidadao) Then
-                Sql = "SELECT * FROM vwFULLCIDADAO WHERE CODCIDADAO=" & !cidadao
-                Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+                sql = "SELECT * FROM vwFULLCIDADAO WHERE CODCIDADAO=" & !cidadao
+                Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
                 With RdoAux2
                     If .RowCount > 0 Then
                         txtCidadao.Text = Format(!CodCidadao, "000000") & " - " & !nomecidadao
-                        txtEnd.Text = !Endereco & ", " & !numimovel
+                        txtEnd.Text = !Endereco & ", " & !NUMIMOVEL
                         txtBairro.Text = SubNull(!DescBairro)
                         txtCompl.Text = SubNull(!Complemento)
                         txtFone.Text = SubNull(!telefone)
@@ -2482,8 +2482,8 @@ With RdoAux
         optD(0).value = !deferido
         optD(1).value = !indeferido
         optD(2).value = !aguardo
-        If IsDate(!DATAEXEC) Then
-            mskDataExec.Text = Format(!DATAEXEC, "dd/mm/yyyy")
+        If IsDate(!Dataexec) Then
+            mskDataExec.Text = Format(!Dataexec, "dd/mm/yyyy")
         End If
         If IsDate(!dataend) Then
             mskDataEnd.Text = Format(!dataend, "dd/mm/yyyy")
@@ -2500,8 +2500,8 @@ End With
 
 
 
-Sql = "SELECT  registroatendimento_endereco.numero_servico FROM registroatendimento_endereco WHERE NUMREG=" & nNumero & " AND ANOREG=" & nAno
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT  registroatendimento_endereco.numero_servico FROM registroatendimento_endereco WHERE NUMREG=" & nNumero & " AND ANOREG=" & nAno
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     
     Do Until .EOF
@@ -2519,8 +2519,8 @@ With RdoAux
     End If
 End With
 
-Sql = "SELECT  * FROM registroatendimento_material WHERE NUMREG=" & nNumero & " AND ANOREG=" & nAno
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT  * FROM registroatendimento_material WHERE NUMREG=" & nNumero & " AND ANOREG=" & nAno
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         bFind = False
@@ -2568,14 +2568,14 @@ txtNomeLog.SelLength = Len(txtNomeLog.Text)
 End Sub
 
 Private Sub txtNomeLog_KeyPress(KeyAscii As Integer)
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, RdoAux As rdoResultset
 
 If KeyAscii = vbKeyReturn Then
    KeyAscii = 0
    lstNomeLog.Clear
    If txtNomeLog.Text <> "" Then
-      Sql = "select codlogradouro,endereco from logradouro where endereco like '%" & Trim$(txtNomeLog.Text) & "%'  order by endereco"
-      Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+      sql = "select codlogradouro,endereco from logradouro where endereco like '%" & Trim$(txtNomeLog.Text) & "%'  order by endereco"
+      Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
       With RdoAux
           If .RowCount > 0 Then
              Do Until .EOF

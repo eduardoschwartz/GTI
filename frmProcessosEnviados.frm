@@ -290,8 +290,11 @@ cidadao:
         nSeq = !Seq
         sDesc1 = !Descricao
         sNome1 = SubNull(!NomeCompleto)
-        Sql = "SELECT * FROM vwTRAMITACAO2 WHERE ANO=" & !ano & " AND NUMERO=" & !Numero & " AND SEQ=" & nSeq + 1
-        'Sql = "SELECT * FROM vwTRAMITACAO2 WHERE ANO=" & !Ano & " AND NUMERO=" & !Numero & " AND SEQ=" & nSeq
+ '       If nSeq < RdoAux.RowCount Then
+            Sql = "SELECT * FROM vwTRAMITACAO2 WHERE ANO=" & !ano & " AND NUMERO=" & !Numero & " AND SEQ=" & nSeq + 1
+ '       Else
+'            Sql = "SELECT * FROM vwTRAMITACAO2 WHERE ANO=" & !ano & " AND NUMERO=" & !Numero & " AND SEQ=" & nSeq
+ '       End If
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurReadOnly)
         
         With RdoAux2
@@ -315,7 +318,7 @@ cidadao:
         On Error Resume Next
         Sql = "INSERT PROCESSOENVIO(COMPUTER,ANO,NUMERO,PROCESSO,SEQ,DESC1,NOME1,DESC2,NOME2,DATAENVIO,ASSUNTO,REQUERENTE,DATAENTRADA) VALUES('" & NomeDeLogin & "',"
         Sql = Sql & nAno & "," & nNumero & ",'" & CStr(nNumero) & "-" & CStr(RetornaDVProcesso(CLng(nNumero))) & "/" & CStr(nAno) & "'," & nSeq & ",'" & Mask(sDesc1) & "','" & Mask(sNome1) & "','" & Mask(sDesc2) & "','" & Mask(sNome2) & "','"
-        Sql = Sql & Format(!DATAENVIO, "mm/dd/yyyy hh:mm") & "','" & Left(Mask(sAssunto), 50) & "','" & Left(Mask(sRequerente), 50) & "','" & Format(!DATAHORA, "mm/dd/yyyy") & "')"
+        Sql = Sql & Format(!dataenvio, "mm/dd/yyyy hh:mm") & "','" & Mask(Left(sAssunto, 50)) & "','" & Left(Mask(sRequerente), 50) & "','" & Format(!dataHora, "mm/dd/yyyy") & "')"
         cn.Execute Sql, rdExecDirect
         On Error GoTo 0
 Proximo:

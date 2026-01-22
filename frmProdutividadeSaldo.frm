@@ -403,7 +403,7 @@ If cmbFiscal.ListIndex = -1 Then
 End If
 ControlBehaviour False
 grdMain.col = 1
-grdMain.Row = 1
+grdMain.row = 1
 grdMain_EnterCell
 End Sub
 
@@ -501,7 +501,7 @@ z = Shell("NOTEPAD" & " " & sPathBin & "\" & sFileName, vbNormalFocus)
 End Sub
 
 Private Sub Form_Load()
-Dim Sql As String, RdoAux As rdoResultset, x As Integer
+Dim sql As String, RdoAux As rdoResultset, x As Integer
 On Error GoTo Erro:
 Centraliza Me
 ControlBehaviour True
@@ -511,9 +511,9 @@ grdMain.COLWIDTH(2) = 0
 grdMain.COLWIDTH(6) = 0
 grdMain.COLWIDTH(7) = 0
 
-Sql = "select codigo,nome,nomecompleto from produtividadefiscal inner join "
-Sql = Sql & "usuario on produtividadefiscal.nome = usuario.nomelogin where calculo=1 order by nomecompleto "
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select codigo,nome,nomecompleto from produtividadefiscal inner join "
+sql = sql & "usuario on produtividadefiscal.nome = usuario.nomelogin where calculo=1 order by nomecompleto "
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         cmbFiscal.AddItem !NomeCompleto
@@ -565,12 +565,12 @@ Private Sub grdMain_EnterCell()
 Exit Sub
 If grdMain.col = 2 Then Exit Sub
 If cmdAlterar.Visible Then Exit Sub
-If grdMain.Row = grdMain.Rows - 1 Then
+If grdMain.row = grdMain.Rows - 1 Then
     txtEdit.Visible = False
     Exit Sub
 End If
 If txtEdit.Visible = False Then txtEdit.Visible = True
-txtEdit.Text = grdMain.TextMatrix(grdMain.Row, grdMain.col)
+txtEdit.Text = grdMain.TextMatrix(grdMain.row, grdMain.col)
 txtEdit.Left = grdMain.Left + grdMain.CellLeft
 txtEdit.Top = grdMain.Top + grdMain.CellTop
 txtEdit.Width = grdMain.CellWidth
@@ -588,10 +588,10 @@ End Sub
 Private Sub grdMain_LeaveCell()
 If grdMain.col = 2 Then Exit Sub
 
-If grdMain.Row = grdMain.Rows - 1 Then Exit Sub
+If grdMain.row = grdMain.Rows - 1 Then Exit Sub
 If cmdGravar.Visible = True Then
     If txtEdit.Text = "" Then txtEdit.Text = "0"
-    grdMain.TextMatrix(grdMain.Row, grdMain.col) = txtEdit.Text
+    grdMain.TextMatrix(grdMain.row, grdMain.col) = txtEdit.Text
 End If
 End Sub
 
@@ -604,14 +604,14 @@ Private Sub txtEdit_KeyDown(KeyCode As Integer, Shift As Integer)
 'If Not bExec Then Exit Sub
 If KeyCode = 38 Then 'up
     grdMain_LeaveCell
-    If grdMain.Row > 1 Then
-        grdMain.Row = grdMain.Row - 1
+    If grdMain.row > 1 Then
+        grdMain.row = grdMain.row - 1
     End If
     grdMain_EnterCell
 ElseIf KeyCode = 40 Then 'down
     grdMain_LeaveCell
-    If grdMain.Row < grdMain.Rows - 2 Then
-        grdMain.Row = grdMain.Row + 1
+    If grdMain.row < grdMain.Rows - 2 Then
+        grdMain.row = grdMain.row + 1
     End If
     grdMain_EnterCell
 ElseIf KeyCode = 37 Then 'left
@@ -635,16 +635,16 @@ Private Sub txtEdit_KeyPress(KeyAscii As Integer)
 Dim nValor As Integer, nCol As Integer, nRow As Integer
 
 nCol = grdMain.col
-nRow = grdMain.Row
+nRow = grdMain.row
 
 If KeyAscii = vbKeyReturn Then
     If txtEdit.Visible = False Then txtEdit.Visible = True
     KeyAscii = 0
     grdMain_LeaveCell
     If nRow < grdMain.Rows - 2 Then
-        grdMain.Row = grdMain.Row + 1
+        grdMain.row = grdMain.row + 1
     Else
-        grdMain.Row = grdMain.Rows - 2
+        grdMain.row = grdMain.Rows - 2
     End If
     
     grdMain_EnterCell
@@ -679,7 +679,7 @@ Le
 End Sub
 
 Private Sub SaveRecord()
-Dim Sql As String, x As Integer, nMes As Integer, nAno As Integer, nCodFiscal As Integer
+Dim sql As String, x As Integer, nMes As Integer, nAno As Integer, nCodFiscal As Integer
 Dim nPontos As Integer, nNegativos As Integer, nUtilizados As Integer, nSaldo As Integer
 Dim nMesRef As Integer, nAnoRef As Integer
 
@@ -687,8 +687,8 @@ nCodFiscal = cmbFiscal.ItemData(cmbFiscal.ListIndex)
 nMesRef = cmbMes.ItemData(cmbMes.ListIndex)
 nAnoRef = Val(cmbAno.Text)
 
-Sql = "DELETE FROM PRODUTIVIDADESALDO WHERE CODFISCAL=" & nCodFiscal & " AND ANOREF=" & nAnoRef & " AND MESREF=" & nMesRef
-cn.Execute Sql, rdExecDirect
+sql = "DELETE FROM PRODUTIVIDADESALDO WHERE CODFISCAL=" & nCodFiscal & " AND ANOREF=" & nAnoRef & " AND MESREF=" & nMesRef
+cn.Execute sql, rdExecDirect
 
 With grdMain
     For x = 1 To .Rows - 2
@@ -699,10 +699,10 @@ With grdMain
         nMes = Val(.TextMatrix(x, 6))
         nAno = Val(.TextMatrix(x, 7))
         
-        Sql = "INSERT PRODUTIVIDADESALDO(CODFISCAL,ANOREF,MESREF,ANO,MES,PONTOS,NEGATIVOS,UTILIZADOS,SALDO) VALUES("
-        Sql = Sql & nCodFiscal & "," & nAnoRef & "," & nMesRef & "," & nAno & "," & nMes & "," & nPontos & "," & nNegativos & ","
-        Sql = Sql & nUtilizados & "," & nSaldo & ")"
-        cn.Execute Sql, rdExecDirect
+        sql = "INSERT PRODUTIVIDADESALDO(CODFISCAL,ANOREF,MESREF,ANO,MES,PONTOS,NEGATIVOS,UTILIZADOS,SALDO) VALUES("
+        sql = sql & nCodFiscal & "," & nAnoRef & "," & nMesRef & "," & nAno & "," & nMes & "," & nPontos & "," & nNegativos & ","
+        sql = sql & nUtilizados & "," & nSaldo & ")"
+        cn.Execute sql, rdExecDirect
         
     Next
 End With
@@ -743,20 +743,20 @@ End Sub
 
 Private Sub Le()
 Dim x As Integer, nMes As Integer, nAno As Integer, nCodFiscal As Integer
-Dim Sql As String, RdoAux As rdoResultset, nAnoRef As Integer, nMesRef As Integer
+Dim sql As String, RdoAux As rdoResultset, nAnoRef As Integer, nMesRef As Integer
 
 If cmbFiscal.ListIndex = -1 Then Exit Sub
 nCodFiscal = cmbFiscal.ItemData(cmbFiscal.ListIndex)
 nMes = cmbMes.ItemData(cmbMes.ListIndex)
 nAno = Val(cmbAno.Text)
 
-Sql = "SELECT * FROM PRODUTIVIDADESALDO WHERE CODFISCAL=" & nCodFiscal & " AND ANOREF=" & nAno
-Sql = Sql & " AND MESREF=" & nMes & " ORDER BY ANO DESC,MES"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT * FROM PRODUTIVIDADESALDO WHERE CODFISCAL=" & nCodFiscal & " AND ANOREF=" & nAno
+sql = sql & " AND MESREF=" & nMes & " ORDER BY ANO DESC,MES"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         nAnoRef = !ano
-        nMesRef = !mes
+        nMesRef = !Mes
         For x = 1 To grdMain.Rows - 2
             If nMesRef = Val(grdMain.TextMatrix(x, 6)) And nAnoRef = Val(grdMain.TextMatrix(x, 7)) Then
                 Exit For
@@ -784,7 +784,7 @@ FillSpace = sTmp
 End Function
 
 Private Sub ProdutividadeFinalizarMes()
-Dim Sql As String, RdoAux As rdoResultset, nCodFiscal As Integer, nMesRef As Integer, nAnoRef As Integer
+Dim sql As String, RdoAux As rdoResultset, nCodFiscal As Integer, nMesRef As Integer, nAnoRef As Integer
 Dim x As Integer, nMes As Integer, nAno As Integer, aTabela() As TabelaType, RdoAux2 As rdoResultset
 Dim nMesRefOld As Integer, nAnoRefOld As Integer, nPos As Integer, nPontosAtual As Integer, nSomaSaldo As Integer
 Dim nValorACompensar As Integer, nSomaCompensado As Integer, nUtilizou As Integer, nFirstYear As Integer, nFirstMonth As Integer
@@ -811,8 +811,8 @@ End If
 
 'executa o cálculo para cada um dos fiscais
 'Sql = "SELECT codigo FROM produtividadefiscal WHERE codigo=8 and  calculo=1 ORDER BY codigo"
-Sql = "SELECT codigo FROM produtividadefiscal where  calculo=1 ORDER BY codigo"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT codigo FROM produtividadefiscal where  calculo=1 ORDER BY codigo"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 Do Until RdoAux.EOF
     nCodFiscal = RdoAux!Codigo
     'nCodFiscal = 9
@@ -846,20 +846,20 @@ Do Until RdoAux.EOF
     
     nSomaSaldo = 0
     'busca extrato anterior para sabermos os saldos disponiveis
-    Sql = "select * from produtividadesaldo where codfiscal=" & nCodFiscal & " and anoref=" & nAnoRefOld
-    Sql = Sql & " and mesref=" & nMesRefOld & " order by ano,mes"
-    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    sql = "select * from produtividadesaldo where codfiscal=" & nCodFiscal & " and anoref=" & nAnoRefOld
+    sql = sql & " and mesref=" & nMesRefOld & " order by ano,mes"
+    Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     With RdoAux2
         Do Until .EOF
             If nFirstMonth = 0 Then
-                nFirstMonth = !mes
+                nFirstMonth = !Mes
                 nFirstYear = !ano
             End If
             nPos = UBound(aTabela) + 1
             ReDim Preserve aTabela(nPos)
             aTabela(nPos).nCodFiscal = nCodFiscal
             aTabela(nPos).nAno = !ano
-            aTabela(nPos).nMes = !mes
+            aTabela(nPos).nMes = !Mes
             aTabela(nPos).nSaldo = !Saldo
             aTabela(nPos).nPontos = !Pontos
             aTabela(nPos).nUtilizado = !utilizados
@@ -945,10 +945,10 @@ RdoAux.Close
 For x = 2 To UBound(aTabela)
     If aTabela(x).nAno = nFirstYear And aTabela(x).nMes = nFirstMonth Then
     Else
-        Sql = "insert produtividadesaldo(codfiscal,anoref,mesref,ano,mes,pontos,negativos,utilizados,saldo) values("
-        Sql = Sql & aTabela(x).nCodFiscal & "," & nAnoRef & "," & nMesRef & "," & aTabela(x).nAno & "," & aTabela(x).nMes & ","
-        Sql = Sql & aTabela(x).nPontos & "," & aTabela(x).nNegativo & "," & aTabela(x).nUtilizado & "," & aTabela(x).nSaldo & ")"
-        cn.Execute Sql, rdExecDirect
+        sql = "insert produtividadesaldo(codfiscal,anoref,mesref,ano,mes,pontos,negativos,utilizados,saldo) values("
+        sql = sql & aTabela(x).nCodFiscal & "," & nAnoRef & "," & nMesRef & "," & aTabela(x).nAno & "," & aTabela(x).nMes & ","
+        sql = sql & aTabela(x).nPontos & "," & aTabela(x).nNegativo & "," & aTabela(x).nUtilizado & "," & aTabela(x).nSaldo & ")"
+        cn.Execute sql, rdExecDirect
     End If
 Next
 
@@ -1027,21 +1027,21 @@ FillArray = nSomaPontos
 End Function
 
 Private Sub FillPontosMes(nCodFiscal As Integer, nMes As Integer, nAno As Integer)
-Dim Sql As String, RdoAux As rdoResultset, nSomaTarefa As Integer, nDia As Integer
+Dim sql As String, RdoAux As rdoResultset, nSomaTarefa As Integer, nDia As Integer
 Dim bAchou As Boolean, nPos As Integer, sNome As String
 
 nLastDay = Val(Left(Format$(DateSerial(nAno, Val(nMes) + 1, 0), "dd/mm/yyyy"), 2))
 ReDim aPontos(nLastDay)
 ReDim aExtratoItem(0)
 
-Sql = "SELECT produtividadetarefa.data, produtividadetarefa.item, produtividadetarefa.qtde, produtividadetarefa.valor, produtividadetarefa.processo, "
-Sql = Sql & "produtividadedesc.descricao FROM produtividadetarefa INNER JOIN produtividadedesc ON produtividadetarefa.item = produtividadedesc.item "
-Sql = Sql & "where year(data)=" & nAno & " and month(data)=" & nMes & " and fiscal=" & nCodFiscal
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT produtividadetarefa.data, produtividadetarefa.item, produtividadetarefa.qtde, produtividadetarefa.valor, produtividadetarefa.processo, "
+sql = sql & "produtividadedesc.descricao FROM produtividadetarefa INNER JOIN produtividadedesc ON produtividadetarefa.item = produtividadedesc.item "
+sql = sql & "where year(data)=" & nAno & " and month(data)=" & nMes & " and fiscal=" & nCodFiscal
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         nDia = Day(!Data)
-        nSomaTarefa = !valor * !QTDE
+        nSomaTarefa = !valor * !Qtde
         nSomaMes = nSomaMes + nSomaTarefa
         aPontos(nDia) = aPontos(nDia) + nSomaTarefa
        .MoveNext
@@ -1052,11 +1052,11 @@ End With
 End Sub
 
 Private Sub CarregaEvento()
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, RdoAux As rdoResultset
 
 ReDim aEvento(0)
-Sql = "select codigo,nome,pontodia from produtividadeevento order by codigo"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select codigo,nome,pontodia from produtividadeevento order by codigo"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         ReDim Preserve aEvento(UBound(aEvento) + 1)

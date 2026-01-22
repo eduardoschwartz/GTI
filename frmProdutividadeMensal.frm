@@ -300,11 +300,11 @@ Dim sNomeArq As String, FF1 As Integer, aExtrato() As ExtratoType, aEvento() As 
 Dim nLastDay As Integer, nSomaMes As Double, nSaldoAnterior As Double, aExtratoItem() As ExtratoItemType
 
 Private Sub CarregaEvento()
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, RdoAux As rdoResultset
 
 ReDim aEvento(0)
-Sql = "select codigo,nome,pontodia from produtividadeevento order by codigo"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select codigo,nome,pontodia from produtividadeevento order by codigo"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         ReDim Preserve aEvento(UBound(aEvento) + 1)
@@ -318,10 +318,10 @@ End With
 End Sub
 
 Private Sub cmbFiscal_Click()
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, RdoAux As rdoResultset
 
-Sql = "select nome,matricula from produtividadefiscal where nome='" & RetornaUsuarioLoginName(cmbFiscal.Text) & "'"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select nome,matricula from produtividadefiscal where nome='" & RetornaUsuarioLoginName(cmbFiscal.Text) & "'"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If RdoAux.RowCount > 0 Then
         lblMatricula.Caption = Val(SubNull(!MATRICULA))
@@ -365,14 +365,14 @@ End Select
 End Sub
 
 Private Sub Form_Load()
-Dim Sql As String, RdoAux As rdoResultset, x As Integer
+Dim sql As String, RdoAux As rdoResultset, x As Integer
 On Error GoTo Erro:
 
 Centraliza Me
 
-Sql = "select codigo,nome,nomecompleto from produtividadefiscal inner join "
-Sql = Sql & "usuario on produtividadefiscal.nome = usuario.nomelogin order by nomecompleto "
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select codigo,nome,nomecompleto from produtividadefiscal inner join "
+sql = sql & "usuario on produtividadefiscal.nome = usuario.nomelogin order by nomecompleto "
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         cmbFiscal.AddItem !NomeCompleto
@@ -389,7 +389,7 @@ If NomeDeLogin <> "SCHWARTZ" And NomeDeLogin <> "RODRIGOC" Then
     End If
 End If
 
-For x = 2011 To 2023
+For x = 2011 To 2026
     cmbAno.AddItem (CStr(x))
 Next
 
@@ -416,14 +416,14 @@ nCodFiscal = cmbFiscal.ItemData(cmbFiscal.ListIndex)
 bIsBoss = ProdIsBoss(cmbFiscal.ItemData(cmbFiscal.ListIndex))
 nMes = cmbMes.ItemData(cmbMes.ListIndex)
 
-If cmbAno.Text = 2015 And nMes = 2 Then
+If cmbAno.Text = 2026 And nMes = 2 Then
     nLastDay = 28
 End If
 For nDay = 1 To nLastDay
     ReDim Preserve aExtrato(UBound(aExtrato) + 1)
     aExtrato(nDay).nDia = nDay
     sData = Format(nDay, "00") & "/" & Format(nMes, "00") & "/" & cmbAno.Text
-    If sData = "29/02/2023" Then sData = "28/02/2023"
+    If sData = "29/02/2026" Then sData = "28/02/2026"
     nWeekDay = Weekday(CDate(sData))
     aExtrato(nDay).sDia = WeekdayName(nWeekDay, True)
 
@@ -573,7 +573,7 @@ FillSpace = sTmp
 End Function
 
 Private Sub FillPontosMes()
-Dim nMes As Integer, Sql As String, RdoAux As rdoResultset, nCodFiscal As Integer, nSomaTarefa As Double, nDia As Integer
+Dim nMes As Integer, sql As String, RdoAux As rdoResultset, nCodFiscal As Integer, nSomaTarefa As Double, nDia As Integer
 Dim bAchou As Boolean, nPos As Integer, sNome As String, RdoAux2 As rdoResultset
 
 nSomaMes = 0
@@ -583,10 +583,10 @@ nLastDay = Val(Left(Format$(DateSerial(2012, Val(nMes) + 1, 0), "dd/mm/yyyy"), 2
 ReDim aPontos(nLastDay)
 ReDim aExtratoItem(0)
 
-Sql = "SELECT produtividadetarefa.data, produtividadetarefa.item, produtividadetarefa.qtde, produtividadetarefa.valor, produtividadetarefa.processo,produtividadetarefa.obs, "
-Sql = Sql & "produtividadedesc.descricao FROM produtividadetarefa INNER JOIN produtividadedesc ON produtividadetarefa.item = produtividadedesc.item "
-Sql = Sql & "where year(data)=" & Val(cmbAno.Text) & " and month(data)=" & nMes & " and fiscal=" & nCodFiscal
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT produtividadetarefa.data, produtividadetarefa.item, produtividadetarefa.qtde, produtividadetarefa.valor, produtividadetarefa.processo,produtividadetarefa.obs, "
+sql = sql & "produtividadedesc.descricao FROM produtividadetarefa INNER JOIN produtividadedesc ON produtividadetarefa.item = produtividadedesc.item "
+sql = sql & "where year(data)=" & Val(cmbAno.Text) & " and month(data)=" & nMes & " and fiscal=" & nCodFiscal
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         nDia = Day(!Data)
@@ -620,7 +620,7 @@ End With
 End Sub
 
 Private Sub PrintExtrato2()
-Dim Sql As String, RdoAux As rdoResultset, x As Integer, nCodFiscal As Integer, nMes As Integer, nLastDay As Integer
+Dim sql As String, RdoAux As rdoResultset, x As Integer, nCodFiscal As Integer, nMes As Integer, nLastDay As Integer
 Dim nSoma As Double, nTotal As Double, nSaldo As Double, nPontosNeg As Double, nResultado As Double, bIsBoss As Boolean
 Dim nReceber As Double, nTransportar As Double, nContaCurso As Integer, nContaFerias As Integer, nContaChefia As Integer
 Dim nContaDiaUtil As Integer, sDataTmp As String, nWeekDay As Integer, nCodEvento As Integer, nContaDiaPerdido As Integer
@@ -638,8 +638,8 @@ bIsBoss = ProdIsBoss(nCodFiscal)
 nMes = cmbMes.ItemData(cmbMes.ListIndex)
 nLastDay = Val(Left(Format$(DateSerial(2012, Val(nMes) + 1, 0), "dd/mm/yyyy"), 2))
 
-Sql = "select item,descricao from produtividadedesc order by item"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select item,descricao from produtividadedesc order by item"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         ReDim Preserve aExtratoItem(UBound(aExtratoItem) + 1)
@@ -651,12 +651,12 @@ With RdoAux
 End With
 
 ReDim Preserve aExtratoItem(UBound(aExtratoItem) + 1)
-aExtratoItem(UBound(aExtratoItem)).sItem = "Afastamento"
+aExtratoItem(UBound(aExtratoItem)).sItem = "Ferias/Afast."
 aExtratoItem(UBound(aExtratoItem)).sDesc = ""
 
 
-Sql = "select data,item,qtde,valor from produtividadetarefa where fiscal=" & nCodFiscal & " and year(data)=" & Val(cmbAno.Text) & " and month(data)=" & nMes
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select data,item,qtde,valor from produtividadetarefa where fiscal=" & nCodFiscal & " and year(data)=" & Val(cmbAno.Text) & " and month(data)=" & nMes
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         For x = 1 To UBound(aExtratoItem)
@@ -676,7 +676,7 @@ ReDim aFiscalEvento(0)
 
 For x = 1 To nLastDay
     sDataTmp = Format(x, "00") & "/" & Format(nMes, "00") & "/" & cmbAno.Text
-    If sDataTmp = "29/02/2023" Then sDataTmp = "28/02/2023"
+    If sDataTmp = "29/02/2025" Then sDataTmp = "28/02/2025"
     'nWeekDay = Weekday(CDate(sDataTmp))
     nCodEvento = ProdEventoDia(nCodFiscal, CDate(sDataTmp))
     If nCodEvento = 1 Then
@@ -692,9 +692,9 @@ For x = 1 To nLastDay
         nCodEvento = 1
     End If
     
-    If nCodEvento <> 2 Then
-    Sql = "select * from feriadodef where  dia=" & x & " and mes=" & nMes & " and ano=" & Val(cmbAno.Text)
-    Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    If nCodEvento <> 2 And nCodEvento <> 8 Then
+    sql = "select * from feriadodef where  dia=" & x & " and mes=" & nMes & " and ano=" & Val(cmbAno.Text)
+    Set RdoAux2 = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     If RdoAux2.RowCount > 0 Then
         RdoAux2.Close
         'nContaDiaPerdido = nContaDiaPerdido + 1
@@ -703,7 +703,7 @@ For x = 1 To nLastDay
     End If
     
     If nCodEvento > 0 Then
-        If (nWeekDay = 1 Or nWeekDay = 7) And nCodEvento <> 2 And nCodEvento <> 3 Then
+        If (nWeekDay = 1 Or nWeekDay = 7) And nCodEvento <> 2 And nCodEvento <> 3 And nCodEvento <> 8 Then
             'sabado,domingo
         Else
             nContaDiaUtil = nContaDiaUtil + 1
@@ -731,13 +731,13 @@ Next
 
 If nContaFerias > 0 Then
 '    nContaFerias = nContaFerias - 1
-    Sql = "SELECT codfiscal, seq, codevento, dataini, datafim From produtividadefiscalevento "
-    Sql = Sql & "WHERE codfiscal = " & nCodFiscal & " AND codevento = 2 AND ('" & Format(sDataFerias, "mm/dd/yyyy") & "' BETWEEN dataini AND datafim)"
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    sql = "SELECT codfiscal, seq, codevento, dataini, datafim From produtividadefiscalevento "
+    sql = sql & "WHERE codfiscal = " & nCodFiscal & " AND codevento = 2 AND ('" & Format(sDataFerias, "mm/dd/yyyy") & "' BETWEEN dataini AND datafim)"
+    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     With RdoAux
         If .RowCount > 0 Then
             'sDataFerias = "Período de: " & Format(!dataini, "dd/mm/yyyy") & " até " & Format(!datafim, "dd/mm/yyyy")
-            sHistferias = "Período de: " & Format(!dataini, "dd/mm/yyyy") & " até " & Format(!Datafim, "dd/mm/yyyy")
+            sHistferias = "Período de: " & Format(!DATAINI, "dd/mm/yyyy") & " até " & Format(!Datafim, "dd/mm/yyyy")
         End If
        .Close
     End With
@@ -770,7 +770,7 @@ For x = 1 To UBound(aExtratoItem)
     ElseIf aExtratoItem(x).sItem = "22" And nContaChefia > 0 Then 'CHEFE
         aExtratoItem(x).nQtde = nContaChefia
         aExtratoItem(x).nValor = 30
-    ElseIf aExtratoItem(x).sItem = "Afastamento" And (nContaFerias > 0 Or nContaLic > 0) Then 'FERIAS
+    ElseIf aExtratoItem(x).sItem = "Ferias/Afast." And (nContaFerias > 0 Or nContaLic > 0) Then 'FERIAS
         aExtratoItem(x).nQtde = nContaFerias
         If nContaLic > 0 Then
             aExtratoItem(x).nQtde = aExtratoItem(x).nQtde + nContaLic
@@ -784,14 +784,14 @@ For x = 1 To UBound(aExtratoItem)
     End If
 Next
 
-Sql = "delete from produtividaderel1 where usuario='" & NomeDeLogin & "'"
-cn.Execute Sql, rdExecDirect
+sql = "delete from produtividaderel1 where usuario='" & NomeDeLogin & "'"
+cn.Execute sql, rdExecDirect
 
 For x = 1 To UBound(aExtratoItem)
     With aExtratoItem(x)
-        Sql = "insert produtividaderel1(usuario,item,descricao,valor,qtde,total) values('" & NomeDeLogin & "','"
-        Sql = Sql & .sItem & "','" & .sDesc & "'," & Virg2Ponto(CStr(.nValor)) & "," & Virg2Ponto(CStr(.nQtde)) & "," & Virg2Ponto(CStr(.nQtde * .nValor)) & ")"
-        cn.Execute Sql, rdExecDirect
+        sql = "insert produtividaderel1(usuario,item,descricao,valor,qtde,total) values('" & NomeDeLogin & "','"
+        sql = sql & .sItem & "','" & .sDesc & "'," & Virg2Ponto(CStr(.nValor)) & "," & Virg2Ponto(CStr(.nQtde)) & "," & Virg2Ponto(CStr(.nQtde * .nValor)) & ")"
+        cn.Execute sql, rdExecDirect
     
         nSoma = .nQtde * .nValor
         nTotal = nTotal + nSoma
@@ -809,8 +809,8 @@ Else
     nAno = Val(cmbAno.Text)
 End If
 
-Sql = "SELECT SUM(saldo) AS soma From produtividadesaldo Where codfiscal = " & nCodFiscal & " And  anoref=" & nAno & " and MesRef = " & cmbMes.ItemData(cmbMes.ListIndex) & " and mes=" & nMes
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT SUM(saldo) AS soma From produtividadesaldo Where codfiscal = " & nCodFiscal & " And  anoref=" & nAno & " and MesRef = " & cmbMes.ItemData(cmbMes.ListIndex) & " and mes=" & nMes
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 If IsNull(RdoAux!soma) Then
     nSaldo = 0
 Else
@@ -841,14 +841,14 @@ End If
 
 frmReport.ShowReport2 "PRODMOB1", frmMdi.HWND, Me.HWND
 
-Sql = "delete from produtividaderel1 where usuario='" & NomeDeLogin & "'"
-cn.Execute Sql, rdExecDirect
+sql = "delete from produtividaderel1 where usuario='" & NomeDeLogin & "'"
+cn.Execute sql, rdExecDirect
 
 
 End Sub
 
 Private Sub PrintSaldoMes()
-Dim sFileName As String, z As Long, Sql As String, RdoAux As rdoResultset, nCodFiscal As Integer, nMes As Integer, nAno As Integer
+Dim sFileName As String, z As Long, sql As String, RdoAux As rdoResultset, nCodFiscal As Integer, nMes As Integer, nAno As Integer
 Dim aSaldo(12) As SaldoType, sMesAno As String, x As Integer, dDataTmp As Date, ax As String
 Exit Sub
 
@@ -856,8 +856,8 @@ nCodFiscal = cmbFiscal.ItemData(cmbFiscal.ListIndex)
 nMes = cmbMes.ItemData(cmbMes.ListIndex)
 nAno = Val(cmbAno.Text)
 
-Sql = "SELECT * FROM PRODUTIVIDADESALDO WHERE CODFISCAL=" & nCodFiscal & " AND MESREF=" & nMes & " AND ANOREF=" & nAno
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT * FROM PRODUTIVIDADESALDO WHERE CODFISCAL=" & nCodFiscal & " AND MESREF=" & nMes & " AND ANOREF=" & nAno
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     If .RowCount = 0 Then
         MsgBox "Não foi calculado o saldo para este período.", vbExclamation, "Atenção"

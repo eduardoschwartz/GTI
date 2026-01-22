@@ -24,9 +24,9 @@ Begin VB.Form frmProdutividadeEvento
       _ExtentX        =   2302
       _ExtentY        =   556
       _Version        =   393216
-      Format          =   156237825
+      Format          =   192937985
       CurrentDate     =   40968
-      MaxDate         =   45291
+      MaxDate         =   46387
       MinDate         =   40544
    End
    Begin prjChameleon.chameleonButton cmdAlterar 
@@ -299,9 +299,9 @@ Begin VB.Form frmProdutividadeEvento
       _ExtentX        =   2302
       _ExtentY        =   556
       _Version        =   393216
-      Format          =   156303361
+      Format          =   192937985
       CurrentDate     =   40968
-      MaxDate         =   45291
+      MaxDate         =   46387
       MinDate         =   40544
    End
    Begin VB.Label lblSeq 
@@ -373,18 +373,18 @@ CarregaLista
 End Sub
 
 Private Sub CarregaLista()
-Dim Sql As String, RdoAux As rdoResultset, z As Long, itmX As ListItem
+Dim sql As String, RdoAux As rdoResultset, z As Long, itmX As ListItem
 
 lvMain.ListItems.Clear
-Sql = "select seq,dataini,datafim,nome from produtividadefiscalevento inner join produtividadeevento "
-Sql = Sql & " ON produtividadefiscalevento.codevento=produtividadeevento.codigo "
-Sql = Sql & " where codfiscal=" & cmbFiscal.ItemData(cmbFiscal.ListIndex) & " order by dataini desc"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select seq,dataini,datafim,nome from produtividadefiscalevento inner join produtividadeevento "
+sql = sql & " ON produtividadefiscalevento.codevento=produtividadeevento.codigo "
+sql = sql & " where codfiscal=" & cmbFiscal.ItemData(cmbFiscal.ListIndex) & " order by dataini desc"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
        Set itmX = lvMain.ListItems.Add(, , Format(!Seq, "000"))
        itmX.SubItems(1) = !Nome
-       itmX.SubItems(2) = Format(!dataini, "dd/mm/yyyy")
+       itmX.SubItems(2) = Format(!DATAINI, "dd/mm/yyyy")
        itmX.SubItems(3) = Format(!Datafim, "dd/mm/yyyy")
        .MoveNext
     Loop
@@ -419,8 +419,8 @@ End If
 
 If MsgBox("Excluir o período selecionado?", vbQuestion + vbYesNo, "Confirmação") = vbNo Then Exit Sub
 
-Sql = "delete from produtividadefiscalevento where codfiscal=" & cmbFiscal.ItemData(cmbFiscal.ListIndex) & " and seq=" & Val(lblSeq.Caption)
-cn.Execute Sql, rdExecDirect
+sql = "delete from produtividadefiscalevento where codfiscal=" & cmbFiscal.ItemData(cmbFiscal.ListIndex) & " and seq=" & Val(lblSeq.Caption)
+cn.Execute sql, rdExecDirect
 Limpa
 CarregaLista
 
@@ -447,8 +447,8 @@ End If
 
 If Not ValidaPeriodo Then Exit Sub
 
-Sql = "SELECT MAX(SEQ) AS MAXIMO FROM produtividadefiscalevento where codfiscal=" & cmbFiscal.ItemData(cmbFiscal.ListIndex)
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT MAX(SEQ) AS MAXIMO FROM produtividadefiscalevento where codfiscal=" & cmbFiscal.ItemData(cmbFiscal.ListIndex)
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 If IsNull(RdoAux!maximo) Then
     nSeq = 1
 Else
@@ -457,25 +457,25 @@ End If
 RdoAux.Close
 
 If bNovo Then
-    Sql = "insert produtividadefiscalevento(codfiscal,seq,codevento,dataini,datafim) values("
-    Sql = Sql & cmbFiscal.ItemData(cmbFiscal.ListIndex) & "," & nSeq & "," & cmbEvento.ItemData(cmbEvento.ListIndex) & ",'"
-    Sql = Sql & Format(mskDataIni.value, "mm/dd/yyyy") & "','" & Format(mskDataFim.value, "mm/dd/yyyy") & "')"
+    sql = "insert produtividadefiscalevento(codfiscal,seq,codevento,dataini,datafim) values("
+    sql = sql & cmbFiscal.ItemData(cmbFiscal.ListIndex) & "," & nSeq & "," & cmbEvento.ItemData(cmbEvento.ListIndex) & ",'"
+    sql = sql & Format(mskDataIni.value, "mm/dd/yyyy") & "','" & Format(mskDataFim.value, "mm/dd/yyyy") & "')"
 Else
-    Sql = "update produtividadefiscalevento set codevento=" & cmbEvento.ItemData(cmbEvento.ListIndex) & ",dataini='" & Format(mskDataIni.value, "mm/dd/yyyy") & "',"
-    Sql = Sql & "datafim='" & Format(mskDataFim.value, "mm/dd/yyyy") & "' where codfiscal=" & cmbFiscal.ItemData(cmbFiscal.ListIndex)
-    Sql = Sql & " and seq=" & Val(lblSeq.Caption)
+    sql = "update produtividadefiscalevento set codevento=" & cmbEvento.ItemData(cmbEvento.ListIndex) & ",dataini='" & Format(mskDataIni.value, "mm/dd/yyyy") & "',"
+    sql = sql & "datafim='" & Format(mskDataFim.value, "mm/dd/yyyy") & "' where codfiscal=" & cmbFiscal.ItemData(cmbFiscal.ListIndex)
+    sql = sql & " and seq=" & Val(lblSeq.Caption)
 End If
-cn.Execute Sql, rdExecDirect
+cn.Execute sql, rdExecDirect
 
 ControlBehaviour (True)
 CarregaLista
 End Sub
 
 Private Function IsTheBoss()
-Dim Sql As String, RdoAux As rdoResultset, bRet As Boolean, sNomeDeLogin As String
+Dim sql As String, RdoAux As rdoResultset, bRet As Boolean, sNomeDeLogin As String
 
-Sql = "select codigo,chefe from produtividadefiscal where nome='" & RetornaUsuarioLoginName(cmbFiscal.Text) & "'"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select codigo,chefe from produtividadefiscal where nome='" & RetornaUsuarioLoginName(cmbFiscal.Text) & "'"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 If IsNull(RdoAux!Chefe) Then
     bRet = False
 Else
@@ -530,7 +530,7 @@ dDataFim2 = CDate(mskDataFim.value)
 For x = 1 To lvMain.ListItems.Count
     If Not bNovo Then
         If lvMain.ListItems(x).Text = lblSeq.Caption Then
-            GoTo proximo2
+            GoTo Proximo2
         End If
     End If
             
@@ -552,7 +552,7 @@ For x = 1 To lvMain.ListItems.Count
         bAchou = True
         Exit For
     End If
-proximo2:
+Proximo2:
 Next
 
 If bAchou Then
@@ -578,15 +578,15 @@ ControlBehaviour (False)
 End Sub
 
 Private Sub Form_Load()
-Dim RdoAux As rdoResultset, Sql As String
+Dim RdoAux As rdoResultset, sql As String
 
 bNovo = False
 Centraliza Me
 
-Sql = "select codigo,nome,nomecompleto from produtividadefiscal inner join "
-Sql = Sql & "usuario on produtividadefiscal.nome = usuario.nomelogin order by nomecompleto; "
-Sql = Sql & "select codigo,nome from produtividadeevento where codigo>0 order by nome"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select codigo,nome,nomecompleto from produtividadefiscal inner join "
+sql = sql & "usuario on produtividadefiscal.nome = usuario.nomelogin order by nomecompleto; "
+sql = sql & "select codigo,nome from produtividadeevento where codigo>0 order by nome"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         cmbFiscal.AddItem !NomeCompleto

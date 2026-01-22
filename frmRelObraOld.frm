@@ -1,19 +1,19 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Object = "{93019C16-6A9D-4E32-A995-8B9C1D41D5FE}#1.0#0"; "prjChameleon.ocx"
 Object = "{F48120B2-B059-11D7-BF14-0010B5B69B54}#1.0#0"; "esMaskEdit.ocx"
 Begin VB.Form frmRelatObra 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Relatórios de Atendimento"
    ClientHeight    =   2475
-   ClientLeft      =   6510
-   ClientTop       =   3105
-   ClientWidth     =   4710
+   ClientLeft      =   16425
+   ClientTop       =   3795
+   ClientWidth     =   4725
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    ScaleHeight     =   2475
-   ScaleWidth      =   4710
+   ScaleWidth      =   4725
    Begin VB.ComboBox cmbSit 
       Height          =   315
       ItemData        =   "frmRelObraOld.frx":0000
@@ -262,13 +262,13 @@ End If
 
 Select Case cmbTipo.ItemData(cmbTipo.ListIndex)
     Case 1
-        frmReport.ShowReport2 "REGATENDIMENTO1", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport2 "REGATENDIMENTO1", frmMdi.HWND, Me.HWND
     Case 2
-        frmReport.ShowReport2 "REGATENDIMENTO3", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport2 "REGATENDIMENTO3", frmMdi.HWND, Me.HWND
     Case 3
-        frmReport.ShowReport2 "REGATENDIMENTO2", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport2 "REGATENDIMENTO2", frmMdi.HWND, Me.HWND
     Case 4
-        frmReport.ShowReport2 "REGATENDIMENTO4", frmMdi.hwnd, Me.hwnd
+        frmReport.ShowReport2 "REGATENDIMENTO4", frmMdi.HWND, Me.HWND
     Case 5
         GeraResumo
 End Select
@@ -304,7 +304,7 @@ Sql = "SELECT CODIGO, NOME From paramobra WHERE SIGLA = 'EQ'"
 Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
-        cmbEquipe.AddItem !nome
+        cmbEquipe.AddItem !Nome
         cmbEquipe.ItemData(cmbEquipe.NewIndex) = !Codigo
        .MoveNext
     Loop
@@ -327,7 +327,7 @@ Private Sub GeraResumo()
 Dim Sql As String, RdoAux As rdoResultset, RdoAux2 As rdoResultset
 Dim itmX As ListItem, sSit As String, x As Integer
 Dim z As Long
-z = SendMessage(lvMain.hwnd, LVM_DELETEALLITEMS, 0, 0)
+z = SendMessage(lvMain.HWND, LVM_DELETEALLITEMS, 0, 0)
 
 Sql = "SELECT * from registroatendimento where data between '" & Format(mskDataIni.Text, "mm/dd/yyyy") & "' and '" & Format(mskDataFim.Text, "mm/dd/yyyy") & "'"
 
@@ -341,20 +341,20 @@ With RdoAux
                 If cmbSit.ListIndex = 1 Then
                     sSit = "CONCLUIDO"
                 Else
-                    GoTo proximo
+                    GoTo Proximo
                 End If
             Else
                 If IsDate(!DataCancel) Then
                     If cmbSit.ListIndex = 3 Then
                         sSit = "CANCELADO"
                     Else
-                        GoTo proximo
+                        GoTo Proximo
                     End If
                 Else
                     If cmbSit.ListIndex = 2 Then
                         sSit = "AGUARDANDO"
                     Else
-                        GoTo proximo
+                        GoTo Proximo
                     End If
                 End If
             End If
@@ -370,7 +370,7 @@ With RdoAux
         itmX.SubItems(3) = SubNull(!assunto)
         Sql = "select nome from paramobra where sigla='EQ' and codigo=" & !equipe
         Set RdoAux2 = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
-        itmX.SubItems(4) = SubNull(RdoAux2!nome)
+        itmX.SubItems(4) = SubNull(RdoAux2!Nome)
         RdoAux2.Close
         If IsDate(!dataend) Then
             sSit = "CONCLUIDO"
@@ -382,7 +382,7 @@ With RdoAux
             End If
         End If
         itmX.SubItems(5) = sSit
-proximo:
+Proximo:
        .MoveNext
     Loop
    .Close
@@ -399,7 +399,7 @@ For x = 1 To lvMain.ListItems.Count
     cn.Execute Sql, rdExecDirect
 Next
 Liberado
-frmReport.ShowReport2 "REGATENDIMENTO5", frmMdi.hwnd, Me.hwnd
+frmReport.ShowReport2 "REGATENDIMENTO5", frmMdi.HWND, Me.HWND
 Sql = "delete from relatorio_obra where usuario='" & NomeDeLogin & "'"
 cn.Execute Sql, rdExecDirect
 

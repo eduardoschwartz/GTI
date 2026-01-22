@@ -488,9 +488,9 @@ Begin VB.Form frmProdutividadeControle
          _ExtentX        =   2302
          _ExtentY        =   556
          _Version        =   393216
-         Format          =   127795201
+         Format          =   174981121
          CurrentDate     =   44201
-         MaxDate         =   45291
+         MaxDate         =   46387
          MinDate         =   42370
       End
       Begin VB.Label Label1 
@@ -800,7 +800,7 @@ End Sub
 
 Private Sub cmdAlterar_Click()
 Dim dData As Date, nMes As Integer, nAno As Integer
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, RdoAux As rdoResultset
 
 If cmbFiscal.ListIndex = -1 Then
     MsgBox "Selecione um fiscal.", vbExclamation, "Atenção"
@@ -821,8 +821,8 @@ End If
 nMes = Month(dData)
 nAno = Year(dData)
 
-Sql = "SELECT * FROM PRODUTIVIDADEENCERRA WHERE ANO=" & nAno & " AND MES=" & nMes
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT * FROM PRODUTIVIDADEENCERRA WHERE ANO=" & nAno & " AND MES=" & nMes
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 If RdoAux.RowCount > 0 Then
     MsgBox "Este mês já foi encerrado e não pode mais ser alterado.", vbCritical, "Atenção"
     RdoAux.Close
@@ -880,9 +880,9 @@ Else
         End If
         
         If bValido Then
-            Sql = "update produtividadetarefa set data='" & Format(n, "mm/dd/yyyy") & "' where fiscal=" & cmbFiscal.ItemData(cmbFiscal.ListIndex) & " and "
-            Sql = Sql & "data='" & Format(mskDataIni.value, "mm/dd/yyyy") & "' and seq=" & Val(lblSeq.Caption)
-            cn.Execute Sql, rdExecDirect
+            sql = "update produtividadetarefa set data='" & Format(n, "mm/dd/yyyy") & "' where fiscal=" & cmbFiscal.ItemData(cmbFiscal.ListIndex) & " and "
+            sql = sql & "data='" & Format(mskDataIni.value, "mm/dd/yyyy") & "' and seq=" & Val(lblSeq.Caption)
+            cn.Execute sql, rdExecDirect
             mskDataIni.value = Format(n, "dd/mm/yyyy")
             mskDataIni_Change
             ControlBehaviour True
@@ -895,7 +895,7 @@ End If
 End Sub
 
 Private Sub cmdExcluir_Click()
-Dim Sql As String
+Dim sql As String
 
 If cmbFiscal.ListIndex = -1 Then
     MsgBox "Selecione um fiscal.", vbExclamation, "Atenção"
@@ -908,9 +908,9 @@ End If
 
 If MsgBox("Deseja excluir esta tarefa?", vbQuestion + vbYesNo, "Confirmação") = vbNo Then Exit Sub
 
-Sql = "delete from produtividadetarefa where fiscal=" & cmbFiscal.ItemData(cmbFiscal.ListIndex)
-Sql = Sql & " and data='" & Format(mskDataIni.value, "mm/dd/yyyy") & "' and seq=" & aDia(nPointer).nSeq
-cn.Execute Sql, rdExecDirect
+sql = "delete from produtividadetarefa where fiscal=" & cmbFiscal.ItemData(cmbFiscal.ListIndex)
+sql = sql & " and data='" & Format(mskDataIni.value, "mm/dd/yyyy") & "' and seq=" & aDia(nPointer).nSeq
+cn.Execute sql, rdExecDirect
 
 CarregaDia
 
@@ -1006,8 +1006,8 @@ dData = mskDataIni.value
 nMes = Month(dData)
 nAno = Year(dData)
 
-Sql = "SELECT * FROM PRODUTIVIDADEENCERRA WHERE ANO=" & nAno & " AND MES=" & nMes
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "SELECT * FROM PRODUTIVIDADEENCERRA WHERE ANO=" & nAno & " AND MES=" & nMes
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 If RdoAux.RowCount > 0 Then
     MsgBox "Este mês já foi encerrado e não pode mais ser alterado.", vbCritical, "Atenção"
     RdoAux.Close
@@ -1070,7 +1070,7 @@ CarregaTarefa
 End Sub
 
 Private Sub Form_Load()
-Dim RdoAux As rdoResultset, Sql As String
+Dim RdoAux As rdoResultset, sql As String
 On Error GoTo Erro
 bNovo = False
 Centraliza Me
@@ -1078,9 +1078,9 @@ ControlBehaviour True
 CarregaEvento
 
 
-Sql = "select codigo,nome,nomecompleto from produtividadefiscal inner join "
-Sql = Sql & "usuario on produtividadefiscal.nome = usuario.nomelogin order by nomecompleto "
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select codigo,nome,nomecompleto from produtividadefiscal inner join "
+sql = sql & "usuario on produtividadefiscal.nome = usuario.nomelogin order by nomecompleto "
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         cmbFiscal.AddItem !NomeCompleto
@@ -1109,6 +1109,7 @@ Erro:
 cmbFiscal.Enabled = False
 mskDataIni.Enabled = False
 MsgBox "Erro Fatal.", vbCritical, "Atenção"
+Resume Next
 
 End Sub
 
@@ -1140,13 +1141,13 @@ End If
 End Sub
 
 Private Sub CarregaLista()
-Dim RdoAux As rdoResultset, Sql As String, itmX As ListItem
+Dim RdoAux As rdoResultset, sql As String, itmX As ListItem
 lvMain.ListItems.Clear
-Sql = "select * from vwprodutividade where dataini<='" & Format(mskDataIni.value, "mm/dd/yyyy") & "' and "
-Sql = Sql & " datafim>='" & Format(mskDataIni.value, "mm/dd/yyyy") & "' "
+sql = "select * from vwprodutividade where dataini<='" & Format(mskDataIni.value, "mm/dd/yyyy") & "' and "
+sql = sql & " datafim>='" & Format(mskDataIni.value, "mm/dd/yyyy") & "' "
 'Sql = Sql & " and item not in ('14','22')"
-Sql = Sql & " order by item"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = sql & " order by item"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         Set itmX = lvMain.ListItems.Add(, , !Item)
@@ -1178,7 +1179,7 @@ TotalizaTarefa
 End Sub
 
 Private Sub CarregaDia()
-Dim RdoAux As rdoResultset, Sql As String, itmX As ListItem, nCodEvento As Integer, nCodFiscal As Integer
+Dim RdoAux As rdoResultset, sql As String, itmX As ListItem, nCodEvento As Integer, nCodFiscal As Integer
 
 If cmbFiscal.ListIndex = -1 Then Exit Sub
 Limpa
@@ -1200,9 +1201,9 @@ End If
 
 ReDim aDia(0)
 
-Sql = "select DISTINCT Seq,processo,ano,numero from produtividadetarefa where fiscal=" & nCodFiscal
-Sql = Sql & " and data='" & Format(mskDataIni.value, "mm/dd/yyyy") & "'"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select DISTINCT Seq,processo,ano,numero from produtividadetarefa where fiscal=" & nCodFiscal
+sql = sql & " and data='" & Format(mskDataIni.value, "mm/dd/yyyy") & "'"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         ReDim Preserve aDia(UBound(aDia) + 1)
@@ -1288,21 +1289,21 @@ Next
 End Sub
 
 Private Sub CarregaTarefa()
-Dim Sql As String, RdoAux As rdoResultset, x As Integer
+Dim sql As String, RdoAux As rdoResultset, x As Integer
 
 ClearGrid
 txtNumProc.Text = aDia(nPointer).sNumProc
 If txtNumProc.Text = "" Then txtNumProc.Text = "000000-0/0000"
 lblSeq.Caption = aDia(nPointer).nSeq
-Sql = "select item,qtde,processo,obs from produtividadetarefa where fiscal=" & cmbFiscal.ItemData(cmbFiscal.ListIndex)
-Sql = Sql & " and data='" & Format(mskDataIni.value, "mm/dd/yyyy") & "' and seq=" & aDia(nPointer).nSeq
+sql = "select item,qtde,processo,obs from produtividadetarefa where fiscal=" & cmbFiscal.ItemData(cmbFiscal.ListIndex)
+sql = sql & " and data='" & Format(mskDataIni.value, "mm/dd/yyyy") & "' and seq=" & aDia(nPointer).nSeq
 
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         For x = 1 To lvMain.ListItems.Count
             If lvMain.ListItems(x).Text = !Item Then
-                lvMain.ListItems(x).SubItems(2) = FormatNumber(!QTDE, 2)
+                lvMain.ListItems(x).SubItems(2) = FormatNumber(!Qtde, 2)
                 lvMain.ListItems(x).Checked = True
                 lvMain.ListItems(x).SubItems(4) = SubNull(!obs)
             End If
@@ -1330,11 +1331,11 @@ lblPontoTarefa.Caption = FormatNumber(nTotal, 2)
 End Sub
 
 Private Sub TotalizaDia()
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, RdoAux As rdoResultset
 
-Sql = "select sum(valor * qtde) as soma from produtividadetarefa where fiscal=" & cmbFiscal.ItemData(cmbFiscal.ListIndex)
-Sql = Sql & " and data='" & Format(mskDataIni.value, "mm/dd/yyyy") & "'"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select sum(valor * qtde) as soma from produtividadetarefa where fiscal=" & cmbFiscal.ItemData(cmbFiscal.ListIndex)
+sql = sql & " and data='" & Format(mskDataIni.value, "mm/dd/yyyy") & "'"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 If Not IsNull(RdoAux!soma) Then
     txtPontos.Text = FormatNumber(RdoAux!soma, 2)
 End If
@@ -1349,9 +1350,9 @@ If MsgBox("Deseja gravar as alterações?", vbQuestion + vbYesNo, "Confirmação") =
 
 nCodFiscal = cmbFiscal.ItemData(cmbFiscal.ListIndex)
 If bNovo Then
-    Sql = "SELECT max(seq) as maximo from produtividadetarefa where data='" & Format(mskDataIni.value, "mm/dd/yyyy") & "' "
-    Sql = Sql & " and fiscal=" & nCodFiscal
-    Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+    sql = "SELECT max(seq) as maximo from produtividadetarefa where data='" & Format(mskDataIni.value, "mm/dd/yyyy") & "' "
+    sql = sql & " and fiscal=" & nCodFiscal
+    Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
     If IsNull(RdoAux!maximo) Then
         nSeq = 1
     Else
@@ -1374,8 +1375,8 @@ If bNovo Then
     nMaxPointer = UBound(aDia)
 Else
     nSeq = Val(lblSeq.Caption)
-    Sql = "delete from produtividadetarefa where fiscal=" & nCodFiscal & " and data='" & Format(mskDataIni.value, "mm/dd/yyyy") & "' and seq=" & nSeq
-    cn.Execute Sql, rdExecDirect
+    sql = "delete from produtividadetarefa where fiscal=" & nCodFiscal & " and data='" & Format(mskDataIni.value, "mm/dd/yyyy") & "' and seq=" & nSeq
+    cn.Execute sql, rdExecDirect
     sNumProcesso = txtNumProc.Text
     nAno = Val(Mid(Trim$(sNumProcesso), InStr(1, Trim$(sNumProcesso), "/", vbBinaryCompare) + 1, 4))
     nNumproc = Val(Left$(Trim$(sNumProcesso), InStr(1, Trim$(sNumProcesso), "/", vbBinaryCompare) - 1))
@@ -1389,21 +1390,21 @@ For nRow = 1 To lvMain.ListItems.Count
         nValor = CDbl(lvMain.ListItems(nRow).SubItems(3))
         sObs = lvMain.ListItems(nRow).SubItems(4)
         
-        Sql = "insert produtividadetarefa(data,fiscal,seq,item,qtde,valor,ano,numero,processo,obs) values('"
-        Sql = Sql & Format(mskDataIni.value, "mm/dd/yyyy") & "'," & nCodFiscal & "," & nSeq & ",'" & sItem & "',"
-        Sql = Sql & Virg2Ponto(CStr(nQtde)) & "," & Virg2Ponto(CStr(nValor)) & "," & nAno & "," & nNumproc & ",'" & sNumProcesso & "','" & Mask(sObs) & "')"
-        cn.Execute Sql, rdExecDirect
+        sql = "insert produtividadetarefa(data,fiscal,seq,item,qtde,valor,ano,numero,processo,obs) values('"
+        sql = sql & Format(mskDataIni.value, "mm/dd/yyyy") & "'," & nCodFiscal & "," & nSeq & ",'" & sItem & "',"
+        sql = sql & Virg2Ponto(CStr(nQtde)) & "," & Virg2Ponto(CStr(nValor)) & "," & nAno & "," & nNumproc & ",'" & sNumProcesso & "','" & Mask(sObs) & "')"
+        cn.Execute sql, rdExecDirect
     End If
 Next
 
 End Sub
 
 Private Sub CarregaEvento()
-Dim Sql As String, RdoAux As rdoResultset
+Dim sql As String, RdoAux As rdoResultset
 
 ReDim aEvento(0)
-Sql = "select codigo,nome,pontodia from produtividadeevento order by codigo"
-Set RdoAux = cn.OpenResultset(Sql, rdOpenKeyset, rdConcurValues)
+sql = "select codigo,nome,pontodia from produtividadeevento order by codigo"
+Set RdoAux = cn.OpenResultset(sql, rdOpenKeyset, rdConcurValues)
 With RdoAux
     Do Until .EOF
         ReDim Preserve aEvento(UBound(aEvento) + 1)
